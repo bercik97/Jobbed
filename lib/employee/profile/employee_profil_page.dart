@@ -259,7 +259,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                           this.context, _user, _employee.timesheets)),
                       _buildTab(employeeTodaysTodo(
                           this.context, _employee.todaysPlan)),
-                      _buildTab(employeePanel(this.context, _employee)),
+                      _buildTab(employeePanel(this.context, _user, _employee)),
                     ],
                   ),
                 ),

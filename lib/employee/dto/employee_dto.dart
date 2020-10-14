@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'employee_timesheet_dto.dart';
 
 class EmployeeDto {
+  final int id;
   final String username;
   final String nationality;
   final String dateOfBirth;
@@ -43,6 +44,7 @@ class EmployeeDto {
   final String todaysPlan;
 
   EmployeeDto({
+    @required this.id,
     @required this.username,
     @required this.nationality,
     @required this.dateOfBirth,
@@ -85,6 +87,7 @@ class EmployeeDto {
 
   factory EmployeeDto.fromJson(Map<String, dynamic> json) {
     return EmployeeDto(
+      id: json['id'] as int,
       username: json['username'] as String,
       nationality: json['nationality'] as String,
       dateOfBirth: json['dateOfBirth'] as String,
