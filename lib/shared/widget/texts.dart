@@ -64,6 +64,7 @@ Text textCenter18WhiteBold(String text) { return Text(text, textAlign: TextAlign
 /*    TEXT DARK    */
 /////////////////////
 Text textDark(String text) { return Text(text, style: TextStyle(color: DARK)); }
+Text text36Dark(String text) { return Text(text, style: TextStyle(fontSize: 36, color: DARK)); }
 
 
 /////////////////////

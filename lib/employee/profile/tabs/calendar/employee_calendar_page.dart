@@ -8,7 +8,6 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:intl/intl.dart';
@@ -87,20 +86,6 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
     });
   }
 
-  void _onCalendarCreated(
-      DateTime first, DateTime last, CalendarFormat format) {
-    DateTime currentDate = DateTime.now();
-    bool vocationsInCurrentMonth = _events.keys.any((element) =>
-        element.year == currentDate.year && element.month == currentDate.month);
-    if (vocationsInCurrentMonth) {
-      ToastService.showToast(
-          getTranslated(context, 'plannedVocationsInCurrentMonth'));
-    } else {
-      ToastService.showToast(
-          getTranslated(context, 'noVocationsForCurrentMonth'));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     if (_loading) {
@@ -127,8 +112,8 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.red,
-          tooltip: 'Legend',
+          tooltip: getTranslated(context, 'legend'),
+          backgroundColor: GREEN,
           onPressed: () {
             slideDialog.showSlideDialog(
               context: context,
@@ -137,16 +122,37 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
                 padding: EdgeInsets.all(10),
                 child: Column(
                   children: <Widget>[
-                    text20GreenBold('Calendar legend'),
+                    text20GreenBold(getTranslated(context, 'calendarLegend')),
                     SizedBox(height: 10),
-                    // TODO calendar images for legend
+                    _buildLegendItem(iconOrange(Icons.error_outline),
+                        getTranslated(context, 'plannedDay')),
+                    _buildLegendItem(iconGreen(Icons.check),
+                        getTranslated(context, 'workedDay')),
+                    _buildLegendItem(iconYellow(Icons.beach_access),
+                        getTranslated(context, 'confirmedVocation')),
+                    _buildLegendItem(iconRed(Icons.beach_access),
+                        getTranslated(context, 'notConfirmedVocation')),
                   ],
                 ),
               ),
             );
           },
-          child: icon50White(Icons.help_outline),
+          child: text36Dark('?'),
         ),
+      ),
+    );
+  }
+
+  Widget _buildLegendItem(Icon icon, String text) {
+    return Padding(
+      padding: EdgeInsets.only(top: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          icon,
+          SizedBox(width: 5),
+          text18White(text),
+        ],
       ),
     );
   }
@@ -181,7 +187,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
             child: Container(
               margin: const EdgeInsets.all(4.0),
               padding: const EdgeInsets.only(top: 5.0, left: 6.0),
-              color: WHITE,
+              color: Colors.blueGrey,
               width: 100,
               height: 100,
               child: Text(
@@ -195,7 +201,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
           return Container(
             margin: const EdgeInsets.all(4.0),
             padding: const EdgeInsets.only(top: 5.0, left: 6.0),
-            color: GREEN,
+            color: Colors.blueAccent,
             width: 100,
             height: 100,
             child: Text(
@@ -222,29 +228,29 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
         _onDaySelected(date, events);
         _animationController.forward(from: 0.0);
       },
-      onCalendarCreated: _onCalendarCreated,
     );
   }
 
   Widget _buildEventsMarker(DateTime date, List events) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        color: GREEN,
-      ),
-      width: 16.0,
-      height: 16.0,
-      child: Center(
-        child: Text(
-          '${events.length}',
-          style: TextStyle().copyWith(
-            color: Colors.white,
-            fontSize: 12.0,
-          ),
-        ),
-      ),
-    );
+    EmployeeCalendarDto workday = events[0];
+    bool isVocationNotNull = workday.isVocationVerified != null;
+    if (isVocationNotNull && workday.isVocationVerified) {
+      return Icon(Icons.beach_access, color: Colors.yellow);
+    } else if (workday.hours != 0) {
+      return icon30Green(Icons.check);
+    } else if (workday.plan != null && workday.plan.isNotEmpty) {
+      if (isVocationNotNull && !workday.isVocationVerified) {
+        return Row(
+          children: [
+            Icon(Icons.beach_access, color: Colors.red),
+            iconOrange(Icons.error_outline),
+          ],
+        );
+      }
+      return iconOrange(Icons.error_outline);
+    } else {
+      return Container();
+    }
   }
 
   Widget _buildEventList() {
