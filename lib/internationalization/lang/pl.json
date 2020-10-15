@@ -371,5 +371,10 @@
   "plannedDay": "Zaplanowany dzień",
   "workedDay": "Przepracowany dzień",
   "confirmedVocation": "Potwierdzony urlop",
-  "notConfirmedVocation": "Niepotwierdzony urlop"
+  "notConfirmedVocation": "Niepotwierdzony urlop",
+  "planFor": "Plan dla",
+  "verifiedVocationForDay": "Zweryfikowany urlop dnia",
+  "notVerifiedVocationForDay": "Niezweryfikowany urlop dnia",
+  "vocationReasonFor": "Powód urlopu dla",
+  "dayHaveNotVerifiedVocation": "Dzień posiada niezweryfikowany urlop"
 }

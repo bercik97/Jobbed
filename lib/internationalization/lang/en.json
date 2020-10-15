@@ -371,5 +371,10 @@
   "plannedDay": "Planned day",
   "workedDay": "Worked day",
   "confirmedVocation": "Confirmed vocation",
-  "notConfirmedVocation": "Not confirmed vocation"
+  "notConfirmedVocation": "Not confirmed vocation",
+  "planFor": "Plan for",
+  "verifiedVocationForDay": "Verified vocation for day",
+  "notVerifiedVocationForDay": "Notverified vocation for day",
+  "vocationReasonFor": "Vocation reason for",
+  "dayHaveNotVerifiedVocation": "Day has an unverified vacation"
 }

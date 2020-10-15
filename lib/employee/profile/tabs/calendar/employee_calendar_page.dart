@@ -1,6 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:give_job/employee/dto/employee_calendar_dto.dart';
-import 'package:give_job/employee/employee_app_bar.dart';
 import 'package:give_job/employee/employee_side_bar.dart';
 import 'package:give_job/employee/service/employee_service.dart';
 import 'package:give_job/employee/shimmer/shimmer_employee_calendar.dart';
@@ -8,8 +9,10 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/settings/settings_page.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
+import 'package:give_job/shared/workdays/workday_util.dart';
 import 'package:intl/intl.dart';
 import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 import 'package:table_calendar/table_calendar.dart';
@@ -40,7 +43,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
 
   Map<DateTime, List<EmployeeCalendarDto>> _events = new Map();
   List _selectedEvents;
-  DateTime _selectedDay;
+  DateTime _selectedDay = DateTime.now();
   AnimationController _animationController;
   CalendarController _calendarController = new CalendarController();
 
@@ -97,49 +100,78 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar:
-            employeeAppBar(context, _user, getTranslated(context, 'calendar')),
+        appBar: _buildAppBar(),
         drawer: employeeSideBar(context, _user),
         body: Column(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             _buildTableCalendarWithBuilders(),
-            //const SizedBox(height: 8.0),
-            //_buildButtons(),
-            const SizedBox(height: 8.0),
             Expanded(child: _buildEventList()),
           ],
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: FloatingActionButton(
-          tooltip: getTranslated(context, 'legend'),
-          backgroundColor: GREEN,
-          onPressed: () {
-            slideDialog.showSlideDialog(
-              context: context,
-              backgroundColor: DARK,
-              child: Padding(
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  children: <Widget>[
-                    text20GreenBold(getTranslated(context, 'calendarLegend')),
-                    SizedBox(height: 10),
-                    _buildLegendItem(iconOrange(Icons.error_outline),
-                        getTranslated(context, 'plannedDay')),
-                    _buildLegendItem(iconGreen(Icons.check),
-                        getTranslated(context, 'workedDay')),
-                    _buildLegendItem(iconYellow(Icons.beach_access),
-                        getTranslated(context, 'confirmedVocation')),
-                    _buildLegendItem(iconRed(Icons.beach_access),
-                        getTranslated(context, 'notConfirmedVocation')),
-                  ],
-                ),
-              ),
-            );
-          },
-          child: text36Dark('?'),
-        ),
       ),
+    );
+  }
+
+  Widget _buildAppBar() {
+    return AppBar(
+      iconTheme: IconThemeData(color: WHITE),
+      backgroundColor: BRIGHTER_DARK,
+      elevation: 0.0,
+      bottomOpacity: 0.0,
+      title: Row(
+        children: [
+          text15White(getTranslated(context, 'calendar')),
+          SizedBox(width: 10),
+          Container(
+            height: 30,
+            child: FloatingActionButton(
+              mini: true,
+              tooltip: getTranslated(context, 'legend'),
+              backgroundColor: GREEN,
+              onPressed: () {
+                slideDialog.showSlideDialog(
+                  context: context,
+                  backgroundColor: DARK,
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: <Widget>[
+                        text20GreenBold(
+                            getTranslated(context, 'calendarLegend')),
+                        SizedBox(height: 10),
+                        _buildLegendItem(iconOrange(Icons.error_outline),
+                            getTranslated(context, 'plannedDay')),
+                        _buildLegendItem(iconGreen(Icons.check),
+                            getTranslated(context, 'workedDay')),
+                        _buildLegendItem(iconYellow(Icons.beach_access),
+                            getTranslated(context, 'confirmedVocation')),
+                        _buildLegendItem(iconRed(Icons.beach_access),
+                            getTranslated(context, 'notConfirmedVocation')),
+                      ],
+                    ),
+                  ),
+                );
+              },
+              child: text25Dark('?'),
+            ),
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(right: 15.0),
+          child: IconButton(
+            icon: iconWhite(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SettingsPage(_user)),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 
@@ -242,12 +274,14 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
       if (isVocationNotNull && !workday.isVocationVerified) {
         return Row(
           children: [
-            Icon(Icons.beach_access, color: Colors.red),
+            iconRed(Icons.beach_access),
             iconOrange(Icons.error_outline),
           ],
         );
       }
       return iconOrange(Icons.error_outline);
+    } else if (isVocationNotNull && !workday.isVocationVerified) {
+      return iconRed(Icons.beach_access);
     } else {
       return Container();
     }
@@ -257,7 +291,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
     return ListView(
       children: _selectedEvents
           .map(
-            (event) => Container(
+            (workday) => Container(
               decoration: BoxDecoration(
                 border: Border.all(width: 0.8),
                 borderRadius: BorderRadius.circular(12.0),
@@ -265,7 +299,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
               margin:
                   const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
               child: ListTile(
-                title: textRed('object'),
+                title: _buildDay(workday),
                 onTap: () => print('object'),
               ),
             ),
@@ -274,23 +308,191 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
     );
   }
 
-  Future<Null> _refresh() {
-    return _service.findEmployeeCalendarByEmployeeId(_employeeId).then((res) {
-      setState(() {
-        _loading = false;
-        _events.clear();
-        res.forEach((key, value) {
-          _events[key] = value;
-        });
-        DateTime currentDate =
-            DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()));
-        _selectedEvents = _events[currentDate] ?? [];
-        _animationController = AnimationController(
-          vsync: this,
-          duration: const Duration(milliseconds: 400),
-        );
-        _animationController.forward();
-      });
-    });
+  Widget _buildDay(EmployeeCalendarDto workday) {
+    bool isVocationNotNull = workday.isVocationVerified != null;
+    if (isVocationNotNull && workday.isVocationVerified) {
+      return _buildVerifiedVocation(workday.vocationReason);
+    } else if (workday.hours != 0) {
+      return _buildWorkedDay(workday);
+    } else if (workday.plan != null && workday.plan.isNotEmpty) {
+      if (isVocationNotNull && !workday.isVocationVerified) {
+        return _buildPlannedDayWithNotVerifiedVocation(
+            workday.plan, workday.vocationReason);
+      }
+      return _buildPlannedDay(workday.plan);
+    } else if (isVocationNotNull && !workday.isVocationVerified) {
+      return _buildNotVerifiedVocation(workday.vocationReason);
+    } else {
+      return _handleEmptyDay();
+    }
+  }
+
+  Widget _buildVerifiedVocation(String reason) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            iconYellow(Icons.beach_access),
+            SizedBox(width: 2.5),
+            text16GreenBold(getTranslated(context, 'verifiedVocationForDay') +
+                ' ' +
+                _selectedDay.toString().substring(0, 10)),
+          ],
+        ),
+        SizedBox(height: 5),
+        textWhite(
+          getTranslated(context, 'reason') +
+              ': ' +
+              (reason != null
+                  ? utf8.decode(reason.runes.toList())
+                  : getTranslated(context, 'empty')),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildNotVerifiedVocation(String reason) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            iconRed(Icons.beach_access),
+            SizedBox(width: 2.5),
+            text16RedBold(getTranslated(context, 'notVerifiedVocationForDay') +
+                ' ' +
+                _selectedDay.toString().substring(0, 10)),
+          ],
+        ),
+        SizedBox(height: 5),
+        textWhite(
+          getTranslated(context, 'reason') +
+              ': ' +
+              (reason != null
+                  ? utf8.decode(reason.runes.toList())
+                  : getTranslated(context, 'empty')),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildWorkedDay(EmployeeCalendarDto workday) {
+    String plan = workday.plan;
+    return Column(
+      children: [
+        textCenter16GreenBold(getTranslated(context, 'workedDay') +
+            ' ' +
+            _selectedDay.toString().substring(0, 10)),
+        ListTile(
+          trailing: icon50Green(Icons.check),
+          title: Row(
+            children: [
+              text16White(getTranslated(context, 'amountOfEarnedMoney') + ': '),
+              text16GreenBold(workday.money.toString()),
+            ],
+          ),
+          subtitle: Column(
+            children: <Widget>[
+              Align(
+                  child: Row(
+                    children: <Widget>[
+                      text16White(
+                          getTranslated(context, 'numberOfHoursWorked') + ': '),
+                      text16GreenBold(workday.hours.toString()),
+                    ],
+                  ),
+                  alignment: Alignment.topLeft),
+              Align(
+                  child: Row(
+                    children: <Widget>[
+                      text16White(getTranslated(context, 'rating') + ': '),
+                      text16GreenBold(workday.rating.toString() + ' / 10'),
+                    ],
+                  ),
+                  alignment: Alignment.topLeft),
+              Align(
+                  child: Row(
+                    children: <Widget>[
+                      text16White(getTranslated(context, 'plan') + ': '),
+                      text16GreenBold(plan != null && plan.isNotEmpty
+                          ? getTranslated(context, 'yes')
+                          : getTranslated(context, 'no')),
+                    ],
+                  ),
+                  alignment: Alignment.topLeft),
+            ],
+          ),
+          onTap: () => WorkdayUtil.showScrollableDialog(
+              context,
+              getTranslated(context, 'planFor') +
+                  ' ' +
+                  _selectedDay.toString().substring(0, 10),
+              plan),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPlannedDay(String plan) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            iconOrange(Icons.error_outline),
+            SizedBox(width: 5),
+            text16GreenBold(getTranslated(context, 'planFor') +
+                ' ' +
+                _selectedDay.toString().substring(0, 10)),
+          ],
+        ),
+        SizedBox(height: 5),
+        textWhite(utf8.decode(plan.runes.toList())),
+      ],
+    );
+  }
+
+  Widget _buildPlannedDayWithNotVerifiedVocation(
+      String plan, String vocationReason) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            iconOrange(Icons.error_outline),
+            SizedBox(width: 5),
+            text16GreenBold(getTranslated(context, 'planFor') +
+                ' ' +
+                _selectedDay.toString().substring(0, 10)),
+          ],
+        ),
+        SizedBox(height: 5),
+        GestureDetector(
+          onTap: () {
+            WorkdayUtil.showScrollableDialog(
+                context,
+                getTranslated(context, 'vocationReasonFor') +
+                    ' ' +
+                    _selectedDay.toString().substring(0, 10),
+                vocationReason);
+          },
+          child: textCenter15RedUnderline(
+              getTranslated(context, 'dayHaveNotVerifiedVocation')),
+        ),
+        SizedBox(height: 5),
+        textWhite(utf8.decode(plan.runes.toList())),
+      ],
+    );
+  }
+
+  Widget _handleEmptyDay() {
+    return Column(
+      children: [
+        text16GreenBold(_selectedDay.toString().substring(0, 10)),
+        SizedBox(height: 5),
+        textWhite('-'),
+      ],
+    );
   }
 }
