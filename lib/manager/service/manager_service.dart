@@ -484,6 +484,38 @@ class ManagerService {
     }
   }
 
+  Future<dynamic> updateEmployeesWorkplacesForWorkdays(
+      String dateFrom,
+      String dateTo,
+      Set<int> employeeIds,
+      int workplaceId,
+      int timesheetYear,
+      int timesheetMonth,
+      String timesheetStatus) async {
+    Map<String, dynamic> map = {
+      'dateFrom': dateFrom,
+      'dateTo': dateTo,
+      'employeeIds': employeeIds.map((el) => el.toInt()).toList(),
+      'workplaceId': workplaceId,
+      'timesheetYear': timesheetYear,
+      'timesheetMonth': timesheetMonth,
+      'timesheetStatus': timesheetStatus,
+    };
+    Response res = await put(_baseWorkdayUrl + '/group/workplaces',
+        body: jsonEncode(map),
+        headers: {
+          HttpHeaders.authorizationHeader: authHeader,
+          'content-type': 'application/json'
+        });
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
   Future<dynamic> removeEmployeesVocations(
       String dateFrom,
       String dateTo,

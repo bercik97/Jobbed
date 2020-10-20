@@ -391,5 +391,11 @@
   "addWorkplace": "Add workplace",
   "textSomeWorkplace": "Text some workplace",
   "successfullyAddedNewWorkplace": "Successfully added new workplace",
-  "ok": "Ok"
+  "ok": "Ok",
+  "setWorkplacesForSelectedEmployees": "Set workplace for selected employees from previous screen",
+  "workplacesUpdatedSuccessfully": "Workplaces updated successfully!",
+  "groupNoWorkplaces": "Current group has no workplaces",
+  "selectWorkplaceForEmployeesWorkdays": "Are you sure you want to add selected workplace for workdays of selected employees?",
+  "yesImSure": "Yes, Im sure",
+  "whichYouWantToSet": "which you want to set"
 }

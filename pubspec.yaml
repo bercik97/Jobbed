@@ -109,6 +109,7 @@ flutter:
     - images/small-timesheets-icon.png
     - images/small-vocation-icon.png
     - images/small-workplace-icon.png
+    - images/small-dark-workplace-icon.png
     - images/small-documents-icon.png
     - docs/regulations.pdf
     - docs/privacy_policy.pdf

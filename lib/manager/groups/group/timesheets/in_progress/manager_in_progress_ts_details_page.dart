@@ -13,6 +13,7 @@ import 'package:give_job/manager/dto/manager_group_timesheet_dto.dart';
 import 'package:give_job/manager/groups/group/employee/manager_employee_profile_page.dart';
 import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
+import 'package:give_job/manager/groups/group/workplaces/select_workplaces_for_employees.dart';
 import 'package:give_job/manager/service/manager_service.dart';
 import 'package:give_job/manager/shimmer/shimmer_manager_in_progress_ts_details.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -381,6 +382,23 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                       {
                         _hoursController.clear(),
                         _showUpdateOpinionDialog(_selectedIds)
+                      }
+                    else
+                      {_showHint()}
+                  },
+                ),
+              ),
+              SizedBox(width: 5),
+              Expanded(
+                child: MaterialButton(
+                  color: GREEN,
+                  child: Image(
+                      image:
+                          AssetImage('images/small-dark-workplace-icon.png')),
+                  onPressed: () => {
+                    if (_selectedIds.isNotEmpty)
+                      {
+                        _showUpdateWorkplaceDialog(_selectedIds),
                       }
                     else
                       {_showHint()}
@@ -932,6 +950,32 @@ class _ManagerTimesheetsEmployeesInProgressPageState
             ),
           );
         },
+      );
+    }
+  }
+
+  void _showUpdateWorkplaceDialog(LinkedHashSet<int> selectedIds) async {
+    int year = _timesheet.year;
+    int monthNum =
+        MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
+    int days = DateUtil().daysInMonth(monthNum, year);
+    final List<DateTime> picked = await DateRagePicker.showDatePicker(
+        context: context,
+        initialFirstDate: new DateTime(year, monthNum, 1),
+        initialLastDate: new DateTime(year, monthNum, days),
+        firstDate: new DateTime(year, monthNum, 1),
+        lastDate: new DateTime(year, monthNum, days));
+    if (picked.length == 1) {
+      picked.add(picked[0]);
+    }
+    if (picked != null && picked.length == 2) {
+      String dateFrom = DateFormat('yyyy-MM-dd').format(picked[0]);
+      String dateTo = DateFormat('yyyy-MM-dd').format(picked[1]);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => SelectWorkplacesForEmployeesPage(
+                _model, _timesheet, year, monthNum, dateFrom, dateTo, selectedIds)),
       );
     }
   }
