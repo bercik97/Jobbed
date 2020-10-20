@@ -376,5 +376,7 @@
   "verifiedVocationForDay": "Verified vocation for day",
   "notVerifiedVocationForDay": "Notverified vocation for day",
   "vocationReasonFor": "Vocation reason for",
-  "dayHaveNotVerifiedVocation": "Day has an unverified vacation"
+  "dayHaveNotVerifiedVocation": "Day has an unverified vocation",
+  "workplaces": "Workplaces",
+  "workplacesDescription": "Manage your workplaces"
 }

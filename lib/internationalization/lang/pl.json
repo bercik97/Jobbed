@@ -376,5 +376,7 @@
   "verifiedVocationForDay": "Zweryfikowany urlop dnia",
   "notVerifiedVocationForDay": "Niezweryfikowany urlop dnia",
   "vocationReasonFor": "Powód urlopu dla",
-  "dayHaveNotVerifiedVocation": "Dzień posiada niezweryfikowany urlop"
+  "dayHaveNotVerifiedVocation": "Dzień posiada niezweryfikowany urlop",
+  "workplaces": "Workplaces",
+  "workplacesDescription": "Manage your workplaces"
 }

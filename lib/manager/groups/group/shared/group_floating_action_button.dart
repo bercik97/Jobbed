@@ -7,6 +7,7 @@ import 'package:give_job/manager/groups/group/employee/model/group_employee_mode
 import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.dart';
 import 'package:give_job/manager/groups/group/timesheets/manager_ts_page.dart';
 import 'package:give_job/manager/groups/group/vocations/manager_vocations_ts_page.dart';
+import 'package:give_job/manager/groups/group/workplaces/manage_group_workplaces_page.dart';
 import 'package:give_job/manager/groups/manager_groups_page.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 
@@ -93,6 +94,20 @@ Widget groupFloatingActionButton(
             context,
             MaterialPageRoute(
                 builder: (context) => ManagerVocationsTsPage(model)),
+          );
+        },
+      ),
+      SpeedDialChild(
+        backgroundColor: BRIGHTER_DARK,
+        child: Image(image: AssetImage('images/small-workplace-icon.png')),
+        label: getTranslated(context, 'workplaces'),
+        labelBackgroundColor: BRIGHTER_DARK,
+        labelStyle: TextStyle(color: WHITE),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ManageGroupWorkplacesPage(model)),
           );
         },
       ),
