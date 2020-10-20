@@ -80,4 +80,13 @@ class ValidatorService {
     }
     return null;
   }
+
+  static String validateWorkplace(String name, BuildContext context) {
+    if (name.isEmpty) {
+      return getTranslated(context, 'workplaceNameIsRequired');
+    } else if (name.length > 200) {
+      return getTranslated(context, 'workplaceNameWrongLength');
+    }
+    return null;
+  }
 }

@@ -378,5 +378,18 @@
   "vocationReasonFor": "Vocation reason for",
   "dayHaveNotVerifiedVocation": "Day has an unverified vocation",
   "workplaces": "Workplaces",
-  "workplacesDescription": "Manage your workplaces"
+  "workplacesDescription": "Manage your workplaces",
+  "workplaceNameIsRequired": "Workplace name is required",
+  "workplaceNameWrongLength": "Workplace length cannot be higher than 200 characters",
+  "areYouSureYouWantToDeleteSelectedWorkplaces": "Are you sure you want to delete selected workplaces?",
+  "yesDeleteThem": "Yes, delete them",
+  "noWorkplaces": "No workplaces",
+  "noWorkplacesHint": "You seem to have no workplaces added.\nSelect the button at the bottom of the screen to add some workplaces.",
+  "needToSelectWorkplaces": "You need to select workplaces",
+  "whichYouWantToRemove": "which you want to remove",
+  "workplaceUpdatedSuccessfully": "Workplace updated successfully",
+  "addWorkplace": "Add workplace",
+  "textSomeWorkplace": "Text some workplace",
+  "successfullyAddedNewWorkplace": "Successfully added new workplace",
+  "ok": "Ok"
 }

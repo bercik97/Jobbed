@@ -7,7 +7,7 @@ import 'package:give_job/manager/groups/group/employee/model/group_employee_mode
 import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.dart';
 import 'package:give_job/manager/groups/group/timesheets/manager_ts_page.dart';
 import 'package:give_job/manager/groups/group/vocations/manager_vocations_ts_page.dart';
-import 'package:give_job/manager/groups/group/workplaces/manage_group_workplaces_page.dart';
+import 'package:give_job/manager/groups/group/workplaces/workplace_page.dart';
 import 'package:give_job/manager/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -239,7 +239,7 @@ class _ManagerGroupDetailsPageState extends State<ManagerGroupDetailsPage> {
                               Navigator.of(context).push(
                                 CupertinoPageRoute<Null>(
                                   builder: (BuildContext context) {
-                                    return ManageGroupWorkplacesPage(_model);
+                                    return WorkplacePage(_model);
                                   },
                                 ),
                               ),
