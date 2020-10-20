@@ -377,6 +377,7 @@
   "notVerifiedVocationForDay": "Notverified vocation for day",
   "vocationReasonFor": "Vocation reason for",
   "dayHaveNotVerifiedVocation": "Day has an unverified vocation",
+  "workplace": "Workplace",
   "workplaces": "Workplaces",
   "workplacesDescription": "Manage your workplaces",
   "workplaceNameIsRequired": "Workplace name is required",
@@ -397,5 +398,8 @@
   "groupNoWorkplaces": "Current group has no workplaces",
   "selectWorkplaceForEmployeesWorkdays": "Are you sure you want to add selected workplace for workdays of selected employees?",
   "yesImSure": "Yes, Im sure",
-  "whichYouWantToSet": "which you want to set"
+  "whichYouWantToSet": "which you want to set",
+  "setWorkplaceForTodaysEmployees": "Set workplace for all employees of the group for today",
+  "selectWorkplaceForTodaysEmployees": "Are you sure you want to add selected workplace for all employees of the group for today?",
+  "todaysWorkplaceHasBeenUpdated": "Today's workplace for employees of a group has been updated"
 }

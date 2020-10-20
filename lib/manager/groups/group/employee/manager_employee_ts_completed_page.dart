@@ -171,6 +171,9 @@ class _ManagerEmployeeTsCompletedPageState
                                       getTranslated(this.context, 'opinion'))),
                               DataColumn(
                                   label: textWhiteBold(getTranslated(
+                                      this.context, 'workplace'))),
+                              DataColumn(
+                                  label: textWhiteBold(getTranslated(
                                       this.context, 'vocations'))),
                             ],
                             rows: [
@@ -215,6 +218,22 @@ class _ManagerEmployeeTsCompletedPageState
                                               getTranslated(this.context,
                                                   'opinionDetails'),
                                               workday.opinion),
+                                    ),
+                                    DataCell(
+                                      Wrap(
+                                        children: <Widget>[
+                                          workday.workplace != null &&
+                                                  workday.workplace.name != ''
+                                              ? iconWhite(Icons.zoom_in)
+                                              : textWhiteBold('-'),
+                                        ],
+                                      ),
+                                      onTap: () =>
+                                          WorkdayUtil.showScrollableDialog(
+                                              this.context,
+                                              getTranslated(
+                                                  this.context, 'workplace'),
+                                              workday.workplace.name),
                                     ),
                                     DataCell(
                                         Wrap(

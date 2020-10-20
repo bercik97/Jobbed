@@ -100,7 +100,7 @@ Widget groupFloatingActionButton(
       SpeedDialChild(
         backgroundColor: BRIGHTER_DARK,
         child: Image(image: AssetImage('images/small-workplace-icon.png')),
-        label: getTranslated(context, 'workplaces'),
+        label: getTranslated(context, 'workplace'),
         labelBackgroundColor: BRIGHTER_DARK,
         labelStyle: TextStyle(color: WHITE),
         onTap: () {

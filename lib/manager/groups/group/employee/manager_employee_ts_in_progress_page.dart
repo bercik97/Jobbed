@@ -228,6 +228,9 @@ class _ManagerEmployeeTsInProgressPageState
                                     ),
                                     DataColumn(
                                         label: textWhiteBold(getTranslated(
+                                            context, 'workplace'))),
+                                    DataColumn(
+                                        label: textWhiteBold(getTranslated(
                                             context, 'vocations'))),
                                   ],
                                   rows: this
@@ -275,6 +278,21 @@ class _ManagerEmployeeTsInProgressPageState
                                                   this.context,
                                                   workday.id,
                                                   workday.opinion),
+                                            ),
+                                            DataCell(
+                                              Wrap(
+                                                children: <Widget>[
+                                                  workday.workplace != null &&
+                                                          workday.workplace
+                                                                  .name !=
+                                                              ''
+                                                      ? iconWhite(Icons.zoom_in)
+                                                      : textWhiteBold('-'),
+                                                ],
+                                              ),
+                                              onTap: () => {
+
+                                              },
                                             ),
                                             DataCell(
                                                 Wrap(

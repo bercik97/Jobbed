@@ -75,7 +75,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
       home: Scaffold(
         backgroundColor: DARK,
         appBar: managerAppBar(
-            context, _model.user, getTranslated(context, 'workplaces')),
+            context, _model.user, getTranslated(context, 'workplace')),
         drawer: managerSideBar(context, _model.user),
         body: Column(
           children: <Widget>[

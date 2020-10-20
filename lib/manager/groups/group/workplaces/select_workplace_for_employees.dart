@@ -23,7 +23,7 @@ import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 import '../../../manager_app_bar.dart';
 import '../../../manager_side_bar.dart';
 
-class SelectWorkplacesForEmployeesPage extends StatefulWidget {
+class SelectWorkplaceForEmployeesPage extends StatefulWidget {
   final GroupEmployeeModel _model;
   final ManagerGroupTimesheetDto _timeSheet;
   final int _year;
@@ -32,16 +32,16 @@ class SelectWorkplacesForEmployeesPage extends StatefulWidget {
   final String _dateTo;
   final LinkedHashSet<int> _selectedEmployeeIds;
 
-  SelectWorkplacesForEmployeesPage(this._model, this._timeSheet, this._year,
+  SelectWorkplaceForEmployeesPage(this._model, this._timeSheet, this._year,
       this._month, this._dateFrom, this._dateTo, this._selectedEmployeeIds);
 
   @override
-  _SelectWorkplacesForEmployeesPageState createState() =>
-      _SelectWorkplacesForEmployeesPageState();
+  _SelectWorkplaceForEmployeesPageState createState() =>
+      _SelectWorkplaceForEmployeesPageState();
 }
 
-class _SelectWorkplacesForEmployeesPageState
-    extends State<SelectWorkplacesForEmployeesPage> {
+class _SelectWorkplaceForEmployeesPageState
+    extends State<SelectWorkplaceForEmployeesPage> {
   GroupEmployeeModel _model;
   ManagerGroupTimesheetDto _timeSheet;
   int _year;
@@ -105,7 +105,7 @@ class _SelectWorkplacesForEmployeesPageState
         appBar: managerAppBar(
             context,
             _model.user,
-            getTranslated(context, 'workplaces') +
+            getTranslated(context, 'workplace') +
                 ' - ' +
                 utf8.decode(_model.groupName != null
                     ? _model.groupName.runes.toList()

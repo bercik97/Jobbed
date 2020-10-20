@@ -634,6 +634,28 @@ class ManagerService {
     }
   }
 
+  Future<dynamic> updateGroupWorkplaceOfTodaysDateInCurrentTimesheet(
+      int groupId, String date, int workplaceId) async {
+    Map<String, dynamic> map = {
+      'groupId': groupId,
+      'date': date,
+      'workplaceId': workplaceId,
+    };
+    Response res = await put(_baseTsUrl + '/group/date/workplace',
+        body: jsonEncode(map),
+        headers: {
+          HttpHeaders.authorizationHeader: authHeader,
+          'content-type': 'application/json'
+        });
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
   Future<dynamic> createOrUpdateVocation(
       String reason,
       String dateFrom,

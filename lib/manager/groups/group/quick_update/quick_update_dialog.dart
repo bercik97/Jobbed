@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
 import 'package:give_job/manager/groups/group/vocations/timesheets/calendar/manager_vocations_calendar_page.dart';
+import 'package:give_job/manager/groups/group/workplaces/select_workplace_for_quick_update_employees.dart';
 import 'package:give_job/manager/service/manager_service.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
@@ -65,6 +66,8 @@ class QuickUpdateDialog {
                     () => _buildUpdatePlanDialog(context)),
                 _buildUpdateButton(getTranslated(context, 'opinion'),
                     () => _buildUpdateOpinionDialog(context)),
+                _buildUpdateButton(getTranslated(context, 'workplace'),
+                    () => _showUpdateWorkplaceDialog(context)),
                 Container(
                   width: 80,
                   child: MaterialButton(
@@ -564,6 +567,15 @@ class QuickUpdateDialog {
           ),
         );
       },
+    );
+  }
+
+  static void _showUpdateWorkplaceDialog(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              SelectWorkplaceForQuickUpdateEmployeesPage(_model, _todaysDate)),
     );
   }
 

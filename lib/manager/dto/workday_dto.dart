@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:give_job/manager/dto/workplace_dto.dart';
 import 'package:give_job/shared/model/vocation_dto.dart';
 
 class WorkdayDto {
@@ -9,6 +10,7 @@ class WorkdayDto {
   final String plan;
   final String opinion;
   final double money;
+  final WorkplaceDto workplace;
   final VocationDto vocation;
 
   WorkdayDto({
@@ -19,10 +21,12 @@ class WorkdayDto {
     @required this.plan,
     @required this.opinion,
     @required this.money,
+    @required this.workplace,
     @required this.vocation,
   });
 
   factory WorkdayDto.fromJson(Map<String, dynamic> json) {
+    var workplaceAsJson = json['workplace'];
     var vocationAsJson = json['vocation'];
     return WorkdayDto(
       id: json['id'] as int,
@@ -32,7 +36,11 @@ class WorkdayDto {
       plan: json['plan'] as String,
       opinion: json['opinion'] as String,
       money: json['money'] as double,
-      vocation: vocationAsJson != null ?  VocationDto.fromJson(vocationAsJson) : null,
+      workplace: workplaceAsJson != null
+          ? WorkplaceDto.fromJson(workplaceAsJson)
+          : null,
+      vocation:
+          vocationAsJson != null ? VocationDto.fromJson(vocationAsJson) : null,
     );
   }
 }

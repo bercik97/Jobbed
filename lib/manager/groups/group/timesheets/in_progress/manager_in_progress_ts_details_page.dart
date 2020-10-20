@@ -13,7 +13,7 @@ import 'package:give_job/manager/dto/manager_group_timesheet_dto.dart';
 import 'package:give_job/manager/groups/group/employee/manager_employee_profile_page.dart';
 import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
-import 'package:give_job/manager/groups/group/workplaces/select_workplaces_for_employees.dart';
+import 'package:give_job/manager/groups/group/workplaces/select_workplace_for_employees.dart';
 import 'package:give_job/manager/service/manager_service.dart';
 import 'package:give_job/manager/shimmer/shimmer_manager_in_progress_ts_details.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -974,7 +974,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => SelectWorkplacesForEmployeesPage(
+            builder: (context) => SelectWorkplaceForEmployeesPage(
                 _model, _timesheet, year, monthNum, dateFrom, dateTo, selectedIds)),
       );
     }
