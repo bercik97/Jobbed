@@ -42,6 +42,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
   EmployeeService _service;
 
   Map<DateTime, List<EmployeeCalendarDto>> _events = new Map();
+  Map<DateTime, List<EmployeeCalendarDto>> _holidays = new Map();
   List _selectedEvents;
   DateTime _selectedDay = DateTime.now();
   AnimationController _animationController;
@@ -256,7 +257,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
           return children;
         },
       ),
-      onDaySelected: (date, events) {
+      onDaySelected: (date, events, _holidays) {
         _onDaySelected(date, events);
         _animationController.forward(from: 0.0);
       },

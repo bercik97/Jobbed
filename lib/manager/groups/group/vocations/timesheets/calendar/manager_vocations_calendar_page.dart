@@ -40,6 +40,7 @@ class _ManagerVocationsCalendarPageState
   ManagerVocationService _vocationService;
 
   Map<DateTime, List<ManagerGroupEmployeeVocationDto>> _events = new Map();
+  Map<DateTime, List<ManagerGroupEmployeeVocationDto>> _holidays = new Map();
   List _selectedEvents;
   DateTime _selectedDay;
   AnimationController _animationController;
@@ -201,7 +202,7 @@ class _ManagerVocationsCalendarPageState
           return children;
         },
       ),
-      onDaySelected: (date, events) {
+      onDaySelected: (date, events, _holidays) {
         _onDaySelected(date, events);
         _animationController.forward(from: 0.0);
       },
