@@ -356,6 +356,26 @@ class ManagerService {
     }
   }
 
+  Future<dynamic> updateWorkdaysWorkplace(
+      Set<int> workdayIds, int workplaceId) async {
+    Map<String, dynamic> map = {
+      'workdayIds': workdayIds.map((el) => el.toString()).toList(),
+      'workplaceId': workplaceId
+    };
+    String url = _baseWorkdayUrl + '/workplace';
+    Response res = await put(url, body: jsonEncode(map), headers: {
+      HttpHeaders.authorizationHeader: authHeader,
+      'content-type': 'application/json'
+    });
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
   Future<dynamic> updateEmployeesHours(
       int hours,
       String dateFrom,

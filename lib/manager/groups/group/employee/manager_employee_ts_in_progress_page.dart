@@ -7,6 +7,7 @@ import 'package:give_job/employee/dto/employee_timesheet_dto.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/dto/workday_dto.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
+import 'package:give_job/manager/groups/group/workplaces/select_workplace_for_selected_workdays.dart';
 import 'package:give_job/manager/service/manager_service.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
@@ -417,13 +418,26 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: text12DarkBold(getTranslated(context, 'vocation')),
+                    child: Image(
+                        image:
+                            AssetImage('images/small-dark-workplace-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {
-                          _vocationReasonController.clear(),
-                          _showUpdateVocationReasonDialog(
-                              _timesheet, selectedIds)
+                          Navigator.push(
+                            this.context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  SelectWorkplaceForSelectedWorkdaysPage(
+                                _model,
+                                _timesheet,
+                                _employeeInfo,
+                                _employeeNationality,
+                                _currency,
+                                selectedIds,
+                              ),
+                            ),
+                          ),
                         }
                       else
                         {_showHint()}
@@ -434,11 +448,16 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: Image(
-                        image:
-                            AssetImage('images/small-dark-workplace-icon.png')),
+                    child: text12DarkBold(getTranslated(context, 'vocation')),
                     onPressed: () => {
-                      if (selectedIds.isNotEmpty) {} else {_showHint()}
+                      if (selectedIds.isNotEmpty)
+                        {
+                          _vocationReasonController.clear(),
+                          _showUpdateVocationReasonDialog(
+                              _timesheet, selectedIds)
+                        }
+                      else
+                        {_showHint()}
                     },
                   ),
                 ),
@@ -759,13 +778,26 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: text12DarkBold(getTranslated(context, 'vocation')),
+                    child: Image(
+                        image:
+                            AssetImage('images/small-dark-workplace-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {
-                          _vocationReasonController.clear(),
-                          _showUpdateVocationReasonDialog(
-                              _timesheet, selectedIds)
+                          Navigator.push(
+                            this.context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  SelectWorkplaceForSelectedWorkdaysPage(
+                                _model,
+                                _timesheet,
+                                _employeeInfo,
+                                _employeeNationality,
+                                _currency,
+                                selectedIds,
+                              ),
+                            ),
+                          ),
                         }
                       else
                         {_showHint()}
@@ -776,11 +808,16 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: Image(
-                        image:
-                            AssetImage('images/small-dark-workplace-icon.png')),
+                    child: text12DarkBold(getTranslated(context, 'vocation')),
                     onPressed: () => {
-                      if (selectedIds.isNotEmpty) {} else {_showHint()}
+                      if (selectedIds.isNotEmpty)
+                        {
+                          _vocationReasonController.clear(),
+                          _showUpdateVocationReasonDialog(
+                              _timesheet, selectedIds)
+                        }
+                      else
+                        {_showHint()}
                     },
                   ),
                 ),

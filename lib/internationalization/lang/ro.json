@@ -401,5 +401,7 @@
   "whichYouWantToSet": "which you want to set",
   "setWorkplaceForTodaysEmployees": "Set workplace for all employees of the group for today",
   "selectWorkplaceForTodaysEmployees": "Are you sure you want to add selected workplace for all employees of the group for today?",
-  "todaysWorkplaceHasBeenUpdated": "Today's workplace for employees of a group has been updated"
+  "todaysWorkplaceHasBeenUpdated": "Today's workplace for employees of a group has been updated",
+  "setWorkplaceForSelectedWorkdaysOfEmployee": "Set workplace for selected workdays of employee",
+  "selectWorkplaceForEmployeesWorkday": "Are you sure you want to add selected workplace for workdays of selected employee?"
 }
