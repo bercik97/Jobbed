@@ -1018,27 +1018,36 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   _showSuccessDialog() {
     return showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: DARK,
-          title: textGreen(getTranslated(this.context, 'success')),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                textWhite(getTranslated(this.context, 'registerSuccess')),
-              ],
+        return WillPopScope(
+          child: AlertDialog(
+            backgroundColor: DARK,
+            title: textGreen(getTranslated(this.context, 'success')),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  textWhite(getTranslated(this.context, 'registerSuccess')),
+                ],
+              ),
             ),
+            actions: <Widget>[
+              FlatButton(
+                child: textWhite(getTranslated(this.context, 'goToLoginPage')),
+                onPressed: () => _resetAndOpenPage(),
+              ),
+            ],
           ),
-          actions: <Widget>[
-            FlatButton(
-              child: textWhite(getTranslated(this.context, 'goToLoginPage')),
-              onPressed: () => _resetAndOpenPage(),
-            ),
-          ],
+          onWillPop: _navigateToLoginPage,
         );
       },
     );
+  }
+
+  Future<bool> _navigateToLoginPage() async {
+    _resetAndOpenPage();
+    return true;
   }
 
   _errorDialogWithNavigate(String errorMsg) {

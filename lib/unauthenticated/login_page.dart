@@ -37,6 +37,9 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _tokenController = TextEditingController();
 
   bool _passwordVisible = false;
+  bool _isLoginButtonTapped = false;
+
+  ProgressDialog _progressDialog;
 
   @override
   void initState() {
@@ -46,8 +49,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final ProgressDialog progressDialog = new ProgressDialog(context);
-    progressDialog.style(
+    _progressDialog = new ProgressDialog(context);
+    _progressDialog.style(
       message: '  ' + getTranslated(context, 'loading'),
       messageTextStyle: TextStyle(color: DARK),
       progressWidget: circularProgressIndicator(),
@@ -91,68 +94,7 @@ class _LoginPageState extends State<LoginPage> {
               height: 50,
               shape: new RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(30.0)),
-              onPressed: () {
-                String username = _usernameController.text;
-                String password = _passwordController.text;
-                String invalidMessage =
-                    ValidatorService.validateLoginCredentials(
-                        username, password, context);
-                if (invalidMessage != null) {
-                  ToastService.showErrorToast(invalidMessage);
-                  return;
-                }
-                progressDialog.show();
-                _login(_usernameController.text, _passwordController.text).then(
-                    (res) {
-                  FocusScope.of(context).unfocus();
-                  bool resNotNullOrEmpty = res.body != null && res.body != '{}';
-                  if (res.statusCode == 200 && resNotNullOrEmpty) {
-                    String authHeader = 'Basic ' +
-                        base64Encode(utf8.encode('$username:$password'));
-                    storage.write(key: 'authorization', value: authHeader);
-                    Map map = json.decode(res.body);
-                    User user = new User();
-                    String role = map['role'];
-                    String id = map['id'];
-                    String info = map['info'];
-                    String nationality = map['nationality'];
-                    storage.write(key: 'role', value: role);
-                    storage.write(key: 'id', value: id);
-                    storage.write(key: 'info', value: info);
-                    storage.write(key: 'username', value: username);
-                    storage.write(key: 'nationality', value: nationality);
-                    user.id = id;
-                    user.role = role;
-                    user.username = username;
-                    user.info = info;
-                    user.nationality = nationality;
-                    user.authHeader = authHeader;
-                    if (role == ROLE_EMPLOYEE) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EmployeeProfilPage(user)));
-                    } else if (role == ROLE_MANAGER) {
-                      _chooseManagerPage(map, user);
-                    }
-                    ToastService.showSuccessToast(
-                        getTranslated(context, 'loginSuccessfully'));
-                  } else if (res.statusCode == 200 && !resNotNullOrEmpty) {
-                    progressDialog.hide();
-                    ToastService.showErrorToast(
-                        getTranslated(context, 'userIsNotVerified'));
-                  } else {
-                    progressDialog.hide();
-                    ToastService.showErrorToast(
-                        getTranslated(context, 'wrongUsernameOrPassword'));
-                  }
-                }, onError: (e) {
-                  progressDialog
-                      .hide(); // TODO progress dialog doesn't hide when error is catched
-                  ToastService.showErrorToast(
-                      getTranslated(context, 'cannotConnectToServer'));
-                });
-              },
+              onPressed: () => _isLoginButtonTapped ? null : _handleLogin(),
               color: GREEN,
               child: text20White(getTranslated(context, 'login')),
               textColor: Colors.white,
@@ -172,6 +114,67 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  _handleLogin() {
+    String username = _usernameController.text;
+    String password = _passwordController.text;
+    String invalidMessage =
+        ValidatorService.validateLoginCredentials(username, password, context);
+    if (invalidMessage != null) {
+      ToastService.showErrorToast(invalidMessage);
+      return;
+    }
+    _progressDialog.show();
+    _login(_usernameController.text, _passwordController.text).then((res) {
+      FocusScope.of(context).unfocus();
+      bool resNotNullOrEmpty = res.body != null && res.body != '{}';
+      if (res.statusCode == 200 && resNotNullOrEmpty) {
+        String authHeader =
+            'Basic ' + base64Encode(utf8.encode('$username:$password'));
+        storage.write(key: 'authorization', value: authHeader);
+        Map map = json.decode(res.body);
+        User user = new User();
+        String role = map['role'];
+        String id = map['id'];
+        String info = map['info'];
+        String nationality = map['nationality'];
+        storage.write(key: 'role', value: role);
+        storage.write(key: 'id', value: id);
+        storage.write(key: 'info', value: info);
+        storage.write(key: 'username', value: username);
+        storage.write(key: 'nationality', value: nationality);
+        user.id = id;
+        user.role = role;
+        user.username = username;
+        user.info = info;
+        user.nationality = nationality;
+        user.authHeader = authHeader;
+        if (role == ROLE_EMPLOYEE) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => EmployeeProfilPage(user)));
+        } else if (role == ROLE_MANAGER) {
+          _chooseManagerPage(map, user);
+        }
+        ToastService.showSuccessToast(
+            getTranslated(context, 'loginSuccessfully'));
+      } else if (res.statusCode == 200 && !resNotNullOrEmpty) {
+        _progressDialog.hide();
+        ToastService.showErrorToast(
+            getTranslated(context, 'userIsNotVerified'));
+      } else {
+        _progressDialog.hide();
+        ToastService.showErrorToast(
+            getTranslated(context, 'wrongUsernameOrPassword'));
+      }
+    }, onError: (e) {
+      _progressDialog
+          .hide(); // TODO progress dialog doesn't hide when error is catched
+      ToastService.showErrorToast(
+          getTranslated(context, 'cannotConnectToServer'));
+    });
   }
 
   _buildUsernameField() {
