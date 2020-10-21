@@ -291,7 +291,13 @@ class _ManagerEmployeeTsInProgressPageState
                                                 ],
                                               ),
                                               onTap: () => {
-
+                                                WorkdayUtil
+                                                    .showScrollableDialog(
+                                                        this.context,
+                                                        getTranslated(
+                                                            this.context,
+                                                            'workplace'),
+                                                        workday.workplace.name),
                                               },
                                             ),
                                             DataCell(
@@ -359,7 +365,7 @@ class _ManagerEmployeeTsInProgressPageState
                     },
                   ),
                 ),
-                SizedBox(width: 5),
+                SizedBox(width: 2.5),
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
@@ -375,7 +381,7 @@ class _ManagerEmployeeTsInProgressPageState
                     },
                   ),
                 ),
-                SizedBox(width: 5),
+                SizedBox(width: 2.5),
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
@@ -391,7 +397,7 @@ class _ManagerEmployeeTsInProgressPageState
                     },
                   ),
                 ),
-                SizedBox(width: 5),
+                SizedBox(width: 2.5),
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
@@ -407,7 +413,7 @@ class _ManagerEmployeeTsInProgressPageState
                     },
                   ),
                 ),
-                SizedBox(width: 5),
+                SizedBox(width: 2.5),
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
@@ -421,6 +427,18 @@ class _ManagerEmployeeTsInProgressPageState
                         }
                       else
                         {_showHint()}
+                    },
+                  ),
+                ),
+                SizedBox(width: 2.5),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: Image(
+                        image:
+                            AssetImage('images/small-dark-workplace-icon.png')),
+                    onPressed: () => {
+                      if (selectedIds.isNotEmpty) {} else {_showHint()}
                     },
                   ),
                 ),
@@ -566,6 +584,9 @@ class _ManagerEmployeeTsInProgressPageState
                               ),
                               DataColumn(
                                   label: textWhiteBold(
+                                      getTranslated(context, 'workplace'))),
+                              DataColumn(
+                                  label: textWhiteBold(
                                       getTranslated(context, 'vocations'))),
                             ],
                             rows: this
@@ -608,6 +629,23 @@ class _ManagerEmployeeTsInProgressPageState
                                         ),
                                         onTap: () => _editOpinion(this.context,
                                             workday.id, workday.opinion),
+                                      ),
+                                      DataCell(
+                                        Wrap(
+                                          children: <Widget>[
+                                            workday.workplace != null &&
+                                                    workday.workplace.name != ''
+                                                ? iconWhite(Icons.zoom_in)
+                                                : textWhiteBold('-'),
+                                          ],
+                                        ),
+                                        onTap: () => {
+                                          WorkdayUtil.showScrollableDialog(
+                                              this.context,
+                                              getTranslated(
+                                                  this.context, 'workplace'),
+                                              workday.workplace.name),
+                                        },
                                       ),
                                       DataCell(
                                           Wrap(
@@ -669,7 +707,7 @@ class _ManagerEmployeeTsInProgressPageState
                     },
                   ),
                 ),
-                SizedBox(width: 5),
+                SizedBox(width: 2.5),
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
@@ -685,7 +723,7 @@ class _ManagerEmployeeTsInProgressPageState
                     },
                   ),
                 ),
-                SizedBox(width: 5),
+                SizedBox(width: 2.5),
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
@@ -701,7 +739,7 @@ class _ManagerEmployeeTsInProgressPageState
                     },
                   ),
                 ),
-                SizedBox(width: 5),
+                SizedBox(width: 2.5),
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
@@ -717,7 +755,7 @@ class _ManagerEmployeeTsInProgressPageState
                     },
                   ),
                 ),
-                SizedBox(width: 5),
+                SizedBox(width: 2.5),
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
@@ -731,6 +769,18 @@ class _ManagerEmployeeTsInProgressPageState
                         }
                       else
                         {_showHint()}
+                    },
+                  ),
+                ),
+                SizedBox(width: 2.5),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: Image(
+                        image:
+                            AssetImage('images/small-dark-workplace-icon.png')),
+                    onPressed: () => {
+                      if (selectedIds.isNotEmpty) {} else {_showHint()}
                     },
                   ),
                 ),
