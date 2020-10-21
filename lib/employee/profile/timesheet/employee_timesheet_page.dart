@@ -139,6 +139,7 @@ class _EmployeeTimesheetPageState extends State<EmployeeTimesheetPage> {
                           data: Theme.of(this.context)
                               .copyWith(dividerColor: MORE_BRIGHTER_DARK),
                           child: DataTable(
+                            columnSpacing: 40,
                             columns: [
                               DataColumn(label: textWhiteBold('No.')),
                               DataColumn(
@@ -150,6 +151,9 @@ class _EmployeeTimesheetPageState extends State<EmployeeTimesheetPage> {
                               DataColumn(
                                   label: textWhiteBold(
                                       getTranslated(this.context, 'plan'))),
+                              DataColumn(
+                                  label: textWhiteBold(getTranslated(
+                                      this.context, 'workplace'))),
                             ],
                             rows: [
                               for (var workday in workdays)
@@ -176,6 +180,21 @@ class _EmployeeTimesheetPageState extends State<EmployeeTimesheetPage> {
                                                 getTranslated(this.context,
                                                     'planDetails'),
                                                 workday.plan)),
+                                    DataCell(
+                                        Wrap(
+                                          children: <Widget>[
+                                            workday.workplaceName != null &&
+                                                    workday.workplaceName != ''
+                                                ? iconWhite(Icons.zoom_in)
+                                                : textWhiteBold('-'),
+                                          ],
+                                        ),
+                                        onTap: () =>
+                                            WorkdayUtil.showScrollableDialog(
+                                                this.context,
+                                                getTranslated(
+                                                    this.context, 'workplace'),
+                                                workday.workplaceName)),
                                   ],
                                 ),
                             ],

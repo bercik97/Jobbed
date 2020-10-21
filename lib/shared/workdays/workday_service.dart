@@ -14,10 +14,10 @@ class SharedWorkdayService {
 
   SharedWorkdayService(this.context, this.authHeader);
 
-  static const String _baseTimesheetUrl = SERVER_IP + '/mobile/workdays';
+  static const String _url = SERVER_IP + '/mobile/workdays';
 
   Future<List<WorkdayDto>> findWorkdaysByTimesheetId(String timesheetId) async {
-    Response res = await get(_baseTimesheetUrl + '/${int.parse(timesheetId)}',
+    Response res = await get(_url + '/${int.parse(timesheetId)}',
         headers: {HttpHeaders.authorizationHeader: authHeader});
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List)
@@ -32,8 +32,7 @@ class SharedWorkdayService {
 
   Future<List<EmployeeWorkdayDto>> findEmployeeWorkdaysByTimesheetId(
       String timesheetId) async {
-    Response res = await get(
-        _baseTimesheetUrl + '/${int.parse(timesheetId)}/employee',
+    Response res = await get(_url + '/${int.parse(timesheetId)}/employee',
         headers: {HttpHeaders.authorizationHeader: authHeader});
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List)
