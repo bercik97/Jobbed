@@ -305,6 +305,8 @@ class _SettingsPageState extends State<SettingsPage> {
             SizedBox(height: 5.0),
             _socialMediaInkWell(
                 'https://www.givejob.pl', 'GiveJob', 'images/logo.png'),
+            _socialMediaInkWell('https://www.medica.givejob.pl',
+                'GiveJob Medica', 'images/givejob-medica-logo.png'),
             _socialMediaInkWell('https://www.facebook.com/givejobb', 'Facebook',
                 'images/facebook-logo.png'),
             _socialMediaInkWell('https://www.instagram.com/give_job',

@@ -84,6 +84,7 @@ flutter:
     - lib/internationalization/lang/ca.json
     - lib/internationalization/lang/uk.json
     - images/logo.png
+    - images/givejob-medica-logo.png
     - images/facebook-logo.png
     - images/instagram-logo.png
     - images/linkedin-logo.png
