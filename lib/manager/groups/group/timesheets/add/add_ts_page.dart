@@ -4,14 +4,18 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/manager/dto/basic_employee_dto.dart';
+import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 
 import '../../../../../internationalization/localization/localization_constants.dart';
 import '../../../../../shared/libraries/colors.dart';
+import '../../../../../shared/libraries/colors.dart';
 import '../../../../../shared/libraries/constants.dart';
+import '../../../../../shared/service/toastr_service.dart';
 import '../../../../../shared/util/language_util.dart';
 import '../../../../../shared/util/month_util.dart';
 import '../../../../../shared/widget/icons.dart';
 import '../../../../../shared/widget/loader.dart';
+import '../../../../../shared/widget/texts.dart';
 import '../../../../../shared/widget/texts.dart';
 import '../../../../manager_app_bar.dart';
 import '../../../../manager_side_bar.dart';
@@ -81,26 +85,34 @@ class _AddTsPageState extends State<AddTsPage> {
           managerSideBar(context, _model.user));
     }
     if (_employees.isEmpty) {
-      showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) {
-          return WillPopScope(
+      return MaterialApp(
+        title: APP_NAME,
+        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: DARK,
+          appBar: managerAppBar(
+              context, _model.user, getTranslated(context, 'addNewTs')),
+          drawer: managerSideBar(context, _model.user),
+          body: WillPopScope(
             onWillPop: _onWillPop,
             child: AlertDialog(
-              backgroundColor: DARK,
-              title: textWhite('Failure'),
-              content: textWhite(
-                  'It seems that all of your group employees have a timesheet for the year and month that you choose.'),
+              backgroundColor: BRIGHTER_DARK,
+              title: textWhite(getTranslated(context, 'failure')),
+              content: textWhite(getTranslated(
+                  context, 'allEmployeesHaveTsForChosenYearAndMonth')),
               actions: <Widget>[
                 FlatButton(
-                  child: textWhite('Ok'),
-                  onPressed: () => ManagerTsPage(_model),
+                  child: textGreen(getTranslated(context, 'goBack')),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ManagerTsPage(_model)),
+                  ),
                 ),
               ],
             ),
-          );
-        },
+          ),
+        ),
       );
     }
     return MaterialApp(
@@ -285,13 +297,48 @@ class _AddTsPageState extends State<AddTsPage> {
                   children: <Widget>[iconWhite(Icons.check)],
                 ),
                 color: GREEN,
-                onPressed: () {},
+                onPressed: () => _createTsForSelectedEmployees(),
               ),
             ],
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: groupFloatingActionButton(context, _model),
+      ),
+    );
+  }
+
+  void _createTsForSelectedEmployees() {
+    if (_selectedIds.isEmpty) {
+      _showHint();
+      return;
+    }
+    _managerService.createForSelected(_year, _month, _selectedIds).then(
+      (res) {
+        ToastService.showSuccessToast(
+            getTranslated(context, 'timesheetsSuccessfullyCreated'));
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ManagerTsPage(_model)),
+        );
+      },
+    );
+  }
+
+  void _showHint() {
+    slideDialog.showSlideDialog(
+      context: context,
+      backgroundColor: DARK,
+      child: Padding(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          children: <Widget>[
+            text20GreenBold(getTranslated(context, 'hint')),
+            SizedBox(height: 10),
+            text20White(getTranslated(context, 'needToSelectEmployees') + ' '),
+            text20White(getTranslated(context, 'forWhomYouWantToAddNewTs')),
+          ],
+        ),
       ),
     );
   }

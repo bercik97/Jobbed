@@ -695,6 +695,28 @@ class ManagerService {
     }
   }
 
+  Future<dynamic> createForSelected(
+      int year, int month, Set<int> employeesId) async {
+    Map<String, dynamic> map = {
+      'year': year,
+      'month': month,
+      'employeesId': employeesId.map((el) => el.toInt()).toList(),
+    };
+    Response res = await post(_baseTsUrl + '/for-selected',
+        body: jsonEncode(map),
+        headers: {
+          HttpHeaders.authorizationHeader: authHeader,
+          'content-type': 'application/json'
+        });
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
   Future<dynamic> createOrUpdateVocation(
       String reason,
       String dateFrom,

@@ -418,5 +418,9 @@
   "addNewTsForSelectedEmployeesForChosenDate": "Add new timesheet for selected employees for chosen year and month",
   "quickUpdateWarn": "Note: The hours of people on vocation will not be updated. Check the holiday calendar",
   "accountExpired": "Account expired",
-  "yourAccountProbablyExpired": "Your account probably expired. You can contact administrator for more info."
+  "yourAccountProbablyExpired": "Your account probably expired. You can contact administrator for more info.",
+  "allEmployeesHaveTsForChosenYearAndMonth": "It seems that all of your group employees have a timesheet for the year and month that you choose. Please choose other year and month.",
+  "forWhomYouWantToAddNewTs": "for whom you want to add new timesheet",
+  "timesheetsSuccessfullyCreated": "Timesheets have been successfully created for the selected employees of the chosen year and month",
+  "goBack": "Go back"
 }

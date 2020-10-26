@@ -418,5 +418,9 @@
   "addNewTsForSelectedEmployeesForChosenDate": "Dodaj nowy grafik dla wybranych pracowników na wybrany rok i miesiąc",
   "quickUpdateWarn": "Uwaga: Godziny osób przebywających na urlopie nie bedą zaktualizowane. Sprawdź kalendarz urlopów",
   "accountExpired": "Konto wygasło",
-  "yourAccountProbablyExpired": "Twoje konto prawdopodobnie wygasło. Skontaktuj się z administratorem, aby uzyskać więcej informacji."
+  "yourAccountProbablyExpired": "Twoje konto prawdopodobnie wygasło. Skontaktuj się z administratorem, aby uzyskać więcej informacji.",
+  "allEmployeesHaveTsForChosenYearAndMonth": "Wygląda na to, że wszyscy pracownicy Twojej grupy posiadają arkusz czasu pracy na wybrany rok oraz miesiąc. Proszę, wybierz inny rok oraz miesiąc.",
+  "forWhomYouWantToAddNewTs": "dla których chcesz dodać nowy arkusz czasu pracy",
+  "timesheetsSuccessfullyCreated": "Arkusze czasu pracy zostały pomyślnie utworzone dla wybranych pracowników wybranego roku i miesiaca",
+  "goBack": "Powrót"
 }
