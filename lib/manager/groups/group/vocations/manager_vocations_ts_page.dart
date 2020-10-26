@@ -9,7 +9,6 @@ import 'package:give_job/manager/groups/group/shared/group_floating_action_butto
 import 'package:give_job/manager/groups/group/vocations/timesheets/calendar/manager_vocations_calendar_page.dart';
 import 'package:give_job/manager/groups/group/vocations/timesheets/manage/manager_vocations_manage_page.dart';
 import 'package:give_job/manager/service/manager_service.dart';
-import 'package:give_job/manager/shimmer/shimmer_manager_vocations_timesheets.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/radio_element.dart';
@@ -17,6 +16,7 @@ import 'package:give_job/shared/util/month_util.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 
+import '../../../../shared/widget/loader.dart';
 import '../../../manager_app_bar.dart';
 import '../../../manager_side_bar.dart';
 
@@ -73,7 +73,10 @@ class _ManagerVocationsTsPageState extends State<ManagerVocationsTsPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return shimmerManagerVocationsTimesheets(context, _model.user);
+      return loader(
+          managerAppBar(
+              context, _model.user, getTranslated(context, 'loading')),
+          managerSideBar(context, _model.user));
     }
     ManagerVocationsCalendarPage page;
     return MaterialApp(

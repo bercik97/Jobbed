@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:give_job/employee/dto/employee_calendar_dto.dart';
 import 'package:give_job/employee/employee_side_bar.dart';
 import 'package:give_job/employee/service/employee_service.dart';
-import 'package:give_job/employee/shimmer/shimmer_employee_calendar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -16,6 +15,9 @@ import 'package:give_job/shared/workdays/workday_util.dart';
 import 'package:intl/intl.dart';
 import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 import 'package:table_calendar/table_calendar.dart';
+
+import '../../../../shared/widget/loader.dart';
+import '../../../employee_app_bar.dart';
 
 class EmployeeCalendarPage extends StatefulWidget {
   EmployeeCalendarPage({Key key}) : super(key: key);
@@ -93,7 +95,9 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return shimmerEmployeeCalendar(this.context, _user);
+      return loader(
+          employeeAppBar(context, _user, getTranslated(context, 'loading')),
+          employeeSideBar(context, _user));
     }
     return MaterialApp(
       title: APP_NAME,

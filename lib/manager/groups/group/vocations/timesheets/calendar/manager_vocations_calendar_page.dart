@@ -6,7 +6,6 @@ import 'package:give_job/manager/dto/manager_group_employee_vocation_dto.dart';
 import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
 import 'package:give_job/manager/service/manager_service.dart';
 import 'package:give_job/manager/service/manager_vocation_service.dart';
-import 'package:give_job/manager/shimmer/shimmer_manager_group_vocations_calendar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
@@ -16,6 +15,7 @@ import 'package:give_job/shared/widget/texts.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../../../../shared/widget/loader.dart';
 import '../../../../../manager_app_bar.dart';
 import '../../../../../manager_side_bar.dart';
 
@@ -40,7 +40,7 @@ class _ManagerVocationsCalendarPageState
   ManagerVocationService _vocationService;
 
   Map<DateTime, List<ManagerGroupEmployeeVocationDto>> _events = new Map();
-  Map<DateTime, List<ManagerGroupEmployeeVocationDto>> _holidays = new Map();
+
   List _selectedEvents;
   DateTime _selectedDay;
   AnimationController _animationController;
@@ -110,7 +110,10 @@ class _ManagerVocationsCalendarPageState
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return shimmerManagerGroupVocationsCalendar(this.context, _model.user);
+      return loader(
+          managerAppBar(
+              context, _model.user, getTranslated(context, 'loading')),
+          managerSideBar(context, _model.user));
     }
     return MaterialApp(
       title: APP_NAME,

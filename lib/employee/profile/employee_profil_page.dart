@@ -11,7 +11,6 @@ import 'package:give_job/employee/profile/tabs/employee_panel.dart';
 import 'package:give_job/employee/profile/tabs/employee_timesheets.tab.dart';
 import 'package:give_job/employee/profile/tabs/employee_todo.dart';
 import 'package:give_job/employee/service/employee_service.dart';
-import 'package:give_job/employee/shimmer/shimmer_employee_profile.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -24,6 +23,9 @@ import 'package:give_job/shared/widget/silver_app_bar_delegate.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../shared/widget/loader.dart';
+import '../employee_app_bar.dart';
+import '../employee_side_bar.dart';
 import 'about_me/employee_about_me_page.dart';
 
 class EmployeeProfilPage extends StatefulWidget {
@@ -54,7 +56,10 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
         builder: (BuildContext context, AsyncSnapshot<EmployeeDto> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting ||
               snapshot.data == null) {
-            return shimmerEmployeeProfile();
+            return loader(
+                employeeAppBar(
+                    context, _user, getTranslated(context, 'loading')),
+                employeeSideBar(context, _user));
           } else {
             this._employee = snapshot.data;
             return _buildPage();

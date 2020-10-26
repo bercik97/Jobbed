@@ -10,7 +10,6 @@ import 'package:give_job/manager/dto/workplace_dto.dart';
 import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
 import 'package:give_job/manager/manager_app_bar.dart';
 import 'package:give_job/manager/service/workplace_service.dart';
-import 'package:give_job/manager/shimmer/shimmer_manager_workplaces.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
@@ -20,6 +19,7 @@ import 'package:give_job/shared/widget/texts.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 
+import '../../../../shared/widget/loader.dart';
 import '../../../manager_side_bar.dart';
 
 class WorkplacePage extends StatefulWidget {
@@ -66,7 +66,10 @@ class _WorkplacePageState extends State<WorkplacePage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return shimmerManagerWorkplaces(context, _model.user);
+      return loader(
+          managerAppBar(
+              context, _model.user, getTranslated(context, 'loading')),
+          managerSideBar(context, _model.user));
     }
     return MaterialApp(
       title: APP_NAME,

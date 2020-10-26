@@ -9,7 +9,6 @@ import 'package:give_job/manager/groups/group/manager_group_details_page.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/service/manager_service.dart';
 import 'package:give_job/manager/service/workplace_service.dart';
-import 'package:give_job/manager/shimmer/shimmer_manager_select_workplaces_for_employees.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/radio_element.dart';
@@ -18,6 +17,7 @@ import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 
+import '../../../../shared/widget/loader.dart';
 import '../../../manager_app_bar.dart';
 import '../../../manager_side_bar.dart';
 
@@ -76,7 +76,10 @@ class _SelectWorkplaceForQuickUpdateEmployeesPageState
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return shimmerManagerSelectWorkplacesForEmployees(context, _model.user);
+      return loader(
+          managerAppBar(
+              context, _model.user, getTranslated(context, 'loading')),
+          managerSideBar(context, _model.user));
     }
     return MaterialApp(
       title: APP_NAME,

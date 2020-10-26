@@ -8,7 +8,6 @@ import 'package:give_job/manager/groups/group/employee/model/group_employee_mode
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/groups/group/timesheets/add/add_ts_page.dart';
 import 'package:give_job/manager/service/manager_service.dart';
-import 'package:give_job/manager/shimmer/shimmer_manager_timesheets.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/util/month_util.dart';
@@ -16,6 +15,7 @@ import 'package:give_job/shared/widget/texts.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 import '../../../../internationalization/localization/localization_constants.dart';
+import '../../../../shared/widget/loader.dart';
 import '../../../../shared/widget/texts.dart';
 import '../../../manager_app_bar.dart';
 import '../../../manager_side_bar.dart';
@@ -66,7 +66,10 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return shimmerManagerTimesheets(context, _model.user);
+      return loader(
+          managerAppBar(
+              context, _model.user, getTranslated(context, 'loading')),
+          managerSideBar(context, _model.user));
     }
     return MaterialApp(
       title: APP_NAME,

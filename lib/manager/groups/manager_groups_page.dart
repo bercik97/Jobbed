@@ -8,7 +8,6 @@ import 'package:give_job/manager/dto/manager_group_dto.dart';
 import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
 import 'package:give_job/manager/manager_side_bar.dart';
 import 'package:give_job/manager/service/manager_service.dart';
-import 'package:give_job/manager/shimmer/shimmer_manager_groups.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
@@ -16,6 +15,7 @@ import 'package:give_job/shared/service/logout_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
+import '../../shared/widget/loader.dart';
 import '../manager_app_bar.dart';
 import 'group/manager_group_details_page.dart';
 
@@ -45,7 +45,10 @@ class _ManagerGroupsPageState extends State<ManagerGroupsPage> {
             AsyncSnapshot<List<ManagerGroupDto>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting ||
               snapshot.data == null) {
-            return shimmerManagerGroups(this.context, _user);
+            return loader(
+                managerAppBar(
+                    context, _user, getTranslated(context, 'loading')),
+                managerSideBar(context, _user));
           } else {
             this._groups = snapshot.data;
             return MaterialApp(

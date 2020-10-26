@@ -76,7 +76,8 @@ class _AddTsPageState extends State<AddTsPage> {
   Widget build(BuildContext context) {
     if (_loading) {
       return loader(
-          managerAppBar(context, null, getTranslated(context, 'loading')),
+          managerAppBar(
+              context, _model.user, getTranslated(context, 'loading')),
           managerSideBar(context, _model.user));
     }
     if (_employees.isEmpty) {

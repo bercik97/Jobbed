@@ -15,7 +15,6 @@ import 'package:give_job/manager/groups/group/employee/model/group_employee_mode
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/groups/group/workplaces/select_workplace_for_employees.dart';
 import 'package:give_job/manager/service/manager_service.dart';
-import 'package:give_job/manager/shimmer/shimmer_manager_in_progress_ts_details.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
@@ -28,6 +27,7 @@ import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 
+import '../../../../../shared/widget/loader.dart';
 import '../../../../manager_app_bar.dart';
 import '../../../../manager_side_bar.dart';
 
@@ -86,7 +86,10 @@ class _ManagerTimesheetsEmployeesInProgressPageState
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return shimmerManagerInProgressTsDetails(this.context, _model.user);
+      return loader(
+          managerAppBar(
+              context, _model.user, getTranslated(context, 'loading')),
+          managerSideBar(context, _model.user));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -328,8 +331,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
               Expanded(
                 child: MaterialButton(
                   color: GREEN,
-                  child: Image(
-                      image: AssetImage('images/dark-hours-icon.png')),
+                  child: Image(image: AssetImage('images/dark-hours-icon.png')),
                   onPressed: () => {
                     if (_selectedIds.isNotEmpty)
                       {
@@ -345,8 +347,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
               Expanded(
                 child: MaterialButton(
                   color: GREEN,
-                  child: Image(
-                      image: AssetImage('images/dark-rate-icon.png')),
+                  child: Image(image: AssetImage('images/dark-rate-icon.png')),
                   onPressed: () => {
                     if (_selectedIds.isNotEmpty)
                       {
@@ -362,8 +363,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
               Expanded(
                 child: MaterialButton(
                   color: GREEN,
-                  child: Image(
-                      image: AssetImage('images/dark-plan-icon.png')),
+                  child: Image(image: AssetImage('images/dark-plan-icon.png')),
                   onPressed: () => {
                     if (_selectedIds.isNotEmpty)
                       {
@@ -379,8 +379,8 @@ class _ManagerTimesheetsEmployeesInProgressPageState
               Expanded(
                 child: MaterialButton(
                   color: GREEN,
-                  child: Image(
-                      image: AssetImage('images/dark-opinion-icon.png')),
+                  child:
+                      Image(image: AssetImage('images/dark-opinion-icon.png')),
                   onPressed: () => {
                     if (_selectedIds.isNotEmpty)
                       {
@@ -397,8 +397,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                 child: MaterialButton(
                   color: GREEN,
                   child: Image(
-                      image:
-                          AssetImage('images/dark-workplace-icon.png')),
+                      image: AssetImage('images/dark-workplace-icon.png')),
                   onPressed: () => {
                     if (_selectedIds.isNotEmpty)
                       {
