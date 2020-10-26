@@ -13,6 +13,8 @@ import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../internationalization/localization/localization_constants.dart';
+
 class QuickUpdateDialog {
   static ManagerService _managerService;
   static GroupEmployeeModel _model;
@@ -55,7 +57,7 @@ class QuickUpdateDialog {
                     );
                   },
                   child: textCenter15RedUnderline(
-                      'Uwaga: Godziny osób przebywających na urlopie nie bedą zaktualizowane. Sprawdź kalendarz urlopów'),
+                      getTranslated(context, 'quickUpdateWarn')),
                 ),
                 SizedBox(height: 10),
                 _buildUpdateButton(getTranslated(context, 'hours'),

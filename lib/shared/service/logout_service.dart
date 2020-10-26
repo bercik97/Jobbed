@@ -4,6 +4,7 @@ import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
+import '../../internationalization/localization/localization_constants.dart';
 import '../../main.dart';
 import '../../unauthenticated/login_page.dart';
 
@@ -47,12 +48,12 @@ class Logout {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: DARK,
-          title: textWhite('Account expired'),
-          content: textWhite(
-              'Your account probably expired. You can contact administrator for more info.'),
+          title: textWhite(getTranslated(context, 'accountExpired')),
+          content:
+              textWhite(getTranslated(context, 'yourAccountProbablyExpired')),
           actions: <Widget>[
             FlatButton(
-              child: textWhite('Ok'),
+              child: textWhite(getTranslated(context, 'ok')),
               onPressed: () => logoutWithoutConfirm(context, null),
             ),
           ],

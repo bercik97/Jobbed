@@ -415,5 +415,8 @@
   "settingWorkplace": "Setting workplace",
   "settingVocation": "Setting vocation",
   "addNewTs": "Add new timesheet",
-  "addNewTsForSelectedEmployeesForChosenDate": "Add new timesheet for selected employees for chosen year and month"
+  "addNewTsForSelectedEmployeesForChosenDate": "Add new timesheet for selected employees for chosen year and month",
+  "quickUpdateWarn": "Note: The hours of people on vocation will not be updated. Check the holiday calendar",
+  "accountExpired": "Account expired",
+  "yourAccountProbablyExpired": "Your account probably expired. You can contact administrator for more info."
 }

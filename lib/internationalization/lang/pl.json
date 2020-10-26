@@ -415,5 +415,8 @@
   "settingWorkplace": "Ustawianie miejsca pracy",
   "settingVocation": "Ustawianie urlopu",
   "addNewTs": "Dodaj nowy arkusz",
-  "addNewTsForSelectedEmployeesForChosenDate": "Dodaj nowy grafik dla wybranych pracowników na wybrany rok i miesiąc"
+  "addNewTsForSelectedEmployeesForChosenDate": "Dodaj nowy grafik dla wybranych pracowników na wybrany rok i miesiąc",
+  "quickUpdateWarn": "Uwaga: Godziny osób przebywających na urlopie nie bedą zaktualizowane. Sprawdź kalendarz urlopów",
+  "accountExpired": "Konto wygasło",
+  "yourAccountProbablyExpired": "Twoje konto prawdopodobnie wygasło. Skontaktuj się z administratorem, aby uzyskać więcej informacji."
 }
