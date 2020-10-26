@@ -22,18 +22,18 @@ import '../../employee/model/group_employee_model.dart';
 import '../../shared/group_floating_action_button.dart';
 import '../manager_ts_page.dart';
 
-class AddTsPage extends StatefulWidget {
+class DeleteTsPage extends StatefulWidget {
   final GroupEmployeeModel _model;
   final int _year;
   final int _month;
 
-  AddTsPage(this._model, this._year, this._month);
+  DeleteTsPage(this._model, this._year, this._month);
 
   @override
-  _AddTsPageState createState() => _AddTsPageState();
+  _DeleteTsPageState createState() => _DeleteTsPageState();
 }
 
-class _AddTsPageState extends State<AddTsPage> {
+class _DeleteTsPageState extends State<DeleteTsPage> {
   GroupEmployeeModel _model;
   int _year;
   int _month;
@@ -56,7 +56,7 @@ class _AddTsPageState extends State<AddTsPage> {
     super.initState();
     _loading = true;
     _managerService
-        .findMobileEmployeesByGroupIdAndTsNotInYearAndMonthAndGroup(
+        .findMobileEmployeesByGroupIdAndTsInYearAndMonthAndGroup(
             _model.groupId, _year, _month)
         .then((res) {
       setState(() {
@@ -68,12 +68,6 @@ class _AddTsPageState extends State<AddTsPage> {
     });
   }
 
-  Future<bool> _onWillPop() async {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => ManagerTsPage(_model)));
-    return false;
-  }
-
   @override
   Widget build(BuildContext context) {
     if (_loading) {
@@ -82,38 +76,6 @@ class _AddTsPageState extends State<AddTsPage> {
               context, _model.user, getTranslated(context, 'loading')),
           managerSideBar(context, _model.user));
     }
-    if (_employees.isEmpty) {
-      return MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: DARK,
-          appBar: managerAppBar(
-              context, _model.user, getTranslated(context, 'addNewTs')),
-          drawer: managerSideBar(context, _model.user),
-          body: WillPopScope(
-            onWillPop: _onWillPop,
-            child: AlertDialog(
-              backgroundColor: BRIGHTER_DARK,
-              title: textWhite(getTranslated(context, 'failure')),
-              content: textWhite(getTranslated(
-                  context, 'allEmployeesHaveTsForChosenYearAndMonth')),
-              actions: <Widget>[
-                FlatButton(
-                  child: textGreen(getTranslated(context, 'goBack')),
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ManagerTsPage(_model)),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    }
     return MaterialApp(
       title: APP_NAME,
       theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
@@ -121,7 +83,7 @@ class _AddTsPageState extends State<AddTsPage> {
       home: Scaffold(
         backgroundColor: DARK,
         appBar: managerAppBar(
-            context, _model.user, getTranslated(context, 'addNewTs')),
+            context, _model.user, getTranslated(context, 'deleteSelectedTs')),
         drawer: managerSideBar(context, _model.user),
         body: RefreshIndicator(
           color: DARK,
@@ -135,7 +97,7 @@ class _AddTsPageState extends State<AddTsPage> {
                 child: Column(
                   children: [
                     textCenter18WhiteBold(getTranslated(
-                        context, 'addNewTsForSelectedEmployeesForChosenDate')),
+                        context, 'removeSelectedTsForChosenEmployees')),
                     SizedBox(height: 5),
                     textCenter20GreenBold(_year.toString() +
                         ' ' +
@@ -315,7 +277,7 @@ class _AddTsPageState extends State<AddTsPage> {
     _managerService.createForSelected(_year, _month, _selectedIds).then(
       (res) {
         ToastService.showSuccessToast(
-            getTranslated(context, 'timesheetsSuccessfullyCreated'));
+            getTranslated(context, 'timesheetSuccessfullyDeleted'));
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => ManagerTsPage(_model)),
@@ -335,7 +297,7 @@ class _AddTsPageState extends State<AddTsPage> {
             text20GreenBold(getTranslated(context, 'hint')),
             SizedBox(height: 10),
             text20White(getTranslated(context, 'needToSelectEmployees') + ' '),
-            text20White(getTranslated(context, 'forWhomYouWantToAddNewTs')),
+            text20White(getTranslated(context, 'forWhomYouWantToDeleteTs')),
           ],
         ),
       ),
@@ -344,7 +306,7 @@ class _AddTsPageState extends State<AddTsPage> {
 
   Future<Null> _refresh() {
     return _managerService
-        .findMobileEmployeesByGroupIdAndTsNotInYearAndMonthAndGroup(
+        .findMobileEmployeesByGroupIdAndTsInYearAndMonthAndGroup(
             _model.groupId, _year, _month)
         .then((res) {
       setState(() {

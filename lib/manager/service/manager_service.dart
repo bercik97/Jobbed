@@ -196,6 +196,23 @@ class ManagerService {
     }
   }
 
+  Future<List<BasicEmployeeDto>>
+      findMobileEmployeesByGroupIdAndTsInYearAndMonthAndGroup(
+          int groupId, int year, int month) async {
+    String url = _baseEmployeeUrl + '/groups/$groupId/time-sheets/$year/$month';
+    Response res =
+        await get(url, headers: {HttpHeaders.authorizationHeader: authHeader});
+    if (res.statusCode == 200) {
+      return (json.decode(res.body) as List)
+          .map((data) => BasicEmployeeDto.fromJson(data))
+          .toList();
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
   Future<List<ManagerVocationsTsDto>>
       findAllForVocationsTsByGroupIdAndTimesheetYearMonthStatusForMobile(
           int groupId, int year, int month, String status) async {

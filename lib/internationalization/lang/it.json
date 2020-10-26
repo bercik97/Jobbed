@@ -422,5 +422,9 @@
   "allEmployeesHaveTsForChosenYearAndMonth": "It seems that all of your group employees have a timesheet for the year and month that you choose. Please choose other year and month.",
   "forWhomYouWantToAddNewTs": "for whom you want to add new timesheet",
   "timesheetsSuccessfullyCreated": "Timesheets have been successfully created for the selected employees of the chosen year and month",
-  "goBack": "Go back"
+  "goBack": "Go back",
+  "forWhomYouWantToDeleteTs": "for whom you want to remove selected timesheet",
+  "timesheetSuccessfullyDeleted": "Selected timesheet have been successfully deleted for the chosen employees",
+  "removeSelectedTsForChosenEmployees": "Remove selected timesheet for chosen employees",
+  "deleteSelectedTs": "Delete selected timesheet"
 }

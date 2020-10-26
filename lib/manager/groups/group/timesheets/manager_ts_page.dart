@@ -206,8 +206,16 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
               Expanded(
                 child: MaterialButton(
                   color: GREEN,
-                  child: text18Dark(getTranslated(context, 'addNewTs')),
-                  onPressed: () => _selectDate(),
+                  child: text18Dark('Add'),
+                  onPressed: () => _addNewTs(),
+                ),
+              ),
+              SizedBox(width: 5),
+              Expanded(
+                child: MaterialButton(
+                  color: GREEN,
+                  child: text18Dark('Delete'),
+                  onPressed: () => _deleteSelectedTs(),
                 ),
               ),
               SizedBox(width: 1),
@@ -218,7 +226,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
     );
   }
 
-  _selectDate() {
+  _addNewTs() {
     DateTime currentDate = DateTime.now();
     showMonthPicker(
       context: context,
@@ -235,4 +243,6 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
       }
     });
   }
+
+  _deleteSelectedTs() {}
 }

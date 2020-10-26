@@ -422,5 +422,9 @@
   "allEmployeesHaveTsForChosenYearAndMonth": "Wygląda na to, że wszyscy pracownicy Twojej grupy posiadają arkusz czasu pracy na wybrany rok oraz miesiąc. Proszę, wybierz inny rok oraz miesiąc.",
   "forWhomYouWantToAddNewTs": "dla których chcesz dodać nowy arkusz czasu pracy",
   "timesheetsSuccessfullyCreated": "Arkusze czasu pracy zostały pomyślnie utworzone dla wybranych pracowników wybranego roku i miesiaca",
-  "goBack": "Powrót"
+  "goBack": "Powrót",
+  "forWhomYouWantToDeleteTs": "dla których chcesz usunąć wybrany arkusz czasu pracy",
+  "timesheetSuccessfullyDeleted": "Wybrany arkusz czasu pracy został pomyślnie usunięty dla wybranych pracowników",
+  "removeSelectedTsForChosenEmployees": "Usuń wybrany arkusz czasu pracy dla wybranych pracowników",
+  "deleteSelectedTs": "Usuń wybrany arkusz czasu pracy"
 }
