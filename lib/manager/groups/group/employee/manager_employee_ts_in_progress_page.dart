@@ -354,7 +354,8 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: text12DarkBold(getTranslated(context, 'hours')),
+                    child: Image(
+                        image: AssetImage('images/small-dark-hours-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {
@@ -370,7 +371,8 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: text12DarkBold(getTranslated(context, 'rating')),
+                    child: Image(
+                        image: AssetImage('images/small-dark-rate-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {
@@ -386,7 +388,8 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: text12DarkBold(getTranslated(context, 'plan')),
+                    child: Image(
+                        image: AssetImage('images/small-dark-plan-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {
@@ -402,7 +405,9 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: text12DarkBold(getTranslated(context, 'opinion')),
+                    child: Image(
+                        image:
+                            AssetImage('images/small-dark-opinion-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {
@@ -714,7 +719,8 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: text12DarkBold(getTranslated(context, 'hours')),
+                    child: Image(
+                        image: AssetImage('images/small-dark-hours-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {
@@ -730,7 +736,8 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: text12DarkBold(getTranslated(context, 'rating')),
+                    child: Image(
+                        image: AssetImage('images/small-dark-rate-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {
@@ -746,7 +753,8 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: text12DarkBold(getTranslated(context, 'plan')),
+                    child: Image(
+                        image: AssetImage('images/small-dark-plan-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {
@@ -762,7 +770,9 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: text12DarkBold(getTranslated(context, 'opinion')),
+                    child: Image(
+                        image:
+                            AssetImage('images/small-dark-opinion-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {

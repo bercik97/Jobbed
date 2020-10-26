@@ -328,7 +328,8 @@ class _ManagerTimesheetsEmployeesInProgressPageState
               Expanded(
                 child: MaterialButton(
                   color: GREEN,
-                  child: textDarkBold(getTranslated(context, 'hours')),
+                  child: Image(
+                      image: AssetImage('images/small-dark-hours-icon.png')),
                   onPressed: () => {
                     if (_selectedIds.isNotEmpty)
                       {
@@ -344,11 +345,12 @@ class _ManagerTimesheetsEmployeesInProgressPageState
               Expanded(
                 child: MaterialButton(
                   color: GREEN,
-                  child: textDarkBold(getTranslated(context, 'rating')),
+                  child: Image(
+                      image: AssetImage('images/small-dark-rate-icon.png')),
                   onPressed: () => {
                     if (_selectedIds.isNotEmpty)
                       {
-                        _hoursController.clear(),
+                        _ratingController.clear(),
                         _showUpdateRatingDialog(_selectedIds)
                       }
                     else
@@ -360,7 +362,8 @@ class _ManagerTimesheetsEmployeesInProgressPageState
               Expanded(
                 child: MaterialButton(
                   color: GREEN,
-                  child: textDarkBold('Plan'),
+                  child: Image(
+                      image: AssetImage('images/small-dark-plan-icon.png')),
                   onPressed: () => {
                     if (_selectedIds.isNotEmpty)
                       {
@@ -376,11 +379,12 @@ class _ManagerTimesheetsEmployeesInProgressPageState
               Expanded(
                 child: MaterialButton(
                   color: GREEN,
-                  child: textDarkBold(getTranslated(this.context, 'opinion')),
+                  child: Image(
+                      image: AssetImage('images/small-dark-opinion-icon.png')),
                   onPressed: () => {
                     if (_selectedIds.isNotEmpty)
                       {
-                        _hoursController.clear(),
+                        _opinionController.clear(),
                         _showUpdateOpinionDialog(_selectedIds)
                       }
                     else
@@ -974,8 +978,8 @@ class _ManagerTimesheetsEmployeesInProgressPageState
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => SelectWorkplaceForEmployeesPage(
-                _model, _timesheet, year, monthNum, dateFrom, dateTo, selectedIds)),
+            builder: (context) => SelectWorkplaceForEmployeesPage(_model,
+                _timesheet, year, monthNum, dateFrom, dateTo, selectedIds)),
       );
     }
   }
