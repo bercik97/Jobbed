@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:give_job/employee/dto/employee_timesheet_dto.dart';
+import 'package:give_job/manager/dto/basic_employee_dto.dart';
 import 'package:give_job/manager/dto/manager_dto.dart';
 import 'package:give_job/manager/dto/manager_employee_contact_dto.dart';
 import 'package:give_job/manager/dto/manager_group_details_dto.dart';
@@ -169,6 +170,24 @@ class ManagerService {
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List)
           .map((data) => ManagerGroupEmployeeDto.fromJson(data))
+          .toList();
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<List<BasicEmployeeDto>>
+      findMobileEmployeesByGroupIdAndTsNotInYearAndMonthAndGroup(
+          int groupId, int year, int month) async {
+    String url =
+        _baseEmployeeUrl + '/groups/$groupId/time-sheets-not-in/$year/$month';
+    Response res =
+        await get(url, headers: {HttpHeaders.authorizationHeader: authHeader});
+    if (res.statusCode == 200) {
+      return (json.decode(res.body) as List)
+          .map((data) => BasicEmployeeDto.fromJson(data))
           .toList();
     } else if (res.statusCode == 401) {
       return Logout.handle401WithLogout(context);

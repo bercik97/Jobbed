@@ -413,5 +413,7 @@
   "settingPlan": "Setting plan",
   "settingOpinion": "Setting opinion",
   "settingWorkplace": "Setting workplace",
-  "settingVocation": "Setting vocation"
+  "settingVocation": "Setting vocation",
+  "addNewTs": "Add new timesheet",
+  "addNewTsForSelectedEmployeesForChosenDate": "Add new timesheet for selected employees for chosen year and month"
 }

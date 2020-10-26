@@ -6,13 +6,17 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/manager/dto/manager_group_timesheet_dto.dart';
 import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
+import 'package:give_job/manager/groups/group/timesheets/add/add_ts_page.dart';
 import 'package:give_job/manager/service/manager_service.dart';
 import 'package:give_job/manager/shimmer/shimmer_manager_timesheets.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/util/month_util.dart';
 import 'package:give_job/shared/widget/texts.dart';
+import 'package:month_picker_dialog/month_picker_dialog.dart';
 
+import '../../../../internationalization/localization/localization_constants.dart';
+import '../../../../shared/widget/texts.dart';
 import '../../../manager_app_bar.dart';
 import '../../../manager_side_bar.dart';
 import 'completed/manager_completed_ts_details_page.dart';
@@ -35,6 +39,8 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
   List<ManagerGroupTimesheetDto> _completedTimesheets = new List();
 
   bool _loading = false;
+
+  DateTime selectedDate = DateTime.now();
 
   @override
   void initState() {
@@ -189,7 +195,41 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: groupFloatingActionButton(context, _model),
+        bottomNavigationBar: Container(
+          height: 40,
+          child: Row(
+            children: <Widget>[
+              SizedBox(width: 1),
+              Expanded(
+                child: MaterialButton(
+                  color: GREEN,
+                  child: text18Dark(getTranslated(context, 'addNewTs')),
+                  onPressed: () => _selectDate(),
+                ),
+              ),
+              SizedBox(width: 1),
+            ],
+          ),
+        ),
       ),
     );
+  }
+
+  _selectDate() {
+    DateTime currentDate = DateTime.now();
+    showMonthPicker(
+      context: context,
+      firstDate: DateTime(currentDate.year, currentDate.month - 3),
+      lastDate: DateTime(currentDate.year, currentDate.month + 3),
+      initialDate: selectedDate,
+    ).then((date) {
+      if (date != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => AddTsPage(_model, date.year, date.month)),
+        );
+      }
+    });
   }
 }

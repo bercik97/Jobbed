@@ -33,6 +33,7 @@ dependencies:
   bouncing_widget: ^1.2.0
   shimmer: ^1.1.1
   table_calendar: ^2.2.3
+  month_picker_dialog: ^0.2.3
 
 dev_dependencies:
   flutter_test:

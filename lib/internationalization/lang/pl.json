@@ -406,12 +406,14 @@
   "selectWorkplaceForEmployeesWorkday": "Czy na pewno chcesz dodać wybrane miejsca pracy dla dni pracy wybranego pracownika?",
   "iconsLegendDescription": "Zobacz legendę ikon",
   "iconsLegend": "Legenda ikon",
-  "tsInProgress": "Timesheet in progress",
-  "completedTs": "Completed timesheet",
-  "settingHours": "Setting hours",
-  "settingRating": "Setting rating",
-  "settingPlan": "Setting plan",
-  "settingOpinion": "Setting opinion",
-  "settingWorkplace": "Setting workplace",
-  "settingVocation": "Setting vocation"
+  "tsInProgress": "Arkusz czasu pracy w toku",
+  "completedTs": "Ukończony arkusz czasu pracy",
+  "settingHours": "Ustawianie godzin",
+  "settingRating": "Ustawianie oceny",
+  "settingPlan": "Ustawianie planu",
+  "settingOpinion": "Ustawianie opinii",
+  "settingWorkplace": "Ustawianie miejsca pracy",
+  "settingVocation": "Ustawianie urlopu",
+  "addNewTs": "Dodaj nowy arkusz",
+  "addNewTsForSelectedEmployeesForChosenDate": "Dodaj nowy grafik dla wybranych pracowników na wybrany rok i miesiąc"
 }
