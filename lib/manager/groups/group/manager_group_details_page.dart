@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
-import 'package:give_job/manager/groups/group/help/help_dialog.dart';
 import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.dart';
 import 'package:give_job/manager/groups/group/timesheets/manager_ts_page.dart';
 import 'package:give_job/manager/groups/group/vocations/manager_vocations_ts_page.dart';
@@ -20,6 +19,7 @@ import '../../manager_app_bar.dart';
 import '../manager_groups_page.dart';
 import 'edit/manager_group_details_edit_page.dart';
 import 'employee/manager_employees_page.dart';
+import 'icons_legend/icons_legend_dialog.dart';
 
 class ManagerGroupDetailsPage extends StatefulWidget {
   final GroupEmployeeModel _model;
@@ -150,8 +150,8 @@ class _ManagerGroupDetailsPageState extends State<ManagerGroupDetailsPage> {
                         child: Material(
                           color: BRIGHTER_DARK,
                           child: InkWell(
-                            onTap: () =>
-                                HelpDialog.showHelpDialog(context, _model),
+                            onTap: () => IconsLegend.showIconsLegendDialog(
+                                context, _model),
                             child: _buildScrollableContainer(
                                 'images/big-help-icon.png',
                                 'iconsLegend',

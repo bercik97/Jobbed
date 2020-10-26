@@ -405,5 +405,13 @@
   "setWorkplaceForSelectedWorkdaysOfEmployee": "დააყენეთ სამუშაო ადგილი თანამშრომლის არჩეული სამუშაო დღისთვის",
   "selectWorkplaceForEmployeesWorkday": "დარწმუნებული ხართ, რომ გსურთ დაამატოთ არჩეული სამუშაო ადგილი შერჩეული თანამშრომლის სამუშაო დღისთვის?",
   "iconsLegendDescription": "See the icon legend",
-  "iconsLegend": "Icons legend"
+  "iconsLegend": "Icons legend",
+  "tsInProgress": "Timesheet in progress",
+  "completedTs": "Completed timesheet",
+  "settingHours": "Setting hours",
+  "settingRating": "Setting rating",
+  "settingPlan": "Setting plan",
+  "settingOpinion": "Setting opinion",
+  "settingWorkplace": "Setting workplace",
+  "settingVocation": "Setting vocation"
 }

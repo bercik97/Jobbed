@@ -405,5 +405,13 @@
   "setWorkplaceForSelectedWorkdaysOfEmployee": "Усталяваць працоўнае месца для выбраных працоўных дзён супрацоўніка",
   "selectWorkplaceForEmployeesWorkday": "Вы ўпэўнены, што хочаце дадаць выбранае працоўнае месца для працоўных дзён абранага супрацоўніка?",
   "iconsLegendDescription": "See the icon legend",
-  "iconsLegend": "Icons legend"
+  "iconsLegend": "Icons legend",
+  "tsInProgress": "Timesheet in progress",
+  "completedTs": "Completed timesheet",
+  "settingHours": "Setting hours",
+  "settingRating": "Setting rating",
+  "settingPlan": "Setting plan",
+  "settingOpinion": "Setting opinion",
+  "settingWorkplace": "Setting workplace",
+  "settingVocation": "Setting vocation"
 }

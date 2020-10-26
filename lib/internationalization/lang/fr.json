@@ -405,5 +405,13 @@
   "setWorkplaceForSelectedWorkdaysOfEmployee": "Définir le lieu de travail pour les jours de travail sélectionnés de l'employé",
   "selectWorkplaceForEmployeesWorkday": "Êtes-vous sûr de vouloir ajouter le lieu de travail sélectionné pour les jours de travail de l'employé sélectionné?",
   "iconsLegendDescription": "See the icon legend",
-  "iconsLegend": "Icons legend"
+  "iconsLegend": "Icons legend",
+  "tsInProgress": "Timesheet in progress",
+  "completedTs": "Completed timesheet",
+  "settingHours": "Setting hours",
+  "settingRating": "Setting rating",
+  "settingPlan": "Setting plan",
+  "settingOpinion": "Setting opinion",
+  "settingWorkplace": "Setting workplace",
+  "settingVocation": "Setting vocation"
 }

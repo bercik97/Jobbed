@@ -405,5 +405,13 @@
   "setWorkplaceForSelectedWorkdaysOfEmployee": "Ställ in arbetsplats för utvalda arbetsdagar för anställd",
   "selectWorkplaceForEmployeesWorkday": "Är du säker på att du vill lägga till vald arbetsplats för valda anställdas arbetsdagar?",
   "iconsLegendDescription": "See the icon legend",
-  "iconsLegend": "Icons legend"
+  "iconsLegend": "Icons legend",
+  "tsInProgress": "Timesheet in progress",
+  "completedTs": "Completed timesheet",
+  "settingHours": "Setting hours",
+  "settingRating": "Setting rating",
+  "settingPlan": "Setting plan",
+  "settingOpinion": "Setting opinion",
+  "settingWorkplace": "Setting workplace",
+  "settingVocation": "Setting vocation"
 }

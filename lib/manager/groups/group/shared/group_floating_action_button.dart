@@ -4,7 +4,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/employee/manager_employees_page.dart';
 import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
-import 'package:give_job/manager/groups/group/help/help_dialog.dart';
+import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
 import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.dart';
 import 'package:give_job/manager/groups/group/timesheets/manager_ts_page.dart';
 import 'package:give_job/manager/groups/group/vocations/manager_vocations_ts_page.dart';
@@ -55,7 +55,7 @@ Widget groupFloatingActionButton(
         label: getTranslated(context, 'iconsLegend'),
         labelBackgroundColor: BRIGHTER_DARK,
         labelStyle: TextStyle(color: WHITE),
-        onTap: () => HelpDialog.showHelpDialog(context, model),
+        onTap: () => IconsLegend.showIconsLegendDialog(context, model),
       ),
       SpeedDialChild(
         backgroundColor: BRIGHTER_DARK,

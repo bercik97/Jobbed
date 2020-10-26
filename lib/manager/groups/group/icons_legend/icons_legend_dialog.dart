@@ -7,8 +7,9 @@ import '../../../../shared/widget/icons.dart';
 import '../../../../shared/widget/texts.dart';
 import '../employee/model/group_employee_model.dart';
 
-class HelpDialog {
-  static void showHelpDialog(BuildContext context, GroupEmployeeModel model) {
+class IconsLegend {
+  static void showIconsLegendDialog(
+      BuildContext context, GroupEmployeeModel model) {
     showGeneralDialog(
       context: context,
       barrierColor: DARK.withOpacity(0.95),
@@ -29,14 +30,22 @@ class HelpDialog {
                       textCenter16GreenBold(
                           getTranslated(context, 'iconsLegend')),
                       SizedBox(height: 25),
-                      _buildRow('images/unchecked.png', 'Time sheet in progress'),
-                      _buildRow('images/checked.png', 'Completed timesheet'),
-                      _buildRow('images/green-hours-icon.png', 'Set hours'),
-                      _buildRow('images/green-rate-icon.png', 'Set rating'),
-                      _buildRow('images/green-plan-icon.png', 'Set plan'),
-                      _buildRow('images/green-opinion-icon.png', 'Set opinion'),
-                      _buildRow('images/green-workplace-icon.png', 'Set workplace'),
-                      _buildRow('images/small-vocation-icon.png', 'Set vocation'),
+                      _buildRow('images/unchecked.png',
+                          getTranslated(context, 'tsInProgress')),
+                      _buildRow('images/checked.png',
+                          getTranslated(context, 'completedTs')),
+                      _buildRow('images/green-hours-icon.png',
+                          getTranslated(context, 'settingHours')),
+                      _buildRow('images/green-rate-icon.png',
+                          getTranslated(context, 'settingRating')),
+                      _buildRow('images/green-plan-icon.png',
+                          getTranslated(context, 'settingPlan')),
+                      _buildRow('images/green-opinion-icon.png',
+                          getTranslated(context, 'settingOpinion')),
+                      _buildRow('images/green-workplace-icon.png',
+                          getTranslated(context, 'settingWorkplace')),
+                      _buildRow('images/small-vocation-icon.png',
+                          getTranslated(context, 'settingVocation')),
                     ],
                   ),
                 ),
