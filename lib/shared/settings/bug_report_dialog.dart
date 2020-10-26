@@ -20,7 +20,7 @@ bugReportDialog(BuildContext context) {
               getTranslated(context, 'contactWithUsByGivenEmail')),
           SizedBox(height: 15),
           SelectableText(
-            'givejob.bug@gmail.com',
+            'givejob.software@gmail.com',
             style: TextStyle(
                 fontStyle: FontStyle.italic,
                 fontWeight: FontWeight.bold,
