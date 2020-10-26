@@ -403,5 +403,7 @@
   "selectWorkplaceForTodaysEmployees": "Etes-vous sûr de vouloir ajouter le lieu de travail sélectionné pour tous les employés du groupe pour aujourd'hui?",
   "todaysWorkplaceHasBeenUpdated": "Le lieu de travail actuel des employés d'un groupe a été mis à jour",
   "setWorkplaceForSelectedWorkdaysOfEmployee": "Définir le lieu de travail pour les jours de travail sélectionnés de l'employé",
-  "selectWorkplaceForEmployeesWorkday": "Êtes-vous sûr de vouloir ajouter le lieu de travail sélectionné pour les jours de travail de l'employé sélectionné?"
+  "selectWorkplaceForEmployeesWorkday": "Êtes-vous sûr de vouloir ajouter le lieu de travail sélectionné pour les jours de travail de l'employé sélectionné?",
+  "iconsLegendDescription": "See the icon legend",
+  "iconsLegend": "Icons legend"
 }

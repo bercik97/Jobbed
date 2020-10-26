@@ -403,5 +403,7 @@
   "selectWorkplaceForTodaysEmployees": "დარწმუნებული ხართ, რომ გსურთ დაამატოთ შერჩეული სამუშაო ადგილი ჯგუფის ყველა თანამშრომლისთვის დღეს?",
   "todaysWorkplaceHasBeenUpdated": "განახლდა დღევანდელი სამუშაო ადგილი ჯგუფის თანამშრომლებისთვის",
   "setWorkplaceForSelectedWorkdaysOfEmployee": "დააყენეთ სამუშაო ადგილი თანამშრომლის არჩეული სამუშაო დღისთვის",
-  "selectWorkplaceForEmployeesWorkday": "დარწმუნებული ხართ, რომ გსურთ დაამატოთ არჩეული სამუშაო ადგილი შერჩეული თანამშრომლის სამუშაო დღისთვის?"
+  "selectWorkplaceForEmployeesWorkday": "დარწმუნებული ხართ, რომ გსურთ დაამატოთ არჩეული სამუშაო ადგილი შერჩეული თანამშრომლის სამუშაო დღისთვის?",
+  "iconsLegendDescription": "See the icon legend",
+  "iconsLegend": "Icons legend"
 }

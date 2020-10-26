@@ -403,5 +403,7 @@
   "selectWorkplaceForTodaysEmployees": "Sigur doriți să adăugați locul de muncă selectat pentru toți angajații grupului astăzi?",
   "todaysWorkplaceHasBeenUpdated": "Locul de muncă de astăzi pentru angajații unui grup a fost actualizat",
   "setWorkplaceForSelectedWorkdaysOfEmployee": "Setați locul de muncă pentru zilele de lucru selectate ale angajatului",
-  "selectWorkplaceForEmployeesWorkday": "Sigur doriți să adăugați locul de muncă selectat pentru zilele lucrătoare ale angajatului selectat?"
+  "selectWorkplaceForEmployeesWorkday": "Sigur doriți să adăugați locul de muncă selectat pentru zilele lucrătoare ale angajatului selectat?",
+  "iconsLegendDescription": "See the icon legend",
+  "iconsLegend": "Icons legend"
 }

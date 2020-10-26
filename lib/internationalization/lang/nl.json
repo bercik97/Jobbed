@@ -403,5 +403,7 @@
   "selectWorkplaceForTodaysEmployees": "Weet u zeker dat u voor vandaag een geselecteerde werkplek voor alle medewerkers van de groep wilt toevoegen?",
   "todaysWorkplaceHasBeenUpdated": "De huidige werkplek voor medewerkers van een groep is bijgewerkt",
   "setWorkplaceForSelectedWorkdaysOfEmployee": "Stel werkplek in voor geselecteerde werkdagen van werknemer",
-  "selectWorkplaceForEmployeesWorkday": "Weet u zeker dat u een geselecteerde werkplek wilt toevoegen voor werkdagen van de geselecteerde werknemer?"
+  "selectWorkplaceForEmployeesWorkday": "Weet u zeker dat u een geselecteerde werkplek wilt toevoegen voor werkdagen van de geselecteerde werknemer?",
+  "iconsLegendDescription": "See the icon legend",
+  "iconsLegend": "Icons legend"
 }

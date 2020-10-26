@@ -403,5 +403,7 @@
   "selectWorkplaceForTodaysEmployees": "Er du sikker på at du vil legge til valgt arbeidsplass for alle ansatte i gruppen i dag?",
   "todaysWorkplaceHasBeenUpdated": "Dagens arbeidsplass for ansatte i en gruppe er oppdatert",
   "setWorkplaceForSelectedWorkdaysOfEmployee": "Angi arbeidsplass for utvalgte arbeidsdager til ansatt",
-  "selectWorkplaceForEmployeesWorkday": "Er du sikker på at du vil legge til valgt arbeidsplass for arbeidsdagene til den valgte medarbeideren?"
+  "selectWorkplaceForEmployeesWorkday": "Er du sikker på at du vil legge til valgt arbeidsplass for arbeidsdagene til den valgte medarbeideren?",
+  "iconsLegendDescription": "See the icon legend",
+  "iconsLegend": "Icons legend"
 }

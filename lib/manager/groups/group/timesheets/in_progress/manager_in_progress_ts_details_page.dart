@@ -329,7 +329,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                 child: MaterialButton(
                   color: GREEN,
                   child: Image(
-                      image: AssetImage('images/small-dark-hours-icon.png')),
+                      image: AssetImage('images/dark-hours-icon.png')),
                   onPressed: () => {
                     if (_selectedIds.isNotEmpty)
                       {
@@ -346,7 +346,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                 child: MaterialButton(
                   color: GREEN,
                   child: Image(
-                      image: AssetImage('images/small-dark-rate-icon.png')),
+                      image: AssetImage('images/dark-rate-icon.png')),
                   onPressed: () => {
                     if (_selectedIds.isNotEmpty)
                       {
@@ -363,7 +363,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                 child: MaterialButton(
                   color: GREEN,
                   child: Image(
-                      image: AssetImage('images/small-dark-plan-icon.png')),
+                      image: AssetImage('images/dark-plan-icon.png')),
                   onPressed: () => {
                     if (_selectedIds.isNotEmpty)
                       {
@@ -380,7 +380,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                 child: MaterialButton(
                   color: GREEN,
                   child: Image(
-                      image: AssetImage('images/small-dark-opinion-icon.png')),
+                      image: AssetImage('images/dark-opinion-icon.png')),
                   onPressed: () => {
                     if (_selectedIds.isNotEmpty)
                       {
@@ -398,7 +398,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                   color: GREEN,
                   child: Image(
                       image:
-                          AssetImage('images/small-dark-workplace-icon.png')),
+                          AssetImage('images/dark-workplace-icon.png')),
                   onPressed: () => {
                     if (_selectedIds.isNotEmpty)
                       {

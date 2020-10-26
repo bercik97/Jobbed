@@ -403,5 +403,7 @@
   "selectWorkplaceForTodaysEmployees": "Ви впевнені, що хочете додати вибране робоче місце для всіх працівників групи на сьогодні?",
   "todaysWorkplaceHasBeenUpdated": "Сьогодні робоче місце для працівників групи оновлено",
   "setWorkplaceForSelectedWorkdaysOfEmployee": "Встановити робоче місце для вибраних робочих днів працівника",
-  "selectWorkplaceForEmployeesWorkday": "Ви впевнені, що хочете додати вибране робоче місце до робочих днів вибраного працівника?"
+  "selectWorkplaceForEmployeesWorkday": "Ви впевнені, що хочете додати вибране робоче місце до робочих днів вибраного працівника?",
+  "iconsLegendDescription": "See the icon legend",
+  "iconsLegend": "Icons legend"
 }

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
+import 'package:give_job/manager/groups/group/help/help_dialog.dart';
 import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.dart';
 import 'package:give_job/manager/groups/group/timesheets/manager_ts_page.dart';
 import 'package:give_job/manager/groups/group/vocations/manager_vocations_ts_page.dart';
@@ -149,6 +150,24 @@ class _ManagerGroupDetailsPageState extends State<ManagerGroupDetailsPage> {
                         child: Material(
                           color: BRIGHTER_DARK,
                           child: InkWell(
+                            onTap: () =>
+                                HelpDialog.showHelpDialog(context, _model),
+                            child: _buildScrollableContainer(
+                                'images/big-help-icon.png',
+                                'iconsLegend',
+                                'iconsLegendDescription'),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Material(
+                          color: BRIGHTER_DARK,
+                          child: InkWell(
                             onTap: () {
                               Navigator.of(context).push(
                                 CupertinoPageRoute<Null>(
@@ -165,11 +184,7 @@ class _ManagerGroupDetailsPageState extends State<ManagerGroupDetailsPage> {
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: <Widget>[
+                      SizedBox(width: 10),
                       Expanded(
                         child: Material(
                           color: BRIGHTER_DARK,
@@ -184,7 +199,11 @@ class _ManagerGroupDetailsPageState extends State<ManagerGroupDetailsPage> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 10),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: <Widget>[
                       Expanded(
                         child: Material(
                           color: BRIGHTER_DARK,
@@ -202,6 +221,27 @@ class _ManagerGroupDetailsPageState extends State<ManagerGroupDetailsPage> {
                                 'images/big-timesheets-icon.png',
                                 'timesheets',
                                 'fillHoursRatingPlans'),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: Material(
+                          color: BRIGHTER_DARK,
+                          child: InkWell(
+                            onTap: () => {
+                              Navigator.of(context).push(
+                                CupertinoPageRoute<Null>(
+                                  builder: (BuildContext context) {
+                                    return WorkplacePage(_model);
+                                  },
+                                ),
+                              ),
+                            },
+                            child: _buildScrollableContainer(
+                                'images/big-workplace-icon.png',
+                                'workplaces',
+                                'workplacesDescription'),
                           ),
                         ),
                       ),
@@ -231,26 +271,7 @@ class _ManagerGroupDetailsPageState extends State<ManagerGroupDetailsPage> {
                         ),
                       ),
                       SizedBox(width: 10),
-                      Expanded(
-                        child: Material(
-                          color: BRIGHTER_DARK,
-                          child: InkWell(
-                            onTap: () => {
-                              Navigator.of(context).push(
-                                CupertinoPageRoute<Null>(
-                                  builder: (BuildContext context) {
-                                    return WorkplacePage(_model);
-                                  },
-                                ),
-                              ),
-                            },
-                            child: _buildScrollableContainer(
-                                'images/big-workplace-icon.png',
-                                'workplaces',
-                                'workplacesDescription'),
-                          ),
-                        ),
-                      ),
+                      Expanded(child: Material(color: BRIGHTER_DARK)),
                     ],
                   ),
                 ],

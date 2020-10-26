@@ -93,15 +93,20 @@ flutter:
     - images/small-quick_update-icon.png
     - images/small-timesheets-icon.png
     - images/small-vocation-icon.png
-    - images/small-workplace-icon.png
     - images/small-help-icon.png
     - images/small-documents-icon.png
 
-    - images/small-dark-hours-icon.png
-    - images/small-dark-rate-icon.png
-    - images/small-dark-plan-icon.png
-    - images/small-dark-opinion-icon.png
-    - images/small-dark-workplace-icon.png
+    - images/green-hours-icon.png
+    - images/green-rate-icon.png
+    - images/green-plan-icon.png
+    - images/green-opinion-icon.png
+    - images/green-workplace-icon.png
+
+    - images/dark-hours-icon.png
+    - images/dark-rate-icon.png
+    - images/dark-plan-icon.png
+    - images/dark-opinion-icon.png
+    - images/dark-workplace-icon.png
 
     - docs/regulations.pdf
     - docs/privacy_policy.pdf
