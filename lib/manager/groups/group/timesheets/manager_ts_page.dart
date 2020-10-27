@@ -7,10 +7,13 @@ import 'package:give_job/manager/dto/manager_group_timesheet_dto.dart';
 import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/groups/group/timesheets/add/add_ts_page.dart';
+import 'package:give_job/manager/groups/group/timesheets/delete/delete_ts_page.dart';
 import 'package:give_job/manager/service/manager_service.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
+import 'package:give_job/shared/model/radio_element.dart';
 import 'package:give_job/shared/util/month_util.dart';
+import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 
@@ -42,6 +45,10 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
 
   DateTime selectedDate = DateTime.now();
 
+  List<RadioElement> _elements = new List();
+  int _currentRadioValue = 0;
+  RadioElement _currentRadioElement;
+
   @override
   void initState() {
     this._model = widget._model;
@@ -51,12 +58,23 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
     _managerService
         .findTimesheetsByGroupId(_model.groupId.toString())
         .then((res) {
+      int _counter = 0;
       setState(() {
         res.forEach((ts) => {
               if (ts.status == STATUS_IN_PROGRESS)
                 {_inProgressTimesheets.add(ts)}
               else
-                {_completedTimesheets.add(ts)}
+                {_completedTimesheets.add(ts)},
+              _elements.add(RadioElement(
+                  index: _counter++,
+                  id: ts.id,
+                  title: ts.year.toString() +
+                      ' ' +
+                      MonthUtil.translateMonth(context, ts.month))),
+              if (_currentRadioElement == null)
+                {
+                  _currentRadioElement = _elements[0],
+                },
             });
         _loading = false;
       });
@@ -132,6 +150,21 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                               fit: BoxFit.fitHeight,
                             ),
                           ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: iconRed(Icons.delete),
+                                onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DeleteTsPage(_model,
+                                        inProgressTs.year, inProgressTs.month),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                           title: text18WhiteBold(inProgressTs.year.toString() +
                               ' ' +
                               MonthUtil.translateMonth(
@@ -184,6 +217,21 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                               fit: BoxFit.fitHeight,
                             ),
                           ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: iconRed(Icons.delete),
+                                onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DeleteTsPage(_model,
+                                        completedTs.year, completedTs.month),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                           title: text18WhiteBold(completedTs.year.toString() +
                               ' ' +
                               MonthUtil.translateMonth(
@@ -208,14 +256,6 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                   color: GREEN,
                   child: text18Dark('Add'),
                   onPressed: () => _addNewTs(),
-                ),
-              ),
-              SizedBox(width: 5),
-              Expanded(
-                child: MaterialButton(
-                  color: GREEN,
-                  child: text18Dark('Delete'),
-                  onPressed: () => _deleteSelectedTs(),
                 ),
               ),
               SizedBox(width: 1),
@@ -243,6 +283,4 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
       }
     });
   }
-
-  _deleteSelectedTs() {}
 }

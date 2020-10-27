@@ -734,6 +734,24 @@ class ManagerService {
     }
   }
 
+  Future<dynamic> deleteAllTsByYearMonthAndEmployeesId(
+      int year, int month, Set<int> employeesId) async {
+    List<String> idsAsStrings = employeesId.map((e) => e.toString()).toList();
+    Response res = await delete(
+        _baseTsUrl + '/$year/$month/employees/$idsAsStrings',
+        headers: {
+          HttpHeaders.authorizationHeader: authHeader,
+          'content-type': 'application/json'
+        });
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
   Future<dynamic> createOrUpdateVocation(
       String reason,
       String dateFrom,

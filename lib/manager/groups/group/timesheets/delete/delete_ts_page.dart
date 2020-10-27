@@ -25,7 +25,7 @@ import '../manager_ts_page.dart';
 class DeleteTsPage extends StatefulWidget {
   final GroupEmployeeModel _model;
   final int _year;
-  final int _month;
+  final String _month;
 
   DeleteTsPage(this._model, this._year, this._month);
 
@@ -51,7 +51,7 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
   void initState() {
     this._model = widget._model;
     this._year = widget._year;
-    this._month = widget._month;
+    this._month = MonthUtil.findMonthNumberByMonthName(context, widget._month);
     this._managerService = new ManagerService(context, _model.user.authHeader);
     super.initState();
     _loading = true;
@@ -258,7 +258,7 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
                   children: <Widget>[iconWhite(Icons.check)],
                 ),
                 color: GREEN,
-                onPressed: () => _createTsForSelectedEmployees(),
+                onPressed: () => _deleteTsForSelectedEmployees(),
               ),
             ],
           ),
@@ -269,12 +269,14 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
     );
   }
 
-  void _createTsForSelectedEmployees() {
+  void _deleteTsForSelectedEmployees() {
     if (_selectedIds.isEmpty) {
       _showHint();
       return;
     }
-    _managerService.createForSelected(_year, _month, _selectedIds).then(
+    _managerService
+        .deleteAllTsByYearMonthAndEmployeesId(_year, _month, _selectedIds)
+        .then(
       (res) {
         ToastService.showSuccessToast(
             getTranslated(context, 'timesheetSuccessfullyDeleted'));
