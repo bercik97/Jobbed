@@ -301,6 +301,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 height: 30,
                 child: text13White(
                     getTranslated(context, 'version') + ': 1.0.10+11')),
+            _titleContainer(getTranslated(context, 'graphics')),
+            _socialMediaInkWell('https://plumko.business.site/ ', 'Plumko',
+                'images/plumko-logo.png'),
             _titleContainer(getTranslated(context, 'followUs')),
             SizedBox(height: 5.0),
             _socialMediaInkWell(

@@ -66,6 +66,7 @@ flutter:
     - lib/internationalization/lang/uk.json
 
     - images/logo.png
+    - images/plumko-logo.png
     - images/givejob-medica-logo.png
     - images/facebook-logo.png
     - images/instagram-logo.png

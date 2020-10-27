@@ -431,5 +431,6 @@
   "updateSelectedTsStatusForChosenEmployees": "Update selected timesheet status for chosen employees",
   "forNewStatus": "for new status",
   "timesheetStatusSuccessfullyUpdated": "Status of selected timesheet have been successfully updated for the chosen employees",
-  "forWhomYouWantToUpdateTsStatus": "for whom you want to update status of selected timesheet"
+  "forWhomYouWantToUpdateTsStatus": "for whom you want to update status of selected timesheet",
+  "graphics": "GRAPHICS"
 }

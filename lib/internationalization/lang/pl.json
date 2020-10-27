@@ -431,5 +431,6 @@
   "updateSelectedTsStatusForChosenEmployees": "Zaaktualizuj status arkusza czasu pracy dla wybranych pracowników",
   "forNewStatus": "dla nowegu statusu",
   "timesheetStatusSuccessfullyUpdated": "Status wybranego arkusza czasu pracy został pomyślnie zaktualizowany dla wybranych pracowników",
-  "forWhomYouWantToUpdateTsStatus": "dla których chcesz zaktualizować status wybranego arkusza czasu pracy"
+  "forWhomYouWantToUpdateTsStatus": "dla których chcesz zaktualizować status wybranego arkusza czasu pracy",
+  "graphics": "GRAFIKA"
 }
