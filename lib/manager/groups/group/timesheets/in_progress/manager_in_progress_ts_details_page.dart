@@ -21,11 +21,11 @@ import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
+import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 
 import '../../../../../shared/widget/loader.dart';
 import '../../../../manager_app_bar.dart';
@@ -339,7 +339,12 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                         _showUpdateHoursDialog(_selectedIds)
                       }
                     else
-                      {_showHint()}
+                      {
+                        showHint(
+                            context,
+                            getTranslated(context, 'needToSelectRecords') + ' ',
+                            getTranslated(context, 'whichYouWantToUpdate'))
+                      }
                   },
                 ),
               ),
@@ -355,7 +360,12 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                         _showUpdateRatingDialog(_selectedIds)
                       }
                     else
-                      {_showHint()}
+                      {
+                        showHint(
+                            context,
+                            getTranslated(context, 'needToSelectRecords') + ' ',
+                            getTranslated(context, 'whichYouWantToUpdate'))
+                      }
                   },
                 ),
               ),
@@ -371,7 +381,12 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                         _showUpdatePlanDialog(_selectedIds)
                       }
                     else
-                      {_showHint()}
+                      {
+                        showHint(
+                            context,
+                            getTranslated(context, 'needToSelectRecords') + ' ',
+                            getTranslated(context, 'whichYouWantToUpdate'))
+                      }
                   },
                 ),
               ),
@@ -388,7 +403,12 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                         _showUpdateOpinionDialog(_selectedIds)
                       }
                     else
-                      {_showHint()}
+                      {
+                        showHint(
+                            context,
+                            getTranslated(context, 'needToSelectRecords') + ' ',
+                            getTranslated(context, 'whichYouWantToUpdate'))
+                      }
                   },
                 ),
               ),
@@ -404,7 +424,12 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                         _showUpdateWorkplaceDialog(_selectedIds),
                       }
                     else
-                      {_showHint()}
+                      {
+                        showHint(
+                            context,
+                            getTranslated(context, 'needToSelectRecords') + ' ',
+                            getTranslated(context, 'whichYouWantToUpdate'))
+                      }
                   },
                 ),
               ),
@@ -989,24 +1014,6 @@ class _ManagerTimesheetsEmployeesInProgressPageState
     List<bool> l = new List();
     _checked.forEach((b) => l.add(false));
     _checked = l;
-  }
-
-  void _showHint() {
-    slideDialog.showSlideDialog(
-      context: context,
-      backgroundColor: DARK,
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          children: <Widget>[
-            text20GreenBold(getTranslated(context, 'hint')),
-            SizedBox(height: 10),
-            text20White(getTranslated(context, 'needToSelectRecords') + ' '),
-            text20White(getTranslated(context, 'whichYouWantToUpdate')),
-          ],
-        ),
-      ),
-    );
   }
 
   Future<Null> _refresh() {

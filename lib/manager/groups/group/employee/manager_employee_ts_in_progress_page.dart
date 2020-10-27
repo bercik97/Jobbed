@@ -15,11 +15,11 @@ import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
 import 'package:give_job/shared/widget/circular_progress_indicator.dart';
+import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:give_job/shared/workdays/workday_service.dart';
 import 'package:give_job/shared/workdays/workday_util.dart';
-import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 
 import '../../../../shared/libraries/constants.dart';
 import '../../../manager_app_bar.dart';
@@ -354,8 +354,8 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: Image(
-                        image: AssetImage('images/dark-hours-icon.png')),
+                    child:
+                        Image(image: AssetImage('images/dark-hours-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {
@@ -363,7 +363,13 @@ class _ManagerEmployeeTsInProgressPageState
                           _showUpdateHoursDialog(selectedIds)
                         }
                       else
-                        {_showHint()}
+                        {
+                          showHint(
+                              context,
+                              getTranslated(context, 'needToSelectRecords') +
+                                  ' ',
+                              getTranslated(context, 'whichYouWantToUpdate'))
+                        }
                     },
                   ),
                 ),
@@ -371,8 +377,8 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: Image(
-                        image: AssetImage('images/dark-rate-icon.png')),
+                    child:
+                        Image(image: AssetImage('images/dark-rate-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {
@@ -380,7 +386,13 @@ class _ManagerEmployeeTsInProgressPageState
                           _showUpdateRatingDialog(selectedIds)
                         }
                       else
-                        {_showHint()}
+                        {
+                          showHint(
+                              context,
+                              getTranslated(context, 'needToSelectRecords') +
+                                  ' ',
+                              getTranslated(context, 'whichYouWantToUpdate'))
+                        }
                     },
                   ),
                 ),
@@ -388,8 +400,8 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: Image(
-                        image: AssetImage('images/dark-plan-icon.png')),
+                    child:
+                        Image(image: AssetImage('images/dark-plan-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {
@@ -397,7 +409,13 @@ class _ManagerEmployeeTsInProgressPageState
                           _showUpdatePlanDialog(selectedIds)
                         }
                       else
-                        {_showHint()}
+                        {
+                          showHint(
+                              context,
+                              getTranslated(context, 'needToSelectRecords') +
+                                  ' ',
+                              getTranslated(context, 'whichYouWantToUpdate'))
+                        }
                     },
                   ),
                 ),
@@ -406,8 +424,7 @@ class _ManagerEmployeeTsInProgressPageState
                   child: MaterialButton(
                     color: GREEN,
                     child: Image(
-                        image:
-                            AssetImage('images/dark-opinion-icon.png')),
+                        image: AssetImage('images/dark-opinion-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {
@@ -415,7 +432,13 @@ class _ManagerEmployeeTsInProgressPageState
                           _showUpdateOpinionDialog(selectedIds)
                         }
                       else
-                        {_showHint()}
+                        {
+                          showHint(
+                              context,
+                              getTranslated(context, 'needToSelectRecords') +
+                                  ' ',
+                              getTranslated(context, 'whichYouWantToUpdate'))
+                        }
                     },
                   ),
                 ),
@@ -424,8 +447,7 @@ class _ManagerEmployeeTsInProgressPageState
                   child: MaterialButton(
                     color: GREEN,
                     child: Image(
-                        image:
-                            AssetImage('images/dark-workplace-icon.png')),
+                        image: AssetImage('images/dark-workplace-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {
@@ -445,7 +467,13 @@ class _ManagerEmployeeTsInProgressPageState
                           ),
                         }
                       else
-                        {_showHint()}
+                        {
+                          showHint(
+                              context,
+                              getTranslated(context, 'needToSelectRecords') +
+                                  ' ',
+                              getTranslated(context, 'whichYouWantToUpdate'))
+                        }
                     },
                   ),
                 ),
@@ -462,7 +490,13 @@ class _ManagerEmployeeTsInProgressPageState
                               _timesheet, selectedIds)
                         }
                       else
-                        {_showHint()}
+                        {
+                          showHint(
+                              context,
+                              getTranslated(context, 'needToSelectRecords') +
+                                  ' ',
+                              getTranslated(context, 'whichYouWantToUpdate'))
+                        }
                     },
                   ),
                 ),
@@ -719,8 +753,8 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: Image(
-                        image: AssetImage('images/dark-hours-icon.png')),
+                    child:
+                        Image(image: AssetImage('images/dark-hours-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {
@@ -728,7 +762,13 @@ class _ManagerEmployeeTsInProgressPageState
                           _showUpdateHoursDialog(selectedIds)
                         }
                       else
-                        {_showHint()}
+                        {
+                          showHint(
+                              context,
+                              getTranslated(context, 'needToSelectRecords') +
+                                  ' ',
+                              getTranslated(context, 'whichYouWantToUpdate'))
+                        }
                     },
                   ),
                 ),
@@ -736,8 +776,8 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: Image(
-                        image: AssetImage('images/dark-rate-icon.png')),
+                    child:
+                        Image(image: AssetImage('images/dark-rate-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {
@@ -745,7 +785,13 @@ class _ManagerEmployeeTsInProgressPageState
                           _showUpdateRatingDialog(selectedIds)
                         }
                       else
-                        {_showHint()}
+                        {
+                          showHint(
+                              context,
+                              getTranslated(context, 'needToSelectRecords') +
+                                  ' ',
+                              getTranslated(context, 'whichYouWantToUpdate'))
+                        }
                     },
                   ),
                 ),
@@ -753,8 +799,8 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: Image(
-                        image: AssetImage('images/dark-plan-icon.png')),
+                    child:
+                        Image(image: AssetImage('images/dark-plan-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {
@@ -762,7 +808,13 @@ class _ManagerEmployeeTsInProgressPageState
                           _showUpdatePlanDialog(selectedIds)
                         }
                       else
-                        {_showHint()}
+                        {
+                          showHint(
+                              context,
+                              getTranslated(context, 'needToSelectRecords') +
+                                  ' ',
+                              getTranslated(context, 'whichYouWantToUpdate'))
+                        }
                     },
                   ),
                 ),
@@ -771,8 +823,7 @@ class _ManagerEmployeeTsInProgressPageState
                   child: MaterialButton(
                     color: GREEN,
                     child: Image(
-                        image:
-                            AssetImage('images/dark-opinion-icon.png')),
+                        image: AssetImage('images/dark-opinion-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {
@@ -780,7 +831,13 @@ class _ManagerEmployeeTsInProgressPageState
                           _showUpdateOpinionDialog(selectedIds)
                         }
                       else
-                        {_showHint()}
+                        {
+                          showHint(
+                              context,
+                              getTranslated(context, 'needToSelectRecords') +
+                                  ' ',
+                              getTranslated(context, 'whichYouWantToUpdate'))
+                        }
                     },
                   ),
                 ),
@@ -789,8 +846,7 @@ class _ManagerEmployeeTsInProgressPageState
                   child: MaterialButton(
                     color: GREEN,
                     child: Image(
-                        image:
-                            AssetImage('images/dark-workplace-icon.png')),
+                        image: AssetImage('images/dark-workplace-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {
@@ -810,7 +866,13 @@ class _ManagerEmployeeTsInProgressPageState
                           ),
                         }
                       else
-                        {_showHint()}
+                        {
+                          showHint(
+                              context,
+                              getTranslated(context, 'needToSelectRecords') +
+                                  ' ',
+                              getTranslated(context, 'whichYouWantToUpdate'))
+                        }
                     },
                   ),
                 ),
@@ -827,7 +889,13 @@ class _ManagerEmployeeTsInProgressPageState
                               _timesheet, selectedIds)
                         }
                       else
-                        {_showHint()}
+                        {
+                          showHint(
+                              context,
+                              getTranslated(context, 'needToSelectRecords') +
+                                  ' ',
+                              getTranslated(context, 'whichYouWantToUpdate'))
+                        }
                     },
                   ),
                 ),
@@ -1699,24 +1767,6 @@ class _ManagerEmployeeTsInProgressPageState
           ),
         );
       },
-    );
-  }
-
-  void _showHint() {
-    slideDialog.showSlideDialog(
-      context: context,
-      backgroundColor: DARK,
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          children: <Widget>[
-            text20GreenBold(getTranslated(context, 'hint')),
-            SizedBox(height: 10),
-            text20White(getTranslated(context, 'needToSelectRecords') + ' '),
-            text20White(getTranslated(context, 'whichYouWantToUpdate')),
-          ],
-        ),
-      ),
     );
   }
 }

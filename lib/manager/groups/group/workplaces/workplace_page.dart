@@ -14,10 +14,10 @@ import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
+import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 
 import '../../../../shared/widget/loader.dart';
 import '../../../manager_side_bar.dart';
@@ -367,7 +367,8 @@ class _WorkplacePageState extends State<WorkplacePage> {
 
   _handleDeleteByIdIn(LinkedHashSet<int> ids) {
     if (ids.isEmpty) {
-      _showHint();
+      showHint(context, getTranslated(context, 'needToSelectWorkplaces') + ' ',
+          getTranslated(context, 'whichYouWantToRemove'));
       return;
     }
     showDialog(
@@ -606,25 +607,6 @@ class _WorkplacePageState extends State<WorkplacePage> {
                   getTranslated(this.context, 'noWorkplacesHint'))),
         ),
       ],
-    );
-  }
-
-  void _showHint() {
-    slideDialog.showSlideDialog(
-      context: context,
-      backgroundColor: DARK,
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          children: <Widget>[
-            text20GreenBold(getTranslated(context, 'hint')),
-            SizedBox(height: 10),
-            textCenter20White(
-                getTranslated(context, 'needToSelectWorkplaces') + ' '),
-            textCenter20White(getTranslated(context, 'whichYouWantToRemove')),
-          ],
-        ),
-      ),
     );
   }
 

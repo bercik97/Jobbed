@@ -16,9 +16,9 @@ import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/radio_element.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
+import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
-import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 
 import '../../../../shared/widget/loader.dart';
 import '../../../manager_app_bar.dart';
@@ -200,7 +200,10 @@ class _SelectWorkplaceForSelectedWorkdaysPageState
                 color: GREEN,
                 onPressed: () {
                   if (_currentRadioElement.id == null) {
-                    _showHint();
+                    showHint(
+                        context,
+                        getTranslated(context, 'needToSelectWorkplaces') + ' ',
+                        getTranslated(context, 'whichYouWantToSet'));
                     return;
                   }
                   showDialog(
@@ -257,24 +260,6 @@ class _SelectWorkplaceForSelectedWorkdaysPageState
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: groupFloatingActionButton(context, _model),
-      ),
-    );
-  }
-
-  void _showHint() {
-    slideDialog.showSlideDialog(
-      context: context,
-      backgroundColor: DARK,
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          children: <Widget>[
-            text20GreenBold(getTranslated(context, 'hint')),
-            SizedBox(height: 10),
-            text20White(getTranslated(context, 'needToSelectWorkplaces') + ' '),
-            text20White(getTranslated(context, 'whichYouWantToSet')),
-          ],
-        ),
       ),
     );
   }

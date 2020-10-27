@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/manager/dto/basic_employee_dto.dart';
-import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
+import 'package:give_job/shared/widget/hint.dart';
 
 import '../../../../../internationalization/localization/localization_constants.dart';
 import '../../../../../shared/libraries/colors.dart';
@@ -309,7 +309,8 @@ class _AddTsPageState extends State<AddTsPage> {
 
   void _createTsForSelectedEmployees() {
     if (_selectedIds.isEmpty) {
-      _showHint();
+      showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ',
+          getTranslated(context, 'forWhomYouWantToAddNewTs'));
       return;
     }
     _managerService.createForSelected(_year, _month, _selectedIds).then(
@@ -321,24 +322,6 @@ class _AddTsPageState extends State<AddTsPage> {
           MaterialPageRoute(builder: (context) => ManagerTsPage(_model)),
         );
       },
-    );
-  }
-
-  void _showHint() {
-    slideDialog.showSlideDialog(
-      context: context,
-      backgroundColor: DARK,
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          children: <Widget>[
-            text20GreenBold(getTranslated(context, 'hint')),
-            SizedBox(height: 10),
-            text20White(getTranslated(context, 'needToSelectEmployees') + ' '),
-            text20White(getTranslated(context, 'forWhomYouWantToAddNewTs')),
-          ],
-        ),
-      ),
     );
   }
 
