@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:give_job/employee/dto/employee_timesheet_dto.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/dto/workday_dto.dart';
+import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/groups/group/workplaces/select_workplace_for_selected_workdays.dart';
 import 'package:give_job/manager/service/manager_service.dart';
@@ -22,7 +23,7 @@ import 'package:give_job/shared/workdays/workday_service.dart';
 import 'package:give_job/shared/workdays/workday_util.dart';
 
 import '../../../../shared/libraries/constants.dart';
-import '../../../manager_app_bar.dart';
+import '../../../manager_app_bar_with_icons_legend.dart';
 import '../../../manager_side_bar.dart';
 import 'model/group_employee_model.dart';
 
@@ -86,12 +87,26 @@ class _ManagerEmployeeTsInProgressPageState
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(
+          appBar: managerAppBarWithIconsLegend(
               context,
-              _model.user,
               getTranslated(context, 'workdays') +
                   ' - ' +
-                  getTranslated(context, STATUS_IN_PROGRESS)),
+                  getTranslated(context, STATUS_IN_PROGRESS),
+              [
+                IconsLegend.buildRow('images/green-hours-icon.png',
+                    getTranslated(context, 'settingHours')),
+                IconsLegend.buildRow('images/green-rate-icon.png',
+                    getTranslated(context, 'settingRating')),
+                IconsLegend.buildRow('images/green-plan-icon.png',
+                    getTranslated(context, 'settingPlan')),
+                IconsLegend.buildRow('images/green-opinion-icon.png',
+                    getTranslated(context, 'settingOpinion')),
+                IconsLegend.buildRow('images/green-workplace-icon.png',
+                    getTranslated(context, 'settingWorkplace')),
+                IconsLegend.buildRow('images/small-vocation-icon.png',
+                    getTranslated(context, 'settingVocation')),
+              ],
+              _model.user),
           drawer: managerSideBar(context, _model.user),
           body: RefreshIndicator(
             color: DARK,
@@ -516,12 +531,28 @@ class _ManagerEmployeeTsInProgressPageState
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(
+          appBar: managerAppBarWithIconsLegend(
               context,
-              _model.user,
               getTranslated(context, 'workdays') +
                   ' - ' +
-                  getTranslated(context, STATUS_IN_PROGRESS)),
+                  getTranslated(context, STATUS_IN_PROGRESS),
+              [
+                IconsLegend.buildRow('images/unchecked.png',
+                    getTranslated(context, 'tsInProgress')),
+                IconsLegend.buildRow('images/green-hours-icon.png',
+                    getTranslated(context, 'settingHours')),
+                IconsLegend.buildRow('images/green-rate-icon.png',
+                    getTranslated(context, 'settingRating')),
+                IconsLegend.buildRow('images/green-plan-icon.png',
+                    getTranslated(context, 'settingPlan')),
+                IconsLegend.buildRow('images/green-opinion-icon.png',
+                    getTranslated(context, 'settingOpinion')),
+                IconsLegend.buildRow('images/green-workplace-icon.png',
+                    getTranslated(context, 'settingWorkplace')),
+                IconsLegend.buildRow('images/small-vocation-icon.png',
+                    getTranslated(context, 'settingVocation')),
+              ],
+              _model.user),
           drawer: managerSideBar(context, _model.user),
           body: RefreshIndicator(
             color: DARK,

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/dto/manager_group_timesheet_dto.dart';
 import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
+import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/groups/group/timesheets/add/add_ts_page.dart';
 import 'package:give_job/manager/groups/group/timesheets/delete/delete_ts_page.dart';
@@ -21,6 +22,7 @@ import '../../../../internationalization/localization/localization_constants.dar
 import '../../../../shared/widget/loader.dart';
 import '../../../../shared/widget/texts.dart';
 import '../../../manager_app_bar.dart';
+import '../../../manager_app_bar_with_icons_legend.dart';
 import '../../../manager_side_bar.dart';
 import 'completed/manager_completed_ts_details_page.dart';
 import 'in_progress/manager_in_progress_ts_details_page.dart';
@@ -80,14 +82,24 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBar(
+        appBar: managerAppBarWithIconsLegend(
             context,
-            _model.user,
             getTranslated(context, 'timesheets') +
                 ' - ' +
                 utf8.decode(_model.groupName != null
                     ? _model.groupName.runes.toList()
-                    : '-')),
+                    : '-'),
+            [
+              IconsLegend.buildRow('images/unchecked.png',
+                  getTranslated(context, 'tsInProgress')),
+              IconsLegend.buildRow(
+                  'images/checked.png', getTranslated(context, 'completedTs')),
+              IconsLegend.buildRowWithIcon(icon50Orange(Icons.arrow_downward),
+                  getTranslated(context, 'settingTsStatusToInProgress')),
+              IconsLegend.buildRowWithIcon(icon50Green(Icons.arrow_upward),
+                  getTranslated(context, 'settingTsStatusToCompleted')),
+            ],
+            _model.user),
         drawer: managerSideBar(context, _model.user),
         body: SingleChildScrollView(
           child: Column(

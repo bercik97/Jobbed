@@ -30,27 +30,27 @@ class IconsLegend {
                       textCenter16GreenBold(
                           getTranslated(context, 'iconsLegend')),
                       SizedBox(height: 25),
-                      _buildRow('images/unchecked.png',
+                      buildRow('images/unchecked.png',
                           getTranslated(context, 'tsInProgress')),
-                      _buildRow('images/checked.png',
+                      buildRow('images/checked.png',
                           getTranslated(context, 'completedTs')),
-                      _buildRowWithIcon(
+                      buildRowWithIcon(
                           icon50Orange(Icons.arrow_downward),
                           getTranslated(
                               context, 'settingTsStatusToInProgress')),
-                      _buildRowWithIcon(icon50Green(Icons.arrow_upward),
+                      buildRowWithIcon(icon50Green(Icons.arrow_upward),
                           getTranslated(context, 'settingTsStatusToCompleted')),
-                      _buildRow('images/green-hours-icon.png',
+                      buildRow('images/green-hours-icon.png',
                           getTranslated(context, 'settingHours')),
-                      _buildRow('images/green-rate-icon.png',
+                      buildRow('images/green-rate-icon.png',
                           getTranslated(context, 'settingRating')),
-                      _buildRow('images/green-plan-icon.png',
+                      buildRow('images/green-plan-icon.png',
                           getTranslated(context, 'settingPlan')),
-                      _buildRow('images/green-opinion-icon.png',
+                      buildRow('images/green-opinion-icon.png',
                           getTranslated(context, 'settingOpinion')),
-                      _buildRow('images/green-workplace-icon.png',
+                      buildRow('images/green-workplace-icon.png',
                           getTranslated(context, 'settingWorkplace')),
-                      _buildRow('images/small-vocation-icon.png',
+                      buildRow('images/small-vocation-icon.png',
                           getTranslated(context, 'settingVocation')),
                     ],
                   ),
@@ -84,7 +84,7 @@ class IconsLegend {
     );
   }
 
-  static Widget _buildRow(String imagePath, String description) {
+  static Widget buildRow(String imagePath, String description) {
     return Column(
       children: [
         Row(
@@ -99,7 +99,7 @@ class IconsLegend {
     );
   }
 
-  static Widget _buildRowWithIcon(Icon icon, String description) {
+  static Widget buildRowWithIcon(Icon icon, String description) {
     return Column(
       children: [
         Row(

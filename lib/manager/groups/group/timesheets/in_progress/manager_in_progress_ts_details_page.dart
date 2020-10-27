@@ -12,6 +12,7 @@ import 'package:give_job/manager/dto/manager_group_employee_dto.dart';
 import 'package:give_job/manager/dto/manager_group_timesheet_dto.dart';
 import 'package:give_job/manager/groups/group/employee/manager_employee_profile_page.dart';
 import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
+import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/groups/group/workplaces/select_workplace_for_employees.dart';
 import 'package:give_job/manager/service/manager_service.dart';
@@ -29,6 +30,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../../../shared/widget/loader.dart';
 import '../../../../manager_app_bar.dart';
+import '../../../../manager_app_bar_with_icons_legend.dart';
 import '../../../../manager_side_bar.dart';
 
 class ManagerTimesheetsEmployeesInProgressPage extends StatefulWidget {
@@ -97,14 +99,26 @@ class _ManagerTimesheetsEmployeesInProgressPageState
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBar(
+        appBar: managerAppBarWithIconsLegend(
             context,
-            _model.user,
             _timesheet.year.toString() +
                 ' ' +
                 MonthUtil.translateMonth(context, _timesheet.month) +
                 ' - ' +
-                getTranslated(context, STATUS_IN_PROGRESS)),
+                getTranslated(context, STATUS_IN_PROGRESS),
+            [
+              IconsLegend.buildRow('images/green-hours-icon.png',
+                  getTranslated(context, 'settingHours')),
+              IconsLegend.buildRow('images/green-rate-icon.png',
+                  getTranslated(context, 'settingRating')),
+              IconsLegend.buildRow('images/green-plan-icon.png',
+                  getTranslated(context, 'settingPlan')),
+              IconsLegend.buildRow('images/green-opinion-icon.png',
+                  getTranslated(context, 'settingOpinion')),
+              IconsLegend.buildRow('images/green-workplace-icon.png',
+                  getTranslated(context, 'settingWorkplace')),
+            ],
+            _model.user),
         drawer: managerSideBar(context, _model.user),
         body: RefreshIndicator(
           color: DARK,
