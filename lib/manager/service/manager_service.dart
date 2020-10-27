@@ -197,9 +197,10 @@ class ManagerService {
   }
 
   Future<List<BasicEmployeeDto>>
-      findMobileEmployeesByGroupIdAndTsInYearAndMonthAndGroup(
-          int groupId, int year, int month) async {
-    String url = _baseEmployeeUrl + '/groups/$groupId/time-sheets/$year/$month';
+      findMobileEmployeesByGroupIdAndTsInYearAndMonthAndStatusAndGroup(
+          int id, int year, int month, String status) async {
+    String url =
+        _baseEmployeeUrl + '/groups/$id/time-sheets-mobile/$year/$month/$status';
     Response res =
         await get(url, headers: {HttpHeaders.authorizationHeader: authHeader});
     if (res.statusCode == 200) {
@@ -734,11 +735,41 @@ class ManagerService {
     }
   }
 
+  Future<dynamic> updateAllTsByYearMonthAndEmployeesId(
+      int newStatusId,
+      Set<int> employeesId,
+      int year,
+      int month,
+      String status,
+      int groupId) async {
+    Map<String, dynamic> map = {
+      'newStatusId': newStatusId,
+      'employeesId': employeesId.map((el) => el.toInt()).toList(),
+      'timesheetYear': year,
+      'timesheetMonth': month,
+      'timesheetStatus': status,
+      'groupId': groupId,
+    };
+    Response res = await put(_baseTsUrl + '/group/status',
+        body: jsonEncode(map),
+        headers: {
+          HttpHeaders.authorizationHeader: authHeader,
+          'content-type': 'application/json'
+        });
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
   Future<dynamic> deleteAllTsByYearMonthAndEmployeesId(
-      int year, int month, Set<int> employeesId) async {
+      int year, int month, String status, Set<int> employeesId) async {
     List<String> idsAsStrings = employeesId.map((e) => e.toString()).toList();
     Response res = await delete(
-        _baseTsUrl + '/$year/$month/employees/$idsAsStrings',
+        _baseTsUrl + '/$year/$month/$status/employees/$idsAsStrings',
         headers: {
           HttpHeaders.authorizationHeader: authHeader,
           'content-type': 'application/json'

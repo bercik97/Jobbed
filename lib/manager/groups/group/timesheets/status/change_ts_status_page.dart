@@ -22,19 +22,19 @@ import '../../employee/model/group_employee_model.dart';
 import '../../shared/group_floating_action_button.dart';
 import '../manager_ts_page.dart';
 
-class DeleteTsPage extends StatefulWidget {
+class ChangeTsStatusPage extends StatefulWidget {
   final GroupEmployeeModel _model;
   final int _year;
   final String _month;
   final String _status;
 
-  DeleteTsPage(this._model, this._year, this._month, this._status);
+  ChangeTsStatusPage(this._model, this._year, this._month, this._status);
 
   @override
-  _DeleteTsPageState createState() => _DeleteTsPageState();
+  _ChangeTsStatusPageState createState() => _ChangeTsStatusPageState();
 }
 
-class _DeleteTsPageState extends State<DeleteTsPage> {
+class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
   GroupEmployeeModel _model;
   int _year;
   int _month;
@@ -60,7 +60,10 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
     _loading = true;
     _managerService
         .findMobileEmployeesByGroupIdAndTsInYearAndMonthAndStatusAndGroup(
-            _model.groupId, _year, _month, _status)
+            _model.groupId,
+            _year,
+            _month,
+            _status == STATUS_COMPLETED ? STATUS_IN_PROGRESS : STATUS_COMPLETED)
         .then((res) {
       setState(() {
         _employees = res;
@@ -85,8 +88,8 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBar(
-            context, _model.user, getTranslated(context, 'deleteSelectedTs')),
+        appBar: managerAppBar(context, _model.user,
+            getTranslated(context, 'updateSelectedTsStatus')),
         drawer: managerSideBar(context, _model.user),
         body: RefreshIndicator(
           color: DARK,
@@ -100,12 +103,25 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
                 child: Column(
                   children: [
                     textCenter18WhiteBold(getTranslated(
-                        context, 'removeSelectedTsForChosenEmployees')),
+                        context, 'updateSelectedTsStatusForChosenEmployees')),
                     SizedBox(height: 5),
-                    textCenter20GreenBold(_year.toString() +
-                        ' ' +
-                        MonthUtil.findMonthNameByMonthNumber(
-                            this.context, _month))
+                    _status == STATUS_COMPLETED
+                        ? textCenter20GreenBold(_year.toString() +
+                            ' ' +
+                            MonthUtil.findMonthNameByMonthNumber(
+                                this.context, _month) +
+                            ' ' +
+                            getTranslated(context, 'forNewStatus') +
+                            '→ ' +
+                            getTranslated(context, _status).toUpperCase())
+                        : textCenter20OrangeBold(_year.toString() +
+                            ' ' +
+                            MonthUtil.findMonthNameByMonthNumber(
+                                this.context, _month) +
+                            ' ' +
+                            getTranslated(context, 'forNewStatus') +
+                            '→ ' +
+                            getTranslated(context, _status).toUpperCase())
                   ],
                 ),
               ),
@@ -261,7 +277,10 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
                   children: <Widget>[iconWhite(Icons.check)],
                 ),
                 color: GREEN,
-                onPressed: () => _deleteTsForSelectedEmployees(),
+                onPressed: () => _status == STATUS_IN_PROGRESS
+                    ? _updateTsStatusForSelectedEmployees(1, STATUS_COMPLETED)
+                    : _updateTsStatusForSelectedEmployees(
+                        2, STATUS_IN_PROGRESS),
               ),
             ],
           ),
@@ -272,18 +291,18 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
     );
   }
 
-  void _deleteTsForSelectedEmployees() {
+  void _updateTsStatusForSelectedEmployees(int newStatusId, String status) {
     if (_selectedIds.isEmpty) {
       _showHint();
       return;
     }
     _managerService
-        .deleteAllTsByYearMonthAndEmployeesId(
-            _year, _month, _status, _selectedIds)
+        .updateAllTsByYearMonthAndEmployeesId(
+            newStatusId, _selectedIds, _year, _month, status, _model.groupId)
         .then(
       (res) {
         ToastService.showSuccessToast(
-            getTranslated(context, 'timesheetSuccessfullyDeleted'));
+            getTranslated(context, 'timesheetStatusSuccessfullyUpdated'));
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => ManagerTsPage(_model)),
@@ -303,7 +322,8 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
             text20GreenBold(getTranslated(context, 'hint')),
             SizedBox(height: 10),
             text20White(getTranslated(context, 'needToSelectEmployees') + ' '),
-            text20White(getTranslated(context, 'forWhomYouWantToDeleteTs')),
+            text20White(
+                getTranslated(context, 'forWhomYouWantToUpdateTsStatus')),
           ],
         ),
       ),
@@ -313,7 +333,10 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
   Future<Null> _refresh() {
     return _managerService
         .findMobileEmployeesByGroupIdAndTsInYearAndMonthAndStatusAndGroup(
-            _model.groupId, _year, _month, _status)
+            _model.groupId,
+            _year,
+            _month,
+            _status == STATUS_COMPLETED ? STATUS_IN_PROGRESS : STATUS_COMPLETED)
         .then((res) {
       setState(() {
         _employees = res;
