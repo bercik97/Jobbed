@@ -34,6 +34,12 @@ class IconsLegend {
                           getTranslated(context, 'tsInProgress')),
                       _buildRow('images/checked.png',
                           getTranslated(context, 'completedTs')),
+                      _buildRowWithIcon(
+                          icon50Orange(Icons.arrow_downward),
+                          getTranslated(
+                              context, 'settingTsStatusToInProgress')),
+                      _buildRowWithIcon(icon50Green(Icons.arrow_upward),
+                          getTranslated(context, 'settingTsStatusToCompleted')),
                       _buildRow('images/green-hours-icon.png',
                           getTranslated(context, 'settingHours')),
                       _buildRow('images/green-rate-icon.png',
@@ -85,8 +91,20 @@ class IconsLegend {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image(height: 50, image: AssetImage(imagePath)),
-            text18WhiteBold('→ $description'),
+            text16WhiteBold('→ $description'),
           ],
+        ),
+        SizedBox(height: 15),
+      ],
+    );
+  }
+
+  static Widget _buildRowWithIcon(Icon icon, String description) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [icon, text16WhiteBold('→ $description')],
         ),
         SizedBox(height: 15),
       ],

@@ -432,5 +432,7 @@
   "forNewStatus": "dla nowegu statusu",
   "timesheetStatusSuccessfullyUpdated": "Status wybranego arkusza czasu pracy został pomyślnie zaktualizowany dla wybranych pracowników",
   "forWhomYouWantToUpdateTsStatus": "dla których chcesz zaktualizować status wybranego arkusza czasu pracy",
-  "graphics": "GRAFIKA"
+  "graphics": "GRAFIKA",
+  "settingTsStatusToInProgress": "Ustawianie statusu arkusza na 'w toku'",
+  "settingTsStatusToCompleted": "Ustawianie statusu arkusza na 'zakończony'"
 }
