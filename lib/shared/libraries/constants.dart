@@ -6,7 +6,7 @@ const String SERVER_IP = 'http://10.0.2.2:8080/api';
 const String ANDROID_APP_ID = 'com.givejob.mobile.give_job';
 const String IOS_APP_ID = null;
 
-const String APP_NAME = 'Give Job';
+const String APP_NAME = 'GiveJob';
 
 const String ROLE_EMPLOYEE = 'ROLE_EMPLOYEE';
 const String ROLE_MANAGER = 'ROLE_MANAGER';

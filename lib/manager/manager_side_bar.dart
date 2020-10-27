@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -7,7 +6,6 @@ import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/logout_service.dart';
 import 'package:give_job/shared/settings/settings_page.dart';
-import 'package:give_job/shared/util/url_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:open_appstore/open_appstore.dart';
@@ -35,10 +33,7 @@ Drawer managerSideBar(BuildContext context, User user) {
                   Container(
                     width: 100,
                     height: 100,
-                    margin: EdgeInsets.only(
-                      top: 30,
-                      bottom: 10,
-                    ),
+                    margin: EdgeInsets.only(top: 50, bottom: 10),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
@@ -46,23 +41,7 @@ Drawer managerSideBar(BuildContext context, User user) {
                           fit: BoxFit.fill),
                     ),
                   ),
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'www.givejob.pl',
-                          style: TextStyle(
-                              fontSize: 22,
-                              color: DARK,
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () async => UrlUtil.launchURL(
-                                context, 'https://www.givejob.pl'),
-                        ),
-                      ],
-                    ),
-                  ),
+                  text25Dark(APP_NAME),
                 ],
               ),
             ),
