@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
+import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/unauthenticated/login_page.dart';
 import 'package:give_job/main.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -58,7 +59,7 @@ class _GetStartedPageState extends State<GetStartedPage> {
             Image.asset('images/logo.png', height: 125),
             SizedBox(height: 20),
             textCenter30White(getTranslated(context, 'getStartedTitle')),
-            textCenter30White('Give Job !'),
+            textCenter30White('$APP_NAME !'),
             SizedBox(height: 30),
             Container(
                 child: textCenter19White(
