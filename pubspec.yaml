@@ -109,6 +109,7 @@ flutter:
     - images/dark-plan-icon.png
     - images/dark-opinion-icon.png
     - images/dark-workplace-icon.png
+    - images/dark-vocation-icon.png
 
     - docs/regulations.pdf
     - docs/privacy_policy.pdf

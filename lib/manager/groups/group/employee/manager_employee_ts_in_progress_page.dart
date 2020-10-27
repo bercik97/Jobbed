@@ -481,7 +481,8 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: text12DarkBold(getTranslated(context, 'vocation')),
+                    child: Image(
+                        image: AssetImage('images/dark-vocation-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {
@@ -880,7 +881,8 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: text12DarkBold(getTranslated(context, 'vocation')),
+                    child: Image(
+                        image: AssetImage('images/dark-vocation-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {
