@@ -109,6 +109,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                       flexibleSpace: FlexibleSpaceBar(
                         background: Column(
                           children: <Widget>[
+                            SizedBox(height: 20),
                             Shimmer.fromColors(
                               baseColor: GREEN,
                               highlightColor: WHITE,
