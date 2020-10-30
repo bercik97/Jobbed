@@ -105,7 +105,6 @@ Text textCenter20Green(String text) { return Text(text, textAlign: TextAlign.cen
 ////////////////////////////
 Text textCenter16GreenBold(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 16, color: GREEN, fontWeight: FontWeight.bold)); }
 Text textCenter20GreenBold(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: GREEN, fontWeight: FontWeight.bold)); }
-Text textCenter28GreenBold(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 28, color: GREEN, fontWeight: FontWeight.bold)); }
 
 
 /////////////////////

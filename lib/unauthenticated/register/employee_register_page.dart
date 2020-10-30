@@ -3,60 +3,57 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:give_job/api/employee/dto/create_employee_dto.dart';
+import 'package:give_job/api/employee/service/employee_service.dart';
+import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/settings/documents_page.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
-import 'package:give_job/unauthenticated/dto/create_employee_dto.dart';
 import 'package:give_job/unauthenticated/login_page.dart';
-import 'package:give_job/unauthenticated/service/unauthenticated_service.dart';
 
-class RegistrationPage extends StatefulWidget {
+class EmployeeRegisterPage extends StatefulWidget {
   final String _tokenId;
   final String _accountExpirationDate;
 
-  RegistrationPage(this._tokenId, this._accountExpirationDate);
+  EmployeeRegisterPage(this._tokenId, this._accountExpirationDate);
 
   @override
-  _RegistrationPageState createState() => _RegistrationPageState();
+  _EmployeeRegisterPageState createState() => _EmployeeRegisterPageState();
 }
 
-class _RegistrationPageState extends State<RegistrationPage> {
+class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
   CreateEmployeeDto dto;
-  UnauthenticatedService _unauthenticatedService = new UnauthenticatedService();
+  EmployeeService _employeeService;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool _passwordVisible = false;
   bool _rePasswordVisible = false;
+
+  String _accountExpirationDate;
   final TextEditingController _usernameController = new TextEditingController();
   final TextEditingController _passwordController = new TextEditingController();
-  final TextEditingController _nameController = new TextEditingController();
-  final TextEditingController _surnameController = new TextEditingController();
-  final TextEditingController _fatherNameController =
-      new TextEditingController();
-  final TextEditingController _motherNameController =
-      new TextEditingController();
-  final TextEditingController _localityController = new TextEditingController();
-  final TextEditingController _zipCodeController = new TextEditingController();
-  final TextEditingController _streetController = new TextEditingController();
-  final TextEditingController _houseNumberController =
-      new TextEditingController();
   final TextEditingController _phoneController = new TextEditingController();
   final TextEditingController _viberController = new TextEditingController();
   final TextEditingController _whatsAppController = new TextEditingController();
-  final TextEditingController _passportNumberController =
-      new TextEditingController();
-  final TextEditingController _emailController = new TextEditingController();
+  final TextEditingController _nameController = new TextEditingController();
+  final TextEditingController _surnameController = new TextEditingController();
+  final TextEditingController _fatherNameController = new TextEditingController();
+  final TextEditingController _motherNameController = new TextEditingController();
+  final TextEditingController _localityController = new TextEditingController();
+  final TextEditingController _zipCodeController = new TextEditingController();
+  final TextEditingController _streetController = new TextEditingController();
+  final TextEditingController _houseNumberController = new TextEditingController();
+  final TextEditingController _passportNumberController = new TextEditingController();
   final TextEditingController _nipController = new TextEditingController();
-  final TextEditingController _bankAccountNumberController =
-      new TextEditingController();
-  final TextEditingController _drivingLicenseController =
-      new TextEditingController();
-  DateTime _dateOfBirth = DateTime.now();
-  DateTime _passportReleaseDate = DateTime.now();
-  DateTime _passportExpirationDate = DateTime.now();
-  DateTime _expirationDateOfWork = DateTime.now();
+  final TextEditingController _bankAccountNumberController = new TextEditingController();
+  final TextEditingController _drivingLicenseController = new TextEditingController();
+
+  DateTime _dateOfBirth;
+  DateTime _passportReleaseDate;
+  DateTime _passportExpirationDate;
+  DateTime _expirationDateOfWork;
   String _nationality;
   bool _regulationsCheckbox = false;
   bool _privacyPolicyCheckbox = false;
@@ -64,6 +61,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
   @override
   void initState() {
     super.initState();
+    _employeeService = ServiceInitializer.initialize(null, EmployeeService);
+    _accountExpirationDate = widget._accountExpirationDate;
     _passwordVisible = false;
     _rePasswordVisible = false;
     _nationality = '';
@@ -88,25 +87,24 @@ class _RegistrationPageState extends State<RegistrationPage> {
           ),
         ),
         body: Padding(
-          padding: EdgeInsets.fromLTRB(25, 0, 25, 25),
+          padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
           child: Center(
             child: Form(
               autovalidate: true,
               key: formKey,
               child: Column(
                 children: <Widget>[
-                  textCenter28GreenBold(
-                      getTranslated(context, 'registrationForm')),
+                  textCenter20GreenBold(getTranslated(context, 'registrationFormEmployee')),
                   Divider(color: WHITE),
-                  SizedBox(height: 10),
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(
                         children: <Widget>[
                           _buildLoginSection(),
+                          _buildAccountExpirationField(),
+                          _buildContactSection(),
                           _buildBasicSection(),
                           _buildAddressSection(),
-                          _buildContactSection(),
                           _buildPassportSection(),
                           _buildOtherSection(),
                           _buildDocumentsSection(),
@@ -148,6 +146,28 @@ class _RegistrationPageState extends State<RegistrationPage> {
     );
   }
 
+  Widget _buildAccountExpirationField() {
+    return Column(
+      children: <Widget>[
+        Align(alignment: Alignment.topLeft, child: text25GreenUnderline(getTranslated(context, 'accountExpirationTime'))),
+        SizedBox(height: 15),
+        TextFormField(
+          readOnly: true,
+          initialValue: _accountExpirationDate == null ? getTranslated(context, 'empty') : _accountExpirationDate,
+          style: TextStyle(color: WHITE),
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+            counterStyle: TextStyle(color: WHITE),
+            border: OutlineInputBorder(),
+            prefixIcon: iconWhite(Icons.access_time_outlined),
+            labelStyle: TextStyle(color: WHITE),
+          ),
+        ),
+        SizedBox(height: 10),
+      ],
+    );
+  }
+
   Widget _buildBasicSection() {
     return Column(
       children: <Widget>[
@@ -169,22 +189,20 @@ class _RegistrationPageState extends State<RegistrationPage> {
           getTranslated(context, 'surnameIsRequired'),
           Icons.person_outline,
         ),
-        _buildRequiredTextField(
+        _buildNationalityDropdown(),
+        _buildNotRequiredTextField(
           _fatherNameController,
           26,
           getTranslated(context, 'fatherName'),
-          getTranslated(context, 'fatherNameIsRequired'),
           Icons.directions_walk,
         ),
-        _buildRequiredTextField(
+        _buildNotRequiredTextField(
           _motherNameController,
           26,
           getTranslated(context, 'motherName'),
-          getTranslated(context, 'motherNameIsRequired'),
           Icons.pregnant_woman,
         ),
         _buildDateOfBirthField(),
-        _buildNationalityDropdown(),
       ],
     );
   }
@@ -194,34 +212,30 @@ class _RegistrationPageState extends State<RegistrationPage> {
       children: <Widget>[
         _buildSectionHeader(
           getTranslated(context, 'addressSection'),
-          getTranslated(context, 'addressSectionDescription'),
+          getTranslated(context, 'thisSectionIsNotRequired'),
         ),
-        _buildRequiredTextField(
+        _buildNotRequiredTextField(
           _localityController,
           100,
           getTranslated(context, 'locality'),
-          getTranslated(context, 'localityIsRequired'),
           Icons.location_city,
         ),
-        _buildRequiredTextField(
+        _buildNotRequiredTextField(
           _zipCodeController,
           12,
           getTranslated(context, 'zipCode'),
-          getTranslated(context, 'zipCodeIsRequired'),
           Icons.local_post_office,
         ),
-        _buildRequiredTextField(
+        _buildNotRequiredTextField(
           _streetController,
           100,
           getTranslated(context, 'street'),
-          getTranslated(context, 'streetIsRequired'),
           Icons.directions,
         ),
-        _buildRequiredTextField(
+        _buildNotRequiredTextField(
           _houseNumberController,
           8,
           getTranslated(context, 'houseNumber'),
-          getTranslated(context, 'streetIsRequired'),
           Icons.home,
         ),
       ],
@@ -259,7 +273,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       children: <Widget>[
         _buildSectionHeader(
           getTranslated(context, 'passportSection'),
-          getTranslated(context, 'passportSectionDescription'),
+          getTranslated(context, 'thisSectionIsNotRequired'),
         ),
         _buildNotRequiredNumField(
           _passportNumberController,
@@ -277,9 +291,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
       children: <Widget>[
         _buildSectionHeader(
           getTranslated(context, 'otherSection'),
-          getTranslated(context, 'otherSectionDescription'),
+          getTranslated(context, 'thisSectionIsNotRequired'),
         ),
-        _buildEmailField(),
         _buildExpirationDateOfWorkField(),
         _buildNotRequiredNumField(
           _nipController,
@@ -393,8 +406,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
     );
   }
 
-  Widget _buildRequiredTextField(TextEditingController controller,
-      int maxLength, String labelText, String errorText, IconData icon) {
+  Widget _buildRequiredTextField(TextEditingController controller, int maxLength, String labelText, String errorText, IconData icon) {
     return Column(
       children: <Widget>[
         TextFormField(
@@ -404,13 +416,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
           maxLength: maxLength,
           style: TextStyle(color: WHITE),
           decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: WHITE, width: 2)),
-              counterStyle: TextStyle(color: WHITE),
-              border: OutlineInputBorder(),
-              labelText: labelText,
-              prefixIcon: iconWhite(icon),
-              labelStyle: TextStyle(color: WHITE)),
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+            counterStyle: TextStyle(color: WHITE),
+            border: OutlineInputBorder(),
+            labelText: labelText,
+            prefixIcon: iconWhite(icon),
+            labelStyle: TextStyle(color: WHITE),
+          ),
           validator: RequiredValidator(errorText: errorText),
         ),
         SizedBox(height: 10),
@@ -418,8 +430,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
     );
   }
 
-  Widget _buildNotRequiredTextField(TextEditingController controller,
-      int maxLength, String labelText, IconData icon) {
+  Widget _buildNotRequiredTextField(TextEditingController controller, int maxLength, String labelText, IconData icon) {
     return Column(
       children: <Widget>[
         TextFormField(
@@ -429,21 +440,20 @@ class _RegistrationPageState extends State<RegistrationPage> {
           controller: controller,
           style: TextStyle(color: WHITE),
           decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: WHITE, width: 2)),
-              counterStyle: TextStyle(color: WHITE),
-              border: OutlineInputBorder(),
-              labelText: labelText,
-              prefixIcon: iconWhite(icon),
-              labelStyle: TextStyle(color: WHITE)),
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+            counterStyle: TextStyle(color: WHITE),
+            border: OutlineInputBorder(),
+            labelText: labelText,
+            prefixIcon: iconWhite(icon),
+            labelStyle: TextStyle(color: WHITE),
+          ),
         ),
         SizedBox(height: 10),
       ],
     );
   }
 
-  Widget _buildContactNumField(
-      TextEditingController controller, String labelText, IconData icon) {
+  Widget _buildContactNumField(TextEditingController controller, String labelText, IconData icon) {
     String validate(String value) {
       String phone = _phoneController.text;
       String viber = _viberController.text;
@@ -463,17 +473,15 @@ class _RegistrationPageState extends State<RegistrationPage> {
           controller: controller,
           style: TextStyle(color: WHITE),
           keyboardType: TextInputType.number,
-          inputFormatters: <TextInputFormatter>[
-            WhitelistingTextInputFormatter.digitsOnly
-          ],
+          inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
           decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: WHITE, width: 2)),
-              counterStyle: TextStyle(color: WHITE),
-              border: OutlineInputBorder(),
-              labelText: labelText,
-              prefixIcon: iconWhite(icon),
-              labelStyle: TextStyle(color: WHITE)),
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+            counterStyle: TextStyle(color: WHITE),
+            border: OutlineInputBorder(),
+            labelText: labelText,
+            prefixIcon: iconWhite(icon),
+            labelStyle: TextStyle(color: WHITE),
+          ),
           validator: (value) => validate(value),
         ),
         SizedBox(height: 10),
@@ -481,8 +489,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
     );
   }
 
-  Widget _buildNotRequiredNumField(
-      TextEditingController controller, String labelText, IconData icon) {
+  Widget _buildNotRequiredNumField(TextEditingController controller, String labelText, IconData icon) {
     return Column(
       children: <Widget>[
         TextFormField(
@@ -491,18 +498,16 @@ class _RegistrationPageState extends State<RegistrationPage> {
           maxLength: 9,
           controller: controller,
           style: TextStyle(color: WHITE),
-          inputFormatters: <TextInputFormatter>[
-            WhitelistingTextInputFormatter.digitsOnly
-          ],
+          inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: WHITE, width: 2)),
-              counterStyle: TextStyle(color: WHITE),
-              border: OutlineInputBorder(),
-              labelText: labelText,
-              prefixIcon: iconWhite(icon),
-              labelStyle: TextStyle(color: WHITE)),
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+            counterStyle: TextStyle(color: WHITE),
+            border: OutlineInputBorder(),
+            labelText: labelText,
+            prefixIcon: iconWhite(icon),
+            labelStyle: TextStyle(color: WHITE),
+          ),
         ),
         SizedBox(height: 10),
       ],
@@ -520,15 +525,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
           controller: _passwordController,
           style: TextStyle(color: WHITE),
           decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: WHITE, width: 2)),
+              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
               counterStyle: TextStyle(color: WHITE),
               border: OutlineInputBorder(),
               labelText: getTranslated(context, 'password'),
               prefixIcon: iconWhite(Icons.lock),
               suffixIcon: IconButton(
-                icon: iconWhite(
-                    _passwordVisible ? Icons.visibility : Icons.visibility_off),
+                icon: iconWhite(_passwordVisible ? Icons.visibility : Icons.visibility_off),
                 onPressed: () => setState(
                   () => _passwordVisible = !_passwordVisible,
                 ),
@@ -568,16 +571,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
           maxLength: 60,
           style: TextStyle(color: WHITE),
           decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: WHITE, width: 2)),
+              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
               counterStyle: TextStyle(color: WHITE),
               border: OutlineInputBorder(),
               labelText: getTranslated(context, 'retypedPassword'),
               prefixIcon: iconWhite(Icons.lock),
               suffixIcon: IconButton(
-                icon: iconWhite(_rePasswordVisible
-                    ? Icons.visibility
-                    : Icons.visibility_off),
+                icon: iconWhite(_rePasswordVisible ? Icons.visibility : Icons.visibility_off),
                 onPressed: () => setState(
                   () => _rePasswordVisible = !_rePasswordVisible,
                 ),
@@ -591,14 +591,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
   }
 
   Widget _buildDateOfBirthField() {
-    String validate(value) {
-      if (_dateOfBirth.toString().substring(0, 10) ==
-          DateTime.now().toString().substring(0, 10)) {
-        return getTranslated(context, 'dateOfBirthIsRequired');
-      }
-      return null;
-    }
-
     return Column(
       children: <Widget>[
         TextFormField(
@@ -609,21 +601,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
             });
           },
           decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: WHITE, width: 2)),
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
             border: OutlineInputBorder(),
-            hintText: _dateOfBirth.toString().substring(0, 10) ==
-                    DateTime.now().toString().substring(0, 10)
-                ? getTranslated(context, 'dateOfBirth')
-                : _dateOfBirth.toString().substring(0, 10) +
-                    ' (' +
-                    getTranslated(context, 'dateOfBirth') +
-                    ')',
+            hintText: _dateOfBirth == null || _dateOfBirth.toString().substring(0, 10) == DateTime.now().toString().substring(0, 10) ? getTranslated(context, 'dateOfBirth') : _dateOfBirth.toString().substring(0, 10) + ' (' + getTranslated(context, 'dateOfBirth') + ')',
             hintStyle: TextStyle(color: WHITE),
             prefixIcon: iconWhite(Icons.date_range),
             labelStyle: TextStyle(color: WHITE),
           ),
-          validator: (value) => validate(value),
         ),
         SizedBox(height: 20),
       ],
@@ -632,11 +616,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   Future<Null> selectDateOfBirth(BuildContext context) async {
     DateTime _datePicker = await showDatePicker(
-        context: context,
-        initialDate: _dateOfBirth,
-        firstDate: DateTime(1950),
-        lastDate: DateTime(2050),
-        initialDatePickerMode: DatePickerMode.year);
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1950),
+      lastDate: DateTime(2050),
+      initialDatePickerMode: DatePickerMode.year,
+    );
     if (_datePicker != null && _datePicker != _dateOfBirth) {
       setState(() {
         _dateOfBirth = _datePicker;
@@ -666,76 +651,19 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 });
               },
               dataSource: [
-                {
-                  'display':
-                      'Беларус ' + LanguageUtil.findFlagByNationality('BE'),
-                  'value': 'BE'
-                },
-                {
-                  'display':
-                      'English ' + LanguageUtil.findFlagByNationality('EN'),
-                  'value': 'EN'
-                },
-                {
-                  'display':
-                      'Français ' + LanguageUtil.findFlagByNationality('FR'),
-                  'value': 'FR'
-                },
-                {
-                  'display':
-                      'ქართული ' + LanguageUtil.findFlagByNationality('GE'),
-                  'value': 'GE'
-                },
-                {
-                  'display':
-                      'Deutsche ' + LanguageUtil.findFlagByNationality('DE'),
-                  'value': 'DE'
-                },
-                {
-                  'display':
-                      'Română ' + LanguageUtil.findFlagByNationality('RO'),
-                  'value': 'RO'
-                },
-                {
-                  'display':
-                      'Nederlands ' + LanguageUtil.findFlagByNationality('NL'),
-                  'value': 'NL'
-                },
-                {
-                  'display':
-                      'Norsk ' + LanguageUtil.findFlagByNationality('NO'),
-                  'value': 'NO'
-                },
-                {
-                  'display':
-                      'Polska ' + LanguageUtil.findFlagByNationality('PL'),
-                  'value': 'PL'
-                },
-                {
-                  'display':
-                      'русский ' + LanguageUtil.findFlagByNationality('RU'),
-                  'value': 'RU'
-                },
-                {
-                  'display':
-                      'Español ' + LanguageUtil.findFlagByNationality('ES'),
-                  'value': 'ES'
-                },
-                {
-                  'display':
-                      'Svenska ' + LanguageUtil.findFlagByNationality('SE'),
-                  'value': 'SE'
-                },
-                {
-                  'display':
-                      'Українська ' + LanguageUtil.findFlagByNationality('UK'),
-                  'value': 'UK'
-                },
-                {
-                  'display':
-                      'Other ' + LanguageUtil.findFlagByNationality('OTHER'),
-                  'value': 'OTHER'
-                },
+                {'display': 'Беларус ' + LanguageUtil.findFlagByNationality('BE'), 'value': 'BE'},
+                {'display': 'English ' + LanguageUtil.findFlagByNationality('EN'), 'value': 'EN'},
+                {'display': 'Français ' + LanguageUtil.findFlagByNationality('FR'), 'value': 'FR'},
+                {'display': 'ქართული ' + LanguageUtil.findFlagByNationality('GE'), 'value': 'GE'},
+                {'display': 'Deutsche ' + LanguageUtil.findFlagByNationality('DE'), 'value': 'DE'},
+                {'display': 'Română ' + LanguageUtil.findFlagByNationality('RO'), 'value': 'RO'},
+                {'display': 'Nederlands ' + LanguageUtil.findFlagByNationality('NL'), 'value': 'NL'},
+                {'display': 'Norsk ' + LanguageUtil.findFlagByNationality('NO'), 'value': 'NO'},
+                {'display': 'Polska ' + LanguageUtil.findFlagByNationality('PL'), 'value': 'PL'},
+                {'display': 'русский ' + LanguageUtil.findFlagByNationality('RU'), 'value': 'RU'},
+                {'display': 'Español ' + LanguageUtil.findFlagByNationality('ES'), 'value': 'ES'},
+                {'display': 'Svenska ' + LanguageUtil.findFlagByNationality('SE'), 'value': 'SE'},
+                {'display': 'Українська ' + LanguageUtil.findFlagByNationality('UK'), 'value': 'UK'},
               ],
               textField: 'display',
               valueField: 'value',
@@ -760,16 +688,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
             });
           },
           decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: WHITE, width: 2)),
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
             border: OutlineInputBorder(),
-            hintText: _passportReleaseDate.toString().substring(0, 10) ==
-                    DateTime.now().toString().substring(0, 10)
-                ? getTranslated(context, 'passportReleaseDate')
-                : _passportReleaseDate.toString().substring(0, 10) +
-                    ' (' +
-                    getTranslated(context, 'passportReleaseDate') +
-                    ')',
+            hintText: _passportReleaseDate == null || _passportReleaseDate.toString().substring(0, 10) == DateTime.now().toString().substring(0, 10) ? getTranslated(context, 'passportReleaseDate') : _passportReleaseDate.toString().substring(0, 10) + ' (' + getTranslated(context, 'passportReleaseDate') + ')',
             hintStyle: TextStyle(color: WHITE),
             prefixIcon: iconWhite(Icons.date_range),
             labelStyle: TextStyle(color: WHITE),
@@ -782,11 +703,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   Future<Null> selectPassportReleaseDate(BuildContext context) async {
     DateTime _datePicker = await showDatePicker(
-        context: context,
-        initialDate: _passportReleaseDate,
-        firstDate: DateTime(1950),
-        lastDate: DateTime(2050),
-        initialDatePickerMode: DatePickerMode.year);
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1950),
+      lastDate: DateTime(2050),
+      initialDatePickerMode: DatePickerMode.year,
+    );
     if (_datePicker != null && _datePicker != _passportReleaseDate) {
       setState(() {
         _passportReleaseDate = _datePicker;
@@ -805,16 +727,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
             });
           },
           decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: WHITE, width: 2)),
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
             border: OutlineInputBorder(),
-            hintText: _passportExpirationDate.toString().substring(0, 10) ==
-                    DateTime.now().toString().substring(0, 10)
-                ? getTranslated(context, 'passportExpirationDate')
-                : _passportExpirationDate.toString().substring(0, 10) +
-                    ' (' +
-                    getTranslated(context, 'passportExpirationDate') +
-                    ')',
+            hintText: _passportExpirationDate == null || _passportExpirationDate.toString().substring(0, 10) == DateTime.now().toString().substring(0, 10) ? getTranslated(context, 'passportExpirationDate') : _passportExpirationDate.toString().substring(0, 10) + ' (' + getTranslated(context, 'passportExpirationDate') + ')',
             hintStyle: TextStyle(color: WHITE),
             prefixIcon: iconWhite(Icons.date_range),
             labelStyle: TextStyle(color: WHITE),
@@ -827,42 +742,17 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   Future<Null> selectPassportExpirationDate(BuildContext context) async {
     DateTime _datePicker = await showDatePicker(
-        context: context,
-        initialDate: _passportExpirationDate,
-        firstDate: DateTime(1950),
-        lastDate: DateTime(2050),
-        initialDatePickerMode: DatePickerMode.year);
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1950),
+      lastDate: DateTime(2050),
+      initialDatePickerMode: DatePickerMode.year,
+    );
     if (_datePicker != null && _datePicker != _passportExpirationDate) {
       setState(() {
         _passportExpirationDate = _datePicker;
       });
     }
-  }
-
-  Widget _buildEmailField() {
-    return Column(
-      children: <Widget>[
-        TextFormField(
-          autocorrect: true,
-          cursorColor: WHITE,
-          maxLength: 255,
-          controller: _emailController,
-          style: TextStyle(color: WHITE),
-          decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: WHITE, width: 2)),
-              counterStyle: TextStyle(color: WHITE),
-              border: OutlineInputBorder(),
-              labelText: getTranslated(context, 'email'),
-              prefixIcon: iconWhite(Icons.alternate_email),
-              labelStyle: TextStyle(color: WHITE)),
-          validator: EmailValidator(
-            errorText: getTranslated(context, 'emailWrongFormat'),
-          ),
-        ),
-        SizedBox(height: 10),
-      ],
-    );
   }
 
   Widget _buildExpirationDateOfWorkField() {
@@ -876,16 +766,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
             });
           },
           decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: WHITE, width: 2)),
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
             border: OutlineInputBorder(),
-            hintText: _expirationDateOfWork.toString().substring(0, 10) ==
-                    DateTime.now().toString().substring(0, 10)
-                ? getTranslated(context, 'expirationDateOfWork')
-                : _expirationDateOfWork.toString().substring(0, 10) +
-                    ' (' +
-                    getTranslated(context, 'expirationDateOfWork') +
-                    ')',
+            hintText: _expirationDateOfWork == null || _expirationDateOfWork.toString().substring(0, 10) == DateTime.now().toString().substring(0, 10) ? getTranslated(context, 'expirationDateOfWork') : _expirationDateOfWork.toString().substring(0, 10) + ' (' + getTranslated(context, 'expirationDateOfWork') + ')',
             hintStyle: TextStyle(color: WHITE),
             prefixIcon: iconWhite(Icons.date_range),
             labelStyle: TextStyle(color: WHITE),
@@ -898,11 +781,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   Future<Null> selectExpirationDateOfWork(BuildContext context) async {
     DateTime _datePicker = await showDatePicker(
-        context: context,
-        initialDate: _expirationDateOfWork,
-        firstDate: DateTime(1950),
-        lastDate: DateTime(2050),
-        initialDatePickerMode: DatePickerMode.year);
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1950),
+      lastDate: DateTime(2050),
+      initialDatePickerMode: DatePickerMode.year,
+    );
     if (_datePicker != null && _datePicker != _expirationDateOfWork) {
       setState(() {
         _expirationDateOfWork = _datePicker;
@@ -918,8 +802,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
           elevation: 0,
           minWidth: double.maxFinite,
           height: 50,
-          shape: new RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(30.0)),
+          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
           onPressed: () => {
             if (!_isValid() || !_regulationsCheckbox || !_privacyPolicyCheckbox)
               {
@@ -928,56 +811,41 @@ class _RegistrationPageState extends State<RegistrationPage> {
             else
               {
                 dto = new CreateEmployeeDto(
-                    username: _usernameController.text,
-                    password: _passwordController.text,
-                    name: _nameController.text,
-                    surname: _surnameController.text,
-                    fatherName: _fatherNameController.text,
-                    motherName: _motherNameController.text,
-                    dateOfBirth: _dateOfBirth.toString().substring(0, 10),
-                    nationality: _nationality,
-                    locality: _localityController.text,
-                    zipCode: _zipCodeController.text,
-                    street: _streetController.text,
-                    houseNumber: _houseNumberController.text,
-                    phoneNumber: _phoneController.text,
-                    viberNumber: _viberController.text,
-                    whatsAppNumber: _whatsAppController.text,
-                    passportNumber: _passportNumberController.text,
-                    passportReleaseDate:
-                        _passportReleaseDate.toString().substring(0, 10),
-                    passportExpirationDate:
-                        _passportExpirationDate.toString().substring(0, 10),
-                    email: _emailController.text,
-                    expirationDateOfWork:
-                        _expirationDateOfWork.toString().substring(0, 10),
-                    nip: _nipController.text,
-                    bankAccountNumber: _bankAccountNumberController.text,
-                    drivingLicense: _drivingLicenseController.text,
-                    tokenId: widget._tokenId,
-                    accountExpirationDate: widget._accountExpirationDate),
-                _unauthenticatedService.registerEmployee(dto).then((res) {
+                  username: _usernameController.text,
+                  password: _passwordController.text,
+                  name: _nameController.text,
+                  surname: _surnameController.text,
+                  nationality: _nationality,
+                  phone: _phoneController.text,
+                  viber: _viberController.text,
+                  whatsApp: _whatsAppController.text,
+                  fatherName: _fatherNameController.text,
+                  motherName: _motherNameController.text,
+                  dateOfBirth: _dateOfBirth != null ? _dateOfBirth.toString().substring(0, 10) : null,
+                  expirationDateOfWork: _expirationDateOfWork != null ? _expirationDateOfWork.toString().substring(0, 10) : null,
+                  nip: _nipController.text,
+                  bankAccountNumber: _bankAccountNumberController.text,
+                  drivingLicense: _drivingLicenseController.text,
+                  locality: _localityController.text,
+                  zipCode: _zipCodeController.text,
+                  street: _streetController.text,
+                  houseNumber: _houseNumberController.text,
+                  passportNumber: _passportNumberController.text,
+                  passportReleaseDate: _passportReleaseDate != null ? _passportReleaseDate.toString().substring(0, 10) : null,
+                  passportExpirationDate: _passportExpirationDate != null ? _passportExpirationDate.toString().substring(0, 10) : null,
+                  tokenId: widget._tokenId,
+                  accountExpirationDate: widget._accountExpirationDate,
+                ),
+                _employeeService.create(dto).then((res) {
                   _showSuccessDialog();
                 }).catchError((onError) {
                   String s = onError.toString();
-                  if (s.contains('USERNAME_UNIQUE')) {
-                    _errorDialog(
-                      getTranslated(context, 'usernameExists') +
-                          '\n' +
-                          getTranslated(context, 'chooseOtherUsername'),
-                    );
-                  } else if (s.contains('TOKEN_INCORRECT') ||
-                      s.contains('TOKEN_NULL_OR_EMPTY')) {
-                    _errorDialogWithNavigate(
-                      getTranslated(context, 'tokenIsIncorrect') +
-                          '\n' +
-                          getTranslated(
-                              context, 'askAdministratorWhatWentWrong'),
-                    );
+                  if (s.contains('USERNAME_EXISTS')) {
+                    _errorDialog(getTranslated(context, 'usernameExists') + '\n' + getTranslated(context, 'chooseOtherUsername'));
+                  } else if (s.contains('TOKEN_EXPIRED')) {
+                    _errorDialogWithNavigate(getTranslated(context, 'tokenIsIncorrect') + '\n' + getTranslated(context, 'askAdministratorWhatWentWrong'));
                   } else {
-                    _errorDialog(
-                      getTranslated(context, 'smthWentWrong'),
-                    );
+                    _errorDialog(getTranslated(context, 'smthWentWrong'));
                   }
                 }),
               }
@@ -1104,8 +972,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
           actions: <Widget>[
             FlatButton(
               child: textWhite(getTranslated(context, 'exitAgree')),
-              onPressed: () =>
-                  {Navigator.of(context).pop(), _resetAndOpenPage()},
+              onPressed: () => {Navigator.of(context).pop(), _resetAndOpenPage()},
             ),
             FlatButton(
               child: textWhite(getTranslated(context, 'no')),

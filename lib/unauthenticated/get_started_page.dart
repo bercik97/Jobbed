@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/unauthenticated/login_page.dart';
 import 'package:give_job/main.dart';
 import 'package:give_job/shared/libraries/colors.dart';
+import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
+import 'package:give_job/unauthenticated/login_page.dart';
 
 import '../internationalization/model/language.dart';
 
@@ -32,8 +32,7 @@ class _GetStartedPageState extends State<GetStartedPage> {
     List<DropdownMenuItem<Language>> items = List();
     for (Language language in languages) {
       items.add(
-        DropdownMenuItem(
-            value: language, child: Text(language.name + ' ' + language.flag)),
+        DropdownMenuItem(value: language, child: Text(language.name + ' ' + language.flag)),
       );
     }
     return items;
@@ -61,13 +60,9 @@ class _GetStartedPageState extends State<GetStartedPage> {
             textCenter30White(getTranslated(context, 'getStartedTitle')),
             textCenter30White('$APP_NAME !'),
             SizedBox(height: 30),
-            Container(
-                child: textCenter19White(
-                    getTranslated(context, 'getStartedDescription'))),
+            Container(child: textCenter19White(getTranslated(context, 'getStartedDescription'))),
             SizedBox(height: 30),
-            Center(
-                child: textCenter19White(
-                    getTranslated(context, 'getStartedLanguage'))),
+            Center(child: textCenter19White(getTranslated(context, 'getStartedLanguage'))),
             SizedBox(height: 5),
             Container(
               child: Center(
@@ -76,13 +71,13 @@ class _GetStartedPageState extends State<GetStartedPage> {
                   child: Column(
                     children: <Widget>[
                       DropdownButtonHideUnderline(
-                          child: DropdownButton(
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 25),
-                              value: _selectedLanguage,
-                              items: _dropdownMenuItems,
-                              onChanged: (Language language) =>
-                                  (_changeLanguage(language, context)))),
+                        child: DropdownButton(
+                          style: TextStyle(color: Colors.white, fontSize: 25),
+                          value: _selectedLanguage,
+                          items: _dropdownMenuItems,
+                          onChanged: (Language language) => (_changeLanguage(language, context)),
+                        ),
+                      ),
                       SizedBox(height: 20),
                     ],
                   ),
@@ -92,33 +87,28 @@ class _GetStartedPageState extends State<GetStartedPage> {
             MaterialButton(
               elevation: 0,
               height: 50,
-              shape: new RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(30.0)),
+              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
               onPressed: () {
                 storage.write(key: 'getStartedClick', value: 'click');
                 Navigator.push(
                   context,
                   PageRouteBuilder(
-                    pageBuilder: (BuildContext context,
-                        Animation<double> animation,
-                        Animation<double> secondaryAnimation) {
+                    pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
                       return LoginPage();
                     },
-                    transitionsBuilder: (BuildContext context,
-                        Animation<double> animation,
-                        Animation<double> secondaryAnimation,
-                        Widget child) {
+                    transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
                       return SlideTransition(
                         position: new Tween<Offset>(
                           begin: const Offset(-1.0, 0.0),
                           end: Offset.zero,
                         ).animate(animation),
                         child: new SlideTransition(
-                            position: new Tween<Offset>(
-                              begin: Offset.zero,
-                              end: const Offset(-1.0, 0.0),
-                            ).animate(secondaryAnimation),
-                            child: child),
+                          position: new Tween<Offset>(
+                            begin: Offset.zero,
+                            end: const Offset(-1.0, 0.0),
+                          ).animate(secondaryAnimation),
+                          child: child,
+                        ),
                       );
                     },
                   ),
@@ -129,7 +119,7 @@ class _GetStartedPageState extends State<GetStartedPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   text20White(getTranslated(context, 'getStarted')),
-                  iconWhite(Icons.arrow_forward_ios)
+                  iconWhite(Icons.arrow_forward_ios),
                 ],
               ),
             ),
