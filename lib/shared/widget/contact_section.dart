@@ -8,72 +8,38 @@ import 'package:give_job/shared/widget/texts.dart';
 
 import 'icons.dart';
 
-Widget buildContactSection(BuildContext context, String email,
-    String phoneNumber, String viberNumber, String whatsAppNumber) {
+Widget buildContactSection(BuildContext context, String phone, String viber, String whatsApp) {
   return SingleChildScrollView(
     child: Column(
       children: <Widget>[
-        email != null
-            ? _buildEmail(context, email)
-            : _buildEmptyListTile(context, 'email'),
-        phoneNumber != null
-            ? _buildPhoneNumber(context, phoneNumber)
-            : _buildEmptyListTile(context, 'phone'),
-        viberNumber != null
-            ? _buildViber(context, viberNumber)
-            : _buildEmptyListTile(context, 'viber'),
-        whatsAppNumber != null
-            ? _buildWhatsApp(context, whatsAppNumber)
-            : _buildEmptyListTile(context, 'whatsApp'),
+        phone != null ? _buildPhoneNumber(context, phone) : _buildEmptyListTile(context, 'phone'),
+        viber != null ? _buildViber(context, viber) : _buildEmptyListTile(context, 'viber'),
+        whatsApp != null ? _buildWhatsApp(context, whatsApp) : _buildEmptyListTile(context, 'whatsApp'),
       ],
     ),
   );
 }
 
-Widget _buildEmail(BuildContext context, String email) {
-  return ListTile(
-    title: text16GreenBold(getTranslated(context, 'email')),
-    subtitle: Row(
-      children: <Widget>[
-        SelectableText(email, style: TextStyle(fontSize: 16, color: WHITE)),
-        SizedBox(width: 5),
-        IconButton(
-          icon: icon30White(Icons.alternate_email),
-          onPressed: () => _launchAction(context, 'mailto', email),
-        ),
-      ],
-    ),
-  );
-}
-
-Widget _buildPhoneNumber(BuildContext context, String phoneNumber) {
+Widget _buildPhoneNumber(BuildContext context, String phone) {
   return ListTile(
     title: text16GreenBold(getTranslated(context, 'phone')),
     subtitle: Row(
       children: <Widget>[
-        SelectableText(phoneNumber,
-            style: TextStyle(fontSize: 16, color: WHITE)),
+        SelectableText(phone, style: TextStyle(fontSize: 16, color: WHITE)),
         SizedBox(width: 5),
-        IconButton(
-          icon: icon30White(Icons.phone),
-          onPressed: () => _launchAction(context, 'tel', phoneNumber),
-        ),
-        IconButton(
-          icon: icon30White(Icons.local_post_office),
-          onPressed: () => _launchAction(context, 'sms', phoneNumber),
-        ),
+        IconButton(icon: icon30White(Icons.phone), onPressed: () => _launchAction(context, 'tel', phone)),
+        IconButton(icon: icon30White(Icons.local_post_office), onPressed: () => _launchAction(context, 'sms', phone)),
       ],
     ),
   );
 }
 
-Widget _buildViber(BuildContext context, String viberNumber) {
+Widget _buildViber(BuildContext context, String viber) {
   return ListTile(
     title: text16GreenBold(getTranslated(context, 'viber')),
     subtitle: Row(
       children: <Widget>[
-        SelectableText(viberNumber,
-            style: TextStyle(fontSize: 16, color: WHITE)),
+        SelectableText(viber, style: TextStyle(fontSize: 16, color: WHITE)),
         SizedBox(width: 5),
         SizedBox(width: 7.5),
         Padding(
@@ -83,12 +49,8 @@ Widget _buildViber(BuildContext context, String viberNumber) {
             child: BouncingWidget(
               duration: Duration(milliseconds: 100),
               scaleFactor: 2,
-              onPressed: () => _launchApp(context, 'viber', viberNumber),
-              child: Image(
-                width: 40,
-                height: 40,
-                image: AssetImage('images/viber-logo.png'),
-              ),
+              onPressed: () => _launchApp(context, 'viber', viber),
+              child: Image(width: 40, height: 40, image: AssetImage('images/viber-logo.png')),
             ),
           ),
         ),
@@ -102,8 +64,7 @@ Widget _buildWhatsApp(BuildContext context, String whatsAppNumber) {
     title: text16GreenBold(getTranslated(context, 'whatsApp')),
     subtitle: Row(
       children: <Widget>[
-        SelectableText(whatsAppNumber,
-            style: TextStyle(fontSize: 16, color: WHITE)),
+        SelectableText(whatsAppNumber, style: TextStyle(fontSize: 16, color: WHITE)),
         SizedBox(width: 7.5),
         Padding(
           padding: EdgeInsets.all(4),

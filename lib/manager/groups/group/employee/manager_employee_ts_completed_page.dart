@@ -2,7 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:give_job/employee/dto/employee_timesheet_dto.dart';
+import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
+import 'package:give_job/api/workday/service/workday_service.dart';
+import 'package:give_job/api/workday/util/workday_util.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/dto/workday_dto.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
@@ -12,8 +15,6 @@ import 'package:give_job/shared/util/month_util.dart';
 import 'package:give_job/shared/widget/circular_progress_indicator.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
-import 'package:give_job/shared/workdays/workday_service.dart';
-import 'package:give_job/shared/workdays/workday_util.dart';
 
 import '../../../../shared/libraries/constants.dart';
 import '../../../manager_app_bar.dart';
@@ -25,31 +26,27 @@ class ManagerEmployeeTsCompletedPage extends StatefulWidget {
   final String _employeeInfo;
   final String _employeeNationality;
   final String _currency;
-  final EmployeeTimesheetDto timesheet;
+  final TimesheetForEmployeeDto timesheet;
 
-  const ManagerEmployeeTsCompletedPage(this._model, this._employeeInfo,
-      this._employeeNationality, this._currency, this.timesheet);
+  const ManagerEmployeeTsCompletedPage(this._model, this._employeeInfo, this._employeeNationality, this._currency, this.timesheet);
 
   @override
-  _ManagerEmployeeTsCompletedPageState createState() =>
-      _ManagerEmployeeTsCompletedPageState();
+  _ManagerEmployeeTsCompletedPageState createState() => _ManagerEmployeeTsCompletedPageState();
 }
 
-class _ManagerEmployeeTsCompletedPageState
-    extends State<ManagerEmployeeTsCompletedPage> {
-  SharedWorkdayService _sharedWorkdayService;
+class _ManagerEmployeeTsCompletedPageState extends State<ManagerEmployeeTsCompletedPage> {
+  WorkdayService _workdayService;
 
   GroupEmployeeModel _model;
   String _employeeInfo;
   String _employeeNationality;
   String _currency;
-  EmployeeTimesheetDto timesheet;
+  TimesheetForEmployeeDto timesheet;
 
   @override
   Widget build(BuildContext context) {
     this._model = widget._model;
-    this._sharedWorkdayService =
-        new SharedWorkdayService(context, _model.user.authHeader);
+    this._workdayService = ServiceInitializer.initialize(context, _model.user.authHeader, WorkdayService);
     this._employeeInfo = widget._employeeInfo;
     this._employeeNationality = widget._employeeNationality;
     this._currency = widget._currency;
@@ -61,12 +58,7 @@ class _ManagerEmployeeTsCompletedPageState
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBar(
-            context,
-            _model.user,
-            getTranslated(context, 'workdays') +
-                ' - ' +
-                getTranslated(context, STATUS_COMPLETED)),
+        appBar: managerAppBar(context, _model.user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, STATUS_COMPLETED)),
         drawer: managerSideBar(context, _model.user),
         body: Column(
           children: <Widget>[
@@ -82,40 +74,29 @@ class _ManagerEmployeeTsCompletedPageState
                       fit: BoxFit.fitHeight,
                     ),
                   ),
-                  title: textWhiteBold(timesheet.year.toString() +
-                      ' ' +
-                      MonthUtil.translateMonth(context, timesheet.month)),
+                  title: textWhiteBold(timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, timesheet.month)),
                   subtitle: Column(
                     children: <Widget>[
                       Align(
                         alignment: Alignment.topLeft,
-                        child: textWhiteBold(_employeeInfo != null
-                            ? utf8.decode(_employeeInfo.runes.toList()) +
-                                ' ' +
-                                LanguageUtil.findFlagByNationality(
-                                    _employeeNationality)
-                            : getTranslated(context, 'empty')),
+                        child: textWhiteBold(_employeeInfo != null ? utf8.decode(_employeeInfo.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality) : getTranslated(context, 'empty')),
                       ),
                       Row(
                         children: <Widget>[
                           Align(
                             alignment: Alignment.topLeft,
-                            child: textWhite(
-                                getTranslated(context, 'hours') + ': '),
+                            child: textWhite(getTranslated(context, 'hours') + ': '),
                           ),
-                          textGreenBold(
-                              timesheet.numberOfHoursWorked.toString() + 'h'),
+                          textGreenBold(timesheet.numberOfHoursWorked.toString() + 'h'),
                         ],
                       ),
                       Row(
                         children: <Widget>[
                           Align(
                             alignment: Alignment.topLeft,
-                            child: textWhite(
-                                getTranslated(context, 'averageRating') + ': '),
+                            child: textWhite(getTranslated(context, 'averageRating') + ': '),
                           ),
-                          textGreenBold(
-                              widget.timesheet.averageRating.toString()),
+                          textGreenBold(widget.timesheet.averageRating.toString()),
                         ],
                       ),
                     ],
@@ -130,12 +111,9 @@ class _ManagerEmployeeTsCompletedPageState
               ),
             ),
             FutureBuilder(
-              future: _sharedWorkdayService
-                  .findWorkdaysByTimesheetId(timesheet.id.toString()),
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<WorkdayDto>> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting ||
-                    snapshot.data == null) {
+              future: _workdayService.findWorkdaysByTimesheetId(timesheet.id.toString()),
+              builder: (BuildContext context, AsyncSnapshot<List<WorkdayDto>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
                   return Padding(
                     padding: EdgeInsets.only(top: 50),
                     child: Center(child: circularProgressIndicator()),
@@ -148,119 +126,61 @@ class _ManagerEmployeeTsCompletedPageState
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Theme(
-                          data: Theme.of(this.context)
-                              .copyWith(dividerColor: MORE_BRIGHTER_DARK),
+                          data: Theme.of(this.context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
                           child: DataTable(
                             columnSpacing: 10,
                             columns: [
                               DataColumn(label: textWhiteBold('No.')),
-                              DataColumn(
-                                  label: textWhiteBold(
-                                      getTranslated(this.context, 'hours'))),
-                              DataColumn(
-                                  label: textWhiteBold(
-                                      getTranslated(this.context, 'rating'))),
-                              DataColumn(
-                                  label: textWhiteBold(
-                                      getTranslated(this.context, 'money'))),
-                              DataColumn(
-                                  label: textWhiteBold(
-                                      getTranslated(this.context, 'plan'))),
-                              DataColumn(
-                                  label: textWhiteBold(
-                                      getTranslated(this.context, 'opinion'))),
-                              DataColumn(
-                                  label: textWhiteBold(getTranslated(
-                                      this.context, 'workplace'))),
-                              DataColumn(
-                                  label: textWhiteBold(getTranslated(
-                                      this.context, 'vocations'))),
+                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'hours'))),
+                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'rating'))),
+                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'money'))),
+                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'plan'))),
+                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'opinion'))),
+                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'workplace'))),
+                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'vocations'))),
                             ],
                             rows: [
                               for (var workday in workdays)
                                 DataRow(
                                   cells: [
-                                    DataCell(
-                                        textWhite(workday.number.toString())),
-                                    DataCell(
-                                        textWhite(workday.hours.toString())),
-                                    DataCell(
-                                        textWhite(workday.rating.toString())),
-                                    DataCell(
-                                        textWhite(workday.money.toString())),
+                                    DataCell(textWhite(workday.number.toString())),
+                                    DataCell(textWhite(workday.hours.toString())),
+                                    DataCell(textWhite(workday.rating.toString())),
+                                    DataCell(textWhite(workday.money.toString())),
                                     DataCell(
                                         Wrap(
                                           children: <Widget>[
-                                            workday.plan != null &&
-                                                    workday.plan != ''
-                                                ? iconWhite(Icons.zoom_in)
-                                                : textWhiteBold('-'),
+                                            workday.plan != null && workday.plan != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
                                           ],
                                         ),
-                                        onTap: () =>
-                                            WorkdayUtil.showScrollableDialog(
-                                                this.context,
-                                                getTranslated(this.context,
-                                                    'planDetails'),
-                                                workday.plan)),
+                                        onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'planDetails'), workday.plan)),
                                     DataCell(
                                       Wrap(
                                         children: <Widget>[
-                                          workday.opinion != null &&
-                                                  workday.opinion != ''
-                                              ? iconWhite(Icons.zoom_in)
-                                              : textWhiteBold('-'),
+                                          workday.opinion != null && workday.opinion != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
                                         ],
                                       ),
-                                      onTap: () =>
-                                          WorkdayUtil.showScrollableDialog(
-                                              this.context,
-                                              getTranslated(this.context,
-                                                  'opinionDetails'),
-                                              workday.opinion),
+                                      onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'opinionDetails'), workday.opinion),
                                     ),
                                     DataCell(
                                       Wrap(
                                         children: <Widget>[
-                                          workday.workplace != null &&
-                                                  workday.workplace.name != ''
-                                              ? iconWhite(Icons.zoom_in)
-                                              : textWhiteBold('-'),
+                                          workday.workplace != null && workday.workplace.name != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
                                         ],
                                       ),
-                                      onTap: () =>
-                                          WorkdayUtil.showScrollableDialog(
-                                              this.context,
-                                              getTranslated(
-                                                  this.context, 'workplace'),
-                                              workday.workplace.name),
+                                      onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'workplace'), workday.workplace.name),
                                     ),
                                     DataCell(
                                         Wrap(
                                           children: <Widget>[
                                             workday.vocation != null
                                                 ? Row(
-                                                    children: [
-                                                      Image(
-                                                          height: 35,
-                                                          image: AssetImage(
-                                                              'images/big-vocation-icon.png')),
-                                                      workday.vocation
-                                                                  .verified ==
-                                                              true
-                                                          ? iconGreen(
-                                                              Icons.check)
-                                                          : iconRed(Icons.clear)
-                                                    ],
+                                                    children: [Image(height: 35, image: AssetImage('images/big-vocation-icon.png')), workday.vocation.verified == true ? iconGreen(Icons.check) : iconRed(Icons.clear)],
                                                   )
                                                 : textWhiteBold('-'),
                                           ],
                                         ),
-                                        onTap: () => WorkdayUtil
-                                            .showVocationReasonDetails(
-                                                this.context,
-                                                workday.vocation.reason,
-                                                workday.vocation.verified)),
+                                        onTap: () => WorkdayUtil.showVocationReasonDetails(this.context, workday.vocation.reason, workday.vocation.verified)),
                                   ],
                                 ),
                             ],

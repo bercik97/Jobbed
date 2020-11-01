@@ -61,7 +61,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
   @override
   void initState() {
     super.initState();
-    _employeeService = ServiceInitializer.initialize(null, EmployeeService);
+    _employeeService = ServiceInitializer.initialize(null, null, EmployeeService);
     _accountExpirationDate = widget._accountExpirationDate;
     _passwordVisible = false;
     _rePasswordVisible = false;

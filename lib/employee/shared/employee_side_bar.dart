@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:give_job/employee/profile/employee_profil_page.dart';
+import 'package:give_job/employee/employee_page.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -22,10 +22,12 @@ Drawer employeeSideBar(BuildContext context, User user) {
             width: double.infinity,
             padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [WHITE, GREEN])),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [WHITE, GREEN],
+              ),
+            ),
             child: Center(
               child: Column(
                 children: <Widget>[
@@ -35,9 +37,7 @@ Drawer employeeSideBar(BuildContext context, User user) {
                     margin: EdgeInsets.only(top: 50, bottom: 10),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: AssetImage('images/logo.png'),
-                          fit: BoxFit.fill),
+                      image: DecorationImage(image: AssetImage('images/logo.png'), fit: BoxFit.fill),
                     ),
                   ),
                   text25Dark(APP_NAME),
@@ -48,33 +48,27 @@ Drawer employeeSideBar(BuildContext context, User user) {
           ListTile(
             leading: iconWhite(Icons.person),
             title: text18White(getTranslated(context, 'profile')),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => EmployeeProfilPage(user)),
-              );
-            },
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => EmployeeProfilPage(user)),
+            ),
           ),
           Divider(color: WHITE),
           ListTile(
             leading: iconWhite(Icons.star),
             title: text18White(getTranslated(context, 'rate')),
-            onTap: () => OpenAppstore.launch(
-                androidAppId: ANDROID_APP_ID, iOSAppId: IOS_APP_ID),
+            onTap: () => OpenAppstore.launch(androidAppId: ANDROID_APP_ID, iOSAppId: IOS_APP_ID),
           ),
           ListTile(
             leading: iconWhite(Icons.settings),
             title: text18White(getTranslated(context, 'settings')),
-            onTap: () {
-              Navigator.of(context).push(
-                CupertinoPageRoute<Null>(
-                  builder: (BuildContext context) {
-                    return SettingsPage(user);
-                  },
-                ),
-              );
-            },
+            onTap: () => Navigator.of(context).push(
+              CupertinoPageRoute<Null>(
+                builder: (BuildContext context) {
+                  return SettingsPage(user);
+                },
+              ),
+            ),
           ),
           ListTile(
             leading: iconWhite(Icons.exit_to_app),

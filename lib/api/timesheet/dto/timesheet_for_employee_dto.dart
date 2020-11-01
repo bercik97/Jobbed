@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-class EmployeeTimesheetDto {
+class TimesheetForEmployeeDto {
   final int id;
   final int year;
   final String month;
@@ -11,7 +11,7 @@ class EmployeeTimesheetDto {
   final double averageRating;
   final double amountOfEarnedMoney;
 
-  EmployeeTimesheetDto({
+  TimesheetForEmployeeDto({
     @required this.id,
     @required this.year,
     @required this.month,
@@ -23,8 +23,8 @@ class EmployeeTimesheetDto {
     @required this.amountOfEarnedMoney,
   });
 
-  factory EmployeeTimesheetDto.fromJson(Map<String, dynamic> json) {
-    return EmployeeTimesheetDto(
+  factory TimesheetForEmployeeDto.fromJson(Map<String, dynamic> json) {
+    return TimesheetForEmployeeDto(
       id: json['id'] as int,
       year: json['year'] as int,
       month: json['month'] as String,

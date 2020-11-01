@@ -4,11 +4,11 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
-Container employeeTodaysTodo(BuildContext context, String todaysPlan) {
-  if (todaysPlan == null || todaysPlan.isEmpty) {
+Container employeeTodaysTodo(BuildContext context, String todayPlan) {
+  if (todayPlan == null || todayPlan.isEmpty) {
     return _handleData(getTranslated(context, 'nothingTodo'), '-');
   }
-  return _handleData(getTranslated(context, 'todayTodo'), todaysPlan);
+  return _handleData(getTranslated(context, 'todayTodo'), todayPlan);
 }
 
 Widget _handleData(String title, String subtitle) {

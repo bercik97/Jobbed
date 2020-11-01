@@ -41,49 +41,33 @@ Widget employeeTimesheetsTab(BuildContext context, User user, List timesheets) {
                         leading: Padding(
                           padding: EdgeInsets.only(bottom: 15),
                           child: Image(
-                            image: timesheet.status == STATUS_IN_PROGRESS
-                                ? AssetImage('images/unchecked.png')
-                                : AssetImage('images/checked.png'),
+                            image: timesheet.status == STATUS_IN_PROGRESS ? AssetImage('images/unchecked.png') : AssetImage('images/checked.png'),
                             fit: BoxFit.fitHeight,
                           ),
                         ),
-                        title: textWhiteBold(timesheet.year.toString() +
-                            ' ' +
-                            MonthUtil.translateMonth(context, timesheet.month) +
-                            '\n' +
-                            utf8.decode(timesheet.groupName.runes.toList())),
+                        title: textWhiteBold(timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, timesheet.month) + '\n' + utf8.decode(timesheet.groupName.runes.toList())),
                         subtitle: Column(
                           children: <Widget>[
                             Align(
                                 child: Row(
                                   children: <Widget>[
-                                    textWhite(
-                                        getTranslated(context, 'hours') + ': '),
-                                    textGreenBold(timesheet.numberOfHoursWorked
-                                        .toString()),
+                                    textWhite(getTranslated(context, 'hours') + ': '),
+                                    textGreenBold(timesheet.numberOfHoursWorked.toString()),
                                   ],
                                 ),
                                 alignment: Alignment.topLeft),
                             Align(
                                 child: Row(
                                   children: <Widget>[
-                                    textWhite(getTranslated(
-                                            context, 'averageRating') +
-                                        ': '),
-                                    textGreenBold(
-                                        timesheet.averageRating.toString()),
+                                    textWhite(getTranslated(context, 'averageRating') + ': '),
+                                    textGreenBold(timesheet.averageRating.toString()),
                                   ],
                                 ),
                                 alignment: Alignment.topLeft),
                           ],
                         ),
                         trailing: Wrap(
-                          children: <Widget>[
-                            textGreenBold(
-                                timesheet.amountOfEarnedMoney.toString()),
-                            textGreenBold(
-                                " " + timesheet.groupCountryCurrency.toString())
-                          ],
+                          children: <Widget>[textGreenBold(timesheet.amountOfEarnedMoney.toString()), textGreenBold(" " + timesheet.groupCountryCurrency.toString())],
                         ),
                       ),
                     ),

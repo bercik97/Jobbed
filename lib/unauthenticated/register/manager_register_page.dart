@@ -48,7 +48,7 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
   @override
   void initState() {
     super.initState();
-    _managerService = ServiceInitializer.initialize(null, ManagerService);
+    _managerService = ServiceInitializer.initialize(null, null, ManagerService);
     _accountExpirationDate = widget._accountExpirationDate;
     _passwordVisible = false;
     _rePasswordVisible = false;

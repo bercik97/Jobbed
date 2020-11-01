@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-class EmployeeWorkdayDto {
+class WorkdayForEmployeeDto {
   final int id;
   final int number;
   final int hours;
@@ -8,7 +8,7 @@ class EmployeeWorkdayDto {
   final String workplaceName;
   final double money;
 
-  EmployeeWorkdayDto({
+  WorkdayForEmployeeDto({
     @required this.id,
     @required this.number,
     @required this.hours,
@@ -17,8 +17,8 @@ class EmployeeWorkdayDto {
     @required this.money,
   });
 
-  factory EmployeeWorkdayDto.fromJson(Map<String, dynamic> json) {
-    return EmployeeWorkdayDto(
+  factory WorkdayForEmployeeDto.fromJson(Map<String, dynamic> json) {
+    return WorkdayForEmployeeDto(
       id: json['id'] as int,
       number: json['number'] as int,
       hours: json['hours'] as int,

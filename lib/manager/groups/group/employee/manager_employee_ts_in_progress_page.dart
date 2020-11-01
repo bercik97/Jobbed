@@ -3,7 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:give_job/employee/dto/employee_timesheet_dto.dart';
+import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
+import 'package:give_job/api/workday/service/workday_service.dart';
+import 'package:give_job/api/workday/util/workday_util.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/dto/workday_dto.dart';
 import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
@@ -19,8 +22,6 @@ import 'package:give_job/shared/widget/circular_progress_indicator.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
-import 'package:give_job/shared/workdays/workday_service.dart';
-import 'package:give_job/shared/workdays/workday_util.dart';
 
 import '../../../../shared/libraries/constants.dart';
 import '../../../manager_app_bar_with_icons_legend.dart';
@@ -32,32 +33,28 @@ class ManagerEmployeeTsInProgressPage extends StatefulWidget {
   final String _employeeInfo;
   final String _employeeNationality;
   final String _currency;
-  final EmployeeTimesheetDto timesheet;
+  final TimesheetForEmployeeDto timesheet;
 
-  const ManagerEmployeeTsInProgressPage(this._model, this._employeeInfo,
-      this._employeeNationality, this._currency, this.timesheet);
+  const ManagerEmployeeTsInProgressPage(this._model, this._employeeInfo, this._employeeNationality, this._currency, this.timesheet);
 
   @override
-  _ManagerEmployeeTsInProgressPageState createState() =>
-      _ManagerEmployeeTsInProgressPageState();
+  _ManagerEmployeeTsInProgressPageState createState() => _ManagerEmployeeTsInProgressPageState();
 }
 
-class _ManagerEmployeeTsInProgressPageState
-    extends State<ManagerEmployeeTsInProgressPage> {
+class _ManagerEmployeeTsInProgressPageState extends State<ManagerEmployeeTsInProgressPage> {
   final TextEditingController _hoursController = new TextEditingController();
   final TextEditingController _ratingController = new TextEditingController();
   final TextEditingController _planController = new TextEditingController();
   final TextEditingController _opinionController = new TextEditingController();
-  final TextEditingController _vocationReasonController =
-      new TextEditingController();
+  final TextEditingController _vocationReasonController = new TextEditingController();
 
   GroupEmployeeModel _model;
-  SharedWorkdayService _sharedWorkdayService;
+  WorkdayService _workdayService;
   ManagerService _managerService;
   String _employeeInfo;
   String _employeeNationality;
   String _currency;
-  EmployeeTimesheetDto _timesheet;
+  TimesheetForEmployeeDto _timesheet;
 
   Set<int> selectedIds = new Set();
   List<WorkdayDto> workdays = new List();
@@ -73,9 +70,8 @@ class _ManagerEmployeeTsInProgressPageState
   @override
   Widget build(BuildContext context) {
     this._model = widget._model;
-    this._sharedWorkdayService =
-        new SharedWorkdayService(context, _model.user.authHeader);
-    this._managerService = new ManagerService(context, _model.user.authHeader);
+    this._workdayService = ServiceInitializer.initialize(context, _model.user.authHeader, WorkdayService);
+    this._managerService = ServiceInitializer.initialize(context, _model.user.authHeader, ManagerService);
     this._employeeInfo = widget._employeeInfo;
     this._employeeNationality = widget._employeeNationality;
     this._currency = widget._currency;
@@ -89,22 +85,14 @@ class _ManagerEmployeeTsInProgressPageState
           backgroundColor: DARK,
           appBar: managerAppBarWithIconsLegend(
               context,
-              getTranslated(context, 'workdays') +
-                  ' - ' +
-                  getTranslated(context, STATUS_IN_PROGRESS),
+              getTranslated(context, 'workdays') + ' - ' + getTranslated(context, STATUS_IN_PROGRESS),
               [
-                IconsLegend.buildRow('images/green-hours-icon.png',
-                    getTranslated(context, 'settingHours')),
-                IconsLegend.buildRow('images/green-rate-icon.png',
-                    getTranslated(context, 'settingRating')),
-                IconsLegend.buildRow('images/green-plan-icon.png',
-                    getTranslated(context, 'settingPlan')),
-                IconsLegend.buildRow('images/green-opinion-icon.png',
-                    getTranslated(context, 'settingOpinion')),
-                IconsLegend.buildRow('images/green-workplace-icon.png',
-                    getTranslated(context, 'settingWorkplace')),
-                IconsLegend.buildRow('images/small-vocation-icon.png',
-                    getTranslated(context, 'settingVocation')),
+                IconsLegend.buildRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
+                IconsLegend.buildRow('images/green-rate-icon.png', getTranslated(context, 'settingRating')),
+                IconsLegend.buildRow('images/green-plan-icon.png', getTranslated(context, 'settingPlan')),
+                IconsLegend.buildRow('images/green-opinion-icon.png', getTranslated(context, 'settingOpinion')),
+                IconsLegend.buildRow('images/green-workplace-icon.png', getTranslated(context, 'settingWorkplace')),
+                IconsLegend.buildRow('images/small-vocation-icon.png', getTranslated(context, 'settingVocation')),
               ],
               _model.user),
           drawer: managerSideBar(context, _model.user),
@@ -126,63 +114,43 @@ class _ManagerEmployeeTsInProgressPageState
                           fit: BoxFit.fitHeight,
                         ),
                       ),
-                      title: textWhiteBold(_timesheet.year.toString() +
-                          ' ' +
-                          MonthUtil.translateMonth(context, _timesheet.month)),
+                      title: textWhiteBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
                       subtitle: Column(
                         children: <Widget>[
                           Align(
                             alignment: Alignment.topLeft,
-                            child: textWhiteBold(_employeeInfo != null
-                                ? utf8.decode(_employeeInfo.runes.toList()) +
-                                    ' ' +
-                                    LanguageUtil.findFlagByNationality(
-                                        _employeeNationality)
-                                : getTranslated(context, 'empty')),
+                            child: textWhiteBold(_employeeInfo != null ? utf8.decode(_employeeInfo.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality) : getTranslated(context, 'empty')),
                           ),
                           Row(
                             children: <Widget>[
                               Align(
                                 alignment: Alignment.topLeft,
-                                child: textWhite(
-                                    getTranslated(context, 'hours') + ': '),
+                                child: textWhite(getTranslated(context, 'hours') + ': '),
                               ),
-                              textGreenBold(
-                                  _timesheet.numberOfHoursWorked.toString() +
-                                      'h'),
+                              textGreenBold(_timesheet.numberOfHoursWorked.toString() + 'h'),
                             ],
                           ),
                           Row(
                             children: <Widget>[
                               Align(
                                 alignment: Alignment.topLeft,
-                                child: textWhite(
-                                    getTranslated(context, 'averageRating') +
-                                        ': '),
+                                child: textWhite(getTranslated(context, 'averageRating') + ': '),
                               ),
-                              textGreenBold(
-                                  widget.timesheet.averageRating.toString()),
+                              textGreenBold(widget.timesheet.averageRating.toString()),
                             ],
                           ),
                         ],
                       ),
                       trailing: Wrap(
-                        children: <Widget>[
-                          text20GreenBold(
-                              widget.timesheet.amountOfEarnedMoney.toString()),
-                          text20GreenBold(' ' + _currency)
-                        ],
+                        children: <Widget>[text20GreenBold(widget.timesheet.amountOfEarnedMoney.toString()), text20GreenBold(' ' + _currency)],
                       ),
                     ),
                   ),
                 ),
                 FutureBuilder(
-                  future: _sharedWorkdayService
-                      .findWorkdaysByTimesheetId(_timesheet.id.toString()),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<WorkdayDto>> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting ||
-                        snapshot.data == null) {
+                  future: _workdayService.findWorkdaysByTimesheetId(_timesheet.id.toString()),
+                  builder: (BuildContext context, AsyncSnapshot<List<WorkdayDto>> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
                       return Padding(
                         padding: EdgeInsets.only(top: 50),
                         child: Center(child: circularProgressIndicator()),
@@ -198,122 +166,54 @@ class _ManagerEmployeeTsInProgressPageState
                             child: Theme(
                               data: Theme.of(context).copyWith(),
                               child: Theme(
-                                data: Theme.of(context)
-                                    .copyWith(dividerColor: MORE_BRIGHTER_DARK),
+                                data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
                                 child: DataTable(
                                   columnSpacing: 10,
                                   sortAscending: _sort,
                                   sortColumnIndex: _sortColumnIndex,
                                   columns: [
-                                    DataColumn(
-                                      label: textWhiteBold('No.'),
-                                      onSort: (columnIndex, ascending) =>
-                                          _onSortNo(columnIndex, ascending),
-                                    ),
-                                    DataColumn(
-                                      label: textWhiteBold(
-                                          getTranslated(context, 'hours')),
-                                      onSort: (columnIndex, ascending) =>
-                                          _onSortHours(columnIndex, ascending),
-                                    ),
-                                    DataColumn(
-                                      label: textWhiteBold(
-                                          getTranslated(context, 'rating')),
-                                      onSort: (columnIndex, ascending) =>
-                                          _onSortRatings(
-                                              columnIndex, ascending),
-                                    ),
-                                    DataColumn(
-                                      label: textWhiteBold(
-                                          getTranslated(context, 'money')),
-                                      onSort: (columnIndex, ascending) =>
-                                          _onSortMoney(columnIndex, ascending),
-                                    ),
-                                    DataColumn(
-                                      label: textWhiteBold(
-                                          getTranslated(context, 'plan')),
-                                      onSort: (columnIndex, ascending) =>
-                                          _onSortPlans(columnIndex, ascending),
-                                    ),
-                                    DataColumn(
-                                      label: textWhiteBold(
-                                          getTranslated(context, 'opinion')),
-                                      onSort: (columnIndex, ascending) =>
-                                          _onSortOpinions(
-                                              columnIndex, ascending),
-                                    ),
-                                    DataColumn(
-                                        label: textWhiteBold(getTranslated(
-                                            context, 'workplace'))),
-                                    DataColumn(
-                                        label: textWhiteBold(getTranslated(
-                                            context, 'vocations'))),
+                                    DataColumn(label: textWhiteBold('No.'), onSort: (columnIndex, ascending) => _onSortNo(columnIndex, ascending)),
+                                    DataColumn(label: textWhiteBold(getTranslated(context, 'hours')), onSort: (columnIndex, ascending) => _onSortHours(columnIndex, ascending)),
+                                    DataColumn(label: textWhiteBold(getTranslated(context, 'rating')), onSort: (columnIndex, ascending) => _onSortRatings(columnIndex, ascending)),
+                                    DataColumn(label: textWhiteBold(getTranslated(context, 'money')), onSort: (columnIndex, ascending) => _onSortMoney(columnIndex, ascending)),
+                                    DataColumn(label: textWhiteBold(getTranslated(context, 'plan')), onSort: (columnIndex, ascending) => _onSortPlans(columnIndex, ascending)),
+                                    DataColumn(label: textWhiteBold(getTranslated(context, 'opinion')), onSort: (columnIndex, ascending) => _onSortOpinions(columnIndex, ascending)),
+                                    DataColumn(label: textWhiteBold(getTranslated(context, 'workplace'))),
+                                    DataColumn(label: textWhiteBold(getTranslated(context, 'vocations'))),
                                   ],
                                   rows: this
                                       .workdays
                                       .map(
                                         (workday) => DataRow(
-                                          selected:
-                                              selectedIds.contains(workday.id),
+                                          selected: selectedIds.contains(workday.id),
                                           onSelectChanged: (bool selected) {
                                             onSelectedRow(selected, workday.id);
                                           },
                                           cells: [
-                                            DataCell(textWhite(
-                                                workday.number.toString())),
-                                            DataCell(textWhite(
-                                                workday.hours.toString())),
-                                            DataCell(textWhite(
-                                                workday.rating.toString())),
-                                            DataCell(textWhite(
-                                                workday.money.toString())),
+                                            DataCell(textWhite(workday.number.toString())),
+                                            DataCell(textWhite(workday.hours.toString())),
+                                            DataCell(textWhite(workday.rating.toString())),
+                                            DataCell(textWhite(workday.money.toString())),
                                             DataCell(
-                                              Wrap(
-                                                children: <Widget>[
-                                                  workday.plan != null &&
-                                                          workday.plan != ''
-                                                      ? iconWhite(Icons.zoom_in)
-                                                      : textWhiteBold('-'),
-                                                ],
-                                              ),
-                                              onTap: () => _editPlan(
-                                                  this.context,
-                                                  workday.id,
-                                                  workday.plan),
+                                              Wrap(children: <Widget>[workday.plan != null && workday.plan != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-')]),
+                                              onTap: () => _editPlan(this.context, workday.id, workday.plan),
                                             ),
                                             DataCell(
                                               Wrap(
                                                 children: <Widget>[
-                                                  workday.opinion != null &&
-                                                          workday.opinion != ''
-                                                      ? iconWhite(Icons.zoom_in)
-                                                      : textWhiteBold('-'),
+                                                  workday.opinion != null && workday.opinion != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
                                                 ],
                                               ),
-                                              onTap: () => _editOpinion(
-                                                  this.context,
-                                                  workday.id,
-                                                  workday.opinion),
+                                              onTap: () => _editOpinion(this.context, workday.id, workday.opinion),
                                             ),
                                             DataCell(
                                               Wrap(
                                                 children: <Widget>[
-                                                  workday.workplace != null &&
-                                                          workday.workplace
-                                                                  .name !=
-                                                              ''
-                                                      ? iconWhite(Icons.zoom_in)
-                                                      : textWhiteBold('-'),
+                                                  workday.workplace != null && workday.workplace.name != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
                                                 ],
                                               ),
                                               onTap: () => {
-                                                WorkdayUtil
-                                                    .showScrollableDialog(
-                                                        this.context,
-                                                        getTranslated(
-                                                            this.context,
-                                                            'workplace'),
-                                                        workday.workplace.name),
+                                                WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'workplace'), workday.workplace.name),
                                               },
                                             ),
                                             DataCell(
@@ -321,30 +221,12 @@ class _ManagerEmployeeTsInProgressPageState
                                                   children: <Widget>[
                                                     workday.vocation != null
                                                         ? Row(
-                                                            children: [
-                                                              Image(
-                                                                  height: 35,
-                                                                  image: AssetImage(
-                                                                      'images/big-vocation-icon.png')),
-                                                              workday.vocation
-                                                                          .verified ==
-                                                                      true
-                                                                  ? iconGreen(
-                                                                      Icons
-                                                                          .check)
-                                                                  : iconRed(Icons
-                                                                      .clear)
-                                                            ],
+                                                            children: [Image(height: 35, image: AssetImage('images/big-vocation-icon.png')), workday.vocation.verified == true ? iconGreen(Icons.check) : iconRed(Icons.clear)],
                                                           )
                                                         : textWhiteBold('-'),
                                                   ],
                                                 ),
-                                                onTap: () => WorkdayUtil
-                                                    .showVocationReasonDetails(
-                                                        this.context,
-                                                        workday.vocation.reason,
-                                                        workday.vocation
-                                                            .verified)),
+                                                onTap: () => WorkdayUtil.showVocationReasonDetails(this.context, workday.vocation.reason, workday.vocation.verified)),
                                           ],
                                         ),
                                       )
@@ -369,22 +251,9 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child:
-                        Image(image: AssetImage('images/dark-hours-icon.png')),
+                    child: Image(image: AssetImage('images/dark-hours-icon.png')),
                     onPressed: () => {
-                      if (selectedIds.isNotEmpty)
-                        {
-                          _hoursController.clear(),
-                          _showUpdateHoursDialog(selectedIds)
-                        }
-                      else
-                        {
-                          showHint(
-                              context,
-                              getTranslated(context, 'needToSelectRecords') +
-                                  ' ',
-                              getTranslated(context, 'whichYouWantToUpdate'))
-                        }
+                      if (selectedIds.isNotEmpty) {_hoursController.clear(), _showUpdateHoursDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
                     },
                   ),
                 ),
@@ -392,22 +261,9 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child:
-                        Image(image: AssetImage('images/dark-rate-icon.png')),
+                    child: Image(image: AssetImage('images/dark-rate-icon.png')),
                     onPressed: () => {
-                      if (selectedIds.isNotEmpty)
-                        {
-                          _ratingController.clear(),
-                          _showUpdateRatingDialog(selectedIds)
-                        }
-                      else
-                        {
-                          showHint(
-                              context,
-                              getTranslated(context, 'needToSelectRecords') +
-                                  ' ',
-                              getTranslated(context, 'whichYouWantToUpdate'))
-                        }
+                      if (selectedIds.isNotEmpty) {_ratingController.clear(), _showUpdateRatingDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
                     },
                   ),
                 ),
@@ -415,22 +271,9 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child:
-                        Image(image: AssetImage('images/dark-plan-icon.png')),
+                    child: Image(image: AssetImage('images/dark-plan-icon.png')),
                     onPressed: () => {
-                      if (selectedIds.isNotEmpty)
-                        {
-                          _planController.clear(),
-                          _showUpdatePlanDialog(selectedIds)
-                        }
-                      else
-                        {
-                          showHint(
-                              context,
-                              getTranslated(context, 'needToSelectRecords') +
-                                  ' ',
-                              getTranslated(context, 'whichYouWantToUpdate'))
-                        }
+                      if (selectedIds.isNotEmpty) {_planController.clear(), _showUpdatePlanDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
                     },
                   ),
                 ),
@@ -438,22 +281,9 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: Image(
-                        image: AssetImage('images/dark-opinion-icon.png')),
+                    child: Image(image: AssetImage('images/dark-opinion-icon.png')),
                     onPressed: () => {
-                      if (selectedIds.isNotEmpty)
-                        {
-                          _opinionController.clear(),
-                          _showUpdateOpinionDialog(selectedIds)
-                        }
-                      else
-                        {
-                          showHint(
-                              context,
-                              getTranslated(context, 'needToSelectRecords') +
-                                  ' ',
-                              getTranslated(context, 'whichYouWantToUpdate'))
-                        }
+                      if (selectedIds.isNotEmpty) {_opinionController.clear(), _showUpdateOpinionDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
                     },
                   ),
                 ),
@@ -461,16 +291,14 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: Image(
-                        image: AssetImage('images/dark-workplace-icon.png')),
+                    child: Image(image: AssetImage('images/dark-workplace-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {
                           Navigator.push(
                             this.context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  SelectWorkplaceForSelectedWorkdaysPage(
+                              builder: (context) => SelectWorkplaceForSelectedWorkdaysPage(
                                 _model,
                                 _timesheet,
                                 _employeeInfo,
@@ -482,13 +310,7 @@ class _ManagerEmployeeTsInProgressPageState
                           ),
                         }
                       else
-                        {
-                          showHint(
-                              context,
-                              getTranslated(context, 'needToSelectRecords') +
-                                  ' ',
-                              getTranslated(context, 'whichYouWantToUpdate'))
-                        }
+                        {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
                     },
                   ),
                 ),
@@ -496,23 +318,9 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: Image(
-                        image: AssetImage('images/dark-vocation-icon.png')),
+                    child: Image(image: AssetImage('images/dark-vocation-icon.png')),
                     onPressed: () => {
-                      if (selectedIds.isNotEmpty)
-                        {
-                          _vocationReasonController.clear(),
-                          _showUpdateVocationReasonDialog(
-                              _timesheet, selectedIds)
-                        }
-                      else
-                        {
-                          showHint(
-                              context,
-                              getTranslated(context, 'needToSelectRecords') +
-                                  ' ',
-                              getTranslated(context, 'whichYouWantToUpdate'))
-                        }
+                      if (selectedIds.isNotEmpty) {_vocationReasonController.clear(), _showUpdateVocationReasonDialog(_timesheet, selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
                     },
                   ),
                 ),
@@ -533,24 +341,15 @@ class _ManagerEmployeeTsInProgressPageState
           backgroundColor: DARK,
           appBar: managerAppBarWithIconsLegend(
               context,
-              getTranslated(context, 'workdays') +
-                  ' - ' +
-                  getTranslated(context, STATUS_IN_PROGRESS),
+              getTranslated(context, 'workdays') + ' - ' + getTranslated(context, STATUS_IN_PROGRESS),
               [
-                IconsLegend.buildRow('images/unchecked.png',
-                    getTranslated(context, 'tsInProgress')),
-                IconsLegend.buildRow('images/green-hours-icon.png',
-                    getTranslated(context, 'settingHours')),
-                IconsLegend.buildRow('images/green-rate-icon.png',
-                    getTranslated(context, 'settingRating')),
-                IconsLegend.buildRow('images/green-plan-icon.png',
-                    getTranslated(context, 'settingPlan')),
-                IconsLegend.buildRow('images/green-opinion-icon.png',
-                    getTranslated(context, 'settingOpinion')),
-                IconsLegend.buildRow('images/green-workplace-icon.png',
-                    getTranslated(context, 'settingWorkplace')),
-                IconsLegend.buildRow('images/small-vocation-icon.png',
-                    getTranslated(context, 'settingVocation')),
+                IconsLegend.buildRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
+                IconsLegend.buildRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
+                IconsLegend.buildRow('images/green-rate-icon.png', getTranslated(context, 'settingRating')),
+                IconsLegend.buildRow('images/green-plan-icon.png', getTranslated(context, 'settingPlan')),
+                IconsLegend.buildRow('images/green-opinion-icon.png', getTranslated(context, 'settingOpinion')),
+                IconsLegend.buildRow('images/green-workplace-icon.png', getTranslated(context, 'settingWorkplace')),
+                IconsLegend.buildRow('images/small-vocation-icon.png', getTranslated(context, 'settingVocation')),
               ],
               _model.user),
           drawer: managerSideBar(context, _model.user),
@@ -572,52 +371,35 @@ class _ManagerEmployeeTsInProgressPageState
                           fit: BoxFit.fitHeight,
                         ),
                       ),
-                      title: textWhiteBold(_timesheet.year.toString() +
-                          ' ' +
-                          MonthUtil.translateMonth(context, _timesheet.month)),
+                      title: textWhiteBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
                       subtitle: Column(
                         children: <Widget>[
                           Align(
                             alignment: Alignment.topLeft,
-                            child: textWhiteBold(_employeeInfo != null
-                                ? utf8.decode(_employeeInfo.runes.toList()) +
-                                    ' ' +
-                                    LanguageUtil.findFlagByNationality(
-                                        _employeeNationality)
-                                : getTranslated(context, 'empty')),
+                            child: textWhiteBold(_employeeInfo != null ? utf8.decode(_employeeInfo.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality) : getTranslated(context, 'empty')),
                           ),
                           Row(
                             children: <Widget>[
                               Align(
                                 alignment: Alignment.topLeft,
-                                child: textWhite(
-                                    getTranslated(context, 'hours') + ': '),
+                                child: textWhite(getTranslated(context, 'hours') + ': '),
                               ),
-                              textGreenBold(
-                                  _timesheet.numberOfHoursWorked.toString() +
-                                      'h'),
+                              textGreenBold(_timesheet.numberOfHoursWorked.toString() + 'h'),
                             ],
                           ),
                           Row(
                             children: <Widget>[
                               Align(
                                 alignment: Alignment.topLeft,
-                                child: textWhite(
-                                    getTranslated(context, 'averageRating') +
-                                        ': '),
+                                child: textWhite(getTranslated(context, 'averageRating') + ': '),
                               ),
-                              textGreenBold(
-                                  widget.timesheet.averageRating.toString()),
+                              textGreenBold(widget.timesheet.averageRating.toString()),
                             ],
                           ),
                         ],
                       ),
                       trailing: Wrap(
-                        children: <Widget>[
-                          text20GreenBold(
-                              _timesheet.amountOfEarnedMoney.toString()),
-                          text20GreenBold(' ' + _currency)
-                        ],
+                        children: <Widget>[text20GreenBold(_timesheet.amountOfEarnedMoney.toString()), text20GreenBold(' ' + _currency)],
                       ),
                     ),
                   ),
@@ -630,54 +412,20 @@ class _ManagerEmployeeTsInProgressPageState
                       child: Theme(
                         data: Theme.of(context).copyWith(),
                         child: Theme(
-                          data: Theme.of(context)
-                              .copyWith(dividerColor: MORE_BRIGHTER_DARK),
+                          data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
                           child: DataTable(
                             columnSpacing: 10,
                             sortAscending: _sort,
                             sortColumnIndex: _sortColumnIndex,
                             columns: [
-                              DataColumn(
-                                label: textWhiteBold('No.'),
-                                onSort: (columnIndex, ascending) =>
-                                    _onSortNo(columnIndex, ascending),
-                              ),
-                              DataColumn(
-                                label: textWhiteBold(
-                                    getTranslated(context, 'hours')),
-                                onSort: (columnIndex, ascending) =>
-                                    _onSortHours(columnIndex, ascending),
-                              ),
-                              DataColumn(
-                                label: textWhiteBold(
-                                    getTranslated(context, 'rating')),
-                                onSort: (columnIndex, ascending) =>
-                                    _onSortRatings(columnIndex, ascending),
-                              ),
-                              DataColumn(
-                                label: textWhiteBold(
-                                    getTranslated(context, 'money')),
-                                onSort: (columnIndex, ascending) =>
-                                    _onSortMoney(columnIndex, ascending),
-                              ),
-                              DataColumn(
-                                label: textWhiteBold(
-                                    getTranslated(context, 'plan')),
-                                onSort: (columnIndex, ascending) =>
-                                    _onSortPlans(columnIndex, ascending),
-                              ),
-                              DataColumn(
-                                label: textWhiteBold(
-                                    getTranslated(context, 'opinion')),
-                                onSort: (columnIndex, ascending) =>
-                                    _onSortOpinions(columnIndex, ascending),
-                              ),
-                              DataColumn(
-                                  label: textWhiteBold(
-                                      getTranslated(context, 'workplace'))),
-                              DataColumn(
-                                  label: textWhiteBold(
-                                      getTranslated(context, 'vocations'))),
+                              DataColumn(label: textWhiteBold('No.'), onSort: (columnIndex, ascending) => _onSortNo(columnIndex, ascending)),
+                              DataColumn(label: textWhiteBold(getTranslated(context, 'hours')), onSort: (columnIndex, ascending) => _onSortHours(columnIndex, ascending)),
+                              DataColumn(label: textWhiteBold(getTranslated(context, 'rating')), onSort: (columnIndex, ascending) => _onSortRatings(columnIndex, ascending)),
+                              DataColumn(label: textWhiteBold(getTranslated(context, 'money')), onSort: (columnIndex, ascending) => _onSortMoney(columnIndex, ascending)),
+                              DataColumn(label: textWhiteBold(getTranslated(context, 'plan')), onSort: (columnIndex, ascending) => _onSortPlans(columnIndex, ascending)),
+                              DataColumn(label: textWhiteBold(getTranslated(context, 'opinion')), onSort: (columnIndex, ascending) => _onSortOpinions(columnIndex, ascending)),
+                              DataColumn(label: textWhiteBold(getTranslated(context, 'workplace'))),
+                              DataColumn(label: textWhiteBold(getTranslated(context, 'vocations'))),
                             ],
                             rows: this
                                 .workdays
@@ -688,53 +436,34 @@ class _ManagerEmployeeTsInProgressPageState
                                       onSelectedRow(selected, workday.id);
                                     },
                                     cells: [
-                                      DataCell(
-                                          textWhite(workday.number.toString())),
-                                      DataCell(
-                                          textWhite(workday.hours.toString())),
-                                      DataCell(
-                                          textWhite(workday.rating.toString())),
-                                      DataCell(
-                                          textWhite(workday.money.toString())),
+                                      DataCell(textWhite(workday.number.toString())),
+                                      DataCell(textWhite(workday.hours.toString())),
+                                      DataCell(textWhite(workday.rating.toString())),
+                                      DataCell(textWhite(workday.money.toString())),
                                       DataCell(
                                         Wrap(
                                           children: <Widget>[
-                                            workday.plan != null &&
-                                                    workday.plan != ''
-                                                ? iconWhite(Icons.zoom_in)
-                                                : textWhiteBold('-'),
+                                            workday.plan != null && workday.plan != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
                                           ],
                                         ),
-                                        onTap: () => _editPlan(this.context,
-                                            workday.id, workday.plan),
+                                        onTap: () => _editPlan(this.context, workday.id, workday.plan),
                                       ),
                                       DataCell(
                                         Wrap(
                                           children: <Widget>[
-                                            workday.opinion != null &&
-                                                    workday.opinion != ''
-                                                ? iconWhite(Icons.zoom_in)
-                                                : textWhiteBold('-'),
+                                            workday.opinion != null && workday.opinion != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
                                           ],
                                         ),
-                                        onTap: () => _editOpinion(this.context,
-                                            workday.id, workday.opinion),
+                                        onTap: () => _editOpinion(this.context, workday.id, workday.opinion),
                                       ),
                                       DataCell(
                                         Wrap(
                                           children: <Widget>[
-                                            workday.workplace != null &&
-                                                    workday.workplace.name != ''
-                                                ? iconWhite(Icons.zoom_in)
-                                                : textWhiteBold('-'),
+                                            workday.workplace != null && workday.workplace.name != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
                                           ],
                                         ),
                                         onTap: () => {
-                                          WorkdayUtil.showScrollableDialog(
-                                              this.context,
-                                              getTranslated(
-                                                  this.context, 'workplace'),
-                                              workday.workplace.name),
+                                          WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'workplace'), workday.workplace.name),
                                         },
                                       ),
                                       DataCell(
@@ -742,28 +471,12 @@ class _ManagerEmployeeTsInProgressPageState
                                             children: <Widget>[
                                               workday.vocation != null
                                                   ? Row(
-                                                      children: [
-                                                        Image(
-                                                            height: 35,
-                                                            image: AssetImage(
-                                                                'images/big-vocation-icon.png')),
-                                                        workday.vocation
-                                                                    .verified ==
-                                                                true
-                                                            ? iconGreen(
-                                                                Icons.check)
-                                                            : iconRed(
-                                                                Icons.clear)
-                                                      ],
+                                                      children: [Image(height: 35, image: AssetImage('images/big-vocation-icon.png')), workday.vocation.verified == true ? iconGreen(Icons.check) : iconRed(Icons.clear)],
                                                     )
                                                   : textWhiteBold('-'),
                                             ],
                                           ),
-                                          onTap: () => WorkdayUtil
-                                              .showVocationReasonDetails(
-                                                  this.context,
-                                                  workday.vocation.reason,
-                                                  workday.vocation.verified)),
+                                          onTap: () => WorkdayUtil.showVocationReasonDetails(this.context, workday.vocation.reason, workday.vocation.verified)),
                                     ],
                                   ),
                                 )
@@ -785,22 +498,9 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child:
-                        Image(image: AssetImage('images/dark-hours-icon.png')),
+                    child: Image(image: AssetImage('images/dark-hours-icon.png')),
                     onPressed: () => {
-                      if (selectedIds.isNotEmpty)
-                        {
-                          _hoursController.clear(),
-                          _showUpdateHoursDialog(selectedIds)
-                        }
-                      else
-                        {
-                          showHint(
-                              context,
-                              getTranslated(context, 'needToSelectRecords') +
-                                  ' ',
-                              getTranslated(context, 'whichYouWantToUpdate'))
-                        }
+                      if (selectedIds.isNotEmpty) {_hoursController.clear(), _showUpdateHoursDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
                     },
                   ),
                 ),
@@ -808,22 +508,9 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child:
-                        Image(image: AssetImage('images/dark-rate-icon.png')),
+                    child: Image(image: AssetImage('images/dark-rate-icon.png')),
                     onPressed: () => {
-                      if (selectedIds.isNotEmpty)
-                        {
-                          _ratingController.clear(),
-                          _showUpdateRatingDialog(selectedIds)
-                        }
-                      else
-                        {
-                          showHint(
-                              context,
-                              getTranslated(context, 'needToSelectRecords') +
-                                  ' ',
-                              getTranslated(context, 'whichYouWantToUpdate'))
-                        }
+                      if (selectedIds.isNotEmpty) {_ratingController.clear(), _showUpdateRatingDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
                     },
                   ),
                 ),
@@ -831,22 +518,9 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child:
-                        Image(image: AssetImage('images/dark-plan-icon.png')),
+                    child: Image(image: AssetImage('images/dark-plan-icon.png')),
                     onPressed: () => {
-                      if (selectedIds.isNotEmpty)
-                        {
-                          _planController.clear(),
-                          _showUpdatePlanDialog(selectedIds)
-                        }
-                      else
-                        {
-                          showHint(
-                              context,
-                              getTranslated(context, 'needToSelectRecords') +
-                                  ' ',
-                              getTranslated(context, 'whichYouWantToUpdate'))
-                        }
+                      if (selectedIds.isNotEmpty) {_planController.clear(), _showUpdatePlanDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
                     },
                   ),
                 ),
@@ -854,22 +528,9 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: Image(
-                        image: AssetImage('images/dark-opinion-icon.png')),
+                    child: Image(image: AssetImage('images/dark-opinion-icon.png')),
                     onPressed: () => {
-                      if (selectedIds.isNotEmpty)
-                        {
-                          _opinionController.clear(),
-                          _showUpdateOpinionDialog(selectedIds)
-                        }
-                      else
-                        {
-                          showHint(
-                              context,
-                              getTranslated(context, 'needToSelectRecords') +
-                                  ' ',
-                              getTranslated(context, 'whichYouWantToUpdate'))
-                        }
+                      if (selectedIds.isNotEmpty) {_opinionController.clear(), _showUpdateOpinionDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
                     },
                   ),
                 ),
@@ -877,16 +538,14 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: Image(
-                        image: AssetImage('images/dark-workplace-icon.png')),
+                    child: Image(image: AssetImage('images/dark-workplace-icon.png')),
                     onPressed: () => {
                       if (selectedIds.isNotEmpty)
                         {
                           Navigator.push(
                             this.context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  SelectWorkplaceForSelectedWorkdaysPage(
+                              builder: (context) => SelectWorkplaceForSelectedWorkdaysPage(
                                 _model,
                                 _timesheet,
                                 _employeeInfo,
@@ -898,13 +557,7 @@ class _ManagerEmployeeTsInProgressPageState
                           ),
                         }
                       else
-                        {
-                          showHint(
-                              context,
-                              getTranslated(context, 'needToSelectRecords') +
-                                  ' ',
-                              getTranslated(context, 'whichYouWantToUpdate'))
-                        }
+                        {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
                     },
                   ),
                 ),
@@ -912,23 +565,9 @@ class _ManagerEmployeeTsInProgressPageState
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: Image(
-                        image: AssetImage('images/dark-vocation-icon.png')),
+                    child: Image(image: AssetImage('images/dark-vocation-icon.png')),
                     onPressed: () => {
-                      if (selectedIds.isNotEmpty)
-                        {
-                          _vocationReasonController.clear(),
-                          _showUpdateVocationReasonDialog(
-                              _timesheet, selectedIds)
-                        }
-                      else
-                        {
-                          showHint(
-                              context,
-                              getTranslated(context, 'needToSelectRecords') +
-                                  ' ',
-                              getTranslated(context, 'whichYouWantToUpdate'))
-                        }
+                      if (selectedIds.isNotEmpty) {_vocationReasonController.clear(), _showUpdateVocationReasonDialog(_timesheet, selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
                     },
                   ),
                 ),
@@ -944,9 +583,7 @@ class _ManagerEmployeeTsInProgressPageState
   }
 
   Future<Null> _refresh() {
-    return _sharedWorkdayService
-        .findWorkdaysByTimesheetId(_timesheet.id.toString())
-        .then((_workdays) {
+    return _workdayService.findWorkdaysByTimesheetId(_timesheet.id.toString()).then((_workdays) {
       setState(() {
         workdays = _workdays;
       });
@@ -1064,10 +701,7 @@ class _ManagerEmployeeTsInProgressPageState
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(top: 50),
-                      child: text20GreenBold(
-                          getTranslated(context, 'hoursUpperCase'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'hoursUpperCase'))),
                   SizedBox(height: 2.5),
                   textGreen(getTranslated(context, 'setHoursForSelectedDays')),
                   Container(
@@ -1076,9 +710,7 @@ class _ManagerEmployeeTsInProgressPageState
                       autofocus: true,
                       controller: _hoursController,
                       keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        WhitelistingTextInputFormatter.digitsOnly
-                      ],
+                      inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
                       maxLength: 2,
                       cursorColor: WHITE,
                       textAlignVertical: TextAlignVertical.center,
@@ -1086,8 +718,7 @@ class _ManagerEmployeeTsInProgressPageState
                       decoration: InputDecoration(
                         counterStyle: TextStyle(color: WHITE),
                         labelStyle: TextStyle(color: WHITE),
-                        labelText:
-                            getTranslated(context, 'newHours') + ' (0-24)',
+                        labelText: getTranslated(context, 'newHours') + ' (0-24)',
                       ),
                     ),
                   ),
@@ -1099,8 +730,7 @@ class _ManagerEmployeeTsInProgressPageState
                         elevation: 0,
                         height: 50,
                         minWidth: 40,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.close)],
@@ -1112,8 +742,7 @@ class _ManagerEmployeeTsInProgressPageState
                       MaterialButton(
                         elevation: 0,
                         height: 50,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
@@ -1124,25 +753,19 @@ class _ManagerEmployeeTsInProgressPageState
                           try {
                             hours = int.parse(_hoursController.text);
                           } catch (FormatException) {
-                            ToastService.showErrorToast(getTranslated(
-                                context, 'givenValueIsNotANumber'));
+                            ToastService.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
                             return;
                           }
-                          String invalidMessage =
-                              ValidatorService.validateUpdatingHours(
-                                  hours, context);
+                          String invalidMessage = ValidatorService.validateUpdatingHours(hours, context);
                           if (invalidMessage != null) {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
-                          _managerService
-                              .updateWorkdaysHours(selectedIds, hours)
-                              .then(
+                          _managerService.updateWorkdaysHours(selectedIds, hours).then(
                             (res) {
                               Navigator.of(context).pop();
                               selectedIds.clear();
-                              ToastService.showSuccessToast(getTranslated(
-                                  context, 'hoursUpdatedSuccessfully'));
+                              ToastService.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
                               _refresh();
                             },
                           );
@@ -1174,10 +797,7 @@ class _ManagerEmployeeTsInProgressPageState
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(top: 50),
-                      child: text20GreenBold(
-                          getTranslated(context, 'ratingUpperCase'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'ratingUpperCase'))),
                   SizedBox(height: 2.5),
                   textGreen(getTranslated(context, 'setRatingForSelectedDays')),
                   Container(
@@ -1186,9 +806,7 @@ class _ManagerEmployeeTsInProgressPageState
                       autofocus: true,
                       controller: _ratingController,
                       keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        WhitelistingTextInputFormatter.digitsOnly
-                      ],
+                      inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
                       maxLength: 2,
                       cursorColor: WHITE,
                       textAlignVertical: TextAlignVertical.center,
@@ -1196,8 +814,7 @@ class _ManagerEmployeeTsInProgressPageState
                       decoration: InputDecoration(
                         counterStyle: TextStyle(color: WHITE),
                         labelStyle: TextStyle(color: WHITE),
-                        labelText:
-                            getTranslated(context, 'newRating') + ' (1-10)',
+                        labelText: getTranslated(context, 'newRating') + ' (1-10)',
                       ),
                     ),
                   ),
@@ -1209,8 +826,7 @@ class _ManagerEmployeeTsInProgressPageState
                         elevation: 0,
                         height: 50,
                         minWidth: 40,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.close)],
@@ -1222,8 +838,7 @@ class _ManagerEmployeeTsInProgressPageState
                       MaterialButton(
                         elevation: 0,
                         height: 50,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
@@ -1234,24 +849,18 @@ class _ManagerEmployeeTsInProgressPageState
                           try {
                             rating = int.parse(_ratingController.text);
                           } catch (FormatException) {
-                            ToastService.showErrorToast(getTranslated(
-                                context, 'givenValueIsNotANumber'));
+                            ToastService.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
                             return;
                           }
-                          String invalidMessage =
-                              ValidatorService.validateUpdatingRating(
-                                  rating, context);
+                          String invalidMessage = ValidatorService.validateUpdatingRating(rating, context);
                           if (invalidMessage != null) {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
-                          _managerService
-                              .updateWorkdaysRating(selectedIds, rating)
-                              .then((res) {
+                          _managerService.updateWorkdaysRating(selectedIds, rating).then((res) {
                             Navigator.of(context).pop();
                             selectedIds.clear();
-                            ToastService.showSuccessToast(getTranslated(
-                                context, 'ratingUpdatedSuccessfully'));
+                            ToastService.showSuccessToast(getTranslated(context, 'ratingUpdatedSuccessfully'));
                             _refresh();
                           });
                         },
@@ -1282,10 +891,7 @@ class _ManagerEmployeeTsInProgressPageState
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(top: 50),
-                      child: text20GreenBold(
-                          getTranslated(context, 'planUpperCase'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'planUpperCase'))),
                   SizedBox(height: 2.5),
                   textGreen(getTranslated(context, 'planForSelectedDays')),
                   SizedBox(height: 20),
@@ -1320,8 +926,7 @@ class _ManagerEmployeeTsInProgressPageState
                         elevation: 0,
                         height: 50,
                         minWidth: 40,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.close)],
@@ -1333,8 +938,7 @@ class _ManagerEmployeeTsInProgressPageState
                       MaterialButton(
                         elevation: 0,
                         height: 50,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
@@ -1342,20 +946,15 @@ class _ManagerEmployeeTsInProgressPageState
                         color: GREEN,
                         onPressed: () {
                           String plan = _planController.text;
-                          String invalidMessage =
-                              ValidatorService.validateUpdatingPlan(
-                                  plan, context);
+                          String invalidMessage = ValidatorService.validateUpdatingPlan(plan, context);
                           if (invalidMessage != null) {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
-                          _managerService
-                              .updateWorkdaysPlan(selectedIds, plan)
-                              .then((res) {
+                          _managerService.updateWorkdaysPlan(selectedIds, plan).then((res) {
                             Navigator.of(context).pop();
                             selectedIds.clear();
-                            ToastService.showSuccessToast(getTranslated(
-                                context, 'planUpdatedSuccessfully'));
+                            ToastService.showSuccessToast(getTranslated(context, 'planUpdatedSuccessfully'));
                             _refresh();
                           });
                         },
@@ -1386,13 +985,9 @@ class _ManagerEmployeeTsInProgressPageState
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(top: 50),
-                      child: text20GreenBold(
-                          getTranslated(context, 'opinionUpperCase'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'opinionUpperCase'))),
                   SizedBox(height: 2.5),
-                  textGreen(
-                      getTranslated(context, 'setOpinionForSelectedDays')),
+                  textGreen(getTranslated(context, 'setOpinionForSelectedDays')),
                   SizedBox(height: 20),
                   Padding(
                     padding: EdgeInsets.only(left: 25, right: 25),
@@ -1425,8 +1020,7 @@ class _ManagerEmployeeTsInProgressPageState
                         elevation: 0,
                         height: 50,
                         minWidth: 40,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.close)],
@@ -1438,8 +1032,7 @@ class _ManagerEmployeeTsInProgressPageState
                       MaterialButton(
                         elevation: 0,
                         height: 50,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
@@ -1447,20 +1040,15 @@ class _ManagerEmployeeTsInProgressPageState
                         color: GREEN,
                         onPressed: () {
                           String opinion = _opinionController.text;
-                          String invalidMessage =
-                              ValidatorService.validateUpdatingOpinion(
-                                  opinion, context);
+                          String invalidMessage = ValidatorService.validateUpdatingOpinion(opinion, context);
                           if (invalidMessage != null) {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
                           Navigator.of(context).pop();
-                          _managerService
-                              .updateWorkdaysOpinion(selectedIds, opinion)
-                              .then((res) {
+                          _managerService.updateWorkdaysOpinion(selectedIds, opinion).then((res) {
                             selectedIds.clear();
-                            ToastService.showSuccessToast(getTranslated(
-                                context, 'opinionUpdatedSuccessfully'));
+                            ToastService.showSuccessToast(getTranslated(context, 'opinionUpdatedSuccessfully'));
                             _refresh();
                           });
                         },
@@ -1476,8 +1064,7 @@ class _ManagerEmployeeTsInProgressPageState
     );
   }
 
-  void _showUpdateVocationReasonDialog(
-      EmployeeTimesheetDto timesheet, Set<int> selectedIds) {
+  void _showUpdateVocationReasonDialog(TimesheetForEmployeeDto timesheet, Set<int> selectedIds) {
     showGeneralDialog(
       context: context,
       barrierColor: DARK.withOpacity(0.95),
@@ -1492,13 +1079,9 @@ class _ManagerEmployeeTsInProgressPageState
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(top: 50),
-                      child: text20GreenBold(
-                          getTranslated(context, 'vocationUpperCase'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'vocationUpperCase'))),
                   SizedBox(height: 2.5),
-                  textGreen(getTranslated(
-                      context, 'setVocationReasonForSelectedDays')),
+                  textGreen(getTranslated(context, 'setVocationReasonForSelectedDays')),
                   SizedBox(height: 20),
                   Padding(
                     padding: EdgeInsets.only(left: 25, right: 25),
@@ -1531,8 +1114,7 @@ class _ManagerEmployeeTsInProgressPageState
                         elevation: 0,
                         height: 50,
                         minWidth: 40,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.close)],
@@ -1544,36 +1126,23 @@ class _ManagerEmployeeTsInProgressPageState
                       MaterialButton(
                         elevation: 0,
                         height: 50,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
                         ),
                         color: GREEN,
                         onPressed: () {
-                          String vocationReason =
-                              _vocationReasonController.text;
-                          String invalidMessage =
-                              ValidatorService.validateVocationReason(
-                                  vocationReason, context);
+                          String vocationReason = _vocationReasonController.text;
+                          String invalidMessage = ValidatorService.validateVocationReason(vocationReason, context);
                           if (invalidMessage != null) {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
                           Navigator.of(context).pop();
-                          _managerService
-                              .createOrUpdateVocationForSelectedDays(
-                                  vocationReason,
-                                  selectedIds,
-                                  timesheet.year,
-                                  MonthUtil.findMonthNumberByMonthName(
-                                      context, timesheet.month),
-                                  STATUS_IN_PROGRESS)
-                              .then((res) {
+                          _managerService.createOrUpdateVocationForSelectedDays(vocationReason, selectedIds, timesheet.year, MonthUtil.findMonthNumberByMonthName(context, timesheet.month), STATUS_IN_PROGRESS).then((res) {
                             selectedIds.clear();
-                            ToastService.showSuccessToast(getTranslated(
-                                context, 'vocationUpdatedSuccessfully'));
+                            ToastService.showSuccessToast(getTranslated(context, 'vocationUpdatedSuccessfully'));
                             _refresh();
                           });
                         },
@@ -1591,9 +1160,7 @@ class _ManagerEmployeeTsInProgressPageState
 
   void _editPlan(BuildContext context, int workdayId, String plan) {
     TextEditingController _planController = new TextEditingController();
-    _planController.text = plan != null
-        ? utf8.decode(plan != null ? plan.runes.toList() : '-')
-        : null;
+    _planController.text = plan != null ? utf8.decode(plan != null ? plan.runes.toList() : '-') : null;
     showGeneralDialog(
       context: context,
       barrierColor: DARK.withOpacity(0.95),
@@ -1608,10 +1175,7 @@ class _ManagerEmployeeTsInProgressPageState
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(top: 50),
-                      child: text20GreenBold(
-                          getTranslated(context, 'planUpperCase'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'planUpperCase'))),
                   SizedBox(height: 2.5),
                   textGreen(getTranslated(context, 'setNewPlan')),
                   SizedBox(height: 20),
@@ -1646,8 +1210,7 @@ class _ManagerEmployeeTsInProgressPageState
                         elevation: 0,
                         height: 50,
                         minWidth: 40,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.close)],
@@ -1659,8 +1222,7 @@ class _ManagerEmployeeTsInProgressPageState
                       MaterialButton(
                         elevation: 0,
                         height: 50,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
@@ -1668,19 +1230,14 @@ class _ManagerEmployeeTsInProgressPageState
                         color: GREEN,
                         onPressed: () {
                           String plan = _planController.text;
-                          String invalidMessage =
-                              ValidatorService.validateUpdatingPlan(
-                                  plan, context);
+                          String invalidMessage = ValidatorService.validateUpdatingPlan(plan, context);
                           if (invalidMessage != null) {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
                           Navigator.of(context).pop();
-                          _managerService
-                              .updateWorkdayPlan(workdayId, plan)
-                              .then((res) {
-                            ToastService.showSuccessToast(getTranslated(
-                                context, 'planUpdatedSuccessfully'));
+                          _managerService.updateWorkdayPlan(workdayId, plan).then((res) {
+                            ToastService.showSuccessToast(getTranslated(context, 'planUpdatedSuccessfully'));
                             _refresh();
                           });
                         },
@@ -1698,9 +1255,7 @@ class _ManagerEmployeeTsInProgressPageState
 
   void _editOpinion(BuildContext context, int workdayId, String opinion) {
     TextEditingController _opinionController = new TextEditingController();
-    _opinionController.text = opinion != null
-        ? utf8.decode(opinion != null ? opinion.runes.toList() : '-')
-        : null;
+    _opinionController.text = opinion != null ? utf8.decode(opinion != null ? opinion.runes.toList() : '-') : null;
     showGeneralDialog(
       context: context,
       barrierColor: DARK.withOpacity(0.95),
@@ -1715,10 +1270,7 @@ class _ManagerEmployeeTsInProgressPageState
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(top: 50),
-                      child: text20GreenBold(
-                          getTranslated(context, 'opinionUpperCase'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'opinionUpperCase'))),
                   SizedBox(height: 2.5),
                   textGreen(getTranslated(context, 'setNewOpinion')),
                   SizedBox(height: 20),
@@ -1753,8 +1305,7 @@ class _ManagerEmployeeTsInProgressPageState
                         elevation: 0,
                         height: 50,
                         minWidth: 40,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.close)],
@@ -1766,8 +1317,7 @@ class _ManagerEmployeeTsInProgressPageState
                       MaterialButton(
                         elevation: 0,
                         height: 50,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
@@ -1775,19 +1325,14 @@ class _ManagerEmployeeTsInProgressPageState
                         color: GREEN,
                         onPressed: () {
                           String opinion = _opinionController.text;
-                          String invalidMessage =
-                              ValidatorService.validateUpdatingOpinion(
-                                  opinion, context);
+                          String invalidMessage = ValidatorService.validateUpdatingOpinion(opinion, context);
                           if (invalidMessage != null) {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
                           Navigator.of(context).pop();
-                          _managerService
-                              .updateWorkdayOpinion(workdayId, opinion)
-                              .then((res) {
-                            ToastService.showSuccessToast(getTranslated(
-                                context, 'opinionUpdatedSuccessfully'));
+                          _managerService.updateWorkdayOpinion(workdayId, opinion).then((res) {
+                            ToastService.showSuccessToast(getTranslated(context, 'opinionUpdatedSuccessfully'));
                             _refresh();
                           });
                         },

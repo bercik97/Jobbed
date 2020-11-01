@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/token/service/token_service.dart';
-import 'package:give_job/employee/profile/employee_profil_page.dart';
+import 'package:give_job/employee/employee_page.dart';
 import 'package:give_job/main.dart';
 import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
 import 'package:give_job/manager/groups/group/manager_group_details_page.dart';
@@ -47,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     _passwordVisible = false;
-    this._tokenService = ServiceInitializer.initialize(null, TokenService);
+    this._tokenService = ServiceInitializer.initialize(null, null, TokenService);
     super.initState();
   }
 

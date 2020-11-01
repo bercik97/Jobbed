@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:give_job/employee/employee_app_bar.dart';
-import 'package:give_job/employee/employee_side_bar.dart';
+import 'package:give_job/employee/shared/employee_app_bar.dart';
+import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/internationalization/model/language.dart';
 import 'package:give_job/manager/manager_app_bar.dart';
@@ -51,8 +51,7 @@ class _SettingsPageState extends State<SettingsPage> {
     List<DropdownMenuItem<Language>> items = List();
     for (Language language in languages) {
       items.add(
-        DropdownMenuItem(
-            value: language, child: Text(language.name + ' ' + language.flag)),
+        DropdownMenuItem(value: language, child: Text(language.name + ' ' + language.flag)),
       );
     }
     return items;
@@ -82,14 +81,8 @@ class _SettingsPageState extends State<SettingsPage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: widget._user.role == ROLE_EMPLOYEE
-            ? employeeAppBar(
-                context, widget._user, getTranslated(context, 'settings'))
-            : managerAppBar(
-                context, widget._user, getTranslated(context, 'settings')),
-        drawer: widget._user.role == ROLE_EMPLOYEE
-            ? employeeSideBar(context, widget._user)
-            : managerSideBar(context, widget._user),
+        appBar: widget._user.role == ROLE_EMPLOYEE ? employeeAppBar(context, widget._user, getTranslated(context, 'settings')) : managerAppBar(context, widget._user, getTranslated(context, 'settings')),
+        drawer: widget._user.role == ROLE_EMPLOYEE ? employeeSideBar(context, widget._user) : managerSideBar(context, widget._user),
         body: ListView(
           children: <Widget>[
             _titleContainer(getTranslated(context, 'account')),
@@ -101,8 +94,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             context: context,
                             barrierColor: DARK.withOpacity(0.95),
                             barrierDismissible: false,
-                            barrierLabel:
-                                getTranslated(context, 'changePassword'),
+                            barrierLabel: getTranslated(context, 'changePassword'),
                             transitionDuration: Duration(milliseconds: 400),
                             pageBuilder: (_, __, ___) {
                               return SizedBox.expand(
@@ -113,126 +105,62 @@ class _SettingsPageState extends State<SettingsPage> {
                                       autovalidate: true,
                                       key: formKey,
                                       child: Padding(
-                                        padding: EdgeInsets.only(
-                                            left: 30, right: 30),
+                                        padding: EdgeInsets.only(left: 30, right: 30),
                                         child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: <Widget>[
                                             _buildPasswordTextField(),
                                             _buildRePasswordTextField(),
                                             Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                              mainAxisAlignment: MainAxisAlignment.center,
                                               children: <Widget>[
                                                 MaterialButton(
                                                   elevation: 0,
                                                   height: 50,
                                                   minWidth: 40,
-                                                  shape:
-                                                      new RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              new BorderRadius
-                                                                      .circular(
-                                                                  30.0)),
+                                                  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                                                   child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: <Widget>[
-                                                      iconWhite(Icons.close)
-                                                    ],
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: <Widget>[iconWhite(Icons.close)],
                                                   ),
                                                   color: Colors.red,
-                                                  onPressed: () => {
-                                                    _passwordController.clear(),
-                                                    _rePasswordController
-                                                        .clear(),
-                                                    Navigator.pop(context)
-                                                  },
+                                                  onPressed: () => {_passwordController.clear(), _rePasswordController.clear(), Navigator.pop(context)},
                                                 ),
                                                 SizedBox(width: 25),
                                                 MaterialButton(
                                                   elevation: 0,
                                                   height: 50,
-                                                  shape:
-                                                      new RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              new BorderRadius
-                                                                      .circular(
-                                                                  30.0)),
+                                                  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                                                   child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: <Widget>[
-                                                      iconWhite(Icons.check)
-                                                    ],
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: <Widget>[iconWhite(Icons.check)],
                                                   ),
                                                   color: GREEN,
                                                   onPressed: () {
-                                                    if (_isValid == null ||
-                                                        !_isValid()) {
+                                                    if (_isValid == null || !_isValid()) {
                                                       return;
                                                     }
                                                     slideDialog.showSlideDialog(
                                                       context: context,
                                                       backgroundColor: DARK,
                                                       child: Padding(
-                                                        padding:
-                                                            EdgeInsets.all(10),
+                                                        padding: EdgeInsets.all(10),
                                                         child: Column(
                                                           children: <Widget>[
-                                                            text20GreenBold(
-                                                                getTranslated(
-                                                                    context,
-                                                                    'warning')),
-                                                            SizedBox(
-                                                                height: 10),
-                                                            textCenter20White(
-                                                                getTranslated(
-                                                                    context,
-                                                                    'changingLanguageWarning')),
-                                                            SizedBox(
-                                                                height: 10),
+                                                            text20GreenBold(getTranslated(context, 'warning')),
+                                                            SizedBox(height: 10),
+                                                            textCenter20White(getTranslated(context, 'changingLanguageWarning')),
+                                                            SizedBox(height: 10),
                                                             FlatButton(
-                                                              child: textWhite(
-                                                                  getTranslated(
-                                                                      context,
-                                                                      'changeMyPassword')),
+                                                              child: textWhite(getTranslated(context, 'changeMyPassword')),
                                                               onPressed: () => {
-                                                                _userService
-                                                                    .updatePassword(
-                                                                        widget
-                                                                            ._user
-                                                                            .username,
-                                                                        _passwordController
-                                                                            .text,
-                                                                        widget
-                                                                            ._user
-                                                                            .authHeader)
-                                                                    .then(
-                                                                        (res) {
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                  Logout.logoutWithoutConfirm(
-                                                                      context,
-                                                                      getTranslated(
-                                                                          context,
-                                                                          'passwordUpdatedSuccessfully'));
+                                                                _userService.updatePassword(widget._user.username, _passwordController.text, widget._user.authHeader).then((res) {
+                                                                  Navigator.of(context).pop();
+                                                                  Logout.logoutWithoutConfirm(context, getTranslated(context, 'passwordUpdatedSuccessfully'));
                                                                 })
                                                               },
                                                             ),
-                                                            FlatButton(
-                                                                child: textWhite(
-                                                                    getTranslated(
-                                                                        context,
-                                                                        'doNotChangeMyPassword')),
-                                                                onPressed: () =>
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .pop()),
+                                                            FlatButton(child: textWhite(getTranslated(context, 'doNotChangeMyPassword')), onPressed: () => Navigator.of(context).pop()),
                                                           ],
                                                         ),
                                                       ),
@@ -251,16 +179,14 @@ class _SettingsPageState extends State<SettingsPage> {
                             },
                           ),
                         },
-                    child: _subtitleInkWellContainer(
-                        getTranslated(context, 'changePassword')))),
+                    child: _subtitleInkWellContainer(getTranslated(context, 'changePassword')))),
             _titleContainer(getTranslated(context, 'other')),
             Container(
               margin: EdgeInsets.only(left: 15),
               child: Theme(
                 data: Theme.of(context).copyWith(canvasColor: DARK),
                 child: Container(
-                  decoration:
-                      BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
+                  decoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
                   padding: EdgeInsets.only(left: 10),
                   alignment: Alignment.centerLeft,
                   height: 30,
@@ -287,35 +213,18 @@ class _SettingsPageState extends State<SettingsPage> {
                             ),
                           ),
                         },
-                    child: _subtitleInkWellContainer(
-                        getTranslated(context, 'termsOfUseLowerCase')))),
-            Container(
-                margin: EdgeInsets.only(left: 15, top: 10),
-                child: InkWell(
-                    onTap: () => bugReportDialog(context),
-                    child: _subtitleInkWellContainer(
-                        getTranslated(context, 'bugReport')))),
-            Container(
-                margin: EdgeInsets.only(left: 25),
-                alignment: Alignment.centerLeft,
-                height: 30,
-                child: text13White(
-                    getTranslated(context, 'version') + ': 1.0.11+12')),
+                    child: _subtitleInkWellContainer(getTranslated(context, 'termsOfUseLowerCase')))),
+            Container(margin: EdgeInsets.only(left: 15, top: 10), child: InkWell(onTap: () => bugReportDialog(context), child: _subtitleInkWellContainer(getTranslated(context, 'bugReport')))),
+            Container(margin: EdgeInsets.only(left: 25), alignment: Alignment.centerLeft, height: 30, child: text13White(getTranslated(context, 'version') + ': 1.0.11+12')),
             _titleContainer(getTranslated(context, 'graphics')),
-            _socialMediaInkWell('https://plumko.business.site/ ', 'Plumko',
-                'images/plumko-logo.png'),
+            _socialMediaInkWell('https://plumko.business.site/ ', 'Plumko', 'images/plumko-logo.png'),
             _titleContainer(getTranslated(context, 'followUs')),
             SizedBox(height: 5.0),
-            _socialMediaInkWell(
-                'https://www.givejob.pl', 'GiveJob', 'images/logo.png'),
-            _socialMediaInkWell('https://www.medica.givejob.pl',
-                'GiveJob Medica', 'images/givejob-medica-logo.png'),
-            _socialMediaInkWell('https://www.facebook.com/givejobb', 'Facebook',
-                'images/facebook-logo.png'),
-            _socialMediaInkWell('https://www.instagram.com/give_job',
-                'Instagram', 'images/instagram-logo.png'),
-            _socialMediaInkWell('https://www.linkedin.com/company/give-job',
-                'Linkedin', 'images/linkedin-logo.png'),
+            _socialMediaInkWell('https://www.givejob.pl', 'GiveJob', 'images/logo.png'),
+            _socialMediaInkWell('https://www.medica.givejob.pl', 'GiveJob Medica', 'images/givejob-medica-logo.png'),
+            _socialMediaInkWell('https://www.facebook.com/givejobb', 'Facebook', 'images/facebook-logo.png'),
+            _socialMediaInkWell('https://www.instagram.com/give_job', 'Instagram', 'images/instagram-logo.png'),
+            _socialMediaInkWell('https://www.linkedin.com/company/give-job', 'Linkedin', 'images/linkedin-logo.png'),
           ],
         ),
       ),
@@ -348,13 +257,11 @@ class _SettingsPageState extends State<SettingsPage> {
       child: Column(
         children: <Widget>[
           ListTile(
-            title:
-                Align(child: text16White(text), alignment: Alignment(-1.05, 0)),
+            title: Align(child: text16White(text), alignment: Alignment(-1.05, 0)),
             leading: Padding(
               padding: EdgeInsets.all(5.0),
               child: Container(
-                child:
-                    Image(image: AssetImage(imagePath), fit: BoxFit.fitWidth),
+                child: Image(image: AssetImage(imagePath), fit: BoxFit.fitWidth),
               ),
             ),
           ),
@@ -375,8 +282,7 @@ class _SettingsPageState extends State<SettingsPage> {
           controller: _passwordController,
           style: TextStyle(color: WHITE),
           decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: WHITE, width: 2)),
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
             counterStyle: TextStyle(color: WHITE),
             border: OutlineInputBorder(),
             labelText: getTranslated(context, 'newPassword'),
@@ -416,14 +322,7 @@ class _SettingsPageState extends State<SettingsPage> {
           cursorColor: WHITE,
           maxLength: 60,
           style: TextStyle(color: WHITE),
-          decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: WHITE, width: 2)),
-              counterStyle: TextStyle(color: WHITE),
-              border: OutlineInputBorder(),
-              labelText: getTranslated(context, 'retypedPassword'),
-              prefixIcon: iconWhite(Icons.lock),
-              labelStyle: TextStyle(color: WHITE)),
+          decoration: InputDecoration(enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)), counterStyle: TextStyle(color: WHITE), border: OutlineInputBorder(), labelText: getTranslated(context, 'retypedPassword'), prefixIcon: iconWhite(Icons.lock), labelStyle: TextStyle(color: WHITE)),
           validator: (value) => validate(value),
         ),
         SizedBox(height: 10),

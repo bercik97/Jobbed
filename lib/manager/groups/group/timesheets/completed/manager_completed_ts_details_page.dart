@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:give_job/employee/dto/employee_timesheet_dto.dart';
+import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/dto/manager_group_employee_dto.dart';
 import 'package:give_job/manager/dto/manager_group_timesheet_dto.dart';
@@ -31,12 +31,10 @@ class ManagerTimesheetsEmployeesCompletedPage extends StatefulWidget {
   ManagerTimesheetsEmployeesCompletedPage(this._model, this._timesheet);
 
   @override
-  _ManagerTimesheetsEmployeesCompletedPageState createState() =>
-      _ManagerTimesheetsEmployeesCompletedPageState();
+  _ManagerTimesheetsEmployeesCompletedPageState createState() => _ManagerTimesheetsEmployeesCompletedPageState();
 }
 
-class _ManagerTimesheetsEmployeesCompletedPageState
-    extends State<ManagerTimesheetsEmployeesCompletedPage> {
+class _ManagerTimesheetsEmployeesCompletedPageState extends State<ManagerTimesheetsEmployeesCompletedPage> {
   GroupEmployeeModel _model;
   ManagerService _managerService;
   ManagerGroupTimesheetDto _timesheet;
@@ -52,13 +50,7 @@ class _ManagerTimesheetsEmployeesCompletedPageState
     this._timesheet = widget._timesheet;
     super.initState();
     _loading = true;
-    _managerService
-        .findAllEmployeesOfTimesheetByGroupIdAndTimesheetYearMonthStatusForMobile(
-            _model.groupId,
-            _timesheet.year,
-            MonthUtil.findMonthNumberByMonthName(context, _timesheet.month),
-            STATUS_COMPLETED)
-        .then((res) {
+    _managerService.findAllEmployeesOfTimesheetByGroupIdAndTimesheetYearMonthStatusForMobile(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_COMPLETED).then((res) {
       setState(() {
         _employees = res;
         _filteredEmployees = _employees;
@@ -72,10 +64,7 @@ class _ManagerTimesheetsEmployeesCompletedPageState
     this._model = widget._model;
     this._timesheet = widget._timesheet;
     if (_loading) {
-      return loader(
-          managerAppBar(
-              context, _model.user, getTranslated(context, 'loading')),
-          managerSideBar(context, _model.user));
+      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')), managerSideBar(context, _model.user));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -83,14 +72,7 @@ class _ManagerTimesheetsEmployeesCompletedPageState
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBar(
-            context,
-            _model.user,
-            _timesheet.year.toString() +
-                ' ' +
-                MonthUtil.translateMonth(context, _timesheet.month) +
-                ' - ' +
-                getTranslated(context, STATUS_COMPLETED)),
+        appBar: managerAppBar(context, _model.user, _timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' - ' + getTranslated(context, STATUS_COMPLETED)),
         drawer: managerSideBar(context, _model.user),
         body: Column(
           children: <Widget>[
@@ -101,22 +83,11 @@ class _ManagerTimesheetsEmployeesCompletedPageState
                 autocorrect: true,
                 cursorColor: WHITE,
                 style: TextStyle(color: WHITE),
-                decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: WHITE, width: 2)),
-                    counterStyle: TextStyle(color: WHITE),
-                    border: OutlineInputBorder(),
-                    labelText: getTranslated(context, 'search'),
-                    prefixIcon: iconWhite(Icons.search),
-                    labelStyle: TextStyle(color: WHITE)),
+                decoration: InputDecoration(enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)), counterStyle: TextStyle(color: WHITE), border: OutlineInputBorder(), labelText: getTranslated(context, 'search'), prefixIcon: iconWhite(Icons.search), labelStyle: TextStyle(color: WHITE)),
                 onChanged: (string) {
                   setState(
                     () {
-                      _filteredEmployees = _employees
-                          .where((u) => (u.info
-                              .toLowerCase()
-                              .contains(string.toLowerCase())))
-                          .toList();
+                      _filteredEmployees = _employees.where((u) => (u.info.toLowerCase().contains(string.toLowerCase()))).toList();
                     },
                   );
                 },
@@ -134,30 +105,21 @@ class _ManagerTimesheetsEmployeesCompletedPageState
                     color: DARK,
                     child: InkWell(
                       onTap: () {
-                        EmployeeTimesheetDto _completedTimesheet =
-                            new EmployeeTimesheetDto(
+                        TimesheetForEmployeeDto _completedTimesheet = new TimesheetForEmployeeDto(
                           id: _timesheet.id,
                           year: _timesheet.year,
                           month: _timesheet.month,
                           groupName: _model.groupName,
                           groupCountryCurrency: currency,
                           status: _timesheet.status,
-                          numberOfHoursWorked:
-                              _filteredEmployees[index].numberOfHoursWorked,
-                          averageRating:
-                              _filteredEmployees[index].averageRating,
-                          amountOfEarnedMoney:
-                              _filteredEmployees[index].amountOfEarnedMoney,
+                          numberOfHoursWorked: _filteredEmployees[index].numberOfHoursWorked,
+                          averageRating: _filteredEmployees[index].averageRating,
+                          amountOfEarnedMoney: _filteredEmployees[index].amountOfEarnedMoney,
                         );
                         Navigator.of(this.context).push(
                           CupertinoPageRoute<Null>(
                             builder: (BuildContext context) {
-                              return ManagerEmployeeTsCompletedPage(
-                                  _model,
-                                  info,
-                                  nationality,
-                                  currency,
-                                  _completedTimesheet);
+                              return ManagerEmployeeTsCompletedPage(_model, info, nationality, currency, _completedTimesheet);
                             },
                           ),
                         );
@@ -180,14 +142,7 @@ class _ManagerTimesheetsEmployeesCompletedPageState
                                       Navigator.push(
                                         this.context,
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              ManagerEmployeeProfilePage(
-                                                  _model,
-                                                  nationality,
-                                                  currency,
-                                                  employee.id,
-                                                  info,
-                                                  employee.moneyPerHour),
+                                          builder: (context) => ManagerEmployeeProfilePage(_model, nationality, currency, employee.id, info, employee.moneyPerHour),
                                         ),
                                       );
                                     },
@@ -204,51 +159,30 @@ class _ManagerTimesheetsEmployeesCompletedPageState
                                   ),
                                 ),
                               ),
-                              title: text20WhiteBold(
-                                  utf8.decode(info.runes.toList()) +
-                                      ' ' +
-                                      LanguageUtil.findFlagByNationality(
-                                          nationality)),
+                              title: text20WhiteBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                               subtitle: Column(
                                 children: <Widget>[
                                   Align(
                                       child: Row(
                                         children: <Widget>[
-                                          textWhite(getTranslated(this.context,
-                                                  'averageRating') +
-                                              ': '),
-                                          textGreenBold(
-                                              _filteredEmployees[index]
-                                                  .averageRating
-                                                  .toString()),
+                                          textWhite(getTranslated(this.context, 'averageRating') + ': '),
+                                          textGreenBold(_filteredEmployees[index].averageRating.toString()),
                                         ],
                                       ),
                                       alignment: Alignment.topLeft),
                                   Align(
                                       child: Row(
                                         children: <Widget>[
-                                          textWhite(getTranslated(this.context,
-                                                  'numberOfHoursWorked') +
-                                              ': '),
-                                          textGreenBold(
-                                              _filteredEmployees[index]
-                                                  .numberOfHoursWorked
-                                                  .toString()),
+                                          textWhite(getTranslated(this.context, 'numberOfHoursWorked') + ': '),
+                                          textGreenBold(_filteredEmployees[index].numberOfHoursWorked.toString()),
                                         ],
                                       ),
                                       alignment: Alignment.topLeft),
                                   Align(
                                       child: Row(
                                         children: <Widget>[
-                                          textWhite(getTranslated(this.context,
-                                                  'amountOfEarnedMoney') +
-                                              ': '),
-                                          textGreenBold(
-                                              _filteredEmployees[index]
-                                                      .amountOfEarnedMoney
-                                                      .toString() +
-                                                  ' ' +
-                                                  currency),
+                                          textWhite(getTranslated(this.context, 'amountOfEarnedMoney') + ': '),
+                                          textGreenBold(_filteredEmployees[index].amountOfEarnedMoney.toString() + ' ' + currency),
                                         ],
                                       ),
                                       alignment: Alignment.topLeft),

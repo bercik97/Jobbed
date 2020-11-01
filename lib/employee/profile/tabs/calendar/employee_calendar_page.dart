@@ -1,9 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:give_job/employee/dto/employee_calendar_dto.dart';
-import 'package:give_job/employee/employee_side_bar.dart';
-import 'package:give_job/employee/service/employee_service.dart';
+import 'package:give_job/api/employee/dto/employee_calendar_dto.dart';
+import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/api/timesheet/service/timesheet_service.dart';
+import 'package:give_job/api/workday/util/workday_util.dart';
+import 'package:give_job/employee/shared/employee_app_bar.dart';
+import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -11,40 +14,28 @@ import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/settings/settings_page.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
-import 'package:give_job/shared/workdays/workday_util.dart';
 import 'package:intl/intl.dart';
 import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../shared/widget/loader.dart';
-import '../../../employee_app_bar.dart';
 
 class EmployeeCalendarPage extends StatefulWidget {
-  EmployeeCalendarPage({Key key}) : super(key: key);
+  final User _user;
+  final int _employeeId;
 
-  User _user;
-  int _employeeId;
-
-  set user(User value) {
-    _user = value;
-  }
-
-  set employeeId(int value) {
-    _employeeId = value;
-  }
+  EmployeeCalendarPage(this._user, this._employeeId);
 
   @override
   _EmployeeCalendarPageState createState() => _EmployeeCalendarPageState();
 }
 
-class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
-    with TickerProviderStateMixin {
+class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with TickerProviderStateMixin {
   User _user;
   int _employeeId;
-  EmployeeService _service;
+  TimesheetService _tsService;
 
   Map<DateTime, List<EmployeeCalendarDto>> _events = new Map();
-  Map<DateTime, List<EmployeeCalendarDto>> _holidays = new Map();
   List _selectedEvents;
   DateTime _selectedDay = DateTime.now();
   AnimationController _animationController;
@@ -57,17 +48,16 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
     super.initState();
     this._user = widget._user;
     this._employeeId = widget._employeeId;
-    this._service = new EmployeeService(context, _user.authHeader);
+    this._tsService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
     super.initState();
     _loading = true;
-    _service.findEmployeeCalendarByEmployeeId(_employeeId).then((res) {
+    _tsService.findDataForEmployeeCalendarByEmployeeId(_employeeId).then((res) {
       setState(() {
         _loading = false;
         res.forEach((key, value) {
           _events[key] = value;
         });
-        DateTime currentDate =
-            DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()));
+        DateTime currentDate = DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()));
         _selectedEvents = _events[currentDate] ?? [];
         _animationController = AnimationController(
           vsync: this,
@@ -95,9 +85,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(
-          employeeAppBar(context, _user, getTranslated(context, 'loading')),
-          employeeSideBar(context, _user));
+      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading')), employeeSideBar(context, _user));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -142,17 +130,12 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
                     padding: EdgeInsets.all(10),
                     child: Column(
                       children: <Widget>[
-                        text20GreenBold(
-                            getTranslated(context, 'calendarLegend')),
+                        text20GreenBold(getTranslated(context, 'calendarLegend')),
                         SizedBox(height: 10),
-                        _buildLegendItem(iconOrange(Icons.error_outline),
-                            getTranslated(context, 'plannedDay')),
-                        _buildLegendItem(iconGreen(Icons.check),
-                            getTranslated(context, 'workedDay')),
-                        _buildLegendItem(iconYellow(Icons.beach_access),
-                            getTranslated(context, 'confirmedVocation')),
-                        _buildLegendItem(iconRed(Icons.beach_access),
-                            getTranslated(context, 'notConfirmedVocation')),
+                        _buildLegendItem(iconOrange(Icons.error_outline), getTranslated(context, 'plannedDay')),
+                        _buildLegendItem(iconGreen(Icons.check), getTranslated(context, 'workedDay')),
+                        _buildLegendItem(iconYellow(Icons.beach_access), getTranslated(context, 'confirmedVocation')),
+                        _buildLegendItem(iconRed(Icons.beach_access), getTranslated(context, 'notConfirmedVocation')),
                       ],
                     ),
                   ),
@@ -215,8 +198,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
       daysOfWeekStyle: DaysOfWeekStyle(
         weekendStyle: TextStyle().copyWith(color: Colors.red),
       ),
-      headerStyle:
-          HeaderStyle(centerHeaderTitle: true, formatButtonVisible: false),
+      headerStyle: HeaderStyle(centerHeaderTitle: true, formatButtonVisible: false),
       builders: CalendarBuilders(
         selectedDayBuilder: (context, date, _) {
           return FadeTransition(
@@ -301,8 +283,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
                 border: Border.all(width: 0.8),
                 borderRadius: BorderRadius.circular(12.0),
               ),
-              margin:
-                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
               child: ListTile(
                 title: _buildDay(workday),
                 onTap: () => print('object'),
@@ -321,8 +302,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
       return _buildWorkedDay(workday);
     } else if (workday.plan != null && workday.plan.isNotEmpty) {
       if (isVocationNotNull && !workday.isVocationVerified) {
-        return _buildPlannedDayWithNotVerifiedVocation(
-            workday.plan, workday.vocationReason);
+        return _buildPlannedDayWithNotVerifiedVocation(workday.plan, workday.vocationReason);
       }
       return _buildPlannedDay(workday.plan);
     } else if (isVocationNotNull && !workday.isVocationVerified) {
@@ -340,18 +320,12 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
           children: [
             iconYellow(Icons.beach_access),
             SizedBox(width: 2.5),
-            text16GreenBold(getTranslated(context, 'verifiedVocationForDay') +
-                ' ' +
-                _selectedDay.toString().substring(0, 10)),
+            text16GreenBold(getTranslated(context, 'verifiedVocationForDay') + ' ' + _selectedDay.toString().substring(0, 10)),
           ],
         ),
         SizedBox(height: 5),
         textWhite(
-          getTranslated(context, 'reason') +
-              ': ' +
-              (reason != null
-                  ? utf8.decode(reason.runes.toList())
-                  : getTranslated(context, 'empty')),
+          getTranslated(context, 'reason') + ': ' + (reason != null ? utf8.decode(reason.runes.toList()) : getTranslated(context, 'empty')),
         ),
       ],
     );
@@ -365,18 +339,12 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
           children: [
             iconRed(Icons.beach_access),
             SizedBox(width: 2.5),
-            text16RedBold(getTranslated(context, 'notVerifiedVocationForDay') +
-                ' ' +
-                _selectedDay.toString().substring(0, 10)),
+            text16RedBold(getTranslated(context, 'notVerifiedVocationForDay') + ' ' + _selectedDay.toString().substring(0, 10)),
           ],
         ),
         SizedBox(height: 5),
         textWhite(
-          getTranslated(context, 'reason') +
-              ': ' +
-              (reason != null
-                  ? utf8.decode(reason.runes.toList())
-                  : getTranslated(context, 'empty')),
+          getTranslated(context, 'reason') + ': ' + (reason != null ? utf8.decode(reason.runes.toList()) : getTranslated(context, 'empty')),
         ),
       ],
     );
@@ -386,9 +354,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
     String plan = workday.plan;
     return Column(
       children: [
-        textCenter16GreenBold(getTranslated(context, 'workedDay') +
-            ' ' +
-            _selectedDay.toString().substring(0, 10)),
+        textCenter16GreenBold(getTranslated(context, 'workedDay') + ' ' + _selectedDay.toString().substring(0, 10)),
         ListTile(
           trailing: icon50Green(Icons.check),
           title: Row(
@@ -402,8 +368,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
               Align(
                   child: Row(
                     children: <Widget>[
-                      text16White(
-                          getTranslated(context, 'numberOfHoursWorked') + ': '),
+                      text16White(getTranslated(context, 'numberOfHoursWorked') + ': '),
                       text16GreenBold(workday.hours.toString()),
                     ],
                   ),
@@ -420,20 +385,13 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
                   child: Row(
                     children: <Widget>[
                       text16White(getTranslated(context, 'plan') + ': '),
-                      text16GreenBold(plan != null && plan.isNotEmpty
-                          ? getTranslated(context, 'yes')
-                          : getTranslated(context, 'no')),
+                      text16GreenBold(plan != null && plan.isNotEmpty ? getTranslated(context, 'yes') : getTranslated(context, 'no')),
                     ],
                   ),
                   alignment: Alignment.topLeft),
             ],
           ),
-          onTap: () => WorkdayUtil.showScrollableDialog(
-              context,
-              getTranslated(context, 'planFor') +
-                  ' ' +
-                  _selectedDay.toString().substring(0, 10),
-              plan),
+          onTap: () => WorkdayUtil.showScrollableDialog(context, getTranslated(context, 'planFor') + ' ' + _selectedDay.toString().substring(0, 10), plan),
         ),
       ],
     );
@@ -447,9 +405,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
           children: [
             iconOrange(Icons.error_outline),
             SizedBox(width: 5),
-            text16GreenBold(getTranslated(context, 'planFor') +
-                ' ' +
-                _selectedDay.toString().substring(0, 10)),
+            text16GreenBold(getTranslated(context, 'planFor') + ' ' + _selectedDay.toString().substring(0, 10)),
           ],
         ),
         SizedBox(height: 5),
@@ -458,8 +414,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
     );
   }
 
-  Widget _buildPlannedDayWithNotVerifiedVocation(
-      String plan, String vocationReason) {
+  Widget _buildPlannedDayWithNotVerifiedVocation(String plan, String vocationReason) {
     return Column(
       children: [
         Row(
@@ -467,23 +422,15 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage>
           children: [
             iconOrange(Icons.error_outline),
             SizedBox(width: 5),
-            text16GreenBold(getTranslated(context, 'planFor') +
-                ' ' +
-                _selectedDay.toString().substring(0, 10)),
+            text16GreenBold(getTranslated(context, 'planFor') + ' ' + _selectedDay.toString().substring(0, 10)),
           ],
         ),
         SizedBox(height: 5),
         GestureDetector(
           onTap: () {
-            WorkdayUtil.showScrollableDialog(
-                context,
-                getTranslated(context, 'vocationReasonFor') +
-                    ' ' +
-                    _selectedDay.toString().substring(0, 10),
-                vocationReason);
+            WorkdayUtil.showScrollableDialog(context, getTranslated(context, 'vocationReasonFor') + ' ' + _selectedDay.toString().substring(0, 10), vocationReason);
           },
-          child: textCenter15RedUnderline(
-              getTranslated(context, 'dayHaveNotVerifiedVocation')),
+          child: textCenter15RedUnderline(getTranslated(context, 'dayHaveNotVerifiedVocation')),
         ),
         SizedBox(height: 5),
         textWhite(utf8.decode(plan.runes.toList())),

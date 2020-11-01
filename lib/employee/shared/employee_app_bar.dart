@@ -18,11 +18,11 @@ AppBar employeeAppBar(BuildContext context, User user, String title) {
         padding: EdgeInsets.only(right: 15.0),
         child: IconButton(
           icon: iconWhite(Icons.settings),
-          onPressed: () {
+          onPressed: () => {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => SettingsPage(user)),
-            );
+            ),
           },
         ),
       ),

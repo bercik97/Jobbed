@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:give_job/employee/dto/employee_timesheet_dto.dart';
+import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/dto/manager_employee_contact_dto.dart';
 import 'package:give_job/manager/groups/group/employee/manager_employees_page.dart';
@@ -46,12 +46,10 @@ class ManagerEmployeeProfilePage extends StatefulWidget {
   );
 
   @override
-  _ManagerEmployeeProfilePageState createState() =>
-      _ManagerEmployeeProfilePageState();
+  _ManagerEmployeeProfilePageState createState() => _ManagerEmployeeProfilePageState();
 }
 
-class _ManagerEmployeeProfilePageState
-    extends State<ManagerEmployeeProfilePage> {
+class _ManagerEmployeeProfilePageState extends State<ManagerEmployeeProfilePage> {
   GroupEmployeeModel _model;
   ManagerService _managerService;
   String _employeeNationality;
@@ -79,8 +77,7 @@ class _ManagerEmployeeProfilePageState
         body: DefaultTabController(
           length: 3,
           child: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
+            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
                 SliverAppBar(
                   elevation: 0.0,
@@ -99,9 +96,7 @@ class _ManagerEmployeeProfilePageState
                         onPressed: () {
                           Navigator.push(
                             this.context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ManagerProfilePage(_model.user)),
+                            MaterialPageRoute(builder: (context) => ManagerProfilePage(_model.user)),
                           );
                         },
                       ),
@@ -128,19 +123,11 @@ class _ManagerEmployeeProfilePageState
                                 fit: BoxFit.fill),
                           ),
                         ),
-                        text25WhiteBold(utf8.decode(_employeeInfo != null
-                            ? _employeeInfo.runes.toList()
-                            : '-')),
+                        text25WhiteBold(utf8.decode(_employeeInfo != null ? _employeeInfo.runes.toList() : '-')),
                         SizedBox(height: 2.5),
-                        text20White(LanguageUtil.convertShortNameToFullName(
-                                this.context, _employeeNationality) +
-                            ' ' +
-                            LanguageUtil.findFlagByNationality(
-                                _employeeNationality)),
+                        text20White(LanguageUtil.convertShortNameToFullName(this.context, _employeeNationality) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality)),
                         SizedBox(height: 2.5),
-                        text18White(getTranslated(this.context, 'employee') +
-                            ' #' +
-                            _employeeId.toString()),
+                        text18White(getTranslated(this.context, 'employee') + ' #' + _employeeId.toString()),
                         SizedBox(height: 10),
                       ],
                     ),
@@ -152,12 +139,8 @@ class _ManagerEmployeeProfilePageState
                       labelColor: GREEN,
                       unselectedLabelColor: Colors.grey,
                       tabs: [
-                        Tab(
-                            icon: Icon(Icons.event_note),
-                            text: getTranslated(this.context, 'timesheets')),
-                        Tab(
-                            icon: Icon(Icons.import_contacts),
-                            text: getTranslated(this.context, 'contact')),
+                        Tab(icon: Icon(Icons.event_note), text: getTranslated(this.context, 'timesheets')),
+                        Tab(icon: Icon(Icons.import_contacts), text: getTranslated(this.context, 'contact')),
                         Tab(
                           icon: Icon(Icons.border_color),
                           text: getTranslated(this.context, 'edit'),
@@ -189,15 +172,12 @@ class _ManagerEmployeeProfilePageState
 
   Widget _buildTimesheetsSection() {
     return FutureBuilder(
-      future: _managerService.findEmployeeTimesheetsByGroupIdAndEmployeeId(
-          _model.groupId.toString(), _employeeId.toString()),
-      builder: (BuildContext context,
-          AsyncSnapshot<List<EmployeeTimesheetDto>> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting ||
-            snapshot.data == null) {
+      future: _managerService.findEmployeeTimesheetsByGroupIdAndEmployeeId(_model.groupId.toString(), _employeeId.toString()),
+      builder: (BuildContext context, AsyncSnapshot<List<TimesheetForEmployeeDto>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
           return Center(child: circularProgressIndicator());
         } else {
-          List<EmployeeTimesheetDto> timesheets = snapshot.data;
+          List<TimesheetForEmployeeDto> timesheets = snapshot.data;
           return timesheets.isNotEmpty
               ? SingleChildScrollView(
                   child: Center(
@@ -212,12 +192,7 @@ class _ManagerEmployeeProfilePageState
                                   Navigator.of(this.context).push(
                                     CupertinoPageRoute<Null>(
                                       builder: (BuildContext context) {
-                                        return ManagerEmployeeTsCompletedPage(
-                                            _model,
-                                            _employeeInfo,
-                                            _employeeNationality,
-                                            _currency,
-                                            timesheet);
+                                        return ManagerEmployeeTsCompletedPage(_model, _employeeInfo, _employeeNationality, _currency, timesheet);
                                       },
                                     ),
                                   );
@@ -225,12 +200,7 @@ class _ManagerEmployeeProfilePageState
                                   Navigator.of(this.context).push(
                                     CupertinoPageRoute<Null>(
                                       builder: (BuildContext context) {
-                                        return ManagerEmployeeTsInProgressPage(
-                                            _model,
-                                            _employeeInfo,
-                                            _employeeNationality,
-                                            _currency,
-                                            timesheet);
+                                        return ManagerEmployeeTsInProgressPage(_model, _employeeInfo, _employeeNationality, _currency, timesheet);
                                       },
                                     ),
                                   );
@@ -243,42 +213,25 @@ class _ManagerEmployeeProfilePageState
                                     leading: Padding(
                                       padding: EdgeInsets.only(bottom: 15),
                                       child: Image(
-                                        image: timesheet.status ==
-                                                STATUS_IN_PROGRESS
-                                            ? AssetImage('images/unchecked.png')
-                                            : AssetImage('images/checked.png'),
+                                        image: timesheet.status == STATUS_IN_PROGRESS ? AssetImage('images/unchecked.png') : AssetImage('images/checked.png'),
                                       ),
                                     ),
-                                    title: textWhiteBold(
-                                        timesheet.year.toString() +
-                                            ' ' +
-                                            MonthUtil.translateMonth(
-                                                this.context, timesheet.month)),
+                                    title: textWhiteBold(timesheet.year.toString() + ' ' + MonthUtil.translateMonth(this.context, timesheet.month)),
                                     subtitle: Column(
                                       children: <Widget>[
                                         Align(
                                             child: Row(
                                               children: <Widget>[
-                                                textWhite(getTranslated(
-                                                        this.context, 'hours') +
-                                                    ': '),
-                                                textGreenBold(timesheet
-                                                        .numberOfHoursWorked
-                                                        .toString() +
-                                                    'h'),
+                                                textWhite(getTranslated(this.context, 'hours') + ': '),
+                                                textGreenBold(timesheet.numberOfHoursWorked.toString() + 'h'),
                                               ],
                                             ),
                                             alignment: Alignment.topLeft),
                                         Align(
                                           child: Row(
                                             children: <Widget>[
-                                              textWhite(getTranslated(
-                                                      this.context,
-                                                      'averageRating') +
-                                                  ': '),
-                                              textGreenBold(timesheet
-                                                  .averageRating
-                                                  .toString()),
+                                              textWhite(getTranslated(this.context, 'averageRating') + ': '),
+                                              textGreenBold(timesheet.averageRating.toString()),
                                             ],
                                           ),
                                           alignment: Alignment.topLeft,
@@ -286,12 +239,7 @@ class _ManagerEmployeeProfilePageState
                                       ],
                                     ),
                                     trailing: Wrap(
-                                      children: <Widget>[
-                                        textGreenBold(timesheet
-                                            .amountOfEarnedMoney
-                                            .toString()),
-                                        textGreenBold(' ' + _currency)
-                                      ],
+                                      children: <Widget>[textGreenBold(timesheet.amountOfEarnedMoney.toString()), textGreenBold(' ' + _currency)],
                                     ),
                                   ),
                                 ],
@@ -302,8 +250,7 @@ class _ManagerEmployeeProfilePageState
                     ),
                   ),
                 )
-              : _handleEmptyData(getTranslated(this.context, 'noTimesheets'),
-                  getTranslated(this.context, 'employeeHasNoTimesheets'));
+              : _handleEmptyData(getTranslated(this.context, 'noTimesheets'), getTranslated(this.context, 'employeeHasNoTimesheets'));
         }
       },
     );
@@ -312,26 +259,19 @@ class _ManagerEmployeeProfilePageState
   Widget _buildContactSection() {
     return FutureBuilder(
         future: _managerService.findEmployeeContactByEmployeeId(_employeeId),
-        builder: (BuildContext context,
-            AsyncSnapshot<ManagerEmployeeContactDto> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<ManagerEmployeeContactDto> snapshot) {
           ManagerEmployeeContactDto contact = snapshot.data;
-          if (snapshot.connectionState == ConnectionState.waiting ||
-              snapshot.data == null) {
+          if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
             return Center(child: circularProgressIndicator());
           } else if (contact == null) {
-            return _handleEmptyData(getTranslated(context, 'noContact'),
-                getTranslated(context, 'employeeHasNoContact'));
+            return _handleEmptyData(getTranslated(context, 'noContact'), getTranslated(context, 'employeeHasNoContact'));
           } else {
-            String email = contact.email;
-            String phoneNumber = contact.phoneNumber;
-            String viberNumber = contact.viberNumber;
-            String whatsAppNumber = contact.whatsAppNumber;
+            String phone = contact.phone;
+            String viber = contact.viber;
+            String whatsApp = contact.whatsApp;
             return SingleChildScrollView(
               child: Column(
-                children: <Widget>[
-                  buildContactSection(this.context, email, phoneNumber,
-                      viberNumber, whatsAppNumber)
-                ],
+                children: <Widget>[buildContactSection(this.context, phone, viber, whatsApp)],
               ),
             );
           }
@@ -342,11 +282,7 @@ class _ManagerEmployeeProfilePageState
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          _buildButton(
-              getTranslated(context, 'changeMoneyPerHour'),
-              Icons.monetization_on,
-              () =>
-                  _changeCurrentMoneyPerHour(_employeeMoneyPerHour.toString())),
+          _buildButton(getTranslated(context, 'changeMoneyPerHour'), Icons.monetization_on, () => _changeCurrentMoneyPerHour(_employeeMoneyPerHour.toString())),
         ],
       ),
     );
@@ -358,8 +294,7 @@ class _ManagerEmployeeProfilePageState
       child: MaterialButton(
         elevation: 0,
         height: 50,
-        shape: new RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(30.0)),
+        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
         onPressed: () => fun(),
         color: GREEN,
         child: Container(
@@ -399,33 +334,25 @@ class _ManagerEmployeeProfilePageState
                       padding: EdgeInsets.only(top: 50),
                       child: Column(
                         children: [
-                          text20GreenBold(
-                              getTranslated(context, 'moneyPerHourUpperCase')),
-                          text20GreenBold(
-                              getTranslated(context, 'currentlyHourlyWage') +
-                                  ': $employeeMoneyPerHour'),
+                          text20GreenBold(getTranslated(context, 'moneyPerHourUpperCase')),
+                          text20GreenBold(getTranslated(context, 'currentlyHourlyWage') + ': $employeeMoneyPerHour'),
                         ],
                       ),
                     ),
                     SizedBox(height: 7.5),
-                    textGreen(getTranslated(
-                        context, 'changeMoneyPerHourForEmployee')),
+                    textGreen(getTranslated(context, 'changeMoneyPerHourForEmployee')),
                     SizedBox(height: 5.0),
-                    textCenter15Red(getTranslated(
-                        context, 'theRateWillNotBeSetToPreviouslyFilledHours')),
-                    textCenter15Red(getTranslated(
-                        context, 'updateAmountsOfPrevSheetsOverwrite')),
+                    textCenter15Red(getTranslated(context, 'theRateWillNotBeSetToPreviouslyFilledHours')),
+                    textCenter15Red(getTranslated(context, 'updateAmountsOfPrevSheetsOverwrite')),
                     SizedBox(height: 2.5),
                     Container(
                       width: 150,
                       child: TextFormField(
                         autofocus: true,
                         controller: _moneyPerHourController,
-                        keyboardType:
-                            TextInputType.numberWithOptions(decimal: true),
+                        keyboardType: TextInputType.numberWithOptions(decimal: true),
                         inputFormatters: <TextInputFormatter>[
-                          WhitelistingTextInputFormatter(
-                              RegExp(r'^\d+\.?\d{0,2}')),
+                          WhitelistingTextInputFormatter(RegExp(r'^\d+\.?\d{0,2}')),
                         ],
                         maxLength: 6,
                         cursorColor: WHITE,
@@ -446,8 +373,7 @@ class _ManagerEmployeeProfilePageState
                           elevation: 0,
                           height: 50,
                           minWidth: 40,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0)),
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[iconWhite(Icons.close)],
@@ -459,8 +385,7 @@ class _ManagerEmployeeProfilePageState
                         MaterialButton(
                           elevation: 0,
                           height: 50,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0)),
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[iconWhite(Icons.check)],
@@ -469,37 +394,20 @@ class _ManagerEmployeeProfilePageState
                           onPressed: () {
                             double newHourlyRate;
                             try {
-                              newHourlyRate =
-                                  double.parse(_moneyPerHourController.text);
+                              newHourlyRate = double.parse(_moneyPerHourController.text);
                             } catch (FormatException) {
-                              ToastService.showErrorToast(getTranslated(
-                                  context, 'newHourlyRateIsRequired'));
+                              ToastService.showErrorToast(getTranslated(context, 'newHourlyRateIsRequired'));
                               return;
                             }
-                            String invalidMessage =
-                                ValidatorService.validateNewHourlyRate(
-                                    newHourlyRate, context);
+                            String invalidMessage = ValidatorService.validateNewHourlyRate(newHourlyRate, context);
                             if (invalidMessage != null) {
                               ToastService.showErrorToast(invalidMessage);
                               return;
                             }
-                            _managerService
-                                .updateMoneyPerHour(_employeeId, newHourlyRate)
-                                .then(
+                            _managerService.updateMoneyPerHour(_employeeId, newHourlyRate).then(
                                   (value) => {
-                                    Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ManagerEmployeesPage(_model)),
-                                        (e) => false),
-                                    ToastService.showSuccessToast(getTranslated(
-                                            context,
-                                            'moneyPerHourUpdatedSuccessfullyFor') +
-                                        utf8.decode(_employeeInfo != null
-                                            ? _employeeInfo.runes.toList()
-                                            : '-') +
-                                        '!'),
+                                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ManagerEmployeesPage(_model)), (e) => false),
+                                    ToastService.showSuccessToast(getTranslated(context, 'moneyPerHourUpdatedSuccessfullyFor') + utf8.decode(_employeeInfo != null ? _employeeInfo.runes.toList() : '-') + '!'),
                                   },
                                 );
                           },
@@ -530,8 +438,7 @@ class _ManagerEmployeeProfilePageState
           padding: EdgeInsets.only(top: 10),
           child: Align(
             alignment: Alignment.center,
-            child: textCenter19White(
-                getTranslated(context, 'employeeHasNoTimesheets')),
+            child: textCenter19White(getTranslated(context, 'employeeHasNoTimesheets')),
           ),
         ),
       ],

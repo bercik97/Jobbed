@@ -1,24 +1,21 @@
 import 'package:flutter/cupertino.dart';
 
 class ManagerEmployeeContactDto {
-  final String email;
-  final String phoneNumber;
-  final String viberNumber;
-  final String whatsAppNumber;
+  final String phone;
+  final String viber;
+  final String whatsApp;
 
   ManagerEmployeeContactDto({
-    @required this.email,
-    @required this.phoneNumber,
-    @required this.viberNumber,
-    @required this.whatsAppNumber,
+    @required this.phone,
+    @required this.viber,
+    @required this.whatsApp,
   });
 
   factory ManagerEmployeeContactDto.fromJson(Map<String, dynamic> json) {
     return ManagerEmployeeContactDto(
-      email: json['email'] as String,
-      phoneNumber: json['phoneNumber'] as String,
-      viberNumber: json['viberNumber'] as String,
-      whatsAppNumber: json['whatsAppNumber'] as String,
+      phone: json['phone'] as String,
+      viber: json['viber'] as String,
+      whatsApp: json['whatsApp'] as String,
     );
   }
 }
