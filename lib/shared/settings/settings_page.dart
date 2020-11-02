@@ -48,6 +48,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
+    _user = widget._user;
     _dropdownMenuItems = buildDropdownMenuItems(_languages);
     _userService = ServiceInitializer.initialize(context, _user.authHeader, UserService);
   }
