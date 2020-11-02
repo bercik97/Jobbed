@@ -425,5 +425,7 @@
   "graphics": "ГРАФІКА",
   "settingTsStatusToInProgress": "Устанаўленне статусу табеля працоўнага часу ў \"выконваецца\"",
   "settingTsStatusToCompleted": "Усталёўка стану табеля працоўнага часу \"завершана\"",
-  "accountExpirationTime": "Account expiration time"
+  "accountExpirationDate": "Account expiration date",
+  "informationAboutYou": "Information about you",
+  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you"
 }

@@ -425,5 +425,7 @@
   "graphics": "GRAFIEK",
   "settingTsStatusToInProgress": "Urenstaatstatus instellen op 'in uitvoering'",
   "settingTsStatusToCompleted": "Urenstaatstatus instellen op 'voltooid'",
-  "accountExpirationTime": "Account expiration time"
+  "accountExpirationDate": "Account expiration date",
+  "informationAboutYou": "Information about you",
+  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you"
 }

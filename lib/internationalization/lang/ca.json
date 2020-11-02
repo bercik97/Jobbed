@@ -425,5 +425,7 @@
   "graphics": "GRAFIK",
   "settingTsStatusToInProgress": "Ställa in tidrapportsstatus till \"pågår\"",
   "settingTsStatusToCompleted": "Ställa in tidrapportens status till \"avslutad\"",
-  "accountExpirationTime": "Account expiration time"
+  "accountExpirationDate": "Account expiration date",
+  "informationAboutYou": "Information about you",
+  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you"
 }

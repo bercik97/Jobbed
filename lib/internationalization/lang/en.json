@@ -425,5 +425,7 @@
   "graphics": "GRAPHICS",
   "settingTsStatusToInProgress": "Setting timesheet status to 'in progress'",
   "settingTsStatusToCompleted": "Setting timesheet status to 'completed'",
-  "accountExpirationTime": "Account expiration time"
+  "accountExpirationDate": "Account expiration date",
+  "informationAboutYou": "Information about you",
+  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you"
 }

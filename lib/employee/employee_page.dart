@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:countup/countup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:give_job/api/employee/dto/employee_page_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/employee/profile/edit/employee_edit_page.dart';
 import 'package:give_job/employee/profile/tabs/employee_panel.dart';
 import 'package:give_job/employee/profile/tabs/employee_timesheets.tab.dart';
 import 'package:give_job/employee/profile/tabs/employee_todo.dart';
@@ -50,7 +50,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
       return _buildPage();
     } else {
       return FutureBuilder<EmployeePageDto>(
-        future: _employeeService.findById(_user.id),
+        future: _employeeService.findByIdForEmployeePage(_user.id),
         builder: (BuildContext context, AsyncSnapshot<EmployeePageDto> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
             return loader(employeeAppBar(context, _user, getTranslated(context, 'loading')), employeeSideBar(context, _user));
@@ -98,23 +98,35 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                       flexibleSpace: FlexibleSpaceBar(
                         background: Column(
                           children: <Widget>[
-                            SizedBox(height: 20),
-                            Padding(
-                              padding: EdgeInsets.only(top: 35, bottom: 5),
-                              child: BouncingWidget(
-                                duration: Duration(milliseconds: 100),
-                                scaleFactor: 2,
-                                onPressed: () => {},
-                                child: Image(
-                                  width: 100,
-                                  height: 100,
-                                  image: AssetImage('images/big-employee-icon.png'),
+                            SizedBox(height: 75),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 120,
+                                  height: 120,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(image: AssetImage('images/big-employee-icon.png')),
+                                  ),
                                 ),
-                              ),
+                                Ink(
+                                  decoration: ShapeDecoration(color: GREEN, shape: CircleBorder()),
+                                  child: IconButton(
+                                    icon: iconDark(Icons.border_color),
+                                    onPressed: () => Navigator.push(
+                                      this.context,
+                                      MaterialPageRoute(
+                                        builder: (context) => EmployeeEditPage(_employeePageDto.id, _user),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            text25WhiteBold(utf8.decode(_user.info != null ? _user.info.runes.toList() : '-') + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
+                            textCenter18WhiteBold(utf8.decode(_user.info != null ? _user.info.runes.toList() : '-') + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
                             SizedBox(height: 5),
-                            text18White(getTranslated(this.context, 'employee') + ' #' + _user.id.toString()),
+                            textCenter18White(getTranslated(this.context, 'employee') + ' #' + _user.id.toString()),
                             SizedBox(height: 12),
                             text16GreenBold(getTranslated(this.context, 'statisticsForThe') + _employeePageDto.tsCurrentYear + ' ' + getTranslated(this.context, _employeePageDto.tsCurrentMonth)),
                             Padding(
@@ -216,7 +228,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
   }
 
   Future<Null> _refresh() {
-    return _employeeService.findById(_user.id.toString()).then((employee) {
+    return _employeeService.findByIdForEmployeePage(_user.id.toString()).then((employee) {
       setState(() {
         _employeePageDto = employee;
         _refreshCalled = true;

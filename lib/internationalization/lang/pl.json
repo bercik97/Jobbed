@@ -425,5 +425,7 @@
   "graphics": "GRAFIKA",
   "settingTsStatusToInProgress": "Ustawianie statusu arkusza na 'w toku'",
   "settingTsStatusToCompleted": "Ustawianie statusu arkusza na 'zakończony'",
-  "accountExpirationTime": "Data wygaśnięcia konta"
+  "accountExpirationDate": "Data wygaśnięcia konta",
+  "informationAboutYou": "Informacje o Tobie",
+  "successfullyUpdatedInformationAboutYou": "Pomyślnie zaktualizowano informacje o Tobie"
 }

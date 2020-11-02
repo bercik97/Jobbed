@@ -425,5 +425,7 @@
   "graphics": "გრაფიკა",
   "settingTsStatusToInProgress": "დროის ფურცლის სტატუსის დაყენება \"მიმდინარეში\"",
   "settingTsStatusToCompleted": "დროის ფურცლის სტატუსის დაყენება \"დასრულებულად\"",
-  "accountExpirationTime": "Account expiration time"
+  "accountExpirationDate": "Account expiration date",
+  "informationAboutYou": "Information about you",
+  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you"
 }

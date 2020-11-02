@@ -425,5 +425,7 @@
   "graphics": "ГРАФИКА",
   "settingTsStatusToInProgress": "Установка статуса расписания на \"в процессе\"",
   "settingTsStatusToCompleted": "Установка статуса расписания на \"завершено\"",
-  "accountExpirationTime": "Account expiration time"
+  "accountExpirationDate": "Account expiration date",
+  "informationAboutYou": "Information about you",
+  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you"
 }

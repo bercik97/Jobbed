@@ -425,5 +425,7 @@
   "graphics": "GRÁFICOS",
   "settingTsStatusToInProgress": "Estableciendo el estado de la hoja de tiempo en 'en progreso'",
   "settingTsStatusToCompleted": "Estableciendo el estado de la hoja de tiempo en 'completado'",
-  "accountExpirationTime": "Account expiration time"
+  "accountExpirationDate": "Account expiration date",
+  "informationAboutYou": "Information about you",
+  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you"
 }

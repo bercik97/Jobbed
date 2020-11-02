@@ -425,5 +425,7 @@
   "graphics": "GRAFICĂ",
   "settingTsStatusToInProgress": "Setarea stării foii de timp la \"în curs\"",
   "settingTsStatusToCompleted": "Setarea stării foii de timp la \"completat\"",
-  "accountExpirationTime": "Account expiration time"
+  "accountExpirationDate": "Account expiration date",
+  "informationAboutYou": "Information about you",
+  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you"
 }

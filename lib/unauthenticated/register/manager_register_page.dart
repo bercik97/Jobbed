@@ -352,7 +352,7 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
   Widget _buildAccountExpirationField() {
     return Column(
       children: <Widget>[
-        Align(alignment: Alignment.topLeft, child: text25GreenUnderline(getTranslated(context, 'accountExpirationTime'))),
+        Align(alignment: Alignment.topLeft, child: text25GreenUnderline(getTranslated(context, 'accountExpirationDate'))),
         SizedBox(height: 15),
         TextFormField(
           readOnly: true,

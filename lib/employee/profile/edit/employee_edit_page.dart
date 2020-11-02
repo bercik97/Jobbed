@@ -3,37 +3,38 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:give_job/api/employee/dto/create_employee_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/employee/shared/employee_app_bar.dart';
+import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/settings/documents_page.dart';
+import 'package:give_job/shared/libraries/constants.dart';
+import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
+import 'package:give_job/shared/widget/loader.dart';
 import 'package:give_job/shared/widget/texts.dart';
-import 'package:give_job/unauthenticated/login_page.dart';
 
-class EmployeeRegisterPage extends StatefulWidget {
-  final String _tokenId;
-  final String _accountExpirationDate;
+class EmployeeEditPage extends StatefulWidget {
+  final int _employeeId;
+  final User _user;
 
-  EmployeeRegisterPage(this._tokenId, this._accountExpirationDate);
+  EmployeeEditPage(this._employeeId, this._user);
 
   @override
-  _EmployeeRegisterPageState createState() => _EmployeeRegisterPageState();
+  _EmployeeEditPageState createState() => _EmployeeEditPageState();
 }
 
-class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
-  CreateEmployeeDto dto;
+class _EmployeeEditPageState extends State<EmployeeEditPage> {
+  User _user;
+  Map<String, Object> _fieldsValues;
   EmployeeService _employeeService;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  bool _passwordVisible = false;
-  bool _rePasswordVisible = false;
 
   String _accountExpirationDate;
   final TextEditingController _usernameController = new TextEditingController();
-  final TextEditingController _passwordController = new TextEditingController();
   final TextEditingController _phoneController = new TextEditingController();
   final TextEditingController _viberController = new TextEditingController();
   final TextEditingController _whatsAppController = new TextEditingController();
@@ -55,47 +56,99 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
   DateTime _passportExpirationDate;
   DateTime _expirationDateOfWork;
   String _nationality;
-  bool _regulationsCheckbox = false;
-  bool _privacyPolicyCheckbox = false;
+
+  bool _loading;
 
   @override
   void initState() {
     super.initState();
-    _employeeService = ServiceInitializer.initialize(null, null, EmployeeService);
-    _accountExpirationDate = widget._accountExpirationDate;
-    _passwordVisible = false;
-    _rePasswordVisible = false;
-    _nationality = '';
+    this._user = widget._user;
+    this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
+    super.initState();
+    _loading = true;
+    _employeeService.findEmployeeAndUserFieldsValuesById(
+      widget._employeeId,
+      [
+        'username',
+        'name',
+        'surname',
+        'nationality',
+        'phone',
+        'viber',
+        'whatsApp',
+        'accountExpirationDate',
+        'fatherName',
+        'motherName',
+        'dateOfBirth',
+        'expirationDateOfWork',
+        'nip',
+        'bankAccountNumber',
+        'drivingLicense',
+        'locality',
+        'zipCode',
+        'street',
+        'houseNumber',
+        'passportNumber',
+        'passportReleaseDate',
+        'passportExpirationDate',
+      ],
+    ).then(
+      (res) => {
+        setState(() {
+          _loading = false;
+          _fieldsValues = res;
+          _usernameController.text = this._fieldsValues['username'];
+          _nameController.text = this._fieldsValues['name'];
+          _surnameController.text = this._fieldsValues['surname'];
+          _nationality = this._fieldsValues['nationality'];
+          _phoneController.text = this._fieldsValues['phone'];
+          _viberController.text = this._fieldsValues['viber'];
+          _whatsAppController.text = this._fieldsValues['whatsApp'];
+          _accountExpirationDate = this._fieldsValues['accountExpirationDate'];
+          _fatherNameController.text = this._fieldsValues['fatherName'];
+          _motherNameController.text = this._fieldsValues['motherName'];
+          _dateOfBirth = DateTime.parse(this._fieldsValues['dateOfBirth']);
+          _expirationDateOfWork = DateTime.parse(this._fieldsValues['expirationDateOfWork']);
+          _nipController.text = this._fieldsValues['nip'];
+          _bankAccountNumberController.text = this._fieldsValues['bankAccountNumber'];
+          _drivingLicenseController.text = this._fieldsValues['drivingLicense'];
+          _localityController.text = this._fieldsValues['locality'];
+          _zipCodeController.text = this._fieldsValues['zipCode'];
+          _streetController.text = this._fieldsValues['street'];
+          _houseNumberController.text = this._fieldsValues['houseNumber'];
+          _passportNumberController.text = this._fieldsValues['passportNumber'];
+          _passportReleaseDate = DateTime.parse(this._fieldsValues['passportReleaseDate']);
+          _passportExpirationDate = DateTime.parse(this._fieldsValues['passportExpirationDate']);
+        }),
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget._tokenId == null) {
-      return LoginPage();
+    if (_loading) {
+      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading')), employeeSideBar(context, _user));
     }
-    return WillPopScope(
-      onWillPop: _onWillPop,
-      child: Scaffold(
+    return MaterialApp(
+      title: APP_NAME,
+      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
         backgroundColor: DARK,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          automaticallyImplyLeading: true,
-          leading: IconButton(
-            icon: iconWhite(Icons.arrow_back),
-            onPressed: () => _exitDialog(),
-          ),
-        ),
+        appBar: employeeAppBar(context, _user, getTranslated(context, 'edit')),
+        drawer: employeeSideBar(context, _user),
         body: Padding(
-          padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+          padding: EdgeInsets.fromLTRB(25, 0, 25, 25),
           child: Center(
             child: Form(
               autovalidate: true,
               key: formKey,
               child: Column(
                 children: <Widget>[
-                  textCenter20GreenBold(getTranslated(context, 'registrationFormEmployee')),
+                  SizedBox(height: 10),
+                  textCenter20GreenBold(getTranslated(context, 'informationAboutYou')),
                   Divider(color: WHITE),
+                  SizedBox(height: 10),
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(
@@ -107,12 +160,11 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
                           _buildAddressSection(),
                           _buildPassportSection(),
                           _buildOtherSection(),
-                          _buildDocumentsSection(),
-                          _buildRegisterButton(),
                         ],
                       ),
                     ),
-                  )
+                  ),
+                  _buildUpdateButton(),
                 ],
               ),
             ),
@@ -129,19 +181,14 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
   Widget _buildLoginSection() {
     return Column(
       children: <Widget>[
-        _buildSectionHeader(
-          getTranslated(context, 'loginSection'),
-          getTranslated(context, 'loginSectionDescription'),
-        ),
         _buildRequiredTextField(
+          true,
           _usernameController,
           26,
           getTranslated(context, 'username'),
           getTranslated(context, 'usernameIsRequired'),
           Icons.person,
         ),
-        _buildPasswordTextField(),
-        _buildRePasswordTextField(),
       ],
     );
   }
@@ -149,8 +196,6 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
   Widget _buildAccountExpirationField() {
     return Column(
       children: <Widget>[
-        Align(alignment: Alignment.topLeft, child: text25GreenUnderline(getTranslated(context, 'accountExpirationDate'))),
-        SizedBox(height: 15),
         TextFormField(
           readOnly: true,
           initialValue: _accountExpirationDate == null ? getTranslated(context, 'empty') : _accountExpirationDate,
@@ -159,11 +204,12 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
             counterStyle: TextStyle(color: WHITE),
             border: OutlineInputBorder(),
+            labelText: getTranslated(context, 'accountExpirationDate'),
             prefixIcon: iconWhite(Icons.access_time_outlined),
             labelStyle: TextStyle(color: WHITE),
           ),
         ),
-        SizedBox(height: 10),
+        SizedBox(height: 20),
       ],
     );
   }
@@ -171,11 +217,8 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
   Widget _buildBasicSection() {
     return Column(
       children: <Widget>[
-        _buildSectionHeader(
-          getTranslated(context, 'basicSection'),
-          getTranslated(context, 'basicSectionDescription'),
-        ),
         _buildRequiredTextField(
+          false,
           _nameController,
           26,
           getTranslated(context, 'name'),
@@ -183,6 +226,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
           Icons.person_outline,
         ),
         _buildRequiredTextField(
+          false,
           _surnameController,
           26,
           getTranslated(context, 'surname'),
@@ -210,10 +254,6 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
   Widget _buildAddressSection() {
     return Column(
       children: <Widget>[
-        _buildSectionHeader(
-          getTranslated(context, 'addressSection'),
-          getTranslated(context, 'thisSectionIsNotRequired'),
-        ),
         _buildNotRequiredTextField(
           _localityController,
           100,
@@ -245,10 +285,6 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
   Widget _buildContactSection() {
     return Column(
       children: <Widget>[
-        _buildSectionHeader(
-          getTranslated(context, 'contactSection'),
-          getTranslated(context, 'contactSectionDescription'),
-        ),
         _buildContactNumField(
           _phoneController,
           getTranslated(context, 'phone'),
@@ -271,10 +307,6 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
   Widget _buildPassportSection() {
     return Column(
       children: <Widget>[
-        _buildSectionHeader(
-          getTranslated(context, 'passportSection'),
-          getTranslated(context, 'thisSectionIsNotRequired'),
-        ),
         _buildNotRequiredNumField(
           _passportNumberController,
           getTranslated(context, 'passportNumber'),
@@ -289,10 +321,6 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
   Widget _buildOtherSection() {
     return Column(
       children: <Widget>[
-        _buildSectionHeader(
-          getTranslated(context, 'otherSection'),
-          getTranslated(context, 'thisSectionIsNotRequired'),
-        ),
         _buildExpirationDateOfWorkField(),
         _buildNotRequiredNumField(
           _nipController,
@@ -315,102 +343,12 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
     );
   }
 
-  Widget _buildDocumentsSection() {
-    return Column(
-      children: <Widget>[
-        _buildSectionHeader(
-          getTranslated(context, 'termsOfUse'),
-          getTranslated(context, 'termsOfUseIsRequired'),
-        ),
-        GestureDetector(
-          onTap: () {
-            Navigator.of(context).push(
-              CupertinoPageRoute<Null>(
-                builder: (BuildContext context) {
-                  return DocumentsPage(null);
-                },
-              ),
-            );
-          },
-          child: Column(
-            children: <Widget>[
-              Align(
-                alignment: Alignment.topLeft,
-                child: textWhite(
-                  getTranslated(context, 'seeDocumentsHint'),
-                ),
-              ),
-              SizedBox(height: 1),
-              Align(
-                alignment: Alignment.topLeft,
-                child: textWhiteBoldUnderline(
-                  getTranslated(context, 'seeDocuments'),
-                ),
-              )
-            ],
-          ),
-        ),
-        ListTileTheme(
-          contentPadding: EdgeInsets.all(0),
-          child: CheckboxListTile(
-            title: textWhite(
-              getTranslated(context, 'acceptRegulations'),
-            ),
-            subtitle: !_regulationsCheckbox
-                ? text13Red(
-                    getTranslated(context, 'acceptRegulationsIsRequired'),
-                  )
-                : null,
-            value: _regulationsCheckbox,
-            onChanged: (value) {
-              setState(() {
-                _regulationsCheckbox = value;
-              });
-            },
-            controlAffinity: ListTileControlAffinity.leading,
-          ),
-        ),
-        ListTileTheme(
-          contentPadding: EdgeInsets.all(0),
-          child: CheckboxListTile(
-            title: textWhite(
-              getTranslated(context, 'acceptPrivacyPolicy'),
-            ),
-            subtitle: !_privacyPolicyCheckbox
-                ? text13Red(
-                    getTranslated(context, 'acceptPrivacyPolicyIsRequired'),
-                  )
-                : null,
-            value: _privacyPolicyCheckbox,
-            onChanged: (value) {
-              setState(() {
-                _privacyPolicyCheckbox = value;
-              });
-            },
-            controlAffinity: ListTileControlAffinity.leading,
-          ),
-        )
-      ],
-    );
-  }
-
-  Widget _buildSectionHeader(String title, String subtitle) {
-    return Column(
-      children: <Widget>[
-        SizedBox(height: 15),
-        Align(alignment: Alignment.topLeft, child: text25GreenUnderline(title)),
-        SizedBox(height: 5),
-        Align(alignment: Alignment.topLeft, child: text13White(subtitle)),
-        SizedBox(height: 20),
-      ],
-    );
-  }
-
-  Widget _buildRequiredTextField(TextEditingController controller, int maxLength, String labelText, String errorText, IconData icon) {
+  Widget _buildRequiredTextField(bool isReadOnly, TextEditingController controller, int maxLength, String labelText, String errorText, IconData icon) {
     return Column(
       children: <Widget>[
         TextFormField(
           controller: controller,
+          readOnly: isReadOnly,
           autocorrect: true,
           cursorColor: WHITE,
           maxLength: maxLength,
@@ -495,7 +433,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
         TextFormField(
           autocorrect: true,
           cursorColor: WHITE,
-          maxLength: 9,
+          maxLength: 12,
           controller: controller,
           style: TextStyle(color: WHITE),
           inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
@@ -508,82 +446,6 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
             prefixIcon: iconWhite(icon),
             labelStyle: TextStyle(color: WHITE),
           ),
-        ),
-        SizedBox(height: 10),
-      ],
-    );
-  }
-
-  Widget _buildPasswordTextField() {
-    return Column(
-      children: <Widget>[
-        TextFormField(
-          autocorrect: true,
-          obscureText: !_passwordVisible,
-          cursorColor: WHITE,
-          maxLength: 60,
-          controller: _passwordController,
-          style: TextStyle(color: WHITE),
-          decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-              counterStyle: TextStyle(color: WHITE),
-              border: OutlineInputBorder(),
-              labelText: getTranslated(context, 'password'),
-              prefixIcon: iconWhite(Icons.lock),
-              suffixIcon: IconButton(
-                icon: iconWhite(_passwordVisible ? Icons.visibility : Icons.visibility_off),
-                onPressed: () => setState(
-                  () => _passwordVisible = !_passwordVisible,
-                ),
-              ),
-              labelStyle: TextStyle(color: WHITE)),
-          validator: MultiValidator([
-            RequiredValidator(
-              errorText: getTranslated(context, 'passwordIsRequired'),
-            ),
-            MinLengthValidator(
-              6,
-              errorText: getTranslated(context, 'passwordWrongLength'),
-            ),
-          ]),
-        ),
-        SizedBox(height: 10),
-      ],
-    );
-  }
-
-  Widget _buildRePasswordTextField() {
-    validate(String value) {
-      if (value.isEmpty) {
-        return getTranslated(context, 'retypeYourPassword');
-      } else if (value != _passwordController.text) {
-        return getTranslated(context, 'passwordAndRetypedPasswordDoNotMatch');
-      }
-      return null;
-    }
-
-    return Column(
-      children: <Widget>[
-        TextFormField(
-          autocorrect: true,
-          obscureText: !_rePasswordVisible,
-          cursorColor: WHITE,
-          maxLength: 60,
-          style: TextStyle(color: WHITE),
-          decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-              counterStyle: TextStyle(color: WHITE),
-              border: OutlineInputBorder(),
-              labelText: getTranslated(context, 'retypedPassword'),
-              prefixIcon: iconWhite(Icons.lock),
-              suffixIcon: IconButton(
-                icon: iconWhite(_rePasswordVisible ? Icons.visibility : Icons.visibility_off),
-                onPressed: () => setState(
-                  () => _rePasswordVisible = !_rePasswordVisible,
-                ),
-              ),
-              labelStyle: TextStyle(color: WHITE)),
-          validator: (value) => validate(value),
         ),
         SizedBox(height: 10),
       ],
@@ -794,64 +656,60 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
     }
   }
 
-  Widget _buildRegisterButton() {
+  Widget _buildUpdateButton() {
     return Column(
       children: <Widget>[
-        SizedBox(height: 30),
         MaterialButton(
           elevation: 0,
           minWidth: double.maxFinite,
           height: 50,
           shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
           onPressed: () => {
-            if (!_isValid() || !_regulationsCheckbox || !_privacyPolicyCheckbox)
+            if (!_isValid())
               {
                 _errorDialog(getTranslated(context, 'correctInvalidFields')),
               }
             else
               {
-                dto = new CreateEmployeeDto(
-                  username: _usernameController.text,
-                  password: _passwordController.text,
-                  name: _nameController.text,
-                  surname: _surnameController.text,
-                  nationality: _nationality,
-                  phone: _phoneController.text,
-                  viber: _viberController.text,
-                  whatsApp: _whatsAppController.text,
-                  fatherName: _fatherNameController.text,
-                  motherName: _motherNameController.text,
-                  dateOfBirth: _dateOfBirth != null ? _dateOfBirth.toString().substring(0, 10) : null,
-                  expirationDateOfWork: _expirationDateOfWork != null ? _expirationDateOfWork.toString().substring(0, 10) : null,
-                  nip: _nipController.text,
-                  bankAccountNumber: _bankAccountNumberController.text,
-                  drivingLicense: _drivingLicenseController.text,
-                  locality: _localityController.text,
-                  zipCode: _zipCodeController.text,
-                  street: _streetController.text,
-                  houseNumber: _houseNumberController.text,
-                  passportNumber: _passportNumberController.text,
-                  passportReleaseDate: _passportReleaseDate != null ? _passportReleaseDate.toString().substring(0, 10) : null,
-                  passportExpirationDate: _passportExpirationDate != null ? _passportExpirationDate.toString().substring(0, 10) : null,
-                  tokenId: widget._tokenId,
-                  accountExpirationDate: widget._accountExpirationDate,
-                ),
-                _employeeService.create(dto).then((res) {
-                  _showSuccessDialog();
+                _employeeService.updateEmployeeAndUser(
+                  widget._employeeId,
+                  {
+                    "username": _usernameController.text,
+                    "name": _nameController.text,
+                    "surname": _surnameController.text,
+                    "nationality": _nationality,
+                    "phone": _phoneController.text,
+                    "viber": _viberController.text,
+                    "whatsApp": _whatsAppController.text,
+                    "fatherName": _fatherNameController.text,
+                    "motherName": _motherNameController.text,
+                    "dateOfBirth": _dateOfBirth != null ? _dateOfBirth.toString().substring(0, 10) : null,
+                    "expirationDateOfWork": _expirationDateOfWork != null ? _expirationDateOfWork.toString().substring(0, 10) : null,
+                    "nip": _nipController.text,
+                    "bankAccountNumber": _bankAccountNumberController.text,
+                    "drivingLicense": _drivingLicenseController.text,
+                    "locality": _localityController.text,
+                    "zipCode": _zipCodeController.text,
+                    "street": _streetController.text,
+                    "houseNumber": _houseNumberController.text,
+                    "passportNumber": _passportNumberController.text,
+                    "passportReleaseDate": _passportReleaseDate != null ? _passportReleaseDate.toString().substring(0, 10) : null,
+                    "passportExpirationDate": _passportExpirationDate != null ? _passportExpirationDate.toString().substring(0, 10) : null,
+                  },
+                ).then((res) {
+                  ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedInformationAboutYou'));
+                  _user.nationality = _nationality;
+                  _user.info = _nameController.text + ' ' + _surnameController.text;
+                  _user.username = _usernameController.text;
                 }).catchError((onError) {
-                  String s = onError.toString();
-                  if (s.contains('USERNAME_EXISTS')) {
-                    _errorDialog(getTranslated(context, 'usernameExists') + '\n' + getTranslated(context, 'chooseOtherUsername'));
-                  } else if (s.contains('TOKEN_EXPIRED')) {
-                    _errorDialogWithNavigate(getTranslated(context, 'tokenIsIncorrect') + '\n' + getTranslated(context, 'askAdministratorWhatWentWrong'));
-                  } else {
-                    _errorDialog(getTranslated(context, 'smthWentWrong'));
-                  }
+                  _errorDialog(
+                    getTranslated(context, 'smthWentWrong'),
+                  );
                 }),
               }
           },
           color: GREEN,
-          child: text20White(getTranslated(context, 'register')),
+          child: text20White(getTranslated(context, 'update')),
           textColor: Colors.white,
         ),
       ],
@@ -876,106 +734,6 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
           actions: <Widget>[
             FlatButton(
               child: textWhite(getTranslated(context, 'close')),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  _showSuccessDialog() {
-    return showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return WillPopScope(
-          child: AlertDialog(
-            backgroundColor: DARK,
-            title: textGreen(getTranslated(this.context, 'success')),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  textWhite(getTranslated(this.context, 'registerSuccess')),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: textWhite(getTranslated(this.context, 'goToLoginPage')),
-                onPressed: () => _resetAndOpenPage(),
-              ),
-            ],
-          ),
-          onWillPop: _navigateToLoginPage,
-        );
-      },
-    );
-  }
-
-  Future<bool> _navigateToLoginPage() async {
-    _resetAndOpenPage();
-    return true;
-  }
-
-  _errorDialogWithNavigate(String errorMsg) {
-    return showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: DARK,
-          title: textGreen(getTranslated(this.context, 'close')),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                textWhite(errorMsg),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: textWhite(getTranslated(this.context, 'close')),
-              onPressed: () => _resetAndOpenPage(),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _resetAndOpenPage() {
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (BuildContext context) => LoginPage()),
-      ModalRoute.withName('/'),
-    );
-  }
-
-  Future<bool> _onWillPop() async {
-    return _exitDialog() ?? false;
-  }
-
-  _exitDialog() {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: DARK,
-          title: textGreen(getTranslated(context, 'confirmation')),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                textWhite(getTranslated(context, 'exitRegistrationContent')),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: textWhite(getTranslated(context, 'exitAgree')),
-              onPressed: () => {Navigator.of(context).pop(), _resetAndOpenPage()},
-            ),
-            FlatButton(
-              child: textWhite(getTranslated(context, 'no')),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ],

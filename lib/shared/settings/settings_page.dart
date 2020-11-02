@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/api/user/service/user_service.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
 import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
@@ -11,7 +13,6 @@ import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/logout_service.dart';
-import 'package:give_job/shared/service/user_service.dart';
 import 'package:give_job/shared/settings/bug_report_dialog.dart';
 import 'package:give_job/shared/settings/documents_page.dart';
 import 'package:give_job/shared/util/language_util.dart';
@@ -36,7 +37,10 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   List<Language> _languages = LanguageUtil.getLanguages();
   List<DropdownMenuItem<Language>> _dropdownMenuItems;
-  final _userService = new UserService();
+
+  User _user;
+  UserService _userService;
+
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final _passwordController = new TextEditingController();
   final _rePasswordController = new TextEditingController();
@@ -45,6 +49,7 @@ class _SettingsPageState extends State<SettingsPage> {
   void initState() {
     super.initState();
     _dropdownMenuItems = buildDropdownMenuItems(_languages);
+    _userService = ServiceInitializer.initialize(context, _user.authHeader, UserService);
   }
 
   List<DropdownMenuItem<Language>> buildDropdownMenuItems(List languages) {
@@ -153,12 +158,12 @@ class _SettingsPageState extends State<SettingsPage> {
                                                             SizedBox(height: 10),
                                                             FlatButton(
                                                               child: textWhite(getTranslated(context, 'changeMyPassword')),
-                                                              onPressed: () => {
-                                                                _userService.updatePassword(widget._user.username, _passwordController.text, widget._user.authHeader).then((res) {
+                                                              onPressed: () => _userService.updatePassword(widget._user.username, _passwordController.text).then(
+                                                                (res) {
                                                                   Navigator.of(context).pop();
                                                                   Logout.logoutWithoutConfirm(context, getTranslated(context, 'passwordUpdatedSuccessfully'));
-                                                                })
-                                                              },
+                                                                },
+                                                              ),
                                                             ),
                                                             FlatButton(child: textWhite(getTranslated(context, 'doNotChangeMyPassword')), onPressed: () => Navigator.of(context).pop()),
                                                           ],

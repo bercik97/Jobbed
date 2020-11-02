@@ -425,5 +425,7 @@
   "graphics": "GRAFIK",
   "settingTsStatusToInProgress": "Setzen des Arbeitszeittabellenstatus auf \"in Bearbeitung\"",
   "settingTsStatusToCompleted": "Setzen des Arbeitszeittabellenstatus auf \"abgeschlossen\"",
-  "accountExpirationTime": "Account expiration time"
+  "accountExpirationDate": "Account expiration date",
+  "informationAboutYou": "Information about you",
+  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you"
 }

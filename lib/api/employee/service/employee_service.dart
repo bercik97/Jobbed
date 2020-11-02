@@ -25,8 +25,14 @@ class EmployeeService {
     return res.statusCode == 200 ? res : Future.error(res.body);
   }
 
-  Future<EmployeePageDto> findById(String id) async {
-    String url = _url + '/${int.parse(id)}';
+  Future<Map<String, Object>> findEmployeeAndUserFieldsValuesById(int id, List<String> fields) async {
+    Response res = await get('$_url?id=$id&fields=$fields');
+    var body = res.body;
+    return res.statusCode == 200 ? json.decode(body) : Future.error(body);
+  }
+
+  Future<EmployeePageDto> findByIdForEmployeePage(String id) async {
+    String url = _url + '/employee-page?id=$id';
     Response res = await get(url, headers: _header);
     if (res.statusCode == 200) {
       return EmployeePageDto.fromJson(jsonDecode(res.body));
@@ -35,5 +41,14 @@ class EmployeeService {
     } else {
       return Future.error(res.body);
     }
+  }
+
+  Future<dynamic> updateEmployeeAndUser(int id, Map<String, Object> fieldsValues) async {
+    Response res = await put(
+      '$_url?id=$id',
+      body: jsonEncode(fieldsValues),
+      headers: _headers,
+    );
+    return res.statusCode == 200 ? res : Future.error(res.body);
   }
 }
