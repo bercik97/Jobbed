@@ -20,14 +20,14 @@ class ServiceInitializer {
     };
     switch (obj.toString()) {
       case 'EmployeeService': return new EmployeeService(context, header, headers);
-      case 'GroupService': return new GroupService(header, headers);
-      case 'ManagerService': return new ManagerService(header, headers);
+      case 'GroupService': return new GroupService(context, header, headers);
+      case 'ManagerService': return new ManagerService(context, header, headers);
       case 'TimesheetService': return new TimesheetService(context, header, headers);
       case 'TokenService': return new TokenService();
-      case 'UserService': return new UserService(header, headers);
-      case 'VocationService': return new VocationService(header, headers);
+      case 'UserService': return new UserService(context, header, headers);
+      case 'VocationService': return new VocationService(context, header, headers);
       case 'WorkdayService': return new WorkdayService(context, header, headers);
-      case 'WorkplaceService': return new WorkplaceService(header, headers);
+      case 'WorkplaceService': return new WorkplaceService(context, header, headers);
       default: throw 'Wrong (class as String) to translate!';
     }
   }

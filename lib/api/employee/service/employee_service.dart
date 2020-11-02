@@ -26,29 +26,50 @@ class EmployeeService {
   }
 
   Future<Map<String, Object>> findEmployeeAndUserFieldsValuesById(int id, List<String> fields) async {
-    Response res = await get('$_url?id=$id&fields=$fields');
+    String url = '$_url?id=$id&fields=$fields';
+    Response res = await get(
+      url,
+      headers: _header,
+    );
     var body = res.body;
-    return res.statusCode == 200 ? json.decode(body) : Future.error(body);
+    if (res.statusCode == 200) {
+      return json.decode(body);
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(body);
+    }
   }
 
   Future<EmployeePageDto> findByIdForEmployeePage(String id) async {
     String url = _url + '/employee-page?id=$id';
-    Response res = await get(url, headers: _header);
+    Response res = await get(
+      url,
+      headers: _header,
+    );
+    var body = res.body;
     if (res.statusCode == 200) {
-      return EmployeePageDto.fromJson(jsonDecode(res.body));
+      return EmployeePageDto.fromJson(jsonDecode(body));
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(body);
+    }
+  }
+
+  Future<dynamic> updateEmployeeAndUser(int id, Map<String, Object> fieldsValues) async {
+    String url = '$_url?id=$id';
+    Response res = await put(
+      url,
+      body: jsonEncode(fieldsValues),
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
     } else if (res.statusCode == 401) {
       return Logout.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
-  }
-
-  Future<dynamic> updateEmployeeAndUser(int id, Map<String, Object> fieldsValues) async {
-    Response res = await put(
-      '$_url?id=$id',
-      body: jsonEncode(fieldsValues),
-      headers: _headers,
-    );
-    return res.statusCode == 200 ? res : Future.error(res.body);
   }
 }

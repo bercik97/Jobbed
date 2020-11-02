@@ -1,14 +1,16 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/manager/dto/create_manager_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:http/http.dart';
 
 class ManagerService {
+  final BuildContext _context;
   final Map<String, String> _header;
   final Map<String, String> _headers;
 
-  ManagerService(this._header, this._headers);
+  ManagerService(this._context, this._header, this._headers);
 
   static const String _url = '$SERVER_IP/managers';
 
