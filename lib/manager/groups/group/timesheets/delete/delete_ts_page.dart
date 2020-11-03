@@ -18,12 +18,12 @@ import '../../../../../shared/widget/texts.dart';
 import '../../../../manager_app_bar.dart';
 import '../../../../manager_side_bar.dart';
 import '../../../../service/manager_service.dart';
-import '../../employee/model/group_employee_model.dart';
+import '../../../model/group_model.dart';
 import '../../shared/group_floating_action_button.dart';
 import '../manager_ts_page.dart';
 
 class DeleteTsPage extends StatefulWidget {
-  final GroupEmployeeModel _model;
+  final GroupModel _model;
   final int _year;
   final String _month;
   final String _status;
@@ -35,7 +35,7 @@ class DeleteTsPage extends StatefulWidget {
 }
 
 class _DeleteTsPageState extends State<DeleteTsPage> {
-  GroupEmployeeModel _model;
+  GroupModel _model;
   int _year;
   int _month;
   String _status;

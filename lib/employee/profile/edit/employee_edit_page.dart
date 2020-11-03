@@ -671,7 +671,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
               }
             else
               {
-                _employeeService.updateEmployeeAndUser(
+                _employeeService.updateEmployeeAndUserFieldsValuesById(
                   widget._employeeId,
                   {
                     "username": _usernameController.text,

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
+import 'package:give_job/manager/groups/model/group_model.dart';
 import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.dart';
 import 'package:give_job/manager/groups/group/timesheets/manager_ts_page.dart';
 import 'package:give_job/manager/groups/group/vocations/manager_vocations_ts_page.dart';
@@ -18,11 +18,11 @@ import 'package:give_job/shared/widget/texts.dart';
 import '../../manager_app_bar.dart';
 import '../groups_dashboard_page.dart';
 import 'edit/group_edit_page.dart';
-import 'employee/manager_employees_page.dart';
+import 'employee/employees_page.dart';
 import 'icons_legend/icons_legend_dialog.dart';
 
 class ManagerGroupDetailsPage extends StatefulWidget {
-  final GroupEmployeeModel _model;
+  final GroupModel _model;
 
   ManagerGroupDetailsPage(this._model);
 
@@ -32,7 +32,7 @@ class ManagerGroupDetailsPage extends StatefulWidget {
 }
 
 class _ManagerGroupDetailsPageState extends State<ManagerGroupDetailsPage> {
-  GroupEmployeeModel _model;
+  GroupModel _model;
 
   @override
   Widget build(BuildContext context) {
@@ -172,7 +172,7 @@ class _ManagerGroupDetailsPageState extends State<ManagerGroupDetailsPage> {
                               Navigator.of(context).push(
                                 CupertinoPageRoute<Null>(
                                   builder: (BuildContext context) {
-                                    return ManagerEmployeesPage(_model);
+                                    return EmployeesPage(_model);
                                   },
                                 ),
                               );

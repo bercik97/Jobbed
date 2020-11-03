@@ -5,11 +5,10 @@ import '../../../../internationalization/localization/localization_constants.dar
 import '../../../../shared/libraries/colors.dart';
 import '../../../../shared/widget/icons.dart';
 import '../../../../shared/widget/texts.dart';
-import '../employee/model/group_employee_model.dart';
+import '../../model/group_model.dart';
 
 class IconsLegend {
-  static void showIconsLegendDialog(
-      BuildContext context, GroupEmployeeModel model) {
+  static void showIconsLegendDialog(BuildContext context, GroupModel model) {
     showGeneralDialog(
       context: context,
       barrierColor: DARK.withOpacity(0.95),
@@ -27,31 +26,18 @@ class IconsLegend {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      textCenter16GreenBold(
-                          getTranslated(context, 'iconsLegend')),
+                      textCenter16GreenBold(getTranslated(context, 'iconsLegend')),
                       SizedBox(height: 25),
-                      buildRow('images/unchecked.png',
-                          getTranslated(context, 'tsInProgress')),
-                      buildRow('images/checked.png',
-                          getTranslated(context, 'completedTs')),
-                      buildRowWithIcon(
-                          icon50Orange(Icons.arrow_downward),
-                          getTranslated(
-                              context, 'settingTsStatusToInProgress')),
-                      buildRowWithIcon(icon50Green(Icons.arrow_upward),
-                          getTranslated(context, 'settingTsStatusToCompleted')),
-                      buildRow('images/green-hours-icon.png',
-                          getTranslated(context, 'settingHours')),
-                      buildRow('images/green-rate-icon.png',
-                          getTranslated(context, 'settingRating')),
-                      buildRow('images/green-plan-icon.png',
-                          getTranslated(context, 'settingPlan')),
-                      buildRow('images/green-opinion-icon.png',
-                          getTranslated(context, 'settingOpinion')),
-                      buildRow('images/green-workplace-icon.png',
-                          getTranslated(context, 'settingWorkplace')),
-                      buildRow('images/small-vocation-icon.png',
-                          getTranslated(context, 'settingVocation')),
+                      buildRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
+                      buildRow('images/checked.png', getTranslated(context, 'completedTs')),
+                      buildRowWithIcon(icon50Orange(Icons.arrow_downward), getTranslated(context, 'settingTsStatusToInProgress')),
+                      buildRowWithIcon(icon50Green(Icons.arrow_upward), getTranslated(context, 'settingTsStatusToCompleted')),
+                      buildRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
+                      buildRow('images/green-rate-icon.png', getTranslated(context, 'settingRating')),
+                      buildRow('images/green-plan-icon.png', getTranslated(context, 'settingPlan')),
+                      buildRow('images/green-opinion-icon.png', getTranslated(context, 'settingOpinion')),
+                      buildRow('images/green-workplace-icon.png', getTranslated(context, 'settingWorkplace')),
+                      buildRow('images/small-vocation-icon.png', getTranslated(context, 'settingVocation')),
                     ],
                   ),
                 ),
@@ -65,8 +51,7 @@ class IconsLegend {
                       elevation: 0,
                       height: 50,
                       minWidth: 100,
-                      shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(30.0)),
+                      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[iconWhite(Icons.close)],

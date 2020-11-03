@@ -1,6 +1,6 @@
 import 'package:give_job/shared/model/user.dart';
 
-class GroupEmployeeModel {
+class GroupModel {
   User user;
   int groupId;
   String groupName;
@@ -8,7 +8,7 @@ class GroupEmployeeModel {
   String numberOfEmployees;
   String countryOfWork;
 
-  GroupEmployeeModel(
+  GroupModel(
     this.user,
     this.groupId,
     this.groupName,

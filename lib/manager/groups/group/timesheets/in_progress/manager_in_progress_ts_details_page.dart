@@ -10,8 +10,8 @@ import 'package:flutter/services.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/dto/manager_group_employee_dto.dart';
 import 'package:give_job/manager/dto/manager_group_timesheet_dto.dart';
-import 'package:give_job/manager/groups/group/employee/manager_employee_profile_page.dart';
-import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
+import 'package:give_job/manager/groups/group/employee/employee_profil_page.dart';
+import 'package:give_job/manager/groups/model/group_model.dart';
 import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/groups/group/workplaces/select_workplace_for_employees.dart';
@@ -34,7 +34,7 @@ import '../../../../manager_app_bar_with_icons_legend.dart';
 import '../../../../manager_side_bar.dart';
 
 class ManagerTimesheetsEmployeesInProgressPage extends StatefulWidget {
-  final GroupEmployeeModel _model;
+  final GroupModel _model;
   final ManagerGroupTimesheetDto _timeSheet;
 
   ManagerTimesheetsEmployeesInProgressPage(this._model, this._timeSheet);
@@ -51,7 +51,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
   final TextEditingController _planController = new TextEditingController();
   final TextEditingController _opinionController = new TextEditingController();
 
-  GroupEmployeeModel _model;
+  GroupModel _model;
   ManagerService _managerService;
   ManagerGroupTimesheetDto _timesheet;
 
@@ -218,7 +218,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                                           this.context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                ManagerEmployeeProfilePage(
+                                                EmployeeProfilPage(
                                                     _model,
                                                     nationality,
                                                     currency,

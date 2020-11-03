@@ -2,11 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:give_job/manager/dto/basic_employee_dto.dart';
 import 'package:give_job/manager/dto/manager_dto.dart';
-import 'package:give_job/manager/dto/manager_employee_contact_dto.dart';
-import 'package:give_job/manager/dto/manager_group_details_dto.dart';
 import 'package:give_job/manager/dto/manager_group_employee_dto.dart';
 import 'package:give_job/manager/dto/manager_group_employee_vocation_dto.dart';
 import 'package:give_job/manager/dto/manager_group_timesheet_dto.dart';
@@ -27,37 +24,12 @@ class ManagerService {
   static const String _baseEmployeeUrl = SERVER_IP + '$_baseUrl/employees';
   static const String _baseTsUrl = SERVER_IP + '$_baseUrl/timesheets';
   static const String _baseWorkdayUrl = SERVER_IP + '$_baseUrl/workdays';
-  static const String _baseContactUrl = SERVER_IP + '$_baseUrl/contacts';
 
   Future<ManagerDto> findById(String id) async {
     String url = _baseManagerUrl + '/${int.parse(id)}';
     Response res = await get(url, headers: {HttpHeaders.authorizationHeader: authHeader});
     if (res.statusCode == 200) {
       return ManagerDto.fromJson(jsonDecode(res.body));
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<List<ManagerGroupDetailsDto>> findEmployeesGroupDetails(String groupId) async {
-    String url = _baseEmployeeUrl + '/groups/${int.parse(groupId)}/details';
-    Response res = await get(url, headers: {HttpHeaders.authorizationHeader: authHeader});
-    if (res.statusCode == 200) {
-      return (json.decode(res.body) as List).map((data) => ManagerGroupDetailsDto.fromJson(data)).toList();
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<List<TimesheetForEmployeeDto>> findEmployeeTimesheetsByGroupIdAndEmployeeId(String groupId, String employeeId) async {
-    String url = _baseTsUrl + '/groups/${int.parse(groupId)}/employees/${int.parse(employeeId)}';
-    Response res = await get(url, headers: {HttpHeaders.authorizationHeader: authHeader});
-    if (res.statusCode == 200) {
-      return (json.decode(res.body) as List).map((data) => TimesheetForEmployeeDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
       return Logout.handle401WithLogout(context);
     } else {
@@ -142,116 +114,6 @@ class ManagerService {
     Response res = await get(url, headers: {HttpHeaders.authorizationHeader: authHeader});
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => ManagerVocationsTsDto.fromJson(data)).toList();
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<dynamic> updateMoneyPerHour(int employeeId, double moneyPerHour) async {
-    Response res = await put(_baseEmployeeUrl + '/money-per-hour', body: jsonEncode({'employeeId': employeeId, 'moneyPerHour': moneyPerHour}), headers: {HttpHeaders.authorizationHeader: authHeader, 'content-type': 'application/json'});
-    if (res.statusCode == 200) {
-      return res;
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<dynamic> updateMoneyPerHourForSelectedEmployees(Set<int> employeesId, double moneyPerHour) async {
-    Response res = await put(_baseEmployeeUrl + '/selected/money-per-hour', body: jsonEncode({'employeesId': employeesId.map((el) => el.toInt()).toList(), 'moneyPerHour': moneyPerHour}), headers: {HttpHeaders.authorizationHeader: authHeader, 'content-type': 'application/json'});
-    if (res.statusCode == 200) {
-      return res;
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<ManagerEmployeeContactDto> findEmployeeContactByEmployeeId(int employeeId) async {
-    String url = _baseContactUrl + '/$employeeId';
-    Response res = await get(url, headers: {HttpHeaders.authorizationHeader: authHeader});
-    if (res.statusCode == 200) {
-      return ManagerEmployeeContactDto.fromJson(jsonDecode(res.body));
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<dynamic> updateWorkdaysHours(Set<int> workdayIds, int hours) async {
-    Map<String, dynamic> map = {'workdayIds': workdayIds.map((el) => el.toString()).toList(), 'hours': hours};
-    String url = _baseWorkdayUrl + '/hours';
-    Response res = await put(url, body: jsonEncode(map), headers: {HttpHeaders.authorizationHeader: authHeader, 'content-type': 'application/json'});
-    if (res.statusCode == 200) {
-      return res;
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<dynamic> updateWorkdaysRating(Set<int> workdayIds, int rating) async {
-    Map<String, dynamic> map = {'workdayIds': workdayIds.map((el) => el.toString()).toList(), 'rating': rating};
-    String url = _baseWorkdayUrl + '/rating';
-    Response res = await put(url, body: jsonEncode(map), headers: {HttpHeaders.authorizationHeader: authHeader, 'content-type': 'application/json'});
-    if (res.statusCode == 200) {
-      return res;
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<dynamic> updateWorkdayPlan(int workdayId, String plan) async {
-    String url = _baseWorkdayUrl + '/$workdayId/plan';
-    Response res = await put(url, body: jsonEncode({'plan': plan}), headers: {HttpHeaders.authorizationHeader: authHeader, 'content-type': 'application/json'});
-    if (res.statusCode == 200) {
-      return res;
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<dynamic> updateWorkdaysPlan(Set<int> workdayIds, String plan) async {
-    Map<String, dynamic> map = {'workdayIds': workdayIds.map((el) => el.toString()).toList(), 'plan': plan};
-    String url = _baseWorkdayUrl + '/plan';
-    Response res = await put(url, body: jsonEncode(map), headers: {HttpHeaders.authorizationHeader: authHeader, 'content-type': 'application/json'});
-    if (res.statusCode == 200) {
-      return res;
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<dynamic> updateWorkdayOpinion(int workdayId, String opinion) async {
-    String url = _baseWorkdayUrl + '/$workdayId/opinion';
-    Response res = await put(url, body: jsonEncode({'opinion': opinion}), headers: {HttpHeaders.authorizationHeader: authHeader, 'content-type': 'application/json'});
-    if (res.statusCode == 200) {
-      return res;
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<dynamic> updateWorkdaysOpinion(Set<int> workdayIds, String opinion) async {
-    Map<String, dynamic> map = {'workdayIds': workdayIds.map((el) => el.toString()).toList(), 'opinion': opinion};
-    String url = _baseWorkdayUrl + '/opinion';
-    Response res = await put(url, body: jsonEncode(map), headers: {HttpHeaders.authorizationHeader: authHeader, 'content-type': 'application/json'});
-    if (res.statusCode == 200) {
-      return res;
     } else if (res.statusCode == 401) {
       return Logout.handle401WithLogout(context);
     } else {
@@ -530,25 +392,6 @@ class ManagerService {
       'timesheetStatus': timesheetStatus,
     };
     Response res = await post(_baseWorkdayUrl + '/group/vocations', body: jsonEncode(map), headers: {HttpHeaders.authorizationHeader: authHeader, 'content-type': 'application/json'});
-    if (res.statusCode == 200) {
-      return res;
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<dynamic> createOrUpdateVocationForSelectedDays(String reason, Set<int> workdayIds, int timesheetYear, int timesheetMonth, String timesheetStatus) async {
-    Map<String, dynamic> map = {
-      'reason': reason,
-      'isVerified': true,
-      'workdayIds': workdayIds.map((el) => el.toInt()).toList(),
-      'timesheetYear': timesheetYear,
-      'timesheetMonth': timesheetMonth,
-      'timesheetStatus': timesheetStatus,
-    };
-    Response res = await post(_baseWorkdayUrl + '/selected/vocations', body: jsonEncode(map), headers: {HttpHeaders.authorizationHeader: authHeader, 'content-type': 'application/json'});
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {

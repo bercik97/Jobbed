@@ -12,45 +12,48 @@ import 'package:give_job/manager/dto/workday_dto.dart';
 import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/groups/group/workplaces/select_workplace_for_selected_workdays.dart';
-import 'package:give_job/manager/service/manager_service.dart';
 import 'package:give_job/shared/libraries/colors.dart';
+import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
-import 'package:give_job/shared/widget/circular_progress_indicator.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
+import 'package:give_job/shared/widget/loader.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
 import '../../../../shared/libraries/constants.dart';
+import '../../../manager_app_bar.dart';
 import '../../../manager_app_bar_with_icons_legend.dart';
 import '../../../manager_side_bar.dart';
-import 'model/group_employee_model.dart';
+import '../../model/group_model.dart';
 
-class ManagerEmployeeTsInProgressPage extends StatefulWidget {
-  final GroupEmployeeModel _model;
+class EmployeeTsInProgressPage extends StatefulWidget {
+  final GroupModel _model;
   final String _employeeInfo;
   final String _employeeNationality;
   final String _currency;
   final TimesheetForEmployeeDto timesheet;
 
-  const ManagerEmployeeTsInProgressPage(this._model, this._employeeInfo, this._employeeNationality, this._currency, this.timesheet);
+  const EmployeeTsInProgressPage(this._model, this._employeeInfo, this._employeeNationality, this._currency, this.timesheet);
 
   @override
-  _ManagerEmployeeTsInProgressPageState createState() => _ManagerEmployeeTsInProgressPageState();
+  _EmployeeTsInProgressPageState createState() => _EmployeeTsInProgressPageState();
 }
 
-class _ManagerEmployeeTsInProgressPageState extends State<ManagerEmployeeTsInProgressPage> {
+class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   final TextEditingController _hoursController = new TextEditingController();
   final TextEditingController _ratingController = new TextEditingController();
   final TextEditingController _planController = new TextEditingController();
   final TextEditingController _opinionController = new TextEditingController();
   final TextEditingController _vocationReasonController = new TextEditingController();
 
-  GroupEmployeeModel _model;
+  GroupModel _model;
+  User _user;
+
   WorkdayService _workdayService;
-  ManagerService _managerService;
+
   String _employeeInfo;
   String _employeeNationality;
   String _currency;
@@ -67,525 +70,280 @@ class _ManagerEmployeeTsInProgressPageState extends State<ManagerEmployeeTsInPro
   bool _sort = true;
   int _sortColumnIndex;
 
+  bool _loading = false;
+
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     this._model = widget._model;
-    this._workdayService = ServiceInitializer.initialize(context, _model.user.authHeader, WorkdayService);
-    this._managerService = ServiceInitializer.initialize(context, _model.user.authHeader, ManagerService);
+    this._user = _model.user;
+    this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     this._employeeInfo = widget._employeeInfo;
     this._employeeNationality = widget._employeeNationality;
     this._currency = widget._currency;
     this._timesheet = widget.timesheet;
-    if (workdays.isEmpty) {
-      return MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: DARK,
-          appBar: managerAppBarWithIconsLegend(
-              context,
-              getTranslated(context, 'workdays') + ' - ' + getTranslated(context, STATUS_IN_PROGRESS),
-              [
-                IconsLegend.buildRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
-                IconsLegend.buildRow('images/green-rate-icon.png', getTranslated(context, 'settingRating')),
-                IconsLegend.buildRow('images/green-plan-icon.png', getTranslated(context, 'settingPlan')),
-                IconsLegend.buildRow('images/green-opinion-icon.png', getTranslated(context, 'settingOpinion')),
-                IconsLegend.buildRow('images/green-workplace-icon.png', getTranslated(context, 'settingWorkplace')),
-                IconsLegend.buildRow('images/small-vocation-icon.png', getTranslated(context, 'settingVocation')),
-              ],
-              _model.user),
-          drawer: managerSideBar(context, _model.user),
-          body: RefreshIndicator(
-            color: DARK,
-            backgroundColor: WHITE,
-            onRefresh: _refresh,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  color: BRIGHTER_DARK,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 15, bottom: 5),
-                    child: ListTile(
-                      leading: Padding(
-                        padding: EdgeInsets.only(bottom: 15),
-                        child: Image(
-                          image: AssetImage('images/unchecked.png'),
-                          fit: BoxFit.fitHeight,
+    super.initState();
+    _loading = true;
+    _workdayService.findAllByTimesheetId(_timesheet.id).then((res) {
+      setState(() {
+        workdays = res;
+        _loading = false;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_loading) {
+      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')), managerSideBar(context, _model.user));
+    }
+    return MaterialApp(
+      title: APP_NAME,
+      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        backgroundColor: DARK,
+        appBar: managerAppBarWithIconsLegend(
+            context,
+            getTranslated(context, 'workdays') + ' - ' + getTranslated(context, STATUS_IN_PROGRESS),
+            [
+              IconsLegend.buildRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
+              IconsLegend.buildRow('images/green-rate-icon.png', getTranslated(context, 'settingRating')),
+              IconsLegend.buildRow('images/green-plan-icon.png', getTranslated(context, 'settingPlan')),
+              IconsLegend.buildRow('images/green-opinion-icon.png', getTranslated(context, 'settingOpinion')),
+              IconsLegend.buildRow('images/green-workplace-icon.png', getTranslated(context, 'settingWorkplace')),
+              IconsLegend.buildRow('images/small-vocation-icon.png', getTranslated(context, 'settingVocation')),
+            ],
+            _user),
+        drawer: managerSideBar(context, _user),
+        body: RefreshIndicator(
+          color: DARK,
+          backgroundColor: WHITE,
+          onRefresh: _refresh,
+          child: Column(
+            children: <Widget>[
+              Container(
+                color: BRIGHTER_DARK,
+                child: Padding(
+                  padding: EdgeInsets.only(top: 15, bottom: 5),
+                  child: ListTile(
+                    leading: Padding(
+                      padding: EdgeInsets.only(bottom: 15),
+                      child: Image(
+                        image: AssetImage('images/unchecked.png'),
+                        fit: BoxFit.fitHeight,
+                      ),
+                    ),
+                    title: textWhiteBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
+                    subtitle: Column(
+                      children: <Widget>[
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: textWhiteBold(_employeeInfo != null ? utf8.decode(_employeeInfo.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality) : getTranslated(context, 'empty')),
                         ),
-                      ),
-                      title: textWhiteBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
-                      subtitle: Column(
-                        children: <Widget>[
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: textWhiteBold(_employeeInfo != null ? utf8.decode(_employeeInfo.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality) : getTranslated(context, 'empty')),
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: textWhite(getTranslated(context, 'hours') + ': '),
-                              ),
-                              textGreenBold(_timesheet.numberOfHoursWorked.toString() + 'h'),
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: textWhite(getTranslated(context, 'averageRating') + ': '),
-                              ),
-                              textGreenBold(widget.timesheet.averageRating.toString()),
-                            ],
-                          ),
-                        ],
-                      ),
-                      trailing: Wrap(
-                        children: <Widget>[text20GreenBold(widget.timesheet.amountOfEarnedMoney.toString()), text20GreenBold(' ' + _currency)],
+                        Row(
+                          children: <Widget>[
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: textWhite(getTranslated(context, 'hours') + ': '),
+                            ),
+                            textGreenBold(_timesheet.numberOfHoursWorked.toString() + 'h'),
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: textWhite(getTranslated(context, 'averageRating') + ': '),
+                            ),
+                            textGreenBold(widget.timesheet.averageRating.toString()),
+                          ],
+                        ),
+                      ],
+                    ),
+                    trailing: Wrap(
+                      children: <Widget>[text20GreenBold(widget.timesheet.amountOfEarnedMoney.toString()), text20GreenBold(' ' + _currency)],
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Theme(
+                      data: Theme.of(context).copyWith(),
+                      child: Theme(
+                        data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
+                        child: DataTable(
+                          columnSpacing: 10,
+                          sortAscending: _sort,
+                          sortColumnIndex: _sortColumnIndex,
+                          columns: [
+                            DataColumn(label: textWhiteBold('No.'), onSort: (columnIndex, ascending) => _onSortNo(columnIndex, ascending)),
+                            DataColumn(label: textWhiteBold(getTranslated(context, 'hours')), onSort: (columnIndex, ascending) => _onSortHours(columnIndex, ascending)),
+                            DataColumn(label: textWhiteBold(getTranslated(context, 'rating')), onSort: (columnIndex, ascending) => _onSortRatings(columnIndex, ascending)),
+                            DataColumn(label: textWhiteBold(getTranslated(context, 'money')), onSort: (columnIndex, ascending) => _onSortMoney(columnIndex, ascending)),
+                            DataColumn(label: textWhiteBold(getTranslated(context, 'plan')), onSort: (columnIndex, ascending) => _onSortPlans(columnIndex, ascending)),
+                            DataColumn(label: textWhiteBold(getTranslated(context, 'opinion')), onSort: (columnIndex, ascending) => _onSortOpinions(columnIndex, ascending)),
+                            DataColumn(label: textWhiteBold(getTranslated(context, 'workplace'))),
+                            DataColumn(label: textWhiteBold(getTranslated(context, 'vocations'))),
+                          ],
+                          rows: this
+                              .workdays
+                              .map(
+                                (workday) => DataRow(
+                                  selected: selectedIds.contains(workday.id),
+                                  onSelectChanged: (bool selected) {
+                                    onSelectedRow(selected, workday.id);
+                                  },
+                                  cells: [
+                                    DataCell(textWhite(workday.number.toString())),
+                                    DataCell(textWhite(workday.hours.toString())),
+                                    DataCell(textWhite(workday.rating.toString())),
+                                    DataCell(textWhite(workday.money.toString())),
+                                    DataCell(
+                                      Wrap(children: <Widget>[workday.plan != null && workday.plan != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-')]),
+                                      onTap: () => _editPlan(this.context, workday.id, workday.plan),
+                                    ),
+                                    DataCell(
+                                      Wrap(
+                                        children: <Widget>[
+                                          workday.opinion != null && workday.opinion != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
+                                        ],
+                                      ),
+                                      onTap: () => _editOpinion(this.context, workday.id, workday.opinion),
+                                    ),
+                                    DataCell(
+                                      Wrap(
+                                        children: <Widget>[
+                                          workday.workplace != null && workday.workplace.name != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
+                                        ],
+                                      ),
+                                      onTap: () => {
+                                        WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'workplace'), workday.workplace.name),
+                                      },
+                                    ),
+                                    DataCell(
+                                        Wrap(
+                                          children: <Widget>[
+                                            workday.vocation != null
+                                                ? Row(
+                                                    children: [Image(height: 35, image: AssetImage('images/big-vocation-icon.png')), workday.vocation.verified == true ? iconGreen(Icons.check) : iconRed(Icons.clear)],
+                                                  )
+                                                : textWhiteBold('-'),
+                                          ],
+                                        ),
+                                        onTap: () => WorkdayUtil.showVocationReasonDetails(this.context, workday.vocation.reason, workday.vocation.verified)),
+                                  ],
+                                ),
+                              )
+                              .toList(),
+                        ),
                       ),
                     ),
                   ),
                 ),
-                FutureBuilder(
-                  future: _workdayService.findWorkdaysByTimesheetId(_timesheet.id.toString()),
-                  builder: (BuildContext context, AsyncSnapshot<List<WorkdayDto>> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
-                      return Padding(
-                        padding: EdgeInsets.only(top: 50),
-                        child: Center(child: circularProgressIndicator()),
-                      );
-                    } else {
-                      this.workdays = snapshot.data;
-                      BuildContext context = this.context;
-                      return Expanded(
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Theme(
-                              data: Theme.of(context).copyWith(),
-                              child: Theme(
-                                data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
-                                child: DataTable(
-                                  columnSpacing: 10,
-                                  sortAscending: _sort,
-                                  sortColumnIndex: _sortColumnIndex,
-                                  columns: [
-                                    DataColumn(label: textWhiteBold('No.'), onSort: (columnIndex, ascending) => _onSortNo(columnIndex, ascending)),
-                                    DataColumn(label: textWhiteBold(getTranslated(context, 'hours')), onSort: (columnIndex, ascending) => _onSortHours(columnIndex, ascending)),
-                                    DataColumn(label: textWhiteBold(getTranslated(context, 'rating')), onSort: (columnIndex, ascending) => _onSortRatings(columnIndex, ascending)),
-                                    DataColumn(label: textWhiteBold(getTranslated(context, 'money')), onSort: (columnIndex, ascending) => _onSortMoney(columnIndex, ascending)),
-                                    DataColumn(label: textWhiteBold(getTranslated(context, 'plan')), onSort: (columnIndex, ascending) => _onSortPlans(columnIndex, ascending)),
-                                    DataColumn(label: textWhiteBold(getTranslated(context, 'opinion')), onSort: (columnIndex, ascending) => _onSortOpinions(columnIndex, ascending)),
-                                    DataColumn(label: textWhiteBold(getTranslated(context, 'workplace'))),
-                                    DataColumn(label: textWhiteBold(getTranslated(context, 'vocations'))),
-                                  ],
-                                  rows: this
-                                      .workdays
-                                      .map(
-                                        (workday) => DataRow(
-                                          selected: selectedIds.contains(workday.id),
-                                          onSelectChanged: (bool selected) {
-                                            onSelectedRow(selected, workday.id);
-                                          },
-                                          cells: [
-                                            DataCell(textWhite(workday.number.toString())),
-                                            DataCell(textWhite(workday.hours.toString())),
-                                            DataCell(textWhite(workday.rating.toString())),
-                                            DataCell(textWhite(workday.money.toString())),
-                                            DataCell(
-                                              Wrap(children: <Widget>[workday.plan != null && workday.plan != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-')]),
-                                              onTap: () => _editPlan(this.context, workday.id, workday.plan),
-                                            ),
-                                            DataCell(
-                                              Wrap(
-                                                children: <Widget>[
-                                                  workday.opinion != null && workday.opinion != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
-                                                ],
-                                              ),
-                                              onTap: () => _editOpinion(this.context, workday.id, workday.opinion),
-                                            ),
-                                            DataCell(
-                                              Wrap(
-                                                children: <Widget>[
-                                                  workday.workplace != null && workday.workplace.name != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
-                                                ],
-                                              ),
-                                              onTap: () => {
-                                                WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'workplace'), workday.workplace.name),
-                                              },
-                                            ),
-                                            DataCell(
-                                                Wrap(
-                                                  children: <Widget>[
-                                                    workday.vocation != null
-                                                        ? Row(
-                                                            children: [Image(height: 35, image: AssetImage('images/big-vocation-icon.png')), workday.vocation.verified == true ? iconGreen(Icons.check) : iconRed(Icons.clear)],
-                                                          )
-                                                        : textWhiteBold('-'),
-                                                  ],
-                                                ),
-                                                onTap: () => WorkdayUtil.showVocationReasonDetails(this.context, workday.vocation.reason, workday.vocation.verified)),
-                                          ],
-                                        ),
-                                      )
-                                      .toList(),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    }
+              ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: Container(
+          height: 40,
+          child: Row(
+            children: <Widget>[
+              SizedBox(width: 1),
+              Expanded(
+                child: MaterialButton(
+                  color: GREEN,
+                  child: Image(image: AssetImage('images/dark-hours-icon.png')),
+                  onPressed: () => {
+                    if (selectedIds.isNotEmpty) {_hoursController.clear(), _showUpdateHoursDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
                   },
                 ),
-              ],
-            ),
-          ),
-          bottomNavigationBar: Container(
-            height: 40,
-            child: Row(
-              children: <Widget>[
-                SizedBox(width: 1),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-hours-icon.png')),
-                    onPressed: () => {
-                      if (selectedIds.isNotEmpty) {_hoursController.clear(), _showUpdateHoursDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
-                    },
-                  ),
+              ),
+              SizedBox(width: 2.5),
+              Expanded(
+                child: MaterialButton(
+                  color: GREEN,
+                  child: Image(image: AssetImage('images/dark-rate-icon.png')),
+                  onPressed: () => {
+                    if (selectedIds.isNotEmpty) {_ratingController.clear(), _showUpdateRatingDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
+                  },
                 ),
-                SizedBox(width: 2.5),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-rate-icon.png')),
-                    onPressed: () => {
-                      if (selectedIds.isNotEmpty) {_ratingController.clear(), _showUpdateRatingDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
-                    },
-                  ),
+              ),
+              SizedBox(width: 2.5),
+              Expanded(
+                child: MaterialButton(
+                  color: GREEN,
+                  child: Image(image: AssetImage('images/dark-plan-icon.png')),
+                  onPressed: () => {
+                    if (selectedIds.isNotEmpty) {_planController.clear(), _showUpdatePlanDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
+                  },
                 ),
-                SizedBox(width: 2.5),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-plan-icon.png')),
-                    onPressed: () => {
-                      if (selectedIds.isNotEmpty) {_planController.clear(), _showUpdatePlanDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
-                    },
-                  ),
+              ),
+              SizedBox(width: 2.5),
+              Expanded(
+                child: MaterialButton(
+                  color: GREEN,
+                  child: Image(image: AssetImage('images/dark-opinion-icon.png')),
+                  onPressed: () => {
+                    if (selectedIds.isNotEmpty) {_opinionController.clear(), _showUpdateOpinionDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
+                  },
                 ),
-                SizedBox(width: 2.5),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-opinion-icon.png')),
-                    onPressed: () => {
-                      if (selectedIds.isNotEmpty) {_opinionController.clear(), _showUpdateOpinionDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
-                    },
-                  ),
-                ),
-                SizedBox(width: 2.5),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-workplace-icon.png')),
-                    onPressed: () => {
-                      if (selectedIds.isNotEmpty)
-                        {
-                          Navigator.push(
-                            this.context,
-                            MaterialPageRoute(
-                              builder: (context) => SelectWorkplaceForSelectedWorkdaysPage(
-                                _model,
-                                _timesheet,
-                                _employeeInfo,
-                                _employeeNationality,
-                                _currency,
-                                selectedIds,
-                              ),
+              ),
+              SizedBox(width: 2.5),
+              Expanded(
+                child: MaterialButton(
+                  color: GREEN,
+                  child: Image(image: AssetImage('images/dark-workplace-icon.png')),
+                  onPressed: () => {
+                    if (selectedIds.isNotEmpty)
+                      {
+                        Navigator.push(
+                          this.context,
+                          MaterialPageRoute(
+                            builder: (context) => SelectWorkplaceForSelectedWorkdaysPage(
+                              _model,
+                              _timesheet,
+                              _employeeInfo,
+                              _employeeNationality,
+                              _currency,
+                              selectedIds,
                             ),
                           ),
-                        }
-                      else
-                        {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
-                    },
-                  ),
-                ),
-                SizedBox(width: 2.5),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-vocation-icon.png')),
-                    onPressed: () => {
-                      if (selectedIds.isNotEmpty) {_vocationReasonController.clear(), _showUpdateVocationReasonDialog(_timesheet, selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
-                    },
-                  ),
-                ),
-                SizedBox(width: 1),
-              ],
-            ),
-          ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-          floatingActionButton: groupFloatingActionButton(context, _model),
-        ),
-      );
-    } else {
-      return MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: DARK,
-          appBar: managerAppBarWithIconsLegend(
-              context,
-              getTranslated(context, 'workdays') + ' - ' + getTranslated(context, STATUS_IN_PROGRESS),
-              [
-                IconsLegend.buildRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
-                IconsLegend.buildRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
-                IconsLegend.buildRow('images/green-rate-icon.png', getTranslated(context, 'settingRating')),
-                IconsLegend.buildRow('images/green-plan-icon.png', getTranslated(context, 'settingPlan')),
-                IconsLegend.buildRow('images/green-opinion-icon.png', getTranslated(context, 'settingOpinion')),
-                IconsLegend.buildRow('images/green-workplace-icon.png', getTranslated(context, 'settingWorkplace')),
-                IconsLegend.buildRow('images/small-vocation-icon.png', getTranslated(context, 'settingVocation')),
-              ],
-              _model.user),
-          drawer: managerSideBar(context, _model.user),
-          body: RefreshIndicator(
-            color: DARK,
-            backgroundColor: WHITE,
-            onRefresh: _refresh,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  color: BRIGHTER_DARK,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 15, bottom: 5),
-                    child: ListTile(
-                      leading: Padding(
-                        padding: EdgeInsets.only(bottom: 15),
-                        child: Image(
-                          image: AssetImage('images/unchecked.png'),
-                          fit: BoxFit.fitHeight,
                         ),
-                      ),
-                      title: textWhiteBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
-                      subtitle: Column(
-                        children: <Widget>[
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: textWhiteBold(_employeeInfo != null ? utf8.decode(_employeeInfo.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality) : getTranslated(context, 'empty')),
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: textWhite(getTranslated(context, 'hours') + ': '),
-                              ),
-                              textGreenBold(_timesheet.numberOfHoursWorked.toString() + 'h'),
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: textWhite(getTranslated(context, 'averageRating') + ': '),
-                              ),
-                              textGreenBold(widget.timesheet.averageRating.toString()),
-                            ],
-                          ),
-                        ],
-                      ),
-                      trailing: Wrap(
-                        children: <Widget>[text20GreenBold(_timesheet.amountOfEarnedMoney.toString()), text20GreenBold(' ' + _currency)],
-                      ),
-                    ),
-                  ),
+                      }
+                    else
+                      {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
+                  },
                 ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Theme(
-                        data: Theme.of(context).copyWith(),
-                        child: Theme(
-                          data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
-                          child: DataTable(
-                            columnSpacing: 10,
-                            sortAscending: _sort,
-                            sortColumnIndex: _sortColumnIndex,
-                            columns: [
-                              DataColumn(label: textWhiteBold('No.'), onSort: (columnIndex, ascending) => _onSortNo(columnIndex, ascending)),
-                              DataColumn(label: textWhiteBold(getTranslated(context, 'hours')), onSort: (columnIndex, ascending) => _onSortHours(columnIndex, ascending)),
-                              DataColumn(label: textWhiteBold(getTranslated(context, 'rating')), onSort: (columnIndex, ascending) => _onSortRatings(columnIndex, ascending)),
-                              DataColumn(label: textWhiteBold(getTranslated(context, 'money')), onSort: (columnIndex, ascending) => _onSortMoney(columnIndex, ascending)),
-                              DataColumn(label: textWhiteBold(getTranslated(context, 'plan')), onSort: (columnIndex, ascending) => _onSortPlans(columnIndex, ascending)),
-                              DataColumn(label: textWhiteBold(getTranslated(context, 'opinion')), onSort: (columnIndex, ascending) => _onSortOpinions(columnIndex, ascending)),
-                              DataColumn(label: textWhiteBold(getTranslated(context, 'workplace'))),
-                              DataColumn(label: textWhiteBold(getTranslated(context, 'vocations'))),
-                            ],
-                            rows: this
-                                .workdays
-                                .map(
-                                  (workday) => DataRow(
-                                    selected: selectedIds.contains(workday.id),
-                                    onSelectChanged: (bool selected) {
-                                      onSelectedRow(selected, workday.id);
-                                    },
-                                    cells: [
-                                      DataCell(textWhite(workday.number.toString())),
-                                      DataCell(textWhite(workday.hours.toString())),
-                                      DataCell(textWhite(workday.rating.toString())),
-                                      DataCell(textWhite(workday.money.toString())),
-                                      DataCell(
-                                        Wrap(
-                                          children: <Widget>[
-                                            workday.plan != null && workday.plan != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
-                                          ],
-                                        ),
-                                        onTap: () => _editPlan(this.context, workday.id, workday.plan),
-                                      ),
-                                      DataCell(
-                                        Wrap(
-                                          children: <Widget>[
-                                            workday.opinion != null && workday.opinion != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
-                                          ],
-                                        ),
-                                        onTap: () => _editOpinion(this.context, workday.id, workday.opinion),
-                                      ),
-                                      DataCell(
-                                        Wrap(
-                                          children: <Widget>[
-                                            workday.workplace != null && workday.workplace.name != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
-                                          ],
-                                        ),
-                                        onTap: () => {
-                                          WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'workplace'), workday.workplace.name),
-                                        },
-                                      ),
-                                      DataCell(
-                                          Wrap(
-                                            children: <Widget>[
-                                              workday.vocation != null
-                                                  ? Row(
-                                                      children: [Image(height: 35, image: AssetImage('images/big-vocation-icon.png')), workday.vocation.verified == true ? iconGreen(Icons.check) : iconRed(Icons.clear)],
-                                                    )
-                                                  : textWhiteBold('-'),
-                                            ],
-                                          ),
-                                          onTap: () => WorkdayUtil.showVocationReasonDetails(this.context, workday.vocation.reason, workday.vocation.verified)),
-                                    ],
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+              ),
+              SizedBox(width: 2.5),
+              Expanded(
+                child: MaterialButton(
+                  color: GREEN,
+                  child: Image(image: AssetImage('images/dark-vocation-icon.png')),
+                  onPressed: () => {
+                    if (selectedIds.isNotEmpty) {_vocationReasonController.clear(), _showUpdateVocationReasonDialog(_timesheet, selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
+                  },
                 ),
-              ],
-            ),
+              ),
+              SizedBox(width: 1),
+            ],
           ),
-          bottomNavigationBar: Container(
-            height: 40,
-            child: Row(
-              children: <Widget>[
-                SizedBox(width: 1),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-hours-icon.png')),
-                    onPressed: () => {
-                      if (selectedIds.isNotEmpty) {_hoursController.clear(), _showUpdateHoursDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
-                    },
-                  ),
-                ),
-                SizedBox(width: 2.5),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-rate-icon.png')),
-                    onPressed: () => {
-                      if (selectedIds.isNotEmpty) {_ratingController.clear(), _showUpdateRatingDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
-                    },
-                  ),
-                ),
-                SizedBox(width: 2.5),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-plan-icon.png')),
-                    onPressed: () => {
-                      if (selectedIds.isNotEmpty) {_planController.clear(), _showUpdatePlanDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
-                    },
-                  ),
-                ),
-                SizedBox(width: 2.5),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-opinion-icon.png')),
-                    onPressed: () => {
-                      if (selectedIds.isNotEmpty) {_opinionController.clear(), _showUpdateOpinionDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
-                    },
-                  ),
-                ),
-                SizedBox(width: 2.5),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-workplace-icon.png')),
-                    onPressed: () => {
-                      if (selectedIds.isNotEmpty)
-                        {
-                          Navigator.push(
-                            this.context,
-                            MaterialPageRoute(
-                              builder: (context) => SelectWorkplaceForSelectedWorkdaysPage(
-                                _model,
-                                _timesheet,
-                                _employeeInfo,
-                                _employeeNationality,
-                                _currency,
-                                selectedIds,
-                              ),
-                            ),
-                          ),
-                        }
-                      else
-                        {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
-                    },
-                  ),
-                ),
-                SizedBox(width: 2.5),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-vocation-icon.png')),
-                    onPressed: () => {
-                      if (selectedIds.isNotEmpty) {_vocationReasonController.clear(), _showUpdateVocationReasonDialog(_timesheet, selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
-                    },
-                  ),
-                ),
-                SizedBox(width: 1),
-              ],
-            ),
-          ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-          floatingActionButton: groupFloatingActionButton(context, _model),
         ),
-      );
-    }
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: groupFloatingActionButton(context, _model),
+      ),
+    );
   }
 
   Future<Null> _refresh() {
-    return _workdayService.findWorkdaysByTimesheetId(_timesheet.id.toString()).then((_workdays) {
+    return _workdayService.findAllByTimesheetId(_timesheet.id).then((_workdays) {
       setState(() {
         workdays = _workdays;
+        _loading = false;
       });
     });
   }
@@ -761,7 +519,12 @@ class _ManagerEmployeeTsInProgressPageState extends State<ManagerEmployeeTsInPro
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
-                          _managerService.updateWorkdaysHours(selectedIds, hours).then(
+                          _workdayService
+                              .updateHoursByIds(
+                            selectedIds.map((el) => el.toString()).toList(),
+                            hours,
+                          )
+                              .then(
                             (res) {
                               Navigator.of(context).pop();
                               selectedIds.clear();
@@ -857,7 +620,12 @@ class _ManagerEmployeeTsInProgressPageState extends State<ManagerEmployeeTsInPro
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
-                          _managerService.updateWorkdaysRating(selectedIds, rating).then((res) {
+                          _workdayService.updateFieldsValuesByIds(
+                            selectedIds.map((el) => el.toString()).toList(),
+                            {
+                              'rating': rating,
+                            },
+                          ).then((res) {
                             Navigator.of(context).pop();
                             selectedIds.clear();
                             ToastService.showSuccessToast(getTranslated(context, 'ratingUpdatedSuccessfully'));
@@ -951,7 +719,12 @@ class _ManagerEmployeeTsInProgressPageState extends State<ManagerEmployeeTsInPro
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
-                          _managerService.updateWorkdaysPlan(selectedIds, plan).then((res) {
+                          _workdayService.updateFieldsValuesByIds(
+                            selectedIds.map((el) => el.toString()).toList(),
+                            {
+                              'plan': plan,
+                            },
+                          ).then((res) {
                             Navigator.of(context).pop();
                             selectedIds.clear();
                             ToastService.showSuccessToast(getTranslated(context, 'planUpdatedSuccessfully'));
@@ -1046,7 +819,12 @@ class _ManagerEmployeeTsInProgressPageState extends State<ManagerEmployeeTsInPro
                             return;
                           }
                           Navigator.of(context).pop();
-                          _managerService.updateWorkdaysOpinion(selectedIds, opinion).then((res) {
+                          _workdayService.updateFieldsValuesByIds(
+                            selectedIds.map((el) => el.toString()).toList(),
+                            {
+                              'opinion': opinion,
+                            },
+                          ).then((res) {
                             selectedIds.clear();
                             ToastService.showSuccessToast(getTranslated(context, 'opinionUpdatedSuccessfully'));
                             _refresh();
@@ -1140,7 +918,15 @@ class _ManagerEmployeeTsInProgressPageState extends State<ManagerEmployeeTsInPro
                             return;
                           }
                           Navigator.of(context).pop();
-                          _managerService.createOrUpdateVocationForSelectedDays(vocationReason, selectedIds, timesheet.year, MonthUtil.findMonthNumberByMonthName(context, timesheet.month), STATUS_IN_PROGRESS).then((res) {
+                          _workdayService
+                              .updateVocationsByIds(
+                            selectedIds.map((el) => el.toString()).toList(),
+                            vocationReason,
+                            timesheet.year,
+                            MonthUtil.findMonthNumberByMonthName(context, timesheet.month),
+                            STATUS_IN_PROGRESS,
+                          )
+                              .then((res) {
                             selectedIds.clear();
                             ToastService.showSuccessToast(getTranslated(context, 'vocationUpdatedSuccessfully'));
                             _refresh();
@@ -1236,7 +1022,12 @@ class _ManagerEmployeeTsInProgressPageState extends State<ManagerEmployeeTsInPro
                             return;
                           }
                           Navigator.of(context).pop();
-                          _managerService.updateWorkdayPlan(workdayId, plan).then((res) {
+                          _workdayService.updateFieldsValuesById(
+                            workdayId,
+                            {
+                              'plan': plan,
+                            },
+                          ).then((res) {
                             ToastService.showSuccessToast(getTranslated(context, 'planUpdatedSuccessfully'));
                             _refresh();
                           });
@@ -1331,7 +1122,12 @@ class _ManagerEmployeeTsInProgressPageState extends State<ManagerEmployeeTsInPro
                             return;
                           }
                           Navigator.of(context).pop();
-                          _managerService.updateWorkdayOpinion(workdayId, opinion).then((res) {
+                          _workdayService.updateFieldsValuesById(
+                            workdayId,
+                            {
+                              'opinion': opinion,
+                            },
+                          ).then((res) {
                             ToastService.showSuccessToast(getTranslated(context, 'opinionUpdatedSuccessfully'));
                             _refresh();
                           });

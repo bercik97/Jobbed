@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/employee/manager_employees_page.dart';
-import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
+import 'package:give_job/manager/groups/group/employee/employees_page.dart';
+import 'package:give_job/manager/groups/model/group_model.dart';
 import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
 import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.dart';
 import 'package:give_job/manager/groups/group/timesheets/manager_ts_page.dart';
@@ -15,7 +15,7 @@ import 'package:give_job/shared/libraries/colors.dart';
 import '../manager_group_details_page.dart';
 
 Widget groupFloatingActionButton(
-    BuildContext context, GroupEmployeeModel model) {
+    BuildContext context, GroupModel model) {
   return SpeedDial(
     backgroundColor: GREEN,
     animatedIcon: AnimatedIcons.view_list,
@@ -67,7 +67,7 @@ Widget groupFloatingActionButton(
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ManagerEmployeesPage(model)),
+                builder: (context) => EmployeesPage(model)),
           );
         },
       ),

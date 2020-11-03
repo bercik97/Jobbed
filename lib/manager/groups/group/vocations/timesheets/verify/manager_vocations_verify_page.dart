@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
+import 'package:give_job/manager/groups/model/group_model.dart';
 
 class ManagerVocationsVerifyPage extends StatefulWidget {
-  final GroupEmployeeModel _model;
+  final GroupModel _model;
 
   ManagerVocationsVerifyPage(this._model);
 
@@ -13,7 +13,7 @@ class ManagerVocationsVerifyPage extends StatefulWidget {
 
 class _ManagerVocationsVerifyPageState
     extends State<ManagerVocationsVerifyPage> {
-  GroupEmployeeModel _model;
+  GroupModel _model;
 
   @override
   Widget build(BuildContext context) {

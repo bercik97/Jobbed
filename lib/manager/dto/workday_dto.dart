@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:give_job/manager/dto/workplace_dto.dart';
 import 'package:give_job/api/vocation/dto/vocation_dto.dart';
+import 'package:give_job/api/workplace/dto/workplace_dto.dart';
 
 class WorkdayDto {
   final int id;
@@ -36,11 +36,8 @@ class WorkdayDto {
       plan: json['plan'] as String,
       opinion: json['opinion'] as String,
       money: json['money'] as double,
-      workplace: workplaceAsJson != null
-          ? WorkplaceDto.fromJson(workplaceAsJson)
-          : null,
-      vocation:
-          vocationAsJson != null ? VocationDto.fromJson(vocationAsJson) : null,
+      workplace: workplaceAsJson != null ? WorkplaceDto.fromJson(workplaceAsJson) : null,
+      vocation: vocationAsJson != null ? VocationDto.fromJson(vocationAsJson) : null,
     );
   }
 }

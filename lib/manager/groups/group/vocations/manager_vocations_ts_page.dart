@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/dto/manager_group_timesheet_with_no_status_dto.dart';
-import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
+import 'package:give_job/manager/groups/model/group_model.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/groups/group/vocations/timesheets/calendar/manager_vocations_calendar_page.dart';
 import 'package:give_job/manager/groups/group/vocations/timesheets/manage/manager_vocations_manage_page.dart';
@@ -21,7 +21,7 @@ import '../../../manager_app_bar.dart';
 import '../../../manager_side_bar.dart';
 
 class ManagerVocationsTsPage extends StatefulWidget {
-  final GroupEmployeeModel _model;
+  final GroupModel _model;
 
   ManagerVocationsTsPage(this._model);
 
@@ -30,7 +30,7 @@ class ManagerVocationsTsPage extends StatefulWidget {
 }
 
 class _ManagerVocationsTsPageState extends State<ManagerVocationsTsPage> {
-  GroupEmployeeModel _model;
+  GroupModel _model;
   ManagerService _managerService;
 
   List<ManagerGroupTimesheetWithNoStatusDto> _inProgressTimesheets = new List();

@@ -2,16 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/api/workplace/dto/workplace_dto.dart';
+import 'package:give_job/api/workplace/service/workplace_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/dto/workplace_dto.dart';
-import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
+import 'package:give_job/manager/groups/model/group_model.dart';
 import 'package:give_job/manager/groups/group/manager_group_details_page.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/service/manager_service.dart';
-import 'package:give_job/manager/service/workplace_service.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/radio_element.dart';
+import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -22,19 +24,19 @@ import '../../../manager_app_bar.dart';
 import '../../../manager_side_bar.dart';
 
 class SelectWorkplaceForQuickUpdateEmployeesPage extends StatefulWidget {
-  final GroupEmployeeModel _model;
+  final GroupModel _model;
   final String _todaysDate;
 
   SelectWorkplaceForQuickUpdateEmployeesPage(this._model, this._todaysDate);
 
   @override
-  _SelectWorkplaceForQuickUpdateEmployeesPageState createState() =>
-      _SelectWorkplaceForQuickUpdateEmployeesPageState();
+  _SelectWorkplaceForQuickUpdateEmployeesPageState createState() => _SelectWorkplaceForQuickUpdateEmployeesPageState();
 }
 
-class _SelectWorkplaceForQuickUpdateEmployeesPageState
-    extends State<SelectWorkplaceForQuickUpdateEmployeesPage> {
-  GroupEmployeeModel _model;
+class _SelectWorkplaceForQuickUpdateEmployeesPageState extends State<SelectWorkplaceForQuickUpdateEmployeesPage> {
+  GroupModel _model;
+  User _user;
+
   String _todaysDate;
 
   WorkplaceService _workplaceService;
@@ -51,8 +53,7 @@ class _SelectWorkplaceForQuickUpdateEmployeesPageState
   void initState() {
     this._model = widget._model;
     this._todaysDate = widget._todaysDate;
-    this._workplaceService =
-        new WorkplaceService(context, _model.user.authHeader);
+    this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
     this._managerService = new ManagerService(context, _model.user.authHeader);
     super.initState();
     _loading = true;
@@ -61,8 +62,7 @@ class _SelectWorkplaceForQuickUpdateEmployeesPageState
         int _counter = 0;
         res.forEach((workplace) => {
               _workplaces.add(workplace),
-              _elements.add(RadioElement(
-                  index: _counter++, id: workplace.id, title: workplace.name)),
+              _elements.add(RadioElement(index: _counter++, id: workplace.id, title: workplace.name)),
               if (_currentRadioElement == null)
                 {
                   _currentRadioElement = _elements[0],
@@ -76,10 +76,7 @@ class _SelectWorkplaceForQuickUpdateEmployeesPageState
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(
-          managerAppBar(
-              context, _model.user, getTranslated(context, 'loading')),
-          managerSideBar(context, _model.user));
+      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')), managerSideBar(context, _model.user));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -87,26 +84,17 @@ class _SelectWorkplaceForQuickUpdateEmployeesPageState
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBar(
-            context,
-            _model.user,
-            getTranslated(context, 'workplace') +
-                ' - ' +
-                utf8.decode(_model.groupName != null
-                    ? _model.groupName.runes.toList()
-                    : '-')),
+        appBar: managerAppBar(context, _model.user, getTranslated(context, 'workplace') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-')),
         drawer: managerSideBar(context, _model.user),
         body: _workplaces.isEmpty
             ? _handleEmptyData()
             : Column(
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.only(
-                        top: 20, left: 10, right: 10, bottom: 10),
+                    padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
                     child: Column(
                       children: [
-                        textCenter18WhiteBold(getTranslated(
-                            context, 'setWorkplaceForTodaysEmployees')),
+                        textCenter18WhiteBold(getTranslated(context, 'setWorkplaceForTodaysEmployees')),
                       ],
                     ),
                   ),
@@ -146,28 +134,21 @@ class _SelectWorkplaceForQuickUpdateEmployeesPageState
                 elevation: 0,
                 height: 50,
                 minWidth: 40,
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0)),
+                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[iconWhite(Icons.close)],
                 ),
                 color: Colors.red,
                 onPressed: () => {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              ManagerGroupDetailsPage(_model)),
-                      (e) => false),
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ManagerGroupDetailsPage(_model)), (e) => false),
                 },
               ),
               SizedBox(width: 25),
               MaterialButton(
                 elevation: 0,
                 height: 50,
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0)),
+                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[iconWhite(Icons.check)],
@@ -175,10 +156,7 @@ class _SelectWorkplaceForQuickUpdateEmployeesPageState
                 color: GREEN,
                 onPressed: () {
                   if (_currentRadioElement.id == null) {
-                    showHint(
-                        context,
-                        getTranslated(context, 'needToSelectWorkplaces') + ' ',
-                        getTranslated(context, 'whichYouWantToSet'));
+                    showHint(context, getTranslated(context, 'needToSelectWorkplaces') + ' ', getTranslated(context, 'whichYouWantToSet'));
                     return;
                   }
                   showDialog(
@@ -186,44 +164,29 @@ class _SelectWorkplaceForQuickUpdateEmployeesPageState
                     builder: (BuildContext context) {
                       return AlertDialog(
                         backgroundColor: DARK,
-                        title: textGreenBold(
-                            getTranslated(context, 'confirmation')),
+                        title: textGreenBold(getTranslated(context, 'confirmation')),
                         content: SingleChildScrollView(
                           child: Column(
                             children: [
-                              textCenterWhite(getTranslated(context,
-                                  'selectWorkplaceForTodaysEmployees')),
+                              textCenterWhite(getTranslated(context, 'selectWorkplaceForTodaysEmployees')),
                             ],
                           ),
                         ),
                         actions: <Widget>[
                           FlatButton(
-                              child: textGreen(
-                                  getTranslated(context, 'yesImSure')),
+                              child: textGreen(getTranslated(context, 'yesImSure')),
                               onPressed: () => {
-                                    _managerService
-                                        .updateGroupWorkplaceOfTodaysDateInCurrentTimesheet(
-                                            _model.groupId,
-                                            _todaysDate,
-                                            _currentRadioElement.id)
-                                        .then(
+                                    _managerService.updateGroupWorkplaceOfTodaysDateInCurrentTimesheet(_model.groupId, _todaysDate, _currentRadioElement.id).then(
                                       (res) {
-                                        ToastService.showSuccessToast(
-                                            getTranslated(context,
-                                                'todaysWorkplaceHasBeenUpdated'));
+                                        ToastService.showSuccessToast(getTranslated(context, 'todaysWorkplaceHasBeenUpdated'));
                                         Navigator.push(
                                           context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ManagerGroupDetailsPage(
-                                                      _model)),
+                                          MaterialPageRoute(builder: (context) => ManagerGroupDetailsPage(_model)),
                                         );
                                       },
                                     ),
                                   }),
-                          FlatButton(
-                              child: textWhite(getTranslated(context, 'no')),
-                              onPressed: () => Navigator.of(context).pop()),
+                          FlatButton(child: textWhite(getTranslated(context, 'no')), onPressed: () => Navigator.of(context).pop()),
                         ],
                       );
                     },
@@ -253,8 +216,7 @@ class _SelectWorkplaceForQuickUpdateEmployeesPageState
           padding: EdgeInsets.only(top: 10),
           child: Align(
             alignment: Alignment.center,
-            child:
-                textCenter19White(getTranslated(context, 'groupNoWorkplaces')),
+            child: textCenter19White(getTranslated(context, 'groupNoWorkplaces')),
           ),
         ),
       ],

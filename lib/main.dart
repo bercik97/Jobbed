@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:give_job/employee/employee_page.dart';
-import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
+import 'package:give_job/manager/groups/model/group_model.dart';
 import 'package:give_job/manager/groups/groups_dashboard_page.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -165,7 +165,7 @@ class _MyAppState extends State<MyApp> {
     String groupDescription = data['groupDescription'];
     String numberOfEmployees = data['numberOfEmployees'];
     String countryOfWork = data['countryOfWork'];
-    GroupEmployeeModel model = new GroupEmployeeModel(user, groupId, groupName,
+    GroupModel model = new GroupModel(user, groupId, groupName,
         groupDescription, numberOfEmployees, countryOfWork);
     return ManagerGroupDetailsPage(model);
   }

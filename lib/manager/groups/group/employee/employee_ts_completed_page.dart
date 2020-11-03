@@ -10,6 +10,7 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/manager/dto/workday_dto.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/shared/libraries/colors.dart';
+import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
 import 'package:give_job/shared/widget/circular_progress_indicator.dart';
@@ -19,25 +20,27 @@ import 'package:give_job/shared/widget/texts.dart';
 import '../../../../shared/libraries/constants.dart';
 import '../../../manager_app_bar.dart';
 import '../../../manager_side_bar.dart';
-import 'model/group_employee_model.dart';
+import '../../model/group_model.dart';
 
-class ManagerEmployeeTsCompletedPage extends StatefulWidget {
-  final GroupEmployeeModel _model;
+class EmployeeTsCompletedPage extends StatefulWidget {
+  final GroupModel _model;
   final String _employeeInfo;
   final String _employeeNationality;
   final String _currency;
   final TimesheetForEmployeeDto timesheet;
 
-  const ManagerEmployeeTsCompletedPage(this._model, this._employeeInfo, this._employeeNationality, this._currency, this.timesheet);
+  const EmployeeTsCompletedPage(this._model, this._employeeInfo, this._employeeNationality, this._currency, this.timesheet);
 
   @override
-  _ManagerEmployeeTsCompletedPageState createState() => _ManagerEmployeeTsCompletedPageState();
+  _EmployeeTsCompletedPageState createState() => _EmployeeTsCompletedPageState();
 }
 
-class _ManagerEmployeeTsCompletedPageState extends State<ManagerEmployeeTsCompletedPage> {
+class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
+  GroupModel _model;
+  User _user;
+
   WorkdayService _workdayService;
 
-  GroupEmployeeModel _model;
   String _employeeInfo;
   String _employeeNationality;
   String _currency;
@@ -46,7 +49,8 @@ class _ManagerEmployeeTsCompletedPageState extends State<ManagerEmployeeTsComple
   @override
   Widget build(BuildContext context) {
     this._model = widget._model;
-    this._workdayService = ServiceInitializer.initialize(context, _model.user.authHeader, WorkdayService);
+    this._user = _model.user;
+    this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     this._employeeInfo = widget._employeeInfo;
     this._employeeNationality = widget._employeeNationality;
     this._currency = widget._currency;
@@ -58,8 +62,8 @@ class _ManagerEmployeeTsCompletedPageState extends State<ManagerEmployeeTsComple
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBar(context, _model.user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, STATUS_COMPLETED)),
-        drawer: managerSideBar(context, _model.user),
+        appBar: managerAppBar(context, _user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, STATUS_COMPLETED)),
+        drawer: managerSideBar(context, _user),
         body: Column(
           children: <Widget>[
             Container(
@@ -111,7 +115,7 @@ class _ManagerEmployeeTsCompletedPageState extends State<ManagerEmployeeTsComple
               ),
             ),
             FutureBuilder(
-              future: _workdayService.findWorkdaysByTimesheetId(timesheet.id.toString()),
+              future: _workdayService.findAllByTimesheetId(timesheet.id),
               builder: (BuildContext context, AsyncSnapshot<List<WorkdayDto>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
                   return Padding(

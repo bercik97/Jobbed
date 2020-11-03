@@ -6,7 +6,7 @@ import 'package:give_job/api/group/service/group_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/edit/money_per_hour/group_edit_money_per_hour.dart';
-import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
+import 'package:give_job/manager/groups/model/group_model.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -21,7 +21,7 @@ import '../../../manager_side_bar.dart';
 import '../manager_group_details_page.dart';
 
 class GroupEditPage extends StatefulWidget {
-  final GroupEmployeeModel _model;
+  final GroupModel _model;
 
   GroupEditPage(this._model);
 
@@ -30,7 +30,7 @@ class GroupEditPage extends StatefulWidget {
 }
 
 class _GroupEditPageState extends State<GroupEditPage> {
-  GroupEmployeeModel _model;
+  GroupModel _model;
   User _user;
   GroupService _groupService;
 

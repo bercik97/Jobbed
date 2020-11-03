@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/dto/manager_group_employee_vocation_dto.dart';
-import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
+import 'package:give_job/manager/groups/model/group_model.dart';
 import 'package:give_job/manager/service/manager_service.dart';
 import 'package:give_job/manager/service/manager_vocation_service.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -22,9 +22,9 @@ import '../../../../../manager_side_bar.dart';
 class ManagerVocationsCalendarPage extends StatefulWidget {
   ManagerVocationsCalendarPage({Key key}) : super(key: key);
 
-  GroupEmployeeModel _model;
+  GroupModel _model;
 
-  set model(GroupEmployeeModel value) {
+  set model(GroupModel value) {
     _model = value;
   }
 
@@ -35,7 +35,7 @@ class ManagerVocationsCalendarPage extends StatefulWidget {
 
 class _ManagerVocationsCalendarPageState
     extends State<ManagerVocationsCalendarPage> with TickerProviderStateMixin {
-  GroupEmployeeModel _model;
+  GroupModel _model;
   ManagerService _service;
   ManagerVocationService _vocationService;
 

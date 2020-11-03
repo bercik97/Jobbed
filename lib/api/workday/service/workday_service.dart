@@ -16,9 +16,9 @@ class WorkdayService {
 
   static const String _url = '$SERVER_IP/workdays';
 
-  Future<List<WorkdayDto>> findWorkdaysByTimesheetId(String timesheetId) async {
+  Future<List<WorkdayDto>> findAllByTimesheetId(int tsId) async {
     Response res = await get(
-      '$_url/${int.parse(timesheetId)}',
+      '$_url/timesheet?timesheet_id=$tsId',
       headers: _header,
     );
     if (res.statusCode == 200) {
@@ -37,6 +37,87 @@ class WorkdayService {
     );
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => WorkdayForEmployeeDto.fromJson(data)).toList();
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> updateFieldsValuesById(int id, Map<String, Object> fieldsValues) async {
+    Response res = await put(
+      '$_url/id?id=$id',
+      body: jsonEncode(fieldsValues),
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> updateFieldsValuesByIds(List<String> ids, Map<String, Object> fieldsValues) async {
+    Response res = await put(
+      '$_url/ids?ids=$ids',
+      body: jsonEncode(fieldsValues),
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> updateHoursByIds(List<String> ids, int hours) async {
+    Response res = await put(
+      '$_url/hours?ids=$ids',
+      body: hours,
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> updateWorkplacesByIds(List<String> ids, int workplaceId) async {
+    Response res = await put(
+      '$_url/workplace?ids=$ids',
+      body: workplaceId.toString(),
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> updateVocationsByIds(List<String> ids, String reason, int tsYear, int tsMonth, String tsStatus) async {
+    Response res = await put(
+      '$_url/vocations?ids=$ids',
+      body: jsonEncode({
+        'reason': reason,
+        'isVerified': true,
+        'tsYear': tsYear,
+        'tsMonth': tsMonth,
+        'tsStatus': tsStatus,
+      }),
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
     } else if (res.statusCode == 401) {
       return Logout.handle401WithLogout(_context);
     } else {

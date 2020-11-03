@@ -9,8 +9,8 @@ import 'package:give_job/api/employee/dto/employee_money_per_hour_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/employee/manager_employee_profile_page.dart';
-import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
+import 'package:give_job/manager/groups/group/employee/employee_profil_page.dart';
+import 'package:give_job/manager/groups/model/group_model.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -28,7 +28,7 @@ import '../../../../manager_app_bar.dart';
 import '../../../../manager_side_bar.dart';
 
 class GroupEditMoneyPerHourPage extends StatefulWidget {
-  final GroupEmployeeModel _model;
+  final GroupModel _model;
 
   GroupEditMoneyPerHourPage(this._model);
 
@@ -39,7 +39,7 @@ class GroupEditMoneyPerHourPage extends StatefulWidget {
 class _GroupEditMoneyPerHourPageState extends State<GroupEditMoneyPerHourPage> {
   final TextEditingController _moneyPerHourController = new TextEditingController();
 
-  GroupEmployeeModel _model;
+  GroupModel _model;
   User _user;
 
   EmployeeService _employeeService;
@@ -174,7 +174,7 @@ class _GroupEditMoneyPerHourPageState extends State<GroupEditMoneyPerHourPage> {
                                         Navigator.push(
                                           this.context,
                                           MaterialPageRoute(
-                                            builder: (context) => ManagerEmployeeProfilePage(
+                                            builder: (context) => EmployeeProfilPage(
                                               _model,
                                               nationality,
                                               currency,

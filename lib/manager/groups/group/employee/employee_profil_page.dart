@@ -4,15 +4,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:give_job/api/employee/service/employee_service.dart';
+import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
+import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/dto/manager_employee_contact_dto.dart';
-import 'package:give_job/manager/groups/group/employee/manager_employees_page.dart';
-import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
+import 'package:give_job/manager/groups/group/employee/employees_page.dart';
+import 'package:give_job/manager/groups/model/group_model.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/profile/manager_profile_page.dart';
-import 'package:give_job/manager/service/manager_service.dart';
 import 'package:give_job/shared/libraries/colors.dart';
+import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
@@ -25,18 +27,18 @@ import 'package:give_job/shared/widget/texts.dart';
 
 import '../../../../shared/libraries/constants.dart';
 import '../../../manager_side_bar.dart';
-import 'manager_employee_ts_completed_page.dart';
-import 'manager_employee_ts_in_progress_page.dart';
+import 'employee_ts_completed_page.dart';
+import 'employee_ts_in_progress_page.dart';
 
-class ManagerEmployeeProfilePage extends StatefulWidget {
-  final GroupEmployeeModel _model;
+class EmployeeProfilPage extends StatefulWidget {
+  final GroupModel _model;
   final String _employeeNationality;
   final String _currency;
   final int _employeeId;
   final String _employeeInfo;
   final double _employeeMoneyPerHour;
 
-  const ManagerEmployeeProfilePage(
+  const EmployeeProfilPage(
     this._model,
     this._employeeNationality,
     this._currency,
@@ -46,12 +48,16 @@ class ManagerEmployeeProfilePage extends StatefulWidget {
   );
 
   @override
-  _ManagerEmployeeProfilePageState createState() => _ManagerEmployeeProfilePageState();
+  _EmployeeProfilPageState createState() => _EmployeeProfilPageState();
 }
 
-class _ManagerEmployeeProfilePageState extends State<ManagerEmployeeProfilePage> {
-  GroupEmployeeModel _model;
-  ManagerService _managerService;
+class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
+  GroupModel _model;
+  User _user;
+
+  TimesheetService _tsService;
+  EmployeeService _employeeService;
+
   String _employeeNationality;
   String _currency;
   int _employeeId;
@@ -61,7 +67,9 @@ class _ManagerEmployeeProfilePageState extends State<ManagerEmployeeProfilePage>
   @override
   Widget build(BuildContext context) {
     this._model = widget._model;
-    this._managerService = new ManagerService(context, _model.user.authHeader);
+    this._user = _model.user;
+    this._tsService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
+    this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
     this._employeeNationality = widget._employeeNationality;
     this._currency = widget._currency;
     this._employeeId = widget._employeeId;
@@ -172,7 +180,7 @@ class _ManagerEmployeeProfilePageState extends State<ManagerEmployeeProfilePage>
 
   Widget _buildTimesheetsSection() {
     return FutureBuilder(
-      future: _managerService.findEmployeeTimesheetsByGroupIdAndEmployeeId(_model.groupId.toString(), _employeeId.toString()),
+      future: _tsService.findAllForEmployeeProfileByGroupIdAndEmployeeId(_model.groupId, _employeeId),
       builder: (BuildContext context, AsyncSnapshot<List<TimesheetForEmployeeDto>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
           return Center(child: circularProgressIndicator());
@@ -192,7 +200,7 @@ class _ManagerEmployeeProfilePageState extends State<ManagerEmployeeProfilePage>
                                   Navigator.of(this.context).push(
                                     CupertinoPageRoute<Null>(
                                       builder: (BuildContext context) {
-                                        return ManagerEmployeeTsCompletedPage(_model, _employeeInfo, _employeeNationality, _currency, timesheet);
+                                        return EmployeeTsCompletedPage(_model, _employeeInfo, _employeeNationality, _currency, timesheet);
                                       },
                                     ),
                                   );
@@ -200,7 +208,7 @@ class _ManagerEmployeeProfilePageState extends State<ManagerEmployeeProfilePage>
                                   Navigator.of(this.context).push(
                                     CupertinoPageRoute<Null>(
                                       builder: (BuildContext context) {
-                                        return ManagerEmployeeTsInProgressPage(_model, _employeeInfo, _employeeNationality, _currency, timesheet);
+                                        return EmployeeTsInProgressPage(_model, _employeeInfo, _employeeNationality, _currency, timesheet);
                                       },
                                     ),
                                   );
@@ -258,24 +266,27 @@ class _ManagerEmployeeProfilePageState extends State<ManagerEmployeeProfilePage>
 
   Widget _buildContactSection() {
     return FutureBuilder(
-        future: _managerService.findEmployeeContactByEmployeeId(_employeeId),
-        builder: (BuildContext context, AsyncSnapshot<ManagerEmployeeContactDto> snapshot) {
-          ManagerEmployeeContactDto contact = snapshot.data;
-          if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
-            return Center(child: circularProgressIndicator());
-          } else if (contact == null) {
-            return _handleEmptyData(getTranslated(context, 'noContact'), getTranslated(context, 'employeeHasNoContact'));
-          } else {
-            String phone = contact.phone;
-            String viber = contact.viber;
-            String whatsApp = contact.whatsApp;
-            return SingleChildScrollView(
-              child: Column(
-                children: <Widget>[buildContactSection(this.context, phone, viber, whatsApp)],
-              ),
-            );
-          }
-        });
+      future: _employeeService.findEmployeeAndUserFieldsValuesById(_employeeId, ['phone', 'viber', 'whatsApp']),
+      builder: (BuildContext context, AsyncSnapshot<Map<String, Object>> snapshot) {
+        Map<String, Object> res = snapshot.data;
+        if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
+          return Center(child: circularProgressIndicator());
+        } else if (res == null || res.isEmpty) {
+          return _handleEmptyData(getTranslated(context, 'noContact'), getTranslated(context, 'employeeHasNoContact'));
+        } else {
+          String phone = res['phone'];
+          String viber = res['viber'];
+          String whatsApp = res['whatsApp'];
+          return SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                buildContactSection(this.context, phone, viber, whatsApp),
+              ],
+            ),
+          );
+        }
+      },
+    );
   }
 
   Widget _buildEditSection() {
@@ -392,24 +403,29 @@ class _ManagerEmployeeProfilePageState extends State<ManagerEmployeeProfilePage>
                           ),
                           color: GREEN,
                           onPressed: () {
-                            double newHourlyRate;
+                            double moneyPerHour;
                             try {
-                              newHourlyRate = double.parse(_moneyPerHourController.text);
+                              moneyPerHour = double.parse(_moneyPerHourController.text);
                             } catch (FormatException) {
                               ToastService.showErrorToast(getTranslated(context, 'newHourlyRateIsRequired'));
                               return;
                             }
-                            String invalidMessage = ValidatorService.validateMoneyPerHour(newHourlyRate, context);
+                            String invalidMessage = ValidatorService.validateMoneyPerHour(moneyPerHour, context);
                             if (invalidMessage != null) {
                               ToastService.showErrorToast(invalidMessage);
                               return;
                             }
-                            _managerService.updateMoneyPerHour(_employeeId, newHourlyRate).then(
-                                  (value) => {
-                                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ManagerEmployeesPage(_model)), (e) => false),
-                                    ToastService.showSuccessToast(getTranslated(context, 'moneyPerHourUpdatedSuccessfullyFor') + utf8.decode(_employeeInfo != null ? _employeeInfo.runes.toList() : '-') + '!'),
-                                  },
-                                );
+                            _employeeService.updateFieldsValuesById(
+                              _employeeId,
+                              {
+                                'moneyPerHour': moneyPerHour,
+                              },
+                            ).then(
+                              (value) => {
+                                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => EmployeesPage(_model)), (e) => false),
+                                ToastService.showSuccessToast(getTranslated(context, 'moneyPerHourUpdatedSuccessfullyFor') + utf8.decode(_employeeInfo != null ? _employeeInfo.runes.toList() : '-') + '!'),
+                              },
+                            );
                           },
                         ),
                       ],

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/employee/dto/create_employee_dto.dart';
+import 'package:give_job/api/employee/dto/employee_group_dto.dart';
 import 'package:give_job/api/employee/dto/employee_money_per_hour_dto.dart';
 import 'package:give_job/api/employee/dto/employee_page_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -57,8 +58,30 @@ class EmployeeService {
     }
   }
 
-  Future<dynamic> updateEmployeeAndUser(int id, Map<String, Object> fieldsValues) async {
+  Future<List<EmployeeGroupDto>> findAllByGroupId(int groupId) async {
+    Response res = await get('$_url/groups?group_id=$groupId', headers: _header);
+    if (res.statusCode == 200) {
+      return (json.decode(res.body) as List).map((data) => EmployeeGroupDto.fromJson(data)).toList();
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> updateEmployeeAndUserFieldsValuesById(int id, Map<String, Object> fieldsValues) async {
     Response res = await put('$_url/employee-user/id?id=$id', body: jsonEncode(fieldsValues), headers: _headers);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> updateFieldsValuesById(int id, Map<String, Object> fieldsValues) async {
+    Response res = await put('$_url/id?id=$id', body: jsonEncode(fieldsValues), headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {

@@ -3,17 +3,19 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
+import 'package:give_job/api/workday/service/workday_service.dart';
+import 'package:give_job/api/workplace/dto/workplace_dto.dart';
+import 'package:give_job/api/workplace/service/workplace_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/dto/workplace_dto.dart';
-import 'package:give_job/manager/groups/group/employee/manager_employee_ts_in_progress_page.dart';
-import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
+import 'package:give_job/manager/groups/group/employee/employee_ts_in_progress_page.dart';
+import 'package:give_job/manager/groups/model/group_model.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
-import 'package:give_job/manager/service/manager_service.dart';
-import 'package:give_job/manager/service/workplace_service.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/radio_element.dart';
+import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
@@ -25,7 +27,7 @@ import '../../../manager_app_bar.dart';
 import '../../../manager_side_bar.dart';
 
 class SelectWorkplaceForSelectedWorkdaysPage extends StatefulWidget {
-  final GroupEmployeeModel _model;
+  final GroupModel _model;
   final TimesheetForEmployeeDto _timeSheet;
   final String _employeeInfo;
   final String _employeeNationality;
@@ -39,7 +41,9 @@ class SelectWorkplaceForSelectedWorkdaysPage extends StatefulWidget {
 }
 
 class _SelectWorkplaceForSelectedWorkdaysPageState extends State<SelectWorkplaceForSelectedWorkdaysPage> {
-  GroupEmployeeModel _model;
+  GroupModel _model;
+  User _user;
+
   TimesheetForEmployeeDto _timeSheet;
   String _employeeInfo;
   String _employeeNationality;
@@ -47,7 +51,7 @@ class _SelectWorkplaceForSelectedWorkdaysPageState extends State<SelectWorkplace
   LinkedHashSet<int> _selectedWorkdayIds;
 
   WorkplaceService _workplaceService;
-  ManagerService _managerService;
+  WorkdayService _workdayService;
 
   List<WorkplaceDto> _workplaces = new List();
   bool _loading = false;
@@ -59,13 +63,14 @@ class _SelectWorkplaceForSelectedWorkdaysPageState extends State<SelectWorkplace
   @override
   void initState() {
     this._model = widget._model;
+    this._user = _model.user;
     this._timeSheet = widget._timeSheet;
     this._employeeInfo = widget._employeeInfo;
     this._employeeNationality = widget._employeeNationality;
     this._currency = widget._currency;
     this._selectedWorkdayIds = widget._selectedWorkdayIds;
-    this._workplaceService = new WorkplaceService(context, _model.user.authHeader);
-    this._managerService = new ManagerService(context, _model.user.authHeader);
+    this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
+    this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     super.initState();
     _loading = true;
     _workplaceService.findAllByGroupId(_model.groupId).then((res) {
@@ -152,7 +157,7 @@ class _SelectWorkplaceForSelectedWorkdaysPageState extends State<SelectWorkplace
                 ),
                 color: Colors.red,
                 onPressed: () => {
-                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ManagerEmployeeTsInProgressPage(_model, _employeeInfo, _employeeNationality, _currency, _timeSheet)), (e) => false),
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => EmployeeTsInProgressPage(_model, _employeeInfo, _employeeNationality, _currency, _timeSheet)), (e) => false),
                 },
               ),
               SizedBox(width: 25),
@@ -187,11 +192,16 @@ class _SelectWorkplaceForSelectedWorkdaysPageState extends State<SelectWorkplace
                           FlatButton(
                             child: textGreen(getTranslated(context, 'yesImSure')),
                             onPressed: () => {
-                              _managerService.updateWorkdaysWorkplace(_selectedWorkdayIds, _currentRadioElement.id).then((res) {
+                              _workdayService
+                                  .updateWorkplacesByIds(
+                                _selectedWorkdayIds.map((el) => el.toString()).toList(),
+                                _currentRadioElement.id,
+                              )
+                                  .then((res) {
                                 ToastService.showSuccessToast(getTranslated(context, 'workplaceUpdatedSuccessfully'));
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => ManagerEmployeeTsInProgressPage(_model, _employeeInfo, _employeeNationality, _currency, _timeSheet)),
+                                  MaterialPageRoute(builder: (context) => EmployeeTsInProgressPage(_model, _employeeInfo, _employeeNationality, _currency, _timeSheet)),
                                 );
                               }),
                             },

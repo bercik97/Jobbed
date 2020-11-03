@@ -7,7 +7,7 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/token/service/token_service.dart';
 import 'package:give_job/employee/employee_page.dart';
 import 'package:give_job/main.dart';
-import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
+import 'package:give_job/manager/groups/model/group_model.dart';
 import 'package:give_job/manager/groups/group/manager_group_details_page.dart';
 import 'package:give_job/manager/groups/groups_dashboard_page.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -243,7 +243,7 @@ class _LoginPageState extends State<LoginPage> {
     String groupDescription = data['groupDescription'];
     String numberOfEmployees = data['numberOfEmployees'];
     String countryOfWork = data['countryOfWork'];
-    GroupEmployeeModel model = new GroupEmployeeModel(user, groupId, groupName, groupDescription, numberOfEmployees, countryOfWork);
+    GroupModel model = new GroupModel(user, groupId, groupName, groupDescription, numberOfEmployees, countryOfWork);
     Navigator.push(context, MaterialPageRoute(builder: (context) => ManagerGroupDetailsPage(model)));
   }
 

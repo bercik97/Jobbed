@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
+import 'package:give_job/manager/groups/model/group_model.dart';
 import 'package:give_job/manager/groups/group/vocations/timesheets/calendar/manager_vocations_calendar_page.dart';
 import 'package:give_job/manager/groups/group/workplaces/select_workplace_for_quick_update_employees.dart';
 import 'package:give_job/manager/service/manager_service.dart';
@@ -17,11 +17,11 @@ import '../../../../internationalization/localization/localization_constants.dar
 
 class QuickUpdateDialog {
   static ManagerService _managerService;
-  static GroupEmployeeModel _model;
+  static GroupModel _model;
   static String _todaysDate;
 
   static void showQuickUpdateDialog(
-      BuildContext context, GroupEmployeeModel model) {
+      BuildContext context, GroupModel model) {
     ManagerVocationsCalendarPage page = ManagerVocationsCalendarPage();
     page.model = model;
     DateTime now = DateTime.now();

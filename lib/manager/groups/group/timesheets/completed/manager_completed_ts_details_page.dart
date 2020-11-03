@@ -7,9 +7,9 @@ import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/dto/manager_group_employee_dto.dart';
 import 'package:give_job/manager/dto/manager_group_timesheet_dto.dart';
-import 'package:give_job/manager/groups/group/employee/manager_employee_profile_page.dart';
-import 'package:give_job/manager/groups/group/employee/manager_employee_ts_completed_page.dart';
-import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
+import 'package:give_job/manager/groups/group/employee/employee_profil_page.dart';
+import 'package:give_job/manager/groups/group/employee/employee_ts_completed_page.dart';
+import 'package:give_job/manager/groups/model/group_model.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/service/manager_service.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -25,7 +25,7 @@ import '../../../../manager_app_bar.dart';
 import '../../../../manager_side_bar.dart';
 
 class ManagerTimesheetsEmployeesCompletedPage extends StatefulWidget {
-  final GroupEmployeeModel _model;
+  final GroupModel _model;
   final ManagerGroupTimesheetDto _timesheet;
 
   ManagerTimesheetsEmployeesCompletedPage(this._model, this._timesheet);
@@ -35,7 +35,7 @@ class ManagerTimesheetsEmployeesCompletedPage extends StatefulWidget {
 }
 
 class _ManagerTimesheetsEmployeesCompletedPageState extends State<ManagerTimesheetsEmployeesCompletedPage> {
-  GroupEmployeeModel _model;
+  GroupModel _model;
   ManagerService _managerService;
   ManagerGroupTimesheetDto _timesheet;
 
@@ -119,7 +119,7 @@ class _ManagerTimesheetsEmployeesCompletedPageState extends State<ManagerTimeshe
                         Navigator.of(this.context).push(
                           CupertinoPageRoute<Null>(
                             builder: (BuildContext context) {
-                              return ManagerEmployeeTsCompletedPage(_model, info, nationality, currency, _completedTimesheet);
+                              return EmployeeTsCompletedPage(_model, info, nationality, currency, _completedTimesheet);
                             },
                           ),
                         );
@@ -142,7 +142,7 @@ class _ManagerTimesheetsEmployeesCompletedPageState extends State<ManagerTimeshe
                                       Navigator.push(
                                         this.context,
                                         MaterialPageRoute(
-                                          builder: (context) => ManagerEmployeeProfilePage(_model, nationality, currency, employee.id, info, employee.moneyPerHour),
+                                          builder: (context) => EmployeeProfilPage(_model, nationality, currency, employee.id, info, employee.moneyPerHour),
                                         ),
                                       );
                                     },

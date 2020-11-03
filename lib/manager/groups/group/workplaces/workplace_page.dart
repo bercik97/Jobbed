@@ -4,14 +4,16 @@ import 'dart:convert';
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/api/workplace/dto/workplace_dto.dart';
+import 'package:give_job/api/workplace/service/workplace_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/dto/update_workplace_dto.dart';
-import 'package:give_job/manager/dto/workplace_dto.dart';
-import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
+import 'package:give_job/manager/groups/model/group_model.dart';
 import 'package:give_job/manager/manager_app_bar.dart';
-import 'package:give_job/manager/service/workplace_service.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
+import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/widget/hint.dart';
@@ -23,7 +25,7 @@ import '../../../../shared/widget/loader.dart';
 import '../../../manager_side_bar.dart';
 
 class WorkplacePage extends StatefulWidget {
-  final GroupEmployeeModel _model;
+  final GroupModel _model;
 
   WorkplacePage(this._model);
 
@@ -32,7 +34,9 @@ class WorkplacePage extends StatefulWidget {
 }
 
 class _WorkplacePageState extends State<WorkplacePage> {
-  GroupEmployeeModel _model;
+  GroupModel _model;
+  User _user;
+
   WorkplaceService _workplaceService;
 
   List<WorkplaceDto> _workplaces = new List();
@@ -49,8 +53,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
   @override
   void initState() {
     this._model = widget._model;
-    this._workplaceService =
-        new WorkplaceService(context, _model.user.authHeader);
+    this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
     super.initState();
     _loading = true;
     _workplaceService.findAllByGroupId(_model.groupId).then((res) {
@@ -66,10 +69,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(
-          managerAppBar(
-              context, _model.user, getTranslated(context, 'loading')),
-          managerSideBar(context, _model.user));
+      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')), managerSideBar(context, _model.user));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -77,35 +77,22 @@ class _WorkplacePageState extends State<WorkplacePage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBar(
-            context, _model.user, getTranslated(context, 'workplace')),
+        appBar: managerAppBar(context, _model.user, getTranslated(context, 'workplace')),
         drawer: managerSideBar(context, _model.user),
         body: Column(
           children: <Widget>[
             Container(
-              padding:
-                  EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
+              padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
               child: TextFormField(
                 autofocus: false,
                 autocorrect: true,
                 cursorColor: WHITE,
                 style: TextStyle(color: WHITE),
-                decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: WHITE, width: 2)),
-                    counterStyle: TextStyle(color: WHITE),
-                    border: OutlineInputBorder(),
-                    labelText: getTranslated(context, 'search'),
-                    prefixIcon: iconWhite(Icons.search),
-                    labelStyle: TextStyle(color: WHITE)),
+                decoration: InputDecoration(enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)), counterStyle: TextStyle(color: WHITE), border: OutlineInputBorder(), labelText: getTranslated(context, 'search'), prefixIcon: iconWhite(Icons.search), labelStyle: TextStyle(color: WHITE)),
                 onChanged: (string) {
                   setState(
                     () {
-                      _filteredWorkplaces = _workplaces
-                          .where((w) => ((w.name)
-                              .toLowerCase()
-                              .contains(string.toLowerCase())))
-                          .toList();
+                      _filteredWorkplaces = _workplaces.where((w) => ((w.name).toLowerCase().contains(string.toLowerCase()))).toList();
                     },
                   );
                 },
@@ -114,8 +101,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
             ListTileTheme(
               contentPadding: EdgeInsets.only(left: 3),
               child: CheckboxListTile(
-                title:
-                    textWhite(getTranslated(this.context, 'selectUnselectAll')),
+                title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
                 value: _isChecked,
                 activeColor: GREEN,
                 checkColor: WHITE,
@@ -163,8 +149,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
                                 child: ListTileTheme(
                                   contentPadding: EdgeInsets.only(right: 10),
                                   child: CheckboxListTile(
-                                    controlAffinity:
-                                        ListTileControlAffinity.trailing,
+                                    controlAffinity: ListTileControlAffinity.trailing,
                                     secondary: Padding(
                                       padding: EdgeInsets.only(left: 10),
                                       child: Shimmer.fromColors(
@@ -173,13 +158,10 @@ class _WorkplacePageState extends State<WorkplacePage> {
                                         child: BouncingWidget(
                                           duration: Duration(milliseconds: 100),
                                           scaleFactor: 2,
-                                          onPressed: () =>
-                                              _editWorkplace(workplace),
+                                          onPressed: () => _editWorkplace(workplace),
                                           child: IconButton(
-                                            icon:
-                                                icon30Green(Icons.border_color),
-                                            onPressed: () =>
-                                                _editWorkplace(workplace),
+                                            icon: icon30Green(Icons.border_color),
+                                            onPressed: () => _editWorkplace(workplace),
                                           ),
                                         ),
                                       ),
@@ -188,10 +170,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
                                       children: [
                                         Align(
                                           alignment: Alignment.topLeft,
-                                          child: textWhite(name != null
-                                              ? utf8.decode(name.runes.toList())
-                                              : getTranslated(
-                                                  this.context, 'empty')),
+                                          child: textWhite(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
                                         ),
                                       ],
                                     ),
@@ -202,16 +181,12 @@ class _WorkplacePageState extends State<WorkplacePage> {
                                       setState(() {
                                         _checked[foundIndex] = value;
                                         if (value) {
-                                          _selectedIds
-                                              .add(_workplaces[foundIndex].id);
+                                          _selectedIds.add(_workplaces[foundIndex].id);
                                         } else {
-                                          _selectedIds.remove(
-                                              _workplaces[foundIndex].id);
+                                          _selectedIds.remove(_workplaces[foundIndex].id);
                                         }
-                                        int selectedIdsLength =
-                                            _selectedIds.length;
-                                        if (selectedIdsLength ==
-                                            _workplaces.length) {
+                                        int selectedIdsLength = _selectedIds.length;
+                                        if (selectedIdsLength == _workplaces.length) {
                                           _isChecked = true;
                                         } else if (selectedIdsLength == 0) {
                                           _isChecked = false;
@@ -245,9 +220,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
               heroTag: "deleteBtn",
               tooltip: getTranslated(context, 'deleteSelectedWorkplaces'),
               backgroundColor: Colors.red,
-              onPressed: () => _isDeleteButtonTapped
-                  ? null
-                  : _handleDeleteByIdIn(_selectedIds),
+              onPressed: () => _isDeleteButtonTapped ? null : _handleDeleteByIdIn(_selectedIds),
               child: Icon(Icons.delete),
             ),
           ],
@@ -272,10 +245,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(top: 50),
-                      child: text20GreenBold(
-                          getTranslated(context, 'addWorkplace'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'addWorkplace'))),
                   SizedBox(height: 20),
                   Padding(
                     padding: EdgeInsets.only(left: 25, right: 25),
@@ -289,9 +259,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: WHITE),
                       decoration: InputDecoration(
-                        hintText:
-                            getTranslated(this.context, 'textSomeWorkplace') +
-                                ' ...',
+                        hintText: getTranslated(this.context, 'textSomeWorkplace') + ' ...',
                         hintStyle: TextStyle(color: MORE_BRIGHTER_DARK),
                         counterStyle: TextStyle(color: WHITE),
                         focusedBorder: OutlineInputBorder(
@@ -310,8 +278,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
                         elevation: 0,
                         height: 50,
                         minWidth: 40,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.close)],
@@ -323,16 +290,13 @@ class _WorkplacePageState extends State<WorkplacePage> {
                       MaterialButton(
                         elevation: 0,
                         height: 50,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
                         ),
                         color: GREEN,
-                        onPressed: () => _isAddButtonTapped
-                            ? null
-                            : _handleAddWorkplace(_workplaceController.text),
+                        onPressed: () => _isAddButtonTapped ? null : _handleAddWorkplace(_workplaceController.text),
                       ),
                     ],
                   ),
@@ -347,8 +311,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
 
   _handleAddWorkplace(String workplace) {
     setState(() => _isAddButtonTapped = true);
-    String invalidMessage =
-        ValidatorService.validateWorkplace(workplace, context);
+    String invalidMessage = ValidatorService.validateWorkplace(workplace, context);
     if (invalidMessage != null) {
       setState(() => _isAddButtonTapped = false);
       ToastService.showErrorToast(invalidMessage);
@@ -367,8 +330,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
 
   _handleDeleteByIdIn(LinkedHashSet<int> ids) {
     if (ids.isEmpty) {
-      showHint(context, getTranslated(context, 'needToSelectWorkplaces') + ' ',
-          getTranslated(context, 'whichYouWantToRemove'));
+      showHint(context, getTranslated(context, 'needToSelectWorkplaces') + ' ', getTranslated(context, 'whichYouWantToRemove'));
       return;
     }
     showDialog(
@@ -377,8 +339,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
         return AlertDialog(
           backgroundColor: DARK,
           title: textWhite(getTranslated(this.context, 'confirmation')),
-          content: textWhite(getTranslated(
-              this.context, 'areYouSureYouWantToDeleteSelectedWorkplaces')),
+          content: textWhite(getTranslated(this.context, 'areYouSureYouWantToDeleteSelectedWorkplaces')),
           actions: <Widget>[
             FlatButton(
               child: textWhite(getTranslated(this.context, 'yesDeleteThem')),
@@ -387,13 +348,10 @@ class _WorkplacePageState extends State<WorkplacePage> {
                     .deleteByIdIn(ids.toList())
                     .then((res) => {
                           Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    WorkplacePage(_model)),
+                            MaterialPageRoute(builder: (BuildContext context) => WorkplacePage(_model)),
                             ModalRoute.withName('/'),
                           ),
-                          ToastService.showSuccessToast(getTranslated(
-                              this.context, 'selectedWorkplacesRemoved')),
+                          ToastService.showSuccessToast(getTranslated(this.context, 'selectedWorkplacesRemoved')),
                         })
                     .catchError((onError) {
                   String errorMsg = onError.toString();
@@ -404,8 +362,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
                     return;
                   }
                   setState(() => _isDeleteButtonTapped = false);
-                  ToastService.showErrorToast(
-                      getTranslated(this.context, 'smthWentWrong'));
+                  ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
                 }),
               },
             ),
@@ -433,8 +390,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    textCenter20White(getTranslated(this.context,
-                        'cannotDeleteWorkplaceWhenSomeoneWorkingThere')),
+                    textCenter20White(getTranslated(this.context, 'cannotDeleteWorkplaceWhenSomeoneWorkingThere')),
                     textCenter20GreenBold(workplaceIds),
                   ],
                 ),
@@ -446,8 +402,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
               elevation: 0,
               height: 50,
               minWidth: double.maxFinite,
-              shape: new RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(30.0)),
+              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
               color: GREEN,
               child: text20WhiteBold(getTranslated(context, 'close')),
               onPressed: () => Navigator.of(context).pop(),
@@ -475,9 +430,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(top: 50),
-                      child: text20GreenBold('Edit workplace')),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold('Edit workplace')),
                   SizedBox(height: 20),
                   Padding(
                     padding: EdgeInsets.only(left: 25, right: 25),
@@ -491,8 +444,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: WHITE),
                       decoration: InputDecoration(
-                        hintText: getTranslated(context, 'textSomeWorkplace') +
-                            ' ...',
+                        hintText: getTranslated(context, 'textSomeWorkplace') + ' ...',
                         hintStyle: TextStyle(color: MORE_BRIGHTER_DARK),
                         counterStyle: TextStyle(color: WHITE),
                         focusedBorder: OutlineInputBorder(
@@ -511,8 +463,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
                         elevation: 0,
                         height: 50,
                         minWidth: 40,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.close)],
@@ -524,8 +475,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
                       MaterialButton(
                         elevation: 0,
                         height: 50,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
@@ -533,22 +483,18 @@ class _WorkplacePageState extends State<WorkplacePage> {
                         color: GREEN,
                         onPressed: () {
                           String name = _workplaceController.text;
-                          String invalidMessage =
-                              ValidatorService.validateWorkplace(name, context);
+                          String invalidMessage = ValidatorService.validateWorkplace(name, context);
                           if (invalidMessage != null) {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
-                          UpdateWorkplaceDto dto = new UpdateWorkplaceDto(
-                              id: workplace.id, name: name);
+                          UpdateWorkplaceDto dto = new UpdateWorkplaceDto(id: workplace.id, name: name);
                           _workplaceService.update(dto).then((res) {
                             Navigator.pop(context);
                             _refresh();
-                            ToastService.showSuccessToast(getTranslated(
-                                context, 'workplaceUpdatedSuccessfully'));
+                            ToastService.showSuccessToast(getTranslated(context, 'workplaceUpdatedSuccessfully'));
                           }).catchError((onError) {
-                            ToastService.showErrorToast(
-                                getTranslated(context, 'smthWentWrong'));
+                            ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
                           });
                         },
                       ),
@@ -573,8 +519,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                textWhite(getTranslated(
-                    this.context, 'successfullyAddedNewWorkplace')),
+                textWhite(getTranslated(this.context, 'successfullyAddedNewWorkplace')),
               ],
             ),
           ),
@@ -594,17 +539,11 @@ class _WorkplacePageState extends State<WorkplacePage> {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(top: 20),
-          child: Align(
-              alignment: Alignment.center,
-              child:
-                  text20GreenBold(getTranslated(this.context, 'noWorkplaces'))),
+          child: Align(alignment: Alignment.center, child: text20GreenBold(getTranslated(this.context, 'noWorkplaces'))),
         ),
         Padding(
           padding: EdgeInsets.only(right: 30, left: 30, top: 10),
-          child: Align(
-              alignment: Alignment.center,
-              child: textCenter19White(
-                  getTranslated(this.context, 'noWorkplacesHint'))),
+          child: Align(alignment: Alignment.center, child: textCenter19White(getTranslated(this.context, 'noWorkplacesHint'))),
         ),
       ],
     );

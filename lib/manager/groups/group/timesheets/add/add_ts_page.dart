@@ -18,12 +18,12 @@ import '../../../../../shared/widget/texts.dart';
 import '../../../../manager_app_bar.dart';
 import '../../../../manager_side_bar.dart';
 import '../../../../service/manager_service.dart';
-import '../../employee/model/group_employee_model.dart';
+import '../../../model/group_model.dart';
 import '../../shared/group_floating_action_button.dart';
 import '../manager_ts_page.dart';
 
 class AddTsPage extends StatefulWidget {
-  final GroupEmployeeModel _model;
+  final GroupModel _model;
   final int _year;
   final int _month;
 
@@ -34,7 +34,7 @@ class AddTsPage extends StatefulWidget {
 }
 
 class _AddTsPageState extends State<AddTsPage> {
-  GroupEmployeeModel _model;
+  GroupModel _model;
   int _year;
   int _month;
 
