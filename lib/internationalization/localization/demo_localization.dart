@@ -16,44 +16,26 @@ class DemoLocalization {
   Map<String, String> _localizedValues;
 
   Future load() async {
-    String jsonStringValues = await rootBundle.loadString(
-        'lib/internationalization/lang/${locale.languageCode}.json');
+    String jsonStringValues = await rootBundle.loadString('lib/internationalization/lang/${locale.languageCode}.json');
 
     Map<String, dynamic> mappedJson = json.decode(jsonStringValues);
 
-    _localizedValues =
-        mappedJson.map((key, value) => MapEntry(key, value.toString()));
+    _localizedValues = mappedJson.map((key, value) => MapEntry(key, value.toString()));
   }
 
   String getTranslatedValue(String key) {
     return _localizedValues[key];
   }
 
-  static const LocalizationsDelegate<DemoLocalization> delegate =
-      _DemoLocalizationDelegate();
+  static const LocalizationsDelegate<DemoLocalization> delegate = _DemoLocalizationDelegate();
 }
 
-class _DemoLocalizationDelegate
-    extends LocalizationsDelegate<DemoLocalization> {
+class _DemoLocalizationDelegate extends LocalizationsDelegate<DemoLocalization> {
   const _DemoLocalizationDelegate();
 
   @override
   bool isSupported(Locale locale) {
-    return [
-      BELARUSIAN,
-      ENGLISH,
-      FRENCH,
-      GEORGIA,
-      GERMAN,
-      MOLDAVIAN,
-      NETHERLANDS,
-      NORWAY,
-      POLISH,
-      RUSSIAN,
-      SPAIN,
-      SWEDEN,
-      UKRAINIAN
-    ].contains(locale.languageCode);
+    return [BELARUSIAN, ENGLISH, FRENCH, GEORGIA, GERMAN, MOLDAVIAN, NETHERLANDS, NORWAY, POLISH, RUSSIAN, SPAIN, SWEDEN, UKRAINIAN].contains(locale.languageCode);
   }
 
   @override

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:give_job/manager/dto/workplace_dto.dart';
-import 'package:give_job/shared/model/vocation_dto.dart';
+import 'package:give_job/api/vocation/dto/vocation_dto.dart';
 
 class WorkdayDto {
   final int id;

@@ -5,7 +5,6 @@ import 'package:give_job/shared/libraries/colors.dart';
 // WHITE //
 Icon iconWhite(IconData iconData) { return Icon(iconData, color: WHITE); }
 Icon icon30White(IconData iconData) { return Icon(iconData, size: 30, color: WHITE); }
-Icon icon50White(IconData iconData) { return Icon(iconData, size: 50, color: WHITE); }
 
 
 // DARK //

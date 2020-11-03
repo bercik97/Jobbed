@@ -20,12 +20,9 @@ class Logout {
           actions: <Widget>[
             FlatButton(
               child: textWhite(getTranslated(context, 'yes')),
-              onPressed: () => logoutWithoutConfirm(
-                  context, getTranslated(context, 'logoutSuccessfully')),
+              onPressed: () => logoutWithoutConfirm(context, getTranslated(context, 'logoutSuccessfully')),
             ),
-            FlatButton(
-                child: textWhite(getTranslated(context, 'no')),
-                onPressed: () => Navigator.of(context).pop()),
+            FlatButton(child: textWhite(getTranslated(context, 'no')), onPressed: () => Navigator.of(context).pop()),
           ],
         );
       },
@@ -35,8 +32,7 @@ class Logout {
   static logoutWithoutConfirm(BuildContext context, String msg) {
     storage.delete(key: 'authorization');
     storage.delete(key: 'role');
-    Navigator.pushAndRemoveUntil(context,
-        MaterialPageRoute(builder: (context) => LoginPage()), (e) => false);
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LoginPage()), (e) => false);
     if (msg != null) {
       ToastService.showSuccessToast(msg);
     }
@@ -49,8 +45,7 @@ class Logout {
         return AlertDialog(
           backgroundColor: DARK,
           title: textWhite(getTranslated(context, 'accountExpired')),
-          content:
-              textWhite(getTranslated(context, 'yourAccountProbablyExpired')),
+          content: textWhite(getTranslated(context, 'yourAccountProbablyExpired')),
           actions: <Widget>[
             FlatButton(
               child: textWhite(getTranslated(context, 'ok')),

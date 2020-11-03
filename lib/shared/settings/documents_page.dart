@@ -44,14 +44,8 @@ class _DocumentsPageState extends State<DocumentsPage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: widget._user.role == ROLE_EMPLOYEE
-            ? employeeAppBar(context, widget._user,
-                getTranslated(context, 'termsOfUseLowerCase'))
-            : managerAppBar(context, widget._user,
-                getTranslated(context, 'termsOfUseLowerCase')),
-        drawer: widget._user.role == ROLE_EMPLOYEE
-            ? employeeSideBar(context, widget._user)
-            : managerSideBar(context, widget._user),
+        appBar: widget._user.role == ROLE_EMPLOYEE ? employeeAppBar(context, widget._user, getTranslated(context, 'termsOfUseLowerCase')) : managerAppBar(context, widget._user, getTranslated(context, 'termsOfUseLowerCase')),
+        drawer: widget._user.role == ROLE_EMPLOYEE ? employeeSideBar(context, widget._user) : managerSideBar(context, widget._user),
         body: _buildBody(),
       ),
     );
@@ -79,8 +73,7 @@ class _DocumentsPageState extends State<DocumentsPage> {
         Expanded(
           child: Center(
             child: _isInit
-                ? textCenter28White(getTranslated(
-                    context, 'pressButtonToChooseInterestedDocument'))
+                ? textCenter28White(getTranslated(context, 'pressButtonToChooseInterestedDocument'))
                 : _isLoading
                     ? Center(child: circularProgressIndicator())
                     : PDFViewer(document: regulationsPDF),

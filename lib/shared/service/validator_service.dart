@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 
 class ValidatorService {
-  static String validateLoginCredentials(
-      String username, String password, BuildContext context) {
+  static String validateLoginCredentials(String username, String password, BuildContext context) {
     if (username.isEmpty && password.isEmpty) {
       return getTranslated(context, 'usernameAndPasswordRequired');
     } else if (username.isEmpty) {
@@ -34,25 +33,18 @@ class ValidatorService {
   }
 
   static String validateUpdatingPlan(String plan, BuildContext context) {
-    return plan != null && plan.length > 510
-        ? getTranslated(context, 'wrongPlanLength')
-        : null;
+    return plan != null && plan.length > 510 ? getTranslated(context, 'wrongPlanLength') : null;
   }
 
   static String validateUpdatingOpinion(String opinion, BuildContext context) {
-    return opinion != null && opinion.length > 510
-        ? getTranslated(context, 'wrongOpinionLength')
-        : null;
+    return opinion != null && opinion.length > 510 ? getTranslated(context, 'wrongOpinionLength') : null;
   }
 
   static String validateVocationReason(String reason, BuildContext context) {
-    return reason == null || reason.length > 510
-        ? getTranslated(context, 'wrongPlanLength')
-        : null;
+    return reason == null || reason.length > 510 ? getTranslated(context, 'wrongPlanLength') : null;
   }
 
-  static String validateUpdatingGroupName(
-      String groupName, BuildContext context) {
+  static String validateUpdatingGroupName(String groupName, BuildContext context) {
     if (groupName.isEmpty) {
       return getTranslated(context, 'groupNameCannotBeEmpty');
     } else if (groupName.length > 26) {
@@ -61,8 +53,7 @@ class ValidatorService {
     return null;
   }
 
-  static String validateUpdatingGroupDescription(
-      String groupDescription, BuildContext context) {
+  static String validateUpdatingGroupDescription(String groupDescription, BuildContext context) {
     if (groupDescription.isEmpty) {
       return getTranslated(context, 'groupDescriptionCannotBeEmpty');
     } else if (groupDescription.length > 100) {
@@ -71,8 +62,7 @@ class ValidatorService {
     return null;
   }
 
-  static String validateNewHourlyRate(
-      double newMoneyPerHour, BuildContext context) {
+  static String validateNewHourlyRate(double newMoneyPerHour, BuildContext context) {
     if (newMoneyPerHour < 0) {
       return getTranslated(context, 'moneyPerHourCannotBeLowerThan0');
     } else if (newMoneyPerHour > 200) {
