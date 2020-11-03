@@ -18,7 +18,7 @@ import '../../../../../shared/widget/texts.dart';
 import '../../../../manager_app_bar.dart';
 import '../../../../manager_side_bar.dart';
 import '../../../../service/manager_service.dart';
-import '../../../model/group_model.dart';
+import '../../shared/group_model.dart';
 import '../../shared/group_floating_action_button.dart';
 import '../manager_ts_page.dart';
 

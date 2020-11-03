@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/api/workplace/dto/workplace_dto.dart';
 import 'package:give_job/api/workplace/service/workplace_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/model/group_model.dart';
 import 'package:give_job/manager/groups/group/manager_group_details_page.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
-import 'package:give_job/manager/service/manager_service.dart';
+import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/radio_element.dart';
@@ -40,7 +40,7 @@ class _SelectWorkplaceForQuickUpdateEmployeesPageState extends State<SelectWorkp
   String _todaysDate;
 
   WorkplaceService _workplaceService;
-  ManagerService _managerService;
+  TimesheetService _timesheetService;
 
   List<WorkplaceDto> _workplaces = new List();
   bool _loading = false;
@@ -52,9 +52,10 @@ class _SelectWorkplaceForQuickUpdateEmployeesPageState extends State<SelectWorkp
   @override
   void initState() {
     this._model = widget._model;
+    this._user = _model.user;
     this._todaysDate = widget._todaysDate;
     this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
-    this._managerService = new ManagerService(context, _model.user.authHeader);
+    this._timesheetService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
     super.initState();
     _loading = true;
     _workplaceService.findAllByGroupId(_model.groupId).then((res) {
@@ -176,7 +177,13 @@ class _SelectWorkplaceForQuickUpdateEmployeesPageState extends State<SelectWorkp
                           FlatButton(
                               child: textGreen(getTranslated(context, 'yesImSure')),
                               onPressed: () => {
-                                    _managerService.updateGroupWorkplaceOfTodaysDateInCurrentTimesheet(_model.groupId, _todaysDate, _currentRadioElement.id).then(
+                                    _timesheetService
+                                        .updateWorkplaceByGroupIdAndDate(
+                                      _model.groupId,
+                                      _todaysDate,
+                                      _currentRadioElement.id,
+                                    )
+                                        .then(
                                       (res) {
                                         ToastService.showSuccessToast(getTranslated(context, 'todaysWorkplaceHasBeenUpdated'));
                                         Navigator.push(
@@ -184,7 +191,12 @@ class _SelectWorkplaceForQuickUpdateEmployeesPageState extends State<SelectWorkp
                                           MaterialPageRoute(builder: (context) => ManagerGroupDetailsPage(_model)),
                                         );
                                       },
-                                    ),
+                                    ).catchError((onError) {
+                                      String s = onError.toString();
+                                      if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
+                                        _errorDialog(context, getTranslated(context, 'cannotUpdateTodaysOpinion'));
+                                      }
+                                    }),
                                   }),
                           FlatButton(child: textWhite(getTranslated(context, 'no')), onPressed: () => Navigator.of(context).pop()),
                         ],
@@ -220,6 +232,31 @@ class _SelectWorkplaceForQuickUpdateEmployeesPageState extends State<SelectWorkp
           ),
         ),
       ],
+    );
+  }
+
+  static _errorDialog(BuildContext context, String content) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: DARK,
+          title: textGreen(getTranslated(context, 'error')),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                textWhite(content),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: textWhite(getTranslated(context, 'close')),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/model/group_model.dart';
+import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.dart';
 import 'package:give_job/manager/groups/group/timesheets/manager_ts_page.dart';
 import 'package:give_job/manager/groups/group/vocations/manager_vocations_ts_page.dart';

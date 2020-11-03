@@ -7,7 +7,7 @@ import 'package:give_job/api/group/dto/group_dashboard_dto.dart';
 import 'package:give_job/api/group/service/group_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/model/group_model.dart';
+import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';

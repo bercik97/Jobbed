@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/employee/employees_page.dart';
-import 'package:give_job/manager/groups/model/group_model.dart';
 import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
 import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.dart';
+import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/timesheets/manager_ts_page.dart';
 import 'package:give_job/manager/groups/group/vocations/manager_vocations_ts_page.dart';
 import 'package:give_job/manager/groups/group/workplaces/workplace_page.dart';
@@ -14,8 +14,7 @@ import 'package:give_job/shared/libraries/colors.dart';
 
 import '../manager_group_details_page.dart';
 
-Widget groupFloatingActionButton(
-    BuildContext context, GroupModel model) {
+Widget groupFloatingActionButton(BuildContext context, GroupModel model) {
   return SpeedDial(
     backgroundColor: GREEN,
     animatedIcon: AnimatedIcons.view_list,
@@ -27,13 +26,10 @@ Widget groupFloatingActionButton(
         label: getTranslated(context, 'group'),
         labelBackgroundColor: BRIGHTER_DARK,
         labelStyle: TextStyle(color: WHITE),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ManagerGroupDetailsPage(model)),
-          );
-        },
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ManagerGroupDetailsPage(model)),
+        ),
       ),
       SpeedDialChild(
         backgroundColor: BRIGHTER_DARK,
@@ -41,13 +37,10 @@ Widget groupFloatingActionButton(
         label: getTranslated(context, 'backToGroups'),
         labelBackgroundColor: BRIGHTER_DARK,
         labelStyle: TextStyle(color: WHITE),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => GroupsDashboardPage(model.user)),
-          );
-        },
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => GroupsDashboardPage(model.user)),
+        ),
       ),
       SpeedDialChild(
         backgroundColor: BRIGHTER_DARK,
@@ -63,13 +56,10 @@ Widget groupFloatingActionButton(
         label: getTranslated(context, 'employees'),
         labelBackgroundColor: BRIGHTER_DARK,
         labelStyle: TextStyle(color: WHITE),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => EmployeesPage(model)),
-          );
-        },
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => EmployeesPage(model)),
+        ),
       ),
       SpeedDialChild(
         backgroundColor: BRIGHTER_DARK,
@@ -85,12 +75,10 @@ Widget groupFloatingActionButton(
         label: getTranslated(context, 'timesheets'),
         labelBackgroundColor: BRIGHTER_DARK,
         labelStyle: TextStyle(color: WHITE),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ManagerTsPage(model)),
-          );
-        },
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ManagerTsPage(model)),
+        ),
       ),
       SpeedDialChild(
         backgroundColor: BRIGHTER_DARK,
@@ -98,12 +86,10 @@ Widget groupFloatingActionButton(
         label: getTranslated(context, 'workplace'),
         labelBackgroundColor: BRIGHTER_DARK,
         labelStyle: TextStyle(color: WHITE),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => WorkplacePage(model)),
-          );
-        },
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => WorkplacePage(model)),
+        ),
       ),
       SpeedDialChild(
         backgroundColor: BRIGHTER_DARK,
@@ -111,13 +97,10 @@ Widget groupFloatingActionButton(
         label: getTranslated(context, 'vocations'),
         labelBackgroundColor: BRIGHTER_DARK,
         labelStyle: TextStyle(color: WHITE),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ManagerVocationsTsPage(model)),
-          );
-        },
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ManagerVocationsTsPage(model)),
+        ),
       ),
     ],
   );

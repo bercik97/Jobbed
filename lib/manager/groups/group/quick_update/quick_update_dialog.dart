@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/model/group_model.dart';
+import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/vocations/timesheets/calendar/manager_vocations_calendar_page.dart';
 import 'package:give_job/manager/groups/group/workplaces/select_workplace_for_quick_update_employees.dart';
-import 'package:give_job/manager/service/manager_service.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
@@ -16,12 +17,11 @@ import 'package:intl/intl.dart';
 import '../../../../internationalization/localization/localization_constants.dart';
 
 class QuickUpdateDialog {
-  static ManagerService _managerService;
+  static TimesheetService _timesheetService;
   static GroupModel _model;
   static String _todaysDate;
 
-  static void showQuickUpdateDialog(
-      BuildContext context, GroupModel model) {
+  static void showQuickUpdateDialog(BuildContext context, GroupModel model) {
     ManagerVocationsCalendarPage page = ManagerVocationsCalendarPage();
     page.model = model;
     DateTime now = DateTime.now();
@@ -42,12 +42,9 @@ class QuickUpdateDialog {
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                textCenter16GreenBold(
-                    getTranslated(context, 'quickUpdateOfTodaysDate') +
-                        ' $formattedDate'),
+                textCenter16GreenBold(getTranslated(context, 'quickUpdateOfTodaysDate') + ' $formattedDate'),
                 SizedBox(height: 5),
-                textCenter16White(
-                    getTranslated(context, 'updateDataForAllEmployeesOfGroup')),
+                textCenter16White(getTranslated(context, 'updateDataForAllEmployeesOfGroup')),
                 SizedBox(height: 5),
                 GestureDetector(
                   onTap: () {
@@ -56,27 +53,20 @@ class QuickUpdateDialog {
                       MaterialPageRoute(builder: (context) => page),
                     );
                   },
-                  child: textCenter15RedUnderline(
-                      getTranslated(context, 'quickUpdateWarn')),
+                  child: textCenter15RedUnderline(getTranslated(context, 'quickUpdateWarn')),
                 ),
                 SizedBox(height: 10),
-                _buildUpdateButton(getTranslated(context, 'hours'),
-                    () => _buildUpdateHoursDialog(context)),
-                _buildUpdateButton(getTranslated(context, 'rating'),
-                    () => _buildUpdateRatingDialog(context)),
-                _buildUpdateButton(getTranslated(context, 'plan'),
-                    () => _buildUpdatePlanDialog(context)),
-                _buildUpdateButton(getTranslated(context, 'opinion'),
-                    () => _buildUpdateOpinionDialog(context)),
-                _buildUpdateButton(getTranslated(context, 'workplace'),
-                    () => _showUpdateWorkplaceDialog(context)),
+                _buildUpdateButton(getTranslated(context, 'hours'), () => _buildUpdateHoursDialog(context)),
+                _buildUpdateButton(getTranslated(context, 'rating'), () => _buildUpdateRatingDialog(context)),
+                _buildUpdateButton(getTranslated(context, 'plan'), () => _buildUpdatePlanDialog(context)),
+                _buildUpdateButton(getTranslated(context, 'opinion'), () => _buildUpdateOpinionDialog(context)),
+                _buildUpdateButton(getTranslated(context, 'workplace'), () => _showUpdateWorkplaceDialog(context)),
                 Container(
                   width: 80,
                   child: MaterialButton(
                     elevation: 0,
                     height: 50,
-                    shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30.0)),
+                    shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[iconWhite(Icons.close)],
@@ -100,8 +90,7 @@ class QuickUpdateDialog {
           elevation: 0,
           minWidth: 200,
           height: 50,
-          shape: new RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(30.0)),
+          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
           onPressed: () => fun(),
           color: GREEN,
           child: text20White(title),
@@ -128,10 +117,7 @@ class QuickUpdateDialog {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(top: 50),
-                      child: text20GreenBold(
-                          getTranslated(context, 'hoursUpperCase'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'hoursUpperCase'))),
                   SizedBox(height: 2.5),
                   textGreen(getTranslated(context, 'fillTodaysGroupHours')),
                   Container(
@@ -140,9 +126,7 @@ class QuickUpdateDialog {
                       autofocus: true,
                       controller: _hoursController,
                       keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        WhitelistingTextInputFormatter.digitsOnly
-                      ],
+                      inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
                       maxLength: 2,
                       cursorColor: WHITE,
                       textAlignVertical: TextAlignVertical.center,
@@ -150,8 +134,7 @@ class QuickUpdateDialog {
                       decoration: InputDecoration(
                         counterStyle: TextStyle(color: WHITE),
                         labelStyle: TextStyle(color: WHITE),
-                        labelText:
-                            getTranslated(context, 'newHours') + ' (0-24)',
+                        labelText: getTranslated(context, 'newHours') + ' (0-24)',
                       ),
                     ),
                   ),
@@ -163,8 +146,7 @@ class QuickUpdateDialog {
                         elevation: 0,
                         height: 50,
                         minWidth: 40,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.close)],
@@ -176,8 +158,7 @@ class QuickUpdateDialog {
                       MaterialButton(
                         elevation: 0,
                         height: 50,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
@@ -188,32 +169,22 @@ class QuickUpdateDialog {
                           try {
                             hours = int.parse(_hoursController.text);
                           } catch (FormatException) {
-                            ToastService.showErrorToast(getTranslated(
-                                context, 'givenValueIsNotANumber'));
+                            ToastService.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
                             return;
                           }
-                          String invalidMessage =
-                              ValidatorService.validateUpdatingHours(
-                                  hours, context);
+                          String invalidMessage = ValidatorService.validateUpdatingHours(hours, context);
                           if (invalidMessage != null) {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
                           Navigator.of(context).pop();
                           _initialize(context, _model.user.authHeader);
-                          _managerService
-                              .updateGroupHoursOfTodaysDateInCurrentTimesheet(
-                                  _model.groupId, _todaysDate, hours)
-                              .then((res) {
-                            ToastService.showSuccessToast(getTranslated(context,
-                                'todaysGroupHoursUpdatedSuccessfully'));
+                          _timesheetService.updateHoursByGroupIdAndDate(_model.groupId, _todaysDate, hours).then((res) {
+                            ToastService.showSuccessToast(getTranslated(context, 'todaysGroupHoursUpdatedSuccessfully'));
                           }).catchError((onError) {
                             String s = onError.toString();
                             if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
-                              _errorDialog(
-                                  context,
-                                  getTranslated(
-                                      context, 'cannotUpdateTodaysHours'));
+                              _errorDialog(context, getTranslated(context, 'cannotUpdateTodaysHours'));
                             }
                           });
                         },
@@ -245,10 +216,7 @@ class QuickUpdateDialog {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(top: 50),
-                      child: text20GreenBold(
-                          getTranslated(context, 'ratingUpperCase'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'ratingUpperCase'))),
                   SizedBox(height: 2.5),
                   textGreen(getTranslated(context, 'fillTodaysGroupRating')),
                   Container(
@@ -257,9 +225,7 @@ class QuickUpdateDialog {
                       autofocus: true,
                       controller: _ratingController,
                       keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        WhitelistingTextInputFormatter.digitsOnly
-                      ],
+                      inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
                       maxLength: 2,
                       cursorColor: WHITE,
                       textAlignVertical: TextAlignVertical.center,
@@ -267,8 +233,7 @@ class QuickUpdateDialog {
                       decoration: InputDecoration(
                         counterStyle: TextStyle(color: WHITE),
                         labelStyle: TextStyle(color: WHITE),
-                        labelText:
-                            getTranslated(context, 'newRating') + ' (0-10)',
+                        labelText: getTranslated(context, 'newRating') + ' (0-10)',
                       ),
                     ),
                   ),
@@ -280,8 +245,7 @@ class QuickUpdateDialog {
                         elevation: 0,
                         height: 50,
                         minWidth: 40,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.close)],
@@ -293,8 +257,7 @@ class QuickUpdateDialog {
                       MaterialButton(
                         elevation: 0,
                         height: 50,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
@@ -305,32 +268,22 @@ class QuickUpdateDialog {
                           try {
                             rating = int.parse(_ratingController.text);
                           } catch (FormatException) {
-                            ToastService.showErrorToast(getTranslated(
-                                context, 'givenValueIsNotANumber'));
+                            ToastService.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
                             return;
                           }
-                          String invalidMessage =
-                              ValidatorService.validateUpdatingRating(
-                                  rating, context);
+                          String invalidMessage = ValidatorService.validateUpdatingRating(rating, context);
                           if (invalidMessage != null) {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
                           Navigator.of(context).pop();
                           _initialize(context, _model.user.authHeader);
-                          _managerService
-                              .updateGroupHoursOfTodaysDateInCurrentTimesheet(
-                                  _model.groupId, _todaysDate, rating)
-                              .then((res) {
-                            ToastService.showSuccessToast(getTranslated(context,
-                                'todaysGroupRatingUpdatedSuccessfully'));
+                          _timesheetService.updateRatingByGroupIdAndDate(_model.groupId, _todaysDate, rating).then((res) {
+                            ToastService.showSuccessToast(getTranslated(context, 'todaysGroupRatingUpdatedSuccessfully'));
                           }).catchError((onError) {
                             String s = onError.toString();
                             if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
-                              _errorDialog(
-                                  context,
-                                  getTranslated(
-                                      context, 'cannotUpdateTodaysRating'));
+                              _errorDialog(context, getTranslated(context, 'cannotUpdateTodaysRating'));
                             }
                           });
                         },
@@ -362,10 +315,7 @@ class QuickUpdateDialog {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(top: 50),
-                      child: text20GreenBold(
-                          getTranslated(context, 'planUpperCase'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'planUpperCase'))),
                   SizedBox(height: 2.5),
                   textGreen(getTranslated(context, 'planTodayForTheGroup')),
                   SizedBox(height: 20),
@@ -400,8 +350,7 @@ class QuickUpdateDialog {
                         elevation: 0,
                         height: 50,
                         minWidth: 40,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.close)],
@@ -413,8 +362,7 @@ class QuickUpdateDialog {
                       MaterialButton(
                         elevation: 0,
                         height: 50,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
@@ -422,28 +370,19 @@ class QuickUpdateDialog {
                         color: GREEN,
                         onPressed: () {
                           String plan = _planController.text;
-                          String invalidMessage =
-                              ValidatorService.validateUpdatingPlan(
-                                  plan, context);
+                          String invalidMessage = ValidatorService.validateUpdatingPlan(plan, context);
                           if (invalidMessage != null) {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
                           Navigator.of(context).pop();
                           _initialize(context, _model.user.authHeader);
-                          _managerService
-                              .updateGroupPlanOfTodaysDateInCurrentTimesheet(
-                                  _model.groupId, _todaysDate, plan)
-                              .then((res) {
-                            ToastService.showSuccessToast(getTranslated(
-                                context, 'todaysGroupPlanUpdatedSuccessfully'));
+                          _timesheetService.updatePlanByGroupIdAndDate(_model.groupId, _todaysDate, plan).then((res) {
+                            ToastService.showSuccessToast(getTranslated(context, 'todaysGroupPlanUpdatedSuccessfully'));
                           }).catchError((onError) {
                             String s = onError.toString();
                             if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
-                              _errorDialog(
-                                  context,
-                                  getTranslated(
-                                      context, 'cannotUpdateTodaysPlan'));
+                              _errorDialog(context, getTranslated(context, 'cannotUpdateTodaysPlan'));
                             }
                           });
                         },
@@ -475,10 +414,7 @@ class QuickUpdateDialog {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(top: 50),
-                      child: text20GreenBold(
-                          getTranslated(context, 'opinionUpperCase'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'opinionUpperCase'))),
                   SizedBox(height: 2.5),
                   textGreen(getTranslated(context, 'fillTodaysGroupOpinion')),
                   SizedBox(height: 20),
@@ -513,8 +449,7 @@ class QuickUpdateDialog {
                         elevation: 0,
                         height: 50,
                         minWidth: 40,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.close)],
@@ -526,8 +461,7 @@ class QuickUpdateDialog {
                       MaterialButton(
                         elevation: 0,
                         height: 50,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
@@ -535,28 +469,19 @@ class QuickUpdateDialog {
                         color: GREEN,
                         onPressed: () {
                           String opinion = _opinionController.text;
-                          String invalidMessage =
-                              ValidatorService.validateUpdatingPlan(
-                                  opinion, context);
+                          String invalidMessage = ValidatorService.validateUpdatingPlan(opinion, context);
                           if (invalidMessage != null) {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
                           Navigator.of(context).pop();
                           _initialize(context, _model.user.authHeader);
-                          _managerService
-                              .updateGroupOpinionOfTodaysDateInCurrentTimesheet(
-                                  _model.groupId, _todaysDate, opinion)
-                              .then((res) {
-                            ToastService.showSuccessToast(getTranslated(context,
-                                'todaysGroupOpinionUpdatedSuccessfully'));
+                          _timesheetService.updateOpinionByGroupIdAndDate(_model.groupId, _todaysDate, opinion).then((res) {
+                            ToastService.showSuccessToast(getTranslated(context, 'todaysGroupOpinionUpdatedSuccessfully'));
                           }).catchError((onError) {
                             String s = onError.toString();
                             if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
-                              _errorDialog(
-                                  context,
-                                  getTranslated(
-                                      context, 'cannotUpdateTodaysOpinion'));
+                              _errorDialog(context, getTranslated(context, 'cannotUpdateTodaysOpinion'));
                             }
                           });
                         },
@@ -575,14 +500,12 @@ class QuickUpdateDialog {
   static void _showUpdateWorkplaceDialog(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-          builder: (context) =>
-              SelectWorkplaceForQuickUpdateEmployeesPage(_model, _todaysDate)),
+      MaterialPageRoute(builder: (context) => SelectWorkplaceForQuickUpdateEmployeesPage(_model, _todaysDate)),
     );
   }
 
   static _initialize(BuildContext context, String authHeader) {
-    _managerService = new ManagerService(context, authHeader);
+    _timesheetService = ServiceInitializer.initialize(context, authHeader, TimesheetService);
   }
 
   static _errorDialog(BuildContext context, String content) {

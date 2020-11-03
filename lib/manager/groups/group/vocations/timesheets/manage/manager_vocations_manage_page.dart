@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/dto/manager_group_timesheet_with_no_status_dto.dart';
 import 'package:give_job/manager/dto/manager_vocations_ts_dto.dart';
-import 'package:give_job/manager/groups/model/group_model.dart';
+import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/service/manager_service.dart';
 import 'package:give_job/shared/libraries/colors.dart';

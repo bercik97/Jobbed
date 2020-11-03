@@ -10,7 +10,7 @@ import 'package:give_job/api/workplace/dto/workplace_dto.dart';
 import 'package:give_job/api/workplace/service/workplace_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/employee/employee_ts_in_progress_page.dart';
-import 'package:give_job/manager/groups/model/group_model.dart';
+import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';

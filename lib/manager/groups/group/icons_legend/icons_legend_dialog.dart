@@ -5,7 +5,7 @@ import '../../../../internationalization/localization/localization_constants.dar
 import '../../../../shared/libraries/colors.dart';
 import '../../../../shared/widget/icons.dart';
 import '../../../../shared/widget/texts.dart';
-import '../../model/group_model.dart';
+import '../shared/group_model.dart';
 
 class IconsLegend {
   static void showIconsLegendDialog(BuildContext context, GroupModel model) {

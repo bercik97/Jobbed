@@ -9,7 +9,7 @@ import 'package:give_job/manager/dto/manager_group_employee_dto.dart';
 import 'package:give_job/manager/dto/manager_group_timesheet_dto.dart';
 import 'package:give_job/manager/groups/group/employee/employee_profil_page.dart';
 import 'package:give_job/manager/groups/group/employee/employee_ts_completed_page.dart';
-import 'package:give_job/manager/groups/model/group_model.dart';
+import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/service/manager_service.dart';
 import 'package:give_job/shared/libraries/colors.dart';

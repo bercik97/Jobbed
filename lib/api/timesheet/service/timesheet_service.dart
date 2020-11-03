@@ -36,9 +36,87 @@ class TimesheetService {
   }
 
   Future<List<TimesheetForEmployeeDto>> findAllForEmployeeProfileByGroupIdAndEmployeeId(int employeeId, int groupId) async {
-    Response res = await get('$_url/employee-profile?employee_id=$employeeId&group_id=$groupId', headers: _header);
+    Response res = await get(
+      '$_url/employee-profile?employee_id=$employeeId&group_id=$groupId',
+      headers: _header,
+    );
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => TimesheetForEmployeeDto.fromJson(data)).toList();
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> updateHoursByGroupIdAndDate(int groupId, String date, int hours) async {
+    Response res = await put(
+      '$_url/hours/groups/$groupId?date=$date',
+      body: hours.toString(),
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> updateRatingByGroupIdAndDate(int groupId, String date, int rating) async {
+    Response res = await put(
+      '$_url/rating/groups/$groupId?date=$date',
+      body: rating.toString(),
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> updatePlanByGroupIdAndDate(int groupId, String date, String plan) async {
+    Response res = await put(
+      '$_url/plan/groups/$groupId?date=$date',
+      body: plan,
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> updateOpinionByGroupIdAndDate(int groupId, String date, String opinion) async {
+    Response res = await put(
+      '$_url/opinion/groups/$groupId?date=$date',
+      body: opinion,
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> updateWorkplaceByGroupIdAndDate(int groupId, String date, int workplaceId) async {
+    Response res = await put(
+      '$_url/workplace/groups/$groupId?date=$date',
+      body: workplaceId.toString(),
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
     } else if (res.statusCode == 401) {
       return Logout.handle401WithLogout(_context);
     } else {

@@ -11,7 +11,7 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/manager/dto/manager_group_employee_dto.dart';
 import 'package:give_job/manager/dto/manager_group_timesheet_dto.dart';
 import 'package:give_job/manager/groups/group/employee/employee_profil_page.dart';
-import 'package:give_job/manager/groups/model/group_model.dart';
+import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/groups/group/workplaces/select_workplace_for_employees.dart';
