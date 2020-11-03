@@ -228,7 +228,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<http.Response> _login(String username, String password) async {
     String basicAuth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
-    var res = await http.get('$SERVER_IP/login/mobile', headers: {'authorization': basicAuth});
+    var res = await http.get('$SERVER_IP/login', headers: {'authorization': basicAuth});
     return res;
   }
 
