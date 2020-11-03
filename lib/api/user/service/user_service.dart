@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/service/logout_service.dart';
@@ -14,9 +12,12 @@ class UserService {
 
   static const String _url = '$SERVER_IP/users';
 
-  Future<dynamic> updatePassword(String username, String newPassword) async {
-    Map<String, dynamic> map = {'username': username, 'newPassword': newPassword};
-    Response res = await put('$_url/password', body: jsonEncode(map), headers: _headers);
+  Future<dynamic> updatePasswordByUsername(String username, String password) async {
+    Response res = await put(
+      '$_url/password?username=$username',
+      body: password,
+      headers: _headers,
+    );
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {

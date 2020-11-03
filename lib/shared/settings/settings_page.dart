@@ -159,7 +159,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                                             SizedBox(height: 10),
                                                             FlatButton(
                                                               child: textWhite(getTranslated(context, 'changeMyPassword')),
-                                                              onPressed: () => _userService.updatePassword(widget._user.username, _passwordController.text).then(
+                                                              onPressed: () => _userService.updatePasswordByUsername(_user.username, _passwordController.text).then(
                                                                 (res) {
                                                                   Navigator.of(context).pop();
                                                                   Logout.logoutWithoutConfirm(context, getTranslated(context, 'passwordUpdatedSuccessfully'));
