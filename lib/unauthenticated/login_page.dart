@@ -9,7 +9,7 @@ import 'package:give_job/employee/employee_page.dart';
 import 'package:give_job/main.dart';
 import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
 import 'package:give_job/manager/groups/group/manager_group_details_page.dart';
-import 'package:give_job/manager/groups/manager_groups_page.dart';
+import 'package:give_job/manager/groups/groups_dashboard_page.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
@@ -235,7 +235,7 @@ class _LoginPageState extends State<LoginPage> {
   void _chooseManagerPage(Map data, User user) {
     String containsMoreThanOneGroup = data['containsMoreThanOneGroup'];
     if (containsMoreThanOneGroup == 'true' || containsMoreThanOneGroup == null || containsMoreThanOneGroup == 'null') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => ManagerGroupsPage(user)));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => GroupsDashboardPage(user)));
       return;
     }
     int groupId = int.parse(data['groupId']);

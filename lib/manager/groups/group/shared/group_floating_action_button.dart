@@ -9,7 +9,7 @@ import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.d
 import 'package:give_job/manager/groups/group/timesheets/manager_ts_page.dart';
 import 'package:give_job/manager/groups/group/vocations/manager_vocations_ts_page.dart';
 import 'package:give_job/manager/groups/group/workplaces/workplace_page.dart';
-import 'package:give_job/manager/groups/manager_groups_page.dart';
+import 'package:give_job/manager/groups/groups_dashboard_page.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 
 import '../manager_group_details_page.dart';
@@ -45,7 +45,7 @@ Widget groupFloatingActionButton(
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ManagerGroupsPage(model.user)),
+                builder: (context) => GroupsDashboardPage(model.user)),
           );
         },
       ),

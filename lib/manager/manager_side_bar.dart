@@ -10,7 +10,7 @@ import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:open_appstore/open_appstore.dart';
 
-import 'groups/manager_groups_page.dart';
+import 'groups/groups_dashboard_page.dart';
 
 Drawer managerSideBar(BuildContext context, User user) {
   return Drawer(
@@ -22,11 +22,7 @@ Drawer managerSideBar(BuildContext context, User user) {
           Container(
             width: double.infinity,
             padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [WHITE, GREEN])),
+            decoration: BoxDecoration(gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [WHITE, GREEN])),
             child: Center(
               child: Column(
                 children: <Widget>[
@@ -36,9 +32,7 @@ Drawer managerSideBar(BuildContext context, User user) {
                     margin: EdgeInsets.only(top: 50, bottom: 10),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: AssetImage('images/logo.png'),
-                          fit: BoxFit.fill),
+                      image: DecorationImage(image: AssetImage('images/logo.png'), fit: BoxFit.fill),
                     ),
                   ),
                   text25Dark(APP_NAME),
@@ -53,7 +47,7 @@ Drawer managerSideBar(BuildContext context, User user) {
               Navigator.of(context).push(
                 CupertinoPageRoute<Null>(
                   builder: (BuildContext context) {
-                    return ManagerGroupsPage(user);
+                    return GroupsDashboardPage(user);
                   },
                 ),
               );
@@ -63,8 +57,7 @@ Drawer managerSideBar(BuildContext context, User user) {
           ListTile(
             leading: iconWhite(Icons.star),
             title: text18White(getTranslated(context, 'rate')),
-            onTap: () => OpenAppstore.launch(
-                androidAppId: ANDROID_APP_ID, iOSAppId: IOS_APP_ID),
+            onTap: () => OpenAppstore.launch(androidAppId: ANDROID_APP_ID, iOSAppId: IOS_APP_ID),
           ),
           ListTile(
             leading: iconWhite(Icons.settings),

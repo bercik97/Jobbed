@@ -399,7 +399,7 @@ class _ManagerEmployeeProfilePageState extends State<ManagerEmployeeProfilePage>
                               ToastService.showErrorToast(getTranslated(context, 'newHourlyRateIsRequired'));
                               return;
                             }
-                            String invalidMessage = ValidatorService.validateNewHourlyRate(newHourlyRate, context);
+                            String invalidMessage = ValidatorService.validateMoneyPerHour(newHourlyRate, context);
                             if (invalidMessage != null) {
                               ToastService.showErrorToast(invalidMessage);
                               return;

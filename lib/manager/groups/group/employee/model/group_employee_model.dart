@@ -8,6 +8,12 @@ class GroupEmployeeModel {
   String numberOfEmployees;
   String countryOfWork;
 
-  GroupEmployeeModel(this.user, this.groupId, this.groupName,
-      this.groupDescription, this.numberOfEmployees, this.countryOfWork);
+  GroupEmployeeModel(
+    this.user,
+    this.groupId,
+    this.groupName,
+    this.groupDescription,
+    this.numberOfEmployees,
+    this.countryOfWork,
+  );
 }

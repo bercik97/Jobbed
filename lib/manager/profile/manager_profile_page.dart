@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/dto/manager_dto.dart';
-import 'package:give_job/manager/groups/manager_groups_page.dart';
+import 'package:give_job/manager/groups/groups_dashboard_page.dart';
 import 'package:give_job/manager/manager_side_bar.dart';
 import 'package:give_job/manager/service/manager_service.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -80,7 +80,7 @@ class _ManagerProfilePageState extends State<ManagerProfilePage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ManagerGroupsPage(_user),
+                            builder: (context) => GroupsDashboardPage(_user),
                           ),
                         ),
                       },

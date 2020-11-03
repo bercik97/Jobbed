@@ -2,13 +2,15 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:give_job/api/group/service/group_service.dart';
+import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/edit/money_per_hour/edit_group_money_per_hour.dart';
+import 'package:give_job/manager/groups/group/edit/money_per_hour/group_edit_money_per_hour.dart';
 import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
-import 'package:give_job/manager/service/manager_group_service.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
+import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -18,40 +20,32 @@ import '../../../manager_app_bar.dart';
 import '../../../manager_side_bar.dart';
 import '../manager_group_details_page.dart';
 
-class ManagerGroupDetailsEditPage extends StatefulWidget {
+class GroupEditPage extends StatefulWidget {
   final GroupEmployeeModel _model;
 
-  ManagerGroupDetailsEditPage(this._model);
+  GroupEditPage(this._model);
 
   @override
-  _ManagerGroupDetailsEditPageState createState() =>
-      _ManagerGroupDetailsEditPageState();
+  _GroupEditPageState createState() => _GroupEditPageState();
 }
 
-class _ManagerGroupDetailsEditPageState
-    extends State<ManagerGroupDetailsEditPage> {
+class _GroupEditPageState extends State<GroupEditPage> {
   GroupEmployeeModel _model;
-  ManagerGroupService _managerGroupService;
+  User _user;
+  GroupService _groupService;
 
   @override
   Widget build(BuildContext context) {
     this._model = widget._model;
-    _managerGroupService =
-        new ManagerGroupService(context, _model.user.authHeader);
+    this._user = _model.user;
+    this._groupService = ServiceInitializer.initialize(context, _user.authHeader, GroupService);
     return MaterialApp(
       title: APP_NAME,
       theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBar(
-            context,
-            _model.user,
-            getTranslated(context, 'editGroup') +
-                ' - ' +
-                utf8.decode(_model.groupName != null
-                    ? _model.groupName.runes.toList()
-                    : '-')),
+        appBar: managerAppBar(context, _model.user, getTranslated(context, 'editGroup') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-')),
         drawer: managerSideBar(context, _model.user),
         body: SingleChildScrollView(
           child: Center(
@@ -63,36 +57,28 @@ class _ManagerGroupDetailsEditPageState
                     children: <Widget>[
                       SizedBox(height: 10),
                       ListTile(
-                        title: text18WhiteBold(
-                            getTranslated(context, 'groupName')),
+                        title: text18WhiteBold(getTranslated(context, 'groupName')),
                         subtitle: text16White(_model.groupName),
                       ),
                       ListTile(
-                        title: text18WhiteBold(
-                            getTranslated(context, 'groupDescription')),
+                        title: text18WhiteBold(getTranslated(context, 'groupDescription')),
                         subtitle: text16White(_model.groupDescription),
                       ),
                     ],
                   ),
                 ),
                 Padding(
-                  padding:
-                      EdgeInsets.only(right: 20, left: 20, top: 10, bottom: 10),
-                  child: textCenter14Green(
-                      getTranslated(context, 'hintEditGroupDetails')),
+                  padding: EdgeInsets.only(right: 20, left: 20, top: 10, bottom: 10),
+                  child: textCenter14Green(getTranslated(context, 'hintEditGroupDetails')),
                 ),
-                _buildButton(getTranslated(context, 'groupName'),
-                    () => _updateGroupName(context, _model.groupName)),
-                _buildButton(
-                    getTranslated(context, 'groupDescription'),
-                    () => _updateGroupDescription(
-                        context, _model.groupDescription)),
+                _buildButton(getTranslated(context, 'groupName'), () => _updateGroupName(context, _model.groupName)),
+                _buildButton(getTranslated(context, 'groupDescription'), () => _updateGroupDescription(context, _model.groupDescription)),
                 _buildButton(
                   getTranslated(context, 'hourlyGroupRates'),
                   () => Navigator.of(context).push(
                     CupertinoPageRoute<Null>(
                       builder: (BuildContext context) {
-                        return EditGroupMoneyPerHourPage(_model);
+                        return GroupEditMoneyPerHourPage(_model);
                       },
                     ),
                   ),
@@ -113,8 +99,7 @@ class _ManagerGroupDetailsEditPageState
       child: MaterialButton(
         elevation: 0,
         height: 50,
-        shape: new RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(30.0)),
+        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
         onPressed: () => fun(),
         color: GREEN,
         child: Container(
@@ -136,7 +121,7 @@ class _ManagerGroupDetailsEditPageState
       context: context,
       barrierColor: DARK.withOpacity(0.95),
       barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'groupName'),
+      barrierLabel: getTranslated(context, 'name'),
       transitionDuration: Duration(milliseconds: 400),
       pageBuilder: (_, __, ___) {
         return SizedBox.expand(
@@ -146,10 +131,7 @@ class _ManagerGroupDetailsEditPageState
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(top: 50),
-                      child: text20GreenBold(
-                          getTranslated(context, 'groupNameUpperCase'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'groupNameUpperCase'))),
                   SizedBox(height: 2.5),
                   textGreen(getTranslated(context, 'setNewNameForGroup')),
                   SizedBox(height: 20),
@@ -184,8 +166,7 @@ class _ManagerGroupDetailsEditPageState
                         elevation: 0,
                         height: 50,
                         minWidth: 40,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.close)],
@@ -197,49 +178,46 @@ class _ManagerGroupDetailsEditPageState
                       MaterialButton(
                         elevation: 0,
                         height: 50,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
                         ),
                         color: GREEN,
                         onPressed: () {
-                          String groupName = _groupNameController.text;
-                          String invalidMessage =
-                              ValidatorService.validateUpdatingGroupName(
-                                  groupName, context);
+                          String name = _groupNameController.text;
+                          String invalidMessage = ValidatorService.validateUpdatingGroupName(name, context);
                           if (invalidMessage != null) {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
-                          _managerGroupService
-                              .updateGroupName(_model.groupId, groupName)
+                          _groupService
+                              .update(
+                                _model.groupId,
+                                {
+                                  'name': name,
+                                },
+                              )
                               .then(
                                 (res) => {
-                                  ToastService.showSuccessToast(getTranslated(
-                                      context, 'groupNameUpdatedSuccessfully')),
-                                  _model.groupName = groupName,
+                                  ToastService.showSuccessToast(getTranslated(context, 'groupNameUpdatedSuccessfully')),
+                                  _model.groupName = name,
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          ManagerGroupDetailsPage(_model),
+                                      builder: (context) => ManagerGroupDetailsPage(_model),
                                     ),
                                   ),
                                 },
                               )
                               .catchError(
-                            (onError) {
-                              String s = onError.toString();
-                              if (s.contains('GROUP_NAME_TAKEN')) {
-                                _errorDialog(
-                                    context,
-                                    getTranslated(
-                                        context, 'groupNameNeedToBeUnique'));
-                              }
-                            },
-                          );
+                                (onError) {
+                                  String s = onError.toString();
+                                  if (s.contains('GROUP_NAME_TAKEN')) {
+                                    _errorDialog(context, getTranslated(context, 'groupNameNeedToBeUnique'));
+                                  }
+                                },
+                              );
                         },
                       ),
                     ],
@@ -254,14 +232,13 @@ class _ManagerGroupDetailsEditPageState
   }
 
   _updateGroupDescription(BuildContext context, String groupDescription) {
-    TextEditingController _groupDescriptionController =
-        new TextEditingController();
+    TextEditingController _groupDescriptionController = new TextEditingController();
     _groupDescriptionController.text = groupDescription;
     showGeneralDialog(
       context: context,
       barrierColor: DARK.withOpacity(0.95),
       barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'groupDescription'),
+      barrierLabel: getTranslated(context, 'description'),
       transitionDuration: Duration(milliseconds: 400),
       pageBuilder: (_, __, ___) {
         return SizedBox.expand(
@@ -271,13 +248,9 @@ class _ManagerGroupDetailsEditPageState
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(top: 50),
-                      child: text20GreenBold(
-                          getTranslated(context, 'groupDescriptionUpperCase'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'groupDescriptionUpperCase'))),
                   SizedBox(height: 2.5),
-                  textGreen(
-                      getTranslated(context, 'setNewDescriptionForGroup')),
+                  textGreen(getTranslated(context, 'setNewDescriptionForGroup')),
                   SizedBox(height: 20),
                   Padding(
                     padding: EdgeInsets.only(left: 25, right: 25),
@@ -291,8 +264,7 @@ class _ManagerGroupDetailsEditPageState
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: WHITE),
                       decoration: InputDecoration(
-                        hintText:
-                            getTranslated(context, 'textSomeGroupDescription'),
+                        hintText: getTranslated(context, 'textSomeGroupDescription'),
                         hintStyle: TextStyle(color: MORE_BRIGHTER_DARK),
                         counterStyle: TextStyle(color: WHITE),
                         focusedBorder: OutlineInputBorder(
@@ -311,8 +283,7 @@ class _ManagerGroupDetailsEditPageState
                         elevation: 0,
                         height: 50,
                         minWidth: 40,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.close)],
@@ -324,41 +295,34 @@ class _ManagerGroupDetailsEditPageState
                       MaterialButton(
                         elevation: 0,
                         height: 50,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
                         ),
                         color: GREEN,
                         onPressed: () {
-                          String groupDescription =
-                              _groupDescriptionController.text;
-                          String invalidMessage =
-                              ValidatorService.validateUpdatingGroupDescription(
-                                  groupDescription, context);
+                          String description = _groupDescriptionController.text;
+                          String invalidMessage = ValidatorService.validateUpdatingGroupDescription(description, context);
                           if (invalidMessage != null) {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
-                          _managerGroupService
-                              .updateGroupDescription(
-                                  _model.groupId, groupDescription)
-                              .then(
-                                (res) => {
-                                  ToastService.showSuccessToast(getTranslated(
-                                      context,
-                                      'groupDescriptionUpdatedSuccessfully')),
-                                  _model.groupDescription = groupDescription,
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          ManagerGroupDetailsPage(_model),
-                                    ),
-                                  ),
-                                },
-                              );
+                          _groupService.update(
+                            _model.groupId,
+                            {'description': description},
+                          ).then(
+                            (res) => {
+                              ToastService.showSuccessToast(getTranslated(context, 'groupDescriptionUpdatedSuccessfully')),
+                              _model.groupDescription = description,
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ManagerGroupDetailsPage(_model),
+                                ),
+                              ),
+                            },
+                          );
                         },
                       ),
                     ],

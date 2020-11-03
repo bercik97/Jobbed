@@ -7,8 +7,6 @@ import 'package:give_job/manager/dto/basic_employee_dto.dart';
 import 'package:give_job/manager/dto/manager_dto.dart';
 import 'package:give_job/manager/dto/manager_employee_contact_dto.dart';
 import 'package:give_job/manager/dto/manager_group_details_dto.dart';
-import 'package:give_job/manager/dto/manager_group_dto.dart';
-import 'package:give_job/manager/dto/manager_group_edit_money_per_hour_dto.dart';
 import 'package:give_job/manager/dto/manager_group_employee_dto.dart';
 import 'package:give_job/manager/dto/manager_group_employee_vocation_dto.dart';
 import 'package:give_job/manager/dto/manager_group_timesheet_dto.dart';
@@ -26,7 +24,6 @@ class ManagerService {
 
   static const String _baseUrl = '/mobile';
   static const String _baseManagerUrl = SERVER_IP + '$_baseUrl/managers';
-  static const String _baseGroupUrl = SERVER_IP + '$_baseUrl/groups';
   static const String _baseEmployeeUrl = SERVER_IP + '$_baseUrl/employees';
   static const String _baseTsUrl = SERVER_IP + '$_baseUrl/timesheets';
   static const String _baseWorkdayUrl = SERVER_IP + '$_baseUrl/workdays';
@@ -44,35 +41,11 @@ class ManagerService {
     }
   }
 
-  Future<List<ManagerGroupDto>> findGroupsManager(String id) async {
-    String url = _baseGroupUrl + '/${int.parse(id)}';
-    Response res = await get(url, headers: {HttpHeaders.authorizationHeader: authHeader});
-    if (res.statusCode == 200) {
-      return (json.decode(res.body) as List).map((data) => ManagerGroupDto.fromJson(data)).toList();
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
   Future<List<ManagerGroupDetailsDto>> findEmployeesGroupDetails(String groupId) async {
     String url = _baseEmployeeUrl + '/groups/${int.parse(groupId)}/details';
     Response res = await get(url, headers: {HttpHeaders.authorizationHeader: authHeader});
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => ManagerGroupDetailsDto.fromJson(data)).toList();
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<List<ManagerGroupEditMoneyPerHourDto>> findEmployeesForEditMoneyPerHour(int groupId) async {
-    String url = _baseEmployeeUrl + '/groups/$groupId/money-per-hour';
-    Response res = await get(url, headers: {HttpHeaders.authorizationHeader: authHeader});
-    if (res.statusCode == 200) {
-      return (json.decode(res.body) as List).map((data) => ManagerGroupEditMoneyPerHourDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
       return Logout.handle401WithLogout(context);
     } else {

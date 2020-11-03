@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 
-class ManagerGroupDto {
+class GroupDashboardDto {
   final int id;
   final String name;
   final String countryOfWork;
   final String description;
   final int numberOfEmployees;
 
-  ManagerGroupDto({
+  GroupDashboardDto({
     @required this.id,
     @required this.name,
     @required this.countryOfWork,
@@ -15,8 +15,8 @@ class ManagerGroupDto {
     @required this.numberOfEmployees,
   });
 
-  factory ManagerGroupDto.fromJson(Map<String, dynamic> json) {
-    return ManagerGroupDto(
+  factory GroupDashboardDto.fromJson(Map<String, dynamic> json) {
+    return GroupDashboardDto(
       id: json['id'] as int,
       name: json['name'] as String,
       countryOfWork: json['countryOfWork'] as String,

@@ -7,8 +7,7 @@ import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
-Widget managerAppBarWithIconsLegend(
-    BuildContext context, String title, List<Widget> icons, User user) {
+Widget managerAppBarWithIconsLegend(BuildContext context, String title, List<Widget> icons, User user) {
   return AppBar(
     iconTheme: IconThemeData(color: WHITE),
     backgroundColor: BRIGHTER_DARK,
@@ -41,8 +40,7 @@ Widget managerAppBarWithIconsLegend(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                textCenter16GreenBold(
-                                    getTranslated(context, 'iconsLegend')),
+                                textCenter16GreenBold(getTranslated(context, 'iconsLegend')),
                                 SizedBox(height: 25),
                                 Column(children: icons),
                               ],
@@ -58,9 +56,7 @@ Widget managerAppBarWithIconsLegend(
                                 elevation: 0,
                                 height: 50,
                                 minWidth: 100,
-                                shape: new RoundedRectangleBorder(
-                                    borderRadius:
-                                        new BorderRadius.circular(30.0)),
+                                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[iconWhite(Icons.close)],

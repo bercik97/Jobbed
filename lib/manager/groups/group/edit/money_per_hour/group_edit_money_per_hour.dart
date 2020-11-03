@@ -5,14 +5,16 @@ import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:give_job/api/employee/dto/employee_money_per_hour_dto.dart';
+import 'package:give_job/api/employee/service/employee_service.dart';
+import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/dto/manager_group_edit_money_per_hour_dto.dart';
 import 'package:give_job/manager/groups/group/employee/manager_employee_profile_page.dart';
 import 'package:give_job/manager/groups/group/employee/model/group_employee_model.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
-import 'package:give_job/manager/service/manager_service.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
+import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
@@ -25,26 +27,25 @@ import '../../../../../shared/widget/loader.dart';
 import '../../../../manager_app_bar.dart';
 import '../../../../manager_side_bar.dart';
 
-class EditGroupMoneyPerHourPage extends StatefulWidget {
+class GroupEditMoneyPerHourPage extends StatefulWidget {
   final GroupEmployeeModel _model;
 
-  EditGroupMoneyPerHourPage(this._model);
+  GroupEditMoneyPerHourPage(this._model);
 
   @override
-  _EditGroupMoneyPerHourPageState createState() =>
-      _EditGroupMoneyPerHourPageState();
+  _GroupEditMoneyPerHourPageState createState() => _GroupEditMoneyPerHourPageState();
 }
 
-class _EditGroupMoneyPerHourPageState extends State<EditGroupMoneyPerHourPage> {
-  final TextEditingController _moneyPerHourController =
-      new TextEditingController();
+class _GroupEditMoneyPerHourPageState extends State<GroupEditMoneyPerHourPage> {
+  final TextEditingController _moneyPerHourController = new TextEditingController();
 
   GroupEmployeeModel _model;
+  User _user;
 
-  ManagerService _managerService;
+  EmployeeService _employeeService;
 
-  List<ManagerGroupEditMoneyPerHourDto> _employees = new List();
-  List<ManagerGroupEditMoneyPerHourDto> _filteredEmployees = new List();
+  List<EmployeeMoneyPerHourDto> _employees = new List();
+  List<EmployeeMoneyPerHourDto> _filteredEmployees = new List();
   bool _loading = false;
   bool _isChecked = false;
   List<bool> _checked = new List();
@@ -53,12 +54,11 @@ class _EditGroupMoneyPerHourPageState extends State<EditGroupMoneyPerHourPage> {
   @override
   void initState() {
     this._model = widget._model;
-    this._managerService = new ManagerService(context, _model.user.authHeader);
+    this._user = _model.user;
+    this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
     super.initState();
     _loading = true;
-    _managerService
-        .findEmployeesForEditMoneyPerHour(_model.groupId)
-        .then((res) {
+    _employeeService.findAllByGroupIdForGroupEditMoneyPerHour(_model.groupId).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
@@ -71,10 +71,7 @@ class _EditGroupMoneyPerHourPageState extends State<EditGroupMoneyPerHourPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(
-          managerAppBar(
-              context, _model.user, getTranslated(context, 'loading')),
-          managerSideBar(context, _model.user));
+      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')), managerSideBar(context, _model.user));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -83,13 +80,10 @@ class _EditGroupMoneyPerHourPageState extends State<EditGroupMoneyPerHourPage> {
       home: Scaffold(
         backgroundColor: DARK,
         appBar: managerAppBar(
-            context,
-            _model.user,
-            getTranslated(context, 'editGroupMoneyPerHour') +
-                ' - ' +
-                utf8.decode(_model.groupName != null
-                    ? _model.groupName.runes.toList()
-                    : '-')),
+          context,
+          _model.user,
+          getTranslated(context, 'editGroupMoneyPerHour') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
+        ),
         drawer: managerSideBar(context, _model.user),
         body: RefreshIndicator(
           color: DARK,
@@ -105,21 +99,17 @@ class _EditGroupMoneyPerHourPageState extends State<EditGroupMoneyPerHourPage> {
                   cursorColor: WHITE,
                   style: TextStyle(color: WHITE),
                   decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: WHITE, width: 2)),
-                      counterStyle: TextStyle(color: WHITE),
-                      border: OutlineInputBorder(),
-                      labelText: getTranslated(this.context, 'search'),
-                      prefixIcon: iconWhite(Icons.search),
-                      labelStyle: TextStyle(color: WHITE)),
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+                    counterStyle: TextStyle(color: WHITE),
+                    border: OutlineInputBorder(),
+                    labelText: getTranslated(this.context, 'search'),
+                    prefixIcon: iconWhite(Icons.search),
+                    labelStyle: TextStyle(color: WHITE),
+                  ),
                   onChanged: (string) {
                     setState(
                       () {
-                        _filteredEmployees = _employees
-                            .where((u) => (u.employeeInfo
-                                .toLowerCase()
-                                .contains(string.toLowerCase())))
-                            .toList();
+                        _filteredEmployees = _employees.where((u) => (u.employeeInfo.toLowerCase().contains(string.toLowerCase()))).toList();
                       },
                     );
                   },
@@ -128,8 +118,7 @@ class _EditGroupMoneyPerHourPageState extends State<EditGroupMoneyPerHourPage> {
               ListTileTheme(
                 contentPadding: EdgeInsets.only(left: 3),
                 child: CheckboxListTile(
-                  title: textWhite(
-                      getTranslated(this.context, 'selectUnselectAll')),
+                  title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
                   value: _isChecked,
                   activeColor: GREEN,
                   checkColor: WHITE,
@@ -140,8 +129,7 @@ class _EditGroupMoneyPerHourPageState extends State<EditGroupMoneyPerHourPage> {
                       _checked.forEach((b) => l.add(value));
                       _checked = l;
                       if (value) {
-                        _selectedIds.addAll(
-                            _filteredEmployees.map((e) => e.employeeId));
+                        _selectedIds.addAll(_filteredEmployees.map((e) => e.employeeId));
                       } else
                         _selectedIds.clear();
                     });
@@ -153,8 +141,7 @@ class _EditGroupMoneyPerHourPageState extends State<EditGroupMoneyPerHourPage> {
                 child: ListView.builder(
                   itemCount: _filteredEmployees.length,
                   itemBuilder: (BuildContext context, int index) {
-                    ManagerGroupEditMoneyPerHourDto employee =
-                        _filteredEmployees[index];
+                    EmployeeMoneyPerHourDto employee = _filteredEmployees[index];
                     int foundIndex = 0;
                     for (int i = 0; i < _employees.length; i++) {
                       if (_employees[i].employeeId == employee.employeeId) {
@@ -175,8 +162,7 @@ class _EditGroupMoneyPerHourPageState extends State<EditGroupMoneyPerHourPage> {
                             child: ListTileTheme(
                               contentPadding: EdgeInsets.only(right: 10),
                               child: CheckboxListTile(
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
+                                controlAffinity: ListTileControlAffinity.leading,
                                 secondary: Padding(
                                   padding: EdgeInsets.all(4),
                                   child: Transform.scale(
@@ -188,14 +174,14 @@ class _EditGroupMoneyPerHourPageState extends State<EditGroupMoneyPerHourPage> {
                                         Navigator.push(
                                           this.context,
                                           MaterialPageRoute(
-                                            builder: (context) =>
-                                                ManagerEmployeeProfilePage(
-                                                    _model,
-                                                    nationality,
-                                                    currency,
-                                                    employee.employeeId,
-                                                    info,
-                                                    employee.moneyPerHour),
+                                            builder: (context) => ManagerEmployeeProfilePage(
+                                              _model,
+                                              nationality,
+                                              currency,
+                                              employee.employeeId,
+                                              info,
+                                              employee.moneyPerHour,
+                                            ),
                                           ),
                                         );
                                       },
@@ -212,24 +198,14 @@ class _EditGroupMoneyPerHourPageState extends State<EditGroupMoneyPerHourPage> {
                                     ),
                                   ),
                                 ),
-                                title: text20WhiteBold(
-                                    utf8.decode(info.runes.toList()) +
-                                        ' ' +
-                                        LanguageUtil.findFlagByNationality(
-                                            nationality)),
+                                title: text20WhiteBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                 subtitle: Column(
                                   children: <Widget>[
                                     Align(
                                         child: Row(
                                           children: <Widget>[
-                                            textWhite(getTranslated(
-                                                    this.context,
-                                                    'moneyPerHour') +
-                                                ': '),
-                                            textGreenBold(employee.moneyPerHour
-                                                    .toString() +
-                                                ' ' +
-                                                currency),
+                                            textWhite(getTranslated(this.context, 'moneyPerHour') + ': '),
+                                            textGreenBold(employee.moneyPerHour.toString() + ' ' + currency),
                                           ],
                                         ),
                                         alignment: Alignment.topLeft),
@@ -242,15 +218,12 @@ class _EditGroupMoneyPerHourPageState extends State<EditGroupMoneyPerHourPage> {
                                   setState(() {
                                     _checked[foundIndex] = value;
                                     if (value) {
-                                      _selectedIds.add(
-                                          _employees[foundIndex].employeeId);
+                                      _selectedIds.add(_employees[foundIndex].employeeId);
                                     } else {
-                                      _selectedIds.remove(
-                                          _employees[foundIndex].employeeId);
+                                      _selectedIds.remove(_employees[foundIndex].employeeId);
                                     }
                                     int selectedIdsLength = _selectedIds.length;
-                                    if (selectedIdsLength ==
-                                        _employees.length) {
+                                    if (selectedIdsLength == _employees.length) {
                                       _isChecked = true;
                                     } else if (selectedIdsLength == 0) {
                                       _isChecked = false;
@@ -277,8 +250,7 @@ class _EditGroupMoneyPerHourPageState extends State<EditGroupMoneyPerHourPage> {
               Expanded(
                 child: MaterialButton(
                   color: GREEN,
-                  child:
-                      textDarkBold(getTranslated(context, 'setMoneyPerHour')),
+                  child: textDarkBold(getTranslated(context, 'setMoneyPerHour')),
                   onPressed: () => {
                     if (_selectedIds.isNotEmpty)
                       {
@@ -286,14 +258,7 @@ class _EditGroupMoneyPerHourPageState extends State<EditGroupMoneyPerHourPage> {
                         _changeCurrentMoneyPerHour(),
                       }
                     else
-                      {
-                        showHint(
-                            context,
-                            getTranslated(context, 'needToSelectEmployees') +
-                                ' ',
-                            getTranslated(
-                                context, 'whichYouWantToSetHourlyRate'))
-                      }
+                      {showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'whichYouWantToSetHourlyRate'))}
                   },
                 ),
               ),
@@ -329,30 +294,24 @@ class _EditGroupMoneyPerHourPageState extends State<EditGroupMoneyPerHourPage> {
                       padding: EdgeInsets.only(top: 50),
                       child: Column(
                         children: [
-                          text20GreenBold(
-                              getTranslated(context, 'moneyPerHourUpperCase')),
+                          text20GreenBold(getTranslated(context, 'moneyPerHourUpperCase')),
                         ],
                       ),
                     ),
                     SizedBox(height: 7.5),
-                    textGreen(getTranslated(
-                        context, 'changeMoneyPerHourForEmployees')),
+                    textGreen(getTranslated(context, 'changeMoneyPerHourForEmployees')),
                     SizedBox(height: 5.0),
-                    textCenter15Red(getTranslated(
-                        context, 'theRateWillNotBeSetToPreviouslyFilledHours')),
-                    textCenter15Red(getTranslated(
-                        context, 'updateAmountsOfPrevSheetsOverwrite')),
+                    textCenter15Red(getTranslated(context, 'theRateWillNotBeSetToPreviouslyFilledHours')),
+                    textCenter15Red(getTranslated(context, 'updateAmountsOfPrevSheetsOverwrite')),
                     SizedBox(height: 2.5),
                     Container(
                       width: 150,
                       child: TextFormField(
                         autofocus: true,
                         controller: _moneyPerHourController,
-                        keyboardType:
-                            TextInputType.numberWithOptions(decimal: true),
+                        keyboardType: TextInputType.numberWithOptions(decimal: true),
                         inputFormatters: <TextInputFormatter>[
-                          WhitelistingTextInputFormatter(
-                              RegExp(r'^\d+\.?\d{0,2}')),
+                          WhitelistingTextInputFormatter(RegExp(r'^\d+\.?\d{0,2}')),
                         ],
                         maxLength: 6,
                         cursorColor: WHITE,
@@ -373,8 +332,7 @@ class _EditGroupMoneyPerHourPageState extends State<EditGroupMoneyPerHourPage> {
                           elevation: 0,
                           height: 50,
                           minWidth: 40,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0)),
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[iconWhite(Icons.close)],
@@ -386,43 +344,38 @@ class _EditGroupMoneyPerHourPageState extends State<EditGroupMoneyPerHourPage> {
                         MaterialButton(
                           elevation: 0,
                           height: 50,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0)),
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[iconWhite(Icons.check)],
                           ),
                           color: GREEN,
                           onPressed: () {
-                            double newHourlyRate;
+                            double moneyPerHour;
                             try {
-                              newHourlyRate =
-                                  double.parse(_moneyPerHourController.text);
+                              moneyPerHour = double.parse(_moneyPerHourController.text);
                             } catch (FormatException) {
-                              ToastService.showErrorToast(getTranslated(
-                                  context, 'newHourlyRateIsRequired'));
+                              ToastService.showErrorToast(getTranslated(context, 'newHourlyRateIsRequired'));
                               return;
                             }
-                            String invalidMessage =
-                                ValidatorService.validateNewHourlyRate(
-                                    newHourlyRate, context);
+                            String invalidMessage = ValidatorService.validateMoneyPerHour(moneyPerHour, context);
                             if (invalidMessage != null) {
                               ToastService.showErrorToast(invalidMessage);
                               return;
                             }
-                            _managerService
-                                .updateMoneyPerHourForSelectedEmployees(
-                                    _selectedIds, newHourlyRate)
-                                .then(
-                                  (res) => {
-                                    _uncheckAll(),
-                                    _refresh(),
-                                    Navigator.pop(context),
-                                    ToastService.showSuccessToast(getTranslated(
-                                        context,
-                                        'successfullyUpdatedMoneyPerHourForSelectedEmployees')),
-                                  },
-                                );
+                            _employeeService.updateFieldsValuesByIds(
+                              _selectedIds.toList(),
+                              {
+                                "moneyPerHour": moneyPerHour,
+                              },
+                            ).then(
+                              (res) => {
+                                _uncheckAll(),
+                                _refresh(),
+                                Navigator.pop(context),
+                                ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedMoneyPerHourForSelectedEmployees')),
+                              },
+                            );
                           },
                         ),
                       ],
@@ -446,9 +399,7 @@ class _EditGroupMoneyPerHourPageState extends State<EditGroupMoneyPerHourPage> {
   }
 
   Future<Null> _refresh() {
-    return _managerService
-        .findEmployeesForEditMoneyPerHour(_model.groupId)
-        .then((res) {
+    return _employeeService.findAllByGroupIdForGroupEditMoneyPerHour(_model.groupId).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));

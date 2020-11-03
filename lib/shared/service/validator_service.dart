@@ -62,7 +62,7 @@ class ValidatorService {
     return null;
   }
 
-  static String validateNewHourlyRate(double newMoneyPerHour, BuildContext context) {
+  static String validateMoneyPerHour(double newMoneyPerHour, BuildContext context) {
     if (newMoneyPerHour < 0) {
       return getTranslated(context, 'moneyPerHourCannotBeLowerThan0');
     } else if (newMoneyPerHour > 200) {
