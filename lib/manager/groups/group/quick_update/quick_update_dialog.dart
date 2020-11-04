@@ -5,7 +5,7 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
-import 'package:give_job/manager/groups/group/vocations/timesheets/calendar/manager_vocations_calendar_page.dart';
+import 'package:give_job/manager/groups/group/vocations/timesheets/calendar/vocations_calendar_page.dart';
 import 'package:give_job/manager/groups/group/workplaces/select_workplace_for_quick_update_employees.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
@@ -22,8 +22,6 @@ class QuickUpdateDialog {
   static String _todaysDate;
 
   static void showQuickUpdateDialog(BuildContext context, GroupModel model) {
-    ManagerVocationsCalendarPage page = ManagerVocationsCalendarPage();
-    page.model = model;
     DateTime now = DateTime.now();
     DateFormat formatter = DateFormat('yyyy-MM-dd');
     String formattedDate = formatter.format(now);
@@ -50,7 +48,7 @@ class QuickUpdateDialog {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => page),
+                      MaterialPageRoute(builder: (context) => VocationsCalendarPage(_model)),
                     );
                   },
                   child: textCenter15RedUnderline(getTranslated(context, 'quickUpdateWarn')),

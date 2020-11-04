@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 
-class ManagerGroupEmployeeVocationDto {
+class VocationEmployeeDto {
   final int id;
   final String employeeInfo;
   final String employeeNationality;
   final String reason;
   final bool verified;
 
-  ManagerGroupEmployeeVocationDto({
+  VocationEmployeeDto({
     @required this.id,
     @required this.employeeInfo,
     @required this.employeeNationality,
@@ -15,8 +15,8 @@ class ManagerGroupEmployeeVocationDto {
     @required this.verified,
   });
 
-  factory ManagerGroupEmployeeVocationDto.fromJson(Map<String, dynamic> json) {
-    return ManagerGroupEmployeeVocationDto(
+  factory VocationEmployeeDto.fromJson(Map<String, dynamic> json) {
+    return VocationEmployeeDto(
       id: json['id'] as int,
       employeeInfo: json['employeeInfo'] as String,
       employeeNationality: json['employeeNationality'] as String,

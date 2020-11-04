@@ -7,7 +7,7 @@ import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.d
 import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/timesheets/manager_ts_page.dart';
-import 'package:give_job/manager/groups/group/vocations/manager_vocations_ts_page.dart';
+import 'package:give_job/manager/groups/group/vocations/vocations_ts_page.dart';
 import 'package:give_job/manager/groups/group/workplaces/workplace_page.dart';
 import 'package:give_job/manager/groups/groups_dashboard_page.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -99,7 +99,7 @@ Widget groupFloatingActionButton(BuildContext context, GroupModel model) {
         labelStyle: TextStyle(color: WHITE),
         onTap: () => Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ManagerVocationsTsPage(model)),
+          MaterialPageRoute(builder: (context) => VocationsTsPage(model)),
         ),
       ),
     ],

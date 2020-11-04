@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/api/workplace/dto/workplace_dto.dart';
 import 'package:give_job/api/workplace/service/workplace_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
@@ -11,7 +12,6 @@ import 'package:give_job/manager/dto/manager_group_timesheet_dto.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/timesheets/in_progress/manager_in_progress_ts_details_page.dart';
-import 'package:give_job/manager/service/manager_service.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/radio_element.dart';
@@ -52,7 +52,7 @@ class _SelectWorkplaceForEmployeesPageState extends State<SelectWorkplaceForEmpl
   LinkedHashSet<int> _selectedEmployeeIds;
 
   WorkplaceService _workplaceService;
-  ManagerService _managerService;
+  WorkdayService _workdayService;
 
   List<WorkplaceDto> _workplaces = new List();
   bool _loading = false;
@@ -72,7 +72,7 @@ class _SelectWorkplaceForEmployeesPageState extends State<SelectWorkplaceForEmpl
     this._dateTo = widget._dateTo;
     this._selectedEmployeeIds = widget._selectedEmployeeIds;
     this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
-    this._managerService = new ManagerService(context, _model.user.authHeader);
+    this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     super.initState();
     _loading = true;
     _workplaceService.findAllByGroupId(_model.groupId).then((res) {
@@ -196,7 +196,17 @@ class _SelectWorkplaceForEmployeesPageState extends State<SelectWorkplaceForEmpl
                           FlatButton(
                               child: textGreen(getTranslated(context, 'yesImSure')),
                               onPressed: () => {
-                                    _managerService.updateEmployeesWorkplacesForWorkdays(_dateFrom, _dateTo, _selectedEmployeeIds, _currentRadioElement.id, _year, _month, STATUS_IN_PROGRESS).then(
+                                    _workdayService
+                                        .updateEmployeesWorkplace(
+                                      _dateFrom,
+                                      _dateTo,
+                                      _selectedEmployeeIds.map((el) => el.toString()).toList(),
+                                      _currentRadioElement.id,
+                                      _year,
+                                      _month,
+                                      STATUS_IN_PROGRESS,
+                                    )
+                                        .then(
                                       (res) {
                                         ToastService.showSuccessToast(getTranslated(context, 'workplacesUpdatedSuccessfully'));
                                         Navigator.push(

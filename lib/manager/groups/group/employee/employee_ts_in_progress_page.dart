@@ -919,7 +919,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                           }
                           Navigator.of(context).pop();
                           _workdayService
-                              .updateVocationsByIds(
+                              .createOrUpdateVocationsByIds(
                             selectedIds.map((el) => el.toString()).toList(),
                             vocationReason,
                             timesheet.year,

@@ -7,17 +7,20 @@ import 'package:date_util/date_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/dto/manager_group_employee_dto.dart';
 import 'package:give_job/manager/dto/manager_group_timesheet_dto.dart';
 import 'package:give_job/manager/groups/group/employee/employee_profil_page.dart';
-import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
+import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/workplaces/select_workplace_for_employees.dart';
 import 'package:give_job/manager/service/manager_service.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
+import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
@@ -40,19 +43,20 @@ class ManagerTimesheetsEmployeesInProgressPage extends StatefulWidget {
   ManagerTimesheetsEmployeesInProgressPage(this._model, this._timeSheet);
 
   @override
-  _ManagerTimesheetsEmployeesInProgressPageState createState() =>
-      _ManagerTimesheetsEmployeesInProgressPageState();
+  _ManagerTimesheetsEmployeesInProgressPageState createState() => _ManagerTimesheetsEmployeesInProgressPageState();
 }
 
-class _ManagerTimesheetsEmployeesInProgressPageState
-    extends State<ManagerTimesheetsEmployeesInProgressPage> {
+class _ManagerTimesheetsEmployeesInProgressPageState extends State<ManagerTimesheetsEmployeesInProgressPage> {
   final TextEditingController _hoursController = new TextEditingController();
   final TextEditingController _ratingController = new TextEditingController();
   final TextEditingController _planController = new TextEditingController();
   final TextEditingController _opinionController = new TextEditingController();
 
   GroupModel _model;
+  User _user;
+
   ManagerService _managerService;
+  WorkdayService _workdayService;
   ManagerGroupTimesheetDto _timesheet;
 
   List<ManagerGroupEmployeeDto> _employees = new List();
@@ -65,17 +69,13 @@ class _ManagerTimesheetsEmployeesInProgressPageState
   @override
   void initState() {
     this._model = widget._model;
+    this._user = _model.user;
     this._managerService = new ManagerService(context, _model.user.authHeader);
+    this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     this._timesheet = widget._timeSheet;
     super.initState();
     _loading = true;
-    _managerService
-        .findAllEmployeesOfTimesheetByGroupIdAndTimesheetYearMonthStatusForMobile(
-            _model.groupId,
-            _timesheet.year,
-            MonthUtil.findMonthNumberByMonthName(context, _timesheet.month),
-            STATUS_IN_PROGRESS)
-        .then((res) {
+    _managerService.findAllEmployeesOfTimesheetByGroupIdAndTimesheetYearMonthStatusForMobile(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_IN_PROGRESS).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
@@ -88,10 +88,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(
-          managerAppBar(
-              context, _model.user, getTranslated(context, 'loading')),
-          managerSideBar(context, _model.user));
+      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')), managerSideBar(context, _model.user));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -101,22 +98,13 @@ class _ManagerTimesheetsEmployeesInProgressPageState
         backgroundColor: DARK,
         appBar: managerAppBarWithIconsLegend(
             context,
-            _timesheet.year.toString() +
-                ' ' +
-                MonthUtil.translateMonth(context, _timesheet.month) +
-                ' - ' +
-                getTranslated(context, STATUS_IN_PROGRESS),
+            _timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' - ' + getTranslated(context, STATUS_IN_PROGRESS),
             [
-              IconsLegend.buildRow('images/green-hours-icon.png',
-                  getTranslated(context, 'settingHours')),
-              IconsLegend.buildRow('images/green-rate-icon.png',
-                  getTranslated(context, 'settingRating')),
-              IconsLegend.buildRow('images/green-plan-icon.png',
-                  getTranslated(context, 'settingPlan')),
-              IconsLegend.buildRow('images/green-opinion-icon.png',
-                  getTranslated(context, 'settingOpinion')),
-              IconsLegend.buildRow('images/green-workplace-icon.png',
-                  getTranslated(context, 'settingWorkplace')),
+              IconsLegend.buildRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
+              IconsLegend.buildRow('images/green-rate-icon.png', getTranslated(context, 'settingRating')),
+              IconsLegend.buildRow('images/green-plan-icon.png', getTranslated(context, 'settingPlan')),
+              IconsLegend.buildRow('images/green-opinion-icon.png', getTranslated(context, 'settingOpinion')),
+              IconsLegend.buildRow('images/green-workplace-icon.png', getTranslated(context, 'settingWorkplace')),
             ],
             _model.user),
         drawer: managerSideBar(context, _model.user),
@@ -133,22 +121,11 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                   autocorrect: true,
                   cursorColor: WHITE,
                   style: TextStyle(color: WHITE),
-                  decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: WHITE, width: 2)),
-                      counterStyle: TextStyle(color: WHITE),
-                      border: OutlineInputBorder(),
-                      labelText: getTranslated(this.context, 'search'),
-                      prefixIcon: iconWhite(Icons.search),
-                      labelStyle: TextStyle(color: WHITE)),
+                  decoration: InputDecoration(enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)), counterStyle: TextStyle(color: WHITE), border: OutlineInputBorder(), labelText: getTranslated(this.context, 'search'), prefixIcon: iconWhite(Icons.search), labelStyle: TextStyle(color: WHITE)),
                   onChanged: (string) {
                     setState(
                       () {
-                        _filteredEmployees = _employees
-                            .where((u) => (u.info
-                                .toLowerCase()
-                                .contains(string.toLowerCase())))
-                            .toList();
+                        _filteredEmployees = _employees.where((u) => (u.info.toLowerCase().contains(string.toLowerCase()))).toList();
                       },
                     );
                   },
@@ -157,8 +134,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
               ListTileTheme(
                 contentPadding: EdgeInsets.only(left: 3),
                 child: CheckboxListTile(
-                  title: textWhite(
-                      getTranslated(this.context, 'selectUnselectAll')),
+                  title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
                   value: _isChecked,
                   activeColor: GREEN,
                   checkColor: WHITE,
@@ -169,8 +145,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                       _checked.forEach((b) => l.add(value));
                       _checked = l;
                       if (value) {
-                        _selectedIds
-                            .addAll(_filteredEmployees.map((e) => e.id));
+                        _selectedIds.addAll(_filteredEmployees.map((e) => e.id));
                       } else
                         _selectedIds.clear();
                     });
@@ -182,8 +157,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                 child: ListView.builder(
                   itemCount: _filteredEmployees.length,
                   itemBuilder: (BuildContext context, int index) {
-                    ManagerGroupEmployeeDto employee =
-                        _filteredEmployees[index];
+                    ManagerGroupEmployeeDto employee = _filteredEmployees[index];
                     int foundIndex = 0;
                     for (int i = 0; i < _employees.length; i++) {
                       if (_employees[i].id == employee.id) {
@@ -204,8 +178,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                             child: ListTileTheme(
                               contentPadding: EdgeInsets.only(right: 10),
                               child: CheckboxListTile(
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
+                                controlAffinity: ListTileControlAffinity.leading,
                                 secondary: Padding(
                                   padding: EdgeInsets.all(4),
                                   child: Transform.scale(
@@ -217,14 +190,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                                         Navigator.push(
                                           this.context,
                                           MaterialPageRoute(
-                                            builder: (context) =>
-                                                EmployeeProfilPage(
-                                                    _model,
-                                                    nationality,
-                                                    currency,
-                                                    employee.id,
-                                                    info,
-                                                    employee.moneyPerHour),
+                                            builder: (context) => EmployeeProfilPage(_model, nationality, currency, employee.id, info, employee.moneyPerHour),
                                           ),
                                         );
                                       },
@@ -241,63 +207,38 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                                     ),
                                   ),
                                 ),
-                                title: text20WhiteBold(
-                                    utf8.decode(info.runes.toList()) +
-                                        ' ' +
-                                        LanguageUtil.findFlagByNationality(
-                                            nationality)),
+                                title: text20WhiteBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                 subtitle: Column(
                                   children: <Widget>[
                                     Align(
                                         child: Row(
                                           children: <Widget>[
-                                            textWhite(getTranslated(
-                                                    this.context,
-                                                    'moneyPerHour') +
-                                                ': '),
-                                            textGreenBold(employee.moneyPerHour
-                                                    .toString() +
-                                                ' ' +
-                                                currency),
+                                            textWhite(getTranslated(this.context, 'moneyPerHour') + ': '),
+                                            textGreenBold(employee.moneyPerHour.toString() + ' ' + currency),
                                           ],
                                         ),
                                         alignment: Alignment.topLeft),
                                     Align(
                                         child: Row(
                                           children: <Widget>[
-                                            textWhite(getTranslated(
-                                                    this.context,
-                                                    'averageRating') +
-                                                ': '),
-                                            textGreenBold(employee.averageRating
-                                                .toString()),
+                                            textWhite(getTranslated(this.context, 'averageRating') + ': '),
+                                            textGreenBold(employee.averageRating.toString()),
                                           ],
                                         ),
                                         alignment: Alignment.topLeft),
                                     Align(
                                         child: Row(
                                           children: <Widget>[
-                                            textWhite(getTranslated(
-                                                    this.context, 'hours') +
-                                                ': '),
-                                            textGreenBold(employee
-                                                .numberOfHoursWorked
-                                                .toString()),
+                                            textWhite(getTranslated(this.context, 'hours') + ': '),
+                                            textGreenBold(employee.numberOfHoursWorked.toString()),
                                           ],
                                         ),
                                         alignment: Alignment.topLeft),
                                     Align(
                                         child: Row(
                                           children: <Widget>[
-                                            textWhite(getTranslated(
-                                                    this.context,
-                                                    'earnedMoney') +
-                                                ': '),
-                                            textGreenBold(employee
-                                                    .amountOfEarnedMoney
-                                                    .toString() +
-                                                ' ' +
-                                                currency),
+                                            textWhite(getTranslated(this.context, 'earnedMoney') + ': '),
+                                            textGreenBold(employee.amountOfEarnedMoney.toString() + ' ' + currency),
                                           ],
                                         ),
                                         alignment: Alignment.topLeft),
@@ -310,15 +251,12 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                                   setState(() {
                                     _checked[foundIndex] = value;
                                     if (value) {
-                                      _selectedIds
-                                          .add(_employees[foundIndex].id);
+                                      _selectedIds.add(_employees[foundIndex].id);
                                     } else {
-                                      _selectedIds
-                                          .remove(_employees[foundIndex].id);
+                                      _selectedIds.remove(_employees[foundIndex].id);
                                     }
                                     int selectedIdsLength = _selectedIds.length;
-                                    if (selectedIdsLength ==
-                                        _employees.length) {
+                                    if (selectedIdsLength == _employees.length) {
                                       _isChecked = true;
                                     } else if (selectedIdsLength == 0) {
                                       _isChecked = false;
@@ -347,18 +285,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                   color: GREEN,
                   child: Image(image: AssetImage('images/dark-hours-icon.png')),
                   onPressed: () => {
-                    if (_selectedIds.isNotEmpty)
-                      {
-                        _hoursController.clear(),
-                        _showUpdateHoursDialog(_selectedIds)
-                      }
-                    else
-                      {
-                        showHint(
-                            context,
-                            getTranslated(context, 'needToSelectRecords') + ' ',
-                            getTranslated(context, 'whichYouWantToUpdate'))
-                      }
+                    if (_selectedIds.isNotEmpty) {_hoursController.clear(), _showUpdateHoursDialog(_selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
                   },
                 ),
               ),
@@ -368,18 +295,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                   color: GREEN,
                   child: Image(image: AssetImage('images/dark-rate-icon.png')),
                   onPressed: () => {
-                    if (_selectedIds.isNotEmpty)
-                      {
-                        _ratingController.clear(),
-                        _showUpdateRatingDialog(_selectedIds)
-                      }
-                    else
-                      {
-                        showHint(
-                            context,
-                            getTranslated(context, 'needToSelectRecords') + ' ',
-                            getTranslated(context, 'whichYouWantToUpdate'))
-                      }
+                    if (_selectedIds.isNotEmpty) {_ratingController.clear(), _showUpdateRatingDialog(_selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
                   },
                 ),
               ),
@@ -389,18 +305,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                   color: GREEN,
                   child: Image(image: AssetImage('images/dark-plan-icon.png')),
                   onPressed: () => {
-                    if (_selectedIds.isNotEmpty)
-                      {
-                        _planController.clear(),
-                        _showUpdatePlanDialog(_selectedIds)
-                      }
-                    else
-                      {
-                        showHint(
-                            context,
-                            getTranslated(context, 'needToSelectRecords') + ' ',
-                            getTranslated(context, 'whichYouWantToUpdate'))
-                      }
+                    if (_selectedIds.isNotEmpty) {_planController.clear(), _showUpdatePlanDialog(_selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
                   },
                 ),
               ),
@@ -408,21 +313,9 @@ class _ManagerTimesheetsEmployeesInProgressPageState
               Expanded(
                 child: MaterialButton(
                   color: GREEN,
-                  child:
-                      Image(image: AssetImage('images/dark-opinion-icon.png')),
+                  child: Image(image: AssetImage('images/dark-opinion-icon.png')),
                   onPressed: () => {
-                    if (_selectedIds.isNotEmpty)
-                      {
-                        _opinionController.clear(),
-                        _showUpdateOpinionDialog(_selectedIds)
-                      }
-                    else
-                      {
-                        showHint(
-                            context,
-                            getTranslated(context, 'needToSelectRecords') + ' ',
-                            getTranslated(context, 'whichYouWantToUpdate'))
-                      }
+                    if (_selectedIds.isNotEmpty) {_opinionController.clear(), _showUpdateOpinionDialog(_selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
                   },
                 ),
               ),
@@ -430,20 +323,14 @@ class _ManagerTimesheetsEmployeesInProgressPageState
               Expanded(
                 child: MaterialButton(
                   color: GREEN,
-                  child: Image(
-                      image: AssetImage('images/dark-workplace-icon.png')),
+                  child: Image(image: AssetImage('images/dark-workplace-icon.png')),
                   onPressed: () => {
                     if (_selectedIds.isNotEmpty)
                       {
                         _showUpdateWorkplaceDialog(_selectedIds),
                       }
                     else
-                      {
-                        showHint(
-                            context,
-                            getTranslated(context, 'needToSelectRecords') + ' ',
-                            getTranslated(context, 'whichYouWantToUpdate'))
-                      }
+                      {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
                   },
                 ),
               ),
@@ -459,15 +346,9 @@ class _ManagerTimesheetsEmployeesInProgressPageState
 
   void _showUpdateHoursDialog(LinkedHashSet<int> selectedIds) async {
     int year = _timesheet.year;
-    int monthNum =
-        MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
+    int monthNum = MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
     int days = DateUtil().daysInMonth(monthNum, year);
-    final List<DateTime> picked = await DateRagePicker.showDatePicker(
-        context: context,
-        initialFirstDate: new DateTime(year, monthNum, 1),
-        initialLastDate: new DateTime(year, monthNum, days),
-        firstDate: new DateTime(year, monthNum, 1),
-        lastDate: new DateTime(year, monthNum, days));
+    final List<DateTime> picked = await DateRagePicker.showDatePicker(context: context, initialFirstDate: new DateTime(year, monthNum, 1), initialLastDate: new DateTime(year, monthNum, days), firstDate: new DateTime(year, monthNum, 1), lastDate: new DateTime(year, monthNum, days));
     if (picked != null && picked.length == 1) {
       picked.add(picked[0]);
     }
@@ -488,13 +369,9 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Padding(
-                          padding: EdgeInsets.only(top: 50),
-                          child: text20GreenBold(
-                              getTranslated(context, 'hoursUpperCase'))),
+                      Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'hoursUpperCase'))),
                       SizedBox(height: 2.5),
-                      textGreen(getTranslated(
-                          context, 'setHoursForSelectedEmployee')),
+                      textGreen(getTranslated(context, 'setHoursForSelectedEmployee')),
                       SizedBox(height: 2.5),
                       textGreenBold('[' + dateFrom + ' - ' + dateTo + ']'),
                       SizedBox(height: 2.5),
@@ -504,9 +381,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                           autofocus: true,
                           controller: _hoursController,
                           keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            WhitelistingTextInputFormatter.digitsOnly
-                          ],
+                          inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
                           maxLength: 2,
                           cursorColor: WHITE,
                           textAlignVertical: TextAlignVertical.center,
@@ -514,8 +389,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                           decoration: InputDecoration(
                             counterStyle: TextStyle(color: WHITE),
                             labelStyle: TextStyle(color: WHITE),
-                            labelText:
-                                getTranslated(context, 'newHours') + ' (0-24)',
+                            labelText: getTranslated(context, 'newHours') + ' (0-24)',
                           ),
                         ),
                       ),
@@ -527,8 +401,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                             elevation: 0,
                             height: 50,
                             minWidth: 40,
-                            shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(30.0)),
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[iconWhite(Icons.close)],
@@ -540,8 +413,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                           MaterialButton(
                             elevation: 0,
                             height: 50,
-                            shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(30.0)),
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[iconWhite(Icons.check)],
@@ -552,31 +424,28 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                               try {
                                 hours = int.parse(_hoursController.text);
                               } catch (FormatException) {
-                                ToastService.showErrorToast(getTranslated(
-                                    context, 'givenValueIsNotANumber'));
+                                ToastService.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
                                 return;
                               }
-                              String invalidMessage =
-                                  ValidatorService.validateUpdatingHours(
-                                      hours, context);
+                              String invalidMessage = ValidatorService.validateUpdatingHours(hours, context);
                               if (invalidMessage != null) {
                                 ToastService.showErrorToast(invalidMessage);
                                 return;
                               }
-                              _managerService
+                              _workdayService
                                   .updateEmployeesHours(
-                                      hours,
-                                      dateFrom,
-                                      dateTo,
-                                      _selectedIds,
-                                      year,
-                                      monthNum,
-                                      STATUS_IN_PROGRESS)
+                                hours,
+                                dateFrom,
+                                dateTo,
+                                _selectedIds.map((el) => el.toString()).toList(),
+                                year,
+                                monthNum,
+                                STATUS_IN_PROGRESS,
+                              )
                                   .then(
                                 (res) {
                                   Navigator.of(context).pop();
-                                  ToastService.showSuccessToast(getTranslated(
-                                      context, 'hoursUpdatedSuccessfully'));
+                                  ToastService.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
                                   _uncheckAll();
                                   _refresh();
                                 },
@@ -596,15 +465,9 @@ class _ManagerTimesheetsEmployeesInProgressPageState
 
   void _showUpdateRatingDialog(LinkedHashSet<int> selectedIds) async {
     int year = _timesheet.year;
-    int monthNum =
-        MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
+    int monthNum = MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
     int days = DateUtil().daysInMonth(monthNum, year);
-    final List<DateTime> picked = await DateRagePicker.showDatePicker(
-        context: context,
-        initialFirstDate: new DateTime(year, monthNum, 1),
-        initialLastDate: new DateTime(year, monthNum, days),
-        firstDate: new DateTime(year, monthNum, 1),
-        lastDate: new DateTime(year, monthNum, days));
+    final List<DateTime> picked = await DateRagePicker.showDatePicker(context: context, initialFirstDate: new DateTime(year, monthNum, 1), initialLastDate: new DateTime(year, monthNum, days), firstDate: new DateTime(year, monthNum, 1), lastDate: new DateTime(year, monthNum, days));
     if (picked.length == 1) {
       picked.add(picked[0]);
     }
@@ -625,13 +488,9 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Padding(
-                        padding: EdgeInsets.only(top: 50),
-                        child: text20GreenBold(
-                            getTranslated(context, 'ratingUpperCase'))),
+                    Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'ratingUpperCase'))),
                     SizedBox(height: 2.5),
-                    textGreen(
-                        getTranslated(context, 'setRatingForSelectedEmployee')),
+                    textGreen(getTranslated(context, 'setRatingForSelectedEmployee')),
                     SizedBox(height: 2.5),
                     textGreenBold('[' + dateFrom + ' - ' + dateTo + ']'),
                     SizedBox(height: 2.5),
@@ -641,9 +500,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                         autofocus: true,
                         controller: _ratingController,
                         keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[
-                          WhitelistingTextInputFormatter.digitsOnly
-                        ],
+                        inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
                         maxLength: 2,
                         cursorColor: WHITE,
                         textAlignVertical: TextAlignVertical.center,
@@ -651,8 +508,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                         decoration: InputDecoration(
                           counterStyle: TextStyle(color: WHITE),
                           labelStyle: TextStyle(color: WHITE),
-                          labelText:
-                              getTranslated(context, 'newRating') + ' (1-10)',
+                          labelText: getTranslated(context, 'newRating') + ' (1-10)',
                         ),
                       ),
                     ),
@@ -664,8 +520,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                           elevation: 0,
                           height: 50,
                           minWidth: 40,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0)),
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[iconWhite(Icons.close)],
@@ -677,8 +532,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                         MaterialButton(
                           elevation: 0,
                           height: 50,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0)),
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[iconWhite(Icons.check)],
@@ -689,33 +543,30 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                             try {
                               rating = int.parse(_ratingController.text);
                             } catch (FormatException) {
-                              ToastService.showErrorToast(getTranslated(
-                                  context, 'givenValueIsNotANumber'));
+                              ToastService.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
                               return;
                             }
-                            String invalidMessage =
-                                ValidatorService.validateUpdatingRating(
-                                    rating, context);
+                            String invalidMessage = ValidatorService.validateUpdatingRating(rating, context);
                             if (invalidMessage != null) {
                               ToastService.showErrorToast(invalidMessage);
                               return;
                             }
-                            _managerService
+                            _workdayService
                                 .updateEmployeesRating(
-                                    rating,
-                                    dateFrom,
-                                    dateTo,
-                                    _selectedIds,
-                                    year,
-                                    monthNum,
-                                    STATUS_IN_PROGRESS)
+                              rating,
+                              dateFrom,
+                              dateTo,
+                              _selectedIds.map((el) => el.toString()).toList(),
+                              year,
+                              monthNum,
+                              STATUS_IN_PROGRESS,
+                            )
                                 .then(
                               (res) {
                                 _uncheckAll();
                                 _refresh();
                                 Navigator.of(context).pop();
-                                ToastService.showSuccessToast(getTranslated(
-                                    context, 'ratingUpdatedSuccessfully'));
+                                ToastService.showSuccessToast(getTranslated(context, 'ratingUpdatedSuccessfully'));
                               },
                             );
                           },
@@ -734,15 +585,9 @@ class _ManagerTimesheetsEmployeesInProgressPageState
 
   void _showUpdatePlanDialog(LinkedHashSet<int> selectedIds) async {
     int year = _timesheet.year;
-    int monthNum =
-        MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
+    int monthNum = MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
     int days = DateUtil().daysInMonth(monthNum, year);
-    final List<DateTime> picked = await DateRagePicker.showDatePicker(
-        context: context,
-        initialFirstDate: new DateTime(year, monthNum, 1),
-        initialLastDate: new DateTime(year, monthNum, days),
-        firstDate: new DateTime(year, monthNum, 1),
-        lastDate: new DateTime(year, monthNum, days));
+    final List<DateTime> picked = await DateRagePicker.showDatePicker(context: context, initialFirstDate: new DateTime(year, monthNum, 1), initialLastDate: new DateTime(year, monthNum, days), firstDate: new DateTime(year, monthNum, 1), lastDate: new DateTime(year, monthNum, days));
     if (picked.length == 1) {
       picked.add(picked[0]);
     }
@@ -763,12 +608,9 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Padding(
-                        padding: EdgeInsets.only(top: 50),
-                        child: text20GreenBold('PLAN')),
+                    Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold('PLAN')),
                     SizedBox(height: 2.5),
-                    textGreen(
-                        getTranslated(context, 'planForSelectedEmployees')),
+                    textGreen(getTranslated(context, 'planForSelectedEmployees')),
                     SizedBox(height: 2.5),
                     textGreenBold('[' + dateFrom + ' - ' + dateTo + ']'),
                     SizedBox(height: 20),
@@ -803,8 +645,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                           elevation: 0,
                           height: 50,
                           minWidth: 40,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0)),
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[iconWhite(Icons.close)],
@@ -816,8 +657,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                         MaterialButton(
                           elevation: 0,
                           height: 50,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0)),
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[iconWhite(Icons.check)],
@@ -825,29 +665,27 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                           color: GREEN,
                           onPressed: () {
                             String plan = _planController.text;
-                            String invalidMessage =
-                                ValidatorService.validateUpdatingPlan(
-                                    plan, context);
+                            String invalidMessage = ValidatorService.validateUpdatingPlan(plan, context);
                             if (invalidMessage != null) {
                               ToastService.showErrorToast(invalidMessage);
                               return;
                             }
-                            _managerService
+                            _workdayService
                                 .updateEmployeesPlan(
-                                    plan,
-                                    dateFrom,
-                                    dateTo,
-                                    _selectedIds,
-                                    year,
-                                    monthNum,
-                                    STATUS_IN_PROGRESS)
+                              plan,
+                              dateFrom,
+                              dateTo,
+                              _selectedIds.map((el) => el.toString()).toList(),
+                              year,
+                              monthNum,
+                              STATUS_IN_PROGRESS,
+                            )
                                 .then(
                               (res) {
                                 _uncheckAll();
                                 _refresh();
                                 Navigator.of(context).pop();
-                                ToastService.showSuccessToast(getTranslated(
-                                    context, 'planUpdatedSuccessfully'));
+                                ToastService.showSuccessToast(getTranslated(context, 'planUpdatedSuccessfully'));
                               },
                             );
                           },
@@ -866,15 +704,9 @@ class _ManagerTimesheetsEmployeesInProgressPageState
 
   void _showUpdateOpinionDialog(LinkedHashSet<int> selectedIds) async {
     int year = _timesheet.year;
-    int monthNum =
-        MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
+    int monthNum = MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
     int days = DateUtil().daysInMonth(monthNum, year);
-    final List<DateTime> picked = await DateRagePicker.showDatePicker(
-        context: context,
-        initialFirstDate: new DateTime(year, monthNum, 1),
-        initialLastDate: new DateTime(year, monthNum, days),
-        firstDate: new DateTime(year, monthNum, 1),
-        lastDate: new DateTime(year, monthNum, days));
+    final List<DateTime> picked = await DateRagePicker.showDatePicker(context: context, initialFirstDate: new DateTime(year, monthNum, 1), initialLastDate: new DateTime(year, monthNum, days), firstDate: new DateTime(year, monthNum, 1), lastDate: new DateTime(year, monthNum, days));
     if (picked.length == 1) {
       picked.add(picked[0]);
     }
@@ -895,13 +727,9 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Padding(
-                        padding: EdgeInsets.only(top: 50),
-                        child: text20GreenBold(
-                            getTranslated(context, 'opinionUpperCase'))),
+                    Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'opinionUpperCase'))),
                     SizedBox(height: 2.5),
-                    textGreen(getTranslated(
-                        context, 'setOpinionForSelectedEmployee')),
+                    textGreen(getTranslated(context, 'setOpinionForSelectedEmployee')),
                     SizedBox(height: 2.5),
                     textGreenBold('[' + dateFrom + ' - ' + dateTo + ']'),
                     SizedBox(height: 20),
@@ -936,8 +764,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                           elevation: 0,
                           height: 50,
                           minWidth: 40,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0)),
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[iconWhite(Icons.close)],
@@ -949,37 +776,32 @@ class _ManagerTimesheetsEmployeesInProgressPageState
                         MaterialButton(
                           elevation: 0,
                           height: 50,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0)),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[iconWhite(Icons.check)]),
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[iconWhite(Icons.check)]),
                           color: GREEN,
                           onPressed: () {
                             String opinion = _opinionController.text;
-                            String invalidMessage =
-                                ValidatorService.validateUpdatingOpinion(
-                                    opinion, context);
+                            String invalidMessage = ValidatorService.validateUpdatingOpinion(opinion, context);
                             if (invalidMessage != null) {
                               ToastService.showErrorToast(invalidMessage);
                               return;
                             }
-                            _managerService
+                            _workdayService
                                 .updateEmployeesOpinion(
-                                    opinion,
-                                    dateFrom,
-                                    dateTo,
-                                    _selectedIds,
-                                    year,
-                                    monthNum,
-                                    STATUS_IN_PROGRESS)
+                              opinion,
+                              dateFrom,
+                              dateTo,
+                              _selectedIds.map((el) => el.toString()).toList(),
+                              year,
+                              monthNum,
+                              STATUS_IN_PROGRESS,
+                            )
                                 .then(
                               (res) {
                                 _uncheckAll();
                                 _refresh();
                                 Navigator.of(context).pop();
-                                ToastService.showSuccessToast(getTranslated(
-                                    context, 'opinionUpdatedSuccessfully'));
+                                ToastService.showSuccessToast(getTranslated(context, 'opinionUpdatedSuccessfully'));
                               },
                             );
                           },
@@ -998,15 +820,9 @@ class _ManagerTimesheetsEmployeesInProgressPageState
 
   void _showUpdateWorkplaceDialog(LinkedHashSet<int> selectedIds) async {
     int year = _timesheet.year;
-    int monthNum =
-        MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
+    int monthNum = MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
     int days = DateUtil().daysInMonth(monthNum, year);
-    final List<DateTime> picked = await DateRagePicker.showDatePicker(
-        context: context,
-        initialFirstDate: new DateTime(year, monthNum, 1),
-        initialLastDate: new DateTime(year, monthNum, days),
-        firstDate: new DateTime(year, monthNum, 1),
-        lastDate: new DateTime(year, monthNum, days));
+    final List<DateTime> picked = await DateRagePicker.showDatePicker(context: context, initialFirstDate: new DateTime(year, monthNum, 1), initialLastDate: new DateTime(year, monthNum, days), firstDate: new DateTime(year, monthNum, 1), lastDate: new DateTime(year, monthNum, days));
     if (picked.length == 1) {
       picked.add(picked[0]);
     }
@@ -1015,9 +831,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
       String dateTo = DateFormat('yyyy-MM-dd').format(picked[1]);
       Navigator.push(
         context,
-        MaterialPageRoute(
-            builder: (context) => SelectWorkplaceForEmployeesPage(_model,
-                _timesheet, year, monthNum, dateFrom, dateTo, selectedIds)),
+        MaterialPageRoute(builder: (context) => SelectWorkplaceForEmployeesPage(_model, _timesheet, year, monthNum, dateFrom, dateTo, selectedIds)),
       );
     }
   }
@@ -1031,13 +845,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState
   }
 
   Future<Null> _refresh() {
-    return _managerService
-        .findAllEmployeesOfTimesheetByGroupIdAndTimesheetYearMonthStatusForMobile(
-            _model.groupId,
-            _timesheet.year,
-            MonthUtil.findMonthNumberByMonthName(context, _timesheet.month),
-            STATUS_IN_PROGRESS)
-        .then((res) {
+    return _managerService.findAllEmployeesOfTimesheetByGroupIdAndTimesheetYearMonthStatusForMobile(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_IN_PROGRESS).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));

@@ -1,13 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/api/timesheet/service/timesheet_service.dart';
+import 'package:give_job/api/vocation/dto/vocation_employee_dto.dart';
+import 'package:give_job/api/vocation/service/vocation_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/dto/manager_group_employee_vocation_dto.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
-import 'package:give_job/manager/service/manager_service.dart';
-import 'package:give_job/manager/service/manager_vocation_service.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
+import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -19,27 +21,23 @@ import '../../../../../../shared/widget/loader.dart';
 import '../../../../../manager_app_bar.dart';
 import '../../../../../manager_side_bar.dart';
 
-class ManagerVocationsCalendarPage extends StatefulWidget {
-  ManagerVocationsCalendarPage({Key key}) : super(key: key);
+class VocationsCalendarPage extends StatefulWidget {
+  final GroupModel _model;
 
-  GroupModel _model;
-
-  set model(GroupModel value) {
-    _model = value;
-  }
+  VocationsCalendarPage(this._model);
 
   @override
-  _ManagerVocationsCalendarPageState createState() =>
-      _ManagerVocationsCalendarPageState();
+  _VocationsCalendarPageState createState() => _VocationsCalendarPageState();
 }
 
-class _ManagerVocationsCalendarPageState
-    extends State<ManagerVocationsCalendarPage> with TickerProviderStateMixin {
+class _VocationsCalendarPageState extends State<VocationsCalendarPage> with TickerProviderStateMixin {
   GroupModel _model;
-  ManagerService _service;
-  ManagerVocationService _vocationService;
+  User _user;
 
-  Map<DateTime, List<ManagerGroupEmployeeVocationDto>> _events = new Map();
+  TimesheetService _timesheetService;
+  VocationService _vocationService;
+
+  Map<DateTime, List<VocationEmployeeDto>> _events = new Map();
 
   List _selectedEvents;
   DateTime _selectedDay;
@@ -52,23 +50,18 @@ class _ManagerVocationsCalendarPageState
   void initState() {
     super.initState();
     this._model = widget._model;
-    this._service = new ManagerService(context, _model.user.authHeader);
-    this._vocationService =
-        new ManagerVocationService(context, _model.user.authHeader);
+    this._user = _model.user;
+    this._timesheetService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
+    this._vocationService = ServiceInitializer.initialize(context, _user.authHeader, VocationService);
     super.initState();
     _loading = true;
-    _service
-        .findTimesheetsWithVocationsByGroupId(
-      _model.groupId.toString(),
-    )
-        .then((res) {
+    _timesheetService.findVocationCalendarInfoForGroup(_model.groupId).then((res) {
       setState(() {
         _loading = false;
         res.forEach((key, value) {
           _events[key] = value;
         });
-        DateTime currentDate =
-            DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()));
+        DateTime currentDate = DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()));
         _selectedEvents = _events[currentDate] ?? [];
         _animationController = AnimationController(
           vsync: this,
@@ -93,27 +86,20 @@ class _ManagerVocationsCalendarPageState
     });
   }
 
-  void _onCalendarCreated(
-      DateTime first, DateTime last, CalendarFormat format) {
+  void _onCalendarCreated(DateTime first, DateTime last, CalendarFormat format) {
     DateTime currentDate = DateTime.now();
-    bool vocationsInCurrentMonth = _events.keys.any((element) =>
-        element.year == currentDate.year && element.month == currentDate.month);
+    bool vocationsInCurrentMonth = _events.keys.any((element) => element.year == currentDate.year && element.month == currentDate.month);
     if (vocationsInCurrentMonth) {
-      ToastService.showToast(
-          getTranslated(context, 'plannedVocationsInCurrentMonth'));
+      ToastService.showToast(getTranslated(context, 'plannedVocationsInCurrentMonth'));
     } else {
-      ToastService.showToast(
-          getTranslated(context, 'noVocationsForCurrentMonth'));
+      ToastService.showToast(getTranslated(context, 'noVocationsForCurrentMonth'));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(
-          managerAppBar(
-              context, _model.user, getTranslated(context, 'loading')),
-          managerSideBar(context, _model.user));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -121,9 +107,8 @@ class _ManagerVocationsCalendarPageState
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBar(
-            context, _model.user, getTranslated(context, 'vocationsCalendar')),
-        drawer: managerSideBar(context, _model.user),
+        appBar: managerAppBar(context, _user, getTranslated(context, 'vocationsCalendar')),
+        drawer: managerSideBar(context, _user),
         body: Column(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
@@ -159,8 +144,7 @@ class _ManagerVocationsCalendarPageState
       daysOfWeekStyle: DaysOfWeekStyle(
         weekendStyle: TextStyle().copyWith(color: Colors.red),
       ),
-      headerStyle:
-          HeaderStyle(centerHeaderTitle: true, formatButtonVisible: false),
+      headerStyle: HeaderStyle(centerHeaderTitle: true, formatButtonVisible: false),
       builders: CalendarBuilders(
         selectedDayBuilder: (context, date, _) {
           return FadeTransition(
@@ -244,12 +228,9 @@ class _ManagerVocationsCalendarPageState
                 border: Border.all(width: 0.8),
                 borderRadius: BorderRadius.circular(12.0),
               ),
-              margin:
-                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
               child: ListTile(
-                title: event.verified
-                    ? _buildVerifiedWidget(event)
-                    : _buildNotVerifiedWidget(event),
+                title: event.verified ? _buildVerifiedWidget(event) : _buildNotVerifiedWidget(event),
                 onTap: () => _showVocationReason(event),
               ),
             ),
@@ -258,31 +239,24 @@ class _ManagerVocationsCalendarPageState
     );
   }
 
-  Widget _buildVerifiedWidget(ManagerGroupEmployeeVocationDto vocation) {
+  Widget _buildVerifiedWidget(VocationEmployeeDto vocation) {
     return ListTile(
-      title: text20WhiteBold(utf8.decode(vocation.employeeInfo.runes.toList()) +
-          ' ' +
-          LanguageUtil.findFlagByNationality(vocation.employeeNationality)),
+      title: text20WhiteBold(utf8.decode(vocation.employeeInfo.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(vocation.employeeNationality)),
       leading: iconGreen(Icons.check),
       subtitle: text16GreenBold(getTranslated(context, 'vocationsAreVerified')),
     );
   }
 
-  Widget _buildNotVerifiedWidget(ManagerGroupEmployeeVocationDto vocation) {
+  Widget _buildNotVerifiedWidget(VocationEmployeeDto vocation) {
     return ListTile(
-      title: text20WhiteBold(utf8.decode(vocation.employeeInfo.runes.toList()) +
-          ' ' +
-          LanguageUtil.findFlagByNationality(vocation.employeeNationality)),
+      title: text20WhiteBold(utf8.decode(vocation.employeeInfo.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(vocation.employeeNationality)),
       leading: iconRed(Icons.cancel),
-      subtitle:
-          text16RedBold(getTranslated(context, 'vocationsAreNotVerified')),
+      subtitle: text16RedBold(getTranslated(context, 'vocationsAreNotVerified')),
     );
   }
 
-  void _showVocationReason(ManagerGroupEmployeeVocationDto vocation) {
-    String employeeInfo = utf8.decode(vocation.employeeInfo.runes.toList()) +
-        ' ' +
-        LanguageUtil.findFlagByNationality(vocation.employeeNationality);
+  void _showVocationReason(VocationEmployeeDto vocation) {
+    String employeeInfo = utf8.decode(vocation.employeeInfo.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(vocation.employeeNationality);
     showGeneralDialog(
       context: context,
       barrierColor: DARK.withOpacity(0.95),
@@ -304,8 +278,7 @@ class _ManagerVocationsCalendarPageState
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              text16GreenBold(getTranslated(
-                                  context, 'vocationsAreVerified')),
+                              text16GreenBold(getTranslated(context, 'vocationsAreVerified')),
                               SizedBox(width: 2),
                               iconGreen(Icons.check),
                             ],
@@ -313,8 +286,7 @@ class _ManagerVocationsCalendarPageState
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              _buildRemoveVocationButton(
-                                  employeeInfo, vocation.id),
+                              _buildRemoveVocationButton(employeeInfo, vocation.id),
                             ],
                           ),
                         ],
@@ -324,8 +296,7 @@ class _ManagerVocationsCalendarPageState
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              text16RedBold(getTranslated(
-                                  context, 'vocationsAreNotVerified')),
+                              text16RedBold(getTranslated(context, 'vocationsAreNotVerified')),
                               SizedBox(width: 2),
                               iconRed(Icons.cancel),
                             ],
@@ -341,17 +312,14 @@ class _ManagerVocationsCalendarPageState
                 SizedBox(height: 10),
                 text20GreenBold(getTranslated(context, 'vocationReason')),
                 SizedBox(height: 10),
-                textCenter20White(vocation.reason != null
-                    ? utf8.decode(vocation.reason.runes.toList())
-                    : getTranslated(context, 'empty')),
+                textCenter20White(vocation.reason != null ? utf8.decode(vocation.reason.runes.toList()) : getTranslated(context, 'empty')),
                 SizedBox(height: 20),
                 Container(
                   width: 80,
                   child: MaterialButton(
                     elevation: 0,
                     height: 50,
-                    shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30.0)),
+                    shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[iconWhite(Icons.close)],
@@ -373,43 +341,46 @@ class _ManagerVocationsCalendarPageState
       color: GREEN,
       child: textDarkBold(getTranslated(context, 'tapToVerify')),
       onPressed: () => _showConfirmationDialog(
-          getTranslated(context, 'confirmation'),
-          getTranslated(context, 'areYouSureYouWantToVerify'),
-          _selectedDay.toString().substring(0, 10) +
-              ' ' +
-              getTranslated(context, 'vocationDayFor'),
-          employeeInfo,
-          textGreen(getTranslated(context, 'verifyConfirmation')),
-          textRed(getTranslated(context, 'no')),
-          () => verifyVocation(vocationId)),
+        getTranslated(context, 'confirmation'),
+        getTranslated(context, 'areYouSureYouWantToVerify'),
+        _selectedDay.toString().substring(0, 10) + ' ' + getTranslated(context, 'vocationDayFor'),
+        employeeInfo,
+        textGreen(getTranslated(context, 'verifyConfirmation')),
+        textRed(getTranslated(context, 'no')),
+        () => verifyVocation(vocationId),
+      ),
     );
   }
 
-  void verifyVocation(int vocationId) {
-    _vocationService.updateVocationVerification(vocationId, true).then(
-          (value) => {
-            _refresh(),
-            Navigator.of(context).pop(),
-            ToastService.showSuccessToast(
-                getTranslated(context, 'vocationVerifiedSuccessfully')),
-          },
-        );
+  void verifyVocation(int id) {
+    _vocationService.updateFieldsValuesById(
+      id,
+      {
+        'isVerified': true,
+      },
+    ).then(
+      (value) => {
+        _refresh(),
+        Navigator.of(context).pop(),
+        ToastService.showSuccessToast(getTranslated(context, 'vocationVerifiedSuccessfully')),
+      },
+    );
   }
 
   Widget _buildRemoveVocationButton(String employeeInfo, int vocationId) {
-    String currentDate =
-        _selectedDay != null ? _selectedDay.toString().substring(0, 10) : '-';
+    String currentDate = _selectedDay != null ? _selectedDay.toString().substring(0, 10) : '-';
     return MaterialButton(
       color: Colors.red,
       child: textDarkBold(getTranslated(context, 'tapToRemoveVocation')),
       onPressed: () => _showConfirmationDialog(
-          getTranslated(context, 'confirmation'),
-          getTranslated(context, 'areYouSureYouWantToDelete'),
-          currentDate + ' ' + getTranslated(context, 'vocationDayFor'),
-          employeeInfo,
-          textRed(getTranslated(context, 'removeVocationConfirmation')),
-          textGreen(getTranslated(context, 'no')),
-          () => removeVocation(vocationId)),
+        getTranslated(context, 'confirmation'),
+        getTranslated(context, 'areYouSureYouWantToDelete'),
+        currentDate + ' ' + getTranslated(context, 'vocationDayFor'),
+        employeeInfo,
+        textRed(getTranslated(context, 'removeVocationConfirmation')),
+        textGreen(getTranslated(context, 'no')),
+        () => removeVocation(vocationId),
+      ),
     );
   }
 
@@ -418,20 +389,12 @@ class _ManagerVocationsCalendarPageState
           (value) => {
             _refresh(),
             Navigator.of(context).pop(),
-            ToastService.showSuccessToast(
-                getTranslated(context, 'vocationRemovedSuccessfully')),
+            ToastService.showSuccessToast(getTranslated(context, 'vocationRemovedSuccessfully')),
           },
         );
   }
 
-  void _showConfirmationDialog(
-      String title,
-      String firstContent,
-      String secondContent,
-      String employeeInfo,
-      Text confirmationBtnText,
-      Text disagreeBtnText,
-      Function() fun) {
+  void _showConfirmationDialog(String title, String firstContent, String secondContent, String employeeInfo, Text confirmationBtnText, Text disagreeBtnText, Function() fun) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -454,9 +417,7 @@ class _ManagerVocationsCalendarPageState
               child: confirmationBtnText,
               onPressed: () => {fun(), Navigator.of(context).pop()},
             ),
-            FlatButton(
-                child: disagreeBtnText,
-                onPressed: () => Navigator.of(context).pop()),
+            FlatButton(child: disagreeBtnText, onPressed: () => Navigator.of(context).pop()),
           ],
         );
       },
@@ -464,17 +425,14 @@ class _ManagerVocationsCalendarPageState
   }
 
   Future<Null> _refresh() {
-    return _service
-        .findTimesheetsWithVocationsByGroupId(_model.groupId.toString())
-        .then((res) {
+    return _timesheetService.findVocationCalendarInfoForGroup(_model.groupId).then((res) {
       setState(() {
         _loading = false;
         _events.clear();
         res.forEach((key, value) {
           _events[key] = value;
         });
-        DateTime currentDate =
-            DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()));
+        DateTime currentDate = DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()));
         _selectedEvents = _events[currentDate] ?? [];
         _animationController = AnimationController(
           vsync: this,

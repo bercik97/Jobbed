@@ -6,7 +6,7 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/timesheets/manager_ts_page.dart';
-import 'package:give_job/manager/groups/group/vocations/manager_vocations_ts_page.dart';
+import 'package:give_job/manager/groups/group/vocations/vocations_ts_page.dart';
 import 'package:give_job/manager/groups/group/workplaces/workplace_page.dart';
 import 'package:give_job/manager/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -211,7 +211,7 @@ class _GroupPageState extends State<GroupPage> {
                               Navigator.of(context).push(
                                 CupertinoPageRoute<Null>(
                                   builder: (BuildContext context) {
-                                    return ManagerVocationsTsPage(_model);
+                                    return VocationsTsPage(_model);
                                   },
                                 ),
                               ),

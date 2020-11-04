@@ -5,14 +5,17 @@ import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:date_util/date_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:give_job/api/employee/service/employee_service.dart';
+import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/api/timesheet/dto/timesheet_without_status_dto.dart';
+import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/dto/manager_group_timesheet_with_no_status_dto.dart';
 import 'package:give_job/manager/dto/manager_vocations_ts_dto.dart';
-import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
-import 'package:give_job/manager/service/manager_service.dart';
+import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
+import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
@@ -26,22 +29,23 @@ import '../../../../../../shared/widget/loader.dart';
 import '../../../../../manager_app_bar.dart';
 import '../../../../../manager_side_bar.dart';
 
-class ManagerVocationsManagePage extends StatefulWidget {
+class VocationsManagePage extends StatefulWidget {
   final GroupModel _model;
-  final ManagerGroupTimesheetWithNoStatusDto _timeSheet;
+  final TimesheetWithoutStatusDto _timeSheet;
 
-  ManagerVocationsManagePage(this._model, this._timeSheet);
+  VocationsManagePage(this._model, this._timeSheet);
 
   @override
-  _ManagerVocationsManagePageState createState() =>
-      _ManagerVocationsManagePageState();
+  _VocationsManagePageState createState() => _VocationsManagePageState();
 }
 
-class _ManagerVocationsManagePageState
-    extends State<ManagerVocationsManagePage> {
+class _VocationsManagePageState extends State<VocationsManagePage> {
   GroupModel _model;
-  ManagerService _managerService;
-  ManagerGroupTimesheetWithNoStatusDto _timesheet;
+  User _user;
+
+  EmployeeService _employeeService;
+  WorkdayService _workdayService;
+  TimesheetWithoutStatusDto _timesheet;
 
   List<ManagerVocationsTsDto> _employees = new List();
   List<ManagerVocationsTsDto> _filteredEmployees = new List();
@@ -55,17 +59,13 @@ class _ManagerVocationsManagePageState
   @override
   void initState() {
     this._model = widget._model;
-    this._managerService = new ManagerService(context, _model.user.authHeader);
+    this._user = _model.user;
+    this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
+    this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     this._timesheet = widget._timeSheet;
     super.initState();
     _loading = true;
-    _managerService
-        .findAllForVocationsTsByGroupIdAndTimesheetYearMonthStatusForMobile(
-            _model.groupId,
-            _timesheet.year,
-            MonthUtil.findMonthNumberByMonthName(context, _timesheet.month),
-            STATUS_IN_PROGRESS)
-        .then((res) {
+    _employeeService.findAllByGroupIdAndTsYearMonthStatusForManageVocations(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_IN_PROGRESS).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
@@ -78,10 +78,7 @@ class _ManagerVocationsManagePageState
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(
-          managerAppBar(
-              context, _model.user, getTranslated(context, 'loading')),
-          managerSideBar(context, _model.user));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -89,9 +86,8 @@ class _ManagerVocationsManagePageState
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBar(context, _model.user,
-            getTranslated(context, 'manageEmployeesVocations')),
-        drawer: managerSideBar(context, _model.user),
+        appBar: managerAppBar(context, _user, getTranslated(context, 'manageEmployeesVocations')),
+        drawer: managerSideBar(context, _user),
         body: RefreshIndicator(
           color: DARK,
           backgroundColor: WHITE,
@@ -102,16 +98,13 @@ class _ManagerVocationsManagePageState
                 children: [
                   Padding(
                     padding: EdgeInsets.all(10),
-                    child: textCenter20White(_timesheet.year.toString() +
-                        ' ' +
-                        MonthUtil.translateMonth(context, _timesheet.month) +
-                        ' - ' +
-                        getTranslated(context, 'vocations')),
+                    child: textCenter20White(
+                      _timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' - ' + getTranslated(context, 'vocations'),
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                    child: textCenter14Green(getTranslated(
-                        context, 'hintSelectEmployeesAndDatesOfVocations')),
+                    child: textCenter14Green(getTranslated(context, 'hintSelectEmployeesAndDatesOfVocations')),
                   ),
                 ],
               ),
@@ -123,21 +116,17 @@ class _ManagerVocationsManagePageState
                   cursorColor: WHITE,
                   style: TextStyle(color: WHITE),
                   decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: WHITE, width: 2)),
-                      counterStyle: TextStyle(color: WHITE),
-                      border: OutlineInputBorder(),
-                      labelText: getTranslated(this.context, 'search'),
-                      prefixIcon: iconWhite(Icons.search),
-                      labelStyle: TextStyle(color: WHITE)),
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+                    counterStyle: TextStyle(color: WHITE),
+                    border: OutlineInputBorder(),
+                    labelText: getTranslated(this.context, 'search'),
+                    prefixIcon: iconWhite(Icons.search),
+                    labelStyle: TextStyle(color: WHITE),
+                  ),
                   onChanged: (string) {
                     setState(
                       () {
-                        _filteredEmployees = _employees
-                            .where((u) => (u.info
-                                .toLowerCase()
-                                .contains(string.toLowerCase())))
-                            .toList();
+                        _filteredEmployees = _employees.where((u) => (u.info.toLowerCase().contains(string.toLowerCase()))).toList();
                       },
                     );
                   },
@@ -146,8 +135,7 @@ class _ManagerVocationsManagePageState
               ListTileTheme(
                 contentPadding: EdgeInsets.only(left: 3),
                 child: CheckboxListTile(
-                  title: textWhite(
-                      getTranslated(this.context, 'selectUnselectAll')),
+                  title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
                   value: _isChecked,
                   activeColor: GREEN,
                   checkColor: WHITE,
@@ -158,8 +146,7 @@ class _ManagerVocationsManagePageState
                       _checked.forEach((b) => l.add(value));
                       _checked = l;
                       if (value) {
-                        _selectedIds
-                            .addAll(_filteredEmployees.map((e) => e.id));
+                        _selectedIds.addAll(_filteredEmployees.map((e) => e.id));
                       } else
                         _selectedIds.clear();
                     });
@@ -191,16 +178,13 @@ class _ManagerVocationsManagePageState
                             child: ListTileTheme(
                               contentPadding: EdgeInsets.only(right: 10),
                               child: CheckboxListTile(
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
+                                controlAffinity: ListTileControlAffinity.leading,
                                 secondary: Padding(
                                   padding: EdgeInsets.all(4),
                                 ),
                                 title: text20WhiteBold(
-                                    utf8.decode(info.runes.toList()) +
-                                        ' ' +
-                                        LanguageUtil.findFlagByNationality(
-                                            nationality)),
+                                  utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality),
+                                ),
                                 activeColor: GREEN,
                                 checkColor: WHITE,
                                 value: _checked[foundIndex],
@@ -208,15 +192,12 @@ class _ManagerVocationsManagePageState
                                   setState(() {
                                     _checked[foundIndex] = value;
                                     if (value) {
-                                      _selectedIds
-                                          .add(_employees[foundIndex].id);
+                                      _selectedIds.add(_employees[foundIndex].id);
                                     } else {
-                                      _selectedIds
-                                          .remove(_employees[foundIndex].id);
+                                      _selectedIds.remove(_employees[foundIndex].id);
                                     }
                                     int selectedIdsLength = _selectedIds.length;
-                                    if (selectedIdsLength ==
-                                        _employees.length) {
+                                    if (selectedIdsLength == _employees.length) {
                                       _isChecked = true;
                                     } else if (selectedIdsLength == 0) {
                                       _isChecked = false;
@@ -280,15 +261,15 @@ class _ManagerVocationsManagePageState
 
   void _manageVocations() async {
     int year = _timesheet.year;
-    int monthNum =
-        MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
+    int monthNum = MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
     int days = DateUtil().daysInMonth(monthNum, year);
     final List<DateTime> picked = await DateRagePicker.showDatePicker(
-        context: context,
-        initialFirstDate: new DateTime(year, monthNum, 1),
-        initialLastDate: new DateTime(year, monthNum, days),
-        firstDate: new DateTime(year, monthNum, 1),
-        lastDate: new DateTime(year, monthNum, days));
+      context: context,
+      initialFirstDate: new DateTime(year, monthNum, 1),
+      initialLastDate: new DateTime(year, monthNum, days),
+      firstDate: new DateTime(year, monthNum, 1),
+      lastDate: new DateTime(year, monthNum, days),
+    );
     if (picked.length == 1) {
       picked.add(picked[0]);
     }
@@ -309,13 +290,9 @@ class _ManagerVocationsManagePageState
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Padding(
-                        padding: EdgeInsets.only(top: 50),
-                        child: text20GreenBold(
-                            getTranslated(context, 'reasonUpperCase'))),
+                    Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'reasonUpperCase'))),
                     SizedBox(height: 2.5),
-                    textGreen(
-                        getTranslated(context, 'vocationForSelectedEmployees')),
+                    textGreen(getTranslated(context, 'vocationForSelectedEmployees')),
                     SizedBox(height: 2.5),
                     textGreenBold('[' + dateFrom + ' - ' + dateTo + ']'),
                     SizedBox(height: 20),
@@ -350,8 +327,7 @@ class _ManagerVocationsManagePageState
                           elevation: 0,
                           height: 50,
                           minWidth: 40,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0)),
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[iconWhite(Icons.close)],
@@ -363,8 +339,7 @@ class _ManagerVocationsManagePageState
                         MaterialButton(
                           elevation: 0,
                           height: 50,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0)),
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[iconWhite(Icons.check)],
@@ -372,29 +347,27 @@ class _ManagerVocationsManagePageState
                           color: GREEN,
                           onPressed: () {
                             String reason = _reasonController.text;
-                            String invalidMessage =
-                                ValidatorService.validateVocationReason(
-                                    reason, context);
+                            String invalidMessage = ValidatorService.validateVocationReason(reason, context);
                             if (invalidMessage != null) {
                               ToastService.showErrorToast(invalidMessage);
                               return;
                             }
-                            _managerService
-                                .createOrUpdateVocation(
-                                    reason,
-                                    dateFrom,
-                                    dateTo,
-                                    _selectedIds,
-                                    year,
-                                    monthNum,
-                                    STATUS_IN_PROGRESS)
+                            _workdayService
+                                .createOrUpdateEmployeesVocation(
+                              reason,
+                              dateFrom,
+                              dateTo,
+                              _selectedIds.map((el) => el.toString()).toList(),
+                              year,
+                              monthNum,
+                              STATUS_IN_PROGRESS,
+                            )
                                 .then(
                               (res) {
                                 _uncheckAll();
                                 _refresh();
                                 Navigator.of(context).pop();
-                                ToastService.showSuccessToast(getTranslated(
-                                    context, 'vocationManagedSuccessfully'));
+                                ToastService.showSuccessToast(getTranslated(context, 'vocationManagedSuccessfully'));
                               },
                             );
                           },
@@ -413,15 +386,15 @@ class _ManagerVocationsManagePageState
 
   void _removeVocations() async {
     int year = _timesheet.year;
-    int monthNum =
-        MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
+    int monthNum = MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
     int days = DateUtil().daysInMonth(monthNum, year);
     final List<DateTime> picked = await DateRagePicker.showDatePicker(
-        context: context,
-        initialFirstDate: new DateTime(year, monthNum, 1),
-        initialLastDate: new DateTime(year, monthNum, days),
-        firstDate: new DateTime(year, monthNum, 1),
-        lastDate: new DateTime(year, monthNum, days));
+      context: context,
+      initialFirstDate: new DateTime(year, monthNum, 1),
+      initialLastDate: new DateTime(year, monthNum, days),
+      firstDate: new DateTime(year, monthNum, 1),
+      lastDate: new DateTime(year, monthNum, days),
+    );
     if (picked.length == 1) {
       picked.add(picked[0]);
     }
@@ -437,17 +410,11 @@ class _ManagerVocationsManagePageState
             content: SingleChildScrollView(
               child: Column(
                 children: [
-                  textCenterWhite(
-                      getTranslated(context, 'areYouSureYouWantToRemove')),
+                  textCenterWhite(getTranslated(context, 'areYouSureYouWantToRemove')),
                   SizedBox(height: 2),
-                  textCenterWhite(
-                      getTranslated(context, "vocationsForSelectedEmployees")),
+                  textCenterWhite(getTranslated(context, "vocationsForSelectedEmployees")),
                   SizedBox(height: 2),
-                  textCenterWhite(getTranslated(context, 'from') +
-                      dateFrom +
-                      getTranslated(context, 'to') +
-                      dateTo +
-                      '?'),
+                  textCenterWhite(getTranslated(context, 'from') + ' ' + dateFrom + ' ' + getTranslated(context, 'to') + ' ' + dateTo + '?'),
                 ],
               ),
             ),
@@ -455,22 +422,21 @@ class _ManagerVocationsManagePageState
               FlatButton(
                 child: textRed(getTranslated(context, 'removeConfirmation')),
                 onPressed: () => {
-                  _managerService
-                      .removeEmployeesVocations(
-                          dateFrom,
-                          dateTo,
-                          _selectedIds,
-                          _timesheet.year,
-                          MonthUtil.findMonthNumberByMonthName(
-                              context, _timesheet.month),
-                          STATUS_IN_PROGRESS)
+                  _workdayService
+                      .removeEmployeesVocation(
+                    dateFrom,
+                    dateTo,
+                    _selectedIds.map((el) => el.toString()).toList(),
+                    _timesheet.year,
+                    MonthUtil.findMonthNumberByMonthName(context, _timesheet.month),
+                    STATUS_IN_PROGRESS,
+                  )
                       .then(
                     (res) {
                       _uncheckAll();
                       _refresh();
                       Navigator.of(context).pop();
-                      ToastService.showSuccessToast(getTranslated(
-                          context, 'vocationsRemovedSuccessfully'));
+                      ToastService.showSuccessToast(getTranslated(context, 'vocationsRemovedSuccessfully'));
                     },
                   ),
                 },
@@ -504,13 +470,8 @@ class _ManagerVocationsManagePageState
           children: <Widget>[
             text20GreenBold(getTranslated(context, 'hint')),
             SizedBox(height: 10),
-            textCenter20White(
-                getTranslated(context, 'needToSelectEmployeesToBe')),
-            textCenter20White(getTranslated(context, 'ableTo') +
-                ' ' +
-                operationName +
-                ' ' +
-                getTranslated(context, 'vocationsForThem')),
+            textCenter20White(getTranslated(context, 'needToSelectEmployeesToBe')),
+            textCenter20White(getTranslated(context, 'ableTo') + ' ' + operationName + ' ' + getTranslated(context, 'vocationsForThem')),
           ],
         ),
       ),
@@ -518,13 +479,7 @@ class _ManagerVocationsManagePageState
   }
 
   Future<Null> _refresh() {
-    return _managerService
-        .findAllForVocationsTsByGroupIdAndTimesheetYearMonthStatusForMobile(
-            _model.groupId,
-            _timesheet.year,
-            MonthUtil.findMonthNumberByMonthName(context, _timesheet.month),
-            STATUS_IN_PROGRESS)
-        .then((res) {
+    return _employeeService.findAllByGroupIdAndTsYearMonthStatusForManageVocations(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_IN_PROGRESS).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));

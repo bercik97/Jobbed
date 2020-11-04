@@ -5,6 +5,7 @@ import 'package:give_job/api/employee/dto/create_employee_dto.dart';
 import 'package:give_job/api/employee/dto/employee_group_dto.dart';
 import 'package:give_job/api/employee/dto/employee_money_per_hour_dto.dart';
 import 'package:give_job/api/employee/dto/employee_page_dto.dart';
+import 'package:give_job/manager/dto/manager_vocations_ts_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/service/logout_service.dart';
 import 'package:http/http.dart';
@@ -24,7 +25,10 @@ class EmployeeService {
   }
 
   Future<Map<String, Object>> findEmployeeAndUserFieldsValuesById(int id, List<String> fields) async {
-    Response res = await get('$_url?id=$id&fields=$fields', headers: _header);
+    Response res = await get(
+      '$_url?id=$id&fields=$fields',
+      headers: _header,
+    );
     var body = res.body;
     if (res.statusCode == 200) {
       return json.decode(body);
@@ -36,7 +40,10 @@ class EmployeeService {
   }
 
   Future<EmployeePageDto> findByIdForEmployeePage(String id) async {
-    Response res = await get('$_url/employee-page?id=$id', headers: _header);
+    Response res = await get(
+      '$_url/employee-page?id=$id',
+      headers: _header,
+    );
     var body = res.body;
     if (res.statusCode == 200) {
       return EmployeePageDto.fromJson(jsonDecode(body));
@@ -48,7 +55,10 @@ class EmployeeService {
   }
 
   Future<List<EmployeeMoneyPerHourDto>> findAllByGroupIdForGroupEditMoneyPerHour(int groupId) async {
-    Response res = await get('$_url/money-per-hour?group_id=$groupId', headers: _header);
+    Response res = await get(
+      '$_url/money-per-hour?group_id=$groupId',
+      headers: _header,
+    );
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeMoneyPerHourDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -59,7 +69,10 @@ class EmployeeService {
   }
 
   Future<List<EmployeeGroupDto>> findAllByGroupId(int groupId) async {
-    Response res = await get('$_url/groups?group_id=$groupId', headers: _header);
+    Response res = await get(
+      '$_url/groups?group_id=$groupId',
+      headers: _header,
+    );
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeGroupDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -69,8 +82,26 @@ class EmployeeService {
     }
   }
 
+  Future<List<ManagerVocationsTsDto>> findAllByGroupIdAndTsYearMonthStatusForManageVocations(int groupId, int year, int month, String status) async {
+    Response res = await get(
+      '$_url/manage-vocations?group_id=$groupId&timesheet_year=$year&timesheet_month=$month&timesheet_status=$status',
+      headers: _header,
+    );
+    if (res.statusCode == 200) {
+      return (json.decode(res.body) as List).map((data) => ManagerVocationsTsDto.fromJson(data)).toList();
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
   Future<dynamic> updateEmployeeAndUserFieldsValuesById(int id, Map<String, Object> fieldsValues) async {
-    Response res = await put('$_url/employee-user/id?id=$id', body: jsonEncode(fieldsValues), headers: _headers);
+    Response res = await put(
+      '$_url/employee-user/id?id=$id',
+      body: jsonEncode(fieldsValues),
+      headers: _headers,
+    );
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
@@ -81,7 +112,11 @@ class EmployeeService {
   }
 
   Future<dynamic> updateFieldsValuesById(int id, Map<String, Object> fieldsValues) async {
-    Response res = await put('$_url/id?id=$id', body: jsonEncode(fieldsValues), headers: _headers);
+    Response res = await put(
+      '$_url/id?id=$id',
+      body: jsonEncode(fieldsValues),
+      headers: _headers,
+    );
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
@@ -92,7 +127,11 @@ class EmployeeService {
   }
 
   Future<dynamic> updateFieldsValuesByIds(List<int> ids, Map<String, Object> fieldsValues) async {
-    Response res = await put('$_url/ids?ids=$ids', body: jsonEncode(fieldsValues), headers: _headers);
+    Response res = await put(
+      '$_url/ids?ids=$ids',
+      body: jsonEncode(fieldsValues),
+      headers: _headers,
+    );
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
