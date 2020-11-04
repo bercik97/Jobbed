@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/manager/dto/create_manager_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
+import 'package:give_job/shared/service/logout_service.dart';
 import 'package:http/http.dart';
 
 class ManagerService {
@@ -21,5 +22,35 @@ class ManagerService {
       headers: {"content-type": "application/json"},
     );
     return res.statusCode == 200 ? res : Future.error(res.body);
+  }
+
+  Future<Map<String, Object>> findManagerAndUserFieldsValuesById(int id, List<String> fields) async {
+    Response res = await get(
+      '$_url?id=$id&fields=$fields',
+      headers: _header,
+    );
+    var body = res.body;
+    if (res.statusCode == 200) {
+      return json.decode(body);
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(body);
+    }
+  }
+
+  Future<dynamic> updateManagerAndUserFieldsValuesById(int id, Map<String, Object> fieldsValues) async {
+    Response res = await put(
+      '$_url/manager-user/id?id=$id',
+      body: jsonEncode(fieldsValues),
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
   }
 }

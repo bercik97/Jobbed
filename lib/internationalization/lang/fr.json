@@ -200,7 +200,6 @@
   "wrongPlanLength": "La longueur du plan ne peut pas être supérieure à 510",
   "wrongOpinionLength": "La longueur de l'opinion ne peut pas être supérieure à 510",
   "seeMyGroups": "Voir mes groupes",
-  "aboutMe": "À propos de moi",
   "profile": "Profile",
   "welcome": "Bienvenue",
   "loggedSuccessButNoGroups": " Vous vous êtes connecté avec succès, mais il semble que vous n'avez pas créé de groupes. Demandez à l'administrateur de créer des groupes d'employés. ",

@@ -200,7 +200,6 @@
   "wrongPlanLength": "Plan length cannot be higher than 510",
   "wrongOpinionLength": "Opinion length cannot be higher than 510",
   "seeMyGroups": "See my groups",
-  "aboutMe": "About me",
   "profile": "Profile",
   "welcome": "Welcome",
   "loggedSuccessButNoGroups": "You have successfully logged in but it looks like you don't have created groups. Ask the administrator to create employee groups.",
