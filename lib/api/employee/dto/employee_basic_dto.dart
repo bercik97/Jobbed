@@ -1,20 +1,20 @@
 import 'package:flutter/cupertino.dart';
 
-class BasicEmployeeDto {
+class EmployeeBasicDto {
   final int id;
   final String name;
   final String surname;
   final String nationality;
 
-  BasicEmployeeDto({
+  EmployeeBasicDto({
     @required this.id,
     @required this.name,
     @required this.surname,
     @required this.nationality,
   });
 
-  factory BasicEmployeeDto.fromJson(Map<String, dynamic> json) {
-    return BasicEmployeeDto(
+  factory EmployeeBasicDto.fromJson(Map<String, dynamic> json) {
+    return EmployeeBasicDto(
       id: json['id'] as int,
       name: json['name'] as String,
       surname: json['surname'] as String,

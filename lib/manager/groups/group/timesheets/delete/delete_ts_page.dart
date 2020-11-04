@@ -3,7 +3,11 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:give_job/manager/dto/basic_employee_dto.dart';
+import 'package:give_job/api/employee/dto/employee_basic_dto.dart';
+import 'package:give_job/api/employee/service/employee_service.dart';
+import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/api/timesheet/service/timesheet_service.dart';
+import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/widget/hint.dart';
 
 import '../../../../../internationalization/localization/localization_constants.dart';
@@ -17,10 +21,9 @@ import '../../../../../shared/widget/loader.dart';
 import '../../../../../shared/widget/texts.dart';
 import '../../../../manager_app_bar.dart';
 import '../../../../manager_side_bar.dart';
-import '../../../../service/manager_service.dart';
-import '../../shared/group_model.dart';
 import '../../shared/group_floating_action_button.dart';
-import '../manager_ts_page.dart';
+import '../../shared/group_model.dart';
+import '../ts_page.dart';
 
 class DeleteTsPage extends StatefulWidget {
   final GroupModel _model;
@@ -36,14 +39,17 @@ class DeleteTsPage extends StatefulWidget {
 
 class _DeleteTsPageState extends State<DeleteTsPage> {
   GroupModel _model;
+  User _user;
+
   int _year;
   int _month;
   String _status;
 
-  ManagerService _managerService;
+  EmployeeService _employeeService;
+  TimesheetService _timesheetService;
 
-  List<BasicEmployeeDto> _employees = new List();
-  List<BasicEmployeeDto> _filteredEmployees = new List();
+  List<EmployeeBasicDto> _employees = new List();
+  List<EmployeeBasicDto> _filteredEmployees = new List();
   bool _loading = false;
   bool _isChecked = false;
   List<bool> _checked = new List();
@@ -52,16 +58,15 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
   @override
   void initState() {
     this._model = widget._model;
+    this._user = _model.user;
     this._year = widget._year;
     this._month = MonthUtil.findMonthNumberByMonthName(context, widget._month);
     this._status = widget._status;
-    this._managerService = new ManagerService(context, _model.user.authHeader);
+    this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
+    this._timesheetService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
     super.initState();
     _loading = true;
-    _managerService
-        .findMobileEmployeesByGroupIdAndTsInYearAndMonthAndStatusAndGroup(
-            _model.groupId, _year, _month, _status)
-        .then((res) {
+    _employeeService.findEmployeesByGroupIdAndTsInYearAndMonthAndStatus(_model.groupId, _year, _month, _status).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
@@ -74,10 +79,7 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(
-          managerAppBar(
-              context, _model.user, getTranslated(context, 'loading')),
-          managerSideBar(context, _model.user));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -85,9 +87,8 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBar(
-            context, _model.user, getTranslated(context, 'deleteSelectedTs')),
-        drawer: managerSideBar(context, _model.user),
+        appBar: managerAppBar(context, _user, getTranslated(context, 'deleteSelectedTs')),
+        drawer: managerSideBar(context, _user),
         body: RefreshIndicator(
           color: DARK,
           backgroundColor: WHITE,
@@ -95,18 +96,9 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
           child: Column(
             children: <Widget>[
               Container(
-                padding:
-                    EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
+                padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
                 child: Column(
-                  children: [
-                    textCenter18WhiteBold(getTranslated(
-                        context, 'removeSelectedTsForChosenEmployees')),
-                    SizedBox(height: 5),
-                    textCenter20GreenBold(_year.toString() +
-                        ' ' +
-                        MonthUtil.findMonthNameByMonthNumber(
-                            this.context, _month))
-                  ],
+                  children: [textCenter18WhiteBold(getTranslated(context, 'removeSelectedTsForChosenEmployees')), SizedBox(height: 5), textCenter20GreenBold(_year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month))],
                 ),
               ),
               Container(
@@ -116,22 +108,11 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
                   autocorrect: true,
                   cursorColor: WHITE,
                   style: TextStyle(color: WHITE),
-                  decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: WHITE, width: 2)),
-                      counterStyle: TextStyle(color: WHITE),
-                      border: OutlineInputBorder(),
-                      labelText: getTranslated(this.context, 'search'),
-                      prefixIcon: iconWhite(Icons.search),
-                      labelStyle: TextStyle(color: WHITE)),
+                  decoration: InputDecoration(enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)), counterStyle: TextStyle(color: WHITE), border: OutlineInputBorder(), labelText: getTranslated(this.context, 'search'), prefixIcon: iconWhite(Icons.search), labelStyle: TextStyle(color: WHITE)),
                   onChanged: (string) {
                     setState(
                       () {
-                        _filteredEmployees = _employees
-                            .where((e) => ((e.name + e.surname)
-                                .toLowerCase()
-                                .contains(string.toLowerCase())))
-                            .toList();
+                        _filteredEmployees = _employees.where((e) => ((e.name + e.surname).toLowerCase().contains(string.toLowerCase()))).toList();
                       },
                     );
                   },
@@ -140,8 +121,7 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
               ListTileTheme(
                 contentPadding: EdgeInsets.only(left: 3),
                 child: CheckboxListTile(
-                  title: textWhite(
-                      getTranslated(this.context, 'selectUnselectAll')),
+                  title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
                   value: _isChecked,
                   activeColor: GREEN,
                   checkColor: WHITE,
@@ -152,8 +132,7 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
                       _checked.forEach((b) => l.add(value));
                       _checked = l;
                       if (value) {
-                        _selectedIds
-                            .addAll(_filteredEmployees.map((e) => e.id));
+                        _selectedIds.addAll(_filteredEmployees.map((e) => e.id));
                       } else
                         _selectedIds.clear();
                     });
@@ -165,7 +144,7 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
                 child: ListView.builder(
                   itemCount: _filteredEmployees.length,
                   itemBuilder: (BuildContext context, int index) {
-                    BasicEmployeeDto employee = _filteredEmployees[index];
+                    EmployeeBasicDto employee = _filteredEmployees[index];
                     int foundIndex = 0;
                     for (int i = 0; i < _employees.length; i++) {
                       if (_employees[i].id == employee.id) {
@@ -185,13 +164,8 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
                             child: ListTileTheme(
                               contentPadding: EdgeInsets.only(right: 10),
                               child: CheckboxListTile(
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
-                                title: text20WhiteBold(
-                                    utf8.decode(info.runes.toList()) +
-                                        ' ' +
-                                        LanguageUtil.findFlagByNationality(
-                                            nationality)),
+                                controlAffinity: ListTileControlAffinity.leading,
+                                title: text20WhiteBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                 activeColor: GREEN,
                                 checkColor: WHITE,
                                 value: _checked[foundIndex],
@@ -199,15 +173,12 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
                                   setState(() {
                                     _checked[foundIndex] = value;
                                     if (value) {
-                                      _selectedIds
-                                          .add(_employees[foundIndex].id);
+                                      _selectedIds.add(_employees[foundIndex].id);
                                     } else {
-                                      _selectedIds
-                                          .remove(_employees[foundIndex].id);
+                                      _selectedIds.remove(_employees[foundIndex].id);
                                     }
                                     int selectedIdsLength = _selectedIds.length;
-                                    if (selectedIdsLength ==
-                                        _employees.length) {
+                                    if (selectedIdsLength == _employees.length) {
                                       _isChecked = true;
                                     } else if (selectedIdsLength == 0) {
                                       _isChecked = false;
@@ -235,27 +206,21 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
                 elevation: 0,
                 height: 50,
                 minWidth: 40,
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0)),
+                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[iconWhite(Icons.close)],
                 ),
                 color: Colors.red,
                 onPressed: () => {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ManagerTsPage(_model)),
-                      (e) => false),
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ManagerTsPage(_model)), (e) => false),
                 },
               ),
               SizedBox(width: 25),
               MaterialButton(
                 elevation: 0,
                 height: 50,
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0)),
+                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[iconWhite(Icons.check)],
@@ -274,17 +239,19 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
 
   void _deleteTsForSelectedEmployees() {
     if (_selectedIds.isEmpty) {
-      showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ',
-          getTranslated(context, 'forWhomYouWantToDeleteTs'));
+      showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'forWhomYouWantToDeleteTs'));
       return;
     }
-    _managerService
-        .deleteAllTsByYearMonthAndEmployeesId(
-            _year, _month, _status, _selectedIds)
+    _timesheetService
+        .deleteForEmployeesByYearAndMonthAndStatus(
+      _selectedIds.map((el) => el.toString()).toList(),
+      _year,
+      _month,
+      _status,
+    )
         .then(
       (res) {
-        ToastService.showSuccessToast(
-            getTranslated(context, 'timesheetSuccessfullyDeleted'));
+        ToastService.showSuccessToast(getTranslated(context, 'timesheetSuccessfullyDeleted'));
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => ManagerTsPage(_model)),
@@ -294,10 +261,7 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
   }
 
   Future<Null> _refresh() {
-    return _managerService
-        .findMobileEmployeesByGroupIdAndTsInYearAndMonthAndStatusAndGroup(
-            _model.groupId, _year, _month, _status)
-        .then((res) {
+    return _employeeService.findEmployeesByGroupIdAndTsInYearAndMonthAndStatus(_model.groupId, _year, _month, _status).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));

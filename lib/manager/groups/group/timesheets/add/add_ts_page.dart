@@ -3,7 +3,11 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:give_job/manager/dto/basic_employee_dto.dart';
+import 'package:give_job/api/employee/dto/employee_basic_dto.dart';
+import 'package:give_job/api/employee/service/employee_service.dart';
+import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/api/timesheet/service/timesheet_service.dart';
+import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/widget/hint.dart';
 
 import '../../../../../internationalization/localization/localization_constants.dart';
@@ -17,10 +21,9 @@ import '../../../../../shared/widget/loader.dart';
 import '../../../../../shared/widget/texts.dart';
 import '../../../../manager_app_bar.dart';
 import '../../../../manager_side_bar.dart';
-import '../../../../service/manager_service.dart';
-import '../../shared/group_model.dart';
 import '../../shared/group_floating_action_button.dart';
-import '../manager_ts_page.dart';
+import '../../shared/group_model.dart';
+import '../ts_page.dart';
 
 class AddTsPage extends StatefulWidget {
   final GroupModel _model;
@@ -35,13 +38,16 @@ class AddTsPage extends StatefulWidget {
 
 class _AddTsPageState extends State<AddTsPage> {
   GroupModel _model;
+  User _user;
+
   int _year;
   int _month;
 
-  ManagerService _managerService;
+  EmployeeService _employeeService;
+  TimesheetService _timesheetService;
 
-  List<BasicEmployeeDto> _employees = new List();
-  List<BasicEmployeeDto> _filteredEmployees = new List();
+  List<EmployeeBasicDto> _employees = new List();
+  List<EmployeeBasicDto> _filteredEmployees = new List();
   bool _loading = false;
   bool _isChecked = false;
   List<bool> _checked = new List();
@@ -50,15 +56,14 @@ class _AddTsPageState extends State<AddTsPage> {
   @override
   void initState() {
     this._model = widget._model;
+    this._user = _model.user;
     this._year = widget._year;
     this._month = widget._month;
-    this._managerService = new ManagerService(context, _model.user.authHeader);
+    this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
+    this._timesheetService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
     super.initState();
     _loading = true;
-    _managerService
-        .findMobileEmployeesByGroupIdAndTsNotInYearAndMonthAndGroup(
-            _model.groupId, _year, _month)
-        .then((res) {
+    _employeeService.findEmployeesByGroupIdAndTsNotInYearAndMonthAndGroup(_model.groupId, _year, _month).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
@@ -69,18 +74,14 @@ class _AddTsPageState extends State<AddTsPage> {
   }
 
   Future<bool> _onWillPop() async {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => ManagerTsPage(_model)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => ManagerTsPage(_model)));
     return false;
   }
 
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(
-          managerAppBar(
-              context, _model.user, getTranslated(context, 'loading')),
-          managerSideBar(context, _model.user));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
     }
     if (_employees.isEmpty) {
       return MaterialApp(
@@ -89,23 +90,20 @@ class _AddTsPageState extends State<AddTsPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(
-              context, _model.user, getTranslated(context, 'addNewTs')),
-          drawer: managerSideBar(context, _model.user),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'addNewTs')),
+          drawer: managerSideBar(context, _user),
           body: WillPopScope(
             onWillPop: _onWillPop,
             child: AlertDialog(
               backgroundColor: BRIGHTER_DARK,
               title: textWhite(getTranslated(context, 'failure')),
-              content: textWhite(getTranslated(
-                  context, 'allEmployeesHaveTsForChosenYearAndMonth')),
+              content: textWhite(getTranslated(context, 'allEmployeesHaveTsForChosenYearAndMonth')),
               actions: <Widget>[
                 FlatButton(
                   child: textGreen(getTranslated(context, 'goBack')),
                   onPressed: () => Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => ManagerTsPage(_model)),
+                    MaterialPageRoute(builder: (context) => ManagerTsPage(_model)),
                   ),
                 ),
               ],
@@ -120,9 +118,8 @@ class _AddTsPageState extends State<AddTsPage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBar(
-            context, _model.user, getTranslated(context, 'addNewTs')),
-        drawer: managerSideBar(context, _model.user),
+        appBar: managerAppBar(context, _user, getTranslated(context, 'addNewTs')),
+        drawer: managerSideBar(context, _user),
         body: RefreshIndicator(
           color: DARK,
           backgroundColor: WHITE,
@@ -130,17 +127,14 @@ class _AddTsPageState extends State<AddTsPage> {
           child: Column(
             children: <Widget>[
               Container(
-                padding:
-                    EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
+                padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
                 child: Column(
                   children: [
-                    textCenter18WhiteBold(getTranslated(
-                        context, 'addNewTsForSelectedEmployeesForChosenDate')),
+                    textCenter18WhiteBold(getTranslated(context, 'addNewTsForSelectedEmployeesForChosenDate')),
                     SizedBox(height: 5),
-                    textCenter20GreenBold(_year.toString() +
-                        ' ' +
-                        MonthUtil.findMonthNameByMonthNumber(
-                            this.context, _month))
+                    textCenter20GreenBold(
+                      _year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month),
+                    ),
                   ],
                 ),
               ),
@@ -152,21 +146,17 @@ class _AddTsPageState extends State<AddTsPage> {
                   cursorColor: WHITE,
                   style: TextStyle(color: WHITE),
                   decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: WHITE, width: 2)),
-                      counterStyle: TextStyle(color: WHITE),
-                      border: OutlineInputBorder(),
-                      labelText: getTranslated(this.context, 'search'),
-                      prefixIcon: iconWhite(Icons.search),
-                      labelStyle: TextStyle(color: WHITE)),
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+                    counterStyle: TextStyle(color: WHITE),
+                    border: OutlineInputBorder(),
+                    labelText: getTranslated(this.context, 'search'),
+                    prefixIcon: iconWhite(Icons.search),
+                    labelStyle: TextStyle(color: WHITE),
+                  ),
                   onChanged: (string) {
                     setState(
                       () {
-                        _filteredEmployees = _employees
-                            .where((e) => ((e.name + e.surname)
-                                .toLowerCase()
-                                .contains(string.toLowerCase())))
-                            .toList();
+                        _filteredEmployees = _employees.where((e) => ((e.name + e.surname).toLowerCase().contains(string.toLowerCase()))).toList();
                       },
                     );
                   },
@@ -175,8 +165,7 @@ class _AddTsPageState extends State<AddTsPage> {
               ListTileTheme(
                 contentPadding: EdgeInsets.only(left: 3),
                 child: CheckboxListTile(
-                  title: textWhite(
-                      getTranslated(this.context, 'selectUnselectAll')),
+                  title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
                   value: _isChecked,
                   activeColor: GREEN,
                   checkColor: WHITE,
@@ -187,8 +176,7 @@ class _AddTsPageState extends State<AddTsPage> {
                       _checked.forEach((b) => l.add(value));
                       _checked = l;
                       if (value) {
-                        _selectedIds
-                            .addAll(_filteredEmployees.map((e) => e.id));
+                        _selectedIds.addAll(_filteredEmployees.map((e) => e.id));
                       } else
                         _selectedIds.clear();
                     });
@@ -200,7 +188,7 @@ class _AddTsPageState extends State<AddTsPage> {
                 child: ListView.builder(
                   itemCount: _filteredEmployees.length,
                   itemBuilder: (BuildContext context, int index) {
-                    BasicEmployeeDto employee = _filteredEmployees[index];
+                    EmployeeBasicDto employee = _filteredEmployees[index];
                     int foundIndex = 0;
                     for (int i = 0; i < _employees.length; i++) {
                       if (_employees[i].id == employee.id) {
@@ -220,13 +208,8 @@ class _AddTsPageState extends State<AddTsPage> {
                             child: ListTileTheme(
                               contentPadding: EdgeInsets.only(right: 10),
                               child: CheckboxListTile(
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
-                                title: text20WhiteBold(
-                                    utf8.decode(info.runes.toList()) +
-                                        ' ' +
-                                        LanguageUtil.findFlagByNationality(
-                                            nationality)),
+                                controlAffinity: ListTileControlAffinity.leading,
+                                title: text20WhiteBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                 activeColor: GREEN,
                                 checkColor: WHITE,
                                 value: _checked[foundIndex],
@@ -234,15 +217,12 @@ class _AddTsPageState extends State<AddTsPage> {
                                   setState(() {
                                     _checked[foundIndex] = value;
                                     if (value) {
-                                      _selectedIds
-                                          .add(_employees[foundIndex].id);
+                                      _selectedIds.add(_employees[foundIndex].id);
                                     } else {
-                                      _selectedIds
-                                          .remove(_employees[foundIndex].id);
+                                      _selectedIds.remove(_employees[foundIndex].id);
                                     }
                                     int selectedIdsLength = _selectedIds.length;
-                                    if (selectedIdsLength ==
-                                        _employees.length) {
+                                    if (selectedIdsLength == _employees.length) {
                                       _isChecked = true;
                                     } else if (selectedIdsLength == 0) {
                                       _isChecked = false;
@@ -270,27 +250,21 @@ class _AddTsPageState extends State<AddTsPage> {
                 elevation: 0,
                 height: 50,
                 minWidth: 40,
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0)),
+                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[iconWhite(Icons.close)],
                 ),
                 color: Colors.red,
                 onPressed: () => {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ManagerTsPage(_model)),
-                      (e) => false),
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ManagerTsPage(_model)), (e) => false),
                 },
               ),
               SizedBox(width: 25),
               MaterialButton(
                 elevation: 0,
                 height: 50,
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0)),
+                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[iconWhite(Icons.check)],
@@ -309,14 +283,12 @@ class _AddTsPageState extends State<AddTsPage> {
 
   void _createTsForSelectedEmployees() {
     if (_selectedIds.isEmpty) {
-      showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ',
-          getTranslated(context, 'forWhomYouWantToAddNewTs'));
+      showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'forWhomYouWantToAddNewTs'));
       return;
     }
-    _managerService.createForSelected(_year, _month, _selectedIds).then(
+    _timesheetService.createForEmployees(_selectedIds.map((el) => el.toString()).toList(), _year, _month).then(
       (res) {
-        ToastService.showSuccessToast(
-            getTranslated(context, 'timesheetsSuccessfullyCreated'));
+        ToastService.showSuccessToast(getTranslated(context, 'timesheetsSuccessfullyCreated'));
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => ManagerTsPage(_model)),
@@ -326,10 +298,7 @@ class _AddTsPageState extends State<AddTsPage> {
   }
 
   Future<Null> _refresh() {
-    return _managerService
-        .findMobileEmployeesByGroupIdAndTsNotInYearAndMonthAndGroup(
-            _model.groupId, _year, _month)
-        .then((res) {
+    return _employeeService.findEmployeesByGroupIdAndTsNotInYearAndMonthAndGroup(_model.groupId, _year, _month).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));

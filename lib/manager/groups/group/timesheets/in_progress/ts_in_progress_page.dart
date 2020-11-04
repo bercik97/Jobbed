@@ -7,17 +7,17 @@ import 'package:date_util/date_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:give_job/api/employee/dto/employee_statistics_dto.dart';
+import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/dto/manager_group_employee_dto.dart';
-import 'package:give_job/manager/dto/manager_group_timesheet_dto.dart';
 import 'package:give_job/manager/groups/group/employee/employee_profil_page.dart';
 import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/workplaces/select_workplace_for_employees.dart';
-import 'package:give_job/manager/service/manager_service.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
@@ -36,17 +36,17 @@ import '../../../../manager_app_bar.dart';
 import '../../../../manager_app_bar_with_icons_legend.dart';
 import '../../../../manager_side_bar.dart';
 
-class ManagerTimesheetsEmployeesInProgressPage extends StatefulWidget {
+class TsInProgressPage extends StatefulWidget {
   final GroupModel _model;
-  final ManagerGroupTimesheetDto _timeSheet;
+  final TimesheetWithStatusDto _timeSheet;
 
-  ManagerTimesheetsEmployeesInProgressPage(this._model, this._timeSheet);
+  TsInProgressPage(this._model, this._timeSheet);
 
   @override
-  _ManagerTimesheetsEmployeesInProgressPageState createState() => _ManagerTimesheetsEmployeesInProgressPageState();
+  _TsInProgressPageState createState() => _TsInProgressPageState();
 }
 
-class _ManagerTimesheetsEmployeesInProgressPageState extends State<ManagerTimesheetsEmployeesInProgressPage> {
+class _TsInProgressPageState extends State<TsInProgressPage> {
   final TextEditingController _hoursController = new TextEditingController();
   final TextEditingController _ratingController = new TextEditingController();
   final TextEditingController _planController = new TextEditingController();
@@ -55,12 +55,12 @@ class _ManagerTimesheetsEmployeesInProgressPageState extends State<ManagerTimesh
   GroupModel _model;
   User _user;
 
-  ManagerService _managerService;
+  EmployeeService _employeeService;
   WorkdayService _workdayService;
-  ManagerGroupTimesheetDto _timesheet;
+  TimesheetWithStatusDto _timesheet;
 
-  List<ManagerGroupEmployeeDto> _employees = new List();
-  List<ManagerGroupEmployeeDto> _filteredEmployees = new List();
+  List<EmployeeStatisticsDto> _employees = new List();
+  List<EmployeeStatisticsDto> _filteredEmployees = new List();
   bool _loading = false;
   bool _isChecked = false;
   List<bool> _checked = new List();
@@ -70,12 +70,12 @@ class _ManagerTimesheetsEmployeesInProgressPageState extends State<ManagerTimesh
   void initState() {
     this._model = widget._model;
     this._user = _model.user;
-    this._managerService = new ManagerService(context, _model.user.authHeader);
+    this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     this._timesheet = widget._timeSheet;
     super.initState();
     _loading = true;
-    _managerService.findAllEmployeesOfTimesheetByGroupIdAndTimesheetYearMonthStatusForMobile(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_IN_PROGRESS).then((res) {
+    _employeeService.findAllByGroupIdAndTsYearAndMonthAndStatus(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_IN_PROGRESS).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
@@ -157,7 +157,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState extends State<ManagerTimesh
                 child: ListView.builder(
                   itemCount: _filteredEmployees.length,
                   itemBuilder: (BuildContext context, int index) {
-                    ManagerGroupEmployeeDto employee = _filteredEmployees[index];
+                    EmployeeStatisticsDto employee = _filteredEmployees[index];
                     int foundIndex = 0;
                     for (int i = 0; i < _employees.length; i++) {
                       if (_employees[i].id == employee.id) {
@@ -845,7 +845,7 @@ class _ManagerTimesheetsEmployeesInProgressPageState extends State<ManagerTimesh
   }
 
   Future<Null> _refresh() {
-    return _managerService.findAllEmployeesOfTimesheetByGroupIdAndTimesheetYearMonthStatusForMobile(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_IN_PROGRESS).then((res) {
+    return _employeeService.findAllByGroupIdAndTsYearAndMonthAndStatus(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_IN_PROGRESS).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));

@@ -1,20 +1,20 @@
 import 'package:flutter/cupertino.dart';
 
-class ManagerGroupTimesheetDto {
+class TimesheetWithStatusDto {
   final int id;
   final int year;
   final String month;
   final String status;
 
-  ManagerGroupTimesheetDto({
+  TimesheetWithStatusDto({
     @required this.id,
     @required this.year,
     @required this.month,
     @required this.status,
   });
 
-  factory ManagerGroupTimesheetDto.fromJson(Map<String, dynamic> json) {
-    return ManagerGroupTimesheetDto(
+  factory TimesheetWithStatusDto.fromJson(Map<String, dynamic> json) {
+    return TimesheetWithStatusDto(
       id: json['id'] as int,
       year: json['year'] as int,
       month: json['month'] as String,

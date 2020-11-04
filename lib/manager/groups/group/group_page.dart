@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
-import 'package:give_job/manager/groups/group/timesheets/manager_ts_page.dart';
+import 'package:give_job/manager/groups/group/timesheets/ts_page.dart';
 import 'package:give_job/manager/groups/group/vocations/vocations_ts_page.dart';
 import 'package:give_job/manager/groups/group/workplaces/workplace_page.dart';
 import 'package:give_job/manager/manager_side_bar.dart';

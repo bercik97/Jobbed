@@ -8,10 +8,10 @@ import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/api/workplace/dto/workplace_dto.dart';
 import 'package:give_job/api/workplace/service/workplace_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/dto/manager_group_timesheet_dto.dart';
+import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
-import 'package:give_job/manager/groups/group/timesheets/in_progress/manager_in_progress_ts_details_page.dart';
+import 'package:give_job/manager/groups/group/timesheets/in_progress/ts_in_progress_page.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/radio_element.dart';
@@ -27,7 +27,7 @@ import '../../../manager_side_bar.dart';
 
 class SelectWorkplaceForEmployeesPage extends StatefulWidget {
   final GroupModel _model;
-  final ManagerGroupTimesheetDto _timeSheet;
+  final TimesheetWithStatusDto _timeSheet;
   final int _year;
   final int _month;
   final String _dateFrom;
@@ -44,7 +44,7 @@ class _SelectWorkplaceForEmployeesPageState extends State<SelectWorkplaceForEmpl
   GroupModel _model;
   User _user;
 
-  ManagerGroupTimesheetDto _timeSheet;
+  TimesheetWithStatusDto _timeSheet;
   int _year;
   int _month;
   String _dateFrom;
@@ -161,7 +161,7 @@ class _SelectWorkplaceForEmployeesPageState extends State<SelectWorkplaceForEmpl
                 ),
                 color: Colors.red,
                 onPressed: () => {
-                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ManagerTimesheetsEmployeesInProgressPage(_model, _timeSheet)), (e) => false),
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TsInProgressPage(_model, _timeSheet)), (e) => false),
                 },
               ),
               SizedBox(width: 25),
@@ -211,7 +211,7 @@ class _SelectWorkplaceForEmployeesPageState extends State<SelectWorkplaceForEmpl
                                         ToastService.showSuccessToast(getTranslated(context, 'workplacesUpdatedSuccessfully'));
                                         Navigator.push(
                                           context,
-                                          MaterialPageRoute(builder: (context) => ManagerTimesheetsEmployeesInProgressPage(_model, _timeSheet)),
+                                          MaterialPageRoute(builder: (context) => TsInProgressPage(_model, _timeSheet)),
                                         );
                                       },
                                     ),

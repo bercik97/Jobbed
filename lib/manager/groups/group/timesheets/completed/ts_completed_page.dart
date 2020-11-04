@@ -3,17 +3,19 @@ import 'dart:convert';
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:give_job/api/employee/dto/employee_statistics_dto.dart';
+import 'package:give_job/api/employee/service/employee_service.dart';
+import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
+import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/dto/manager_group_employee_dto.dart';
-import 'package:give_job/manager/dto/manager_group_timesheet_dto.dart';
 import 'package:give_job/manager/groups/group/employee/employee_profil_page.dart';
 import 'package:give_job/manager/groups/group/employee/employee_ts_completed_page.dart';
-import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
-import 'package:give_job/manager/service/manager_service.dart';
+import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
+import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -24,33 +26,36 @@ import '../../../../../shared/widget/loader.dart';
 import '../../../../manager_app_bar.dart';
 import '../../../../manager_side_bar.dart';
 
-class ManagerTimesheetsEmployeesCompletedPage extends StatefulWidget {
+class TsCompletedPage extends StatefulWidget {
   final GroupModel _model;
-  final ManagerGroupTimesheetDto _timesheet;
+  final TimesheetWithStatusDto _timesheet;
 
-  ManagerTimesheetsEmployeesCompletedPage(this._model, this._timesheet);
+  TsCompletedPage(this._model, this._timesheet);
 
   @override
-  _ManagerTimesheetsEmployeesCompletedPageState createState() => _ManagerTimesheetsEmployeesCompletedPageState();
+  _TsCompletedPageState createState() => _TsCompletedPageState();
 }
 
-class _ManagerTimesheetsEmployeesCompletedPageState extends State<ManagerTimesheetsEmployeesCompletedPage> {
+class _TsCompletedPageState extends State<TsCompletedPage> {
   GroupModel _model;
-  ManagerService _managerService;
-  ManagerGroupTimesheetDto _timesheet;
+  User _user;
 
-  List<ManagerGroupEmployeeDto> _employees = new List();
-  List<ManagerGroupEmployeeDto> _filteredEmployees = new List();
+  EmployeeService _employeeService;
+  TimesheetWithStatusDto _timesheet;
+
+  List<EmployeeStatisticsDto> _employees = new List();
+  List<EmployeeStatisticsDto> _filteredEmployees = new List();
   bool _loading = false;
 
   @override
   void initState() {
     this._model = widget._model;
-    this._managerService = new ManagerService(context, _model.user.authHeader);
+    this._user = _model.user;
+    this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
     this._timesheet = widget._timesheet;
     super.initState();
     _loading = true;
-    _managerService.findAllEmployeesOfTimesheetByGroupIdAndTimesheetYearMonthStatusForMobile(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_COMPLETED).then((res) {
+    _employeeService.findAllByGroupIdAndTsYearAndMonthAndStatus(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_COMPLETED).then((res) {
       setState(() {
         _employees = res;
         _filteredEmployees = _employees;
@@ -83,7 +88,14 @@ class _ManagerTimesheetsEmployeesCompletedPageState extends State<ManagerTimeshe
                 autocorrect: true,
                 cursorColor: WHITE,
                 style: TextStyle(color: WHITE),
-                decoration: InputDecoration(enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)), counterStyle: TextStyle(color: WHITE), border: OutlineInputBorder(), labelText: getTranslated(context, 'search'), prefixIcon: iconWhite(Icons.search), labelStyle: TextStyle(color: WHITE)),
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+                  counterStyle: TextStyle(color: WHITE),
+                  border: OutlineInputBorder(),
+                  labelText: getTranslated(context, 'search'),
+                  prefixIcon: iconWhite(Icons.search),
+                  labelStyle: TextStyle(color: WHITE),
+                ),
                 onChanged: (string) {
                   setState(
                     () {
@@ -97,7 +109,7 @@ class _ManagerTimesheetsEmployeesCompletedPageState extends State<ManagerTimeshe
               child: ListView.builder(
                 itemCount: _filteredEmployees.length,
                 itemBuilder: (BuildContext context, int index) {
-                  ManagerGroupEmployeeDto employee = _filteredEmployees[index];
+                  EmployeeStatisticsDto employee = _filteredEmployees[index];
                   String info = employee.info;
                   String nationality = employee.nationality;
                   String currency = employee.currency;

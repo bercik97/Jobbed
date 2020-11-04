@@ -2,17 +2,19 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
+import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/dto/manager_group_timesheet_dto.dart';
-import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
+import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/timesheets/add/add_ts_page.dart';
 import 'package:give_job/manager/groups/group/timesheets/delete/delete_ts_page.dart';
 import 'package:give_job/manager/groups/group/timesheets/status/change_ts_status_page.dart';
-import 'package:give_job/manager/service/manager_service.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
+import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/util/month_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -24,8 +26,8 @@ import '../../../../shared/widget/texts.dart';
 import '../../../manager_app_bar.dart';
 import '../../../manager_app_bar_with_icons_legend.dart';
 import '../../../manager_side_bar.dart';
-import 'completed/manager_completed_ts_details_page.dart';
-import 'in_progress/manager_in_progress_ts_details_page.dart';
+import 'completed/ts_completed_page.dart';
+import 'in_progress/ts_in_progress_page.dart';
 
 class ManagerTsPage extends StatefulWidget {
   final GroupModel _model;
@@ -38,10 +40,12 @@ class ManagerTsPage extends StatefulWidget {
 
 class _ManagerTsPageState extends State<ManagerTsPage> {
   GroupModel _model;
-  ManagerService _managerService;
+  User _user;
 
-  List<ManagerGroupTimesheetDto> _inProgressTimesheets = new List();
-  List<ManagerGroupTimesheetDto> _completedTimesheets = new List();
+  TimesheetService _timesheetService;
+
+  List<TimesheetWithStatusDto> _inProgressTimesheets = new List();
+  List<TimesheetWithStatusDto> _completedTimesheets = new List();
 
   bool _loading = false;
 
@@ -50,18 +54,14 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
   @override
   void initState() {
     this._model = widget._model;
-    this._managerService = new ManagerService(context, _model.user.authHeader);
+    this._user = _model.user;
+    this._timesheetService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
     super.initState();
     _loading = true;
-    _managerService
-        .findTimesheetsByGroupId(_model.groupId.toString())
-        .then((res) {
+    _timesheetService.findAllWithStatusByGroupId(_model.groupId).then((res) {
       setState(() {
         res.forEach((ts) => {
-              if (ts.status == STATUS_IN_PROGRESS)
-                {_inProgressTimesheets.add(ts)}
-              else
-                {_completedTimesheets.add(ts)},
+              if (ts.status == STATUS_IN_PROGRESS) {_inProgressTimesheets.add(ts)} else {_completedTimesheets.add(ts)},
             });
         _loading = false;
       });
@@ -71,10 +71,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(
-          managerAppBar(
-              context, _model.user, getTranslated(context, 'loading')),
-          managerSideBar(context, _model.user));
+      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')), managerSideBar(context, _model.user));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -84,20 +81,12 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
         backgroundColor: DARK,
         appBar: managerAppBarWithIconsLegend(
             context,
-            getTranslated(context, 'timesheets') +
-                ' - ' +
-                utf8.decode(_model.groupName != null
-                    ? _model.groupName.runes.toList()
-                    : '-'),
+            getTranslated(context, 'timesheets') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
             [
-              IconsLegend.buildRow('images/unchecked.png',
-                  getTranslated(context, 'tsInProgress')),
-              IconsLegend.buildRow(
-                  'images/checked.png', getTranslated(context, 'completedTs')),
-              IconsLegend.buildRowWithIcon(icon50Orange(Icons.arrow_downward),
-                  getTranslated(context, 'settingTsStatusToInProgress')),
-              IconsLegend.buildRowWithIcon(icon50Green(Icons.arrow_upward),
-                  getTranslated(context, 'settingTsStatusToCompleted')),
+              IconsLegend.buildRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
+              IconsLegend.buildRow('images/checked.png', getTranslated(context, 'completedTs')),
+              IconsLegend.buildRowWithIcon(icon50Orange(Icons.arrow_downward), getTranslated(context, 'settingTsStatusToInProgress')),
+              IconsLegend.buildRowWithIcon(icon50Green(Icons.arrow_upward), getTranslated(context, 'settingTsStatusToCompleted')),
             ],
             _model.user),
         drawer: managerSideBar(context, _model.user),
@@ -108,8 +97,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                 padding: EdgeInsets.only(left: 20, top: 15, bottom: 5),
                 child: Align(
                   alignment: Alignment.topLeft,
-                  child: text20OrangeBold(
-                      getTranslated(context, 'inProgressTimesheets')),
+                  child: text20OrangeBold(getTranslated(context, 'inProgressTimesheets')),
                 ),
               ),
               _inProgressTimesheets.isEmpty
@@ -117,8 +105,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                       padding: EdgeInsets.only(left: 20),
                       child: Align(
                         alignment: Alignment.topLeft,
-                        child: text15White(
-                            getTranslated(context, 'noInProgressTimesheets')),
+                        child: text15White(getTranslated(context, 'noInProgressTimesheets')),
                       ),
                     )
                   : Container(),
@@ -130,8 +117,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                       Navigator.of(context).push(
                         CupertinoPageRoute<Null>(
                           builder: (BuildContext context) {
-                            return ManagerTimesheetsEmployeesInProgressPage(
-                                _model, inProgressTs);
+                            return TsInProgressPage(_model, inProgressTs);
                           },
                         ),
                       );
@@ -155,11 +141,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                                 onPressed: () => Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ChangeTsStatusPage(
-                                        _model,
-                                        inProgressTs.year,
-                                        inProgressTs.month,
-                                        STATUS_COMPLETED),
+                                    builder: (context) => ChangeTsStatusPage(_model, inProgressTs.year, inProgressTs.month, STATUS_COMPLETED),
                                   ),
                                 ),
                               ),
@@ -168,20 +150,13 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                                 onPressed: () => Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => DeleteTsPage(
-                                        _model,
-                                        inProgressTs.year,
-                                        inProgressTs.month,
-                                        STATUS_IN_PROGRESS),
+                                    builder: (context) => DeleteTsPage(_model, inProgressTs.year, inProgressTs.month, STATUS_IN_PROGRESS),
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                          title: text18WhiteBold(inProgressTs.year.toString() +
-                              ' ' +
-                              MonthUtil.translateMonth(
-                                  context, inProgressTs.month)),
+                          title: text18WhiteBold(inProgressTs.year.toString() + ' ' + MonthUtil.translateMonth(context, inProgressTs.month)),
                         ),
                       ],
                     ),
@@ -191,8 +166,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                 padding: EdgeInsets.only(left: 20, top: 15, bottom: 5),
                 child: Align(
                   alignment: Alignment.topLeft,
-                  child: text20GreenBold(
-                      getTranslated(this.context, 'completedTimesheets')),
+                  child: text20GreenBold(getTranslated(this.context, 'completedTimesheets')),
                 ),
               ),
               _completedTimesheets.isEmpty
@@ -200,8 +174,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                       padding: EdgeInsets.only(left: 20),
                       child: Align(
                         alignment: Alignment.topLeft,
-                        child: text15White(getTranslated(
-                            this.context, 'noCompletedTimesheets')),
+                        child: text15White(getTranslated(this.context, 'noCompletedTimesheets')),
                       ),
                     )
                   : Container(),
@@ -213,8 +186,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                       Navigator.of(context).push(
                         CupertinoPageRoute<Null>(
                           builder: (BuildContext context) {
-                            return ManagerTimesheetsEmployeesCompletedPage(
-                                _model, completedTs);
+                            return TsCompletedPage(_model, completedTs);
                           },
                         ),
                       );
@@ -238,11 +210,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                                 onPressed: () => Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ChangeTsStatusPage(
-                                        _model,
-                                        completedTs.year,
-                                        completedTs.month,
-                                        STATUS_IN_PROGRESS),
+                                    builder: (context) => ChangeTsStatusPage(_model, completedTs.year, completedTs.month, STATUS_IN_PROGRESS),
                                   ),
                                 ),
                               ),
@@ -251,20 +219,13 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                                 onPressed: () => Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => DeleteTsPage(
-                                        _model,
-                                        completedTs.year,
-                                        completedTs.month,
-                                        STATUS_COMPLETED),
+                                    builder: (context) => DeleteTsPage(_model, completedTs.year, completedTs.month, STATUS_COMPLETED),
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                          title: text18WhiteBold(completedTs.year.toString() +
-                              ' ' +
-                              MonthUtil.translateMonth(
-                                  context, completedTs.month)),
+                          title: text18WhiteBold(completedTs.year.toString() + ' ' + MonthUtil.translateMonth(context, completedTs.month)),
                         ),
                       ],
                     ),
@@ -306,8 +267,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
       if (date != null) {
         Navigator.push(
           context,
-          MaterialPageRoute(
-              builder: (context) => AddTsPage(_model, date.year, date.month)),
+          MaterialPageRoute(builder: (context) => AddTsPage(_model, date.year, date.month)),
         );
       }
     });

@@ -6,7 +6,7 @@ import 'package:give_job/manager/groups/group/employee/employees_page.dart';
 import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
 import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
-import 'package:give_job/manager/groups/group/timesheets/manager_ts_page.dart';
+import 'package:give_job/manager/groups/group/timesheets/ts_page.dart';
 import 'package:give_job/manager/groups/group/vocations/vocations_ts_page.dart';
 import 'package:give_job/manager/groups/group/workplaces/workplace_page.dart';
 import 'package:give_job/manager/groups/groups_dashboard_page.dart';

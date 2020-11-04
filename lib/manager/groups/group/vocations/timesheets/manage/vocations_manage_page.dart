@@ -5,12 +5,12 @@ import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:date_util/date_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:give_job/api/employee/dto/employee_for_vocations_ts_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_without_status_dto.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/dto/manager_vocations_ts_dto.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -47,8 +47,8 @@ class _VocationsManagePageState extends State<VocationsManagePage> {
   WorkdayService _workdayService;
   TimesheetWithoutStatusDto _timesheet;
 
-  List<ManagerVocationsTsDto> _employees = new List();
-  List<ManagerVocationsTsDto> _filteredEmployees = new List();
+  List<EmployeeForVocationsTsDto> _employees = new List();
+  List<EmployeeForVocationsTsDto> _filteredEmployees = new List();
   bool _loading = false;
   bool _isChecked = false;
   List<bool> _checked = new List();
@@ -158,7 +158,7 @@ class _VocationsManagePageState extends State<VocationsManagePage> {
                 child: ListView.builder(
                   itemCount: _filteredEmployees.length,
                   itemBuilder: (BuildContext context, int index) {
-                    ManagerVocationsTsDto employee = _filteredEmployees[index];
+                    EmployeeForVocationsTsDto employee = _filteredEmployees[index];
                     int foundIndex = 0;
                     for (int i = 0; i < _employees.length; i++) {
                       if (_employees[i].id == employee.id) {

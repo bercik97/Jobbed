@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/workday/dto/workday_for_employee_dto.dart';
-import 'package:give_job/manager/dto/workday_dto.dart';
+import 'package:give_job/api/workday/dto/workday_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/service/logout_service.dart';
 import 'package:http/http.dart';

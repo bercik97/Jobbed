@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/employee/dto/employee_calendar_dto.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
+import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_without_status_dto.dart';
 import 'package:give_job/api/vocation/dto/vocation_employee_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -17,6 +18,21 @@ class TimesheetService {
   TimesheetService(this._context, this._header, this._headers);
 
   static const String _url = '$SERVER_IP/timesheets';
+
+  Future<dynamic> createForEmployees(List<String> employeeIds, int year, int month) async {
+    Response res = await post(
+      '$_url/employees/$employeeIds',
+      body: jsonEncode({'year': year, 'month': month}),
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
 
   Future<Map<DateTime, List<EmployeeCalendarDto>>> findDataForEmployeeCalendarByEmployeeId(int employeeId) async {
     Response res = await get(
@@ -63,6 +79,20 @@ class TimesheetService {
     );
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => TimesheetForEmployeeDto.fromJson(data)).toList();
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<List<TimesheetWithStatusDto>> findAllWithStatusByGroupId(int groupId) async {
+    Response res = await get(
+      '$_url/groups/$groupId/with-status',
+      headers: _header,
+    );
+    if (res.statusCode == 200) {
+      return (json.decode(res.body) as List).map((data) => TimesheetWithStatusDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
       return Logout.handle401WithLogout(_context);
     } else {
@@ -148,6 +178,35 @@ class TimesheetService {
     Response res = await put(
       '$_url/workplace/groups/$groupId?date=$date',
       body: workplaceId.toString(),
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> updateEmployeesTsStatus(List<String> employeeIds, int newStatusId, int tsYear, int tsMonth, String tsStatus, int groupId) async {
+    Response res = await put(
+      '$_url/groups/$groupId/employees/$employeeIds',
+      body: jsonEncode({'newStatusId': newStatusId, 'tsYear': tsYear, 'tsMonth': tsMonth, 'tsStatus': tsStatus}),
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> deleteForEmployeesByYearAndMonthAndStatus(List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
+    Response res = await delete(
+      '$_url/employees/$employeeIds?timesheet_year=$tsYear&timesheet_month=$tsMonth&timesheet_status=$tsStatus',
       headers: _headers,
     );
     if (res.statusCode == 200) {
