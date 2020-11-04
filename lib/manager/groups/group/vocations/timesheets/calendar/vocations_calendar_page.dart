@@ -18,8 +18,8 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../../../shared/widget/loader.dart';
-import '../../../../../manager_app_bar.dart';
-import '../../../../../manager_side_bar.dart';
+import '../../../../../shared/manager_app_bar.dart';
+import '../../../../../shared/manager_side_bar.dart';
 
 class VocationsCalendarPage extends StatefulWidget {
   final GroupModel _model;

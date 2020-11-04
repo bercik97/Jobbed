@@ -16,8 +16,8 @@ import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
-import '../../../manager_app_bar.dart';
-import '../../../manager_side_bar.dart';
+import '../../../shared/manager_app_bar.dart';
+import '../../../shared/manager_side_bar.dart';
 import '../group_page.dart';
 
 class GroupEditPage extends StatefulWidget {

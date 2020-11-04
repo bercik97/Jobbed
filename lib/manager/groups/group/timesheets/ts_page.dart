@@ -23,9 +23,9 @@ import 'package:month_picker_dialog/month_picker_dialog.dart';
 import '../../../../internationalization/localization/localization_constants.dart';
 import '../../../../shared/widget/loader.dart';
 import '../../../../shared/widget/texts.dart';
-import '../../../manager_app_bar.dart';
-import '../../../manager_app_bar_with_icons_legend.dart';
-import '../../../manager_side_bar.dart';
+import '../../../shared/manager_app_bar.dart';
+import '../../../shared/manager_app_bar_with_icons_legend.dart';
+import '../../../shared/manager_side_bar.dart';
 import 'completed/ts_completed_page.dart';
 import 'in_progress/ts_in_progress_page.dart';
 

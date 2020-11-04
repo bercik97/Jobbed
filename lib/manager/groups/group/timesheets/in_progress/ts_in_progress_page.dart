@@ -32,9 +32,9 @@ import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../../shared/widget/loader.dart';
-import '../../../../manager_app_bar.dart';
-import '../../../../manager_app_bar_with_icons_legend.dart';
-import '../../../../manager_side_bar.dart';
+import '../../../../shared/manager_app_bar.dart';
+import '../../../../shared/manager_app_bar_with_icons_legend.dart';
+import '../../../../shared/manager_side_bar.dart';
 
 class TsInProgressPage extends StatefulWidget {
   final GroupModel _model;

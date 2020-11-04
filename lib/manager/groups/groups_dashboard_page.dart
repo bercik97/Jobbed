@@ -8,7 +8,7 @@ import 'package:give_job/api/group/service/group_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
-import 'package:give_job/manager/manager_side_bar.dart';
+import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
@@ -17,7 +17,7 @@ import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
 import '../../shared/widget/loader.dart';
-import '../manager_app_bar.dart';
+import '../shared/manager_app_bar.dart';
 import 'group/group_page.dart';
 
 class GroupsDashboardPage extends StatefulWidget {

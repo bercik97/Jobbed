@@ -23,8 +23,8 @@ import 'package:give_job/shared/widget/texts.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../../shared/widget/loader.dart';
-import '../../../../manager_app_bar.dart';
-import '../../../../manager_side_bar.dart';
+import '../../../../shared/manager_app_bar.dart';
+import '../../../../shared/manager_side_bar.dart';
 
 class TsCompletedPage extends StatefulWidget {
   final GroupModel _model;

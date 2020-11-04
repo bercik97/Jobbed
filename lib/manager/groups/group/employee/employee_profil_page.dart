@@ -26,7 +26,7 @@ import 'package:give_job/shared/widget/silver_app_bar_delegate.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
 import '../../../../shared/libraries/constants.dart';
-import '../../../manager_side_bar.dart';
+import '../../../shared/manager_side_bar.dart';
 import 'employee_ts_completed_page.dart';
 import 'employee_ts_in_progress_page.dart';
 

@@ -17,8 +17,8 @@ import 'package:give_job/shared/widget/texts.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../shared/widget/loader.dart';
-import '../../../manager_app_bar.dart';
-import '../../../manager_side_bar.dart';
+import '../../../shared/manager_app_bar.dart';
+import '../../../shared/manager_side_bar.dart';
 import 'employee_profil_page.dart';
 
 class EmployeesPage extends StatefulWidget {

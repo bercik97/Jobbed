@@ -18,8 +18,8 @@ import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
 import '../../../../shared/libraries/constants.dart';
-import '../../../manager_app_bar.dart';
-import '../../../manager_side_bar.dart';
+import '../../../shared/manager_app_bar.dart';
+import '../../../shared/manager_side_bar.dart';
 import '../shared/group_model.dart';
 
 class EmployeeTsCompletedPage extends StatefulWidget {

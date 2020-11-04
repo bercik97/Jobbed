@@ -10,7 +10,7 @@ import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:open_appstore/open_appstore.dart';
 
-import 'groups/groups_dashboard_page.dart';
+import '../groups/groups_dashboard_page.dart';
 
 Drawer managerSideBar(BuildContext context, User user) {
   return Drawer(
