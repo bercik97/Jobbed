@@ -8,7 +8,7 @@ import 'package:give_job/api/token/service/token_service.dart';
 import 'package:give_job/employee/employee_page.dart';
 import 'package:give_job/main.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
-import 'package:give_job/manager/groups/group/manager_group_details_page.dart';
+import 'package:give_job/manager/groups/group/group_page.dart';
 import 'package:give_job/manager/groups/groups_dashboard_page.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -244,7 +244,7 @@ class _LoginPageState extends State<LoginPage> {
     String numberOfEmployees = data['numberOfEmployees'];
     String countryOfWork = data['countryOfWork'];
     GroupModel model = new GroupModel(user, groupId, groupName, groupDescription, numberOfEmployees, countryOfWork);
-    Navigator.push(context, MaterialPageRoute(builder: (context) => ManagerGroupDetailsPage(model)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage(model)));
   }
 
   _buildCreateAccountDialog() {

@@ -12,7 +12,7 @@ import 'package:give_job/manager/groups/group/workplaces/workplace_page.dart';
 import 'package:give_job/manager/groups/groups_dashboard_page.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 
-import '../manager_group_details_page.dart';
+import '../group_page.dart';
 
 Widget groupFloatingActionButton(BuildContext context, GroupModel model) {
   return SpeedDial(
@@ -28,7 +28,7 @@ Widget groupFloatingActionButton(BuildContext context, GroupModel model) {
         labelStyle: TextStyle(color: WHITE),
         onTap: () => Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ManagerGroupDetailsPage(model)),
+          MaterialPageRoute(builder: (context) => GroupPage(model)),
         ),
       ),
       SpeedDialChild(

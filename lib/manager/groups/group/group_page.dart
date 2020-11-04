@@ -3,14 +3,15 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.dart';
+import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/timesheets/manager_ts_page.dart';
 import 'package:give_job/manager/groups/group/vocations/manager_vocations_ts_page.dart';
 import 'package:give_job/manager/groups/group/workplaces/workplace_page.dart';
 import 'package:give_job/manager/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
+import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -21,22 +22,23 @@ import 'edit/group_edit_page.dart';
 import 'employee/employees_page.dart';
 import 'icons_legend/icons_legend_dialog.dart';
 
-class ManagerGroupDetailsPage extends StatefulWidget {
+class GroupPage extends StatefulWidget {
   final GroupModel _model;
 
-  ManagerGroupDetailsPage(this._model);
+  GroupPage(this._model);
 
   @override
-  _ManagerGroupDetailsPageState createState() =>
-      _ManagerGroupDetailsPageState();
+  _GroupPageState createState() => _GroupPageState();
 }
 
-class _ManagerGroupDetailsPageState extends State<ManagerGroupDetailsPage> {
+class _GroupPageState extends State<GroupPage> {
   GroupModel _model;
+  User _user;
 
   @override
   Widget build(BuildContext context) {
     this._model = widget._model;
+    this._user = _model.user;
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -44,15 +46,8 @@ class _ManagerGroupDetailsPageState extends State<ManagerGroupDetailsPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(
-              context,
-              _model.user,
-              getTranslated(context, 'group') +
-                  ' - ' +
-                  utf8.decode(_model.groupName != null
-                      ? _model.groupName.runes.toList()
-                      : '-')),
-          drawer: managerSideBar(context, _model.user),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'group') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-')),
+          drawer: managerSideBar(context, _user),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(12.0),
@@ -77,46 +72,25 @@ class _ManagerGroupDetailsPageState extends State<ManagerGroupDetailsPage> {
                     ),
                     title: text18WhiteBold(
                       utf8.decode(
-                        _model.groupName != null
-                            ? _model.groupName.runes.toList()
-                            : getTranslated(context, 'empty'),
+                        _model.groupName != null ? _model.groupName.runes.toList() : getTranslated(context, 'empty'),
                       ),
                     ),
                     subtitle: Column(
                       children: <Widget>[
-                        Align(
-                            child: textWhite(utf8.decode(
-                                _model.groupDescription != null
-                                    ? _model.groupDescription.runes.toList()
-                                    : getTranslated(context, 'empty'))),
-                            alignment: Alignment.topLeft),
+                        Align(child: textWhite(utf8.decode(_model.groupDescription != null ? _model.groupDescription.runes.toList() : getTranslated(context, 'empty'))), alignment: Alignment.topLeft),
                         SizedBox(height: 5),
-                        Align(
-                            child: textWhite(
-                                getTranslated(context, 'numberOfEmployees') +
-                                    ': ' +
-                                    _model.numberOfEmployees.toString()),
-                            alignment: Alignment.topLeft),
-                        Align(
-                            child: textWhite(
-                                getTranslated(context, 'groupCountryOfWork') +
-                                    ': ' +
-                                    LanguageUtil.findFlagByNationality(
-                                        _model.countryOfWork.toString())),
-                            alignment: Alignment.topLeft),
+                        Align(child: textWhite(getTranslated(context, 'numberOfEmployees') + ': ' + _model.numberOfEmployees.toString()), alignment: Alignment.topLeft),
+                        Align(child: textWhite(getTranslated(context, 'groupCountryOfWork') + ': ' + LanguageUtil.findFlagByNationality(_model.countryOfWork.toString())), alignment: Alignment.topLeft),
                       ],
                     ),
                     trailing: Ink(
-                      decoration:
-                          ShapeDecoration(color: GREEN, shape: CircleBorder()),
+                      decoration: ShapeDecoration(color: GREEN, shape: CircleBorder()),
                       child: IconButton(
                         icon: iconDark(Icons.border_color),
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    GroupEditPage(_model)),
+                            MaterialPageRoute(builder: (context) => GroupEditPage(_model)),
                           );
                         },
                       ),
@@ -133,15 +107,12 @@ class _ManagerGroupDetailsPageState extends State<ManagerGroupDetailsPage> {
                               Navigator.of(context).push(
                                 CupertinoPageRoute<Null>(
                                   builder: (BuildContext context) {
-                                    return GroupsDashboardPage(_model.user);
+                                    return GroupsDashboardPage(_user);
                                   },
                                 ),
                               );
                             },
-                            child: _buildScrollableContainer(
-                                'images/big-groups-icon.png',
-                                'backToGroups',
-                                'seeYourAllGroups'),
+                            child: _buildScrollableContainer('images/big-groups-icon.png', 'backToGroups', 'seeYourAllGroups'),
                           ),
                         ),
                       ),
@@ -150,12 +121,8 @@ class _ManagerGroupDetailsPageState extends State<ManagerGroupDetailsPage> {
                         child: Material(
                           color: BRIGHTER_DARK,
                           child: InkWell(
-                            onTap: () => IconsLegend.showIconsLegendDialog(
-                                context, _model),
-                            child: _buildScrollableContainer(
-                                'images/big-help-icon.png',
-                                'iconsLegend',
-                                'iconsLegendDescription'),
+                            onTap: () => IconsLegend.showIconsLegendDialog(context, _model),
+                            child: _buildScrollableContainer('images/big-help-icon.png', 'iconsLegend', 'iconsLegendDescription'),
                           ),
                         ),
                       ),
@@ -177,10 +144,7 @@ class _ManagerGroupDetailsPageState extends State<ManagerGroupDetailsPage> {
                                 ),
                               );
                             },
-                            child: _buildScrollableContainer(
-                                'images/big-employees-icon.png',
-                                'employees',
-                                'manageSelectedEmployee'),
+                            child: _buildScrollableContainer('images/big-employees-icon.png', 'employees', 'manageSelectedEmployee'),
                           ),
                         ),
                       ),
@@ -189,13 +153,8 @@ class _ManagerGroupDetailsPageState extends State<ManagerGroupDetailsPage> {
                         child: Material(
                           color: BRIGHTER_DARK,
                           child: InkWell(
-                            onTap: () =>
-                                QuickUpdateDialog.showQuickUpdateDialog(
-                                    context, _model),
-                            child: _buildScrollableContainer(
-                                'images/big-quick_update-icon.png',
-                                'quickUpdate',
-                                'quickUpdateDescription'),
+                            onTap: () => QuickUpdateDialog.showQuickUpdateDialog(context, _model),
+                            child: _buildScrollableContainer('images/big-quick_update-icon.png', 'quickUpdate', 'quickUpdateDescription'),
                           ),
                         ),
                       ),
@@ -217,10 +176,7 @@ class _ManagerGroupDetailsPageState extends State<ManagerGroupDetailsPage> {
                                 ),
                               );
                             },
-                            child: _buildScrollableContainer(
-                                'images/big-timesheets-icon.png',
-                                'timesheets',
-                                'fillHoursRatingPlans'),
+                            child: _buildScrollableContainer('images/big-timesheets-icon.png', 'timesheets', 'fillHoursRatingPlans'),
                           ),
                         ),
                       ),
@@ -238,10 +194,7 @@ class _ManagerGroupDetailsPageState extends State<ManagerGroupDetailsPage> {
                                 ),
                               ),
                             },
-                            child: _buildScrollableContainer(
-                                'images/big-workplace-icon.png',
-                                'workplaces',
-                                'workplacesDescription'),
+                            child: _buildScrollableContainer('images/big-workplace-icon.png', 'workplaces', 'workplacesDescription'),
                           ),
                         ),
                       ),
@@ -263,10 +216,7 @@ class _ManagerGroupDetailsPageState extends State<ManagerGroupDetailsPage> {
                                 ),
                               ),
                             },
-                            child: _buildScrollableContainer(
-                                'images/big-vocation-icon.png',
-                                'vocations',
-                                'vocationsDescription'),
+                            child: _buildScrollableContainer('images/big-vocation-icon.png', 'vocations', 'vocationsDescription'),
                           ),
                         ),
                       ),
@@ -284,21 +234,13 @@ class _ManagerGroupDetailsPageState extends State<ManagerGroupDetailsPage> {
     );
   }
 
-  Widget _buildScrollableContainer(
-      String imagePath, String title, String subtitle) {
+  Widget _buildScrollableContainer(String imagePath, String title, String subtitle) {
     return Container(
       height: 160,
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
-          children: <Widget>[
-            Image(height: 100, image: AssetImage(imagePath)),
-            text18WhiteBold(getTranslated(context, title)),
-            Padding(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                child: textCenter13White(getTranslated(context, subtitle))),
-            SizedBox(height: 10)
-          ],
+          children: <Widget>[Image(height: 100, image: AssetImage(imagePath)), text18WhiteBold(getTranslated(context, title)), Padding(padding: EdgeInsets.only(left: 10, right: 10), child: textCenter13White(getTranslated(context, subtitle))), SizedBox(height: 10)],
         ),
       ),
     );
@@ -308,7 +250,7 @@ class _ManagerGroupDetailsPageState extends State<ManagerGroupDetailsPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => GroupsDashboardPage(_model.user),
+        builder: (context) => GroupsDashboardPage(_user),
       ),
     );
     return false;

@@ -7,7 +7,7 @@ import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/api/workplace/dto/workplace_dto.dart';
 import 'package:give_job/api/workplace/service/workplace_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/manager_group_details_page.dart';
+import 'package:give_job/manager/groups/group/group_page.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -142,7 +142,7 @@ class _SelectWorkplaceForQuickUpdateEmployeesPageState extends State<SelectWorkp
                 ),
                 color: Colors.red,
                 onPressed: () => {
-                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ManagerGroupDetailsPage(_model)), (e) => false),
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => GroupPage(_model)), (e) => false),
                 },
               ),
               SizedBox(width: 25),
@@ -188,7 +188,7 @@ class _SelectWorkplaceForQuickUpdateEmployeesPageState extends State<SelectWorkp
                                         ToastService.showSuccessToast(getTranslated(context, 'todaysWorkplaceHasBeenUpdated'));
                                         Navigator.push(
                                           context,
-                                          MaterialPageRoute(builder: (context) => ManagerGroupDetailsPage(_model)),
+                                          MaterialPageRoute(builder: (context) => GroupPage(_model)),
                                         );
                                       },
                                     ).catchError((onError) {

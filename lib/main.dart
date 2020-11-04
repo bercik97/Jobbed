@@ -15,7 +15,7 @@ import 'package:give_job/unauthenticated/login_page.dart';
 
 import 'internationalization/localization/demo_localization.dart';
 import 'internationalization/localization/localization_constants.dart';
-import 'manager/groups/group/manager_group_details_page.dart';
+import 'manager/groups/group/group_page.dart';
 
 final storage = new FlutterSecureStorage();
 
@@ -167,6 +167,6 @@ class _MyAppState extends State<MyApp> {
     String countryOfWork = data['countryOfWork'];
     GroupModel model = new GroupModel(user, groupId, groupName,
         groupDescription, numberOfEmployees, countryOfWork);
-    return ManagerGroupDetailsPage(model);
+    return GroupPage(model);
   }
 }

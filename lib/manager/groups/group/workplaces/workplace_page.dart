@@ -8,7 +8,6 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/workplace/dto/workplace_dto.dart';
 import 'package:give_job/api/workplace/service/workplace_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/dto/update_workplace_dto.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -53,6 +52,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
   @override
   void initState() {
     this._model = widget._model;
+    this._user = _model.user;
     this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
     super.initState();
     _loading = true;
@@ -133,7 +133,6 @@ class _WorkplacePageState extends State<WorkplacePage> {
                             foundIndex = i;
                           }
                         }
-                        int id = workplace.id;
                         String name = workplace.name;
                         if (name != null && name.length >= 30) {
                           name = name.substring(0, 30) + ' ...';
@@ -345,7 +344,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
               child: textWhite(getTranslated(this.context, 'yesDeleteThem')),
               onPressed: () => {
                 _workplaceService
-                    .deleteByIdIn(ids.toList())
+                    .deleteByIdIn(ids.map((e) => e.toString()).toList())
                     .then((res) => {
                           Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(builder: (BuildContext context) => WorkplacePage(_model)),
@@ -488,8 +487,12 @@ class _WorkplacePageState extends State<WorkplacePage> {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
-                          UpdateWorkplaceDto dto = new UpdateWorkplaceDto(id: workplace.id, name: name);
-                          _workplaceService.update(dto).then((res) {
+                          _workplaceService.updateFieldsValuesById(
+                            workplace.id,
+                            {
+                              'name': name,
+                            },
+                          ).then((res) {
                             Navigator.pop(context);
                             _refresh();
                             ToastService.showSuccessToast(getTranslated(context, 'workplaceUpdatedSuccessfully'));

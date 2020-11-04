@@ -18,7 +18,7 @@ import 'package:give_job/shared/widget/texts.dart';
 
 import '../../shared/widget/loader.dart';
 import '../manager_app_bar.dart';
-import 'group/manager_group_details_page.dart';
+import 'group/group_page.dart';
 
 class GroupsDashboardPage extends StatefulWidget {
   final User _user;
@@ -82,7 +82,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                     Navigator.of(context).push(
                       CupertinoPageRoute<Null>(
                         builder: (BuildContext context) {
-                          return ManagerGroupDetailsPage(
+                          return GroupPage(
                             new GroupModel(
                               _user,
                               group.id,

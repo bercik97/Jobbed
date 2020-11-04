@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/workplace/dto/workplace_dto.dart';
-import 'package:give_job/manager/dto/update_workplace_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/service/logout_service.dart';
 import 'package:http/http.dart';
@@ -33,7 +32,7 @@ class WorkplaceService {
 
   Future<List<WorkplaceDto>> findAllByGroupId(int groupId) async {
     Response res = await get(
-      _url + '/group/$groupId',
+      _url + '/groups/$groupId',
       headers: _header,
     );
     if (res.statusCode == 200) {
@@ -45,10 +44,9 @@ class WorkplaceService {
     }
   }
 
-  Future<dynamic> deleteByIdIn(List<int> ids) async {
-    List<String> idsAsStrings = ids.map((e) => e.toString()).toList();
+  Future<dynamic> deleteByIdIn(List<String> ids) async {
     Response res = await delete(
-      _url + '/$idsAsStrings',
+      _url + '/$ids',
       headers: _headers,
     );
     if (res.statusCode == 200) {
@@ -60,10 +58,10 @@ class WorkplaceService {
     }
   }
 
-  Future<dynamic> update(UpdateWorkplaceDto dto) async {
+  Future<dynamic> updateFieldsValuesById(int id, Map<String, Object> fieldsValues) async {
     Response res = await put(
-      _url,
-      body: jsonEncode(UpdateWorkplaceDto.jsonEncode(dto)),
+      '$_url/id?id=$id',
+      body: jsonEncode(fieldsValues),
       headers: _headers,
     );
     if (res.statusCode == 200) {

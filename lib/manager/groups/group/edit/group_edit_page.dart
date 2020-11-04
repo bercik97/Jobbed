@@ -18,7 +18,7 @@ import 'package:give_job/shared/widget/texts.dart';
 
 import '../../../manager_app_bar.dart';
 import '../../../manager_side_bar.dart';
-import '../manager_group_details_page.dart';
+import '../group_page.dart';
 
 class GroupEditPage extends StatefulWidget {
   final GroupModel _model;
@@ -205,7 +205,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => ManagerGroupDetailsPage(_model),
+                                      builder: (context) => GroupPage(_model),
                                     ),
                                   ),
                                 },
@@ -318,7 +318,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ManagerGroupDetailsPage(_model),
+                                  builder: (context) => GroupPage(_model),
                                 ),
                               ),
                             },
