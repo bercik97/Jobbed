@@ -139,8 +139,7 @@
   "tokenIsIncorrect": "Bestått token er ikke riktig.",
   "exitRegistrationContent": "Er du sikker på at du vil avslutte registreringsskjemaet?",
   "exitAgree": "Ja, jeg vil avslutte",
-  "registrationFormEmployee": "Registreringsskjema for ansatte",
-  "registrationFormManager": "Lederregistreringsskjema",
+  "registrationForm": "Registreringsskjema",
   "loginSection": "PÅLOGGING",
   "loginSectionDescription": "Gjennom informasjonen i denne delen vil du kunne logge på applikasjonen. Husk dem.",
   "usernameIsRequired": "Brukernavn er obligatorisk",
@@ -426,5 +425,12 @@
   "settingTsStatusToCompleted": "Angir tidslistestatus til \"fullført\"",
   "accountExpirationDate": "Account expiration date",
   "informationAboutYou": "Information about you",
-  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you"
+  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you",
+  "companyName": "Company name",
+  "role": "Role",
+  "informationSection": "Information section",
+  "informationSectionDescription": "Following section provides information about the account",
+  "uneditableSection": "Uneditable section",
+  "editableSection": "Editable section",
+  "companyGroups": "Groups in the company"
 }

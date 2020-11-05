@@ -16,9 +16,10 @@ import 'package:give_job/unauthenticated/login_page.dart';
 
 class EmployeeRegisterPage extends StatefulWidget {
   final String _tokenId;
+  final String _companyName;
   final String _accountExpirationDate;
 
-  EmployeeRegisterPage(this._tokenId, this._accountExpirationDate);
+  EmployeeRegisterPage(this._tokenId, this._companyName, this._accountExpirationDate);
 
   @override
   _EmployeeRegisterPageState createState() => _EmployeeRegisterPageState();
@@ -31,7 +32,9 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
   bool _passwordVisible = false;
   bool _rePasswordVisible = false;
 
+  String _companyName;
   String _accountExpirationDate;
+
   final TextEditingController _usernameController = new TextEditingController();
   final TextEditingController _passwordController = new TextEditingController();
   final TextEditingController _phoneController = new TextEditingController();
@@ -62,6 +65,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
   void initState() {
     super.initState();
     _employeeService = ServiceInitializer.initialize(null, null, EmployeeService);
+    _companyName = widget._companyName;
     _accountExpirationDate = widget._accountExpirationDate;
     _passwordVisible = false;
     _rePasswordVisible = false;
@@ -94,12 +98,13 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
               key: formKey,
               child: Column(
                 children: <Widget>[
-                  textCenter20GreenBold(getTranslated(context, 'registrationFormEmployee')),
+                  textCenter20GreenBold(getTranslated(context, 'registrationForm')),
                   Divider(color: WHITE),
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(
                         children: <Widget>[
+                          _buildReadOnlySection(),
                           _buildLoginSection(),
                           _buildAccountExpirationField(),
                           _buildContactSection(),
@@ -124,6 +129,17 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
 
   bool _isValid() {
     return formKey.currentState.validate();
+  }
+
+  Widget _buildReadOnlySection() {
+    return Column(
+      children: [
+        _buildSectionHeader(getTranslated(context, 'informationSection'), getTranslated(context, 'informationSectionDescription')),
+        _buildReadOnlyField(getTranslated(context, 'companyName'), _companyName, Icons.business),
+        _buildReadOnlyField(getTranslated(context, 'accountExpirationDate'), _accountExpirationDate, Icons.access_time_outlined),
+        _buildReadOnlyField(getTranslated(context, 'role'), getTranslated(context, 'employee'), Icons.nature_people_sharp),
+      ],
+    );
   }
 
   Widget _buildLoginSection() {
@@ -402,6 +418,28 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
         SizedBox(height: 5),
         Align(alignment: Alignment.topLeft, child: text13White(subtitle)),
         SizedBox(height: 20),
+      ],
+    );
+  }
+
+  Widget _buildReadOnlyField(String name, String value, IconData icon) {
+    return Column(
+      children: <Widget>[
+        TextFormField(
+          readOnly: true,
+          initialValue: value == null ? getTranslated(context, 'empty') : value,
+          style: TextStyle(color: WHITE),
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+            counterStyle: TextStyle(color: WHITE),
+            suffixIcon: iconGreen(Icons.assignment_turned_in_outlined),
+            border: OutlineInputBorder(),
+            prefixIcon: iconWhite(icon),
+            labelText: name,
+            labelStyle: TextStyle(color: WHITE),
+          ),
+        ),
+        SizedBox(height: 10),
       ],
     );
   }

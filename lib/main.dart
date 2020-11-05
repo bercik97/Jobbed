@@ -61,8 +61,8 @@ class _MyAppState extends State<MyApp> {
     var info = await storage.read(key: 'info');
     var username = await storage.read(key: 'username');
     var nationality = await storage.read(key: 'nationality');
-    var containsMoreThanOneGroup =
-        await storage.read(key: 'containsMoreThanOneGroup');
+    var companyName = await storage.read(key: 'companyName');
+    var containsMoreThanOneGroup = await storage.read(key: 'containsMoreThanOneGroup');
     var groupId = await storage.read(key: 'groupId');
     var groupName = await storage.read(key: 'groupName');
     var groupDescription = await storage.read(key: 'groupDescription');
@@ -76,6 +76,7 @@ class _MyAppState extends State<MyApp> {
     map['info'] = info;
     map['username'] = username;
     map['nationality'] = nationality;
+    map['companyName'] = companyName;
     map['containsMoreThanOneGroup'] = containsMoreThanOneGroup;
     map['groupId'] = groupId;
     map['groupName'] = groupName;
@@ -120,8 +121,7 @@ class _MyAppState extends State<MyApp> {
         ],
         localeResolutionCallback: (deviceLocale, supportedLocales) {
           for (var locale in supportedLocales) {
-            if (locale.languageCode == deviceLocale.languageCode &&
-                locale.countryCode == deviceLocale.countryCode) {
+            if (locale.languageCode == deviceLocale.languageCode && locale.countryCode == deviceLocale.countryCode) {
               return deviceLocale;
             }
           }
@@ -156,8 +156,7 @@ class _MyAppState extends State<MyApp> {
 
   Widget _chooseManagerPage(Map<String, String> data, User user) {
     String containsMoreThanOneGroup = data['containsMoreThanOneGroup'];
-    if (containsMoreThanOneGroup == 'true' ||
-        containsMoreThanOneGroup == null) {
+    if (containsMoreThanOneGroup == 'true' || containsMoreThanOneGroup == null) {
       return GroupsDashboardPage(user);
     }
     int groupId = data['groupId'] as int;
@@ -165,8 +164,7 @@ class _MyAppState extends State<MyApp> {
     String groupDescription = data['groupDescription'];
     String numberOfEmployees = data['numberOfEmployees'];
     String countryOfWork = data['countryOfWork'];
-    GroupModel model = new GroupModel(user, groupId, groupName,
-        groupDescription, numberOfEmployees, countryOfWork);
+    GroupModel model = new GroupModel(user, groupId, groupName, groupDescription, numberOfEmployees, countryOfWork);
     return GroupPage(model);
   }
 }

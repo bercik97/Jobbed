@@ -139,8 +139,7 @@
   "tokenIsIncorrect": "გადაცემული ჟეტონი არ არის სწორი.",
   "exitRegistrationContent": "დარწმუნებული ხართ, რომ გსურთ რეგისტრაციიდან გასვლა?",
   "exitAgree": "დიახ, მინდა გასვლა",
-  "registrationFormEmployee": "თანამშრომლების რეგისტრაციის ფორმა",
-  "registrationFormManager": "მენეჯერის რეგისტრაციის ფორმა",
+  "registrationForm": "არეგისტრაციო ფორმა",
   "loginSection": "შესვლის სექცია",
   "loginSectionDescription": "ამ სექციაში მოცემული ინფორმაციის საშუალებით თქვენ შეძლებთ პროგრამაში შესვლას. გახსოვდეთ ისინი.",
   "usernameIsRequired": "საჭიროა მომხმარებლის სახელი",
@@ -426,5 +425,12 @@
   "settingTsStatusToCompleted": "დროის ფურცლის სტატუსის დაყენება \"დასრულებულად\"",
   "accountExpirationDate": "Account expiration date",
   "informationAboutYou": "Information about you",
-  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you"
+  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you",
+  "companyName": "Company name",
+  "role": "Role",
+  "informationSection": "Information section",
+  "informationSectionDescription": "Following section provides information about the account",
+  "uneditableSection": "Uneditable section",
+  "editableSection": "Editable section",
+  "companyGroups": "Groups in the company"
 }

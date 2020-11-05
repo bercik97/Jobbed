@@ -139,8 +139,7 @@
   "tokenIsIncorrect": "Geslaagd token is niet correct.",
   "exitRegistrationContent": "Weet u zeker dat u het registratieformulier wilt verlaten?",
   "exitAgree": "Ja, ik wil afsluiten",
-  "registrationFormEmployee": "Registratieformulier voor werknemers",
-  "registrationFormManager": "Manager registratieformulier",
+  "registrationForm": "Registratieformulier",
   "loginSection": "LOGIN SECTIE",
   "loginSectionDescription": "Via de informatie in deze sectie kunt u inloggen op de applicatie. Onthoud ze.",
   "usernameIsRequired": "Gebruikersnaam is verplicht",
@@ -426,5 +425,12 @@
   "settingTsStatusToCompleted": "Urenstaatstatus instellen op 'voltooid'",
   "accountExpirationDate": "Account expiration date",
   "informationAboutYou": "Information about you",
-  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you"
+  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you",
+  "companyName": "Company name",
+  "role": "Role",
+  "informationSection": "Information section",
+  "informationSectionDescription": "Following section provides information about the account",
+  "uneditableSection": "Uneditable section",
+  "editableSection": "Editable section",
+  "companyGroups": "Groups in the company"
 }

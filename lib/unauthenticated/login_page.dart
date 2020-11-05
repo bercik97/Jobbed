@@ -7,8 +7,8 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/token/service/token_service.dart';
 import 'package:give_job/employee/employee_page.dart';
 import 'package:give_job/main.dart';
-import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/group_page.dart';
+import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/groups_dashboard_page.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -196,16 +196,19 @@ class _LoginPageState extends State<LoginPage> {
         String id = map['id'];
         String info = map['info'];
         String nationality = map['nationality'];
+        String companyName = map['companyName'];
         storage.write(key: 'role', value: role);
         storage.write(key: 'id', value: id);
         storage.write(key: 'info', value: info);
         storage.write(key: 'username', value: username);
         storage.write(key: 'nationality', value: nationality);
+        storage.write(key: 'companyName', value: companyName);
         user.id = id;
         user.role = role;
         user.username = username;
         user.info = info;
         user.nationality = nationality;
+        user.companyName = companyName;
         user.authHeader = authHeader;
         if (role == ROLE_EMPLOYEE) {
           Navigator.push(context, MaterialPageRoute(builder: (context) => EmployeeProfilPage(user)));
@@ -317,16 +320,16 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         color: GREEN,
                         onPressed: () {
-                          _tokenService.findFieldsValuesById(_tokenController.text, ['role', 'accountExpirationDate']).then(
+                          _tokenService.findFieldsValuesById(_tokenController.text, ['role', 'companyName', 'accountExpirationDate']).then(
                             (res) {
                               if (res == null) {
-                                _tokenAlertDialog(false, null, null);
+                                _tokenAlertDialog(false, null, null, null);
                                 return;
                               }
-                              _tokenAlertDialog(true, res['role'], res['accountExpirationDate']);
+                              _tokenAlertDialog(true, res['role'], res['companyName'], res['accountExpirationDate']);
                             },
                           ).catchError((onError) {
-                            _tokenAlertDialog(false, null, null);
+                            _tokenAlertDialog(false, null, null, null);
                           });
                         },
                       ),
@@ -341,7 +344,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _tokenAlertDialog(bool isCorrect, String role, String accountExpirationDate) {
+  _tokenAlertDialog(bool isCorrect, String role, String companyName, String accountExpirationDate) {
     return showDialog(
       barrierDismissible: false,
       context: context,
@@ -378,7 +381,7 @@ class _LoginPageState extends State<LoginPage> {
                   context,
                   PageRouteBuilder(
                     pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
-                      return role == ROLE_MANAGER ? ManagerRegisterPage(_tokenController.text, accountExpirationDate) : EmployeeRegisterPage(_tokenController.text, accountExpirationDate);
+                      return role == ROLE_MANAGER ? ManagerRegisterPage(_tokenController.text, companyName, accountExpirationDate) : EmployeeRegisterPage(_tokenController.text, companyName, accountExpirationDate);
                     },
                     transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
                       return SlideTransition(

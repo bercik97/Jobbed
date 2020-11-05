@@ -139,8 +139,7 @@
   "tokenIsIncorrect": "Godkänt token är inte korrekt.",
   "exitRegistrationContent": "Är du säker på att du vill lämna registreringsformuläret?",
   "exitAgree": "Ja, jag vill avsluta",
-  "registrationFormEmployee": "Anmälningsblankett för anställda",
-  "registrationFormManager": "Chefs registreringsformulär",
+  "registrationForm": "Anmälningsblankett",
   "loginSection": "LOGIN SECTION",
   "loginSectionDescription": "Genom informationen i detta avsnitt kommer du att kunna logga in på applikationen. Kom ihåg dem.",
   "usernameIsRequired": "Användarnamn krävs",
@@ -426,5 +425,12 @@
   "settingTsStatusToCompleted": "Ställa in tidrapportens status till \"avslutad\"",
   "accountExpirationDate": "Account expiration date",
   "informationAboutYou": "Information about you",
-  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you"
+  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you",
+  "companyName": "Company name",
+  "role": "Role",
+  "informationSection": "Information section",
+  "informationSectionDescription": "Following section provides information about the account",
+  "uneditableSection": "Uneditable section",
+  "editableSection": "Editable section",
+  "companyGroups": "Groups in the company"
 }

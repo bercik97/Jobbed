@@ -33,6 +33,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
   EmployeeService _employeeService;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  String _companyName;
   String _accountExpirationDate;
   final TextEditingController _usernameController = new TextEditingController();
   final TextEditingController _phoneController = new TextEditingController();
@@ -66,7 +67,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
     this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
     super.initState();
     _loading = true;
-    _employeeService.findEmployeeAndUserFieldsValuesById(
+    _employeeService.findEmployeeAndUserAndCompanyFieldsValuesById(
       widget._employeeId,
       [
         'username',
@@ -76,7 +77,6 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
         'phone',
         'viber',
         'whatsApp',
-        'accountExpirationDate',
         'fatherName',
         'motherName',
         'dateOfBirth',
@@ -91,6 +91,8 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
         'passportNumber',
         'passportReleaseDate',
         'passportExpirationDate',
+        'accountExpirationDate',
+        'companyName',
       ],
     ).then(
       (res) => {
@@ -119,6 +121,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
           _passportNumberController.text = this._fieldsValues['passportNumber'];
           _passportReleaseDate = DateTime.parse(this._fieldsValues['passportReleaseDate']);
           _passportExpirationDate = DateTime.parse(this._fieldsValues['passportExpirationDate']);
+          _companyName = this._fieldsValues['companyName'];
         }),
       },
     );
@@ -153,8 +156,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: <Widget>[
-                          _buildLoginSection(),
-                          _buildAccountExpirationField(),
+                          _buildReadOnlySection(),
                           _buildContactSection(),
                           _buildBasicSection(),
                           _buildAddressSection(),
@@ -178,38 +180,16 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
     return formKey.currentState.validate();
   }
 
-  Widget _buildLoginSection() {
+  Widget _buildReadOnlySection() {
     return Column(
-      children: <Widget>[
-        _buildRequiredTextField(
-          true,
-          _usernameController,
-          26,
-          getTranslated(context, 'username'),
-          getTranslated(context, 'usernameIsRequired'),
-          Icons.person,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildAccountExpirationField() {
-    return Column(
-      children: <Widget>[
-        TextFormField(
-          readOnly: true,
-          initialValue: _accountExpirationDate == null ? getTranslated(context, 'empty') : _accountExpirationDate,
-          style: TextStyle(color: WHITE),
-          decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            counterStyle: TextStyle(color: WHITE),
-            border: OutlineInputBorder(),
-            labelText: getTranslated(context, 'accountExpirationDate'),
-            prefixIcon: iconWhite(Icons.access_time_outlined),
-            labelStyle: TextStyle(color: WHITE),
-          ),
-        ),
+      children: [
+        SizedBox(height: 5),
+        Align(alignment: Alignment.topLeft, child: text25GreenUnderline(getTranslated(context, 'uneditableSection'))),
         SizedBox(height: 20),
+        _buildReadOnlyField(getTranslated(context, 'companyName'), _companyName, Icons.business),
+        _buildReadOnlyField(getTranslated(context, 'accountExpirationDate'), _accountExpirationDate, Icons.access_time_outlined),
+        _buildReadOnlyField(getTranslated(context, 'role'), getTranslated(context, 'employee'), Icons.nature_people_sharp),
+        _buildReadOnlyField(getTranslated(context, 'username'), _usernameController.text, Icons.person),
       ],
     );
   }
@@ -285,6 +265,9 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
   Widget _buildContactSection() {
     return Column(
       children: <Widget>[
+        SizedBox(height: 20),
+        Align(alignment: Alignment.topLeft, child: text25GreenUnderline(getTranslated(context, 'editableSection'))),
+        SizedBox(height: 20),
         _buildContactNumField(
           _phoneController,
           getTranslated(context, 'phone'),
@@ -339,6 +322,28 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
           getTranslated(context, 'drivingLicense'),
           Icons.drive_eta,
         ),
+      ],
+    );
+  }
+
+  Widget _buildReadOnlyField(String name, String value, IconData icon) {
+    return Column(
+      children: <Widget>[
+        TextFormField(
+          readOnly: true,
+          initialValue: value == null ? getTranslated(context, 'empty') : value,
+          style: TextStyle(color: WHITE),
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+            counterStyle: TextStyle(color: WHITE),
+            suffixIcon: iconGreen(Icons.assignment_turned_in_outlined),
+            border: OutlineInputBorder(),
+            prefixIcon: iconWhite(icon),
+            labelText: name,
+            labelStyle: TextStyle(color: WHITE),
+          ),
+        ),
+        SizedBox(height: 10),
       ],
     );
   }

@@ -139,8 +139,7 @@
   "tokenIsIncorrect": "Übergebenes Token ist nicht korrekt.",
   "exitRegistrationContent": "Sind Sie sicher, dass Sie das Registrierungsformular verlassen möchten?",
   "exitAgree": "Ja, ich möchte beenden",
-  "registrationFormEmployee": "Anmeldeformular für Mitarbeiter",
-  "registrationFormManager": "Manager Registrierungsformular",
+  "registrationForm": "Anmeldeformular",
   "loginSection": "LOGIN-ABSCHNITT",
   "loginSectionDescription": "Über die Informationen in diesem Abschnitt können Sie sich bei der Anwendung anmelden. Bitte merken Sie sich diese.",
   "usernameIsRequired": "Benutzername ist erforderlich",
@@ -426,5 +425,12 @@
   "settingTsStatusToCompleted": "Setzen des Arbeitszeittabellenstatus auf \"abgeschlossen\"",
   "accountExpirationDate": "Account expiration date",
   "informationAboutYou": "Information about you",
-  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you"
+  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you",
+  "companyName": "Company name",
+  "role": "Role",
+  "informationSection": "Information section",
+  "informationSectionDescription": "Following section provides information about the account",
+  "uneditableSection": "Uneditable section",
+  "editableSection": "Editable section",
+  "companyGroups": "Groups in the company"
 }

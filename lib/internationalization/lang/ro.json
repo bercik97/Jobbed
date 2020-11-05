@@ -139,8 +139,7 @@
   "tokenIsIncorrect": "Jetonul trecut nu este corect.",
   "exitRegistrationContent": "Sigur doriți să ieșiți din formularul de înregistrare?",
   "exitAgree": "Da, vreau să ies",
-  "registrationFormEmployee": "Formular de înregistrare a angajaților",
-  "registrationFormManager": "Formular de înregistrare manager",
+  "registrationForm": "Formular de înregistrare",
   "loginSection": "LOGIN SECTION",
   "loginSectionDescription": "Prin informațiile din această secțiune veți putea să vă conectați la aplicație. Vă rugăm să le amintiți.",
   "usernameIsRequired": "Numele de utilizator este obligatoriu",
@@ -426,5 +425,12 @@
   "settingTsStatusToCompleted": "Setarea stării foii de timp la \"completat\"",
   "accountExpirationDate": "Account expiration date",
   "informationAboutYou": "Information about you",
-  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you"
+  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you",
+  "companyName": "Company name",
+  "role": "Role",
+  "informationSection": "Information section",
+  "informationSectionDescription": "Following section provides information about the account",
+  "uneditableSection": "Uneditable section",
+  "editableSection": "Editable section",
+  "companyGroups": "Groups in the company"
 }

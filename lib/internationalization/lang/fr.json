@@ -139,8 +139,7 @@
   "tokenIsIncorrect": "Le jeton transmis n'est pas correct.",
   "exitRegistrationContent": "Êtes-vous sûr de vouloir quitter le formulaire d'inscription?",
   "exitAgree": "Oui, je veux quitter",
-  "registrationFormEmployee": "Formulaire d'inscription des employés",
-  "registrationFormManager": "Formulaire d'inscription du gestionnaire",
+  "registrationForm": "Formulaire d'inscription",
   "loginSection": "SECTION DE CONNEXION",
   "loginSectionDescription": "Grâce aux informations de cette section, vous pourrez vous connecter à l'application. Veuillez les retenir.",
   "usernameIsRequired": "Le nom d'utilisateur est requis",
@@ -426,5 +425,12 @@
   "settingTsStatusToCompleted": "Définition de l'état de la feuille de temps sur \"terminé\"",
   "accountExpirationDate": "Account expiration date",
   "informationAboutYou": "Information about you",
-  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you"
+  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you",
+  "companyName": "Company name",
+  "role": "Role",
+  "informationSection": "Information section",
+  "informationSectionDescription": "Following section provides information about the account",
+  "uneditableSection": "Uneditable section",
+  "editableSection": "Editable section",
+  "companyGroups": "Groups in the company"
 }

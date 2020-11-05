@@ -26,7 +26,7 @@ class EmployeeService {
     return res.statusCode == 200 ? res : Future.error(res.body);
   }
 
-  Future<Map<String, Object>> findEmployeeAndUserFieldsValuesById(int id, List<String> fields) async {
+  Future<Map<String, Object>> findEmployeeAndUserAndCompanyFieldsValuesById(int id, List<String> fields) async {
     Response res = await get(
       '$_url?id=$id&fields=$fields',
       headers: _header,

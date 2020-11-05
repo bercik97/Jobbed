@@ -17,9 +17,10 @@ import '../login_page.dart';
 
 class ManagerRegisterPage extends StatefulWidget {
   final String _tokenId;
+  final String _companyName;
   final String _accountExpirationDate;
 
-  ManagerRegisterPage(this._tokenId, this._accountExpirationDate);
+  ManagerRegisterPage(this._tokenId, this._companyName, this._accountExpirationDate);
 
   @override
   _ManagerRegisterPageState createState() => _ManagerRegisterPageState();
@@ -32,7 +33,9 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
   bool _passwordVisible = false;
   bool _rePasswordVisible = false;
 
+  String _companyName;
   String _accountExpirationDate;
+
   final TextEditingController _usernameController = new TextEditingController();
   final TextEditingController _passwordController = new TextEditingController();
   final TextEditingController _nameController = TextEditingController();
@@ -49,6 +52,7 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
   void initState() {
     super.initState();
     _managerService = ServiceInitializer.initialize(null, null, ManagerService);
+    _companyName = widget._companyName;
     _accountExpirationDate = widget._accountExpirationDate;
     _passwordVisible = false;
     _rePasswordVisible = false;
@@ -81,14 +85,14 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
               key: formKey,
               child: Column(
                 children: <Widget>[
-                  textCenter20GreenBold(getTranslated(context, 'registrationFormManager')),
+                  textCenter20GreenBold(getTranslated(context, 'registrationForm')),
                   Divider(color: WHITE),
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(
                         children: <Widget>[
+                          _buildReadOnlySection(),
                           _buildLoginSection(),
-                          _buildAccountExpirationField(),
                           _buildBasicSection(),
                           _buildContactSection(),
                           _buildDocumentsSection(),
@@ -108,6 +112,17 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
 
   bool _isValid() {
     return formKey.currentState.validate();
+  }
+
+  Widget _buildReadOnlySection() {
+    return Column(
+      children: [
+        _buildSectionHeader(getTranslated(context, 'informationSection'), getTranslated(context, 'informationSectionDescription')),
+        _buildReadOnlyField(getTranslated(context, 'companyName'), _companyName, Icons.business),
+        _buildReadOnlyField(getTranslated(context, 'accountExpirationDate'), _accountExpirationDate, Icons.access_time_outlined),
+        _buildReadOnlyField(getTranslated(context, 'role'), getTranslated(context, 'manager'), Icons.nature_people_sharp),
+      ],
+    );
   }
 
   Widget _buildLoginSection() {
@@ -273,6 +288,28 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
     );
   }
 
+  Widget _buildReadOnlyField(String name, String value, IconData icon) {
+    return Column(
+      children: <Widget>[
+        TextFormField(
+          readOnly: true,
+          initialValue: value == null ? getTranslated(context, 'empty') : value,
+          style: TextStyle(color: WHITE),
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+            counterStyle: TextStyle(color: WHITE),
+            suffixIcon: iconGreen(Icons.assignment_turned_in_outlined),
+            border: OutlineInputBorder(),
+            prefixIcon: iconWhite(icon),
+            labelText: name,
+            labelStyle: TextStyle(color: WHITE),
+          ),
+        ),
+        SizedBox(height: 10),
+      ],
+    );
+  }
+
   Widget _buildPasswordTextField() {
     return Column(
       children: <Widget>[
@@ -343,28 +380,6 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
               ),
               labelStyle: TextStyle(color: WHITE)),
           validator: (value) => validate(value),
-        ),
-        SizedBox(height: 10),
-      ],
-    );
-  }
-
-  Widget _buildAccountExpirationField() {
-    return Column(
-      children: <Widget>[
-        Align(alignment: Alignment.topLeft, child: text25GreenUnderline(getTranslated(context, 'accountExpirationDate'))),
-        SizedBox(height: 15),
-        TextFormField(
-          readOnly: true,
-          initialValue: _accountExpirationDate == null ? getTranslated(context, 'empty') : _accountExpirationDate,
-          style: TextStyle(color: WHITE),
-          decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            counterStyle: TextStyle(color: WHITE),
-            border: OutlineInputBorder(),
-            prefixIcon: iconWhite(Icons.access_time_outlined),
-            labelStyle: TextStyle(color: WHITE),
-          ),
         ),
         SizedBox(height: 10),
       ],

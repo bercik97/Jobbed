@@ -139,8 +139,7 @@
   "tokenIsIncorrect": "Przekazany token jest nieprawidłowy.",
   "exitRegistrationContent": "Czy na pewno chcesz wyjść z formularza rejestracyjnego?",
   "exitAgree": "Tak, chcę wyjść",
-  "registrationFormEmployee": "Formularz rejestracji pracownika",
-  "registrationFormManager": "Formularz rejestracji menadżera",
+  "registrationForm": "Formularz rejestracji",
   "loginSection": "Sekcja logowania",
   "loginSectionDescription": "Poprzez dane w tej sekcji będziesz mógł zalogować się do aplikacji. Proszę, zapamiętaj je.",
   "usernameIsRequired": "Nazwa użytkownika jest wymagana",
@@ -426,5 +425,12 @@
   "settingTsStatusToCompleted": "Ustawianie statusu arkusza na 'zakończony'",
   "accountExpirationDate": "Data wygaśnięcia konta",
   "informationAboutYou": "Informacje o Tobie",
-  "successfullyUpdatedInformationAboutYou": "Pomyślnie zaktualizowano informacje o Tobie"
+  "successfullyUpdatedInformationAboutYou": "Pomyślnie zaktualizowano informacje o Tobie",
+  "companyName": "Nazwa firmy",
+  "role": "Rola",
+  "informationSection": "Sekcja informacji",
+  "informationSectionDescription": "Poniższa sekcja zawiera informacje o koncie",
+  "uneditableSection": "Nieedytowalna sekcja",
+  "editableSection": "Edytowalna sekcja",
+  "companyGroups": "Grupy w firmie"
 }

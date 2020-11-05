@@ -266,7 +266,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
 
   Widget _buildContactSection() {
     return FutureBuilder(
-      future: _employeeService.findEmployeeAndUserFieldsValuesById(_employeeId, ['phone', 'viber', 'whatsApp']),
+      future: _employeeService.findEmployeeAndUserAndCompanyFieldsValuesById(_employeeId, ['phone', 'viber', 'whatsApp']),
       builder: (BuildContext context, AsyncSnapshot<Map<String, Object>> snapshot) {
         Map<String, Object> res = snapshot.data;
         if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {

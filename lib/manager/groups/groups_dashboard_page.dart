@@ -53,7 +53,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
               debugShowCheckedModeBanner: false,
               home: Scaffold(
                 backgroundColor: DARK,
-                appBar: managerAppBar(context, _user, getTranslated(context, 'groups')),
+                appBar: managerAppBar(context, _user, getTranslated(context, 'companyGroups')),
                 drawer: managerSideBar(context, _user),
                 body: Column(
                   children: <Widget>[_groups.isNotEmpty ? _handleGroups() : _handleNoGroups()],
@@ -73,10 +73,46 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
         padding: const EdgeInsets.all(12.0),
         child: Column(
           children: <Widget>[
+            ListTile(
+              leading: Tab(
+                icon: Container(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 13),
+                    child: Container(
+                      child: Image(
+                        width: 75,
+                        image: AssetImage(
+                          'images/big-group-icon.png',
+                        ),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              title: text18WhiteBold(
+                _user.companyName != null ? utf8.decode(_user.companyName.runes.toList()) : getTranslated(context, 'empty'),
+              ),
+            ),
+            SizedBox(height: 10),
             for (int i = 0; i < _groups.length; i++)
               Card(
                 color: BRIGHTER_DARK,
-                child: InkWell(
+                child: ListTile(
+                  leading: Tab(
+                    icon: Padding(
+                      padding: EdgeInsets.only(top: 13),
+                      child: Container(
+                        child: Image(
+                          width: 75,
+                          image: AssetImage(
+                            'images/big-group-icon.png',
+                          ),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
                   onTap: () {
                     GroupDashboardDto group = _groups[i];
                     Navigator.of(context).push(
@@ -96,46 +132,25 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                       ),
                     );
                   },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                  title: text18WhiteBold(
+                    utf8.decode(
+                      _groups[i].name != null ? _groups[i].name.runes.toList() : getTranslated(context, 'empty'),
+                    ),
+                  ),
+                  subtitle: Column(
                     children: <Widget>[
-                      ListTile(
-                        leading: Tab(
-                          icon: Padding(
-                            padding: EdgeInsets.only(top: 13),
-                            child: Container(
-                              child: Image(
-                                width: 75,
-                                image: AssetImage(
-                                  'images/big-group-icon.png',
-                                ),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ),
-                        title: text18WhiteBold(
-                          utf8.decode(
-                            _groups[i].name != null ? _groups[i].name.runes.toList() : getTranslated(context, 'empty'),
-                          ),
-                        ),
-                        subtitle: Column(
-                          children: <Widget>[
-                            Align(
-                              child: textWhite(utf8.decode(_groups[i].description != null ? _groups[i].description.runes.toList() : getTranslated(context, 'empty'))),
-                              alignment: Alignment.topLeft,
-                            ),
-                            SizedBox(height: 5),
-                            Align(
-                              child: textWhite(getTranslated(context, 'numberOfEmployees') + ': ' + _groups[i].numberOfEmployees.toString()),
-                              alignment: Alignment.topLeft,
-                            ),
-                            Align(
-                              child: textWhite(getTranslated(context, 'groupCountryOfWork') + ': ' + LanguageUtil.findFlagByNationality(_groups[i].countryOfWork.toString())),
-                              alignment: Alignment.topLeft,
-                            ),
-                          ],
-                        ),
+                      Align(
+                        child: textWhite(utf8.decode(_groups[i].description != null ? _groups[i].description.runes.toList() : getTranslated(context, 'empty'))),
+                        alignment: Alignment.topLeft,
+                      ),
+                      SizedBox(height: 5),
+                      Align(
+                        child: textWhite(getTranslated(context, 'numberOfEmployees') + ': ' + _groups[i].numberOfEmployees.toString()),
+                        alignment: Alignment.topLeft,
+                      ),
+                      Align(
+                        child: textWhite(getTranslated(context, 'groupCountryOfWork') + ': ' + LanguageUtil.findFlagByNationality(_groups[i].countryOfWork.toString())),
+                        alignment: Alignment.topLeft,
                       ),
                     ],
                   ),

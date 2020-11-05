@@ -1,4 +1,3 @@
-
 import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +32,9 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
   ManagerService _managerService;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  String _companyName;
   String _accountExpirationDate;
+
   final TextEditingController _usernameController = new TextEditingController();
   final TextEditingController _phoneController = new TextEditingController();
   final TextEditingController _viberController = new TextEditingController();
@@ -62,7 +63,8 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
         'phone',
         'viber',
         'whatsApp',
-        'accountExpirationDate',
+        'companyName'
+            'accountExpirationDate',
       ],
     ).then(
       (res) => {
@@ -76,6 +78,7 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
           _phoneController.text = this._fieldsValues['phone'];
           _viberController.text = this._fieldsValues['viber'];
           _whatsAppController.text = this._fieldsValues['whatsApp'];
+          _companyName = this._fieldsValues['companyName'];
           _accountExpirationDate = this._fieldsValues['accountExpirationDate'];
         }),
       },
@@ -111,8 +114,7 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: <Widget>[
-                          _buildLoginSection(),
-                          _buildAccountExpirationField(),
+                          _buildReadOnlySection(),
                           _buildContactSection(),
                           _buildBasicSection(),
                         ],
@@ -133,38 +135,16 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
     return formKey.currentState.validate();
   }
 
-  Widget _buildLoginSection() {
+  Widget _buildReadOnlySection() {
     return Column(
-      children: <Widget>[
-        _buildRequiredTextField(
-          true,
-          _usernameController,
-          26,
-          getTranslated(context, 'username'),
-          getTranslated(context, 'usernameIsRequired'),
-          Icons.person,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildAccountExpirationField() {
-    return Column(
-      children: <Widget>[
-        TextFormField(
-          readOnly: true,
-          initialValue: _accountExpirationDate == null ? getTranslated(context, 'empty') : _accountExpirationDate,
-          style: TextStyle(color: WHITE),
-          decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            counterStyle: TextStyle(color: WHITE),
-            border: OutlineInputBorder(),
-            labelText: getTranslated(context, 'accountExpirationDate'),
-            prefixIcon: iconWhite(Icons.access_time_outlined),
-            labelStyle: TextStyle(color: WHITE),
-          ),
-        ),
+      children: [
+        SizedBox(height: 5),
+        Align(alignment: Alignment.topLeft, child: text25GreenUnderline(getTranslated(context, 'uneditableSection'))),
         SizedBox(height: 20),
+        _buildReadOnlyField(getTranslated(context, 'companyName'), _companyName, Icons.business),
+        _buildReadOnlyField(getTranslated(context, 'accountExpirationDate'), _accountExpirationDate, Icons.access_time_outlined),
+        _buildReadOnlyField(getTranslated(context, 'role'), getTranslated(context, 'employee'), Icons.nature_people_sharp),
+        _buildReadOnlyField(getTranslated(context, 'username'), _usernameController.text, Icons.person),
       ],
     );
   }
@@ -196,6 +176,9 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
   Widget _buildContactSection() {
     return Column(
       children: <Widget>[
+        SizedBox(height: 20),
+        Align(alignment: Alignment.topLeft, child: text25GreenUnderline(getTranslated(context, 'editableSection'))),
+        SizedBox(height: 20),
         _buildContactNumField(
           _phoneController,
           getTranslated(context, 'phone'),
@@ -211,6 +194,28 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
           getTranslated(context, 'whatsApp'),
           Icons.perm_phone_msg,
         ),
+      ],
+    );
+  }
+
+  Widget _buildReadOnlyField(String name, String value, IconData icon) {
+    return Column(
+      children: <Widget>[
+        TextFormField(
+          readOnly: true,
+          initialValue: value == null ? getTranslated(context, 'empty') : value,
+          style: TextStyle(color: WHITE),
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+            counterStyle: TextStyle(color: WHITE),
+            suffixIcon: iconGreen(Icons.assignment_turned_in_outlined),
+            border: OutlineInputBorder(),
+            prefixIcon: iconWhite(icon),
+            labelText: name,
+            labelStyle: TextStyle(color: WHITE),
+          ),
+        ),
+        SizedBox(height: 10),
       ],
     );
   }

@@ -139,8 +139,7 @@
   "tokenIsIncorrect": "Переданный токен неверен.",
   "exitRegistrationContent": "Вы уверены, что хотите выйти из регистрационной формы?",
   "exitAgree": "Да, я хочу выйти",
-  "registrationFormEmployee": "Регистрационная форма сотрудника",
-  "registrationFormManager": "Форма регистрации менеджера",
+  "registrationForm": "Форма регистрации",
   "loginSection": "РАЗДЕЛ ВХОДА",
   "loginSectionDescription": "Благодаря информации в этом разделе вы сможете войти в приложение. Пожалуйста, запомните их.",
   "usernameIsRequired": "Требуется имя пользователя",
@@ -426,5 +425,12 @@
   "settingTsStatusToCompleted": "Установка статуса расписания на \"завершено\"",
   "accountExpirationDate": "Account expiration date",
   "informationAboutYou": "Information about you",
-  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you"
+  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you",
+  "companyName": "Company name",
+  "role": "Role",
+  "informationSection": "Information section",
+  "informationSectionDescription": "Following section provides information about the account",
+  "uneditableSection": "Uneditable section",
+  "editableSection": "Editable section",
+  "companyGroups": "Groups in the company"
 }

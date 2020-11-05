@@ -139,8 +139,7 @@
   "tokenIsIncorrect": "El token pasado no es correcto.",
   "exitRegistrationContent": "¿Está seguro de que desea salir del formulario de registro?",
   "exitAgree": "Sí, quiero salir",
-  "registrationFormEmployee": "Formulario de registro de empleados",
-  "registrationFormManager": "Formulario de registro de gerente",
+  "registrationForm": "Formulario de inscripción",
   "loginSection": "SECCIÓN DE INICIO DE SESIÓN",
   "loginSectionDescription": "A través de la información de esta sección podrá iniciar sesión en la aplicación. Por favor recuérdelos.",
   "usernameIsRequired": "El nombre de usuario es obligatorio",
@@ -426,5 +425,12 @@
   "settingTsStatusToCompleted": "Estableciendo el estado de la hoja de tiempo en 'completado'",
   "accountExpirationDate": "Account expiration date",
   "informationAboutYou": "Information about you",
-  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you"
+  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you",
+  "companyName": "Company name",
+  "role": "Role",
+  "informationSection": "Information section",
+  "informationSectionDescription": "Following section provides information about the account",
+  "uneditableSection": "Uneditable section",
+  "editableSection": "Editable section",
+  "companyGroups": "Groups in the company"
 }
