@@ -452,5 +452,11 @@
   "groupDoesNotExists": "Grupa nie istnieje",
   "manageGroupEmployees": "Zarządzaj pracownikami grupy",
   "addEmployees": "Dodaj pracowników",
-  "deleteEmployees": "Usuń pracowników"
+  "deleteEmployees": "Usuń pracowników",
+  "noEmployeesToAddGroup": "Brak pracowników do dodania do wybranej grupy ponieważ wszyscy pracownicy firmy aktualnie posiadają grupę.",
+  "addingEmployeesToGroup": "Dodawanie pracowników do grupy",
+  "successfullyAddedGroupEmployees": "Pomyślnie dodano pracowników do grupy",
+  "removingEmployeesFromGroup": "Usuwanie pracowników z grupy",
+  "successfullyRemovedGroupEmployees": "Pomyślnie usunięto pracowników z grupy",
+  "youWantToRemoveFromGroup": "których chcesz usunąć z grupy"
 }

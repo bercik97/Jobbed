@@ -452,5 +452,11 @@
   "groupDoesNotExists": "Group does not exists",
   "manageGroupEmployees": "Manage group employees",
   "addEmployees": "Add employees",
-  "deleteEmployees": "Delete employees"
+  "deleteEmployees": "Delete employees",
+  "noEmployeesToAddGroup": "There are no employees to add to selected group as all employees of the company currently have a group.",
+  "addingEmployeesToGroup": "Adding employees to the group",
+  "successfullyAddedGroupEmployees": "Successfully added group employees",
+  "removingEmployeesFromGroup": "Removing employees from the group",
+  "successfullyRemovedGroupEmployees": "Successfully removed group employees",
+  "youWantToRemoveFromGroup": "you want to remove from the group"
 }

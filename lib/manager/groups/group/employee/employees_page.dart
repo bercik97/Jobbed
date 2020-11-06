@@ -89,7 +89,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
                 onChanged: (string) {
                   setState(
                     () {
-                      _filteredEmployees = _employees.where((u) => (u.employeeInfo.toLowerCase().contains(string.toLowerCase()))).toList();
+                      _filteredEmployees = _employees.where((u) => (u.info.toLowerCase().contains(string.toLowerCase()))).toList();
                     },
                   );
                 },
@@ -105,8 +105,8 @@ class _EmployeesPageState extends State<EmployeesPage> {
                         itemCount: _filteredEmployees.length,
                         itemBuilder: (BuildContext context, int index) {
                           EmployeeGroupDto employee = _filteredEmployees[index];
-                          String info = employee.employeeInfo;
-                          String nationality = employee.employeeNationality;
+                          String info = employee.info;
+                          String nationality = employee.nationality;
                           String currency = employee.currency;
                           return Card(
                             color: DARK,
@@ -125,7 +125,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
                                               _model,
                                               nationality,
                                               currency,
-                                              employee.employeeId,
+                                              employee.id,
                                               info,
                                               employee.moneyPerHour,
                                             );

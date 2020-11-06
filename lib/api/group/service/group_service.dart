@@ -40,7 +40,7 @@ class GroupService {
   }
 
   Future<dynamic> update(int id, Map<String, Object> fieldsValues) async {
-    String url = '$_url?id=$id';
+    String url = '$_url/id?id=$id';
     Response res = await put(
       url,
       body: jsonEncode(fieldsValues),
@@ -58,6 +58,37 @@ class GroupService {
   Future<dynamic> deleteByName(String name) async {
     Response res = await delete(
       _url + '/$name',
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> addGroupEmployees(int id, List<int> employeeIds) async {
+    String url = '$_url?id=$id';
+    Response res = await put(
+      url,
+      body: jsonEncode(employeeIds),
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> deleteGroupEmployees(int id, List<int> employeeIds) async {
+    String url = '$_url?id=$id&employee_ids=$employeeIds';
+    Response res = await delete(
+      url,
       headers: _headers,
     );
     if (res.statusCode == 200) {

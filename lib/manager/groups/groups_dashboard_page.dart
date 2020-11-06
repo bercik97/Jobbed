@@ -183,7 +183,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                     children: [
                       IconButton(
                         icon: text25Green('+ -'),
-                        onPressed: () => _manageGroupEmployees(_groups[i].name),
+                        onPressed: () => _manageGroupEmployees(_groups[i].name, _groups[i].id),
                       ),
                       IconButton(
                         icon: icon30Red(Icons.delete),
@@ -220,7 +220,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
     );
   }
 
-  void _manageGroupEmployees(String groupName) {
+  void _manageGroupEmployees(String groupName, int groupId) {
     showGeneralDialog(
       context: context,
       barrierColor: DARK.withOpacity(0.95),
@@ -251,7 +251,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                       shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                       onPressed: () => Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => AddGroupEmployeesPage(_user)),
+                        MaterialPageRoute(builder: (context) => AddGroupEmployeesPage(_user, groupId)),
                       ),
                       color: GREEN,
                       child: Container(
@@ -270,7 +270,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                       shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                       onPressed: () => Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => DeleteGroupEmployeesPage(_user)),
+                        MaterialPageRoute(builder: (context) => DeleteGroupEmployeesPage(_user, groupId)),
                       ),
                       color: Colors.red,
                       child: Container(
