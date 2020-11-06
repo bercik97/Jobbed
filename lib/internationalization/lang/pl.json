@@ -449,5 +449,8 @@
   "groupNameForDeleteInvalid": "Wpisana nazwa grupy nie jest taka sama jak realna nazwa grupy",
   "groupNameForDelete": "Nazwa grupy do usunięcia",
   "successfullyDeletedGroup": "Pomyślnie usunięto wybraną grupę",
-  "groupDoesNotExists": "Grupa nie istnieje"
+  "groupDoesNotExists": "Grupa nie istnieje",
+  "manageGroupEmployees": "Zarządzaj pracownikami grupy",
+  "addEmployees": "Dodaj pracowników",
+  "deleteEmployees": "Usuń pracowników"
 }

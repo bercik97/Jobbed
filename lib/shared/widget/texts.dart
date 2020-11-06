@@ -67,6 +67,7 @@ Text textDarkBold(String text) { return Text(text, style: TextStyle(color: DARK,
 /*    TEXT GREEN   */
 /////////////////////
 Text textGreen(String text) { return Text(text, style: TextStyle(color: GREEN)); }
+Text text25Green(String text) { return Text(text, style: TextStyle(fontSize: 25, color: GREEN)); }
 
 
 /////////////////////////////////

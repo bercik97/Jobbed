@@ -7,6 +7,8 @@ import 'package:give_job/api/group/dto/group_dashboard_dto.dart';
 import 'package:give_job/api/group/service/group_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
+import 'package:give_job/manager/groups/crud/add_group_employees_page.dart';
+import 'package:give_job/manager/groups/crud/delete_group_employees_page.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -164,10 +166,6 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                   ),
                   subtitle: Column(
                     children: <Widget>[
-                      Align(
-                        child: textWhite(utf8.decode(_groups[i].description != null ? _groups[i].description.runes.toList() : getTranslated(context, 'empty'))),
-                        alignment: Alignment.topLeft,
-                      ),
                       SizedBox(height: 5),
                       Align(
                         child: textWhite(getTranslated(context, 'numberOfEmployees') + ': ' + _groups[i].numberOfEmployees.toString()),
@@ -177,18 +175,20 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                         child: textWhite(getTranslated(context, 'groupCountryOfWork') + ': ' + LanguageUtil.findFlagByNationality(_groups[i].countryOfWork.toString())),
                         alignment: Alignment.topLeft,
                       ),
+                      SizedBox(height: 5),
                     ],
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        icon: icon30Green(Icons.border_color),
-                        onPressed: () {
-                          print('edit');
-                        },
+                        icon: text25Green('+ -'),
+                        onPressed: () => _manageGroupEmployees(_groups[i].name),
                       ),
-                      IconButton(icon: icon30Red(Icons.delete), onPressed: () => _showDeleteGroupDialog(_groups[i].name)),
+                      IconButton(
+                        icon: icon30Red(Icons.delete),
+                        onPressed: () => _showDeleteGroupDialog(_groups[i].name),
+                      ),
                     ],
                   ),
                 ),
@@ -217,6 +217,93 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
           ),
         ),
       ],
+    );
+  }
+
+  void _manageGroupEmployees(String groupName) {
+    showGeneralDialog(
+      context: context,
+      barrierColor: DARK.withOpacity(0.95),
+      barrierDismissible: false,
+      barrierLabel: getTranslated(context, 'manageGroupEmployees'),
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: Scaffold(
+            backgroundColor: Colors.black12,
+            body: Center(
+              child: Form(
+                autovalidate: true,
+                key: formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 50),
+                      child: text20GreenBold(getTranslated(context, 'manageGroupEmployees')),
+                    ),
+                    SizedBox(height: 2.5),
+                    textWhite(getTranslated(context, 'groupName') + ': ' + groupName),
+                    SizedBox(height: 20),
+                    MaterialButton(
+                      elevation: 0,
+                      height: 50,
+                      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AddGroupEmployeesPage(_user)),
+                      ),
+                      color: GREEN,
+                      child: Container(
+                        width: 250,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[text20White(getTranslated(context, 'addEmployees'))],
+                        ),
+                      ),
+                      textColor: Colors.white,
+                    ),
+                    SizedBox(height: 20),
+                    MaterialButton(
+                      elevation: 0,
+                      height: 50,
+                      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DeleteGroupEmployeesPage(_user)),
+                      ),
+                      color: Colors.red,
+                      child: Container(
+                        width: 250,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[text20White(getTranslated(context, 'deleteEmployees'))],
+                        ),
+                      ),
+                      textColor: Colors.white,
+                    ),
+                    SizedBox(height: 30),
+                    Container(
+                      width: 80,
+                      child: MaterialButton(
+                        elevation: 0,
+                        height: 50,
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[iconWhite(Icons.close)],
+                        ),
+                        color: Colors.red,
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
