@@ -10,7 +10,13 @@ class EmployeePageDto {
   final num tsEarnedMoney;
   final num tsRating;
   final List timeSheets;
+  final int todayWorkdayId;
+  final String todayDate;
+  final num todayMoney;
+  final int todayHours;
+  final int todayRating;
   final String todayPlan;
+  final String todayNote;
   final String groupManager;
   final String groupManagerPhone;
   final String groupManagerViber;
@@ -25,7 +31,13 @@ class EmployeePageDto {
     @required this.tsEarnedMoney,
     @required this.tsRating,
     @required this.timeSheets,
+    @required this.todayWorkdayId,
+    @required this.todayDate,
+    @required this.todayMoney,
+    @required this.todayHours,
+    @required this.todayRating,
     @required this.todayPlan,
+    @required this.todayNote,
     @required this.groupManager,
     @required this.groupManagerPhone,
     @required this.groupManagerViber,
@@ -42,7 +54,13 @@ class EmployeePageDto {
       tsEarnedMoney: json['tsEarnedMoney'] as num,
       tsRating: json['tsRating'] as num,
       timeSheets: json['timeSheets'].map((data) => TimesheetForEmployeeDto.fromJson(data)).toList(),
+      todayWorkdayId: json['todayWorkdayId'] as int,
+      todayDate: json['todayDate'] as String,
+      todayMoney: json['todayMoney'] as num,
+      todayHours: json['todayHours'] as num,
+      todayRating: json['todayRating'] as num,
       todayPlan: json['todayPlan'] as String,
+      todayNote: json['todayNote'] as String,
       groupManager: json['groupManager'] as String,
       groupManagerPhone: json['groupManagerPhone'] as String,
       groupManagerViber: json['groupManagerViber'] as String,

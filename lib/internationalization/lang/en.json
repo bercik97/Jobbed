@@ -467,8 +467,12 @@
   "noteDetails": "Note details",
   "writeNote": "Write note",
   "textSomeNote": "Text some note ...",
-  "noteCannotBeEmpty": "Note cannot be empty",
   "noteSavedSuccessfully": "Note has been saved successfully",
   "noteFor": "Note for",
-  "today": "Today"
+  "today": "Today",
+  "checkDetails": "Check details",
+  "fillHours": "Fill hours",
+  "editNote": "Edit note",
+  "youDontHaveTsForCurrentMonth": "You do not have a time sheet for the current month",
+  "settingHoursForToday": "Setting hours for today"
 }

@@ -467,8 +467,12 @@
   "noteDetails": "Szczegóły notatki",
   "writeNote": "Napisz notatkę",
   "textSomeNote": "Napisz jakąś notatkę ...",
-  "noteCannotBeEmpty": "Notatka nie może być pusta",
   "noteSavedSuccessfully": "Notatka została zapisana pomyślnie",
   "noteFor": "Notatka dla",
-  "today": "Dzisiaj"
+  "today": "Dzisiaj",
+  "checkDetails": "Sprawdź szczegóły",
+  "fillHours": "Uzupełnij godziny",
+  "editNote": "Edytuj notatkę",
+  "youDontHaveTsForCurrentMonth": "Nie posiadasz arkusza czasu pracy na bieżący miesiąc",
+  "setHoursForToday": "Uzupełnianie dzisiejszych godzin"
 }

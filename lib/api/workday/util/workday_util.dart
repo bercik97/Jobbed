@@ -110,4 +110,61 @@ class WorkdayUtil {
       },
     );
   }
+
+  static void showScrollablePlanAndNote(BuildContext context, String date, String plan, String note) {
+    if ((plan == null || plan.isEmpty) && (note == null || note.isEmpty)) {
+      return;
+    }
+    showGeneralDialog(
+      context: context,
+      barrierColor: DARK.withOpacity(0.95),
+      barrierDismissible: false,
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: Scaffold(
+            backgroundColor: Colors.black12,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: <Widget>[
+                        text20GreenBold(date.substring(0, 10)),
+                        SizedBox(height: 20),
+                        text20GreenBold(getTranslated(context, 'plan')),
+                        SizedBox(height: 5),
+                        textCenter20White(plan != null ? utf8.decode(plan.runes.toList()) : getTranslated(context, 'empty')),
+                        SizedBox(height: 20),
+                        text20GreenBold(getTranslated(context, 'note')),
+                        SizedBox(height: 5),
+                        textCenter20White(note != null ? utf8.decode(note.runes.toList()) : getTranslated(context, 'empty')),
+                        SizedBox(height: 20),
+                        Container(
+                          width: 80,
+                          child: MaterialButton(
+                            elevation: 0,
+                            height: 50,
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[iconWhite(Icons.close)],
+                            ),
+                            color: Colors.red,
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
 }

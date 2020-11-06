@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:give_job/api/workday/dto/workday_for_employee_dto.dart';
 import 'package:give_job/api/workday/dto/workday_dto.dart';
+import 'package:give_job/api/workday/dto/workday_for_employee_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/service/logout_service.dart';
 import 'package:http/http.dart';
@@ -77,7 +77,7 @@ class WorkdayService {
   Future<dynamic> updateHoursByIds(List<String> ids, int hours) async {
     Response res = await put(
       '$_url/hours?ids=$ids',
-      body: hours,
+      body: jsonEncode(hours),
       headers: _headers,
     );
     if (res.statusCode == 200) {

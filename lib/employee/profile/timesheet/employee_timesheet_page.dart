@@ -188,8 +188,8 @@ class _EmployeeTimesheetPageState extends State<EmployeeTimesheetPage> {
                       autofocus: false,
                       controller: _noteController,
                       keyboardType: TextInputType.multiline,
-                      maxLength: 510,
-                      maxLines: 5,
+                      maxLength: 100,
+                      maxLines: 3,
                       cursorColor: WHITE,
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: WHITE),
@@ -233,10 +233,6 @@ class _EmployeeTimesheetPageState extends State<EmployeeTimesheetPage> {
                         color: GREEN,
                         onPressed: () {
                           String note = _noteController.text;
-                          if (note == null || note == '') {
-                            ToastService.showErrorToast(getTranslated(context, 'noteCannotBeEmpty'));
-                            return;
-                          }
                           Navigator.of(context).pop();
                           _workdayService.updateFieldsValuesById(
                             workdayId,

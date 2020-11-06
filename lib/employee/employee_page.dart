@@ -4,9 +4,11 @@ import 'package:countup/countup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:give_job/api/employee/dto/employee_page_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/employee/profile/edit/employee_edit_page.dart';
 import 'package:give_job/employee/profile/tabs/employee_panel.dart';
 import 'package:give_job/employee/profile/tabs/employee_timesheets.tab.dart';
@@ -18,6 +20,8 @@ import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/logout_service.dart';
+import 'package:give_job/shared/service/toastr_service.dart';
+import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/settings/settings_page.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -37,6 +41,7 @@ class EmployeeProfilPage extends StatefulWidget {
 
 class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
   EmployeeService _employeeService;
+  WorkdayService _workdayService;
 
   User _user;
   EmployeePageDto _employeePageDto;
@@ -46,6 +51,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
   Widget build(BuildContext context) {
     this._user = widget._user;
     this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
+    this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     if (_refreshCalled) {
       return _buildPage();
     } else {
@@ -211,7 +217,12 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                   child: TabBarView(
                     children: <Widget>[
                       _buildTab(employeeTimesheetsTab(this.context, _user, _employeePageDto.timeSheets)),
-                      _buildTab(employeeToday(this.context, _employeePageDto.todayPlan)),
+                      _buildTab(employeeToday(
+                        this.context,
+                        _employeePageDto,
+                        () => _fillHoursFun(_employeePageDto.todayWorkdayId),
+                        () => _editNoteFun(_employeePageDto.todayNote, _employeePageDto.todayWorkdayId),
+                      )),
                       _buildTab(employeePanel(this.context, _user, _employeePageDto)),
                     ],
                   ),
@@ -234,6 +245,202 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
         _refreshCalled = true;
       });
     });
+  }
+
+  _fillHoursFun(int workdayId) {
+    TextEditingController _hoursController = new TextEditingController();
+    showGeneralDialog(
+      context: context,
+      barrierColor: DARK.withOpacity(0.95),
+      barrierDismissible: false,
+      barrierLabel: getTranslated(context, 'hours'),
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: Scaffold(
+            backgroundColor: Colors.black12,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'hoursUpperCase'))),
+                  SizedBox(height: 2.5),
+                  textGreen(getTranslated(context, 'settingHoursForToday')),
+                  Container(
+                    width: 150,
+                    child: TextFormField(
+                      autofocus: true,
+                      controller: _hoursController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
+                      maxLength: 2,
+                      cursorColor: WHITE,
+                      textAlignVertical: TextAlignVertical.center,
+                      style: TextStyle(color: WHITE),
+                      decoration: InputDecoration(
+                        counterStyle: TextStyle(color: WHITE),
+                        labelStyle: TextStyle(color: WHITE),
+                        labelText: getTranslated(context, 'hours') + ' (0-24)',
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      MaterialButton(
+                        elevation: 0,
+                        height: 50,
+                        minWidth: 40,
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[iconWhite(Icons.close)],
+                        ),
+                        color: Colors.red,
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                      SizedBox(width: 25),
+                      MaterialButton(
+                        elevation: 0,
+                        height: 50,
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[iconWhite(Icons.check)],
+                        ),
+                        color: GREEN,
+                        onPressed: () {
+                          int hours;
+                          try {
+                            hours = int.parse(_hoursController.text);
+                          } catch (FormatException) {
+                            ToastService.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
+                            return;
+                          }
+                          String invalidMessage = ValidatorService.validateUpdatingHours(hours, context);
+                          if (invalidMessage != null) {
+                            ToastService.showErrorToast(invalidMessage);
+                            return;
+                          }
+                          _workdayService
+                              .updateHoursByIds(
+                            [workdayId].map((e) => e.toString()).toList(),
+                            hours,
+                          )
+                              .then(
+                            (res) {
+                              Navigator.of(context).pop();
+                              ToastService.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
+                              _refresh();
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  _editNoteFun(String note, int workdayId) {
+    TextEditingController _noteController = new TextEditingController();
+    _noteController.text = note != null ? utf8.decode(note != null ? note.runes.toList() : '-') : null;
+    showGeneralDialog(
+      context: context,
+      barrierColor: DARK.withOpacity(0.95),
+      barrierDismissible: false,
+      barrierLabel: getTranslated(context, 'noteDetails'),
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: Scaffold(
+            backgroundColor: Colors.black12,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'noteUpperCase'))),
+                  SizedBox(height: 2.5),
+                  textGreen(getTranslated(context, 'writeNote')),
+                  SizedBox(height: 20),
+                  Padding(
+                    padding: EdgeInsets.only(left: 25, right: 25),
+                    child: TextFormField(
+                      autofocus: false,
+                      controller: _noteController,
+                      keyboardType: TextInputType.multiline,
+                      maxLength: 100,
+                      maxLines: 3,
+                      cursorColor: WHITE,
+                      textAlignVertical: TextAlignVertical.center,
+                      style: TextStyle(color: WHITE),
+                      decoration: InputDecoration(
+                        hintText: getTranslated(context, 'textSomeNote'),
+                        hintStyle: TextStyle(color: MORE_BRIGHTER_DARK),
+                        counterStyle: TextStyle(color: WHITE),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: GREEN, width: 2.5),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: GREEN, width: 2.5),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      MaterialButton(
+                        elevation: 0,
+                        height: 50,
+                        minWidth: 40,
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[iconWhite(Icons.close)],
+                        ),
+                        color: Colors.red,
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                      SizedBox(width: 25),
+                      MaterialButton(
+                        elevation: 0,
+                        height: 50,
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[iconWhite(Icons.check)],
+                        ),
+                        color: GREEN,
+                        onPressed: () {
+                          String note = _noteController.text;
+                          _workdayService.updateFieldsValuesById(
+                            workdayId,
+                            {
+                              'note': note,
+                            },
+                          ).then((res) {
+                            Navigator.of(context).pop();
+                            ToastService.showSuccessToast(getTranslated(context, 'noteSavedSuccessfully'));
+                            _refresh();
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Future<bool> _onWillPop() async {
