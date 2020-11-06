@@ -30,9 +30,9 @@ class WorkplaceService {
     }
   }
 
-  Future<List<WorkplaceDto>> findAllByGroupId(int groupId) async {
+  Future<List<WorkplaceDto>> findAllByCompanyId(int companyId) async {
     Response res = await get(
-      _url + '/groups/$groupId',
+      _url + '/companies/$companyId',
       headers: _header,
     );
     if (res.statusCode == 200) {

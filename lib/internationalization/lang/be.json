@@ -377,7 +377,7 @@
   "needToSelectWorkplaces": "Вам трэба выбраць працоўныя месцы",
   "whichYouWantToRemove": "які вы хочаце выдаліць",
   "workplaceUpdatedSuccessfully": "Працоўнае месца паспяхова абноўлена",
-  "addWorkplace": "Дадаць працоўнае месца",
+  "createWorkplace": "Дадаць працоўнае месца",
   "textSomeWorkplace": "Напісаць тэкст на працоўным месцы",
   "successfullyAddedNewWorkplace": "Паспяхова дададзена новае працоўнае месца",
   "ok": "Добра",
@@ -458,5 +458,6 @@
   "successfullyAddedGroupEmployees": "Successfully added group employees",
   "removingEmployeesFromGroup": "Removing employees from the group",
   "successfullyRemovedGroupEmployees": "Successfully removed group employees",
-  "youWantToRemoveFromGroup": "you want to remove from the group"
+  "youWantToRemoveFromGroup": "you want to remove from the group",
+  "manageWorkplaces": "Manage workplaces"
 }

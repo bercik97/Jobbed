@@ -73,7 +73,7 @@ class _SelectWorkplaceForSelectedWorkdaysPageState extends State<SelectWorkplace
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     super.initState();
     _loading = true;
-    _workplaceService.findAllByGroupId(_model.groupId).then((res) {
+    _workplaceService.findAllByCompanyId(int.parse(_user.companyId)).then((res) {
       setState(() {
         int _counter = 0;
         res.forEach((workplace) => {

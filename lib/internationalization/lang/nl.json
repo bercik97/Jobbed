@@ -377,7 +377,7 @@
   "needToSelectWorkplaces": "U moet werkplekken selecteren",
   "whichYouWantToRemove": "die u wilt verwijderen",
   "workplaceUpdatedSuccessfully": "Werkplek succesvol bijgewerkt",
-  "addWorkplace": "Werkplek toevoegen",
+  "createWorkplace": "Werkplek toevoegen",
   "textSomeWorkplace": "Sms een werkplek",
   "successfullyAddedNewWorkplace": "Succesvol nieuwe werkplek toegevoegd",
   "ok": "oke",
@@ -458,5 +458,6 @@
   "successfullyAddedGroupEmployees": "Successfully added group employees",
   "removingEmployeesFromGroup": "Removing employees from the group",
   "successfullyRemovedGroupEmployees": "Successfully removed group employees",
-  "youWantToRemoveFromGroup": "you want to remove from the group"
+  "youWantToRemoveFromGroup": "you want to remove from the group",
+  "manageWorkplaces": "Manage workplaces"
 }

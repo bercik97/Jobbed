@@ -377,7 +377,7 @@
   "needToSelectWorkplaces": "Vous devez sélectionner les lieux de travail",
   "whichYouWantToRemove": "que vous souhaitez supprimer",
   "workplaceUpdatedSuccessfully": "Workplace mis à jour avec succès",
-  "addWorkplace": "Ajouter un lieu de travail",
+  "createWorkplace": "Ajouter un lieu de travail",
   "textSomeWorkplace": "Envoyez un SMS à un lieu de travail",
   "successfullyAddedNewWorkplace": "Nouveau lieu de travail ajouté avec succès",
   "ok": "OK",
@@ -458,5 +458,6 @@
   "successfullyAddedGroupEmployees": "Successfully added group employees",
   "removingEmployeesFromGroup": "Removing employees from the group",
   "successfullyRemovedGroupEmployees": "Successfully removed group employees",
-  "youWantToRemoveFromGroup": "you want to remove from the group"
+  "youWantToRemoveFromGroup": "you want to remove from the group",
+  "manageWorkplaces": "Manage workplaces"
 }

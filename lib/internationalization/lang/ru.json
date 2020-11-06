@@ -377,7 +377,7 @@
   "needToSelectWorkplaces": "Вам необходимо выбрать рабочие места",
   "whichYouWantToRemove": "который вы хотите удалить",
   "workplaceUpdatedSuccessfully": "Рабочее место успешно обновлено",
-  "addWorkplace": "Добавить рабочее место",
+  "createWorkplace": "Добавить рабочее место",
   "textSomeWorkplace": "Напишите текст на рабочем месте",
   "successfullyAddedNewWorkplace": "Новое рабочее место успешно добавлено",
   "ok": "хорошо",
@@ -458,5 +458,6 @@
   "successfullyAddedGroupEmployees": "Successfully added group employees",
   "removingEmployeesFromGroup": "Removing employees from the group",
   "successfullyRemovedGroupEmployees": "Successfully removed group employees",
-  "youWantToRemoveFromGroup": "you want to remove from the group"
+  "youWantToRemoveFromGroup": "you want to remove from the group",
+  "manageWorkplaces": "Manage workplaces"
 }

@@ -377,7 +377,7 @@
   "needToSelectWorkplaces": "თქვენ უნდა აირჩიოთ სამუშაო ადგილები",
   "whichYouWantToRemove": "რომლის წაშლაც გსურთ",
   "workplaceUpdatedSuccessfully": "სამუშაო ადგილი წარმატებით განახლდა",
-  "addWorkplace": "სამუშაო ადგილის დამატება",
+  "createWorkplace": "სამუშაო ადგილის დამატება",
   "textSomeWorkplace": "გაგზავნეთ ტექსტი ზოგიერთ სამუშაო ადგილზე",
   "successfullyAddedNewWorkplace": "წარმატებით დაემატა ახალი სამუშაო ადგილი",
   "ok": "კარგი",
@@ -458,5 +458,6 @@
   "successfullyAddedGroupEmployees": "Successfully added group employees",
   "removingEmployeesFromGroup": "Removing employees from the group",
   "successfullyRemovedGroupEmployees": "Successfully removed group employees",
-  "youWantToRemoveFromGroup": "you want to remove from the group"
+  "youWantToRemoveFromGroup": "you want to remove from the group",
+  "manageWorkplaces": "Manage workplaces"
 }

@@ -7,9 +7,8 @@ import 'package:give_job/api/group/dto/group_dashboard_dto.dart';
 import 'package:give_job/api/group/service/group_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/crud/add_group_employees_page.dart';
-import 'package:give_job/manager/groups/crud/delete_group_employees_page.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
+import 'package:give_job/manager/groups/manage/workplace/workplaces_page.dart';
 import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -22,8 +21,10 @@ import 'package:give_job/shared/widget/texts.dart';
 
 import '../../shared/widget/loader.dart';
 import '../shared/manager_app_bar.dart';
-import 'crud/add_group_page.dart';
 import 'group/group_page.dart';
+import 'manage/group/add_group_employees_page.dart';
+import 'manage/group/add_group_page.dart';
+import 'manage/group/delete_group_employees_page.dart';
 
 class GroupsDashboardPage extends StatefulWidget {
   final User _user;
@@ -69,6 +70,20 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                 floatingActionButton: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    FloatingActionButton(
+                      heroTag: "manageWorkplacesBtn",
+                      tooltip: getTranslated(context, 'manageWorkplaces'),
+                      backgroundColor: GREEN,
+                      onPressed: () => Navigator.push(
+                        this.context,
+                        MaterialPageRoute(builder: (context) => WorkplacesPage(_user)),
+                      ),
+                      child: Image(
+                        image: AssetImage('images/dark-workplace-icon.png'),
+                        fit: BoxFit.fitHeight,
+                      ),
+                    ),
+                    SizedBox(height: 15),
                     FloatingActionButton(
                       heroTag: "createGroupBtn",
                       tooltip: getTranslated(context, 'createGroup'),

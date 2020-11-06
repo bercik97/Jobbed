@@ -4,11 +4,11 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/api/workplace/dto/workplace_dto.dart';
 import 'package:give_job/api/workplace/service/workplace_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/timesheets/in_progress/ts_in_progress_page.dart';
@@ -75,7 +75,7 @@ class _SelectWorkplaceForEmployeesPageState extends State<SelectWorkplaceForEmpl
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     super.initState();
     _loading = true;
-    _workplaceService.findAllByGroupId(_model.groupId).then((res) {
+    _workplaceService.findAllByCompanyId(int.parse(_user.companyId)).then((res) {
       setState(() {
         int _counter = 0;
         res.forEach((workplace) => {

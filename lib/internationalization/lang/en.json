@@ -377,7 +377,7 @@
   "needToSelectWorkplaces": "You need to select workplaces",
   "whichYouWantToRemove": "which you want to remove",
   "workplaceUpdatedSuccessfully": "Workplace updated successfully",
-  "addWorkplace": "Add workplace",
+  "createWorkplace": "Add workplace",
   "textSomeWorkplace": "Text some workplace",
   "successfullyAddedNewWorkplace": "Successfully added new workplace",
   "ok": "Ok",
@@ -458,5 +458,6 @@
   "successfullyAddedGroupEmployees": "Successfully added group employees",
   "removingEmployeesFromGroup": "Removing employees from the group",
   "successfullyRemovedGroupEmployees": "Successfully removed group employees",
-  "youWantToRemoveFromGroup": "you want to remove from the group"
+  "youWantToRemoveFromGroup": "you want to remove from the group",
+  "manageWorkplaces": "Manage workplaces"
 }

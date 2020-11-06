@@ -377,7 +377,7 @@
   "needToSelectWorkplaces": "Du må velge arbeidsplasser",
   "whichYouWantToRemove": "som du vil fjerne",
   "workplaceUpdatedSuccessfully": "Arbeidsplassen er oppdatert vellykket",
-  "addWorkplace": "Legg til arbeidsplass",
+  "createWorkplace": "Legg til arbeidsplass",
   "textSomeWorkplace": "Tekst til en arbeidsplass",
   "successfullyAddedNewWorkplace": "Vellykket lagt til ny arbeidsplass",
   "ok": "Ok",
@@ -458,5 +458,6 @@
   "successfullyAddedGroupEmployees": "Successfully added group employees",
   "removingEmployeesFromGroup": "Removing employees from the group",
   "successfullyRemovedGroupEmployees": "Successfully removed group employees",
-  "youWantToRemoveFromGroup": "you want to remove from the group"
+  "youWantToRemoveFromGroup": "you want to remove from the group",
+  "manageWorkplaces": "Manage workplaces"
 }

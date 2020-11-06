@@ -377,7 +377,7 @@
   "needToSelectWorkplaces": "Trebuie să selectați locurile de muncă",
   "whichYouWantToRemove": "pe care doriți să îl eliminați",
   "workplaceUpdatedSuccessfully": "Locul de muncă actualizat cu succes",
-  "addWorkplace": "Adăugați un loc de muncă",
+  "createWorkplace": "Adăugați un loc de muncă",
   "textSomeWorkplace": "Trimiteți text unui loc de muncă",
   "successfullyAddedNewWorkplace": "A adăugat cu succes un loc de muncă nou",
   "ok": "bine",
@@ -458,5 +458,6 @@
   "successfullyAddedGroupEmployees": "Successfully added group employees",
   "removingEmployeesFromGroup": "Removing employees from the group",
   "successfullyRemovedGroupEmployees": "Successfully removed group employees",
-  "youWantToRemoveFromGroup": "you want to remove from the group"
+  "youWantToRemoveFromGroup": "you want to remove from the group",
+  "manageWorkplaces": "Manage workplaces"
 }

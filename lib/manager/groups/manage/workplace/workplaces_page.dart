@@ -8,7 +8,6 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/workplace/dto/workplace_dto.dart';
 import 'package:give_job/api/workplace/service/workplace_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -23,17 +22,16 @@ import 'package:shimmer/shimmer.dart';
 import '../../../../shared/widget/loader.dart';
 import '../../../shared/manager_side_bar.dart';
 
-class WorkplacePage extends StatefulWidget {
-  final GroupModel _model;
+class WorkplacesPage extends StatefulWidget {
+  final User _user;
 
-  WorkplacePage(this._model);
+  WorkplacesPage(this._user);
 
   @override
-  _WorkplacePageState createState() => _WorkplacePageState();
+  _WorkplacesPageState createState() => _WorkplacesPageState();
 }
 
-class _WorkplacePageState extends State<WorkplacePage> {
-  GroupModel _model;
+class _WorkplacesPageState extends State<WorkplacesPage> {
   User _user;
 
   WorkplaceService _workplaceService;
@@ -51,12 +49,11 @@ class _WorkplacePageState extends State<WorkplacePage> {
 
   @override
   void initState() {
-    this._model = widget._model;
-    this._user = _model.user;
+    this._user = widget._user;
     this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
     super.initState();
     _loading = true;
-    _workplaceService.findAllByGroupId(_model.groupId).then((res) {
+    _workplaceService.findAllByCompanyId(int.parse(_user.companyId)).then((res) {
       setState(() {
         _workplaces = res;
         _workplaces.forEach((e) => _checked.add(false));
@@ -69,7 +66,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')), managerSideBar(context, _model.user));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -77,8 +74,8 @@ class _WorkplacePageState extends State<WorkplacePage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBar(context, _model.user, getTranslated(context, 'workplace')),
-        drawer: managerSideBar(context, _model.user),
+        appBar: managerAppBar(context, _user, getTranslated(context, 'workplace')),
+        drawer: managerSideBar(context, _user),
         body: Column(
           children: <Widget>[
             Container(
@@ -209,7 +206,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
           children: [
             FloatingActionButton(
               heroTag: "plusBtn",
-              tooltip: getTranslated(context, 'addWorkplace'),
+              tooltip: getTranslated(context, 'createWorkplace'),
               backgroundColor: GREEN,
               onPressed: () => _addWorkplace(context),
               child: text25Dark('+'),
@@ -244,7 +241,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'addWorkplace'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'createWorkplace'))),
                   SizedBox(height: 20),
                   Padding(
                     padding: EdgeInsets.only(left: 25, right: 25),
@@ -316,7 +313,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
       ToastService.showErrorToast(invalidMessage);
       return;
     }
-    WorkplaceDto dto = new WorkplaceDto(id: _model.groupId, name: workplace);
+    WorkplaceDto dto = new WorkplaceDto(id: int.parse(_user.companyId), name: workplace);
     _workplaceService.create(dto).then((res) {
       Navigator.pop(context);
       _refresh();
@@ -347,7 +344,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
                     .deleteByIdIn(ids.map((e) => e.toString()).toList())
                     .then((res) => {
                           Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (BuildContext context) => WorkplacePage(_model)),
+                            MaterialPageRoute(builder: (BuildContext context) => WorkplacesPage(_user)),
                             ModalRoute.withName('/'),
                           ),
                           ToastService.showSuccessToast(getTranslated(this.context, 'selectedWorkplacesRemoved')),
@@ -554,7 +551,7 @@ class _WorkplacePageState extends State<WorkplacePage> {
 
   Future<Null> _refresh() {
     _loading = true;
-    return _workplaceService.findAllByGroupId(_model.groupId).then((res) {
+    return _workplaceService.findAllByCompanyId(int.parse(_user.companyId)).then((res) {
       setState(() {
         _isAddButtonTapped = false;
         _isDeleteButtonTapped = false;
