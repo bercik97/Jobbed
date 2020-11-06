@@ -6,6 +6,7 @@ class WorkdayForEmployeeDto {
   final int hours;
   final String plan;
   final String workplaceName;
+  final String note;
   final double money;
 
   WorkdayForEmployeeDto({
@@ -14,6 +15,7 @@ class WorkdayForEmployeeDto {
     @required this.hours,
     @required this.plan,
     @required this.workplaceName,
+    @required this.note,
     @required this.money,
   });
 
@@ -24,6 +26,7 @@ class WorkdayForEmployeeDto {
       hours: json['hours'] as int,
       plan: json['plan'] as String,
       workplaceName: json['workplaceName'] as String,
+      note: json['note'] as String,
       money: json['money'] as double,
     );
   }

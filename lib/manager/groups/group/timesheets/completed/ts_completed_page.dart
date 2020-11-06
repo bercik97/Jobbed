@@ -121,6 +121,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                           id: _timesheet.id,
                           year: _timesheet.year,
                           month: _timesheet.month,
+                          companyName: null,
                           groupName: _model.groupName,
                           groupCountryCurrency: currency,
                           status: _timesheet.status,

@@ -245,29 +245,6 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
     );
   }
 
-  Widget _buildNotRequiredTextField(TextEditingController controller, int maxLength, String labelText, IconData icon) {
-    return Column(
-      children: <Widget>[
-        TextFormField(
-          autocorrect: true,
-          cursorColor: WHITE,
-          maxLength: maxLength,
-          controller: controller,
-          style: TextStyle(color: WHITE),
-          decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            counterStyle: TextStyle(color: WHITE),
-            border: OutlineInputBorder(),
-            labelText: labelText,
-            prefixIcon: iconWhite(icon),
-            labelStyle: TextStyle(color: WHITE),
-          ),
-        ),
-        SizedBox(height: 10),
-      ],
-    );
-  }
-
   Widget _buildContactNumField(TextEditingController controller, String labelText, IconData icon) {
     String validate(String value) {
       String phone = _phoneController.text;
@@ -298,31 +275,6 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
             labelStyle: TextStyle(color: WHITE),
           ),
           validator: (value) => validate(value),
-        ),
-        SizedBox(height: 10),
-      ],
-    );
-  }
-
-  Widget _buildNotRequiredNumField(TextEditingController controller, String labelText, IconData icon) {
-    return Column(
-      children: <Widget>[
-        TextFormField(
-          autocorrect: true,
-          cursorColor: WHITE,
-          maxLength: 12,
-          controller: controller,
-          style: TextStyle(color: WHITE),
-          inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
-          keyboardType: TextInputType.number,
-          decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            counterStyle: TextStyle(color: WHITE),
-            border: OutlineInputBorder(),
-            labelText: labelText,
-            prefixIcon: iconWhite(icon),
-            labelStyle: TextStyle(color: WHITE),
-          ),
         ),
         SizedBox(height: 10),
       ],

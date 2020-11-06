@@ -12,41 +12,44 @@ import 'contact/contact_for_manager.dart';
 
 Container employeePanel(BuildContext context, User user, EmployeePageDto employee) {
   return Container(
-    child: SingleChildScrollView(
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: Material(
-              color: BRIGHTER_DARK,
-              child: InkWell(
-                onTap: () => Navigator.of(context).push(
-                  CupertinoPageRoute<Null>(
-                    builder: (BuildContext context) {
-                      return EmployeeCalendarPage(user, employee.id);
-                    },
+    child: Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: SingleChildScrollView(
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Material(
+                color: BRIGHTER_DARK,
+                child: InkWell(
+                  onTap: () => Navigator.of(context).push(
+                    CupertinoPageRoute<Null>(
+                      builder: (BuildContext context) {
+                        return EmployeeCalendarPage(user, employee.id);
+                      },
+                    ),
                   ),
+                  child: _buildScrollableContainer(context, Icons.today, 'calendar', 'checkYourCalendar'),
                 ),
-                child: _buildScrollableContainer(context, Icons.today, 'calendar', 'checkYourCalendar'),
               ),
             ),
-          ),
-          SizedBox(width: 10),
-          Expanded(
-            child: Material(
-              color: BRIGHTER_DARK,
-              child: InkWell(
-                onTap: () => showContactForManager(
-                  context,
-                  employee.groupManager,
-                  employee.groupManagerPhone,
-                  employee.groupManagerViber,
-                  employee.groupManagerWhatsApp,
+            SizedBox(width: 10),
+            Expanded(
+              child: Material(
+                color: BRIGHTER_DARK,
+                child: InkWell(
+                  onTap: () => showContactForManager(
+                    context,
+                    employee.groupManager,
+                    employee.groupManagerPhone,
+                    employee.groupManagerViber,
+                    employee.groupManagerWhatsApp,
+                  ),
+                  child: _buildScrollableContainer(context, Icons.phone, 'contact', 'contactWithYourManager'),
                 ),
-                child: _buildScrollableContainer(context, Icons.phone, 'contact', 'contactWithYourManager'),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     ),
   );

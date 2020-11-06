@@ -464,5 +464,13 @@
   "removingGroup": "Usuwanie grupy",
   "manageCompanyWorkplaces" : "Zarządzaj miejscami pracy firmy",
   "addingGroup": "Dodawanie grupy",
-  "company": "Firma"
+  "company": "Firma",
+  "note": "Notatka",
+  "noteUpperCase": "NOTATKA",
+  "noteDetails": "Szczegóły notatki",
+  "writeNote": "Napisz notatkę",
+  "textSomeNote": "Napisz jakąś notatkę ...",
+  "noteCannotBeEmpty": "Notatka nie może być pusta",
+  "noteSavedSuccessfully": "Notatka została zapisana pomyślnie",
+  "noteFor": "Notatka dla"
 }

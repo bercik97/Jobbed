@@ -464,5 +464,13 @@
   "removingGroup": "Removing group",
   "manageCompanyWorkplaces" : "Manage company workplaces",
   "addingGroup": "Adding group",
-  "company": "Company"
+  "company": "Company",
+  "note": "Note",
+  "noteUpperCase": "NOTE",
+  "noteDetails": "Note details",
+  "writeNote": "Write note",
+  "textSomeNote": "Text some note ...",
+  "noteCannotBeEmpty": "Note cannot be empty",
+  "noteSavedSuccessfully": "Note has been saved successfully",
+  "noteFor": "Note for"
 }

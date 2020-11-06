@@ -5,10 +5,9 @@ import 'package:http/http.dart';
 
 class UserService {
   final BuildContext _context;
-  final Map<String, String> _header;
   final Map<String, String> _headers;
 
-  UserService(this._context, this._header, this._headers);
+  UserService(this._context, this._headers);
 
   static const String _url = '$SERVER_IP/users';
 

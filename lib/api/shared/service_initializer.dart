@@ -24,8 +24,8 @@ class ServiceInitializer {
       case 'ManagerService': return new ManagerService(context, header, headers);
       case 'TimesheetService': return new TimesheetService(context, header, headers);
       case 'TokenService': return new TokenService();
-      case 'UserService': return new UserService(context, header, headers);
-      case 'VocationService': return new VocationService(context, header, headers);
+      case 'UserService': return new UserService(context, headers);
+      case 'VocationService': return new VocationService(context, headers);
       case 'WorkdayService': return new WorkdayService(context, header, headers);
       case 'WorkplaceService': return new WorkplaceService(context, header, headers);
       default: throw 'Wrong (class as String) to translate!';

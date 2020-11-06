@@ -13,6 +13,7 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
 import 'package:give_job/shared/widget/circular_progress_indicator.dart';
@@ -115,12 +116,13 @@ class _EmployeeTimesheetPageState extends State<EmployeeTimesheetPage> {
                         child: Theme(
                           data: Theme.of(this.context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
                           child: DataTable(
-                            columnSpacing: 40,
+                            columnSpacing: 20,
                             columns: [
                               DataColumn(label: textWhiteBold('No.')),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'hours'))),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'money'))),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'plan'))),
+                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'note'))),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'workplace'))),
                             ],
                             rows: [
@@ -131,19 +133,17 @@ class _EmployeeTimesheetPageState extends State<EmployeeTimesheetPage> {
                                     DataCell(textWhite(workday.hours.toString())),
                                     DataCell(textWhite(workday.money.toString())),
                                     DataCell(
-                                        Wrap(
-                                          children: <Widget>[
-                                            workday.plan != null && workday.plan != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
-                                          ],
-                                        ),
-                                        onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'planDetails'), workday.plan)),
+                                      Wrap(children: <Widget>[workday.plan != null && workday.plan != '' ? iconWhite(Icons.zoom_in) : text20RedBold('-')]),
+                                      onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'planDetails'), workday.plan),
+                                    ),
                                     DataCell(
-                                        Wrap(
-                                          children: <Widget>[
-                                            workday.workplaceName != null && workday.workplaceName != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
-                                          ],
-                                        ),
-                                        onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'workplace'), workday.workplaceName)),
+                                      Wrap(children: <Widget>[workday.note != null && workday.note != '' ? iconWhite(Icons.zoom_in) : text20GreenBold('+')]),
+                                      onTap: () => _editNote(this.context, workday.id, workday.note),
+                                    ),
+                                    DataCell(
+                                      Wrap(children: <Widget>[workday.workplaceName != null && workday.workplaceName != '' ? iconWhite(Icons.zoom_in) : text20RedBold('-')]),
+                                      onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'workplace'), workday.workplaceName),
+                                    ),
                                   ],
                                 ),
                             ],
@@ -158,6 +158,104 @@ class _EmployeeTimesheetPageState extends State<EmployeeTimesheetPage> {
           ],
         ),
       ),
+    );
+  }
+
+  void _editNote(BuildContext context, int workdayId, String note) {
+    TextEditingController _noteController = new TextEditingController();
+    _noteController.text = note != null ? utf8.decode(note != null ? note.runes.toList() : '-') : null;
+    showGeneralDialog(
+      context: context,
+      barrierColor: DARK.withOpacity(0.95),
+      barrierDismissible: false,
+      barrierLabel: getTranslated(context, 'noteDetails'),
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: Scaffold(
+            backgroundColor: Colors.black12,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'noteUpperCase'))),
+                  SizedBox(height: 2.5),
+                  textGreen(getTranslated(context, 'writeNote')),
+                  SizedBox(height: 20),
+                  Padding(
+                    padding: EdgeInsets.only(left: 25, right: 25),
+                    child: TextFormField(
+                      autofocus: false,
+                      controller: _noteController,
+                      keyboardType: TextInputType.multiline,
+                      maxLength: 510,
+                      maxLines: 5,
+                      cursorColor: WHITE,
+                      textAlignVertical: TextAlignVertical.center,
+                      style: TextStyle(color: WHITE),
+                      decoration: InputDecoration(
+                        hintText: getTranslated(context, 'textSomeNote'),
+                        hintStyle: TextStyle(color: MORE_BRIGHTER_DARK),
+                        counterStyle: TextStyle(color: WHITE),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: GREEN, width: 2.5),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: GREEN, width: 2.5),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      MaterialButton(
+                        elevation: 0,
+                        height: 50,
+                        minWidth: 40,
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[iconWhite(Icons.close)],
+                        ),
+                        color: Colors.red,
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                      SizedBox(width: 25),
+                      MaterialButton(
+                        elevation: 0,
+                        height: 50,
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[iconWhite(Icons.check)],
+                        ),
+                        color: GREEN,
+                        onPressed: () {
+                          String note = _noteController.text;
+                          if (note == null || note == '') {
+                            ToastService.showErrorToast(getTranslated(context, 'noteCannotBeEmpty'));
+                            return;
+                          }
+                          Navigator.of(context).pop();
+                          _workdayService.updateFieldsValuesById(
+                            workdayId,
+                            {
+                              'note': note,
+                            },
+                          ).then((res) {
+                            ToastService.showSuccessToast(getTranslated(context, 'noteSavedSuccessfully'));
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
