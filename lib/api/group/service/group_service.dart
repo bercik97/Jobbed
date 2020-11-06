@@ -31,9 +31,7 @@ class GroupService {
       headers: _header,
     );
     if (res.statusCode == 200) {
-      return (json.decode(res.body) as List)
-          .map((data) => GroupDashboardDto.fromJson(data))
-          .toList();
+      return (json.decode(res.body) as List).map((data) => GroupDashboardDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
       return Logout.handle401WithLogout(_context);
     } else {
@@ -46,6 +44,20 @@ class GroupService {
     Response res = await put(
       url,
       body: jsonEncode(fieldsValues),
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> deleteByName(String name) async {
+    Response res = await delete(
+      _url + '/$name',
       headers: _headers,
     );
     if (res.statusCode == 200) {

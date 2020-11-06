@@ -201,7 +201,7 @@
   "seeMyGroups": "Se gruppene mine",
   "profile": "Profile",
   "welcome": "Velkommen",
-  "loggedSuccessButNoGroups": "Du har logget inn, men det ser ut til at du ikke har opprettet grupper. Be administratoren om å opprette ansattgrupper.",
+  "loggedSuccessButNoGroups": "Du har logget inn, men det ser ut til at du ikke har opprettet grupper. For å opprette en gruppe, vennligst velg knappen nederst på skjermen.",
   "backToGroups": "Tilbake til grupper",
   "seeYourAllGroups": "Se alle gruppene dine",
   "manageSelectedEmployee": "Administrer valgt ansatt",
@@ -443,5 +443,11 @@
   "chooseOtherGroupName": "Please write another group name",
   "successfullyAddedNewGroup": "Successfully added new group",
   "someEmployeesAreInOtherGroup": "Some employees are in other group",
-  "goToGroupsDashboard": "Return to the groups page"
+  "goToGroupsDashboard": "Return to the groups page",
+  "deleteGroup": "Delete group",
+  "textGroupNameForDelete": "Rewrite group name",
+  "groupNameForDeleteInvalid": "Provided group name does not equal real group name",
+  "groupNameForDelete": "Group name for delete",
+  "successfullyDeletedGroup": "The selected group was successfully deleted",
+  "groupDoesNotExists": "Group does not exists"
 }

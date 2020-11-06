@@ -13,6 +13,7 @@ import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/logout_service.dart';
+import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -34,6 +35,8 @@ class GroupsDashboardPage extends StatefulWidget {
 class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
   User _user;
   GroupService _groupService;
+
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   List<GroupDashboardDto> _groups = new List();
 
@@ -83,6 +86,10 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
       ),
       onWillPop: _onWillPop,
     );
+  }
+
+  bool _isValid() {
+    return formKey.currentState.validate();
   }
 
   Widget _handleGroups() {
@@ -172,11 +179,17 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                       ),
                     ],
                   ),
-                  trailing: IconButton(
-                    icon: icon30Green(Icons.border_color),
-                    onPressed: () {
-                      print('sdfs');
-                    },
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: icon30Green(Icons.border_color),
+                        onPressed: () {
+                          print('edit');
+                        },
+                      ),
+                      IconButton(icon: icon30Red(Icons.delete), onPressed: () => _showDeleteGroupDialog(_groups[i].name)),
+                    ],
                   ),
                 ),
               ),
@@ -204,6 +217,140 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
           ),
         ),
       ],
+    );
+  }
+
+  void _showDeleteGroupDialog(String groupName) {
+    TextEditingController _nameController = new TextEditingController();
+    showGeneralDialog(
+      context: context,
+      barrierColor: DARK.withOpacity(0.95),
+      barrierDismissible: false,
+      barrierLabel: getTranslated(context, 'deleteGroup'),
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: Scaffold(
+            backgroundColor: Colors.black12,
+            body: Center(
+              child: Form(
+                autovalidate: true,
+                key: formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 50),
+                      child: text20RedBold(getTranslated(context, 'deleteGroup')),
+                    ),
+                    SizedBox(height: 2.5),
+                    textRed(getTranslated(context, 'groupNameForDelete') + ': ' + groupName),
+                    SizedBox(height: 20),
+                    Padding(
+                      padding: EdgeInsets.only(left: 25, right: 25),
+                      child: TextFormField(
+                        autofocus: true,
+                        controller: _nameController,
+                        keyboardType: TextInputType.text,
+                        maxLength: 26,
+                        maxLines: 1,
+                        cursorColor: WHITE,
+                        textAlignVertical: TextAlignVertical.center,
+                        style: TextStyle(color: WHITE),
+                        decoration: InputDecoration(
+                          hintText: getTranslated(context, 'textGroupNameForDelete'),
+                          hintStyle: TextStyle(color: MORE_BRIGHTER_DARK),
+                          counterStyle: TextStyle(color: WHITE),
+                          border: OutlineInputBorder(),
+                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+                        ),
+                        validator: (value) => _validateGroupName(value, groupName),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        MaterialButton(
+                          elevation: 0,
+                          height: 50,
+                          minWidth: 40,
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[iconWhite(Icons.close)],
+                          ),
+                          color: Colors.red,
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                        SizedBox(width: 25),
+                        MaterialButton(
+                          elevation: 0,
+                          height: 50,
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[iconWhite(Icons.check)],
+                          ),
+                          color: GREEN,
+                          onPressed: () {
+                            if (!_isValid()) {
+                              _errorDialog(getTranslated(context, 'correctInvalidFields'));
+                              return;
+                            }
+                            _groupService.deleteByName(_nameController.text).then((value) {
+                              ToastService.showSuccessToast(getTranslated(context, 'successfullyDeletedGroup'));
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => GroupsDashboardPage(_user)),
+                              );
+                            }).catchError((onError) {
+                              String errorMsg = onError.toString();
+                              if (errorMsg.contains("GROUP_DOES_NOT_EXISTS")) {
+                                ToastService.showErrorToast(getTranslated(context, 'groupDoesNotExists'));
+                              }
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  _validateGroupName(String value, String groupName) {
+    return value != groupName ? getTranslated(context, 'groupNameForDeleteInvalid') : null;
+  }
+
+  _errorDialog(String content) {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: DARK,
+          title: textGreen(getTranslated(context, 'error')),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                textWhite(content),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: textWhite(getTranslated(context, 'close')),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
     );
   }
 

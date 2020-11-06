@@ -201,7 +201,7 @@
   "seeMyGroups": "Zobacz moje grupy",
   "profile": "Profil",
   "welcome": "Witaj",
-  "loggedSuccessButNoGroups": "Udało Ci się zalogować, ale wygląda na to, że nie masz utworzonych grup. Poproś administratora o utworzenie grup pracowników.",
+  "loggedSuccessButNoGroups": "Udało Ci się zalogować, ale wygląda na to, że nie masz utworzonych grup. Aby utworzyć grupę, wybierz proszę przycisk znajdujący się na dole ekranu.",
   "backToGroups": "Powrót do grup",
   "seeYourAllGroups": "Zobacz wszystkie swoje grupy",
   "manageSelectedEmployee": "Zarządzaj wybranym pracownikiem",
@@ -443,5 +443,11 @@
   "chooseOtherGroupName": "Proszę wpisz inną nazwę grupy",
   "successfullyAddedNewGroup": "Pomyślnie dodano nową grupę",
   "someEmployeesAreInOtherGroup": "Niektórzy pracownicy są w innej grupie",
-  "goToGroupsDashboard": "Wróć do panelu grup"
+  "goToGroupsDashboard": "Wróć do panelu grup",
+  "deleteGroup": "Usuń grupę",
+  "textGroupNameForDelete": "Przepisz wybraną nazwę grupy",
+  "groupNameForDeleteInvalid": "Wpisana nazwa grupy nie jest taka sama jak realna nazwa grupy",
+  "groupNameForDelete": "Nazwa grupy do usunięcia",
+  "successfullyDeletedGroup": "Pomyślnie usunięto wybraną grupę",
+  "groupDoesNotExists": "Grupa nie istnieje"
 }
