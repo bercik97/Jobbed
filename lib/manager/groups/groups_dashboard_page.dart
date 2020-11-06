@@ -9,6 +9,7 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/manage/workplace/workplaces_page.dart';
+import 'package:give_job/manager/shared/manager_app_bar_with_icons_legend.dart';
 import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -22,6 +23,7 @@ import 'package:give_job/shared/widget/texts.dart';
 import '../../shared/widget/loader.dart';
 import '../shared/manager_app_bar.dart';
 import 'group/group_page.dart';
+import 'group/icons_legend/icons_legend_dialog.dart';
 import 'manage/group/add_group_employees_page.dart';
 import 'manage/group/add_group_page.dart';
 import 'manage/group/delete_group_employees_page.dart';
@@ -61,7 +63,17 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
               debugShowCheckedModeBanner: false,
               home: Scaffold(
                 backgroundColor: DARK,
-                appBar: managerAppBar(context, _user, getTranslated(context, 'companyGroups')),
+                appBar: managerAppBarWithIconsLegend(
+                  context,
+                  getTranslated(context, 'companyGroups'),
+                  [
+                    IconsLegend.buildRowWithWidget(text25Green('+ -'), getTranslated(context, 'manageEmployeesInGroup')),
+                    IconsLegend.buildRowWithWidget(icon50Red(Icons.delete), getTranslated(context, 'removingGroup')),
+                    IconsLegend.buildRow('images/big-workplace-icon.png', getTranslated(context, 'manageCompanyWorkplaces')),
+                    IconsLegend.buildRowWithWidget(icon50Green(Icons.group_add), getTranslated(context, 'addingGroup')),
+                  ],
+                  _user,
+                ),
                 drawer: managerSideBar(context, _user),
                 body: Column(
                   children: <Widget>[_groups.isNotEmpty ? _handleGroups() : _handleNoGroups()],

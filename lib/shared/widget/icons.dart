@@ -15,6 +15,7 @@ Icon icon30Dark(IconData iconData) { return Icon(iconData, size: 30, color: DARK
 // RED //
 Icon iconRed(IconData iconData) { return Icon(iconData, color: Colors.red); }
 Icon icon30Red(IconData iconData) { return Icon(iconData, size: 30, color: Colors.red); }
+Icon icon50Red(IconData iconData) { return Icon(iconData, size: 50, color: Colors.red); }
 
 
 // ORANGE //

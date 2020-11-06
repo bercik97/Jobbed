@@ -85,8 +85,8 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
             [
               IconsLegend.buildRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
               IconsLegend.buildRow('images/checked.png', getTranslated(context, 'completedTs')),
-              IconsLegend.buildRowWithIcon(icon50Orange(Icons.arrow_downward), getTranslated(context, 'settingTsStatusToInProgress')),
-              IconsLegend.buildRowWithIcon(icon50Green(Icons.arrow_upward), getTranslated(context, 'settingTsStatusToCompleted')),
+              IconsLegend.buildRowWithWidget(icon50Orange(Icons.arrow_downward), getTranslated(context, 'settingTsStatusToInProgress')),
+              IconsLegend.buildRowWithWidget(icon50Green(Icons.arrow_upward), getTranslated(context, 'settingTsStatusToCompleted')),
             ],
             _model.user),
         drawer: managerSideBar(context, _model.user),

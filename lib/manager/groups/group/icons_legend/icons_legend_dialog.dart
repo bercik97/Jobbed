@@ -30,8 +30,8 @@ class IconsLegend {
                       SizedBox(height: 25),
                       buildRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
                       buildRow('images/checked.png', getTranslated(context, 'completedTs')),
-                      buildRowWithIcon(icon50Orange(Icons.arrow_downward), getTranslated(context, 'settingTsStatusToInProgress')),
-                      buildRowWithIcon(icon50Green(Icons.arrow_upward), getTranslated(context, 'settingTsStatusToCompleted')),
+                      buildRowWithWidget(icon50Orange(Icons.arrow_downward), getTranslated(context, 'settingTsStatusToInProgress')),
+                      buildRowWithWidget(icon50Green(Icons.arrow_upward), getTranslated(context, 'settingTsStatusToCompleted')),
                       buildRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
                       buildRow('images/green-rate-icon.png', getTranslated(context, 'settingRating')),
                       buildRow('images/green-plan-icon.png', getTranslated(context, 'settingPlan')),
@@ -84,12 +84,12 @@ class IconsLegend {
     );
   }
 
-  static Widget buildRowWithIcon(Icon icon, String description) {
+  static Widget buildRowWithWidget(Widget widget, String description) {
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [icon, text16WhiteBold('→ $description')],
+          children: [widget, text16WhiteBold('→ $description')],
         ),
         SizedBox(height: 15),
       ],

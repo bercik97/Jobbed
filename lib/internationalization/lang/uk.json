@@ -459,5 +459,9 @@
   "removingEmployeesFromGroup": "Removing employees from the group",
   "successfullyRemovedGroupEmployees": "Successfully removed group employees",
   "youWantToRemoveFromGroup": "you want to remove from the group",
-  "manageWorkplaces": "Manage workplaces"
+  "manageWorkplaces": "Manage workplaces",
+  "manageEmployeesInGroup": "Manage employees in group",
+  "removingGroup": "Removing group",
+  "manageCompanyWorkplaces" : "Manage company workplaces",
+  "addingGroup": "Adding group"
 }
