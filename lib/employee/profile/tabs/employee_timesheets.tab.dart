@@ -45,9 +45,25 @@ Widget employeeTimesheetsTab(BuildContext context, User user, List timesheets) {
                             fit: BoxFit.fitHeight,
                           ),
                         ),
-                        title: textWhiteBold(timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, timesheet.month) + '\n' + utf8.decode(timesheet.groupName.runes.toList())),
+                        title: textWhiteBold(timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, timesheet.month)),
                         subtitle: Column(
                           children: <Widget>[
+                            Align(
+                                child: Row(
+                                  children: <Widget>[
+                                    textWhite(getTranslated(context, 'company') + ': '),
+                                    textGreenBold(timesheet.companyName != null ? utf8.decode(timesheet.companyName.runes.toList()) : getTranslated(context, 'empty')),
+                                  ],
+                                ),
+                                alignment: Alignment.topLeft),
+                            Align(
+                                child: Row(
+                                  children: <Widget>[
+                                    textWhite(getTranslated(context, 'group') + ': '),
+                                    textGreenBold(timesheet.groupName != null ? utf8.decode(timesheet.groupName.runes.toList()) : getTranslated(context, 'empty')),
+                                  ],
+                                ),
+                                alignment: Alignment.topLeft),
                             Align(
                                 child: Row(
                                   children: <Widget>[

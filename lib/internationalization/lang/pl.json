@@ -463,5 +463,6 @@
   "manageEmployeesInGroup": "Zarządzanie pracownikami grupy",
   "removingGroup": "Usuwanie grupy",
   "manageCompanyWorkplaces" : "Zarządzaj miejscami pracy firmy",
-  "addingGroup": "Dodawanie grupy"
+  "addingGroup": "Dodawanie grupy",
+  "company": "Firma"
 }

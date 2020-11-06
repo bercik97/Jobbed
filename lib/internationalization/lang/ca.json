@@ -463,5 +463,6 @@
   "manageEmployeesInGroup": "Manage employees in group",
   "removingGroup": "Removing group",
   "manageCompanyWorkplaces" : "Manage company workplaces",
-  "addingGroup": "Adding group"
+  "addingGroup": "Adding group",
+  "company": "Company"
 }
