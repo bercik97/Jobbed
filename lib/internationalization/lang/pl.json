@@ -432,5 +432,16 @@
   "informationSectionDescription": "Poniższa sekcja zawiera informacje o koncie",
   "uneditableSection": "Nieedytowalna sekcja",
   "editableSection": "Edytowalna sekcja",
-  "companyGroups": "Grupy w firmie"
+  "companyGroups": "Grupy w firmie",
+  "createGroup": "Tworzenie grupy",
+  "youWantToAddToGroup": "których chcesz dodać do grupy",
+  "noEmployeesToFormGroup": "Brak pracowników do utworzenia grupy ponieważ wszyscy pracownicy firmy aktualnie posiadają grupę.",
+  "nameYourGroup": "Nazwij swoją grupę ...",
+  "groupNameIsRequired": "Nazwa grupy jest wymagana",
+  "groupDescriptionIsRequired": "Opis grupy jest wymagany",
+  "groupNameExists": "Nazwa grupy jest używana przez inną grupę",
+  "chooseOtherGroupName": "Proszę wpisz inną nazwę grupy",
+  "successfullyAddedNewGroup": "Pomyślnie dodano nową grupę",
+  "someEmployeesAreInOtherGroup": "Niektórzy pracownicy są w innej grupie",
+  "goToGroupsDashboard": "Wróć do panelu grup"
 }

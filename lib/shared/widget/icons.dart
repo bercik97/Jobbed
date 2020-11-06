@@ -9,6 +9,7 @@ Icon icon30White(IconData iconData) { return Icon(iconData, size: 30, color: WHI
 
 // DARK //
 Icon iconDark(IconData iconData) { return Icon(iconData, color: DARK); }
+Icon icon30Dark(IconData iconData) { return Icon(iconData, size: 30, color: DARK); }
 
 
 // RED //

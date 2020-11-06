@@ -84,6 +84,20 @@ class EmployeeService {
     }
   }
 
+  Future<List<EmployeeBasicDto>> findAllByGroupIsNullAndCompanyId(int companyId) async {
+    Response res = await get(
+      '$_url/nullable-group/companies?company_id=$companyId',
+      headers: _header,
+    );
+    if (res.statusCode == 200) {
+      return (json.decode(res.body) as List).map((data) => EmployeeBasicDto.fromJson(data)).toList();
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
   Future<List<EmployeeForVocationsTsDto>> findAllByGroupIdAndTsYearMonthStatusForManageVocations(int groupId, int year, int month, String status) async {
     Response res = await get(
       '$_url/manage-vocations?group_id=$groupId&timesheet_year=$year&timesheet_month=$month&timesheet_status=$status',

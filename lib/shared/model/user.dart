@@ -4,6 +4,7 @@ class User {
   String username;
   String info;
   String nationality;
+  String companyId;
   String companyName;
   String authHeader;
 
@@ -15,6 +16,7 @@ class User {
     username = data['username'];
     info = data['info'];
     nationality = data['nationality'];
+    companyId = data['companyId'];
     companyName = data['companyName'];
     authHeader = data['authorization'];
     return this;

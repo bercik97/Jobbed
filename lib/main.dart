@@ -61,6 +61,7 @@ class _MyAppState extends State<MyApp> {
     var info = await storage.read(key: 'info');
     var username = await storage.read(key: 'username');
     var nationality = await storage.read(key: 'nationality');
+    var companyId = await storage.read(key: 'companyId');
     var companyName = await storage.read(key: 'companyName');
     var containsMoreThanOneGroup = await storage.read(key: 'containsMoreThanOneGroup');
     var groupId = await storage.read(key: 'groupId');
@@ -76,6 +77,7 @@ class _MyAppState extends State<MyApp> {
     map['info'] = info;
     map['username'] = username;
     map['nationality'] = nationality;
+    map['companyId'] = companyId;
     map['companyName'] = companyName;
     map['containsMoreThanOneGroup'] = containsMoreThanOneGroup;
     map['groupId'] = groupId;

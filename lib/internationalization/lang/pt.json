@@ -432,5 +432,16 @@
   "informationSectionDescription": "Following section provides information about the account",
   "uneditableSection": "Uneditable section",
   "editableSection": "Editable section",
-  "companyGroups": "Groups in the company"
+  "companyGroups": "Groups in the company",
+  "createGroup": "Create group",
+  "youWantToAddToGroup": "you want to add to the group",
+  "noEmployeesToFormGroup": "There are no employees to form a group as all employees of the company currently have a group.",
+  "nameYourGroup": "Name your group ...",
+  "groupNameIsRequired": "Group name is required",
+  "groupDescriptionIsRequired": "Group description is required",
+  "groupNameExists": "Group name is in use by another group",
+  "chooseOtherGroupName": "Please write another group name",
+  "successfullyAddedNewGroup": "Successfully added new group",
+  "someEmployeesAreInOtherGroup": "Some employees are in other group",
+  "goToGroupsDashboard": "Return to the groups page"
 }

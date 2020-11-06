@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:give_job/api/group/dto/create_group_dto.dart';
 import 'package:give_job/api/group/dto/group_dashboard_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/service/logout_service.dart';
@@ -15,13 +16,24 @@ class GroupService {
 
   static const String _url = '$SERVER_IP/groups';
 
+  Future<dynamic> create(CreateGroupDto dto) async {
+    Response res = await post(
+      _url,
+      body: jsonEncode(CreateGroupDto.jsonEncode(dto)),
+      headers: {"content-type": "application/json"},
+    );
+    return res.statusCode == 200 ? res : Future.error(res.body);
+  }
+
   Future<List<GroupDashboardDto>> findAllByManagerId(String managerId) async {
     Response res = await get(
       '$_url?manager_id=$managerId',
       headers: _header,
     );
     if (res.statusCode == 200) {
-      return (json.decode(res.body) as List).map((data) => GroupDashboardDto.fromJson(data)).toList();
+      return (json.decode(res.body) as List)
+          .map((data) => GroupDashboardDto.fromJson(data))
+          .toList();
     } else if (res.statusCode == 401) {
       return Logout.handle401WithLogout(_context);
     } else {

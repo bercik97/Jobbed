@@ -196,18 +196,21 @@ class _LoginPageState extends State<LoginPage> {
         String id = map['id'];
         String info = map['info'];
         String nationality = map['nationality'];
+        String companyId = map['companyId'];
         String companyName = map['companyName'];
         storage.write(key: 'role', value: role);
         storage.write(key: 'id', value: id);
         storage.write(key: 'info', value: info);
         storage.write(key: 'username', value: username);
         storage.write(key: 'nationality', value: nationality);
+        storage.write(key: 'companyId', value: companyId);
         storage.write(key: 'companyName', value: companyName);
         user.id = id;
         user.role = role;
         user.username = username;
         user.info = info;
         user.nationality = nationality;
+        user.companyId = companyId;
         user.companyName = companyName;
         user.authHeader = authHeader;
         if (role == ROLE_EMPLOYEE) {

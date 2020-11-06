@@ -14,10 +14,12 @@ import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/logout_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
+import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
 import '../../shared/widget/loader.dart';
 import '../shared/manager_app_bar.dart';
+import 'crud/add_group_page.dart';
 import 'group/group_page.dart';
 
 class GroupsDashboardPage extends StatefulWidget {
@@ -57,6 +59,22 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                 drawer: managerSideBar(context, _user),
                 body: Column(
                   children: <Widget>[_groups.isNotEmpty ? _handleGroups() : _handleNoGroups()],
+                ),
+                floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+                floatingActionButton: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    FloatingActionButton(
+                      heroTag: "createGroupBtn",
+                      tooltip: getTranslated(context, 'createGroup'),
+                      backgroundColor: GREEN,
+                      onPressed: () => Navigator.push(
+                        this.context,
+                        MaterialPageRoute(builder: (context) => AddGroupPage(_user)),
+                      ),
+                      child: icon30Dark(Icons.group_add),
+                    ),
+                  ],
                 ),
               ),
             );
@@ -153,6 +171,12 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                         alignment: Alignment.topLeft,
                       ),
                     ],
+                  ),
+                  trailing: IconButton(
+                    icon: icon30Green(Icons.border_color),
+                    onPressed: () {
+                      print('sdfs');
+                    },
                   ),
                 ),
               ),
