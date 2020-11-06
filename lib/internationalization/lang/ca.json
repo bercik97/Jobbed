@@ -255,9 +255,6 @@
   "employeeHasNoTimesheets": "Nuvarande anställd har inga tidtabeller",
   "noContact": "Ingen kontakt",
   "employeeHasNoContact": "Nuvarande anställd har ingen kontakt",
-  "todo": "Todo",
-  "todayTodo": "Todo för idag",
-  "nothingTodo": "Du har inget att göra idag",
   "noTimesheetsYet": "Du har inte tidrapporter ännu",
   "userIsNotVerified": "Användaren är inte verifierad",
   "In progress": "Pågår",
@@ -472,5 +469,6 @@
   "textSomeNote": "Text some note ...",
   "noteCannotBeEmpty": "Note cannot be empty",
   "noteSavedSuccessfully": "Note has been saved successfully",
-  "noteFor": "Note for"
+  "noteFor": "Note for",
+  "today": "Today"
 }

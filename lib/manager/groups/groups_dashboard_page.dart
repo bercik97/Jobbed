@@ -136,7 +136,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                       child: Image(
                         width: 75,
                         image: AssetImage(
-                          'images/big-group-icon.png',
+                          'images/big-company-icon.png',
                         ),
                         fit: BoxFit.cover,
                       ),

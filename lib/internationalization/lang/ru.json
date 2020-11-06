@@ -255,9 +255,6 @@
   "employeeHasNoTimesheets": "У текущего сотрудника нет табелей учета рабочего времени",
   "noContact": "Нет контакта",
   "employeeHasNoContact": "У текущего сотрудника нет контакта",
-  "todo": "Todo",
-  "todayTodo": "Todo на сегодня",
-  "nothingTodo": "Тебе сегодня нечего делать",
   "noTimesheetsYet": "У вас еще нет табелей",
   "userIsNotVerified": "Пользователь не подтвержден",
   "In progress": "В процессе",
@@ -472,5 +469,6 @@
   "textSomeNote": "Text some note ...",
   "noteCannotBeEmpty": "Note cannot be empty",
   "noteSavedSuccessfully": "Note has been saved successfully",
-  "noteFor": "Note for"
+  "noteFor": "Note for",
+  "today": "Today"
 }

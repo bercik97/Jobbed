@@ -255,9 +255,6 @@
   "employeeHasNoTimesheets": "El empleado actual no tiene hojas de horas",
   "noContact": "Sin contacto",
   "employeeHasNoContact": "El empleado actual no tiene contacto",
-  "todo": "Todo",
-  "todayTodo": "Todo por hoy",
-  "nothingTodo": "No tienes nada que hacer hoy",
   "noTimesheetsYet": "Aún no tienes hojas de tiempo",
   "userIsNotVerified": "El usuario no está verificado",
   "In progress": "En progreso",
@@ -472,5 +469,6 @@
   "textSomeNote": "Text some note ...",
   "noteCannotBeEmpty": "Note cannot be empty",
   "noteSavedSuccessfully": "Note has been saved successfully",
-  "noteFor": "Note for"
+  "noteFor": "Note for",
+  "today": "Today"
 }

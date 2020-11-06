@@ -255,9 +255,6 @@
   "employeeHasNoTimesheets": "Huidige werknemer heeft geen urenstaten",
   "noContact": "Geen contact",
   "employeeHasNoContact": "Huidige medewerker heeft geen contact",
-  "todo": "Todo",
-  "todayTodo": "Todo voor vandaag",
-  "nothingTodo": "Je hebt vandaag niets te doen",
   "noTimesheetsYet": "Je hebt nog geen urenstaten",
   "userIsNotVerified": "Gebruiker is niet geverifieerd",
   "In progress": "In uitvoering",
@@ -472,5 +469,6 @@
   "textSomeNote": "Text some note ...",
   "noteCannotBeEmpty": "Note cannot be empty",
   "noteSavedSuccessfully": "Note has been saved successfully",
-  "noteFor": "Note for"
+  "noteFor": "Note for",
+  "today": "Today"
 }

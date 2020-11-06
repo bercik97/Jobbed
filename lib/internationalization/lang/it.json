@@ -255,9 +255,6 @@
   "employeeHasNoTimesheets": "Nåværende ansatt har ingen timelister",
   "noContact": "Ingen kontakt",
   "employeeHasNoContact": "Nåværende ansatt har ingen kontakt",
-  "todo": "Todo",
-  "todayTodo": "Todo for i dag",
-  "nothingTodo": "Du har ingenting å gjøre i dag",
   "noTimesheetsYet": "Du har ikke timelister ennå",
   "userIsNotVerified": "Brukeren er ikke bekreftet",
   "In progress": "Pågår",
@@ -472,5 +469,6 @@
   "textSomeNote": "Text some note ...",
   "noteCannotBeEmpty": "Note cannot be empty",
   "noteSavedSuccessfully": "Note has been saved successfully",
-  "noteFor": "Note for"
+  "noteFor": "Note for",
+  "today": "Today"
 }

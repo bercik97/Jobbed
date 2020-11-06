@@ -10,7 +10,7 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/employee/profile/edit/employee_edit_page.dart';
 import 'package:give_job/employee/profile/tabs/employee_panel.dart';
 import 'package:give_job/employee/profile/tabs/employee_timesheets.tab.dart';
-import 'package:give_job/employee/profile/tabs/employee_todo.dart';
+import 'package:give_job/employee/profile/tabs/employee_today.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
 import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
@@ -197,7 +197,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                           unselectedLabelColor: Colors.grey,
                           tabs: <Widget>[
                             Tab(icon: iconWhite(Icons.assignment), text: getTranslated(this.context, 'timesheets')),
-                            Tab(icon: iconWhite(Icons.done_outline), text: getTranslated(this.context, 'todo')),
+                            Tab(icon: iconWhite(Icons.timelapse), text: getTranslated(this.context, 'today')),
                             Tab(icon: iconWhite(Icons.sort), text: getTranslated(this.context, 'panel')),
                           ],
                         ),
@@ -211,7 +211,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                   child: TabBarView(
                     children: <Widget>[
                       _buildTab(employeeTimesheetsTab(this.context, _user, _employeePageDto.timeSheets)),
-                      _buildTab(employeeTodaysTodo(this.context, _employeePageDto.todayPlan)),
+                      _buildTab(employeeToday(this.context, _employeePageDto.todayPlan)),
                       _buildTab(employeePanel(this.context, _user, _employeePageDto)),
                     ],
                   ),

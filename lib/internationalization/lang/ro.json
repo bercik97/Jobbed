@@ -255,9 +255,6 @@
   "employeeHasNoTimesheets": "Angajatul actual nu are foi de timp",
   "noContact": "Fără contact",
   "employeeHasNoContact": "Angajatul actual nu are contact",
-  "todo": "Todo",
-  "todayTodo": "Tot pentru azi",
-  "nothingTodo": "Nu aveți nimic de făcut astăzi",
   "noTimesheetsYet": "Nu aveți încă foi de timp",
   "userIsNotVerified": "Utilizatorul nu este verificat",
   "In progress": "În curs",
@@ -472,5 +469,6 @@
   "textSomeNote": "Text some note ...",
   "noteCannotBeEmpty": "Note cannot be empty",
   "noteSavedSuccessfully": "Note has been saved successfully",
-  "noteFor": "Note for"
+  "noteFor": "Note for",
+  "today": "Today"
 }
