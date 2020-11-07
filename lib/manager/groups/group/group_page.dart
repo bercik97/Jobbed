@@ -7,6 +7,7 @@ import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.d
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/timesheets/ts_page.dart';
 import 'package:give_job/manager/groups/group/vocations/vocations_ts_page.dart';
+import 'package:give_job/manager/groups/manage/workplace/workplaces_page.dart';
 import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -197,6 +198,30 @@ class _GroupPageState extends State<GroupPage> {
                           ),
                         ),
                       ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Material(
+                          color: BRIGHTER_DARK,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                CupertinoPageRoute<Null>(
+                                  builder: (BuildContext context) {
+                                    return WorkplacesPage(_model.user);
+                                  },
+                                ),
+                              );
+                            },
+                            child: _buildScrollableContainer('images/big-workplace-icon.png', 'workplaces', 'workplacesDescription'),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(child: Material(color: BRIGHTER_DARK)),
                     ],
                   ),
                 ],
