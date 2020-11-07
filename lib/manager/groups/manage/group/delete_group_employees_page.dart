@@ -286,7 +286,7 @@ class _DeleteGroupEmployeesPageState extends State<DeleteGroupEmployeesPage> {
                 showHint(context, getTranslated(context, 'needToSelectEmployees'), getTranslated(context, 'youWantToRemoveFromGroup'));
                 return;
               }
-              _groupService.addGroupEmployees(_groupId, _selectedIds.map((e) => e.toInt()).toList()).then((value) {
+              _groupService.deleteGroupEmployees(_groupId, _selectedIds.map((e) => e.toString()).toList()).then((value) {
                 ToastService.showSuccessToast(getTranslated(context, 'successfullyRemovedGroupEmployees'));
                 Navigator.push(
                   context,

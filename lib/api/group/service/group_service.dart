@@ -85,7 +85,7 @@ class GroupService {
     }
   }
 
-  Future<dynamic> deleteGroupEmployees(int id, List<int> employeeIds) async {
+  Future<dynamic> deleteGroupEmployees(int id, List<String> employeeIds) async {
     String url = '$_url?id=$id&employee_ids=$employeeIds';
     Response res = await delete(
       url,
