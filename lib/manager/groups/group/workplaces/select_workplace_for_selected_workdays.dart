@@ -236,7 +236,7 @@ class _SelectWorkplaceForSelectedWorkdaysPageState extends State<SelectWorkplace
           padding: EdgeInsets.only(top: 10),
           child: Align(
             alignment: Alignment.center,
-            child: textCenter19White(getTranslated(context, 'groupNoWorkplaces')),
+            child: textCenter19White(getTranslated(context, 'companyNoWorkplaces')),
           ),
         ),
       ],
