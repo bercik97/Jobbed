@@ -320,7 +320,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
           children: [
             iconYellow(Icons.beach_access),
             SizedBox(width: 2.5),
-            text16GreenBold(getTranslated(context, 'verifiedVocationForDay') + ' ' + _selectedDay.toString().substring(0, 10)),
+            text15GreenBold(getTranslated(context, 'verifiedVocationForDay') + ' ' + _selectedDay.toString().substring(0, 10)),
           ],
         ),
         SizedBox(height: 5),
@@ -339,7 +339,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
           children: [
             iconRed(Icons.beach_access),
             SizedBox(width: 2.5),
-            text16RedBold(getTranslated(context, 'notVerifiedVocationForDay') + ' ' + _selectedDay.toString().substring(0, 10)),
+            text15RedBold(getTranslated(context, 'notVerifiedVocationForDay') + ' ' + _selectedDay.toString().substring(0, 10)),
           ],
         ),
         SizedBox(height: 5),
@@ -360,8 +360,8 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
           trailing: icon50Green(Icons.check),
           title: Row(
             children: [
-              text16White(getTranslated(context, 'amountOfEarnedMoney') + ': '),
-              text16GreenBold(workday.money.toString()),
+              text15White(getTranslated(context, 'amountOfEarnedMoney') + ': '),
+              text15GreenBold(workday.money.toString()),
             ],
           ),
           subtitle: Column(
@@ -369,32 +369,32 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
               Align(
                   child: Row(
                     children: <Widget>[
-                      text16White(getTranslated(context, 'numberOfHoursWorked') + ': '),
-                      text16GreenBold(workday.hours.toString()),
+                      text15White(getTranslated(context, 'numberOfHoursWorked') + ': '),
+                      text15GreenBold(workday.hours.toString()),
                     ],
                   ),
                   alignment: Alignment.topLeft),
               Align(
                   child: Row(
                     children: <Widget>[
-                      text16White(getTranslated(context, 'rating') + ': '),
-                      text16GreenBold(workday.rating.toString() + ' / 10'),
+                      text15White(getTranslated(context, 'rating') + ': '),
+                      text15GreenBold(workday.rating.toString() + ' / 10'),
                     ],
                   ),
                   alignment: Alignment.topLeft),
               Align(
                   child: Row(
                     children: <Widget>[
-                      text16White(getTranslated(context, 'plan') + ': '),
-                      text16GreenBold(plan != null && plan.isNotEmpty ? getTranslated(context, 'yes') : getTranslated(context, 'empty')),
+                      text15White(getTranslated(context, 'plan') + ': '),
+                      text15GreenBold(plan != null && plan.isNotEmpty ? getTranslated(context, 'yes') : getTranslated(context, 'empty')),
                     ],
                   ),
                   alignment: Alignment.topLeft),
               Align(
                   child: Row(
                     children: <Widget>[
-                      text16White(getTranslated(context, 'note') + ': '),
-                      text16GreenBold(note != null && note.isNotEmpty ? getTranslated(context, 'yes') : getTranslated(context, 'empty')),
+                      text15White(getTranslated(context, 'note') + ': '),
+                      text15GreenBold(note != null && note.isNotEmpty ? getTranslated(context, 'yes') : getTranslated(context, 'empty')),
                     ],
                   ),
                   alignment: Alignment.topLeft),
@@ -414,7 +414,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
           children: [
             iconOrange(Icons.error_outline),
             SizedBox(width: 5),
-            text16GreenBold(getTranslated(context, 'planFor') + ' ' + _selectedDay.toString().substring(0, 10)),
+            text15GreenBold(getTranslated(context, 'planFor') + ' ' + _selectedDay.toString().substring(0, 10)),
           ],
         ),
         SizedBox(height: 5),
@@ -431,7 +431,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
           children: [
             iconOrange(Icons.error_outline),
             SizedBox(width: 5),
-            text16GreenBold(getTranslated(context, 'planFor') + ' ' + _selectedDay.toString().substring(0, 10)),
+            text15GreenBold(getTranslated(context, 'planFor') + ' ' + _selectedDay.toString().substring(0, 10)),
           ],
         ),
         SizedBox(height: 5),
@@ -450,7 +450,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
   Widget _handleEmptyDay() {
     return Column(
       children: [
-        text16GreenBold(_selectedDay.toString().substring(0, 10)),
+        text15GreenBold(_selectedDay.toString().substring(0, 10)),
         SizedBox(height: 5),
         textWhite('-'),
       ],

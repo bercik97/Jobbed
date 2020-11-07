@@ -46,8 +46,8 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                 trailing: todayHours != '0' ? icon50Green(Icons.check) : icon50Red(Icons.close),
                 title: Row(
                   children: [
-                    text16White(getTranslated(context, 'amountOfEarnedMoney') + ': '),
-                    text16GreenBold(todayMoney),
+                    text15White(getTranslated(context, 'amountOfEarnedMoney') + ': '),
+                    text15GreenBold(todayMoney),
                   ],
                 ),
                 subtitle: Column(
@@ -56,8 +56,8 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                     Align(
                         child: Row(
                           children: <Widget>[
-                            text16White(getTranslated(context, 'numberOfHoursWorked') + ': '),
-                            text16GreenBold(todayHours),
+                            text15White(getTranslated(context, 'numberOfHoursWorked') + ': '),
+                            text15GreenBold(todayHours),
                           ],
                         ),
                         alignment: Alignment.topLeft),
@@ -65,8 +65,8 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                     Align(
                         child: Row(
                           children: <Widget>[
-                            text16White(getTranslated(context, 'rating') + ': '),
-                            text16GreenBold(todayRating + ' / 10'),
+                            text15White(getTranslated(context, 'rating') + ': '),
+                            text15GreenBold(todayRating + ' / 10'),
                           ],
                         ),
                         alignment: Alignment.topLeft),
@@ -74,16 +74,16 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                     Align(
                         child: Row(
                           children: <Widget>[
-                            text16White(getTranslated(context, 'plan') + ': '),
+                            text15White(getTranslated(context, 'plan') + ': '),
                             todayPlan != null && todayPlan.isNotEmpty
                                 ? Row(
                                     children: [
-                                      text16GreenBold(getTranslated(context, 'yes') + ' '),
+                                      text15GreenBold(getTranslated(context, 'yes') + ' '),
                                       iconGreen(Icons.search),
                                       textGreen('(' + getTranslated(context, 'checkDetails') + ')'),
                                     ],
                                   )
-                                : text16RedBold(getTranslated(context, 'empty'))
+                                : text15RedBold(getTranslated(context, 'empty'))
                           ],
                         ),
                         alignment: Alignment.topLeft),
@@ -91,16 +91,16 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                     Align(
                         child: Row(
                           children: <Widget>[
-                            text16White(getTranslated(context, 'note') + ': '),
+                            text15White(getTranslated(context, 'note') + ': '),
                             todayNote != null && todayNote.isNotEmpty
                                 ? Row(
                                     children: [
-                                      text16GreenBold(getTranslated(context, 'yes') + ' '),
+                                      text15GreenBold(getTranslated(context, 'yes') + ' '),
                                       iconGreen(Icons.search),
                                       textGreen('(' + getTranslated(context, 'checkDetails') + ')'),
                                     ],
                                   )
-                                : text16RedBold(getTranslated(context, 'empty'))
+                                : text15RedBold(getTranslated(context, 'empty'))
                           ],
                         ),
                         alignment: Alignment.topLeft),

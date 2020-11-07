@@ -93,6 +93,7 @@ Text textCenter20GreenBold(String text) { return Text(text, textAlign: TextAlign
 /* TEXT GREEN BOLD */
 /////////////////////
 Text textGreenBold(String text) { return Text(text, style: TextStyle(color: GREEN, fontWeight: FontWeight.bold)); }
+Text text15GreenBold(String text) { return Text(text, style: TextStyle(fontSize: 15, color: GREEN, fontWeight: FontWeight.bold)); }
 Text text16GreenBold(String text) { return Text(text, style: TextStyle(fontSize: 16, color: GREEN, fontWeight: FontWeight.bold)); }
 Text text20GreenBold(String text) { return Text(text, style: TextStyle(fontSize: 20, color: GREEN, fontWeight: FontWeight.bold)); }
 
@@ -107,6 +108,7 @@ Text text13Red(String text) { return Text(text, style: TextStyle(fontSize: 13, c
 /////////////////////
 /*  TEXT RED BOLD  */
 /////////////////////
+Text text15RedBold(String text) { return Text(text, style: TextStyle(fontSize: 15, color: Colors.red, fontWeight: FontWeight.bold)); }
 Text text16RedBold(String text) { return Text(text, style: TextStyle(fontSize: 16, color: Colors.red, fontWeight: FontWeight.bold)); }
 Text text20RedBold(String text) { return Text(text, style: TextStyle(fontSize: 20, color: Colors.red, fontWeight: FontWeight.bold)); }
 
