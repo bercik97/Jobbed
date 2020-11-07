@@ -5,6 +5,7 @@ import 'package:give_job/employee/profile/tabs/calendar/employee_calendar_page.d
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
@@ -37,13 +38,15 @@ Container employeePanel(BuildContext context, User user, EmployeePageDto employe
               child: Material(
                 color: BRIGHTER_DARK,
                 child: InkWell(
-                  onTap: () => showContactForManager(
-                    context,
-                    employee.groupManager,
-                    employee.groupManagerPhone,
-                    employee.groupManagerViber,
-                    employee.groupManagerWhatsApp,
-                  ),
+                  onTap: () => employee.groupManager != null
+                      ? showContactForManager(
+                          context,
+                          employee.groupManager,
+                          employee.groupManagerPhone,
+                          employee.groupManagerViber,
+                          employee.groupManagerWhatsApp,
+                        )
+                      : ToastService.showErrorToast(getTranslated(context, 'noManagerAssigned')),
                   child: _buildScrollableContainer(context, Icons.phone, 'contact', 'contactWithYourManager'),
                 ),
               ),

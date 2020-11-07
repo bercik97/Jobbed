@@ -474,5 +474,6 @@
   "fillHours": "Uzupełnij godziny",
   "editNote": "Edytuj notatkę",
   "youDontHaveTsForCurrentMonth": "Nie posiadasz arkusza czasu pracy na bieżący miesiąc",
-  "setHoursForToday": "Uzupełnianie dzisiejszych godzin"
+  "setHoursForToday": "Uzupełnianie dzisiejszych godzin",
+  "noManagerAssigned": "Brak przypisanego menadżera"
 }

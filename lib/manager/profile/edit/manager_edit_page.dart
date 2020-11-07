@@ -63,8 +63,8 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
         'phone',
         'viber',
         'whatsApp',
-        'companyName'
-            'accountExpirationDate',
+        'companyName',
+        'accountExpirationDate',
       ],
     ).then(
       (res) => {
@@ -143,7 +143,7 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
         SizedBox(height: 20),
         _buildReadOnlyField(getTranslated(context, 'companyName'), _companyName, Icons.business),
         _buildReadOnlyField(getTranslated(context, 'accountExpirationDate'), _accountExpirationDate, Icons.access_time_outlined),
-        _buildReadOnlyField(getTranslated(context, 'role'), getTranslated(context, 'employee'), Icons.nature_people_sharp),
+        _buildReadOnlyField(getTranslated(context, 'role'), getTranslated(context, 'manager'), Icons.nature_people_sharp),
         _buildReadOnlyField(getTranslated(context, 'username'), _usernameController.text, Icons.person),
       ],
     );

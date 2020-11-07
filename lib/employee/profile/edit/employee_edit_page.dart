@@ -109,8 +109,8 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
           _accountExpirationDate = this._fieldsValues['accountExpirationDate'];
           _fatherNameController.text = this._fieldsValues['fatherName'];
           _motherNameController.text = this._fieldsValues['motherName'];
-          _dateOfBirth = DateTime.parse(this._fieldsValues['dateOfBirth']);
-          _expirationDateOfWork = DateTime.parse(this._fieldsValues['expirationDateOfWork']);
+          _dateOfBirth = this._fieldsValues['dateOfBirth'] != null ? DateTime.parse(this._fieldsValues['dateOfBirth']) : null;
+          _expirationDateOfWork = this._fieldsValues['expirationDateOfWork'] != null ? DateTime.parse(this._fieldsValues['expirationDateOfWork']) : null;
           _nipController.text = this._fieldsValues['nip'];
           _bankAccountNumberController.text = this._fieldsValues['bankAccountNumber'];
           _drivingLicenseController.text = this._fieldsValues['drivingLicense'];
@@ -119,8 +119,8 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
           _streetController.text = this._fieldsValues['street'];
           _houseNumberController.text = this._fieldsValues['houseNumber'];
           _passportNumberController.text = this._fieldsValues['passportNumber'];
-          _passportReleaseDate = DateTime.parse(this._fieldsValues['passportReleaseDate']);
-          _passportExpirationDate = DateTime.parse(this._fieldsValues['passportExpirationDate']);
+          _passportReleaseDate = this._fieldsValues['passportReleaseDate'] != null ? DateTime.parse(this._fieldsValues['passportReleaseDate']) : null;
+          _passportExpirationDate = this._fieldsValues['passportExpirationDate'] != null ? DateTime.parse(this._fieldsValues['passportExpirationDate']) : null;
           _companyName = this._fieldsValues['companyName'];
         }),
       },

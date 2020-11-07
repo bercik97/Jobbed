@@ -459,7 +459,7 @@
   "manageWorkplaces": "Manage workplaces",
   "manageEmployeesInGroup": "Manage employees in group",
   "removingGroup": "Removing group",
-  "manageCompanyWorkplaces" : "Manage company workplaces",
+  "manageCompanyWorkplaces": "Manage company workplaces",
   "addingGroup": "Adding group",
   "company": "Company",
   "note": "Note",
@@ -474,5 +474,6 @@
   "fillHours": "Fill hours",
   "editNote": "Edit note",
   "youDontHaveTsForCurrentMonth": "You do not have a time sheet for the current month",
-  "settingHoursForToday": "Setting hours for today"
+  "settingHoursForToday": "Setting hours for today",
+  "noManagerAssigned": "No manager assigned"
 }
