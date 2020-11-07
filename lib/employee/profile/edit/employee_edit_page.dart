@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/employee/employee_profile_page.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
 import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
@@ -669,49 +670,51 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
           minWidth: double.maxFinite,
           height: 50,
           shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-          onPressed: () => {
-            if (!_isValid())
-              {
-                _errorDialog(getTranslated(context, 'correctInvalidFields')),
-              }
-            else
-              {
-                _employeeService.updateEmployeeAndUserFieldsValuesById(
-                  widget._employeeId,
-                  {
-                    "username": _usernameController.text,
-                    "name": _nameController.text,
-                    "surname": _surnameController.text,
-                    "nationality": _nationality,
-                    "phone": _phoneController.text,
-                    "viber": _viberController.text,
-                    "whatsApp": _whatsAppController.text,
-                    "fatherName": _fatherNameController.text,
-                    "motherName": _motherNameController.text,
-                    "dateOfBirth": _dateOfBirth != null ? _dateOfBirth.toString().substring(0, 10) : null,
-                    "expirationDateOfWork": _expirationDateOfWork != null ? _expirationDateOfWork.toString().substring(0, 10) : null,
-                    "nip": _nipController.text,
-                    "bankAccountNumber": _bankAccountNumberController.text,
-                    "drivingLicense": _drivingLicenseController.text,
-                    "locality": _localityController.text,
-                    "zipCode": _zipCodeController.text,
-                    "street": _streetController.text,
-                    "houseNumber": _houseNumberController.text,
-                    "passportNumber": _passportNumberController.text,
-                    "passportReleaseDate": _passportReleaseDate != null ? _passportReleaseDate.toString().substring(0, 10) : null,
-                    "passportExpirationDate": _passportExpirationDate != null ? _passportExpirationDate.toString().substring(0, 10) : null,
-                  },
-                ).then((res) {
-                  ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedInformationAboutYou'));
-                  _user.nationality = _nationality;
-                  _user.info = _nameController.text + ' ' + _surnameController.text;
-                  _user.username = _usernameController.text;
-                }).catchError((onError) {
-                  _errorDialog(
-                    getTranslated(context, 'smthWentWrong'),
-                  );
-                }),
-              }
+          onPressed: () {
+            if (!_isValid()) {
+              _errorDialog(getTranslated(context, 'correctInvalidFields'));
+              return;
+            } else {
+              _employeeService.updateEmployeeAndUserFieldsValuesById(
+                widget._employeeId,
+                {
+                  "username": _usernameController.text,
+                  "name": _nameController.text,
+                  "surname": _surnameController.text,
+                  "nationality": _nationality,
+                  "phone": _phoneController.text,
+                  "viber": _viberController.text,
+                  "whatsApp": _whatsAppController.text,
+                  "fatherName": _fatherNameController.text,
+                  "motherName": _motherNameController.text,
+                  "dateOfBirth": _dateOfBirth != null ? _dateOfBirth.toString().substring(0, 10) : null,
+                  "expirationDateOfWork": _expirationDateOfWork != null ? _expirationDateOfWork.toString().substring(0, 10) : null,
+                  "nip": _nipController.text,
+                  "bankAccountNumber": _bankAccountNumberController.text,
+                  "drivingLicense": _drivingLicenseController.text,
+                  "locality": _localityController.text,
+                  "zipCode": _zipCodeController.text,
+                  "street": _streetController.text,
+                  "houseNumber": _houseNumberController.text,
+                  "passportNumber": _passportNumberController.text,
+                  "passportReleaseDate": _passportReleaseDate != null ? _passportReleaseDate.toString().substring(0, 10) : null,
+                  "passportExpirationDate": _passportExpirationDate != null ? _passportExpirationDate.toString().substring(0, 10) : null,
+                },
+              ).then((res) {
+                ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedInformationAboutYou'));
+                _user.nationality = _nationality;
+                _user.info = _nameController.text + ' ' + _surnameController.text;
+                _user.username = _usernameController.text;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => EmployeeProfilPage(_user)),
+                );
+              }).catchError((onError) {
+                _errorDialog(
+                  getTranslated(context, 'smthWentWrong'),
+                );
+              });
+            }
           },
           color: GREEN,
           child: text20White(getTranslated(context, 'update')),

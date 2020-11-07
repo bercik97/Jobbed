@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/token/service/token_service.dart';
-import 'package:give_job/employee/employee_page.dart';
+import 'package:give_job/employee/employee_profile_page.dart';
 import 'package:give_job/main.dart';
 import 'package:give_job/manager/groups/group/group_page.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';

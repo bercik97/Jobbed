@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:give_job/employee/employee_page.dart';
+import 'package:give_job/employee/employee_profile_page.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/groups_dashboard_page.dart';
 import 'package:give_job/shared/libraries/colors.dart';

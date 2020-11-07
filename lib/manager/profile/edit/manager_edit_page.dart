@@ -6,6 +6,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_job/api/manager/service/manager_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
+import 'package:give_job/manager/profile/manager_profile_page.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -337,34 +338,36 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
           minWidth: double.maxFinite,
           height: 50,
           shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-          onPressed: () => {
-            if (!_isValid())
-              {
-                _errorDialog(getTranslated(context, 'correctInvalidFields')),
-              }
-            else
-              {
-                _managerService.updateManagerAndUserFieldsValuesById(
-                  int.parse(_user.id),
-                  {
-                    "name": _nameController.text,
-                    "surname": _surnameController.text,
-                    "nationality": _nationality,
-                    "phone": _phoneController.text,
-                    "viber": _viberController.text,
-                    "whatsApp": _whatsAppController.text,
-                  },
-                ).then((res) {
-                  ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedInformationAboutYou'));
-                  _user.nationality = _nationality;
-                  _user.info = _nameController.text + ' ' + _surnameController.text;
-                  _user.username = _usernameController.text;
-                }).catchError((onError) {
-                  _errorDialog(
-                    getTranslated(context, 'smthWentWrong'),
-                  );
-                }),
-              }
+          onPressed: () {
+            if (!_isValid()) {
+              _errorDialog(getTranslated(context, 'correctInvalidFields'));
+              return;
+            } else {
+              _managerService.updateManagerAndUserFieldsValuesById(
+                int.parse(_user.id),
+                {
+                  "name": _nameController.text,
+                  "surname": _surnameController.text,
+                  "nationality": _nationality,
+                  "phone": _phoneController.text,
+                  "viber": _viberController.text,
+                  "whatsApp": _whatsAppController.text,
+                },
+              ).then((res) {
+                ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedInformationAboutYou'));
+                _user.nationality = _nationality;
+                _user.info = _nameController.text + ' ' + _surnameController.text;
+                _user.username = _usernameController.text;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ManagerProfilePage(_user)),
+                );
+              }).catchError((onError) {
+                _errorDialog(
+                  getTranslated(context, 'smthWentWrong'),
+                );
+              });
+            }
           },
           color: GREEN,
           child: text20White(getTranslated(context, 'update')),
