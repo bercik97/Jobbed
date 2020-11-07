@@ -12,9 +12,9 @@ Widget buildContactSection(BuildContext context, String phone, String viber, Str
   return SingleChildScrollView(
     child: Column(
       children: <Widget>[
-        phone != null ? _buildPhoneNumber(context, phone) : _buildEmptyListTile(context, 'phone'),
-        viber != null ? _buildViber(context, viber) : _buildEmptyListTile(context, 'viber'),
-        whatsApp != null ? _buildWhatsApp(context, whatsApp) : _buildEmptyListTile(context, 'whatsApp'),
+        phone != null && phone != '' ? _buildPhoneNumber(context, phone) : _buildEmptyListTile(context, 'phone'),
+        viber != null && viber != '' ? _buildViber(context, viber) : _buildEmptyListTile(context, 'viber'),
+        whatsApp != null && whatsApp != '' ? _buildWhatsApp(context, whatsApp) : _buildEmptyListTile(context, 'whatsApp'),
       ],
     ),
   );

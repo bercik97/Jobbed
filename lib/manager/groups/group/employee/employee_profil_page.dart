@@ -149,10 +149,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                       tabs: [
                         Tab(icon: Icon(Icons.event_note), text: getTranslated(this.context, 'timesheets')),
                         Tab(icon: Icon(Icons.import_contacts), text: getTranslated(this.context, 'contact')),
-                        Tab(
-                          icon: Icon(Icons.border_color),
-                          text: getTranslated(this.context, 'edit'),
-                        )
+                        Tab(icon: Icon(Icons.border_color), text: getTranslated(this.context, 'edit')),
                       ],
                     ),
                   ),
