@@ -30,8 +30,9 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
   CreateManagerDto _dto;
   ManagerService _managerService;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  bool _passwordVisible = false;
-  bool _rePasswordVisible = false;
+  bool _passwordVisible;
+  bool _rePasswordVisible;
+  bool _isRegisterButtonTapped;
 
   String _companyName;
   String _accountExpirationDate;
@@ -56,6 +57,7 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
     _accountExpirationDate = widget._accountExpirationDate;
     _passwordVisible = false;
     _rePasswordVisible = false;
+    _isRegisterButtonTapped = false;
     _nationality = '';
   }
 
@@ -496,45 +498,47 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
           minWidth: double.maxFinite,
           height: 50,
           shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-          onPressed: () => {
-            if (!_isValid() || !_regulationsCheckbox || !_privacyPolicyCheckbox)
-              {
-                _errorDialog(getTranslated(context, 'correctInvalidFields')),
-              }
-            else
-              {
-                _dto = new CreateManagerDto(
-                  username: _usernameController.text,
-                  password: _passwordController.text,
-                  name: _nameController.text,
-                  surname: _surnameController.text,
-                  nationality: _nationality,
-                  phone: _phoneController.text,
-                  viber: _viberController.text,
-                  whatsApp: _whatsAppController.text,
-                  tokenId: widget._tokenId,
-                  accountExpirationDate: _accountExpirationDate,
-                ),
-                _managerService.create(_dto).then((res) {
-                  _showSuccessDialog();
-                }).catchError((onError) {
-                  String msg = onError.toString();
-                  if (msg.contains("USERNAME_EXISTS")) {
-                    _errorDialog(getTranslated(context, 'usernameExists') + '\n' + getTranslated(context, 'chooseOtherUsername'));
-                  } else if (msg.contains("TOKEN_EXPIRED")) {
-                    _errorDialogWithNavigate(getTranslated(context, 'tokenIsIncorrect') + '\n' + getTranslated(context, 'askAdministratorWhatWentWrong'));
-                  } else {
-                    _errorDialog(getTranslated(context, 'smthWentWrong'));
-                  }
-                }),
-              }
-          },
+          onPressed: () => _isRegisterButtonTapped ? null : _handleRegisterButton(),
           color: GREEN,
           child: text20White(getTranslated(context, 'register')),
           textColor: Colors.white,
         ),
       ],
     );
+  }
+
+  _handleRegisterButton() {
+    setState(() => _isRegisterButtonTapped = true);
+    if (!_isValid() || !_regulationsCheckbox || !_privacyPolicyCheckbox) {
+      _errorDialog(getTranslated(context, 'correctInvalidFields'));
+      setState(() => _isRegisterButtonTapped = false);
+      return;
+    }
+    _dto = new CreateManagerDto(
+      username: _usernameController.text,
+      password: _passwordController.text,
+      name: _nameController.text,
+      surname: _surnameController.text,
+      nationality: _nationality,
+      phone: _phoneController.text,
+      viber: _viberController.text,
+      whatsApp: _whatsAppController.text,
+      tokenId: widget._tokenId,
+      accountExpirationDate: _accountExpirationDate,
+    );
+    _managerService.create(_dto).then((res) {
+      _showSuccessDialog();
+    }).catchError((onError) {
+      String msg = onError.toString();
+      if (msg.contains("USERNAME_EXISTS")) {
+        _errorDialog(getTranslated(context, 'usernameExists') + '\n' + getTranslated(context, 'chooseOtherUsername'));
+      } else if (msg.contains("TOKEN_EXPIRED")) {
+        _errorDialogWithNavigate(getTranslated(context, 'tokenIsIncorrect') + '\n' + getTranslated(context, 'askAdministratorWhatWentWrong'));
+      } else {
+        _errorDialog(getTranslated(context, 'smthWentWrong'));
+      }
+      setState(() => _isRegisterButtonTapped = false);
+    });
   }
 
   _errorDialog(String content) {

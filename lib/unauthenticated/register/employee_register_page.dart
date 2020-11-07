@@ -29,8 +29,9 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
   CreateEmployeeDto dto;
   EmployeeService _employeeService;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  bool _passwordVisible = false;
-  bool _rePasswordVisible = false;
+  bool _passwordVisible;
+  bool _rePasswordVisible;
+  bool _isRegisterButtonTapped;
 
   String _companyName;
   String _accountExpirationDate;
@@ -69,6 +70,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
     _accountExpirationDate = widget._accountExpirationDate;
     _passwordVisible = false;
     _rePasswordVisible = false;
+    _isRegisterButtonTapped = false;
     _nationality = '';
   }
 
@@ -818,59 +820,61 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
           minWidth: double.maxFinite,
           height: 50,
           shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-          onPressed: () => {
-            if (!_isValid() || !_regulationsCheckbox || !_privacyPolicyCheckbox)
-              {
-                _errorDialog(getTranslated(context, 'correctInvalidFields')),
-              }
-            else
-              {
-                dto = new CreateEmployeeDto(
-                  username: _usernameController.text,
-                  password: _passwordController.text,
-                  name: _nameController.text,
-                  surname: _surnameController.text,
-                  nationality: _nationality,
-                  phone: _phoneController.text,
-                  viber: _viberController.text,
-                  whatsApp: _whatsAppController.text,
-                  fatherName: _fatherNameController.text,
-                  motherName: _motherNameController.text,
-                  dateOfBirth: _dateOfBirth != null ? _dateOfBirth.toString().substring(0, 10) : null,
-                  expirationDateOfWork: _expirationDateOfWork != null ? _expirationDateOfWork.toString().substring(0, 10) : null,
-                  nip: _nipController.text,
-                  bankAccountNumber: _bankAccountNumberController.text,
-                  drivingLicense: _drivingLicenseController.text,
-                  locality: _localityController.text,
-                  zipCode: _zipCodeController.text,
-                  street: _streetController.text,
-                  houseNumber: _houseNumberController.text,
-                  passportNumber: _passportNumberController.text,
-                  passportReleaseDate: _passportReleaseDate != null ? _passportReleaseDate.toString().substring(0, 10) : null,
-                  passportExpirationDate: _passportExpirationDate != null ? _passportExpirationDate.toString().substring(0, 10) : null,
-                  tokenId: widget._tokenId,
-                  accountExpirationDate: widget._accountExpirationDate,
-                ),
-                _employeeService.create(dto).then((res) {
-                  _showSuccessDialog();
-                }).catchError((onError) {
-                  String s = onError.toString();
-                  if (s.contains('USERNAME_EXISTS')) {
-                    _errorDialog(getTranslated(context, 'usernameExists') + '\n' + getTranslated(context, 'chooseOtherUsername'));
-                  } else if (s.contains('TOKEN_EXPIRED')) {
-                    _errorDialogWithNavigate(getTranslated(context, 'tokenIsIncorrect') + '\n' + getTranslated(context, 'askAdministratorWhatWentWrong'));
-                  } else {
-                    _errorDialog(getTranslated(context, 'smthWentWrong'));
-                  }
-                }),
-              }
-          },
+          onPressed: () => _isRegisterButtonTapped ? null : _handleRegisterButton(),
           color: GREEN,
           child: text20White(getTranslated(context, 'register')),
           textColor: Colors.white,
         ),
       ],
     );
+  }
+
+  _handleRegisterButton() {
+    setState(() => _isRegisterButtonTapped = true);
+    if (!_isValid() || !_regulationsCheckbox || !_privacyPolicyCheckbox) {
+      _errorDialog(getTranslated(context, 'correctInvalidFields'));
+      setState(() => _isRegisterButtonTapped = false);
+      return;
+    }
+    dto = new CreateEmployeeDto(
+      username: _usernameController.text,
+      password: _passwordController.text,
+      name: _nameController.text,
+      surname: _surnameController.text,
+      nationality: _nationality,
+      phone: _phoneController.text,
+      viber: _viberController.text,
+      whatsApp: _whatsAppController.text,
+      fatherName: _fatherNameController.text,
+      motherName: _motherNameController.text,
+      dateOfBirth: _dateOfBirth != null ? _dateOfBirth.toString().substring(0, 10) : null,
+      expirationDateOfWork: _expirationDateOfWork != null ? _expirationDateOfWork.toString().substring(0, 10) : null,
+      nip: _nipController.text,
+      bankAccountNumber: _bankAccountNumberController.text,
+      drivingLicense: _drivingLicenseController.text,
+      locality: _localityController.text,
+      zipCode: _zipCodeController.text,
+      street: _streetController.text,
+      houseNumber: _houseNumberController.text,
+      passportNumber: _passportNumberController.text,
+      passportReleaseDate: _passportReleaseDate != null ? _passportReleaseDate.toString().substring(0, 10) : null,
+      passportExpirationDate: _passportExpirationDate != null ? _passportExpirationDate.toString().substring(0, 10) : null,
+      tokenId: widget._tokenId,
+      accountExpirationDate: widget._accountExpirationDate,
+    );
+    _employeeService.create(dto).then((res) {
+      _showSuccessDialog();
+    }).catchError((onError) {
+      String s = onError.toString();
+      if (s.contains('USERNAME_EXISTS')) {
+        _errorDialog(getTranslated(context, 'usernameExists') + '\n' + getTranslated(context, 'chooseOtherUsername'));
+      } else if (s.contains('TOKEN_EXPIRED')) {
+        _errorDialogWithNavigate(getTranslated(context, 'tokenIsIncorrect') + '\n' + getTranslated(context, 'askAdministratorWhatWentWrong'));
+      } else {
+        _errorDialog(getTranslated(context, 'smthWentWrong'));
+      }
+      setState(() => _isRegisterButtonTapped = false);
+    });
   }
 
   _errorDialog(String content) {

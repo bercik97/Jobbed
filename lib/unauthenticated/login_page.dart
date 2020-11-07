@@ -39,14 +39,17 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _tokenController = TextEditingController();
 
-  bool _passwordVisible = false;
-  bool _isLoginButtonTapped = false;
+  bool _passwordVisible;
+  bool _isLoginButtonTapped;
+  bool _isConfirmTokenButtonTapped;
 
   ProgressDialog _progressDialog;
 
   @override
   void initState() {
     _passwordVisible = false;
+    _isLoginButtonTapped = false;
+    _isConfirmTokenButtonTapped = false;
     this._tokenService = ServiceInitializer.initialize(null, null, TokenService);
     super.initState();
   }
@@ -176,11 +179,13 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _handleLogin() {
+    setState(() => _isLoginButtonTapped = true);
     String username = _usernameController.text;
     String password = _passwordController.text;
     String invalidMessage = ValidatorService.validateLoginCredentials(username, password, context);
     if (invalidMessage != null) {
       ToastService.showErrorToast(invalidMessage);
+      setState(() => _isLoginButtonTapped = false);
       return;
     }
     _progressDialog.show();
@@ -230,6 +235,7 @@ class _LoginPageState extends State<LoginPage> {
       _progressDialog.hide(); // TODO progress dialog doesn't hide when error is catched
       ToastService.showErrorToast(getTranslated(context, 'cannotConnectToServer'));
     });
+    setState(() => _isLoginButtonTapped = false);
   }
 
   Future<http.Response> _login(String username, String password) async {
@@ -322,19 +328,7 @@ class _LoginPageState extends State<LoginPage> {
                           children: <Widget>[iconWhite(Icons.check)],
                         ),
                         color: GREEN,
-                        onPressed: () {
-                          _tokenService.findFieldsValuesById(_tokenController.text, ['role', 'companyName', 'accountExpirationDate']).then(
-                            (res) {
-                              if (res == null) {
-                                _tokenAlertDialog(false, null, null, null);
-                                return;
-                              }
-                              _tokenAlertDialog(true, res['role'], res['companyName'], res['accountExpirationDate']);
-                            },
-                          ).catchError((onError) {
-                            _tokenAlertDialog(false, null, null, null);
-                          });
-                        },
+                        onPressed: () => _isConfirmTokenButtonTapped ? null : _handleConfirmTokenButton(),
                       ),
                     ],
                   ),
@@ -345,6 +339,24 @@ class _LoginPageState extends State<LoginPage> {
         );
       },
     );
+  }
+
+  _handleConfirmTokenButton() {
+    setState(() => _isConfirmTokenButtonTapped = true);
+    _tokenService.findFieldsValuesById(_tokenController.text, ['role', 'companyName', 'accountExpirationDate']).then(
+      (res) {
+        if (res == null) {
+          _tokenAlertDialog(false, null, null, null);
+          setState(() => _isConfirmTokenButtonTapped = false);
+          return;
+        }
+        _tokenAlertDialog(true, res['role'], res['companyName'], res['accountExpirationDate']);
+        setState(() => _isConfirmTokenButtonTapped = false);
+      },
+    ).catchError((onError) {
+      _tokenAlertDialog(false, null, null, null);
+      setState(() => _isConfirmTokenButtonTapped = false);
+    });
   }
 
   _tokenAlertDialog(bool isCorrect, String role, String companyName, String accountExpirationDate) {
