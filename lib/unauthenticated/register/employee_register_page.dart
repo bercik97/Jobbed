@@ -106,7 +106,6 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
                         children: <Widget>[
                           _buildReadOnlySection(),
                           _buildLoginSection(),
-                          _buildAccountExpirationField(),
                           _buildContactSection(),
                           _buildBasicSection(),
                           _buildAddressSection(),
@@ -158,28 +157,6 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
         ),
         _buildPasswordTextField(),
         _buildRePasswordTextField(),
-      ],
-    );
-  }
-
-  Widget _buildAccountExpirationField() {
-    return Column(
-      children: <Widget>[
-        Align(alignment: Alignment.topLeft, child: text25GreenUnderline(getTranslated(context, 'accountExpirationDate'))),
-        SizedBox(height: 15),
-        TextFormField(
-          readOnly: true,
-          initialValue: _accountExpirationDate == null ? getTranslated(context, 'empty') : _accountExpirationDate,
-          style: TextStyle(color: WHITE),
-          decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            counterStyle: TextStyle(color: WHITE),
-            border: OutlineInputBorder(),
-            prefixIcon: iconWhite(Icons.access_time_outlined),
-            labelStyle: TextStyle(color: WHITE),
-          ),
-        ),
-        SizedBox(height: 10),
       ],
     );
   }
