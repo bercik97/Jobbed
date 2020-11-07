@@ -9,8 +9,8 @@ class CreateManagerDto {
   final String phone;
   final String viber;
   final String whatsApp;
-  final String accountExpirationDate;
   final String tokenId;
+  final String accountExpirationDate;
 
   CreateManagerDto({
     @required this.username,
@@ -21,8 +21,8 @@ class CreateManagerDto {
     @required this.phone,
     @required this.viber,
     @required this.whatsApp,
-    @required this.accountExpirationDate,
     @required this.tokenId,
+    @required this.accountExpirationDate,
   });
 
   static Map<String, dynamic> jsonEncode(CreateManagerDto dto) {
@@ -35,8 +35,8 @@ class CreateManagerDto {
     map['phone'] = dto.phone;
     map['viber'] = dto.viber;
     map['whatsApp'] = dto.whatsApp;
-    map['accountExpirationDate'] = dto.accountExpirationDate;
     map['tokenId'] = dto.tokenId;
+    map['accountExpirationDate'] = dto.accountExpirationDate;
     return map;
   }
 }

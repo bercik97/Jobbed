@@ -22,7 +22,11 @@ class EmployeeService {
   static const String _url = '$SERVER_IP/employees';
 
   Future<dynamic> create(CreateEmployeeDto dto) async {
-    Response res = await post(_url, body: jsonEncode(CreateEmployeeDto.jsonEncode(dto)), headers: {"content-type": "application/json"});
+    Response res = await post(
+      _url,
+      body: jsonEncode(CreateEmployeeDto.jsonEncode(dto)),
+      headers: {"content-type": "application/json"},
+    );
     return res.statusCode == 200 ? res : Future.error(res.body);
   }
 

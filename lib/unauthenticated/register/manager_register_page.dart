@@ -512,8 +512,8 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
                   phone: _phoneController.text,
                   viber: _viberController.text,
                   whatsApp: _whatsAppController.text,
-                  accountExpirationDate: _accountExpirationDate,
                   tokenId: widget._tokenId,
+                  accountExpirationDate: _accountExpirationDate,
                 ),
                 _managerService.create(_dto).then((res) {
                   _showSuccessDialog();
