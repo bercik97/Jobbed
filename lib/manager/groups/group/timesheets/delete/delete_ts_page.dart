@@ -53,6 +53,7 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
   List<EmployeeBasicDto> _filteredEmployees = new List();
   bool _loading = false;
   bool _isChecked = false;
+  bool _isDeleteBtnTapped = false;
   List<bool> _checked = new List();
   LinkedHashSet<int> _selectedIds = new LinkedHashSet();
 
@@ -228,7 +229,7 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
                     children: <Widget>[iconWhite(Icons.check)],
                   ),
                   color: GREEN,
-                  onPressed: () => _deleteTsForSelectedEmployees(),
+                  onPressed: () => _isDeleteBtnTapped ? null : _deleteTsForSelectedEmployees(),
                 ),
               ],
             ),
@@ -242,26 +243,21 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
   }
 
   void _deleteTsForSelectedEmployees() {
+    setState(() => _isDeleteBtnTapped = true);
     if (_selectedIds.isEmpty) {
       showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'forWhomYouWantToDeleteTs'));
+      setState(() => _isDeleteBtnTapped = false);
       return;
     }
-    _timesheetService
-        .deleteForEmployeesByYearAndMonthAndStatus(
-      _selectedIds.map((el) => el.toString()).toList(),
-      _year,
-      _month,
-      _status,
-    )
-        .then(
+    _timesheetService.deleteForEmployeesByYearAndMonthAndStatus(_selectedIds.map((el) => el.toString()).toList(), _year, _month, _status).then(
       (res) {
         ToastService.showSuccessToast(getTranslated(context, 'timesheetSuccessfullyDeleted'));
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ManagerTsPage(_model)),
-        );
+        Navigator.push(context, MaterialPageRoute(builder: (context) => ManagerTsPage(_model)));
       },
-    );
+    ).catchError((onError) {
+      ToastService.showErrorToast('smthWentWrong');
+      setState(() => _isDeleteBtnTapped = false);
+    });
   }
 
   Future<Null> _refresh() {

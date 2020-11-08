@@ -6,7 +6,7 @@ import 'package:give_job/api/employee/dto/employee_group_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/edit/group_edit_page.dart';
+import 'package:give_job/manager/groups/group/group_page.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -203,7 +203,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
           floatingActionButton: groupFloatingActionButton(context, _model),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupEditPage(_model)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model)),
     );
   }
 

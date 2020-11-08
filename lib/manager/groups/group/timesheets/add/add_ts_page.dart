@@ -51,6 +51,7 @@ class _AddTsPageState extends State<AddTsPage> {
   List<EmployeeBasicDto> _filteredEmployees = new List();
   bool _loading = false;
   bool _isChecked = false;
+  bool _isAddBtnTapped = false;
   List<bool> _checked = new List();
   LinkedHashSet<int> _selectedIds = new LinkedHashSet();
 
@@ -267,7 +268,7 @@ class _AddTsPageState extends State<AddTsPage> {
                     children: <Widget>[iconWhite(Icons.check)],
                   ),
                   color: GREEN,
-                  onPressed: () => _createTsForSelectedEmployees(),
+                  onPressed: () => _isAddBtnTapped ? null : _createTsForSelectedEmployees(),
                 ),
               ],
             ),
@@ -281,8 +282,10 @@ class _AddTsPageState extends State<AddTsPage> {
   }
 
   void _createTsForSelectedEmployees() {
+    setState(() => _isAddBtnTapped = true);
     if (_selectedIds.isEmpty) {
       showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'forWhomYouWantToAddNewTs'));
+      setState(() => _isAddBtnTapped = false);
       return;
     }
     _timesheetService.createForEmployees(_selectedIds.map((el) => el.toString()).toList(), _year, _month).then(
@@ -293,7 +296,10 @@ class _AddTsPageState extends State<AddTsPage> {
           MaterialPageRoute(builder: (context) => ManagerTsPage(_model)),
         );
       },
-    );
+    ).catchError((onError) {
+      ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+      setState(() => _isAddBtnTapped = false);
+    });
   }
 
   Future<Null> _refresh() {

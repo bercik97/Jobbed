@@ -45,6 +45,7 @@ class _DeleteGroupEmployeesPageState extends State<DeleteGroupEmployeesPage> {
   List<EmployeeGroupDto> _filteredEmployees = new List();
   bool _loading = false;
   bool _isChecked = false;
+  bool _isDeleteButtonTapped = false;
   List<bool> _checked = new List();
   LinkedHashSet<int> _selectedIds = new LinkedHashSet();
 
@@ -285,24 +286,29 @@ class _DeleteGroupEmployeesPageState extends State<DeleteGroupEmployeesPage> {
               children: <Widget>[iconWhite(Icons.check)],
             ),
             color: GREEN,
-            onPressed: () {
-              if (_selectedIds.isEmpty) {
-                showHint(context, getTranslated(context, 'needToSelectEmployees'), getTranslated(context, 'youWantToRemoveFromGroup'));
-                return;
-              }
-              _groupService.deleteGroupEmployees(_groupId, _selectedIds.map((e) => e.toString()).toList()).then((value) {
-                ToastService.showSuccessToast(getTranslated(context, 'successfullyRemovedGroupEmployees'));
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => GroupsDashboardPage(_user)),
-                );
-              }).catchError((onError) {
-                ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
-              });
-            },
+            onPressed: () => _isDeleteButtonTapped ? null : _handleDeleteBtn(),
           ),
         ],
       ),
     );
+  }
+
+  _handleDeleteBtn() {
+    setState(() => _isDeleteButtonTapped = true);
+    if (_selectedIds.isEmpty) {
+      showHint(context, getTranslated(context, 'needToSelectEmployees'), getTranslated(context, 'youWantToRemoveFromGroup'));
+      setState(() => _isDeleteButtonTapped = false);
+      return;
+    }
+    _groupService.deleteGroupEmployees(_groupId, _selectedIds.map((e) => e.toString()).toList()).then((value) {
+      ToastService.showSuccessToast(getTranslated(context, 'successfullyRemovedGroupEmployees'));
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => GroupsDashboardPage(_user)),
+      );
+    }).catchError((onError) {
+      ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+      setState(() => _isDeleteButtonTapped = false);
+    });
   }
 }

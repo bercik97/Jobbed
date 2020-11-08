@@ -53,6 +53,7 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
   List<EmployeeBasicDto> _filteredEmployees = new List();
   bool _loading = false;
   bool _isChecked = false;
+  bool _isChangeBtnTapped = false;
   List<bool> _checked = new List();
   LinkedHashSet<int> _selectedIds = new LinkedHashSet();
 
@@ -228,7 +229,16 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
                     children: <Widget>[iconWhite(Icons.check)],
                   ),
                   color: GREEN,
-                  onPressed: () => _status == STATUS_IN_PROGRESS ? _updateTsStatusForSelectedEmployees(1, STATUS_COMPLETED) : _updateTsStatusForSelectedEmployees(2, STATUS_IN_PROGRESS),
+                  onPressed: () {
+                    if (_isChangeBtnTapped) {
+                      return;
+                    }
+                    if (_status == STATUS_IN_PROGRESS) {
+                      _updateTsStatusForSelectedEmployees(1, STATUS_COMPLETED);
+                    } else {
+                      _updateTsStatusForSelectedEmployees(2, STATUS_IN_PROGRESS);
+                    }
+                  },
                 ),
               ],
             ),
@@ -242,8 +252,10 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
   }
 
   void _updateTsStatusForSelectedEmployees(int newStatusId, String status) {
+    setState(() => _isChangeBtnTapped = true);
     if (_selectedIds.isEmpty) {
       showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'forWhomYouWantToUpdateTsStatus'));
+      setState(() => _isChangeBtnTapped = false);
       return;
     }
     _timesheetService.updateEmployeesTsStatus(_selectedIds.map((el) => el.toString()).toList(), newStatusId, _year, _month, status, _model.groupId).then(
@@ -254,7 +266,10 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
           MaterialPageRoute(builder: (context) => ManagerTsPage(_model)),
         );
       },
-    );
+    ).catchError((onError) {
+      ToastService.showErrorToast('smthWentWrong');
+      setState(() => _isChangeBtnTapped = false);
+    });
   }
 
   Future<Null> _refresh() {

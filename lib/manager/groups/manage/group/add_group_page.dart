@@ -52,6 +52,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
   List<EmployeeBasicDto> _filteredEmployees = new List();
   bool _loading = false;
   bool _isChecked = false;
+  bool _isAddButtonTapped = false;
   List<bool> _checked = new List();
   LinkedHashSet<int> _selectedIds = new LinkedHashSet();
 
@@ -390,7 +391,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
               children: <Widget>[iconWhite(Icons.check)],
             ),
             color: GREEN,
-            onPressed: () => _createGroup(),
+            onPressed: () => _isAddButtonTapped ? null : _createGroup(),
           ),
         ],
       ),
@@ -398,12 +399,15 @@ class _AddGroupPageState extends State<AddGroupPage> {
   }
 
   void _createGroup() {
+    setState(() => _isAddButtonTapped = true);
     if (!_isValid()) {
       _errorDialog(getTranslated(context, 'correctInvalidFields'));
+      setState(() => _isAddButtonTapped = false);
       return;
     }
     if (_selectedIds.isEmpty) {
       showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'youWantToAddToGroup'));
+      setState(() => _isAddButtonTapped = false);
       return;
     }
     CreateGroupDto dto = new CreateGroupDto(
@@ -426,6 +430,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
       } else if (errorMsg.contains("SOME_EMPLOYEES_ARE_IN_OTHER_GROUP")) {
         _errorDialog(getTranslated(context, 'someEmployeesAreInOtherGroup'));
       }
+      setState(() => _isAddButtonTapped = false);
     });
   }
 

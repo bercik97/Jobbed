@@ -45,6 +45,7 @@ class _AddGroupEmployeesPageState extends State<AddGroupEmployeesPage> {
   List<EmployeeBasicDto> _filteredEmployees = new List();
   bool _loading = false;
   bool _isChecked = false;
+  bool _isAddButtonTapped = false;
   List<bool> _checked = new List();
   LinkedHashSet<int> _selectedIds = new LinkedHashSet();
 
@@ -286,24 +287,29 @@ class _AddGroupEmployeesPageState extends State<AddGroupEmployeesPage> {
               children: <Widget>[iconWhite(Icons.check)],
             ),
             color: GREEN,
-            onPressed: () {
-              if (_selectedIds.isEmpty) {
-                showHint(context, getTranslated(context, 'needToSelectEmployees'), getTranslated(context, 'youWantToAddToGroup'));
-                return;
-              }
-              _groupService.addGroupEmployees(_groupId, _selectedIds.map((e) => e.toInt()).toList()).then((value) {
-                ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedGroupEmployees'));
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => GroupsDashboardPage(_user)),
-                );
-              }).catchError((onError) {
-                ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
-              });
-            },
+            onPressed: () => _isAddButtonTapped ? null : _handleAddBtn(),
           ),
         ],
       ),
     );
+  }
+
+  _handleAddBtn() {
+    setState(() => _isAddButtonTapped = true);
+    if (_selectedIds.isEmpty) {
+      showHint(context, getTranslated(context, 'needToSelectEmployees'), getTranslated(context, 'youWantToAddToGroup'));
+      setState(() => _isAddButtonTapped = false);
+      return;
+    }
+    _groupService.addGroupEmployees(_groupId, _selectedIds.map((e) => e.toInt()).toList()).then((value) {
+      ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedGroupEmployees'));
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => GroupsDashboardPage(_user)),
+      );
+    }).catchError((onError) {
+      ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+      setState(() => _isAddButtonTapped = false);
+    });
   }
 }
