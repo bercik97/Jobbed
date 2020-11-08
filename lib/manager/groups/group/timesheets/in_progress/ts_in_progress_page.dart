@@ -25,6 +25,7 @@ import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -35,6 +36,7 @@ import '../../../../../shared/widget/loader.dart';
 import '../../../../shared/manager_app_bar.dart';
 import '../../../../shared/manager_app_bar_with_icons_legend.dart';
 import '../../../../shared/manager_side_bar.dart';
+import '../ts_page.dart';
 
 class TsInProgressPage extends StatefulWidget {
   final GroupModel _model;
@@ -90,257 +92,260 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
     if (_loading) {
       return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')), managerSideBar(context, _model.user));
     }
-    return MaterialApp(
-      title: APP_NAME,
-      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: DARK,
-        appBar: managerAppBarWithIconsLegend(
-            context,
-            _timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' - ' + getTranslated(context, STATUS_IN_PROGRESS),
-            [
-              IconsLegend.buildRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
-              IconsLegend.buildRow('images/green-rate-icon.png', getTranslated(context, 'settingRating')),
-              IconsLegend.buildRow('images/green-plan-icon.png', getTranslated(context, 'settingPlan')),
-              IconsLegend.buildRow('images/green-opinion-icon.png', getTranslated(context, 'settingOpinion')),
-              IconsLegend.buildRow('images/green-workplace-icon.png', getTranslated(context, 'settingWorkplace')),
-            ],
-            _model.user),
-        drawer: managerSideBar(context, _model.user),
-        body: RefreshIndicator(
-          color: DARK,
-          backgroundColor: WHITE,
-          onRefresh: _refresh,
-          child: Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(10),
-                child: TextFormField(
-                  autofocus: false,
-                  autocorrect: true,
-                  cursorColor: WHITE,
-                  style: TextStyle(color: WHITE),
-                  decoration: InputDecoration(enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)), counterStyle: TextStyle(color: WHITE), border: OutlineInputBorder(), labelText: getTranslated(this.context, 'search'), prefixIcon: iconWhite(Icons.search), labelStyle: TextStyle(color: WHITE)),
-                  onChanged: (string) {
-                    setState(
-                      () {
-                        _filteredEmployees = _employees.where((u) => (u.info.toLowerCase().contains(string.toLowerCase()))).toList();
-                      },
-                    );
-                  },
+    return WillPopScope(
+      child: MaterialApp(
+        title: APP_NAME,
+        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: DARK,
+          appBar: managerAppBarWithIconsLegend(
+              context,
+              _timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' - ' + getTranslated(context, STATUS_IN_PROGRESS),
+              [
+                IconsLegend.buildRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
+                IconsLegend.buildRow('images/green-rate-icon.png', getTranslated(context, 'settingRating')),
+                IconsLegend.buildRow('images/green-plan-icon.png', getTranslated(context, 'settingPlan')),
+                IconsLegend.buildRow('images/green-opinion-icon.png', getTranslated(context, 'settingOpinion')),
+                IconsLegend.buildRow('images/green-workplace-icon.png', getTranslated(context, 'settingWorkplace')),
+              ],
+              _model.user),
+          drawer: managerSideBar(context, _model.user),
+          body: RefreshIndicator(
+            color: DARK,
+            backgroundColor: WHITE,
+            onRefresh: _refresh,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: TextFormField(
+                    autofocus: false,
+                    autocorrect: true,
+                    cursorColor: WHITE,
+                    style: TextStyle(color: WHITE),
+                    decoration: InputDecoration(enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)), counterStyle: TextStyle(color: WHITE), border: OutlineInputBorder(), labelText: getTranslated(this.context, 'search'), prefixIcon: iconWhite(Icons.search), labelStyle: TextStyle(color: WHITE)),
+                    onChanged: (string) {
+                      setState(
+                        () {
+                          _filteredEmployees = _employees.where((u) => (u.info.toLowerCase().contains(string.toLowerCase()))).toList();
+                        },
+                      );
+                    },
+                  ),
                 ),
-              ),
-              ListTileTheme(
-                contentPadding: EdgeInsets.only(left: 3),
-                child: CheckboxListTile(
-                  title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
-                  value: _isChecked,
-                  activeColor: GREEN,
-                  checkColor: WHITE,
-                  onChanged: (bool value) {
-                    setState(() {
-                      _isChecked = value;
-                      List<bool> l = new List();
-                      _checked.forEach((b) => l.add(value));
-                      _checked = l;
-                      if (value) {
-                        _selectedIds.addAll(_filteredEmployees.map((e) => e.id));
-                      } else
-                        _selectedIds.clear();
-                    });
-                  },
-                  controlAffinity: ListTileControlAffinity.leading,
+                ListTileTheme(
+                  contentPadding: EdgeInsets.only(left: 3),
+                  child: CheckboxListTile(
+                    title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
+                    value: _isChecked,
+                    activeColor: GREEN,
+                    checkColor: WHITE,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _isChecked = value;
+                        List<bool> l = new List();
+                        _checked.forEach((b) => l.add(value));
+                        _checked = l;
+                        if (value) {
+                          _selectedIds.addAll(_filteredEmployees.map((e) => e.id));
+                        } else
+                          _selectedIds.clear();
+                      });
+                    },
+                    controlAffinity: ListTileControlAffinity.leading,
+                  ),
                 ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: _filteredEmployees.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    EmployeeStatisticsDto employee = _filteredEmployees[index];
-                    int foundIndex = 0;
-                    for (int i = 0; i < _employees.length; i++) {
-                      if (_employees[i].id == employee.id) {
-                        foundIndex = i;
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: _filteredEmployees.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      EmployeeStatisticsDto employee = _filteredEmployees[index];
+                      int foundIndex = 0;
+                      for (int i = 0; i < _employees.length; i++) {
+                        if (_employees[i].id == employee.id) {
+                          foundIndex = i;
+                        }
                       }
-                    }
-                    String info = employee.info;
-                    String nationality = employee.nationality;
-                    String currency = employee.currency;
-                    return Card(
-                      color: DARK,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            color: BRIGHTER_DARK,
-                            child: ListTileTheme(
-                              contentPadding: EdgeInsets.only(right: 10),
-                              child: CheckboxListTile(
-                                controlAffinity: ListTileControlAffinity.leading,
-                                secondary: Padding(
-                                  padding: EdgeInsets.all(4),
-                                  child: Transform.scale(
-                                    scale: 1.2,
-                                    child: BouncingWidget(
-                                      duration: Duration(milliseconds: 100),
-                                      scaleFactor: 2,
-                                      onPressed: () {
-                                        Navigator.push(
-                                          this.context,
-                                          MaterialPageRoute(
-                                            builder: (context) => EmployeeProfilPage(_model, nationality, currency, employee.id, info, employee.moneyPerHour),
+                      String info = employee.info;
+                      String nationality = employee.nationality;
+                      String currency = employee.currency;
+                      return Card(
+                        color: DARK,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              color: BRIGHTER_DARK,
+                              child: ListTileTheme(
+                                contentPadding: EdgeInsets.only(right: 10),
+                                child: CheckboxListTile(
+                                  controlAffinity: ListTileControlAffinity.leading,
+                                  secondary: Padding(
+                                    padding: EdgeInsets.all(4),
+                                    child: Transform.scale(
+                                      scale: 1.2,
+                                      child: BouncingWidget(
+                                        duration: Duration(milliseconds: 100),
+                                        scaleFactor: 2,
+                                        onPressed: () {
+                                          Navigator.push(
+                                            this.context,
+                                            MaterialPageRoute(
+                                              builder: (context) => EmployeeProfilPage(_model, nationality, currency, employee.id, info, employee.moneyPerHour),
+                                            ),
+                                          );
+                                        },
+                                        child: Shimmer.fromColors(
+                                          baseColor: GREEN,
+                                          highlightColor: WHITE,
+                                          child: Image(
+                                            image: AssetImage(
+                                              'images/big-employee-icon.png',
+                                            ),
+                                            fit: BoxFit.cover,
                                           ),
-                                        );
-                                      },
-                                      child: Shimmer.fromColors(
-                                        baseColor: GREEN,
-                                        highlightColor: WHITE,
-                                        child: Image(
-                                          image: AssetImage(
-                                            'images/big-employee-icon.png',
-                                          ),
-                                          fit: BoxFit.cover,
                                         ),
                                       ),
                                     ),
                                   ),
+                                  title: text20WhiteBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                  subtitle: Column(
+                                    children: <Widget>[
+                                      Align(
+                                          child: Row(
+                                            children: <Widget>[
+                                              textWhite(getTranslated(this.context, 'moneyPerHour') + ': '),
+                                              textGreenBold(employee.moneyPerHour.toString() + ' ' + currency),
+                                            ],
+                                          ),
+                                          alignment: Alignment.topLeft),
+                                      Align(
+                                          child: Row(
+                                            children: <Widget>[
+                                              textWhite(getTranslated(this.context, 'averageRating') + ': '),
+                                              textGreenBold(employee.averageRating.toString()),
+                                            ],
+                                          ),
+                                          alignment: Alignment.topLeft),
+                                      Align(
+                                          child: Row(
+                                            children: <Widget>[
+                                              textWhite(getTranslated(this.context, 'hours') + ': '),
+                                              textGreenBold(employee.numberOfHoursWorked.toString()),
+                                            ],
+                                          ),
+                                          alignment: Alignment.topLeft),
+                                      Align(
+                                          child: Row(
+                                            children: <Widget>[
+                                              textWhite(getTranslated(this.context, 'earnedMoney') + ': '),
+                                              textGreenBold(employee.amountOfEarnedMoney.toString() + ' ' + currency),
+                                            ],
+                                          ),
+                                          alignment: Alignment.topLeft),
+                                    ],
+                                  ),
+                                  activeColor: GREEN,
+                                  checkColor: WHITE,
+                                  value: _checked[foundIndex],
+                                  onChanged: (bool value) {
+                                    setState(() {
+                                      _checked[foundIndex] = value;
+                                      if (value) {
+                                        _selectedIds.add(_employees[foundIndex].id);
+                                      } else {
+                                        _selectedIds.remove(_employees[foundIndex].id);
+                                      }
+                                      int selectedIdsLength = _selectedIds.length;
+                                      if (selectedIdsLength == _employees.length) {
+                                        _isChecked = true;
+                                      } else if (selectedIdsLength == 0) {
+                                        _isChecked = false;
+                                      }
+                                    });
+                                  },
                                 ),
-                                title: text20WhiteBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
-                                subtitle: Column(
-                                  children: <Widget>[
-                                    Align(
-                                        child: Row(
-                                          children: <Widget>[
-                                            textWhite(getTranslated(this.context, 'moneyPerHour') + ': '),
-                                            textGreenBold(employee.moneyPerHour.toString() + ' ' + currency),
-                                          ],
-                                        ),
-                                        alignment: Alignment.topLeft),
-                                    Align(
-                                        child: Row(
-                                          children: <Widget>[
-                                            textWhite(getTranslated(this.context, 'averageRating') + ': '),
-                                            textGreenBold(employee.averageRating.toString()),
-                                          ],
-                                        ),
-                                        alignment: Alignment.topLeft),
-                                    Align(
-                                        child: Row(
-                                          children: <Widget>[
-                                            textWhite(getTranslated(this.context, 'hours') + ': '),
-                                            textGreenBold(employee.numberOfHoursWorked.toString()),
-                                          ],
-                                        ),
-                                        alignment: Alignment.topLeft),
-                                    Align(
-                                        child: Row(
-                                          children: <Widget>[
-                                            textWhite(getTranslated(this.context, 'earnedMoney') + ': '),
-                                            textGreenBold(employee.amountOfEarnedMoney.toString() + ' ' + currency),
-                                          ],
-                                        ),
-                                        alignment: Alignment.topLeft),
-                                  ],
-                                ),
-                                activeColor: GREEN,
-                                checkColor: WHITE,
-                                value: _checked[foundIndex],
-                                onChanged: (bool value) {
-                                  setState(() {
-                                    _checked[foundIndex] = value;
-                                    if (value) {
-                                      _selectedIds.add(_employees[foundIndex].id);
-                                    } else {
-                                      _selectedIds.remove(_employees[foundIndex].id);
-                                    }
-                                    int selectedIdsLength = _selectedIds.length;
-                                    if (selectedIdsLength == _employees.length) {
-                                      _isChecked = true;
-                                    } else if (selectedIdsLength == 0) {
-                                      _isChecked = false;
-                                    }
-                                  });
-                                },
                               ),
-                            ),
-                          )
-                        ],
-                      ),
-                    );
-                  },
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        bottomNavigationBar: Container(
-          height: 40,
-          child: Row(
-            children: <Widget>[
-              SizedBox(width: 1),
-              Expanded(
-                child: MaterialButton(
-                  color: GREEN,
-                  child: Image(image: AssetImage('images/dark-hours-icon.png')),
-                  onPressed: () => {
-                    if (_selectedIds.isNotEmpty) {_hoursController.clear(), _showUpdateHoursDialog(_selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
-                  },
+          bottomNavigationBar: Container(
+            height: 40,
+            child: Row(
+              children: <Widget>[
+                SizedBox(width: 1),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: Image(image: AssetImage('images/dark-hours-icon.png')),
+                    onPressed: () => {
+                      if (_selectedIds.isNotEmpty) {_hoursController.clear(), _showUpdateHoursDialog(_selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(width: 5),
-              Expanded(
-                child: MaterialButton(
-                  color: GREEN,
-                  child: Image(image: AssetImage('images/dark-rate-icon.png')),
-                  onPressed: () => {
-                    if (_selectedIds.isNotEmpty) {_ratingController.clear(), _showUpdateRatingDialog(_selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
-                  },
+                SizedBox(width: 5),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: Image(image: AssetImage('images/dark-rate-icon.png')),
+                    onPressed: () => {
+                      if (_selectedIds.isNotEmpty) {_ratingController.clear(), _showUpdateRatingDialog(_selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(width: 5),
-              Expanded(
-                child: MaterialButton(
-                  color: GREEN,
-                  child: Image(image: AssetImage('images/dark-plan-icon.png')),
-                  onPressed: () => {
-                    if (_selectedIds.isNotEmpty) {_planController.clear(), _showUpdatePlanDialog(_selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
-                  },
+                SizedBox(width: 5),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: Image(image: AssetImage('images/dark-plan-icon.png')),
+                    onPressed: () => {
+                      if (_selectedIds.isNotEmpty) {_planController.clear(), _showUpdatePlanDialog(_selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(width: 5),
-              Expanded(
-                child: MaterialButton(
-                  color: GREEN,
-                  child: Image(image: AssetImage('images/dark-opinion-icon.png')),
-                  onPressed: () => {
-                    if (_selectedIds.isNotEmpty) {_opinionController.clear(), _showUpdateOpinionDialog(_selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
-                  },
+                SizedBox(width: 5),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: Image(image: AssetImage('images/dark-opinion-icon.png')),
+                    onPressed: () => {
+                      if (_selectedIds.isNotEmpty) {_opinionController.clear(), _showUpdateOpinionDialog(_selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(width: 5),
-              Expanded(
-                child: MaterialButton(
-                  color: GREEN,
-                  child: Image(image: AssetImage('images/dark-workplace-icon.png')),
-                  onPressed: () => {
-                    if (_selectedIds.isNotEmpty)
-                      {
-                        _showUpdateWorkplaceDialog(_selectedIds),
-                      }
-                    else
-                      {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
-                  },
+                SizedBox(width: 5),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: Image(image: AssetImage('images/dark-workplace-icon.png')),
+                    onPressed: () => {
+                      if (_selectedIds.isNotEmpty)
+                        {
+                          _showUpdateWorkplaceDialog(_selectedIds),
+                        }
+                      else
+                        {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(width: 1),
-            ],
+                SizedBox(width: 1),
+              ],
+            ),
           ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          floatingActionButton: groupFloatingActionButton(context, _model),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: groupFloatingActionButton(context, _model),
       ),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, ManagerTsPage(_model)),
     );
   }
 

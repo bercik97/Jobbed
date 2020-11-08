@@ -16,6 +16,7 @@ import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/loader.dart';
@@ -113,27 +114,30 @@ class _AddGroupEmployeesPageState extends State<AddGroupEmployeesPage> {
     if (_loading) {
       return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
     }
-    return MaterialApp(
-      title: APP_NAME,
-      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: DARK,
-        appBar: managerAppBar(context, _user, getTranslated(context, 'addingEmployeesToGroup')),
-        drawer: managerSideBar(context, _user),
-        body: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            children: [
-              SizedBox(height: 5),
-              _buildLoupe(),
-              _buildSelectUnselectAllCheckbox(),
-              _buildEmployees(),
-            ],
+    return WillPopScope(
+      child: MaterialApp(
+        title: APP_NAME,
+        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: DARK,
+          appBar: managerAppBar(context, _user, getTranslated(context, 'addingEmployeesToGroup')),
+          drawer: managerSideBar(context, _user),
+          body: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              children: [
+                SizedBox(height: 5),
+                _buildLoupe(),
+                _buildSelectUnselectAllCheckbox(),
+                _buildEmployees(),
+              ],
+            ),
           ),
+          bottomNavigationBar: _buildBottomNavigationBar(),
         ),
-        bottomNavigationBar: _buildBottomNavigationBar(),
       ),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupsDashboardPage(_user)),
     );
   }
 

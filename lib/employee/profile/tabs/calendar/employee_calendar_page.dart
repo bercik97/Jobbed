@@ -12,6 +12,7 @@ import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/settings/settings_page.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:intl/intl.dart';
@@ -19,6 +20,7 @@ import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../shared/widget/loader.dart';
+import '../../../employee_profile_page.dart';
 
 class EmployeeCalendarPage extends StatefulWidget {
   final User _user;
@@ -87,22 +89,25 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
     if (_loading) {
       return loader(employeeAppBar(context, _user, getTranslated(context, 'loading')), employeeSideBar(context, _user));
     }
-    return MaterialApp(
-      title: APP_NAME,
-      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: DARK,
-        appBar: _buildAppBar(),
-        drawer: employeeSideBar(context, _user),
-        body: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            _buildTableCalendarWithBuilders(),
-            Expanded(child: _buildEventList()),
-          ],
+    return WillPopScope(
+      child: MaterialApp(
+        title: APP_NAME,
+        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: DARK,
+          appBar: _buildAppBar(),
+          drawer: employeeSideBar(context, _user),
+          body: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              _buildTableCalendarWithBuilders(),
+              Expanded(child: _buildEventList()),
+            ],
+          ),
         ),
       ),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilPage(_user)),
     );
   }
 

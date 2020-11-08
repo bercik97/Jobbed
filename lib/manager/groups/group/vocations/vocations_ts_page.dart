@@ -15,12 +15,14 @@ import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/radio_element.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/util/month_util.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 
 import '../../../../shared/widget/loader.dart';
 import '../../../shared/manager_app_bar.dart';
 import '../../../shared/manager_side_bar.dart';
+import '../group_page.dart';
 
 class VocationsTsPage extends StatefulWidget {
   final GroupModel _model;
@@ -84,152 +86,155 @@ class _VocationsTsPageState extends State<VocationsTsPage> {
     if (_loading) {
       return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
     }
-    return MaterialApp(
-      title: APP_NAME,
-      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: DARK,
-        appBar: managerAppBar(context, _user, getTranslated(context, 'vocations') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-')),
-        drawer: managerSideBar(context, _user),
-        body: RefreshIndicator(
-          color: DARK,
-          backgroundColor: WHITE,
-          onRefresh: _refresh,
-          child: ListView(
-            children: [
-              SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(10),
-                          child: textCenter20White(getTranslated(context, 'manageEmployeesVocations')),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 10, right: 10),
-                          child: textCenter14Green(getTranslated(context, 'hintSelectTsVocations')),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 20, top: 15, bottom: 5),
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 15),
-                              child: Image(
-                                height: 45,
-                                image: AssetImage('images/unchecked.png'),
-                              ),
-                            ),
-                            text20OrangeBold(getTranslated(context, 'inProgressTimesheets')),
-                          ],
-                        ),
+    return WillPopScope(
+      child: MaterialApp(
+        title: APP_NAME,
+        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: DARK,
+          appBar: managerAppBar(context, _user, getTranslated(context, 'vocations') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-')),
+          drawer: managerSideBar(context, _user),
+          body: RefreshIndicator(
+            color: DARK,
+            backgroundColor: WHITE,
+            onRefresh: _refresh,
+            child: ListView(
+              children: [
+                SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: textCenter20White(getTranslated(context, 'manageEmployeesVocations')),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 10, right: 10),
+                            child: textCenter14Green(getTranslated(context, 'hintSelectTsVocations')),
+                          ),
+                        ],
                       ),
-                    ),
-                    _inProgressTimesheets.isEmpty
-                        ? Padding(
-                            padding: EdgeInsets.only(left: 20),
-                            child: Align(
-                              alignment: Alignment.topLeft,
-                              child: text15White(getTranslated(context, 'noInProgressTimesheets')),
-                            ),
-                          )
-                        : Container(),
-                    Card(
-                      color: BRIGHTER_DARK,
-                      child: InkWell(
-                        onTap: () {},
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: _elements
-                              .map(
-                                (e) => RadioListTile(
-                                  activeColor: GREEN,
-                                  groupValue: _currentRadioValue,
-                                  title: text18WhiteBold(e.title),
-                                  value: e.index,
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      _currentRadioValue = newValue;
-                                      _currentRadioElement = e;
-                                    });
-                                  },
+                      Padding(
+                        padding: EdgeInsets.only(left: 20, top: 15, bottom: 5),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 15),
+                                child: Image(
+                                  height: 45,
+                                  image: AssetImage('images/unchecked.png'),
                                 ),
-                              )
-                              .toList(),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        bottomNavigationBar: Container(
-          height: 40,
-          child: Row(
-            children: <Widget>[
-              SizedBox(width: 1),
-              Expanded(
-                child: MaterialButton(
-                  color: GREEN,
-                  child: textDarkBold(getTranslated(context, 'manage')),
-                  onPressed: () => {
-                    if (_currentRadioElement != null)
-                      {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => VocationsManagePage(_model, _inProgressTimesheets[_currentRadioElement.index])),
-                        ),
-                      }
-                    else
-                      {_handleEmptyTs()},
-                  },
-                ),
-              ),
-              SizedBox(width: 5),
-              Expanded(
-                child: MaterialButton(
-                  color: Colors.grey,
-                  child: textDarkBold(getTranslated(context, 'verify')),
-                  onPressed: () => {
-                    if (_currentRadioElement != null) {} else {_handleEmptyTs()},
-                  },
-                ),
-              ),
-              SizedBox(width: 5),
-              Expanded(
-                child: MaterialButton(
-                  color: GREEN,
-                  child: textDarkBold(getTranslated(context, 'calendar')),
-                  onPressed: () => {
-                    if (_currentRadioElement != null)
-                      {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => VocationsCalendarPage(_model),
+                              ),
+                              text20OrangeBold(getTranslated(context, 'inProgressTimesheets')),
+                            ],
                           ),
                         ),
-                      }
-                    else
-                      {_handleEmptyTs()},
-                  },
+                      ),
+                      _inProgressTimesheets.isEmpty
+                          ? Padding(
+                              padding: EdgeInsets.only(left: 20),
+                              child: Align(
+                                alignment: Alignment.topLeft,
+                                child: text15White(getTranslated(context, 'noInProgressTimesheets')),
+                              ),
+                            )
+                          : Container(),
+                      Card(
+                        color: BRIGHTER_DARK,
+                        child: InkWell(
+                          onTap: () {},
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: _elements
+                                .map(
+                                  (e) => RadioListTile(
+                                    activeColor: GREEN,
+                                    groupValue: _currentRadioValue,
+                                    title: text18WhiteBold(e.title),
+                                    value: e.index,
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        _currentRadioValue = newValue;
+                                        _currentRadioElement = e;
+                                      });
+                                    },
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(width: 1),
-            ],
+              ],
+            ),
           ),
+          bottomNavigationBar: Container(
+            height: 40,
+            child: Row(
+              children: <Widget>[
+                SizedBox(width: 1),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: textDarkBold(getTranslated(context, 'manage')),
+                    onPressed: () => {
+                      if (_currentRadioElement != null)
+                        {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => VocationsManagePage(_model, _inProgressTimesheets[_currentRadioElement.index])),
+                          ),
+                        }
+                      else
+                        {_handleEmptyTs()},
+                    },
+                  ),
+                ),
+                SizedBox(width: 5),
+                Expanded(
+                  child: MaterialButton(
+                    color: Colors.grey,
+                    child: textDarkBold(getTranslated(context, 'verify')),
+                    onPressed: () => {
+                      if (_currentRadioElement != null) {} else {_handleEmptyTs()},
+                    },
+                  ),
+                ),
+                SizedBox(width: 5),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: textDarkBold(getTranslated(context, 'calendar')),
+                    onPressed: () => {
+                      if (_currentRadioElement != null)
+                        {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => VocationsCalendarPage(_model),
+                            ),
+                          ),
+                        }
+                      else
+                        {_handleEmptyTs()},
+                    },
+                  ),
+                ),
+                SizedBox(width: 1),
+              ],
+            ),
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          floatingActionButton: groupFloatingActionButton(context, _model),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: groupFloatingActionButton(context, _model),
       ),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model)),
     );
   }
 

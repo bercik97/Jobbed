@@ -13,6 +13,7 @@ import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
+import 'package:give_job/manager/groups/group/vocations/vocations_ts_page.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
@@ -20,6 +21,7 @@ import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:intl/intl.dart';
@@ -80,182 +82,185 @@ class _VocationsManagePageState extends State<VocationsManagePage> {
     if (_loading) {
       return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
     }
-    return MaterialApp(
-      title: APP_NAME,
-      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: DARK,
-        appBar: managerAppBar(context, _user, getTranslated(context, 'manageEmployeesVocations')),
-        drawer: managerSideBar(context, _user),
-        body: RefreshIndicator(
-          color: DARK,
-          backgroundColor: WHITE,
-          onRefresh: _refresh,
-          child: Column(
-            children: <Widget>[
-              Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: textCenter20White(
-                      _timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' - ' + getTranslated(context, 'vocations'),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                    child: textCenter14Green(getTranslated(context, 'hintSelectEmployeesAndDatesOfVocations')),
-                  ),
-                ],
-              ),
-              Container(
-                padding: EdgeInsets.all(10),
-                child: TextFormField(
-                  autofocus: false,
-                  autocorrect: true,
-                  cursorColor: WHITE,
-                  style: TextStyle(color: WHITE),
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-                    counterStyle: TextStyle(color: WHITE),
-                    border: OutlineInputBorder(),
-                    labelText: getTranslated(this.context, 'search'),
-                    prefixIcon: iconWhite(Icons.search),
-                    labelStyle: TextStyle(color: WHITE),
-                  ),
-                  onChanged: (string) {
-                    setState(
-                      () {
-                        _filteredEmployees = _employees.where((u) => (u.info.toLowerCase().contains(string.toLowerCase()))).toList();
-                      },
-                    );
-                  },
-                ),
-              ),
-              ListTileTheme(
-                contentPadding: EdgeInsets.only(left: 3),
-                child: CheckboxListTile(
-                  title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
-                  value: _isChecked,
-                  activeColor: GREEN,
-                  checkColor: WHITE,
-                  onChanged: (bool value) {
-                    setState(() {
-                      _isChecked = value;
-                      List<bool> l = new List();
-                      _checked.forEach((b) => l.add(value));
-                      _checked = l;
-                      if (value) {
-                        _selectedIds.addAll(_filteredEmployees.map((e) => e.id));
-                      } else
-                        _selectedIds.clear();
-                    });
-                  },
-                  controlAffinity: ListTileControlAffinity.leading,
-                ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: _filteredEmployees.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    EmployeeForVocationsTsDto employee = _filteredEmployees[index];
-                    int foundIndex = 0;
-                    for (int i = 0; i < _employees.length; i++) {
-                      if (_employees[i].id == employee.id) {
-                        foundIndex = i;
-                      }
-                    }
-                    String info = employee.info;
-                    String nationality = employee.nationality;
-                    return Card(
-                      color: DARK,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            color: BRIGHTER_DARK,
-                            child: ListTileTheme(
-                              contentPadding: EdgeInsets.only(right: 10),
-                              child: CheckboxListTile(
-                                controlAffinity: ListTileControlAffinity.leading,
-                                secondary: Padding(
-                                  padding: EdgeInsets.all(4),
-                                ),
-                                title: text20WhiteBold(
-                                  utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality),
-                                ),
-                                activeColor: GREEN,
-                                checkColor: WHITE,
-                                value: _checked[foundIndex],
-                                onChanged: (bool value) {
-                                  setState(() {
-                                    _checked[foundIndex] = value;
-                                    if (value) {
-                                      _selectedIds.add(_employees[foundIndex].id);
-                                    } else {
-                                      _selectedIds.remove(_employees[foundIndex].id);
-                                    }
-                                    int selectedIdsLength = _selectedIds.length;
-                                    if (selectedIdsLength == _employees.length) {
-                                      _isChecked = true;
-                                    } else if (selectedIdsLength == 0) {
-                                      _isChecked = false;
-                                    }
-                                  });
-                                },
-                              ),
-                            ),
-                          )
-                        ],
+    return WillPopScope(
+      child: MaterialApp(
+        title: APP_NAME,
+        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: DARK,
+          appBar: managerAppBar(context, _user, getTranslated(context, 'manageEmployeesVocations')),
+          drawer: managerSideBar(context, _user),
+          body: RefreshIndicator(
+            color: DARK,
+            backgroundColor: WHITE,
+            onRefresh: _refresh,
+            child: Column(
+              children: <Widget>[
+                Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: textCenter20White(
+                        _timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' - ' + getTranslated(context, 'vocations'),
                       ),
-                    );
-                  },
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                      child: textCenter14Green(getTranslated(context, 'hintSelectEmployeesAndDatesOfVocations')),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: TextFormField(
+                    autofocus: false,
+                    autocorrect: true,
+                    cursorColor: WHITE,
+                    style: TextStyle(color: WHITE),
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+                      counterStyle: TextStyle(color: WHITE),
+                      border: OutlineInputBorder(),
+                      labelText: getTranslated(this.context, 'search'),
+                      prefixIcon: iconWhite(Icons.search),
+                      labelStyle: TextStyle(color: WHITE),
+                    ),
+                    onChanged: (string) {
+                      setState(
+                        () {
+                          _filteredEmployees = _employees.where((u) => (u.info.toLowerCase().contains(string.toLowerCase()))).toList();
+                        },
+                      );
+                    },
+                  ),
+                ),
+                ListTileTheme(
+                  contentPadding: EdgeInsets.only(left: 3),
+                  child: CheckboxListTile(
+                    title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
+                    value: _isChecked,
+                    activeColor: GREEN,
+                    checkColor: WHITE,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _isChecked = value;
+                        List<bool> l = new List();
+                        _checked.forEach((b) => l.add(value));
+                        _checked = l;
+                        if (value) {
+                          _selectedIds.addAll(_filteredEmployees.map((e) => e.id));
+                        } else
+                          _selectedIds.clear();
+                      });
+                    },
+                    controlAffinity: ListTileControlAffinity.leading,
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: _filteredEmployees.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      EmployeeForVocationsTsDto employee = _filteredEmployees[index];
+                      int foundIndex = 0;
+                      for (int i = 0; i < _employees.length; i++) {
+                        if (_employees[i].id == employee.id) {
+                          foundIndex = i;
+                        }
+                      }
+                      String info = employee.info;
+                      String nationality = employee.nationality;
+                      return Card(
+                        color: DARK,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              color: BRIGHTER_DARK,
+                              child: ListTileTheme(
+                                contentPadding: EdgeInsets.only(right: 10),
+                                child: CheckboxListTile(
+                                  controlAffinity: ListTileControlAffinity.leading,
+                                  secondary: Padding(
+                                    padding: EdgeInsets.all(4),
+                                  ),
+                                  title: text20WhiteBold(
+                                    utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality),
+                                  ),
+                                  activeColor: GREEN,
+                                  checkColor: WHITE,
+                                  value: _checked[foundIndex],
+                                  onChanged: (bool value) {
+                                    setState(() {
+                                      _checked[foundIndex] = value;
+                                      if (value) {
+                                        _selectedIds.add(_employees[foundIndex].id);
+                                      } else {
+                                        _selectedIds.remove(_employees[foundIndex].id);
+                                      }
+                                      int selectedIdsLength = _selectedIds.length;
+                                      if (selectedIdsLength == _employees.length) {
+                                        _isChecked = true;
+                                      } else if (selectedIdsLength == 0) {
+                                        _isChecked = false;
+                                      }
+                                    });
+                                  },
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        bottomNavigationBar: Container(
-          height: 40,
-          child: Row(
-            children: <Widget>[
-              SizedBox(width: 1),
-              Expanded(
-                child: MaterialButton(
-                  color: GREEN,
-                  child: textDarkBold(getTranslated(context, 'manage')),
+          bottomNavigationBar: Container(
+            height: 40,
+            child: Row(
+              children: <Widget>[
+                SizedBox(width: 1),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: textDarkBold(getTranslated(context, 'manage')),
+                    onPressed: () => {
+                      if (_selectedIds.isNotEmpty)
+                        {
+                          _manageVocations(),
+                        }
+                      else
+                        {_showHint(getTranslated(context, 'manageLowerCase'))}
+                    },
+                  ),
+                ),
+                SizedBox(width: 1),
+                Expanded(
+                    child: MaterialButton(
+                  color: Colors.red,
+                  child: textWhiteBold(getTranslated(context, 'remove')),
                   onPressed: () => {
                     if (_selectedIds.isNotEmpty)
                       {
-                        _manageVocations(),
+                        _removeVocations(),
                       }
                     else
-                      {_showHint(getTranslated(context, 'manageLowerCase'))}
+                      {_showHint(getTranslated(context, 'removeLowerCase'))}
                   },
-                ),
-              ),
-              SizedBox(width: 1),
-              Expanded(
-                  child: MaterialButton(
-                color: Colors.red,
-                child: textWhiteBold(getTranslated(context, 'remove')),
-                onPressed: () => {
-                  if (_selectedIds.isNotEmpty)
-                    {
-                      _removeVocations(),
-                    }
-                  else
-                    {_showHint(getTranslated(context, 'removeLowerCase'))}
-                },
-              )),
-              SizedBox(width: 1),
-            ],
+                )),
+                SizedBox(width: 1),
+              ],
+            ),
           ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          floatingActionButton: groupFloatingActionButton(context, _model),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: groupFloatingActionButton(context, _model),
       ),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, VocationsTsPage(_model)),
     );
   }
 

@@ -14,6 +14,7 @@ import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/loader.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -91,44 +92,47 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
     if (_loading) {
       return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
     }
-    return MaterialApp(
-      title: APP_NAME,
-      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: DARK,
-        appBar: managerAppBar(context, _user, getTranslated(context, 'edit')),
-        drawer: managerSideBar(context, _user),
-        body: Padding(
-          padding: EdgeInsets.fromLTRB(25, 0, 25, 25),
-          child: Center(
-            child: Form(
-              autovalidate: true,
-              key: formKey,
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: 10),
-                  textCenter20GreenBold(getTranslated(context, 'informationAboutYou')),
-                  Divider(color: WHITE),
-                  SizedBox(height: 10),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: <Widget>[
-                          _buildReadOnlySection(),
-                          _buildContactSection(),
-                          _buildBasicSection(),
-                        ],
+    return WillPopScope(
+      child: MaterialApp(
+        title: APP_NAME,
+        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: DARK,
+          appBar: managerAppBar(context, _user, getTranslated(context, 'edit')),
+          drawer: managerSideBar(context, _user),
+          body: Padding(
+            padding: EdgeInsets.fromLTRB(25, 0, 25, 25),
+            child: Center(
+              child: Form(
+                autovalidate: true,
+                key: formKey,
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: 10),
+                    textCenter20GreenBold(getTranslated(context, 'informationAboutYou')),
+                    Divider(color: WHITE),
+                    SizedBox(height: 10),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: <Widget>[
+                            _buildReadOnlySection(),
+                            _buildContactSection(),
+                            _buildBasicSection(),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  _buildUpdateButton(),
-                ],
+                    _buildUpdateButton(),
+                  ],
+                ),
               ),
             ),
           ),
         ),
       ),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, ManagerProfilePage(_user)),
     );
   }
 
@@ -358,10 +362,6 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
                 _user.nationality = _nationality;
                 _user.info = _nameController.text + ' ' + _surnameController.text;
                 _user.username = _usernameController.text;
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ManagerProfilePage(_user)),
-                );
               }).catchError((onError) {
                 _errorDialog(
                   getTranslated(context, 'smthWentWrong'),

@@ -88,7 +88,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                       backgroundColor: GREEN,
                       onPressed: () => Navigator.push(
                         this.context,
-                        MaterialPageRoute(builder: (context) => WorkplacesPage(_user)),
+                        MaterialPageRoute(builder: (context) => WorkplacesPage(_user, GroupsDashboardPage(_user))),
                       ),
                       child: Image(
                         image: AssetImage('images/dark-workplace-icon.png'),

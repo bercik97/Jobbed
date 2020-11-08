@@ -13,6 +13,7 @@ import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
@@ -39,57 +40,60 @@ class _GroupEditPageState extends State<GroupEditPage> {
     this._model = widget._model;
     this._user = _model.user;
     this._groupService = ServiceInitializer.initialize(context, _user.authHeader, GroupService);
-    return MaterialApp(
-      title: APP_NAME,
-      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: DARK,
-        appBar: managerAppBar(context, _model.user, getTranslated(context, 'editGroup') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-')),
-        drawer: managerSideBar(context, _model.user),
-        body: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 20, right: 20),
-                  child: Column(
-                    children: <Widget>[
-                      SizedBox(height: 10),
-                      ListTile(
-                        title: text18WhiteBold(getTranslated(context, 'groupName')),
-                        subtitle: text16White(_model.groupName),
-                      ),
-                      ListTile(
-                        title: text18WhiteBold(getTranslated(context, 'groupDescription')),
-                        subtitle: text16White(_model.groupDescription),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 20, left: 20, top: 10, bottom: 10),
-                  child: textCenter14Green(getTranslated(context, 'hintEditGroupDetails')),
-                ),
-                _buildButton(getTranslated(context, 'groupName'), () => _updateGroupName(context, _model.groupName)),
-                _buildButton(getTranslated(context, 'groupDescription'), () => _updateGroupDescription(context, _model.groupDescription)),
-                _buildButton(
-                  getTranslated(context, 'hourlyGroupRates'),
-                  () => Navigator.of(context).push(
-                    CupertinoPageRoute<Null>(
-                      builder: (BuildContext context) {
-                        return GroupEditMoneyPerHourPage(_model);
-                      },
+    return WillPopScope(
+      child: MaterialApp(
+        title: APP_NAME,
+        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: DARK,
+          appBar: managerAppBar(context, _model.user, getTranslated(context, 'editGroup') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-')),
+          drawer: managerSideBar(context, _model.user),
+          body: SingleChildScrollView(
+            child: Center(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 20, right: 20),
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(height: 10),
+                        ListTile(
+                          title: text18WhiteBold(getTranslated(context, 'groupName')),
+                          subtitle: text16White(_model.groupName),
+                        ),
+                        ListTile(
+                          title: text18WhiteBold(getTranslated(context, 'groupDescription')),
+                          subtitle: text16White(_model.groupDescription),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: EdgeInsets.only(right: 20, left: 20, top: 10, bottom: 10),
+                    child: textCenter14Green(getTranslated(context, 'hintEditGroupDetails')),
+                  ),
+                  _buildButton(getTranslated(context, 'groupName'), () => _updateGroupName(context, _model.groupName)),
+                  _buildButton(getTranslated(context, 'groupDescription'), () => _updateGroupDescription(context, _model.groupDescription)),
+                  _buildButton(
+                    getTranslated(context, 'hourlyGroupRates'),
+                    () => Navigator.of(context).push(
+                      CupertinoPageRoute<Null>(
+                        builder: (BuildContext context) {
+                          return GroupEditMoneyPerHourPage(_model);
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          floatingActionButton: groupFloatingActionButton(context, _model),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: groupFloatingActionButton(context, _model),
       ),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model)),
     );
   }
 

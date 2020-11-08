@@ -18,6 +18,7 @@ import 'package:give_job/shared/model/radio_element.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -94,131 +95,134 @@ class _SelectWorkplaceForSelectedWorkdaysPageState extends State<SelectWorkplace
     if (_loading) {
       return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')), managerSideBar(context, _model.user));
     }
-    return MaterialApp(
-      title: APP_NAME,
-      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: DARK,
-        appBar: managerAppBar(context, _model.user, _employeeInfo != null ? utf8.decode(_employeeInfo.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality) : getTranslated(context, 'empty')),
-        drawer: managerSideBar(context, _model.user),
-        body: _workplaces.isEmpty
-            ? _handleEmptyData()
-            : Column(
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
-                    child: Column(
-                      children: [
-                        textCenter18WhiteBold(getTranslated(context, 'setWorkplaceForSelectedWorkdaysOfEmployee')),
-                      ],
-                    ),
-                  ),
-                  Card(
-                    color: BRIGHTER_DARK,
-                    child: InkWell(
-                      onTap: () {},
+    return WillPopScope(
+      child: MaterialApp(
+        title: APP_NAME,
+        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: DARK,
+          appBar: managerAppBar(context, _model.user, _employeeInfo != null ? utf8.decode(_employeeInfo.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality) : getTranslated(context, 'empty')),
+          drawer: managerSideBar(context, _model.user),
+          body: _workplaces.isEmpty
+              ? _handleEmptyData()
+              : Column(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: _elements
-                            .map(
-                              (e) => RadioListTile(
-                                activeColor: GREEN,
-                                groupValue: _currentRadioValue,
-                                title: text18WhiteBold(e.title),
-                                value: e.index,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    _currentRadioValue = newValue;
-                                    _currentRadioElement = e;
-                                  });
-                                },
-                              ),
-                            )
-                            .toList(),
+                        children: [
+                          textCenter18WhiteBold(getTranslated(context, 'setWorkplaceForSelectedWorkdaysOfEmployee')),
+                        ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(bottom: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              MaterialButton(
-                elevation: 0,
-                height: 50,
-                minWidth: 40,
-                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[iconWhite(Icons.close)],
-                ),
-                color: Colors.red,
-                onPressed: () => {
-                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => EmployeeTsInProgressPage(_model, _employeeInfo, _employeeNationality, _currency, _timeSheet)), (e) => false),
-                },
-              ),
-              SizedBox(width: 25),
-              MaterialButton(
-                elevation: 0,
-                height: 50,
-                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[iconWhite(Icons.check)],
-                ),
-                color: GREEN,
-                onPressed: () {
-                  if (_currentRadioElement.id == null) {
-                    showHint(context, getTranslated(context, 'needToSelectWorkplaces') + ' ', getTranslated(context, 'whichYouWantToSet'));
-                    return;
-                  }
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        backgroundColor: DARK,
-                        title: textGreenBold(getTranslated(context, 'confirmation')),
-                        content: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              textCenterWhite(getTranslated(context, 'selectWorkplaceForEmployeesWorkday')),
-                            ],
-                          ),
-                        ),
-                        actions: <Widget>[
-                          FlatButton(
-                            child: textGreen(getTranslated(context, 'yesImSure')),
-                            onPressed: () => {
-                              _workdayService
-                                  .updateWorkplacesByIds(
-                                _selectedWorkdayIds.map((el) => el.toString()).toList(),
-                                _currentRadioElement.id,
+                    Card(
+                      color: BRIGHTER_DARK,
+                      child: InkWell(
+                        onTap: () {},
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: _elements
+                              .map(
+                                (e) => RadioListTile(
+                                  activeColor: GREEN,
+                                  groupValue: _currentRadioValue,
+                                  title: text18WhiteBold(e.title),
+                                  value: e.index,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      _currentRadioValue = newValue;
+                                      _currentRadioElement = e;
+                                    });
+                                  },
+                                ),
                               )
-                                  .then((res) {
-                                ToastService.showSuccessToast(getTranslated(context, 'workplaceUpdatedSuccessfully'));
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => EmployeeTsInProgressPage(_model, _employeeInfo, _employeeNationality, _currency, _timeSheet)),
-                                );
-                              }),
-                            },
+                              .toList(),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+          bottomNavigationBar: Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                MaterialButton(
+                  elevation: 0,
+                  height: 50,
+                  minWidth: 40,
+                  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[iconWhite(Icons.close)],
+                  ),
+                  color: Colors.red,
+                  onPressed: () => {
+                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => EmployeeTsInProgressPage(_model, _employeeInfo, _employeeNationality, _currency, _timeSheet)), (e) => false),
+                  },
+                ),
+                SizedBox(width: 25),
+                MaterialButton(
+                  elevation: 0,
+                  height: 50,
+                  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[iconWhite(Icons.check)],
+                  ),
+                  color: GREEN,
+                  onPressed: () {
+                    if (_currentRadioElement.id == null) {
+                      showHint(context, getTranslated(context, 'needToSelectWorkplaces') + ' ', getTranslated(context, 'whichYouWantToSet'));
+                      return;
+                    }
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          backgroundColor: DARK,
+                          title: textGreenBold(getTranslated(context, 'confirmation')),
+                          content: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                textCenterWhite(getTranslated(context, 'selectWorkplaceForEmployeesWorkday')),
+                              ],
+                            ),
                           ),
-                          FlatButton(child: textWhite(getTranslated(context, 'no')), onPressed: () => Navigator.of(context).pop()),
-                        ],
-                      );
-                    },
-                  );
-                },
-              ),
-            ],
+                          actions: <Widget>[
+                            FlatButton(
+                              child: textGreen(getTranslated(context, 'yesImSure')),
+                              onPressed: () => {
+                                _workdayService
+                                    .updateWorkplacesByIds(
+                                  _selectedWorkdayIds.map((el) => el.toString()).toList(),
+                                  _currentRadioElement.id,
+                                )
+                                    .then((res) {
+                                  ToastService.showSuccessToast(getTranslated(context, 'workplaceUpdatedSuccessfully'));
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => EmployeeTsInProgressPage(_model, _employeeInfo, _employeeNationality, _currency, _timeSheet)),
+                                  );
+                                }),
+                              },
+                            ),
+                            FlatButton(child: textWhite(getTranslated(context, 'no')), onPressed: () => Navigator.of(context).pop()),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          floatingActionButton: groupFloatingActionButton(context, _model),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: groupFloatingActionButton(context, _model),
       ),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeTsInProgressPage(_model, _employeeInfo, _employeeNationality, _currency, _timeSheet)),
     );
   }
 

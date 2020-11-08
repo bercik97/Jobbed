@@ -10,14 +10,15 @@ import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/employee/employee_profil_page.dart';
-import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
+import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -26,6 +27,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../../../shared/widget/loader.dart';
 import '../../../../shared/manager_app_bar.dart';
 import '../../../../shared/manager_side_bar.dart';
+import '../group_edit_page.dart';
 
 class GroupEditMoneyPerHourPage extends StatefulWidget {
   final GroupModel _model;
@@ -73,202 +75,205 @@ class _GroupEditMoneyPerHourPageState extends State<GroupEditMoneyPerHourPage> {
     if (_loading) {
       return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')), managerSideBar(context, _model.user));
     }
-    return MaterialApp(
-      title: APP_NAME,
-      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: DARK,
-        appBar: managerAppBar(
-          context,
-          _model.user,
-          getTranslated(context, 'editGroupMoneyPerHour') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
-        ),
-        drawer: managerSideBar(context, _model.user),
-        body: RefreshIndicator(
-          color: DARK,
-          backgroundColor: WHITE,
-          onRefresh: _refresh,
-          child: Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(10),
-                child: TextFormField(
-                  autofocus: false,
-                  autocorrect: true,
-                  cursorColor: WHITE,
-                  style: TextStyle(color: WHITE),
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-                    counterStyle: TextStyle(color: WHITE),
-                    border: OutlineInputBorder(),
-                    labelText: getTranslated(this.context, 'search'),
-                    prefixIcon: iconWhite(Icons.search),
-                    labelStyle: TextStyle(color: WHITE),
+    return WillPopScope(
+      child: MaterialApp(
+        title: APP_NAME,
+        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: DARK,
+          appBar: managerAppBar(
+            context,
+            _model.user,
+            getTranslated(context, 'editGroupMoneyPerHour') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
+          ),
+          drawer: managerSideBar(context, _model.user),
+          body: RefreshIndicator(
+            color: DARK,
+            backgroundColor: WHITE,
+            onRefresh: _refresh,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: TextFormField(
+                    autofocus: false,
+                    autocorrect: true,
+                    cursorColor: WHITE,
+                    style: TextStyle(color: WHITE),
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+                      counterStyle: TextStyle(color: WHITE),
+                      border: OutlineInputBorder(),
+                      labelText: getTranslated(this.context, 'search'),
+                      prefixIcon: iconWhite(Icons.search),
+                      labelStyle: TextStyle(color: WHITE),
+                    ),
+                    onChanged: (string) {
+                      setState(
+                        () {
+                          _filteredEmployees = _employees.where((u) => (u.employeeInfo.toLowerCase().contains(string.toLowerCase()))).toList();
+                        },
+                      );
+                    },
                   ),
-                  onChanged: (string) {
-                    setState(
-                      () {
-                        _filteredEmployees = _employees.where((u) => (u.employeeInfo.toLowerCase().contains(string.toLowerCase()))).toList();
-                      },
-                    );
-                  },
                 ),
-              ),
-              ListTileTheme(
-                contentPadding: EdgeInsets.only(left: 3),
-                child: CheckboxListTile(
-                  title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
-                  value: _isChecked,
-                  activeColor: GREEN,
-                  checkColor: WHITE,
-                  onChanged: (bool value) {
-                    setState(() {
-                      _isChecked = value;
-                      List<bool> l = new List();
-                      _checked.forEach((b) => l.add(value));
-                      _checked = l;
-                      if (value) {
-                        _selectedIds.addAll(_filteredEmployees.map((e) => e.employeeId));
-                      } else
-                        _selectedIds.clear();
-                    });
-                  },
-                  controlAffinity: ListTileControlAffinity.leading,
+                ListTileTheme(
+                  contentPadding: EdgeInsets.only(left: 3),
+                  child: CheckboxListTile(
+                    title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
+                    value: _isChecked,
+                    activeColor: GREEN,
+                    checkColor: WHITE,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _isChecked = value;
+                        List<bool> l = new List();
+                        _checked.forEach((b) => l.add(value));
+                        _checked = l;
+                        if (value) {
+                          _selectedIds.addAll(_filteredEmployees.map((e) => e.employeeId));
+                        } else
+                          _selectedIds.clear();
+                      });
+                    },
+                    controlAffinity: ListTileControlAffinity.leading,
+                  ),
                 ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: _filteredEmployees.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    EmployeeMoneyPerHourDto employee = _filteredEmployees[index];
-                    int foundIndex = 0;
-                    for (int i = 0; i < _employees.length; i++) {
-                      if (_employees[i].employeeId == employee.employeeId) {
-                        foundIndex = i;
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: _filteredEmployees.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      EmployeeMoneyPerHourDto employee = _filteredEmployees[index];
+                      int foundIndex = 0;
+                      for (int i = 0; i < _employees.length; i++) {
+                        if (_employees[i].employeeId == employee.employeeId) {
+                          foundIndex = i;
+                        }
                       }
-                    }
-                    String info = employee.employeeInfo;
-                    String nationality = employee.employeeNationality;
-                    String currency = employee.currency;
-                    return Card(
-                      color: DARK,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            color: BRIGHTER_DARK,
-                            child: ListTileTheme(
-                              contentPadding: EdgeInsets.only(right: 10),
-                              child: CheckboxListTile(
-                                controlAffinity: ListTileControlAffinity.leading,
-                                secondary: Padding(
-                                  padding: EdgeInsets.all(4),
-                                  child: Transform.scale(
-                                    scale: 1.2,
-                                    child: BouncingWidget(
-                                      duration: Duration(milliseconds: 100),
-                                      scaleFactor: 2,
-                                      onPressed: () {
-                                        Navigator.push(
-                                          this.context,
-                                          MaterialPageRoute(
-                                            builder: (context) => EmployeeProfilPage(
-                                              _model,
-                                              nationality,
-                                              currency,
-                                              employee.employeeId,
-                                              info,
-                                              employee.moneyPerHour,
+                      String info = employee.employeeInfo;
+                      String nationality = employee.employeeNationality;
+                      String currency = employee.currency;
+                      return Card(
+                        color: DARK,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              color: BRIGHTER_DARK,
+                              child: ListTileTheme(
+                                contentPadding: EdgeInsets.only(right: 10),
+                                child: CheckboxListTile(
+                                  controlAffinity: ListTileControlAffinity.leading,
+                                  secondary: Padding(
+                                    padding: EdgeInsets.all(4),
+                                    child: Transform.scale(
+                                      scale: 1.2,
+                                      child: BouncingWidget(
+                                        duration: Duration(milliseconds: 100),
+                                        scaleFactor: 2,
+                                        onPressed: () {
+                                          Navigator.push(
+                                            this.context,
+                                            MaterialPageRoute(
+                                              builder: (context) => EmployeeProfilPage(
+                                                _model,
+                                                nationality,
+                                                currency,
+                                                employee.employeeId,
+                                                info,
+                                                employee.moneyPerHour,
+                                              ),
                                             ),
+                                          );
+                                        },
+                                        child: Shimmer.fromColors(
+                                          baseColor: GREEN,
+                                          highlightColor: WHITE,
+                                          child: Image(
+                                            image: AssetImage(
+                                              'images/big-employee-icon.png',
+                                            ),
+                                            fit: BoxFit.cover,
                                           ),
-                                        );
-                                      },
-                                      child: Shimmer.fromColors(
-                                        baseColor: GREEN,
-                                        highlightColor: WHITE,
-                                        child: Image(
-                                          image: AssetImage(
-                                            'images/big-employee-icon.png',
-                                          ),
-                                          fit: BoxFit.cover,
                                         ),
                                       ),
                                     ),
                                   ),
+                                  title: text20WhiteBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                  subtitle: Column(
+                                    children: <Widget>[
+                                      Align(
+                                          child: Row(
+                                            children: <Widget>[
+                                              textWhite(getTranslated(this.context, 'moneyPerHour') + ': '),
+                                              textGreenBold(employee.moneyPerHour.toString() + ' ' + currency),
+                                            ],
+                                          ),
+                                          alignment: Alignment.topLeft),
+                                    ],
+                                  ),
+                                  activeColor: GREEN,
+                                  checkColor: WHITE,
+                                  value: _checked[foundIndex],
+                                  onChanged: (bool value) {
+                                    setState(() {
+                                      _checked[foundIndex] = value;
+                                      if (value) {
+                                        _selectedIds.add(_employees[foundIndex].employeeId);
+                                      } else {
+                                        _selectedIds.remove(_employees[foundIndex].employeeId);
+                                      }
+                                      int selectedIdsLength = _selectedIds.length;
+                                      if (selectedIdsLength == _employees.length) {
+                                        _isChecked = true;
+                                      } else if (selectedIdsLength == 0) {
+                                        _isChecked = false;
+                                      }
+                                    });
+                                  },
                                 ),
-                                title: text20WhiteBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
-                                subtitle: Column(
-                                  children: <Widget>[
-                                    Align(
-                                        child: Row(
-                                          children: <Widget>[
-                                            textWhite(getTranslated(this.context, 'moneyPerHour') + ': '),
-                                            textGreenBold(employee.moneyPerHour.toString() + ' ' + currency),
-                                          ],
-                                        ),
-                                        alignment: Alignment.topLeft),
-                                  ],
-                                ),
-                                activeColor: GREEN,
-                                checkColor: WHITE,
-                                value: _checked[foundIndex],
-                                onChanged: (bool value) {
-                                  setState(() {
-                                    _checked[foundIndex] = value;
-                                    if (value) {
-                                      _selectedIds.add(_employees[foundIndex].employeeId);
-                                    } else {
-                                      _selectedIds.remove(_employees[foundIndex].employeeId);
-                                    }
-                                    int selectedIdsLength = _selectedIds.length;
-                                    if (selectedIdsLength == _employees.length) {
-                                      _isChecked = true;
-                                    } else if (selectedIdsLength == 0) {
-                                      _isChecked = false;
-                                    }
-                                  });
-                                },
                               ),
-                            ),
-                          )
-                        ],
-                      ),
-                    );
-                  },
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        bottomNavigationBar: Container(
-          height: 40,
-          child: Row(
-            children: <Widget>[
-              SizedBox(width: 1),
-              Expanded(
-                child: MaterialButton(
-                  color: GREEN,
-                  child: textDarkBold(getTranslated(context, 'setMoneyPerHour')),
-                  onPressed: () => {
-                    if (_selectedIds.isNotEmpty)
-                      {
-                        _moneyPerHourController.clear(),
-                        _changeCurrentMoneyPerHour(),
-                      }
-                    else
-                      {showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'whichYouWantToSetHourlyRate'))}
-                  },
+          bottomNavigationBar: Container(
+            height: 40,
+            child: Row(
+              children: <Widget>[
+                SizedBox(width: 1),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: textDarkBold(getTranslated(context, 'setMoneyPerHour')),
+                    onPressed: () => {
+                      if (_selectedIds.isNotEmpty)
+                        {
+                          _moneyPerHourController.clear(),
+                          _changeCurrentMoneyPerHour(),
+                        }
+                      else
+                        {showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'whichYouWantToSetHourlyRate'))}
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(width: 1),
-            ],
+                SizedBox(width: 1),
+              ],
+            ),
           ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          floatingActionButton: groupFloatingActionButton(context, _model),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: groupFloatingActionButton(context, _model),
       ),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupEditPage(_model)),
     );
   }
 

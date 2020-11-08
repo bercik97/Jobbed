@@ -14,6 +14,7 @@ import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/loader.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -133,47 +134,50 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
     if (_loading) {
       return loader(employeeAppBar(context, _user, getTranslated(context, 'loading')), employeeSideBar(context, _user));
     }
-    return MaterialApp(
-      title: APP_NAME,
-      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: DARK,
-        appBar: employeeAppBar(context, _user, getTranslated(context, 'edit')),
-        drawer: employeeSideBar(context, _user),
-        body: Padding(
-          padding: EdgeInsets.fromLTRB(25, 0, 25, 25),
-          child: Center(
-            child: Form(
-              autovalidate: true,
-              key: formKey,
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: 10),
-                  textCenter20GreenBold(getTranslated(context, 'informationAboutYou')),
-                  Divider(color: WHITE),
-                  SizedBox(height: 10),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: <Widget>[
-                          _buildReadOnlySection(),
-                          _buildContactSection(),
-                          _buildBasicSection(),
-                          _buildAddressSection(),
-                          _buildPassportSection(),
-                          _buildOtherSection(),
-                        ],
+    return WillPopScope(
+      child: MaterialApp(
+        title: APP_NAME,
+        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: DARK,
+          appBar: employeeAppBar(context, _user, getTranslated(context, 'edit')),
+          drawer: employeeSideBar(context, _user),
+          body: Padding(
+            padding: EdgeInsets.fromLTRB(25, 0, 25, 25),
+            child: Center(
+              child: Form(
+                autovalidate: true,
+                key: formKey,
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: 10),
+                    textCenter20GreenBold(getTranslated(context, 'informationAboutYou')),
+                    Divider(color: WHITE),
+                    SizedBox(height: 10),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: <Widget>[
+                            _buildReadOnlySection(),
+                            _buildContactSection(),
+                            _buildBasicSection(),
+                            _buildAddressSection(),
+                            _buildPassportSection(),
+                            _buildOtherSection(),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  _buildUpdateButton(),
-                ],
+                    _buildUpdateButton(),
+                  ],
+                ),
               ),
             ),
           ),
         ),
       ),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilPage(_user)),
     );
   }
 
@@ -705,10 +709,6 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
                 _user.nationality = _nationality;
                 _user.info = _nameController.text + ' ' + _surnameController.text;
                 _user.username = _usernameController.text;
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => EmployeeProfilPage(_user)),
-                );
               }).catchError((onError) {
                 _errorDialog(
                   getTranslated(context, 'smthWentWrong'),

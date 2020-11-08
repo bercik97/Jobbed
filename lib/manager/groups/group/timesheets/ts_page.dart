@@ -6,6 +6,7 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
 import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
+import 'package:give_job/manager/groups/group/group_page.dart';
 import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
@@ -16,6 +17,7 @@ import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/util/month_util.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
@@ -73,186 +75,189 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
     if (_loading) {
       return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')), managerSideBar(context, _model.user));
     }
-    return MaterialApp(
-      title: APP_NAME,
-      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: DARK,
-        appBar: managerAppBarWithIconsLegend(
-            context,
-            getTranslated(context, 'timesheets') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
-            [
-              IconsLegend.buildRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
-              IconsLegend.buildRow('images/checked.png', getTranslated(context, 'completedTs')),
-              IconsLegend.buildRowWithWidget(icon50Orange(Icons.arrow_downward), getTranslated(context, 'settingTsStatusToInProgress')),
-              IconsLegend.buildRowWithWidget(icon50Green(Icons.arrow_upward), getTranslated(context, 'settingTsStatusToCompleted')),
-            ],
-            _model.user),
-        drawer: managerSideBar(context, _model.user),
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: 20, top: 15, bottom: 5),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: text20OrangeBold(getTranslated(context, 'inProgressTimesheets')),
-                ),
-              ),
-              _inProgressTimesheets.isEmpty
-                  ? Padding(
-                      padding: EdgeInsets.only(left: 20),
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: text15White(getTranslated(context, 'noInProgressTimesheets')),
-                      ),
-                    )
-                  : Container(),
-              for (var inProgressTs in _inProgressTimesheets)
-                Card(
-                  color: BRIGHTER_DARK,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        CupertinoPageRoute<Null>(
-                          builder: (BuildContext context) {
-                            return TsInProgressPage(_model, inProgressTs);
-                          },
-                        ),
-                      );
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        ListTile(
-                          leading: Padding(
-                            padding: EdgeInsets.only(bottom: 15),
-                            child: Image(
-                              image: AssetImage('images/unchecked.png'),
-                              fit: BoxFit.fitHeight,
-                            ),
-                          ),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: iconGreen(Icons.arrow_upward),
-                                onPressed: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ChangeTsStatusPage(_model, inProgressTs.year, inProgressTs.month, STATUS_COMPLETED),
-                                  ),
-                                ),
-                              ),
-                              IconButton(
-                                icon: iconRed(Icons.delete),
-                                onPressed: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => DeleteTsPage(_model, inProgressTs.year, inProgressTs.month, STATUS_IN_PROGRESS),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          title: text18WhiteBold(inProgressTs.year.toString() + ' ' + MonthUtil.translateMonth(context, inProgressTs.month)),
-                        ),
-                      ],
-                    ),
+    return WillPopScope(
+      child: MaterialApp(
+        title: APP_NAME,
+        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: DARK,
+          appBar: managerAppBarWithIconsLegend(
+              context,
+              getTranslated(context, 'timesheets') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
+              [
+                IconsLegend.buildRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
+                IconsLegend.buildRow('images/checked.png', getTranslated(context, 'completedTs')),
+                IconsLegend.buildRowWithWidget(icon50Orange(Icons.arrow_downward), getTranslated(context, 'settingTsStatusToInProgress')),
+                IconsLegend.buildRowWithWidget(icon50Green(Icons.arrow_upward), getTranslated(context, 'settingTsStatusToCompleted')),
+              ],
+              _model.user),
+          drawer: managerSideBar(context, _model.user),
+          body: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(left: 20, top: 15, bottom: 5),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: text20OrangeBold(getTranslated(context, 'inProgressTimesheets')),
                   ),
                 ),
-              Padding(
-                padding: EdgeInsets.only(left: 20, top: 15, bottom: 5),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: text20GreenBold(getTranslated(this.context, 'completedTimesheets')),
-                ),
-              ),
-              _completedTimesheets.isEmpty
-                  ? Padding(
-                      padding: EdgeInsets.only(left: 20),
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: text15White(getTranslated(this.context, 'noCompletedTimesheets')),
-                      ),
-                    )
-                  : Container(),
-              for (var completedTs in _completedTimesheets)
-                Card(
-                  color: BRIGHTER_DARK,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        CupertinoPageRoute<Null>(
-                          builder: (BuildContext context) {
-                            return TsCompletedPage(_model, completedTs);
-                          },
+                _inProgressTimesheets.isEmpty
+                    ? Padding(
+                        padding: EdgeInsets.only(left: 20),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: text15White(getTranslated(context, 'noInProgressTimesheets')),
                         ),
-                      );
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        ListTile(
-                          leading: Padding(
-                            padding: EdgeInsets.only(bottom: 15),
-                            child: Image(
-                              image: AssetImage('images/checked.png'),
-                              fit: BoxFit.fitHeight,
+                      )
+                    : Container(),
+                for (var inProgressTs in _inProgressTimesheets)
+                  Card(
+                    color: BRIGHTER_DARK,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          CupertinoPageRoute<Null>(
+                            builder: (BuildContext context) {
+                              return TsInProgressPage(_model, inProgressTs);
+                            },
+                          ),
+                        );
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          ListTile(
+                            leading: Padding(
+                              padding: EdgeInsets.only(bottom: 15),
+                              child: Image(
+                                image: AssetImage('images/unchecked.png'),
+                                fit: BoxFit.fitHeight,
+                              ),
                             ),
-                          ),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: iconOrange(Icons.arrow_downward),
-                                onPressed: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ChangeTsStatusPage(_model, completedTs.year, completedTs.month, STATUS_IN_PROGRESS),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: iconGreen(Icons.arrow_upward),
+                                  onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ChangeTsStatusPage(_model, inProgressTs.year, inProgressTs.month, STATUS_COMPLETED),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              IconButton(
-                                icon: iconRed(Icons.delete),
-                                onPressed: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => DeleteTsPage(_model, completedTs.year, completedTs.month, STATUS_COMPLETED),
+                                IconButton(
+                                  icon: iconRed(Icons.delete),
+                                  onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DeleteTsPage(_model, inProgressTs.year, inProgressTs.month, STATUS_IN_PROGRESS),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
+                            title: text18WhiteBold(inProgressTs.year.toString() + ' ' + MonthUtil.translateMonth(context, inProgressTs.month)),
                           ),
-                          title: text18WhiteBold(completedTs.year.toString() + ' ' + MonthUtil.translateMonth(context, completedTs.month)),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
+                Padding(
+                  padding: EdgeInsets.only(left: 20, top: 15, bottom: 5),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: text20GreenBold(getTranslated(this.context, 'completedTimesheets')),
+                  ),
                 ),
-            ],
+                _completedTimesheets.isEmpty
+                    ? Padding(
+                        padding: EdgeInsets.only(left: 20),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: text15White(getTranslated(this.context, 'noCompletedTimesheets')),
+                        ),
+                      )
+                    : Container(),
+                for (var completedTs in _completedTimesheets)
+                  Card(
+                    color: BRIGHTER_DARK,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          CupertinoPageRoute<Null>(
+                            builder: (BuildContext context) {
+                              return TsCompletedPage(_model, completedTs);
+                            },
+                          ),
+                        );
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          ListTile(
+                            leading: Padding(
+                              padding: EdgeInsets.only(bottom: 15),
+                              child: Image(
+                                image: AssetImage('images/checked.png'),
+                                fit: BoxFit.fitHeight,
+                              ),
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: iconOrange(Icons.arrow_downward),
+                                  onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ChangeTsStatusPage(_model, completedTs.year, completedTs.month, STATUS_IN_PROGRESS),
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: iconRed(Icons.delete),
+                                  onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DeleteTsPage(_model, completedTs.year, completedTs.month, STATUS_COMPLETED),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            title: text18WhiteBold(completedTs.year.toString() + ' ' + MonthUtil.translateMonth(context, completedTs.month)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: groupFloatingActionButton(context, _model),
-        bottomNavigationBar: Container(
-          height: 40,
-          child: Row(
-            children: <Widget>[
-              SizedBox(width: 1),
-              Expanded(
-                child: MaterialButton(
-                  color: GREEN,
-                  child: text18Dark(getTranslated(context, 'addNewTs')),
-                  onPressed: () => _addNewTs(),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          floatingActionButton: groupFloatingActionButton(context, _model),
+          bottomNavigationBar: Container(
+            height: 40,
+            child: Row(
+              children: <Widget>[
+                SizedBox(width: 1),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: text18Dark(getTranslated(context, 'addNewTs')),
+                    onPressed: () => _addNewTs(),
+                  ),
                 ),
-              ),
-              SizedBox(width: 1),
-            ],
+                SizedBox(width: 1),
+              ],
+            ),
           ),
         ),
       ),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model)),
     );
   }
 

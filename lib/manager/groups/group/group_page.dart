@@ -13,6 +13,7 @@ import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/util/language_util.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
@@ -211,7 +212,7 @@ class _GroupPageState extends State<GroupPage> {
                               Navigator.of(context).push(
                                 CupertinoPageRoute<Null>(
                                   builder: (BuildContext context) {
-                                    return WorkplacesPage(_model.user);
+                                    return WorkplacesPage(_model.user, GroupPage(_model));
                                   },
                                 ),
                               );
@@ -230,7 +231,7 @@ class _GroupPageState extends State<GroupPage> {
           ),
         ),
       ),
-      onWillPop: _onWillPop,
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupsDashboardPage(_user)),
     );
   }
 
@@ -244,15 +245,5 @@ class _GroupPageState extends State<GroupPage> {
         ),
       ),
     );
-  }
-
-  Future<bool> _onWillPop() async {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => GroupsDashboardPage(_user),
-      ),
-    );
-    return false;
   }
 }
