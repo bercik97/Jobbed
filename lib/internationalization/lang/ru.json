@@ -475,5 +475,9 @@
   "editNote": "Редактировать заметку",
   "youDontHaveTsForCurrentMonth": "У вас нет табеля рабочего времени за текущий месяц",
   "settingHoursForToday": "Установка часов на сегодня",
-  "noManagerAssigned": "Менеджер не назначен"
+  "noManagerAssigned": "Менеджер не назначен",
+  "settingNote": "Примечание по настройке",
+  "viewRecordDetails": "Просмотр сведений о записи",
+  "addNote": "Добавить заметку",
+  "notesSavedSuccessfully": "Заметки успешно сохранены"
 }

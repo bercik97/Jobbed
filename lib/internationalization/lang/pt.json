@@ -475,5 +475,9 @@
   "editNote": "ჩანაწერის რედაქტირება",
   "youDontHaveTsForCurrentMonth": "თქვენ არ გაქვთ დროის ფურცელი მიმდინარე თვისთვის",
   "settingHoursForToday": "დღეს საათების დაყენება",
-  "noManagerAssigned": "არ არის დანიშნული მენეჯერი"
+  "noManagerAssigned": "არ არის დანიშნული მენეჯერი",
+  "settingNote": "ნოტის დაყენება",
+  "viewRecordDetails": "ჩანაწერის დეტალების ნახვა",
+  "addNote": "ჩანიშვნა",
+  "notesSavedSuccessfully": "ჩანიშვნები წარმატებით შეინახეს"
 }

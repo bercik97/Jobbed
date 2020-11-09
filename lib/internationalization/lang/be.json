@@ -475,5 +475,9 @@
   "editNote": "Рэдагаваць нататку",
   "youDontHaveTsForCurrentMonth": "У вас няма табліцы часу на бягучы месяц",
   "settingHoursForToday": "Устаноўка гадзін на сёння",
-  "noManagerAssigned": "Менеджэр не прызначаны"
+  "noManagerAssigned": "Менеджэр не прызначаны",
+  "settingNote": "Нататка пра ўстаноўку",
+  "viewRecordDetails": "Прагляд дэталяў запісу",
+  "addNote": "Дадаць каментарый",
+  "notesSavedSuccessfully": "Нататкі паспяхова захаваны"
 }

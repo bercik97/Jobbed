@@ -257,8 +257,13 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                 child: MaterialButton(
                   color: GREEN,
                   child: Image(image: AssetImage('images/dark-hours-icon.png')),
-                  onPressed: () => {
-                    if (selectedIds.isNotEmpty) {_hoursController.clear(), _showUpdateHoursDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
+                  onPressed: () {
+                    if (selectedIds.isNotEmpty) {
+                      _hoursController.clear();
+                      _showUpdateHoursDialog(selectedIds);
+                    } else {
+                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                    }
                   },
                 ),
               ),
@@ -267,8 +272,13 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                 child: MaterialButton(
                   color: GREEN,
                   child: Image(image: AssetImage('images/dark-rate-icon.png')),
-                  onPressed: () => {
-                    if (selectedIds.isNotEmpty) {_ratingController.clear(), _showUpdateRatingDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
+                  onPressed: () {
+                    if (selectedIds.isNotEmpty) {
+                      _ratingController.clear();
+                      _showUpdateRatingDialog(selectedIds);
+                    } else {
+                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                    }
                   },
                 ),
               ),
@@ -277,8 +287,13 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                 child: MaterialButton(
                   color: GREEN,
                   child: Image(image: AssetImage('images/dark-plan-icon.png')),
-                  onPressed: () => {
-                    if (selectedIds.isNotEmpty) {_planController.clear(), _showUpdatePlanDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
+                  onPressed: () {
+                    if (selectedIds.isNotEmpty) {
+                      _planController.clear();
+                      _showUpdatePlanDialog(selectedIds);
+                    } else {
+                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                    }
                   },
                 ),
               ),
@@ -287,8 +302,13 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                 child: MaterialButton(
                   color: GREEN,
                   child: Image(image: AssetImage('images/dark-opinion-icon.png')),
-                  onPressed: () => {
-                    if (selectedIds.isNotEmpty) {_opinionController.clear(), _showUpdateOpinionDialog(selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
+                  onPressed: () {
+                    if (selectedIds.isNotEmpty) {
+                      _opinionController.clear();
+                      _showUpdateOpinionDialog(selectedIds);
+                    } else {
+                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                    }
                   },
                 ),
               ),
@@ -297,25 +317,24 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                 child: MaterialButton(
                   color: GREEN,
                   child: Image(image: AssetImage('images/dark-workplace-icon.png')),
-                  onPressed: () => {
-                    if (selectedIds.isNotEmpty)
-                      {
-                        Navigator.push(
-                          this.context,
-                          MaterialPageRoute(
-                            builder: (context) => SelectWorkplaceForSelectedWorkdaysPage(
-                              _model,
-                              _timesheet,
-                              _employeeInfo,
-                              _employeeNationality,
-                              _currency,
-                              selectedIds,
-                            ),
+                  onPressed: () {
+                    if (selectedIds.isNotEmpty) {
+                      Navigator.push(
+                        this.context,
+                        MaterialPageRoute(
+                          builder: (context) => SelectWorkplaceForSelectedWorkdaysPage(
+                            _model,
+                            _timesheet,
+                            _employeeInfo,
+                            _employeeNationality,
+                            _currency,
+                            selectedIds,
                           ),
                         ),
-                      }
-                    else
-                      {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
+                      );
+                    } else {
+                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                    }
                   },
                 ),
               ),
@@ -324,8 +343,13 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                 child: MaterialButton(
                   color: GREEN,
                   child: Image(image: AssetImage('images/dark-vocation-icon.png')),
-                  onPressed: () => {
-                    if (selectedIds.isNotEmpty) {_vocationReasonController.clear(), _showUpdateVocationReasonDialog(_timesheet, selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
+                  onPressed: () {
+                    if (selectedIds.isNotEmpty) {
+                      _vocationReasonController.clear();
+                      _showUpdateVocationReasonDialog(_timesheet, selectedIds);
+                    } else {
+                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                    }
                   },
                 ),
               ),

@@ -475,5 +475,9 @@
   "editNote": "Edit note",
   "youDontHaveTsForCurrentMonth": "You do not have a time sheet for the current month",
   "settingHoursForToday": "Setting hours for today",
-  "noManagerAssigned": "No manager assigned"
+  "noManagerAssigned": "No manager assigned",
+  "settingNote": "Setting note",
+  "viewRecordDetails": "View record details",
+  "addNote": "Add note",
+  "notesSavedSuccessfully": "Notes saved successfully"
 }

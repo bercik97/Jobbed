@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:give_job/employee/profile/timesheet/employee_timesheet_page.dart';
+import 'package:give_job/employee/profile/timesheet/employee_ts_completed_page.dart';
+import 'package:give_job/employee/profile/timesheet/employee_ts_in_progress_page.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -32,7 +33,11 @@ Widget employeeTimesheetsTab(BuildContext context, User user, List timesheets) {
                         Navigator.of(context).push(
                           CupertinoPageRoute<Null>(
                             builder: (BuildContext context) {
-                              return EmployeeTimesheetPage(user, timesheet);
+                              if (timesheet.status == STATUS_IN_PROGRESS) {
+                                return EmployeeTsInProgressPage(user, timesheet);
+                              } else {
+                                return EmployeeTsCompletedPage(user, timesheet);
+                              }
                             },
                           ),
                         );

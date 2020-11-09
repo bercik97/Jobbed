@@ -475,5 +475,9 @@
   "editNote": "Editar nota",
   "youDontHaveTsForCurrentMonth": "No tiene una hoja de horas para el mes actual",
   "settingHoursForToday": "Estableciendo horas para hoy",
-  "noManagerAssigned": "Ningún administrador asignado"
+  "noManagerAssigned": "Ningún administrador asignado",
+  "settingNote": "Nota de ajuste",
+  "viewRecordDetails": "Ver detalles del registro",
+  "addNote": "Añadir la nota",
+  "notesSavedSuccessfully": "Notas guardadas correctamente"
 }

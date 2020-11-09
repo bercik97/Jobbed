@@ -475,5 +475,9 @@
   "editNote": "Modifier la note",
   "youDontHaveTsForCurrentMonth": "Vous n'avez pas de feuille de temps pour le mois en cours",
   "settingHoursForToday": "Réglage des heures pour aujourd'hui",
-  "noManagerAssigned": "Aucun responsable affecté"
+  "noManagerAssigned": "Aucun responsable affecté",
+  "settingNote": "Note de réglage",
+  "viewRecordDetails": "Afficher les détails de l'enregistrement",
+  "addNote": "Ajouter une note",
+  "notesSavedSuccessfully": "Notes enregistrées avec succès"
 }

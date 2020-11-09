@@ -475,5 +475,9 @@
   "editNote": "Edit note",
   "youDontHaveTsForCurrentMonth": "Du har ikke et timeliste for inneværende måned",
   "settingHoursForToday": "Stille inn timer for i dag",
-  "noManagerAssigned": "Ingen manager tildelt"
+  "noManagerAssigned": "Ingen manager tildelt",
+  "settingNote": "Innstillingsnotat",
+  "viewRecordDetails": "Vis rekorddetaljer",
+  "addNote": "Legge til notat",
+  "notesSavedSuccessfully": "Notater er lagret"
 }

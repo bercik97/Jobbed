@@ -475,5 +475,9 @@
   "editNote": "Editați nota",
   "youDontHaveTsForCurrentMonth": "Nu aveți o foaie de timp pentru luna curentă",
   "settingHoursForToday": "Setarea orelor pentru astăzi",
-  "noManagerAssigned": "Niciun manager atribuit"
+  "noManagerAssigned": "Niciun manager atribuit",
+  "settingNote": "Notă de setare",
+  "viewRecordDetails": "Vizualizați detaliile înregistrării",
+  "addNote": "Adauga notita",
+  "notesSavedSuccessfully": "Note salvate cu succes"
 }

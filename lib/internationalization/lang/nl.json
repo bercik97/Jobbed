@@ -475,5 +475,9 @@
   "editNote": "Bewerk notitie",
   "youDontHaveTsForCurrentMonth": "U heeft geen urenstaat voor de huidige maand",
   "settingHoursForToday": "Uren instellen voor vandaag",
-  "noManagerAssigned": "Geen manager toegewezen"
+  "noManagerAssigned": "Geen manager toegewezen",
+  "settingNote": "Opmerking instellen",
+  "viewRecordDetails": "Bekijk recorddetails",
+  "addNote": "Notitie toevoegen",
+  "notesSavedSuccessfully": "Notities zijn opgeslagen"
 }

@@ -475,5 +475,9 @@
   "editNote": "Notiz bearbeiten",
   "youDontHaveTsForCurrentMonth": "Du har ingen tidrapport för den aktuella månaden",
   "settingHoursForToday": "Ställa in timmar för idag",
-  "noManagerAssigned": "Ingen manager tilldelad"
+  "noManagerAssigned": "Ingen manager tilldelad",
+  "settingNote": "Notiz einstellen",
+  "viewRecordDetails": "Datensatzdetails anzeigen",
+  "addNote": "Notiz hinzufügen",
+  "notesSavedSuccessfully": "Notizen erfolgreich gespeichert"
 }

@@ -475,5 +475,9 @@
   "editNote": "Edytuj notatkę",
   "youDontHaveTsForCurrentMonth": "Nie posiadasz arkusza czasu pracy na bieżący miesiąc",
   "setHoursForToday": "Uzupełnianie dzisiejszych godzin",
-  "noManagerAssigned": "Brak przypisanego menadżera"
+  "noManagerAssigned": "Brak przypisanego menadżera",
+  "settingNote": "Ustawianie notatki",
+  "viewRecordDetails": "Wyświetl szczegóły rekordu",
+  "addNote": "Dodawanie notatki",
+  "notesSavedSuccessfully": "Notatki zostały zapisana pomyślnie"
 }
