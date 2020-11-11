@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/api/employee/dto/employee_page_dto.dart';
 import 'package:give_job/employee/profile/tabs/calendar/employee_calendar_page.dart';
+import 'package:give_job/employee/profile/tabs/worktime/work_time_page.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/model/user.dart';
@@ -24,7 +25,10 @@ Container employeePanel(BuildContext context, User user, EmployeePageDto employe
                   child: Material(
                     color: BRIGHTER_DARK,
                     child: InkWell(
-                      onTap: () => {},
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => WorkTimePage(user, employee.todayWorkdayId)),
+                      ),
                       child: _buildScrollableContainer(context, 'images/big-employee-work-icon.png', 'workingTime', 'startFinishWork'),
                     ),
                   ),

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/work_time/dto/is_currently_at_work_with_worktimes_dto.dart';
 import 'package:give_job/api/work_time/service/worktime_service.dart';
-import 'package:give_job/api/workplace/service/workplace_service.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
 import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
@@ -16,8 +15,9 @@ import 'package:give_job/shared/widget/texts.dart';
 
 class WorkTimePage extends StatefulWidget {
   final User _user;
+  final int _todayWorkdayId;
 
-  WorkTimePage(this._user);
+  WorkTimePage(this._user, this._todayWorkdayId);
 
   @override
   _WorkTimePageState createState() => _WorkTimePageState();
@@ -25,8 +25,8 @@ class WorkTimePage extends StatefulWidget {
 
 class _WorkTimePageState extends State<WorkTimePage> {
   User _user;
+  int _todayWorkdayId;
 
-  WorkplaceService _workplaceService;
   WorkTimeService _workTimeService;
 
   IsCurrentlyAtWorkWithWorkTimesDto _dto;
@@ -37,7 +37,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
   @override
   Widget build(BuildContext context) {
     this._user = widget._user;
-    this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
+    this._todayWorkdayId = widget._todayWorkdayId;
     this._workTimeService = ServiceInitializer.initialize(context, _user.authHeader, WorkTimeService);
     return MaterialApp(
       title: APP_NAME,
@@ -47,27 +47,27 @@ class _WorkTimePageState extends State<WorkTimePage> {
         backgroundColor: DARK,
         appBar: employeeAppBar(context, _user, getTranslated(context, 'workTimeForToday')),
         drawer: employeeSideBar(context, _user),
-        // body: SingleChildScrollView(
-        //   child: FutureBuilder(
-        //     future: _workTimeService.checkIfIsCurrentlyAtWorkAndFindAllByEmployeeIdAndDateOrEndTimeIsNull(_user.id),
-        //     builder: (BuildContext context, AsyncSnapshot<IsCurrentlyAtWorkWithWorkTimesDto> snapshot) {
-        //       if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
-        //         return Padding(
-        //           padding: EdgeInsets.only(top: 50),
-        //           child: Center(child: circularProgressIndicator()),
-        //         );
-        //       } else {
-        //         _dto = snapshot.data;
-        //         List workTimes = _dto.workTimes;
-        //         if (_dto.currentlyAtWork) {
-        //           return _handleEmployeeInWork(workTimes);
-        //         } else {
-        //           return _handleEmployeeNotInWork(workTimes);
-        //         }
-        //       }
-        //     },
-        //   ),
-        // ),
+        body: SingleChildScrollView(
+          child: FutureBuilder(
+            future: _workTimeService.checkIfCurrentDateWorkTimeIsStartedAndNotFinished(_todayWorkdayId),
+            builder: (BuildContext context, AsyncSnapshot<IsCurrentlyAtWorkWithWorkTimesDto> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
+                return Padding(
+                  padding: EdgeInsets.only(top: 50),
+                  child: Center(child: circularProgressIndicator()),
+                );
+              } else {
+                _dto = snapshot.data;
+                List workTimes = _dto.workTimes;
+                if (_dto.currentlyAtWork) {
+                  return _handleEmployeeInWork(workTimes);
+                } else {
+                  return _handleEmployeeNotInWork(workTimes);
+                }
+              }
+            },
+          ),
+        ),
       ),
     );
   }
@@ -78,6 +78,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
         children: [
           _buildBtn('images/stop-icon.png', _showPauseWorkDialog),
           _buildPauseHint(),
+          _buildLocationHint(),
           _displayWorkTimes(workTimes),
         ],
       ),
@@ -90,6 +91,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
         children: [
           _buildBtn('images/play-icon.png', () => print('TODO')),
           _buildStartHint(),
+          _buildLocationHint(),
           _displayWorkTimes(workTimes),
         ],
       ),
@@ -112,15 +114,22 @@ class _WorkTimePageState extends State<WorkTimePage> {
 
   Widget _buildStartHint() {
     return Padding(
-      padding: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+      padding: EdgeInsets.only(top: 10, left: 20, right: 20),
       child: textCenter18Green(getTranslated(context, 'hintPressBtnToStart')),
     );
   }
 
   Widget _buildPauseHint() {
     return Padding(
-      padding: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+      padding: EdgeInsets.only(top: 10, left: 20, right: 20),
       child: textCenter18Green(getTranslated(context, 'hintPressBtnToPause')),
+    );
+  }
+
+  Widget _buildLocationHint() {
+    return Padding(
+      padding: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+      child: textCenter18Green('Before start or pause work, please turn on location, otherwise it wont work'),
     );
   }
 
@@ -172,21 +181,23 @@ class _WorkTimePageState extends State<WorkTimePage> {
         child: Theme(
           data: Theme.of(this.context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
           child: DataTable(
-            columnSpacing: 45,
+            columnSpacing: 20,
             columns: [
+              DataColumn(label: textWhiteBold('No.')),
               DataColumn(label: textWhiteBold(getTranslated(this.context, 'from'))),
               DataColumn(label: textWhiteBold(getTranslated(this.context, 'to'))),
               DataColumn(label: textWhiteBold(getTranslated(this.context, 'sum'))),
-              DataColumn(label: textWhiteBold(getTranslated(this.context, 'workplaceId'))),
+              DataColumn(label: textWhiteBold(getTranslated(this.context, 'workplaceName'))),
             ],
             rows: [
-              for (var workTime in workTimes)
+              for (int i = 0; i < workTimes.length; i++)
                 DataRow(
                   cells: [
-                    DataCell(textWhite(workTime.startTime)),
-                    DataCell(textWhite(workTime.endTime != null ? workTime.endTime : '-')),
-                    DataCell(textWhite(workTime.totalTime != null ? workTime.totalTime : '-')),
-                    DataCell(textWhite(workTime.workplaceId != null ? workTime.workplaceId : '-')),
+                    DataCell(textWhite((i + 1).toString())),
+                    DataCell(textWhite(workTimes[i].startTime)),
+                    DataCell(textWhite(workTimes[i].endTime != null ? workTimes[i].endTime : '-')),
+                    DataCell(textWhite(workTimes[i].totalTime != null ? workTimes[i].totalTime : '-')),
+                    DataCell(textWhite(workTimes[i].workplaceId != null ? workTimes[i].workplaceName : '-')),
                   ],
                 ),
             ],
@@ -196,11 +207,11 @@ class _WorkTimePageState extends State<WorkTimePage> {
     );
   }
 
-  // Future<Null> _refresh() {
-  //   return _workTimeService.checkIfIsCurrentlyAtWorkAndFindAllByEmployeeIdAndDateOrEndTimeIsNull(_user.id).then((res) {
-  //     setState(() {
-  //       _dto = res;
-  //     });
-  //   });
-  // }
+  Future<Null> _refresh() {
+    return _workTimeService.checkIfCurrentDateWorkTimeIsStartedAndNotFinished(_todayWorkdayId).then((res) {
+      setState(() {
+        _dto = res;
+      });
+    });
+  }
 }

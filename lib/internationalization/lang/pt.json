@@ -483,7 +483,7 @@
   "workingTime": "Working Time",
   "startFinishWork": "Start or finish work",
   "workTimeForToday": "Today's working time",
-  "hintPressBtnToStart": "Hint: Press start button then enter workplace code to begin work",
+  "hintPressBtnToStart": "Hint: Press start button to begin work",
   "hintPressBtnToPause": "Hint: Press pause button to finish your work",
   "pauseWorkConfirmation": "Are you sure you want to STOP your work?",
   "workIsDone": "Yes, work is done",
