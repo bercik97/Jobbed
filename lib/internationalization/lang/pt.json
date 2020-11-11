@@ -291,8 +291,8 @@
   "removeVocations": "მოწოდებების წაშლა",
   "areYouSureYouWantToRemove": "დარწმუნებული ხართ, რომ გსურთ წაშლა",
   "vocationsForSelectedEmployees": "პროფესია შერჩეული თანამშრომლებისთვის",
-  "from": "საწყისი",
-  "to": "რომ",
+  "fromLowerCase": "საწყისი",
+  "toLowerCase": "რომ",
   "removeConfirmation": "დიახ, მინდა ამოშლა",
   "vocationsRemovedSuccessfully": "პროფესიები წარმატებით მოიხსნა!",
   "needToSelectEmployeesToBe": "თქვენ უნდა აირჩიოთ თანამშრომლები",
@@ -488,5 +488,9 @@
   "pauseWorkConfirmation": "Are you sure you want to STOP your work?",
   "workIsDone": "Yes, work is done",
   "sum": "Sum",
-  "workplaceId": "Workplace id"
+  "workplaceId": "Workplace id",
+  "workTimes": "Work times",
+  "workplaceName": "Workplace name",
+  "from": "From",
+  "to": "To"
 }

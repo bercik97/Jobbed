@@ -291,8 +291,8 @@
   "removeVocations": "FJERN KALKER",
   "areYouSureYouWantToRemove": "Er du sikker på at du vil fjerne",
   "vocationsForSelectedEmployees": "kall for utvalgte ansatte",
-  "from": "fra",
-  "to": "til",
+  "fromLowerCase": "fra",
+  "toLowerCase": "til",
   "removeConfirmation": "Ja, jeg vil fjerne",
   "vocationsRemovedSuccessfully": "Yrkene fjernet vellykket!",
   "needToSelectEmployeesToBe": "Du må velge ansatte som skal være",
@@ -488,5 +488,9 @@
   "pauseWorkConfirmation": "Are you sure you want to STOP your work?",
   "workIsDone": "Yes, work is done",
   "sum": "Sum",
-  "workplaceId": "Workplace id"
+  "workplaceId": "Workplace id",
+  "workTimes": "Work times",
+  "workplaceName": "Workplace name",
+  "from": "From",
+  "to": "To"
 }

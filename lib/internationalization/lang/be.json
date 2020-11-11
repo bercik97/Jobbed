@@ -291,8 +291,8 @@
   "removeVocations": "ВЫДАЛІЦЬ пакліканні",
   "areYouSureYouWantToRemove": "Вы ўпэўнены, што хочаце выдаліць",
   "vocationsForSelectedEmployees": "пакліканні для выбраных супрацоўнікаў",
-  "from": "ад",
-  "to": "да",
+  "fromLowerCase": "ад",
+  "toLowerCase": "да",
   "removeConfirmation": "Так, я хачу выдаліць",
   "vocationsRemovedSuccessfully": "Пакліканні выдалены паспяхова!",
   "needToSelectEmployeesToBe": "Вам трэба выбраць супрацоўнікаў, якімі трэба быць",
@@ -488,5 +488,9 @@
   "pauseWorkConfirmation": "Are you sure you want to STOP your work?",
   "workIsDone": "Yes, work is done",
   "sum": "Sum",
-  "workplaceId": "Workplace id"
+  "workplaceId": "Workplace id",
+  "workTimes": "Work times",
+  "workplaceName": "Workplace name",
+  "from": "From",
+  "to": "To"
 }

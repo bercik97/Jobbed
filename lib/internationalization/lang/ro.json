@@ -291,8 +291,8 @@
   "removeVocations": "ELIMINAȚI Vocațiile",
   "areYouSureYouWantToRemove": "Sigur doriți să eliminați",
   "vocationsForSelectedEmployees": "vocații pentru angajații selectați",
-  "from": "din",
-  "to": "către",
+  "fromLowerCase": "din",
+  "toLowerCase": "către",
   "removeConfirmation": "Da, vreau să elimin",
   "vocationsRemovedSuccessfully": "Vocațiile au fost eliminate cu succes!",
   "needToSelectEmployeesToBe": "Trebuie să selectați angajații care vor fi",
@@ -488,5 +488,9 @@
   "pauseWorkConfirmation": "Are you sure you want to STOP your work?",
   "workIsDone": "Yes, work is done",
   "sum": "Sum",
-  "workplaceId": "Workplace id"
+  "workplaceId": "Workplace id",
+  "workTimes": "Work times",
+  "workplaceName": "Workplace name",
+  "from": "From",
+  "to": "To"
 }

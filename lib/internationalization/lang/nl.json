@@ -291,8 +291,8 @@
   "removeVocations": "VERWIJDER Roepingen",
   "areYouSureYouWantToRemove": "Weet u zeker dat u wilt verwijderen",
   "vocationsForSelectedEmployees": "roepingen voor geselecteerde werknemers",
-  "from": "van",
-  "to": "naar",
+  "fromLowerCase": "van",
+  "toLowerCase": "naar",
   "removeConfirmation": "Ja, ik wil verwijderen",
   "vocationsRemovedSuccessfully": "Roepingen succesvol verwijderd!",
   "needToSelectEmployeesToBe": "U moet werknemers selecteren om te zijn",
@@ -488,5 +488,9 @@
   "pauseWorkConfirmation": "Are you sure you want to STOP your work?",
   "workIsDone": "Yes, work is done",
   "sum": "Sum",
-  "workplaceId": "Workplace id"
+  "workplaceId": "Workplace id",
+  "workTimes": "Work times",
+  "workplaceName": "Workplace name",
+  "from": "From",
+  "to": "To"
 }

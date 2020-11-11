@@ -291,8 +291,8 @@
   "removeVocations": "TA BORT Yrken",
   "areYouSureYouWantToRemove": "Är du säker på att du vill ta bort",
   "vocationsForSelectedEmployees": "kall för utvalda anställda",
-  "from": "från",
-  "to": "till",
+  "fromLowerCase": "från",
+  "toLowerCase": "till",
   "removeConfirmation": "Ja, jag vill ta bort",
   "vocationsRemovedSuccessfully": "Yrken har tagits bort!",
   "needToSelectEmployeesToBe": "Du måste välja de anställda som ska vara",
@@ -488,5 +488,9 @@
   "pauseWorkConfirmation": "Are you sure you want to STOP your work?",
   "workIsDone": "Yes, work is done",
   "sum": "Sum",
-  "workplaceId": "Workplace id"
+  "workplaceId": "Workplace id",
+  "workTimes": "Work times",
+  "workplaceName": "Workplace name",
+  "from": "From",
+  "to": "To"
 }

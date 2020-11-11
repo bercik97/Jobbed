@@ -291,8 +291,8 @@
   "removeVocations": "USUŃ Urlopy",
   "areYouSureYouWantToRemove": "Czy na pewno chcesz usunąć",
   "vocationsForSelectedEmployees": "urlopy dla wybranych pracowników",
-  "from": "od",
-  "to": "do",
+  "fromLowerCase": "od",
+  "toLowerCase": "do",
   "removeConfirmation": "Tak, chcę usunąć",
   "vocationsRemovedSuccessfully": "Urlopy usunięte pomyślnie!",
   "needToSelectEmployeesToBe": "Musisz wybrać pracowników aby",
@@ -488,5 +488,9 @@
   "pauseWorkConfirmation": "Czy na pewno chcesz zakończyć pracę?",
   "workIsDone": "Tak, praca jest skończona",
   "sum": "Suma",
-  "workplaceId": "Id miejsca pracy"
+  "workplaceId": "Id miejsca pracy",
+  "workTimes": "Czas pracy",
+  "workplaceName": "Nazwa miejsca pracy",
+  "from": "Od",
+  "to": "Do"
 }

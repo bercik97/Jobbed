@@ -116,6 +116,92 @@ class WorkdayUtil {
     );
   }
 
+  static void showScrollableWorkTimesDialog(BuildContext context, String title, List workTimes) {
+    if (workTimes == null || workTimes.isEmpty) {
+      return;
+    }
+    showGeneralDialog(
+      context: context,
+      barrierColor: DARK.withOpacity(0.95),
+      barrierDismissible: false,
+      barrierLabel: title,
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: Scaffold(
+            backgroundColor: Colors.black12,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: <Widget>[
+                        text20GreenBold(title),
+                        SizedBox(height: 20),
+                        _buildWorkTimesDataTable(context, workTimes),
+                        SizedBox(height: 20),
+                        Container(
+                          width: 80,
+                          child: MaterialButton(
+                            elevation: 0,
+                            height: 50,
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[iconWhite(Icons.close)],
+                            ),
+                            color: Colors.red,
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  static Widget _buildWorkTimesDataTable(BuildContext context, List workTimes) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Theme(
+          data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
+          child: DataTable(
+            columnSpacing: 10,
+            columns: [
+              DataColumn(label: textWhiteBold('No.')),
+              DataColumn(label: textWhiteBold(getTranslated(context, 'from'))),
+              DataColumn(label: textWhiteBold(getTranslated(context, 'to'))),
+              DataColumn(label: textWhiteBold(getTranslated(context, 'sum'))),
+              DataColumn(label: textWhiteBold(getTranslated(context, 'workplaceName'))),
+            ],
+            rows: [
+              for (int i = 0; i < workTimes.length; i++)
+                DataRow(
+                  cells: [
+                    DataCell(textWhite((i + 1).toString())),
+                    DataCell(textWhite(workTimes[i].startTime.toString())),
+                    DataCell(textWhite(workTimes[i].endTime.toString())),
+                    DataCell(textWhite(workTimes[i].totalTime.toString())),
+                    DataCell(textWhite(workTimes[i].workplaceName.toString())),
+                  ],
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   static void showVocationReasonDetails(BuildContext context, String vocationReason, bool verified) {
     showGeneralDialog(
       context: context,

@@ -419,7 +419,7 @@ class _VocationsManagePageState extends State<VocationsManagePage> {
                   SizedBox(height: 2),
                   textCenterWhite(getTranslated(context, "vocationsForSelectedEmployees")),
                   SizedBox(height: 2),
-                  textCenterWhite(getTranslated(context, 'from') + ' ' + dateFrom + ' ' + getTranslated(context, 'to') + ' ' + dateTo + '?'),
+                  textCenterWhite(getTranslated(context, 'fromLowerCase') + ' ' + dateFrom + ' ' + getTranslated(context, 'toLowerCase') + ' ' + dateTo + '?'),
                 ],
               ),
             ),

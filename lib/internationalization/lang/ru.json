@@ -291,8 +291,8 @@
   "removeVocations": "УДАЛИТЬ призвания",
   "areYouSureYouWantToRemove": "Вы уверены, что хотите удалить",
   "vocationsForSelectedEmployees": "профессии для избранных сотрудников",
-  "from": "от",
-  "to": "к",
+  "fromLowerCase": "от",
+  "toLowerCase": "к",
   "removeConfirmation": "Да, я хочу удалить",
   "vocationsRemovedSuccessfully": "Призвания успешно удалены!",
   "needToSelectEmployeesToBe": "Вам нужно выбрать сотрудников, которых вы хотите",
@@ -488,5 +488,9 @@
   "pauseWorkConfirmation": "Are you sure you want to STOP your work?",
   "workIsDone": "Yes, work is done",
   "sum": "Sum",
-  "workplaceId": "Workplace id"
+  "workplaceId": "Workplace id",
+  "workTimes": "Work times",
+  "workplaceName": "Workplace name",
+  "from": "From",
+  "to": "To"
 }

@@ -291,8 +291,8 @@
   "removeVocations": "QUITAR Vocaciones",
   "areYouSureYouWantToRemove": "¿Está seguro de que desea eliminar",
   "vocationsForSelectedEmployees": "vocaciones para empleados seleccionados",
-  "from": "desde",
-  "to": "a",
+  "fromLowerCase": "desde",
+  "toLowerCase": "a",
   "removeConfirmation": "Sí, quiero eliminar",
   "vocationsRemovedSuccessfully": "¡Vocaciones eliminadas con éxito!",
   "needToSelectEmployeesToBe": "Necesitas seleccionar empleados para ser",
@@ -488,5 +488,9 @@
   "pauseWorkConfirmation": "Are you sure you want to STOP your work?",
   "workIsDone": "Yes, work is done",
   "sum": "Sum",
-  "workplaceId": "Workplace id"
+  "workplaceId": "Workplace id",
+  "workTimes": "Work times",
+  "workplaceName": "Workplace name",
+  "from": "From",
+  "to": "To"
 }
