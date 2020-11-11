@@ -183,6 +183,15 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                             alignment: Alignment.topLeft,
                                             child: textWhite(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
                                           ),
+                                          Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Row(
+                                              children: [
+                                                textWhite('Distance: '),
+                                                textGreen(workplace.radiusLength.toString() + ' KM'),
+                                              ],
+                                            ),
+                                          ),
                                         ],
                                       ),
                                       activeColor: GREEN,
@@ -447,8 +456,19 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
             FlatButton(
               child: textGreen('Add'),
               onPressed: () {
-                dto = new WorkplaceDto(id: int.parse(_user.companyId), name: workplace);
+                Circle circle;
+                if (_circles != null && _circles.isNotEmpty) {
+                  circle = _circles.elementAt(0);
+                }
+                dto = new WorkplaceDto(
+                  id: int.parse(_user.companyId),
+                  name: workplace,
+                  radiusLength: _distance != 0 ? double.parse(_distance.toString().substring(0, 4)) : 0,
+                  latitude: circle != null ? circle.center.latitude : 0,
+                  longitude: circle != null ? circle.center.longitude : 0,
+                );
                 _workplaceService.create(dto).then((res) {
+                  Navigator.pop(context);
                   Navigator.pop(context);
                   _refresh();
                   _showSuccessDialog(getTranslated(this.context, 'successfullyAddedNewWorkplace'));
