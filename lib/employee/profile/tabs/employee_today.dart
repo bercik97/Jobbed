@@ -15,7 +15,7 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
         child: Column(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(top: 10),
+              padding: EdgeInsets.all(10),
               child: Align(
                 alignment: Alignment.center,
                 child: textCenter20GreenBold(getTranslated(context, 'youDontHaveTsForCurrentMonth')),
