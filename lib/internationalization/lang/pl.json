@@ -481,5 +481,12 @@
   "addNote": "Dodawanie notatki",
   "notesSavedSuccessfully": "Notatki zostały zapisana pomyślnie",
   "workingTime": "Czas pracy",
-  "startFinishWork": "Rozpocznij lub zakończ pracę"
+  "startFinishWork": "Rozpocznij lub zakończ pracę",
+  "workTimeForToday": "Dzisiejszy czas pracy",
+  "hintPressBtnToStart": "Podpowiedź: Naciśnij przycisk start aby rozpocząc pracę",
+  "hintPressBtnToPause": "Podpowiedź: Naciśnij przycisk stop aby zakończyć pracę",
+  "pauseWorkConfirmation": "Czy na pewno chcesz zakończyć pracę?",
+  "workIsDone": "Tak, praca jest skończona",
+  "sum": "Suma",
+  "workplaceId": "Id miejsca pracy"
 }

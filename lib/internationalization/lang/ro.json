@@ -481,5 +481,12 @@
   "addNote": "Adauga notita",
   "notesSavedSuccessfully": "Note salvate cu succes",
   "workingTime": "Working Time",
-  "startFinishWork": "Start or finish work"
+  "startFinishWork": "Start or finish work",
+  "workTimeForToday": "Today's working time",
+  "hintPressBtnToStart": "Hint: Press start button then enter workplace code to begin work",
+  "hintPressBtnToPause": "Hint: Press pause button to finish your work",
+  "pauseWorkConfirmation": "Are you sure you want to STOP your work?",
+  "workIsDone": "Yes, work is done",
+  "sum": "Sum",
+  "workplaceId": "Workplace id"
 }
