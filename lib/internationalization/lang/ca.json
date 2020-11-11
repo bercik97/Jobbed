@@ -479,5 +479,7 @@
   "settingNote": "Inställningsanteckning",
   "viewRecordDetails": "Visa postinformation",
   "addNote": "Lägg till anteckning",
-  "notesSavedSuccessfully": "Anteckningar sparades"
+  "notesSavedSuccessfully": "Anteckningar sparades",
+  "workingTime": "Working Time",
+  "startFinishWork": "Start or finish work"
 }

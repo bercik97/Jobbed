@@ -479,5 +479,7 @@
   "settingNote": "Нататка пра ўстаноўку",
   "viewRecordDetails": "Прагляд дэталяў запісу",
   "addNote": "Дадаць каментарый",
-  "notesSavedSuccessfully": "Нататкі паспяхова захаваны"
+  "notesSavedSuccessfully": "Нататкі паспяхова захаваны",
+  "workingTime": "Working Time",
+  "startFinishWork": "Start or finish work"
 }

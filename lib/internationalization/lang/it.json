@@ -479,5 +479,7 @@
   "settingNote": "Innstillingsnotat",
   "viewRecordDetails": "Vis rekorddetaljer",
   "addNote": "Legge til notat",
-  "notesSavedSuccessfully": "Notater er lagret"
+  "notesSavedSuccessfully": "Notater er lagret",
+  "workingTime": "Working Time",
+  "startFinishWork": "Start or finish work"
 }

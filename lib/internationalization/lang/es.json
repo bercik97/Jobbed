@@ -479,5 +479,7 @@
   "settingNote": "Nota de ajuste",
   "viewRecordDetails": "Ver detalles del registro",
   "addNote": "Añadir la nota",
-  "notesSavedSuccessfully": "Notas guardadas correctamente"
+  "notesSavedSuccessfully": "Notas guardadas correctamente",
+  "workingTime": "Working Time",
+  "startFinishWork": "Start or finish work"
 }

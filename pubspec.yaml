@@ -79,6 +79,8 @@ flutter:
     - images/group-img.png
     - images/unchecked.png
     - images/checked.png
+    - images/play-icon.png
+    - images/stop-icon.png
 
     - images/big-company-icon.png
     - images/big-group-icon.png
@@ -92,6 +94,8 @@ flutter:
     - images/big-documents-icon.png
     - images/big-manager-icon.png
     - images/big-employee-icon.png
+    - images/big-contact-with-manager-icon.png
+    - images/big-employee-work-icon.png
 
     - images/small-group-icon.png
     - images/small-groups-icon.png

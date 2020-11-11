@@ -479,5 +479,7 @@
   "settingNote": "Notiz einstellen",
   "viewRecordDetails": "Datensatzdetails anzeigen",
   "addNote": "Notiz hinzufügen",
-  "notesSavedSuccessfully": "Notizen erfolgreich gespeichert"
+  "notesSavedSuccessfully": "Notizen erfolgreich gespeichert",
+  "workingTime": "Working Time",
+  "startFinishWork": "Start or finish work"
 }

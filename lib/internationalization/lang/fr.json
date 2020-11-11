@@ -479,5 +479,7 @@
   "settingNote": "Note de réglage",
   "viewRecordDetails": "Afficher les détails de l'enregistrement",
   "addNote": "Ajouter une note",
-  "notesSavedSuccessfully": "Notes enregistrées avec succès"
+  "notesSavedSuccessfully": "Notes enregistrées avec succès",
+  "workingTime": "Working Time",
+  "startFinishWork": "Start or finish work"
 }

@@ -479,5 +479,7 @@
   "settingNote": "ნოტის დაყენება",
   "viewRecordDetails": "ჩანაწერის დეტალების ნახვა",
   "addNote": "ჩანიშვნა",
-  "notesSavedSuccessfully": "ჩანიშვნები წარმატებით შეინახეს"
+  "notesSavedSuccessfully": "ჩანიშვნები წარმატებით შეინახეს",
+  "workingTime": "Working Time",
+  "startFinishWork": "Start or finish work"
 }

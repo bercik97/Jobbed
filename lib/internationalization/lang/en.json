@@ -479,5 +479,7 @@
   "settingNote": "Setting note",
   "viewRecordDetails": "View record details",
   "addNote": "Add note",
-  "notesSavedSuccessfully": "Notes saved successfully"
+  "notesSavedSuccessfully": "Notes saved successfully",
+  "workingTime": "Working Time",
+  "startFinishWork": "Start or finish work"
 }

@@ -479,5 +479,7 @@
   "settingNote": "Примечание по настройке",
   "viewRecordDetails": "Просмотр сведений о записи",
   "addNote": "Добавить заметку",
-  "notesSavedSuccessfully": "Заметки успешно сохранены"
+  "notesSavedSuccessfully": "Заметки успешно сохранены",
+  "workingTime": "Working Time",
+  "startFinishWork": "Start or finish work"
 }

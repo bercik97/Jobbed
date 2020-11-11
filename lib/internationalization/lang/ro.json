@@ -479,5 +479,7 @@
   "settingNote": "Notă de setare",
   "viewRecordDetails": "Vizualizați detaliile înregistrării",
   "addNote": "Adauga notita",
-  "notesSavedSuccessfully": "Note salvate cu succes"
+  "notesSavedSuccessfully": "Note salvate cu succes",
+  "workingTime": "Working Time",
+  "startFinishWork": "Start or finish work"
 }

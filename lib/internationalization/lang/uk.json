@@ -479,5 +479,7 @@
   "settingNote": "Примітка про встановлення",
   "viewRecordDetails": "Переглянути деталі запису",
   "addNote": "Додати коментар",
-  "notesSavedSuccessfully": "Нотатки успішно збережено"
+  "notesSavedSuccessfully": "Нотатки успішно збережено",
+  "workingTime": "Working Time",
+  "startFinishWork": "Start or finish work"
 }

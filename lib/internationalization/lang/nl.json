@@ -479,5 +479,7 @@
   "settingNote": "Opmerking instellen",
   "viewRecordDetails": "Bekijk recorddetails",
   "addNote": "Notitie toevoegen",
-  "notesSavedSuccessfully": "Notities zijn opgeslagen"
+  "notesSavedSuccessfully": "Notities zijn opgeslagen",
+  "workingTime": "Working Time",
+  "startFinishWork": "Start or finish work"
 }
