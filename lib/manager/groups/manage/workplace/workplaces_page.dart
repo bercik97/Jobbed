@@ -18,7 +18,9 @@ import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import '../../../../shared/widget/loader.dart';
 import '../../../shared/manager_side_bar.dart';
@@ -49,6 +51,14 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
 
   bool _isAddButtonTapped = false;
   bool _isDeleteButtonTapped = false;
+
+  CameraPosition _cameraPosition = new CameraPosition(target: LatLng(51.9189046, 19.1343786));
+  GoogleMapController _controller;
+
+  List<Marker> _markersList = new List();
+  Set<Circle> _circles = new Set();
+
+  double _distance = 0;
 
   @override
   void initState() {
@@ -274,6 +284,86 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                       ),
                     ),
                   ),
+                  SizedBox(height: 10),
+                  MaterialButton(
+                    child: textDarkBold('Set workplace area'),
+                    color: GREEN,
+                    onPressed: () {
+                      showGeneralDialog(
+                        context: context,
+                        barrierColor: DARK.withOpacity(0.95),
+                        barrierDismissible: false,
+                        barrierLabel: getTranslated(context, 'contact'),
+                        transitionDuration: Duration(milliseconds: 400),
+                        pageBuilder: (_, __, ___) {
+                          return SizedBox.expand(
+                            child: StatefulBuilder(
+                              builder: (context, setState) {
+                                return WillPopScope(
+                                  child: Scaffold(
+                                    body: GoogleMap(
+                                      initialCameraPosition: _cameraPosition,
+                                      markers: _markersList.toSet(),
+                                      onMapCreated: (controller) {
+                                        this._controller = controller;
+                                      },
+                                      circles: _circles,
+                                      onTap: (coordinates) {
+                                        _controller.animateCamera(CameraUpdate.newLatLng(coordinates));
+                                        _markersList.clear();
+                                        _markersList.add(
+                                          new Marker(
+                                            position: coordinates,
+                                            markerId: MarkerId('${coordinates.latitude}-${coordinates.longitude}'),
+                                          ),
+                                        );
+                                        _circles.clear();
+                                        _circles.add(
+                                          new Circle(
+                                            circleId: CircleId('${51.9189046}-${19.1343786}'),
+                                            center: LatLng(coordinates.latitude, coordinates.longitude),
+                                            radius: _distance * 1000,
+                                          ),
+                                        );
+                                        setState(() {});
+                                      },
+                                    ),
+                                    bottomNavigationBar: Container(
+                                      height: 100,
+                                      child: SfSlider(
+                                        min: 0.0,
+                                        max: 20.0,
+                                        value: _distance,
+                                        interval: 4,
+                                        showTicks: true,
+                                        showLabels: true,
+                                        showTooltip: true,
+                                        minorTicksPerInterval: 1,
+                                        onChanged: (dynamic value) {
+                                          Circle circle = _circles.elementAt(0);
+                                          _circles.clear();
+                                          _circles.add(
+                                            new Circle(
+                                              circleId: CircleId('${circle.circleId}'),
+                                              center: circle.center,
+                                              radius: _distance * 1000,
+                                            ),
+                                          );
+                                          setState(() => _distance = value);
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  onWillPop: onWillPop,
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                  SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -287,7 +377,12 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                           children: <Widget>[iconWhite(Icons.close)],
                         ),
                         color: Colors.red,
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          _markersList.clear();
+                          _circles.clear();
+                          _distance = 0;
+                        },
                       ),
                       SizedBox(width: 25),
                       MaterialButton(
@@ -312,6 +407,16 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
     );
   }
 
+  Future<bool> onWillPop() async {
+    if (_markersList.isEmpty) {
+      ToastService.showErrorToast('Workplace area is still not setted ✘');
+    } else {
+      String km = _distance.toString().substring(0, 4);
+      ToastService.showSuccessToast('Workplace area is setted to $km KM ✓');
+    }
+    return true;
+  }
+
   _handleAddWorkplace(String workplace) {
     setState(() => _isAddButtonTapped = true);
     String invalidMessage = ValidatorService.validateWorkplace(workplace, context);
@@ -320,15 +425,44 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
       ToastService.showErrorToast(invalidMessage);
       return;
     }
-    WorkplaceDto dto = new WorkplaceDto(id: int.parse(_user.companyId), name: workplace);
-    _workplaceService.create(dto).then((res) {
-      Navigator.pop(context);
-      _refresh();
-      _showSuccessDialog(res);
-    }).catchError((onError) {
-      setState(() => _isAddButtonTapped = false);
-      ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
-    });
+    WorkplaceDto dto;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: DARK,
+          title: textCenter16GreenBold('Information about new workplace'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                textCenterWhite('Workplace name: '),
+                textCenter16GreenBold(workplace),
+                SizedBox(height: 5),
+                textCenterWhite('Workplace area distance: '),
+                textCenter16GreenBold(_distance != 0 ? _distance.toString().substring(0, 4) : getTranslated(context, 'empty')),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: textGreen('Add'),
+              onPressed: () {
+                dto = new WorkplaceDto(id: int.parse(_user.companyId), name: workplace);
+                _workplaceService.create(dto).then((res) {
+                  Navigator.pop(context);
+                  _refresh();
+                  _showSuccessDialog(getTranslated(this.context, 'successfullyAddedNewWorkplace'));
+                }).catchError((onError) {
+                  setState(() => _isAddButtonTapped = false);
+                  ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+                });
+              },
+            ),
+            FlatButton(child: textRed('Do not add'), onPressed: () => Navigator.of(context).pop()),
+          ],
+        );
+      },
+    );
   }
 
   _handleDeleteByIdIn(LinkedHashSet<int> ids) {
@@ -516,7 +650,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
     );
   }
 
-  _showSuccessDialog(String workplaceCode) {
+  _showSuccessDialog(String msg) {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -526,7 +660,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                textWhite(getTranslated(this.context, 'successfullyAddedNewWorkplace')),
+                textWhite(msg),
               ],
             ),
           ),
