@@ -6,7 +6,7 @@ import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/vocations/timesheets/calendar/vocations_calendar_page.dart';
-import 'package:give_job/manager/groups/group/workplaces/select_workplace_for_quick_update_employees.dart';
+import 'package:give_job/manager/groups/group/workplaces/select_workplaces_for_quick_update_employees.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
@@ -58,7 +58,7 @@ class QuickUpdateDialog {
                 _buildUpdateButton(getTranslated(context, 'rating'), () => _buildUpdateRatingDialog(context)),
                 _buildUpdateButton(getTranslated(context, 'plan'), () => _buildUpdatePlanDialog(context)),
                 _buildUpdateButton(getTranslated(context, 'opinion'), () => _buildUpdateOpinionDialog(context)),
-                _buildUpdateButton(getTranslated(context, 'workplace'), () => _showUpdateWorkplaceDialog(context)),
+                _buildUpdateButton(getTranslated(context, 'workplaces'), () => _showUpdateWorkplacesDialog(context)),
                 Container(
                   width: 80,
                   child: MaterialButton(
@@ -495,10 +495,10 @@ class QuickUpdateDialog {
     );
   }
 
-  static void _showUpdateWorkplaceDialog(BuildContext context) {
+  static void _showUpdateWorkplacesDialog(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SelectWorkplaceForQuickUpdateEmployeesPage(_model, _todaysDate)),
+      MaterialPageRoute(builder: (context) => SelectWorkplacesForQuickUpdateEmployeesPage(_model, _todaysDate)),
     );
   }
 

@@ -60,6 +60,62 @@ class WorkdayUtil {
     );
   }
 
+  static void showScrollableWorkplacesDialog(BuildContext context, String title, List workplaces) {
+    if (workplaces == null || workplaces.isEmpty) {
+      return;
+    }
+    showGeneralDialog(
+      context: context,
+      barrierColor: DARK.withOpacity(0.95),
+      barrierDismissible: false,
+      barrierLabel: title,
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: Scaffold(
+            backgroundColor: Colors.black12,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: <Widget>[
+                        text20GreenBold(title),
+                        SizedBox(height: 20),
+                        Column(
+                          children: [
+                            for (int i = 0; i < workplaces.length; i++) textCenter20White('#' + (i + 1).toString() + ' ' + workplaces[i].name + '\n'),
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                        Container(
+                          width: 80,
+                          child: MaterialButton(
+                            elevation: 0,
+                            height: 50,
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[iconWhite(Icons.close)],
+                            ),
+                            color: Colors.red,
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   static void showVocationReasonDetails(BuildContext context, String vocationReason, bool verified) {
     showGeneralDialog(
       context: context,

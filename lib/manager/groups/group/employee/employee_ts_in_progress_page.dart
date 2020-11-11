@@ -11,7 +11,7 @@ import 'package:give_job/api/workday/util/workday_util.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
-import 'package:give_job/manager/groups/group/workplaces/select_workplace_for_selected_workdays.dart';
+import 'package:give_job/manager/groups/group/workplaces/select_workplaces_for_selected_workdays.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
@@ -186,7 +186,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             DataColumn(label: textWhiteBold(getTranslated(context, 'money')), onSort: (columnIndex, ascending) => _onSortMoney(columnIndex, ascending)),
                             DataColumn(label: textWhiteBold(getTranslated(context, 'plan')), onSort: (columnIndex, ascending) => _onSortPlans(columnIndex, ascending)),
                             DataColumn(label: textWhiteBold(getTranslated(context, 'opinion')), onSort: (columnIndex, ascending) => _onSortOpinions(columnIndex, ascending)),
-                            DataColumn(label: textWhiteBold(getTranslated(context, 'workplace'))),
+                            DataColumn(label: textWhiteBold(getTranslated(context, 'workplaces'))),
                             DataColumn(label: textWhiteBold(getTranslated(context, 'vocations'))),
                           ],
                           rows: this
@@ -217,11 +217,11 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                     DataCell(
                                       Wrap(
                                         children: <Widget>[
-                                          workday.workplace != null && workday.workplace.name != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
+                                          workday.workplaces != null && workday.workplaces.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
                                         ],
                                       ),
                                       onTap: () => {
-                                        WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'workplace'), workday.workplace.name),
+                                        WorkdayUtil.showScrollableWorkplacesDialog(this.context, getTranslated(this.context, 'workplaces'), workday.workplaces),
                                       },
                                     ),
                                     DataCell(
@@ -322,7 +322,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                       Navigator.push(
                         this.context,
                         MaterialPageRoute(
-                          builder: (context) => SelectWorkplaceForSelectedWorkdaysPage(
+                          builder: (context) => SelectWorkplacesForSelectedWorkdaysPage(
                             _model,
                             _timesheet,
                             _employeeInfo,

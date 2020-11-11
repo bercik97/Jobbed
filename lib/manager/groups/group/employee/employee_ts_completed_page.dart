@@ -139,7 +139,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'money'))),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'plan'))),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'opinion'))),
-                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'workplace'))),
+                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'workplaces'))),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'vocations'))),
                             ],
                             rows: [
@@ -168,10 +168,10 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                                     DataCell(
                                       Wrap(
                                         children: <Widget>[
-                                          workday.workplace != null && workday.workplace.name != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
+                                          workday.workplaces != null && workday.workplaces.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
                                         ],
                                       ),
-                                      onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'workplace'), workday.workplace.name),
+                                      onTap: () => WorkdayUtil.showScrollableWorkplacesDialog(this.context, getTranslated(this.context, 'workplaces'), workday.workplaces),
                                     ),
                                     DataCell(
                                         Wrap(

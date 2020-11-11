@@ -17,7 +17,7 @@ import 'package:give_job/manager/groups/group/employee/employee_profil_page.dart
 import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
-import 'package:give_job/manager/groups/group/workplaces/select_workplace_for_employees.dart';
+import 'package:give_job/manager/groups/group/workplaces/select_workplaces_for_employees.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
@@ -836,7 +836,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
       String dateTo = DateFormat('yyyy-MM-dd').format(picked[1]);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => SelectWorkplaceForEmployeesPage(_model, _timesheet, year, monthNum, dateFrom, dateTo, selectedIds)),
+        MaterialPageRoute(builder: (context) => SelectWorkplacesForEmployeesPage(_model, _timesheet, year, monthNum, dateFrom, dateTo, selectedIds)),
       );
     }
   }

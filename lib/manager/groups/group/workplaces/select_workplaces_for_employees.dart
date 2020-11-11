@@ -14,7 +14,6 @@ import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/timesheets/in_progress/ts_in_progress_page.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/radio_element.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
@@ -26,7 +25,7 @@ import '../../../../shared/widget/loader.dart';
 import '../../../shared/manager_app_bar.dart';
 import '../../../shared/manager_side_bar.dart';
 
-class SelectWorkplaceForEmployeesPage extends StatefulWidget {
+class SelectWorkplacesForEmployeesPage extends StatefulWidget {
   final GroupModel _model;
   final TimesheetWithStatusDto _timeSheet;
   final int _year;
@@ -35,13 +34,13 @@ class SelectWorkplaceForEmployeesPage extends StatefulWidget {
   final String _dateTo;
   final LinkedHashSet<int> _selectedEmployeeIds;
 
-  SelectWorkplaceForEmployeesPage(this._model, this._timeSheet, this._year, this._month, this._dateFrom, this._dateTo, this._selectedEmployeeIds);
+  SelectWorkplacesForEmployeesPage(this._model, this._timeSheet, this._year, this._month, this._dateFrom, this._dateTo, this._selectedEmployeeIds);
 
   @override
-  _SelectWorkplaceForEmployeesPageState createState() => _SelectWorkplaceForEmployeesPageState();
+  _SelectWorkplacesForEmployeesPageState createState() => _SelectWorkplacesForEmployeesPageState();
 }
 
-class _SelectWorkplaceForEmployeesPageState extends State<SelectWorkplaceForEmployeesPage> {
+class _SelectWorkplacesForEmployeesPageState extends State<SelectWorkplacesForEmployeesPage> {
   GroupModel _model;
   User _user;
 
@@ -56,11 +55,11 @@ class _SelectWorkplaceForEmployeesPageState extends State<SelectWorkplaceForEmpl
   WorkdayService _workdayService;
 
   List<WorkplaceDto> _workplaces = new List();
+  List<WorkplaceDto> _filteredWorkplaces = new List();
   bool _loading = false;
-
-  List<RadioElement> _elements = new List();
-  int _currentRadioValue = 0;
-  RadioElement _currentRadioElement;
+  bool _isChecked = false;
+  List<bool> _checked = new List();
+  LinkedHashSet<int> _selectedIds = new LinkedHashSet();
 
   @override
   void initState() {
@@ -78,15 +77,9 @@ class _SelectWorkplaceForEmployeesPageState extends State<SelectWorkplaceForEmpl
     _loading = true;
     _workplaceService.findAllByCompanyId(int.parse(_user.companyId)).then((res) {
       setState(() {
-        int _counter = 0;
-        res.forEach((workplace) => {
-              _workplaces.add(workplace),
-              _elements.add(RadioElement(index: _counter++, id: workplace.id, title: workplace.name)),
-              if (_currentRadioElement == null)
-                {
-                  _currentRadioElement = _elements[0],
-                }
-            });
+        _workplaces = res;
+        _workplaces.forEach((e) => _checked.add(false));
+        _filteredWorkplaces = _workplaces;
         _loading = false;
       });
     });
@@ -108,44 +101,135 @@ class _SelectWorkplaceForEmployeesPageState extends State<SelectWorkplaceForEmpl
           drawer: managerSideBar(context, _model.user),
           body: _workplaces.isEmpty
               ? _handleEmptyData()
-              : Column(
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
-                      child: Column(
-                        children: [
-                          textCenter18WhiteBold(getTranslated(context, 'setWorkplacesForSelectedEmployees')),
-                          SizedBox(height: 5),
-                          text16GreenBold(_dateFrom + ' - ' + _dateTo),
-                        ],
-                      ),
-                    ),
-                    Card(
-                      color: BRIGHTER_DARK,
-                      child: InkWell(
-                        onTap: () {},
+              : RefreshIndicator(
+                  color: DARK,
+                  backgroundColor: WHITE,
+                  onRefresh: _refresh,
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: _elements
-                              .map(
-                                (e) => RadioListTile(
-                                  activeColor: GREEN,
-                                  groupValue: _currentRadioValue,
-                                  title: text18WhiteBold(e.title),
-                                  value: e.index,
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      _currentRadioValue = newValue;
-                                      _currentRadioElement = e;
-                                    });
-                                  },
-                                ),
-                              )
-                              .toList(),
+                          children: [
+                            textCenter18WhiteBold(getTranslated(context, 'setWorkplacesForSelectedEmployees')),
+                            SizedBox(height: 5),
+                            text16GreenBold(_dateFrom + ' - ' + _dateTo),
+                          ],
                         ),
                       ),
-                    ),
-                  ],
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        child: TextFormField(
+                          autofocus: false,
+                          autocorrect: true,
+                          cursorColor: WHITE,
+                          style: TextStyle(color: WHITE),
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+                            counterStyle: TextStyle(color: WHITE),
+                            border: OutlineInputBorder(),
+                            labelText: getTranslated(this.context, 'search'),
+                            prefixIcon: iconWhite(Icons.search),
+                            labelStyle: TextStyle(color: WHITE),
+                          ),
+                          onChanged: (string) {
+                            setState(
+                              () {
+                                _filteredWorkplaces = _workplaces.where((w) => (w.name.toLowerCase().contains(string.toLowerCase()))).toList();
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                      ListTileTheme(
+                        contentPadding: EdgeInsets.only(left: 3),
+                        child: CheckboxListTile(
+                          title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
+                          value: _isChecked,
+                          activeColor: GREEN,
+                          checkColor: WHITE,
+                          onChanged: (bool value) {
+                            setState(() {
+                              _isChecked = value;
+                              List<bool> l = new List();
+                              _checked.forEach((b) => l.add(value));
+                              _checked = l;
+                              if (value) {
+                                _selectedIds.addAll(_filteredWorkplaces.map((w) => w.id));
+                              } else
+                                _selectedIds.clear();
+                            });
+                          },
+                          controlAffinity: ListTileControlAffinity.leading,
+                        ),
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: _filteredWorkplaces.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            WorkplaceDto workplace = _filteredWorkplaces[index];
+                            int foundIndex = 0;
+                            for (int i = 0; i < _workplaces.length; i++) {
+                              if (_workplaces[i].id == workplace.id) {
+                                foundIndex = i;
+                              }
+                            }
+                            var name = workplace.name;
+                            return Card(
+                              color: DARK,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    color: BRIGHTER_DARK,
+                                    child: ListTileTheme(
+                                      contentPadding: EdgeInsets.only(right: 10),
+                                      child: CheckboxListTile(
+                                        controlAffinity: ListTileControlAffinity.leading,
+                                        title: text20WhiteBold(utf8.decode(name.runes.toList())),
+                                        subtitle: Column(
+                                          children: <Widget>[
+                                            Align(
+                                                child: Row(
+                                                  children: <Widget>[
+                                                    textWhite('Distance: ' + ': '),
+                                                    textGreenBold(workplace.radiusLength.toString() + ' KM'),
+                                                  ],
+                                                ),
+                                                alignment: Alignment.topLeft),
+                                          ],
+                                        ),
+                                        activeColor: GREEN,
+                                        checkColor: WHITE,
+                                        value: _checked[foundIndex],
+                                        onChanged: (bool value) {
+                                          setState(() {
+                                            _checked[foundIndex] = value;
+                                            if (value) {
+                                              _selectedIds.add(_workplaces[foundIndex].id);
+                                            } else {
+                                              _selectedIds.remove(_workplaces[foundIndex].id);
+                                            }
+                                            int selectedIdsLength = _selectedIds.length;
+                                            if (selectedIdsLength == _workplaces.length) {
+                                              _isChecked = true;
+                                            } else if (selectedIdsLength == 0) {
+                                              _isChecked = false;
+                                            }
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
           bottomNavigationBar: Padding(
             padding: const EdgeInsets.only(bottom: 20),
@@ -177,7 +261,7 @@ class _SelectWorkplaceForEmployeesPageState extends State<SelectWorkplaceForEmpl
                   ),
                   color: GREEN,
                   onPressed: () {
-                    if (_currentRadioElement.id == null) {
+                    if (_selectedIds == null || _selectedIds.isEmpty) {
                       showHint(context, getTranslated(context, 'needToSelectWorkplaces') + ' ', getTranslated(context, 'whichYouWantToSet'));
                       return;
                     }
@@ -199,11 +283,11 @@ class _SelectWorkplaceForEmployeesPageState extends State<SelectWorkplaceForEmpl
                                 child: textGreen(getTranslated(context, 'yesImSure')),
                                 onPressed: () => {
                                       _workdayService
-                                          .updateEmployeesWorkplace(
+                                          .updateEmployeesWorkplaces(
                                         _dateFrom,
                                         _dateTo,
                                         _selectedEmployeeIds.map((el) => el.toString()).toList(),
-                                        _currentRadioElement.id,
+                                        _selectedIds.map((el) => el.toString()).toList(),
                                         _year,
                                         _month,
                                         STATUS_IN_PROGRESS,
@@ -255,5 +339,16 @@ class _SelectWorkplaceForEmployeesPageState extends State<SelectWorkplaceForEmpl
         ),
       ],
     );
+  }
+
+  Future<Null> _refresh() {
+    return _workplaceService.findAllByCompanyId(int.parse(_user.companyId)).then((res) {
+      setState(() {
+        _workplaces = res;
+        _workplaces.forEach((e) => _checked.add(false));
+        _filteredWorkplaces = _workplaces;
+        _loading = false;
+      });
+    });
   }
 }
