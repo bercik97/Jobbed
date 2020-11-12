@@ -12,7 +12,6 @@ import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:intl/intl.dart';
@@ -21,7 +20,6 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../../../../../shared/widget/loader.dart';
 import '../../../../../shared/manager_app_bar.dart';
 import '../../../../../shared/manager_side_bar.dart';
-import '../../vocations_ts_page.dart';
 
 class VocationsCalendarPage extends StatefulWidget {
   final GroupModel _model;
@@ -103,28 +101,25 @@ class _VocationsCalendarPageState extends State<VocationsCalendarPage> with Tick
     if (_loading) {
       return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
     }
-    return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'vocationsCalendar')),
-          drawer: managerSideBar(context, _user),
-          body: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              _buildTableCalendarWithBuilders(),
-              //const SizedBox(height: 8.0),
-              //_buildButtons(),
-              const SizedBox(height: 8.0),
-              Expanded(child: _buildEventList()),
-            ],
-          ),
+    return MaterialApp(
+      title: APP_NAME,
+      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        backgroundColor: DARK,
+        appBar: managerAppBar(context, _user, getTranslated(context, 'vocationsCalendar')),
+        drawer: managerSideBar(context, _user),
+        body: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            _buildTableCalendarWithBuilders(),
+            //const SizedBox(height: 8.0),
+            //_buildButtons(),
+            const SizedBox(height: 8.0),
+            Expanded(child: _buildEventList()),
+          ],
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, VocationsTsPage(_model)),
     );
   }
 
