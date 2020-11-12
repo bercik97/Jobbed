@@ -80,26 +80,29 @@ class _WorkTimePageState extends State<WorkTimePage> {
         backgroundColor: DARK,
         appBar: employeeAppBar(context, _user, getTranslated(context, 'workTimeForToday')),
         drawer: employeeSideBar(context, _user),
-        body: SingleChildScrollView(
-          child: FutureBuilder(
-            future: _fetchData(),
-            builder: (context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
-                return Padding(
-                  padding: EdgeInsets.only(top: 50),
-                  child: Center(child: circularProgressIndicator()),
-                );
-              } else {
-                _dto = snapshot.data[0];
-                List workTimes = _dto.workTimes;
-                if (_dto.currentlyAtWork) {
-                  return _handleEmployeeInWork(workTimes);
+        body: WillPopScope(
+          child: SingleChildScrollView(
+            child: FutureBuilder(
+              future: _fetchData(),
+              builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
+                  return Padding(
+                    padding: EdgeInsets.only(top: 50),
+                    child: Center(child: circularProgressIndicator()),
+                  );
                 } else {
-                  return _handleEmployeeNotInWork(workTimes);
+                  _dto = snapshot.data[0];
+                  List workTimes = _dto.workTimes;
+                  if (_dto.currentlyAtWork) {
+                    return _handleEmployeeInWork(workTimes);
+                  } else {
+                    return _handleEmployeeNotInWork(workTimes);
+                  }
                 }
-              }
-            },
+              },
+            ),
           ),
+          onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilPage(_user)),
         ),
       ),
     );
@@ -361,11 +364,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     _workTimeService
         .create(dto)
         .then(
-          (res) => {
-            _refresh(),
-            Navigator.pop(context),
-            setState(() => _isPauseWorkButtonTapped = false),
-          },
+          (res) => _refresh(),
         )
         .catchError((onError) {
       ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
@@ -408,11 +407,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
 
   _finishWork() {
     setState(() => _isPauseWorkButtonTapped = true);
-    _workTimeService.finish(_dto.notFinishedWorkTimeId).then((res) {
-      _refresh();
-      Navigator.pop(context);
-      setState(() => _isStartWorkButtonTapped = false);
-    });
+    _workTimeService.finish(_dto.notFinishedWorkTimeId).then((res) => _refresh());
   }
 
   _displayWorkTimes(List workTimes) {
@@ -449,11 +444,10 @@ class _WorkTimePageState extends State<WorkTimePage> {
     );
   }
 
-  Future<Null> _refresh() {
-    return _workTimeService.checkIfCurrentDateWorkTimeIsStartedAndNotFinished(_todayWorkdayId).then((res) {
-      setState(() {
-        _dto = res;
-      });
-    });
+  void _refresh() {
+    Navigator.push(
+      this.context,
+      MaterialPageRoute(builder: (context) => WorkTimePage(_user, _todayWorkdayId)),
+    );
   }
 }
