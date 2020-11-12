@@ -81,6 +81,7 @@ Text text25GreenUnderline(String text) { return Text(text, style: TextStyle(font
 ////////////////////////////
 /*    TEXT CENTER GREEN   */
 ////////////////////////////
+Text textCenterGreen(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(color: GREEN)); }
 Text textCenter14Green(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 14, color: GREEN)); }
 Text textCenter18Green(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 18, color: GREEN)); }
 Text textCenter20Green(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: GREEN)); }
@@ -89,6 +90,7 @@ Text textCenter20Green(String text) { return Text(text, textAlign: TextAlign.cen
 ////////////////////////////
 /* TEXT CENTER GREEN BOLD */
 ////////////////////////////
+Text textCenterGreenBold(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(color: GREEN, fontWeight: FontWeight.bold)); }
 Text textCenter16GreenBold(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 16, color: GREEN, fontWeight: FontWeight.bold)); }
 Text textCenter20GreenBold(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: GREEN, fontWeight: FontWeight.bold)); }
 

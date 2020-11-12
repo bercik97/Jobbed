@@ -1,17 +1,29 @@
+import 'package:android_intent/android_intent.dart';
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/api/work_time/dto/create_work_time_dto.dart';
 import 'package:give_job/api/work_time/dto/is_currently_at_work_with_worktimes_dto.dart';
 import 'package:give_job/api/work_time/service/worktime_service.dart';
+import 'package:give_job/api/workplace/dto/workplace_id_name_dto.dart';
+import 'package:give_job/api/workplace/service/workplace_service.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
 import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/service/toastr_service.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/circular_progress_indicator.dart';
+import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
+import 'package:location/location.dart' as loc;
+import 'package:permission_handler/permission_handler.dart';
+
+import '../../../employee_profile_page.dart';
 
 class WorkTimePage extends StatefulWidget {
   final User _user;
@@ -24,21 +36,104 @@ class WorkTimePage extends StatefulWidget {
 }
 
 class _WorkTimePageState extends State<WorkTimePage> {
+  final PermissionHandler permissionHandler = PermissionHandler();
+  Map<PermissionGroup, PermissionStatus> permissions;
+
   User _user;
   int _todayWorkdayId;
 
   WorkTimeService _workTimeService;
+  WorkplaceService _workplaceService;
 
   IsCurrentlyAtWorkWithWorkTimesDto _dto;
 
-  bool _isStartButtonTapped = false;
+  bool _isStartDialogButtonTapped = false;
+  bool _isStartWorkButtonTapped = false;
+
   bool _isPauseButtonTapped = false;
+
+  loc.Location location = new loc.Location();
+  loc.LocationData _locationData;
+
+  @override
+  void initState() {
+    _requestLocationPermission();
+    _gpsService();
+    _getUserLocation();
+    super.initState();
+  }
+
+  Future<bool> _requestPermission(PermissionGroup permission) async {
+    final PermissionHandler _permissionHandler = PermissionHandler();
+    var result = await _permissionHandler.requestPermissions([permission]);
+    if (result[permission] == PermissionStatus.granted) {
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> _requestLocationPermission() async {
+    var granted = await _requestPermission(PermissionGroup.location);
+    if (granted != true) {
+      _requestLocationPermission();
+    }
+    return granted;
+  }
+
+  Future _checkGps() async {
+    if (!(await Geolocator.isLocationServiceEnabled())) {
+      if (Theme.of(context).platform == TargetPlatform.android) {
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (BuildContext context) {
+            return WillPopScope(
+              child: AlertDialog(
+                title: Text("Can't get gurrent location"),
+                content: const Text('Please make sure you enable GPS and try again'),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('Ok'),
+                    onPressed: () {
+                      final AndroidIntent intent = AndroidIntent(action: 'android.settings.LOCATION_SOURCE_SETTINGS');
+                      intent.launch();
+                      _gpsService();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => EmployeeProfilPage(_user)),
+                      );
+                    },
+                  )
+                ],
+              ),
+              onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilPage(_user)),
+            );
+          },
+        );
+      }
+    }
+  }
+
+  Future _gpsService() async {
+    if (!(await Geolocator.isLocationServiceEnabled())) {
+      _checkGps();
+      return null;
+    } else {
+      return true;
+    }
+  }
+
+  Future<bool> _getUserLocation() async {
+    _locationData = await location.getLocation();
+    return _locationData != null ? true : false;
+  }
 
   @override
   Widget build(BuildContext context) {
     this._user = widget._user;
     this._todayWorkdayId = widget._todayWorkdayId;
     this._workTimeService = ServiceInitializer.initialize(context, _user.authHeader, WorkTimeService);
+    this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
     return MaterialApp(
       title: APP_NAME,
       theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
@@ -58,12 +153,24 @@ class _WorkTimePageState extends State<WorkTimePage> {
                 );
               } else {
                 _dto = snapshot.data;
-                List workTimes = _dto.workTimes;
-                if (_dto.currentlyAtWork) {
-                  return _handleEmployeeInWork(workTimes);
-                } else {
-                  return _handleEmployeeNotInWork(workTimes);
-                }
+                return FutureBuilder(
+                  future: _getUserLocation(),
+                  builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
+                      return Padding(
+                        padding: EdgeInsets.only(top: 50),
+                        child: Center(child: circularProgressIndicator()),
+                      );
+                    } else {
+                      List workTimes = _dto.workTimes;
+                      if (_dto.currentlyAtWork) {
+                        return _handleEmployeeInWork(workTimes);
+                      } else {
+                        return _handleEmployeeNotInWork(workTimes);
+                      }
+                    }
+                  },
+                );
               }
             },
           ),
@@ -76,9 +183,8 @@ class _WorkTimePageState extends State<WorkTimePage> {
     return Center(
       child: Column(
         children: [
-          _buildBtn('images/stop-icon.png', _showPauseWorkDialog),
+          _buildBtn('images/stop-icon.png', _isPauseButtonTapped, _showPauseWorkDialog),
           _buildPauseHint(),
-          _buildLocationHint(),
           _displayWorkTimes(workTimes),
         ],
       ),
@@ -89,23 +195,22 @@ class _WorkTimePageState extends State<WorkTimePage> {
     return Center(
       child: Column(
         children: [
-          _buildBtn('images/play-icon.png', () => print('TODO')),
+          _buildBtn('images/play-icon.png', _isStartDialogButtonTapped, _findWorkplacesByCurrentLocation),
           _buildStartHint(),
-          _buildLocationHint(),
           _displayWorkTimes(workTimes),
         ],
       ),
     );
   }
 
-  Widget _buildBtn(String imgPath, Function() fun) {
+  Widget _buildBtn(String imgPath, bool isTapped, Function() fun) {
     return Column(
       children: <Widget>[
         SizedBox(height: 20),
         BouncingWidget(
           duration: Duration(milliseconds: 100),
           scaleFactor: 2,
-          onPressed: () => fun(),
+          onPressed: () => isTapped ? null : fun(),
           child: Image(width: 100, height: 100, image: AssetImage(imgPath)),
         ),
       ],
@@ -115,22 +220,154 @@ class _WorkTimePageState extends State<WorkTimePage> {
   Widget _buildStartHint() {
     return Padding(
       padding: EdgeInsets.only(top: 10, left: 20, right: 20),
-      child: textCenter18Green(getTranslated(context, 'hintPressBtnToStart')),
+      child: textCenter18Green(getTranslated(context, 'pressBtnToStart')),
     );
   }
 
   Widget _buildPauseHint() {
     return Padding(
       padding: EdgeInsets.only(top: 10, left: 20, right: 20),
-      child: textCenter18Green(getTranslated(context, 'hintPressBtnToPause')),
+      child: textCenter18Green(getTranslated(context, 'pressBtnToPause')),
     );
   }
 
-  Widget _buildLocationHint() {
-    return Padding(
-      padding: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
-      child: textCenter18Green('Before start or pause work, please turn on location, otherwise it wont work'),
+  _findWorkplacesByCurrentLocation() async {
+    setState(() => _isStartDialogButtonTapped = true);
+    _workplaceService.findWorkplaceByCompanyIdAndLocationParams(int.parse(_user.companyId), _locationData.latitude, _locationData.longitude).then((res) {
+      _showStartConfirmDialog(res);
+      setState(() => _isStartDialogButtonTapped = false);
+    }).catchError((onError) {
+      ToastService.showErrorToast('Cannot find workplace by your location!');
+      setState(() => _isStartDialogButtonTapped = false);
+    });
+  }
+
+  _showStartConfirmDialog(List<WorkplaceIdNameDto> workplaces) {
+    showGeneralDialog(
+      context: context,
+      barrierColor: DARK.withOpacity(0.95),
+      barrierDismissible: false,
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: Scaffold(
+            backgroundColor: Colors.black12,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: <Widget>[
+                        textCenter19White('We have found several workplaces in your location.'),
+                        SizedBox(height: 5),
+                        textCenter18Green('Hint: Select the button next to where you want to start working.'),
+                        SizedBox(height: 20),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Theme(
+                              data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
+                              child: DataTable(
+                                columnSpacing: 10,
+                                columns: [
+                                  DataColumn(label: textWhiteBold('No.')),
+                                  DataColumn(label: textWhiteBold(getTranslated(context, 'workplaceName'))),
+                                  DataColumn(label: textWhiteBold(getTranslated(context, 'confirmation'))),
+                                ],
+                                rows: [
+                                  for (int i = 0; i < workplaces.length; i++)
+                                    DataRow(
+                                      cells: [
+                                        DataCell(textWhite((i + 1).toString())),
+                                        DataCell(textWhite(workplaces[i].name)),
+                                        DataCell(
+                                          MaterialButton(
+                                            child: Text(getTranslated(context, 'startUpperCase')),
+                                            color: GREEN,
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    backgroundColor: DARK,
+                                                    title: textGreenBold(getTranslated(context, 'confirmation')),
+                                                    content: SingleChildScrollView(
+                                                      child: Column(
+                                                        children: [
+                                                          textCenterWhite('Are you sure you want to START your work in the workplace below?'),
+                                                          SizedBox(height: 10),
+                                                          textCenterGreenBold(getTranslated(context, 'workplaceName')),
+                                                          SizedBox(height: 2),
+                                                          textCenterWhite(workplaces[i].name),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    actions: <Widget>[
+                                                      FlatButton(
+                                                        child: textGreen('Yes, I want to start work'),
+                                                        onPressed: () => _isStartWorkButtonTapped ? null : _startWork(workplaces[i].id),
+                                                      ),
+                                                      FlatButton(child: textWhite('No'), onPressed: () => Navigator.of(context).pop()),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            },
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Container(
+                          width: 80,
+                          child: MaterialButton(
+                            elevation: 0,
+                            height: 50,
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[iconWhite(Icons.close)],
+                            ),
+                            color: Colors.red,
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
+  }
+
+  void _startWork(int workplaceId) {
+    setState(() => _isStartWorkButtonTapped = true);
+    CreateWorkTimeDto dto = new CreateWorkTimeDto(workplaceId: workplaceId, workdayId: _todayWorkdayId);
+    _workTimeService
+        .create(dto)
+        .then(
+          (res) => {
+            _refresh(),
+            Navigator.pop(context),
+            setState(() => _isPauseButtonTapped = false),
+          },
+        )
+        .catchError((onError) {
+      ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+      setState(() => _isStartWorkButtonTapped = false);
+    });
   }
 
   _showPauseWorkDialog() {
@@ -163,14 +400,12 @@ class _WorkTimePageState extends State<WorkTimePage> {
   }
 
   _finishWork() {
-    // setState(() => _isPauseButtonTapped = !_isPauseButtonTapped);
-    // _workTimeService.finish(_dto.notFinishedWorkTimeId).then(
-    //       (res) => {
-    //         _refresh(),
-    //         Navigator.pop(context),
-    //         setState(() => _isStartButtonTapped = false),
-    //       },
-    //     );
+    // setState(() => _isPauseButtonTapped = true);
+    // _workTimeService.finish(_dto.notFinishedWorkTimeId).then((res) {
+    //   _refresh();
+    //   Navigator.pop(context);
+    //   setState(() => _isStartButtonTapped = false);
+    // });
   }
 
   _displayWorkTimes(List workTimes) {

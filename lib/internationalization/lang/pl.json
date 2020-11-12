@@ -483,8 +483,8 @@
   "workingTime": "Czas pracy",
   "startFinishWork": "Rozpocznij lub zakończ pracę",
   "workTimeForToday": "Dzisiejszy czas pracy",
-  "hintPressBtnToStart": "Podpowiedź: Naciśnij przycisk start aby rozpocząc pracę",
-  "hintPressBtnToPause": "Podpowiedź: Naciśnij przycisk stop aby zakończyć pracę",
+  "pressBtnToStart": "Naciśnij przycisk start aby rozpocząc pracę",
+  "pressBtnToPause": "Naciśnij przycisk stop aby zakończyć pracę",
   "pauseWorkConfirmation": "Czy na pewno chcesz zakończyć pracę?",
   "workIsDone": "Tak, praca jest skończona",
   "sum": "Suma",
@@ -492,5 +492,6 @@
   "workTimes": "Czas pracy",
   "workplaceName": "Nazwa miejsca pracy",
   "from": "Od",
-  "to": "Do"
+  "to": "Do",
+  "startUpperCase": "START"
 }

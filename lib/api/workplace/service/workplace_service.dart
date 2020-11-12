@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/workplace/dto/workplace_dto.dart';
+import 'package:give_job/api/workplace/dto/workplace_id_name_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/service/logout_service.dart';
 import 'package:http/http.dart';
@@ -37,6 +38,20 @@ class WorkplaceService {
     );
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => WorkplaceDto.fromJson(data)).toList();
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<List<WorkplaceIdNameDto>> findWorkplaceByCompanyIdAndLocationParams(int companyId, double latitude, double longitude) async {
+    Response res = await get(
+      _url + '/companies/$companyId/location?latitude=$latitude&longitude=$longitude',
+      headers: _header,
+    );
+    if (res.statusCode == 200) {
+      return (json.decode(res.body) as List).map((data) => WorkplaceIdNameDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
       return Logout.handle401WithLogout(_context);
     } else {
