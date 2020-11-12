@@ -80,29 +80,26 @@ class _WorkTimePageState extends State<WorkTimePage> {
         backgroundColor: DARK,
         appBar: employeeAppBar(context, _user, getTranslated(context, 'workTimeForToday')),
         drawer: employeeSideBar(context, _user),
-        body: WillPopScope(
-          child: SingleChildScrollView(
-            child: FutureBuilder(
-              future: _fetchData(),
-              builder: (context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
-                  return Padding(
-                    padding: EdgeInsets.only(top: 50),
-                    child: Center(child: circularProgressIndicator()),
-                  );
+        body: SingleChildScrollView(
+          child: FutureBuilder(
+            future: _fetchData(),
+            builder: (context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
+                return Padding(
+                  padding: EdgeInsets.only(top: 50),
+                  child: Center(child: circularProgressIndicator()),
+                );
+              } else {
+                _dto = snapshot.data[0];
+                List workTimes = _dto.workTimes;
+                if (_dto.currentlyAtWork) {
+                  return _handleEmployeeInWork(workTimes);
                 } else {
-                  _dto = snapshot.data[0];
-                  List workTimes = _dto.workTimes;
-                  if (_dto.currentlyAtWork) {
-                    return _handleEmployeeInWork(workTimes);
-                  } else {
-                    return _handleEmployeeNotInWork(workTimes);
-                  }
+                  return _handleEmployeeNotInWork(workTimes);
                 }
-              },
-            ),
+              }
+            },
           ),
-          onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilPage(_user)),
         ),
       ),
     );
@@ -186,26 +183,32 @@ class _WorkTimePageState extends State<WorkTimePage> {
   }
 
   Widget _handleEmployeeInWork(List workTimes) {
-    return Center(
-      child: Column(
-        children: [
-          _buildBtn('images/stop-icon.png', _isPauseWorkButtonTapped, _showPauseWorkDialog),
-          _buildPauseHint(),
-          _displayWorkTimes(workTimes),
-        ],
+    return WillPopScope(
+      child: Center(
+        child: Column(
+          children: [
+            _buildBtn('images/stop-icon.png', _isPauseWorkButtonTapped, _showPauseWorkDialog),
+            _buildPauseHint(),
+            _displayWorkTimes(workTimes),
+          ],
+        ),
       ),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilPage(_user)),
     );
   }
 
   Widget _handleEmployeeNotInWork(List workTimes) {
-    return Center(
-      child: Column(
-        children: [
-          _buildBtn('images/play-icon.png', _isStartDialogButtonTapped, _findWorkplacesByCurrentLocation),
-          _buildStartHint(),
-          _displayWorkTimes(workTimes),
-        ],
+    return WillPopScope(
+      child: Center(
+        child: Column(
+          children: [
+            _buildBtn('images/play-icon.png', _isStartDialogButtonTapped, _findWorkplacesByCurrentLocation),
+            _buildStartHint(),
+            _displayWorkTimes(workTimes),
+          ],
+        ),
       ),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilPage(_user)),
     );
   }
 
@@ -407,7 +410,11 @@ class _WorkTimePageState extends State<WorkTimePage> {
 
   _finishWork() {
     setState(() => _isPauseWorkButtonTapped = true);
-    _workTimeService.finish(_dto.notFinishedWorkTimeId).then((res) => _refresh());
+    _workTimeService.finish(_dto.notFinishedWorkTimeId).then((res) {
+      _refresh();
+    }).catchError((onError) {
+      ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+    });
   }
 
   _displayWorkTimes(List workTimes) {
