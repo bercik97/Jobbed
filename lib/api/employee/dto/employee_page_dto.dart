@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
+import 'package:give_job/api/work_time/dto/work_time_dto.dart';
 
 class EmployeePageDto {
   final int id;
@@ -15,6 +16,7 @@ class EmployeePageDto {
   final num todayMoney;
   final int todayHours;
   final int todayRating;
+  final List todayWorkTimes;
   final String todayPlan;
   final String todayNote;
   final String groupManager;
@@ -36,6 +38,7 @@ class EmployeePageDto {
     @required this.todayMoney,
     @required this.todayHours,
     @required this.todayRating,
+    @required this.todayWorkTimes,
     @required this.todayPlan,
     @required this.todayNote,
     @required this.groupManager,
@@ -59,6 +62,7 @@ class EmployeePageDto {
       todayMoney: json['todayMoney'] as num,
       todayHours: json['todayHours'] as num,
       todayRating: json['todayRating'] as num,
+      todayWorkTimes: json['todayWorkTimes'].map((data) => WorkTimeDto.fromJson(data)).toList(),
       todayPlan: json['todayPlan'] as String,
       todayNote: json['todayNote'] as String,
       groupManager: json['groupManager'] as String,

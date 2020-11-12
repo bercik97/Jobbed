@@ -141,4 +141,5 @@ Text text20OrangeBold(String text) { return Text(text, style: TextStyle(fontSize
 ////////////////////////////
 /* TEXT CENTER ORANGE BOLD*/
 ////////////////////////////
+Text textCenter16OrangeBold(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 16, color: Colors.orange, fontWeight: FontWeight.bold)); }
 Text textCenter20OrangeBold(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.orange, fontWeight: FontWeight.bold)); }

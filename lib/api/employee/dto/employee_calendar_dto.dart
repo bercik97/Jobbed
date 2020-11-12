@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:give_job/api/work_time/dto/work_time_dto.dart';
 
 class EmployeeCalendarDto {
   final int hours;
   final int rating;
+  final List workTimes;
   final String plan;
   final String note;
   final double money;
@@ -13,6 +15,7 @@ class EmployeeCalendarDto {
   EmployeeCalendarDto({
     @required this.hours,
     @required this.rating,
+    @required this.workTimes,
     @required this.plan,
     @required this.note,
     @required this.money,
@@ -25,6 +28,7 @@ class EmployeeCalendarDto {
     return EmployeeCalendarDto(
       hours: json['hours'] as int,
       rating: json['rating'] as int,
+      workTimes: json['workTimes'].map((data) => WorkTimeDto.fromJson(data)).toList(),
       plan: json['plan'] as String,
       note: json['note'] as String,
       money: json['money'] as double,

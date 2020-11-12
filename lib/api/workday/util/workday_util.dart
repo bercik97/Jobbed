@@ -190,8 +190,8 @@ class WorkdayUtil {
                   cells: [
                     DataCell(textWhite((i + 1).toString())),
                     DataCell(textWhite(workTimes[i].startTime.toString())),
-                    DataCell(textWhite(workTimes[i].endTime.toString())),
-                    DataCell(textWhite(workTimes[i].totalTime.toString())),
+                    DataCell(textWhite(workTimes[i].endTime != null ? workTimes[i].endTime.toString() : '-')),
+                    DataCell(textWhite(workTimes[i].totalTime != null ? workTimes[i].totalTime.toString() : '-')),
                     DataCell(textWhite(workTimes[i].workplaceName.toString())),
                   ],
                 ),
@@ -253,8 +253,8 @@ class WorkdayUtil {
     );
   }
 
-  static void showScrollablePlanAndNote(BuildContext context, String date, String plan, String note) {
-    if ((plan == null || plan.isEmpty) && (note == null || note.isEmpty)) {
+  static void showScrollableWorkTimesAndPlanAndNote(BuildContext context, String date, List workTimes, String plan, String note) {
+    if ((workTimes == null || workTimes.isEmpty) && (plan == null || plan.isEmpty) && (note == null || note.isEmpty)) {
       return;
     }
     showGeneralDialog(
@@ -276,6 +276,10 @@ class WorkdayUtil {
                       children: <Widget>[
                         text20GreenBold(date.substring(0, 10)),
                         SizedBox(height: 20),
+                        text20GreenBold(getTranslated(context, 'workTimes')),
+                        SizedBox(height: 5),
+                        _buildWorkTimesDataTable(context, workTimes),
+                        SizedBox(height: 5),
                         text20GreenBold(getTranslated(context, 'plan')),
                         SizedBox(height: 5),
                         textCenter20White(plan != null ? utf8.decode(plan.runes.toList()) : getTranslated(context, 'empty')),

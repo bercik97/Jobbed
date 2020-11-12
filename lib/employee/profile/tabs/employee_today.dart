@@ -30,6 +30,7 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
   String todayMoney = dto.todayMoney.toString();
   String todayHours = dto.todayHours.toString();
   String todayRating = dto.todayRating.toString();
+  List todayWorkTimes = dto.todayWorkTimes;
   String todayPlan = dto.todayPlan;
   String todayNote = dto.todayNote;
   return Container(
@@ -74,6 +75,23 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                     Align(
                         child: Row(
                           children: <Widget>[
+                            text15White(getTranslated(context, 'workTimes') + ': '),
+                            todayWorkTimes != null && todayWorkTimes.isNotEmpty
+                                ? Row(
+                              children: [
+                                text15GreenBold(getTranslated(context, 'yes') + ' '),
+                                iconGreen(Icons.search),
+                                textGreen('(' + getTranslated(context, 'checkDetails') + ')'),
+                              ],
+                            )
+                                : text15RedBold(getTranslated(context, 'empty'))
+                          ],
+                        ),
+                        alignment: Alignment.topLeft),
+                    SizedBox(height: 5),
+                    Align(
+                        child: Row(
+                          children: <Widget>[
                             text15White(getTranslated(context, 'plan') + ': '),
                             todayPlan != null && todayPlan.isNotEmpty
                                 ? Row(
@@ -107,7 +125,7 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                     SizedBox(height: 2.5),
                   ],
                 ),
-                onTap: () => WorkdayUtil.showScrollablePlanAndNote(context, todayDate, todayPlan, todayNote),
+                onTap: () => WorkdayUtil.showScrollableWorkTimesAndPlanAndNote(context, todayDate, todayWorkTimes, todayPlan, todayNote),
               ),
             ),
             SizedBox(height: 10),
