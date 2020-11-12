@@ -72,36 +72,39 @@ class _WorkTimePageState extends State<WorkTimePage> {
     this._todayWorkdayId = widget._todayWorkdayId;
     this._workTimeService = ServiceInitializer.initialize(context, _user.authHeader, WorkTimeService);
     this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
-    return MaterialApp(
-      title: APP_NAME,
-      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: DARK,
-        appBar: employeeAppBar(context, _user, getTranslated(context, 'workTimeForToday')),
-        drawer: employeeSideBar(context, _user),
-        body: SingleChildScrollView(
-          child: FutureBuilder(
-            future: _fetchData(),
-            builder: (context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
-                return Padding(
-                  padding: EdgeInsets.only(top: 50),
-                  child: Center(child: circularProgressIndicator()),
-                );
-              } else {
-                _dto = snapshot.data[0];
-                List workTimes = _dto.workTimes;
-                if (_dto.currentlyAtWork) {
-                  return _handleEmployeeInWork(workTimes);
+    return WillPopScope(
+      child: MaterialApp(
+        title: APP_NAME,
+        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: DARK,
+          appBar: employeeAppBar(context, _user, getTranslated(context, 'workTimeForToday')),
+          drawer: employeeSideBar(context, _user),
+          body: SingleChildScrollView(
+            child: FutureBuilder(
+              future: _fetchData(),
+              builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
+                  return Padding(
+                    padding: EdgeInsets.only(top: 50),
+                    child: Center(child: circularProgressIndicator()),
+                  );
                 } else {
-                  return _handleEmployeeNotInWork(workTimes);
+                  _dto = snapshot.data[0];
+                  List workTimes = _dto.workTimes;
+                  if (_dto.currentlyAtWork) {
+                    return _handleEmployeeInWork(workTimes);
+                  } else {
+                    return _handleEmployeeNotInWork(workTimes);
+                  }
                 }
-              }
-            },
+              },
+            ),
           ),
         ),
       ),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilPage(_user)),
     );
   }
 
@@ -141,26 +144,23 @@ class _WorkTimePageState extends State<WorkTimePage> {
           barrierDismissible: false,
           context: context,
           builder: (BuildContext context) {
-            return WillPopScope(
-              child: AlertDialog(
-                title: Text("Can't get gurrent location"),
-                content: const Text('Please make sure you enable GPS and try again'),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text('Ok'),
-                    onPressed: () {
-                      final AndroidIntent intent = AndroidIntent(action: 'android.settings.LOCATION_SOURCE_SETTINGS');
-                      intent.launch();
-                      _gpsService();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => EmployeeProfilPage(_user)),
-                      );
-                    },
-                  )
-                ],
-              ),
-              onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilPage(_user)),
+            return AlertDialog(
+              title: Text("Can't get gurrent location"),
+              content: const Text('Please make sure you enable GPS and try again'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Ok'),
+                  onPressed: () {
+                    final AndroidIntent intent = AndroidIntent(action: 'android.settings.LOCATION_SOURCE_SETTINGS');
+                    intent.launch();
+                    _gpsService();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => EmployeeProfilPage(_user)),
+                    );
+                  },
+                )
+              ],
             );
           },
         );
@@ -198,17 +198,14 @@ class _WorkTimePageState extends State<WorkTimePage> {
   }
 
   Widget _handleEmployeeNotInWork(List workTimes) {
-    return WillPopScope(
-      child: Center(
-        child: Column(
-          children: [
-            _buildBtn('images/play-icon.png', _isStartDialogButtonTapped, _findWorkplacesByCurrentLocation),
-            _buildStartHint(),
-            _displayWorkTimes(workTimes),
-          ],
-        ),
+    return Center(
+      child: Column(
+        children: [
+          _buildBtn('images/play-icon.png', _isStartDialogButtonTapped, _findWorkplacesByCurrentLocation),
+          _buildStartHint(),
+          _displayWorkTimes(workTimes),
+        ],
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilPage(_user)),
     );
   }
 
