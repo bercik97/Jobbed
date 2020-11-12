@@ -36,4 +36,10 @@ class WorkTimeService {
       return Future.error(res.body);
     }
   }
+
+  Future<dynamic> finish(int id) async {
+    String url = _url + '/$id/finish';
+    Response res = await put(url, headers: _headers);
+    return res.statusCode == 200 ? res : Future.error(res.body);
+  }
 }

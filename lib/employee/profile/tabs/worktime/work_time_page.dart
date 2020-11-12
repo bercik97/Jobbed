@@ -1,4 +1,5 @@
 import 'package:android_intent/android_intent.dart';
+import 'package:async/async.dart';
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -49,11 +50,12 @@ class _WorkTimePageState extends State<WorkTimePage> {
 
   bool _isStartDialogButtonTapped = false;
   bool _isStartWorkButtonTapped = false;
-
-  bool _isPauseButtonTapped = false;
+  bool _isPauseWorkButtonTapped = false;
 
   loc.Location location = new loc.Location();
   loc.LocationData _locationData;
+
+  AsyncMemoizer _memoizer;
 
   @override
   void initState() {
@@ -61,6 +63,58 @@ class _WorkTimePageState extends State<WorkTimePage> {
     _gpsService();
     _getUserLocation();
     super.initState();
+    _memoizer = AsyncMemoizer();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    this._user = widget._user;
+    this._todayWorkdayId = widget._todayWorkdayId;
+    this._workTimeService = ServiceInitializer.initialize(context, _user.authHeader, WorkTimeService);
+    this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
+    return MaterialApp(
+      title: APP_NAME,
+      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        backgroundColor: DARK,
+        appBar: employeeAppBar(context, _user, getTranslated(context, 'workTimeForToday')),
+        drawer: employeeSideBar(context, _user),
+        body: SingleChildScrollView(
+          child: FutureBuilder(
+            future: _fetchData(),
+            builder: (context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
+                return Padding(
+                  padding: EdgeInsets.only(top: 50),
+                  child: Center(child: circularProgressIndicator()),
+                );
+              } else {
+                _dto = snapshot.data[0];
+                List workTimes = _dto.workTimes;
+                if (_dto.currentlyAtWork) {
+                  return _handleEmployeeInWork(workTimes);
+                } else {
+                  return _handleEmployeeNotInWork(workTimes);
+                }
+              }
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<dynamic> _fetchData() async {
+    return this._memoizer.runOnce(() async {
+      await Future.delayed(Duration(seconds: 1));
+      return Future.wait(
+        [
+          _workTimeService.checkIfCurrentDateWorkTimeIsStartedAndNotFinished(_todayWorkdayId),
+          _getUserLocation(),
+        ],
+      );
+    });
   }
 
   Future<bool> _requestPermission(PermissionGroup permission) async {
@@ -128,62 +182,11 @@ class _WorkTimePageState extends State<WorkTimePage> {
     return _locationData != null ? true : false;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    this._user = widget._user;
-    this._todayWorkdayId = widget._todayWorkdayId;
-    this._workTimeService = ServiceInitializer.initialize(context, _user.authHeader, WorkTimeService);
-    this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
-    return MaterialApp(
-      title: APP_NAME,
-      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: DARK,
-        appBar: employeeAppBar(context, _user, getTranslated(context, 'workTimeForToday')),
-        drawer: employeeSideBar(context, _user),
-        body: SingleChildScrollView(
-          child: FutureBuilder(
-            future: _workTimeService.checkIfCurrentDateWorkTimeIsStartedAndNotFinished(_todayWorkdayId),
-            builder: (BuildContext context, AsyncSnapshot<IsCurrentlyAtWorkWithWorkTimesDto> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
-                return Padding(
-                  padding: EdgeInsets.only(top: 50),
-                  child: Center(child: circularProgressIndicator()),
-                );
-              } else {
-                _dto = snapshot.data;
-                return FutureBuilder(
-                  future: _getUserLocation(),
-                  builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
-                      return Padding(
-                        padding: EdgeInsets.only(top: 50),
-                        child: Center(child: circularProgressIndicator()),
-                      );
-                    } else {
-                      List workTimes = _dto.workTimes;
-                      if (_dto.currentlyAtWork) {
-                        return _handleEmployeeInWork(workTimes);
-                      } else {
-                        return _handleEmployeeNotInWork(workTimes);
-                      }
-                    }
-                  },
-                );
-              }
-            },
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _handleEmployeeInWork(List workTimes) {
     return Center(
       child: Column(
         children: [
-          _buildBtn('images/stop-icon.png', _isPauseButtonTapped, _showPauseWorkDialog),
+          _buildBtn('images/stop-icon.png', _isPauseWorkButtonTapped, _showPauseWorkDialog),
           _buildPauseHint(),
           _displayWorkTimes(workTimes),
         ],
@@ -361,7 +364,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
           (res) => {
             _refresh(),
             Navigator.pop(context),
-            setState(() => _isPauseButtonTapped = false),
+            setState(() => _isPauseWorkButtonTapped = false),
           },
         )
         .catchError((onError) {
@@ -380,7 +383,11 @@ class _WorkTimePageState extends State<WorkTimePage> {
           title: textGreen(getTranslated(context, 'confirmation')),
           content: SingleChildScrollView(
             child: ListBody(
-              children: <Widget>[textCenter20Green(getTranslated(context, 'pauseWorkConfirmation'))],
+              children: <Widget>[
+                textCenter20Green(
+                  getTranslated(context, 'pauseWorkConfirmation'),
+                )
+              ],
             ),
           ),
           actions: <Widget>[
@@ -388,7 +395,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
               children: [
                 FlatButton(
                   child: textWhite(getTranslated(context, 'workIsDone')),
-                  onPressed: () => _isPauseButtonTapped ? null : _finishWork(),
+                  onPressed: () => _isPauseWorkButtonTapped ? null : _finishWork(),
                 ),
                 FlatButton(child: textWhite(getTranslated(context, 'no')), onPressed: () => Navigator.of(context).pop()),
               ],
@@ -400,12 +407,12 @@ class _WorkTimePageState extends State<WorkTimePage> {
   }
 
   _finishWork() {
-    // setState(() => _isPauseButtonTapped = true);
-    // _workTimeService.finish(_dto.notFinishedWorkTimeId).then((res) {
-    //   _refresh();
-    //   Navigator.pop(context);
-    //   setState(() => _isStartButtonTapped = false);
-    // });
+    setState(() => _isPauseWorkButtonTapped = true);
+    _workTimeService.finish(_dto.notFinishedWorkTimeId).then((res) {
+      _refresh();
+      Navigator.pop(context);
+      setState(() => _isStartWorkButtonTapped = false);
+    });
   }
 
   _displayWorkTimes(List workTimes) {
@@ -432,7 +439,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                     DataCell(textWhite(workTimes[i].startTime)),
                     DataCell(textWhite(workTimes[i].endTime != null ? workTimes[i].endTime : '-')),
                     DataCell(textWhite(workTimes[i].totalTime != null ? workTimes[i].totalTime : '-')),
-                    DataCell(textWhite(workTimes[i].workplaceId != null ? workTimes[i].workplaceName : '-')),
+                    DataCell(textWhite(workTimes[i].workplaceName != null ? workTimes[i].workplaceName : '-')),
                   ],
                 ),
             ],
