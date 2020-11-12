@@ -37,6 +37,18 @@ class WorkTimeService {
     }
   }
 
+  Future<bool> canFinishByIdAndLocationParams(int id, double latitude, double longitude) async {
+    String url = _url + '/$id/can-finish?latitude=$latitude&longitude=$longitude';
+    Response res = await get(url, headers: _header);
+    if (res.statusCode == 200) {
+      return res.body == 'true' ? true : false;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
   Future<dynamic> finish(int id) async {
     String url = _url + '/$id/finish';
     Response res = await put(url, headers: _headers);

@@ -7,6 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/work_time/dto/create_work_time_dto.dart';
 import 'package:give_job/api/work_time/dto/is_currently_at_work_with_worktimes_dto.dart';
+import 'package:give_job/api/work_time/dto/work_time_dto.dart';
 import 'package:give_job/api/work_time/service/worktime_service.dart';
 import 'package:give_job/api/workplace/dto/workplace_id_name_dto.dart';
 import 'package:give_job/api/workplace/service/workplace_service.dart';
@@ -192,7 +193,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
       child: Center(
         child: Column(
           children: [
-            _buildBtn('images/stop-icon.png', _isPauseWorkButtonTapped, _showPauseWorkDialog),
+            _buildBtn('images/stop-icon.png', _isPauseWorkButtonTapped, () => _showPauseWorkDialog(workTimes.last)),
             _buildPauseHint(),
             _displayWorkTimes(workTimes),
           ],
@@ -238,7 +239,13 @@ class _WorkTimePageState extends State<WorkTimePage> {
   Widget _buildPauseHint() {
     return Padding(
       padding: EdgeInsets.only(top: 10, left: 20, right: 20),
-      child: textCenter18Green(getTranslated(context, 'pressBtnToPause')),
+      child: Column(
+        children: [
+          textCenter18Green(getTranslated(context, 'pressBtnToPause')),
+          SizedBox(height: 5),
+          textCenter15Red('Note: You can only finish your work when you are in the place where you started to work!'),
+        ],
+      ),
     );
   }
 
@@ -246,7 +253,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     setState(() => _isStartDialogButtonTapped = true);
     _progressDialog.show();
     await _getUserLocation().then((value) {
-      _workplaceService.findWorkplaceByCompanyIdAndLocationParams(int.parse(_user.companyId), _locationData.latitude, _locationData.longitude).then((res) {
+      _workplaceService.findAllWorkplacesByCompanyIdAndLocationParams(int.parse(_user.companyId), _locationData.latitude, _locationData.longitude).then((res) {
         _progressDialog.hide();
         _showStartConfirmDialog(res);
         setState(() => _isStartDialogButtonTapped = false);
@@ -385,7 +392,26 @@ class _WorkTimePageState extends State<WorkTimePage> {
     });
   }
 
-  _showPauseWorkDialog() {
+  _showPauseWorkDialog(WorkTimeDto workTime) async {
+    setState(() => _isPauseWorkButtonTapped = true);
+    _progressDialog.show();
+    await _getUserLocation().then((value) {
+      _workTimeService.canFinishByIdAndLocationParams(workTime.id, _locationData.latitude, _locationData.longitude).then((res) {
+        _progressDialog.hide();
+        _showPauseConfirmDialog(res);
+        setState(() => _isPauseWorkButtonTapped = false);
+      }).catchError((onError) {
+        ToastService.showErrorToast('Cannot find workplace where you started by your current location!');
+        setState(() => _isPauseWorkButtonTapped = false);
+      });
+    }).catchError((onError) {
+      ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+      setState(() => _isStartDialogButtonTapped = false);
+      _progressDialog.hide();
+    });
+  }
+
+  _showPauseConfirmDialog(res) {
     return showDialog(
       barrierDismissible: false,
       context: context,
@@ -424,6 +450,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
       _refresh();
     }).catchError((onError) {
       ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+      setState(() => _isPauseWorkButtonTapped = false);
     });
   }
 

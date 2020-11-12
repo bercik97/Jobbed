@@ -45,7 +45,7 @@ class WorkplaceService {
     }
   }
 
-  Future<List<WorkplaceIdNameDto>> findWorkplaceByCompanyIdAndLocationParams(int companyId, double latitude, double longitude) async {
+  Future<List<WorkplaceIdNameDto>> findAllWorkplacesByCompanyIdAndLocationParams(int companyId, double latitude, double longitude) async {
     Response res = await get(
       _url + '/companies/$companyId/location?latitude=$latitude&longitude=$longitude',
       headers: _header,

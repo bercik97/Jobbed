@@ -123,7 +123,7 @@ Text text20RedBold(String text) { return Text(text, style: TextStyle(fontSize: 2
 /////////////////////
 /* TEXT CENTER RED */
 /////////////////////
-Text textCenter15Red(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 13, color: Colors.red)); }
+Text textCenter15Red(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 15, color: Colors.red)); }
 
 
 /////////////////////////////////
