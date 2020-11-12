@@ -23,6 +23,7 @@ import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:location/location.dart' as loc;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 import '../../../employee_profile_page.dart';
 
@@ -57,17 +58,24 @@ class _WorkTimePageState extends State<WorkTimePage> {
 
   AsyncMemoizer _memoizer;
 
+  ProgressDialog _progressDialog;
+
   @override
   void initState() {
     _requestLocationPermission();
     _gpsService();
-    _getUserLocation();
     super.initState();
     _memoizer = AsyncMemoizer();
   }
 
   @override
   Widget build(BuildContext context) {
+    _progressDialog = new ProgressDialog(context);
+    _progressDialog.style(
+      message: 'Looking for workplaces in your location ...',
+      messageTextStyle: TextStyle(color: DARK),
+      progressWidget: circularProgressIndicator(),
+    );
     this._user = widget._user;
     this._todayWorkdayId = widget._todayWorkdayId;
     this._workTimeService = ServiceInitializer.initialize(context, _user.authHeader, WorkTimeService);
@@ -112,10 +120,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     return this._memoizer.runOnce(() async {
       await Future.delayed(Duration(seconds: 1));
       return Future.wait(
-        [
-          _workTimeService.checkIfCurrentDateWorkTimeIsStartedAndNotFinished(_todayWorkdayId),
-          _getUserLocation(),
-        ],
+        [_workTimeService.checkIfCurrentDateWorkTimeIsStartedAndNotFinished(_todayWorkdayId)],
       );
     });
   }
@@ -239,12 +244,20 @@ class _WorkTimePageState extends State<WorkTimePage> {
 
   _findWorkplacesByCurrentLocation() async {
     setState(() => _isStartDialogButtonTapped = true);
-    _workplaceService.findWorkplaceByCompanyIdAndLocationParams(int.parse(_user.companyId), _locationData.latitude, _locationData.longitude).then((res) {
-      _showStartConfirmDialog(res);
-      setState(() => _isStartDialogButtonTapped = false);
+    _progressDialog.show();
+    await _getUserLocation().then((value) {
+      _workplaceService.findWorkplaceByCompanyIdAndLocationParams(int.parse(_user.companyId), _locationData.latitude, _locationData.longitude).then((res) {
+        _progressDialog.hide();
+        _showStartConfirmDialog(res);
+        setState(() => _isStartDialogButtonTapped = false);
+      }).catchError((onError) {
+        ToastService.showErrorToast('Cannot find workplace by your location!');
+        setState(() => _isStartDialogButtonTapped = false);
+      });
     }).catchError((onError) {
-      ToastService.showErrorToast('Cannot find workplace by your location!');
+      ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
       setState(() => _isStartDialogButtonTapped = false);
+      _progressDialog.hide();
     });
   }
 
