@@ -45,6 +45,8 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
 
   List<GroupDashboardDto> _groups = new List();
 
+  ScrollController _scrollController = new ScrollController();
+
   @override
   Widget build(BuildContext context) {
     this._user = widget._user;
@@ -75,9 +77,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                   _user,
                 ),
                 drawer: managerSideBar(context, _user),
-                body: Column(
-                  children: <Widget>[_groups.isNotEmpty ? _handleGroups() : _handleNoGroups()],
-                ),
+                body: _groups.isNotEmpty ? _handleGroups() : _handleNoGroups(),
                 floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
                 floatingActionButton: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -122,106 +122,130 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
   }
 
   Widget _handleGroups() {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: <Widget>[
-            ListTile(
-              leading: Tab(
-                icon: Container(
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 13),
-                    child: Container(
-                      child: Image(
-                        width: 75,
-                        image: AssetImage(
-                          'images/big-company-icon.png',
-                        ),
-                        fit: BoxFit.cover,
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            leading: Tab(
+              icon: Container(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 13),
+                  child: Container(
+                    child: Image(
+                      width: 75,
+                      image: AssetImage(
+                        'images/big-company-icon.png',
                       ),
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
               ),
-              title: text18WhiteBold(
-                _user.companyName != null ? utf8.decode(_user.companyName.runes.toList()) : getTranslated(context, 'empty'),
-              ),
             ),
-            SizedBox(height: 10),
-            for (int i = 0; i < _groups.length; i++)
-              Card(
-                color: BRIGHTER_DARK,
-                child: ListTile(
-                  leading: Tab(
-                    icon: Padding(
-                      padding: EdgeInsets.only(top: 13),
-                      child: Container(
-                        child: Image(
-                          width: 75,
-                          image: AssetImage(
-                            'images/big-group-icon.png',
-                          ),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                  onTap: () {
-                    GroupDashboardDto group = _groups[i];
-                    Navigator.of(context).push(
-                      CupertinoPageRoute<Null>(
-                        builder: (BuildContext context) {
-                          return GroupPage(
-                            new GroupModel(
-                              _user,
-                              group.id,
-                              group.name,
-                              group.description,
-                              group.numberOfEmployees.toString(),
-                              group.countryOfWork,
+            title: text18WhiteBold(
+              _user.companyName != null ? utf8.decode(_user.companyName.runes.toList()) : getTranslated(context, 'empty'),
+            ),
+          ),
+          SizedBox(height: 10),
+          Expanded(
+            flex: 2,
+            child: RefreshIndicator(
+              color: DARK,
+              backgroundColor: WHITE,
+              onRefresh: _refresh,
+              child: Scrollbar(
+                isAlwaysShown: true,
+                controller: _scrollController,
+                child: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: _groups.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                      color: DARK,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Card(
+                            color: BRIGHTER_DARK,
+                            child: ListTile(
+                              leading: Tab(
+                                icon: Padding(
+                                  padding: EdgeInsets.only(top: 13),
+                                  child: Container(
+                                    child: Image(
+                                      width: 75,
+                                      image: AssetImage(
+                                        'images/big-group-icon.png',
+                                      ),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              onTap: () {
+                                GroupDashboardDto group = _groups[index];
+                                Navigator.of(this.context).push(
+                                  CupertinoPageRoute<Null>(
+                                    builder: (BuildContext context) {
+                                      return GroupPage(
+                                        new GroupModel(
+                                          _user,
+                                          group.id,
+                                          group.name,
+                                          group.description,
+                                          group.numberOfEmployees.toString(),
+                                          group.countryOfWork,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                              title: text18WhiteBold(
+                                utf8.decode(
+                                  _groups[index].name != null ? _groups[index].name.runes.toList() : getTranslated(this.context, 'empty'),
+                                ),
+                              ),
+                              subtitle: Column(
+                                children: <Widget>[
+                                  SizedBox(height: 5),
+                                  Align(
+                                    child: textWhite(getTranslated(this.context, 'numberOfEmployees') + ': ' + _groups[index].numberOfEmployees.toString()),
+                                    alignment: Alignment.topLeft,
+                                  ),
+                                  Align(
+                                    child: textWhite(getTranslated(this.context, 'groupCountryOfWork') + ': ' + LanguageUtil.findFlagByNationality(_groups[index].countryOfWork.toString())),
+                                    alignment: Alignment.topLeft,
+                                  ),
+                                  SizedBox(height: 5),
+                                ],
+                              ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon: text25Green('+ -'),
+                                    onPressed: () => _manageGroupEmployees(_groups[index].name, _groups[index].id),
+                                  ),
+                                  IconButton(
+                                    icon: icon30Red(Icons.delete),
+                                    onPressed: () => _showDeleteGroupDialog(_groups[index].name),
+                                  ),
+                                ],
+                              ),
                             ),
-                          );
-                        },
+                          ),
+                        ],
                       ),
                     );
                   },
-                  title: text18WhiteBold(
-                    utf8.decode(
-                      _groups[i].name != null ? _groups[i].name.runes.toList() : getTranslated(context, 'empty'),
-                    ),
-                  ),
-                  subtitle: Column(
-                    children: <Widget>[
-                      SizedBox(height: 5),
-                      Align(
-                        child: textWhite(getTranslated(context, 'numberOfEmployees') + ': ' + _groups[i].numberOfEmployees.toString()),
-                        alignment: Alignment.topLeft,
-                      ),
-                      Align(
-                        child: textWhite(getTranslated(context, 'groupCountryOfWork') + ': ' + LanguageUtil.findFlagByNationality(_groups[i].countryOfWork.toString())),
-                        alignment: Alignment.topLeft,
-                      ),
-                      SizedBox(height: 5),
-                    ],
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: text25Green('+ -'),
-                        onPressed: () => _manageGroupEmployees(_groups[i].name, _groups[i].id),
-                      ),
-                      IconButton(
-                        icon: icon30Red(Icons.delete),
-                        onPressed: () => _showDeleteGroupDialog(_groups[i].name),
-                      ),
-                    ],
-                  ),
                 ),
               ),
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -466,6 +490,14 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
         );
       },
     );
+  }
+
+  Future<Null> _refresh() {
+    return _groupService.findAllByManagerId(_user.id).then((res) {
+      setState(() {
+        this._groups = res;
+      });
+    });
   }
 
   Future<bool> _onWillPop() async {

@@ -60,6 +60,8 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
 
   double _distance = 0;
 
+  ScrollController _scrollController = new ScrollController();
+
   @override
   void initState() {
     this._user = widget._user;
@@ -91,138 +93,152 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
           backgroundColor: DARK,
           appBar: managerAppBar(context, _user, getTranslated(context, 'workplace')),
           drawer: managerSideBar(context, _user),
-          body: Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
-                child: TextFormField(
-                  autofocus: false,
-                  autocorrect: true,
-                  cursorColor: WHITE,
-                  style: TextStyle(color: WHITE),
-                  decoration: InputDecoration(enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)), counterStyle: TextStyle(color: WHITE), border: OutlineInputBorder(), labelText: getTranslated(context, 'search'), prefixIcon: iconWhite(Icons.search), labelStyle: TextStyle(color: WHITE)),
-                  onChanged: (string) {
-                    setState(
-                      () {
-                        _filteredWorkplaces = _workplaces.where((w) => ((w.name).toLowerCase().contains(string.toLowerCase()))).toList();
-                      },
-                    );
-                  },
+          body: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
+                  child: TextFormField(
+                    autofocus: false,
+                    autocorrect: true,
+                    cursorColor: WHITE,
+                    style: TextStyle(color: WHITE),
+                    decoration: InputDecoration(enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)), counterStyle: TextStyle(color: WHITE), border: OutlineInputBorder(), labelText: getTranslated(context, 'search'), prefixIcon: iconWhite(Icons.search), labelStyle: TextStyle(color: WHITE)),
+                    onChanged: (string) {
+                      setState(
+                        () {
+                          _filteredWorkplaces = _workplaces.where((w) => ((w.name).toLowerCase().contains(string.toLowerCase()))).toList();
+                        },
+                      );
+                    },
+                  ),
                 ),
-              ),
-              ListTileTheme(
-                contentPadding: EdgeInsets.only(left: 3),
-                child: CheckboxListTile(
-                  title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
-                  value: _isChecked,
-                  activeColor: GREEN,
-                  checkColor: WHITE,
-                  onChanged: (bool value) {
-                    setState(() {
-                      _isChecked = value;
-                      List<bool> l = new List();
-                      _checked.forEach((b) => l.add(value));
-                      _checked = l;
-                      if (value) {
-                        _selectedIds.addAll(_filteredWorkplaces.map((e) => e.id));
-                      } else
-                        _selectedIds.clear();
-                    });
-                  },
-                  controlAffinity: ListTileControlAffinity.leading,
+                ListTileTheme(
+                  contentPadding: EdgeInsets.only(left: 3),
+                  child: CheckboxListTile(
+                    title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
+                    value: _isChecked,
+                    activeColor: GREEN,
+                    checkColor: WHITE,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _isChecked = value;
+                        List<bool> l = new List();
+                        _checked.forEach((b) => l.add(value));
+                        _checked = l;
+                        if (value) {
+                          _selectedIds.addAll(_filteredWorkplaces.map((e) => e.id));
+                        } else
+                          _selectedIds.clear();
+                      });
+                    },
+                    controlAffinity: ListTileControlAffinity.leading,
+                  ),
                 ),
-              ),
-              _workplaces.isEmpty
-                  ? _handleNoWorkplaces()
-                  : Expanded(
-                      child: ListView.builder(
-                        itemCount: _filteredWorkplaces.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          WorkplaceDto workplace = _filteredWorkplaces[index];
-                          int foundIndex = 0;
-                          for (int i = 0; i < _workplaces.length; i++) {
-                            if (_workplaces[i].id == workplace.id) {
-                              foundIndex = i;
-                            }
-                          }
-                          String name = workplace.name;
-                          if (name != null && name.length >= 30) {
-                            name = name.substring(0, 30) + ' ...';
-                          }
-                          return Card(
-                            color: DARK,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  color: BRIGHTER_DARK,
-                                  child: ListTileTheme(
-                                    contentPadding: EdgeInsets.only(right: 10),
-                                    child: CheckboxListTile(
-                                      controlAffinity: ListTileControlAffinity.trailing,
-                                      secondary: Padding(
-                                        padding: EdgeInsets.only(left: 10),
-                                        child: Shimmer.fromColors(
-                                          baseColor: GREEN,
-                                          highlightColor: WHITE,
-                                          child: BouncingWidget(
-                                            duration: Duration(milliseconds: 100),
-                                            scaleFactor: 2,
-                                            onPressed: () => _editWorkplace(workplace),
-                                            child: IconButton(
-                                              icon: icon30Green(Icons.border_color),
-                                              onPressed: () => _editWorkplace(workplace),
+                _workplaces.isEmpty
+                    ? _handleNoWorkplaces()
+                    : Expanded(
+                        flex: 2,
+                        child: RefreshIndicator(
+                          color: DARK,
+                          backgroundColor: WHITE,
+                          onRefresh: _refresh,
+                          child: Scrollbar(
+                            isAlwaysShown: true,
+                            controller: _scrollController,
+                            child: ListView.builder(
+                              controller: _scrollController,
+                              itemCount: _filteredWorkplaces.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                WorkplaceDto workplace = _filteredWorkplaces[index];
+                                int foundIndex = 0;
+                                for (int i = 0; i < _workplaces.length; i++) {
+                                  if (_workplaces[i].id == workplace.id) {
+                                    foundIndex = i;
+                                  }
+                                }
+                                String name = workplace.name;
+                                if (name != null && name.length >= 30) {
+                                  name = name.substring(0, 30) + ' ...';
+                                }
+                                return Card(
+                                  color: DARK,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                        color: BRIGHTER_DARK,
+                                        child: ListTileTheme(
+                                          contentPadding: EdgeInsets.only(right: 10),
+                                          child: CheckboxListTile(
+                                            controlAffinity: ListTileControlAffinity.trailing,
+                                            secondary: Padding(
+                                              padding: EdgeInsets.only(left: 10),
+                                              child: Shimmer.fromColors(
+                                                baseColor: GREEN,
+                                                highlightColor: WHITE,
+                                                child: BouncingWidget(
+                                                  duration: Duration(milliseconds: 100),
+                                                  scaleFactor: 2,
+                                                  onPressed: () => _editWorkplace(workplace),
+                                                  child: IconButton(
+                                                    icon: icon30Green(Icons.border_color),
+                                                    onPressed: () => _editWorkplace(workplace),
+                                                  ),
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                      ),
-                                      title: Column(
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.topLeft,
-                                            child: textWhite(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
-                                          ),
-                                          Align(
-                                            alignment: Alignment.topLeft,
-                                            child: Row(
+                                            title: Column(
                                               children: [
-                                                textWhite('Distance: '),
-                                                textGreen(workplace.radiusLength.toString() + ' KM'),
+                                                Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: textWhite(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
+                                                ),
+                                                Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: Row(
+                                                    children: [
+                                                      textWhite('Distance: '),
+                                                      textGreen(workplace.radiusLength.toString() + ' KM'),
+                                                    ],
+                                                  ),
+                                                ),
                                               ],
                                             ),
+                                            activeColor: GREEN,
+                                            checkColor: WHITE,
+                                            value: _checked[foundIndex],
+                                            onChanged: (bool value) {
+                                              setState(() {
+                                                _checked[foundIndex] = value;
+                                                if (value) {
+                                                  _selectedIds.add(_workplaces[foundIndex].id);
+                                                } else {
+                                                  _selectedIds.remove(_workplaces[foundIndex].id);
+                                                }
+                                                int selectedIdsLength = _selectedIds.length;
+                                                if (selectedIdsLength == _workplaces.length) {
+                                                  _isChecked = true;
+                                                } else if (selectedIdsLength == 0) {
+                                                  _isChecked = false;
+                                                }
+                                              });
+                                            },
                                           ),
-                                        ],
-                                      ),
-                                      activeColor: GREEN,
-                                      checkColor: WHITE,
-                                      value: _checked[foundIndex],
-                                      onChanged: (bool value) {
-                                        setState(() {
-                                          _checked[foundIndex] = value;
-                                          if (value) {
-                                            _selectedIds.add(_workplaces[foundIndex].id);
-                                          } else {
-                                            _selectedIds.remove(_workplaces[foundIndex].id);
-                                          }
-                                          int selectedIdsLength = _selectedIds.length;
-                                          if (selectedIdsLength == _workplaces.length) {
-                                            _isChecked = true;
-                                          } else if (selectedIdsLength == 0) {
-                                            _isChecked = false;
-                                          }
-                                        });
-                                      },
-                                    ),
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                )
-                              ],
+                                );
+                              },
                             ),
-                          );
-                        },
+                          ),
+                        ),
                       ),
-                    ),
-            ],
+              ],
+            ),
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
           floatingActionButton: Column(
