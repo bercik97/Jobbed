@@ -197,7 +197,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                                   alignment: Alignment.topLeft,
                                                   child: Row(
                                                     children: [
-                                                      textWhite('Radius: '),
+                                                      textWhite(getTranslated(this.context, 'radius') + ': '),
                                                       textGreen(workplace.radiusLength.toString() + ' KM'),
                                                     ],
                                                   ),
@@ -356,7 +356,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
     return Padding(
       padding: const EdgeInsets.only(top: 10, bottom: 20),
       child: MaterialButton(
-        child: textDarkBold('Set workplace area'),
+        child: textDarkBold(getTranslated(context, 'setWorkplaceArea')),
         color: GREEN,
         onPressed: () {
           showGeneralDialog(
@@ -441,7 +441,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
     return Padding(
       padding: const EdgeInsets.only(top: 10, bottom: 20),
       child: MaterialButton(
-        child: textDarkBold('Edit workplace area'),
+        child: textDarkBold(getTranslated(context, 'editWorkplaceArea')),
         color: GREEN,
         onPressed: () {
           showGeneralDialog(
@@ -542,10 +542,10 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
 
   Future<bool> onWillPop() async {
     if (_markersList.isEmpty) {
-      ToastService.showErrorToast('Workplace area is not setted ✘');
+      ToastService.showErrorToast(getTranslated(context, 'workplaceAreaIsNotSetted'));
     } else {
       String km = _radius.toString().substring(0, 4);
-      ToastService.showSuccessToast('Workplace area is setted to $km KM ✓');
+      ToastService.showSuccessToast(getTranslated(context, 'workplaceAreaIsSettedTo') + ' $km KM ✓');
     }
     return true;
   }
@@ -564,21 +564,21 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: DARK,
-          title: textCenter16GreenBold('Information about new workplace'),
+          title: textCenter16GreenBold(getTranslated(this.context, 'informationAboutNewWorkplace')),
           content: SingleChildScrollView(
             child: Column(
               children: [
-                textCenterWhite('Workplace name: '),
+                textCenterWhite(getTranslated(this.context, 'workplaceName') + ': '),
                 textCenter16GreenBold(workplace),
                 SizedBox(height: 5),
-                textCenterWhite('Workplace area radius: '),
+                textCenterWhite(getTranslated(this.context, 'workplaceAreaRadius') + ': '),
                 textCenter16GreenBold(_radius != 0 ? _radius.toString().substring(0, 4) + ' KM' : getTranslated(context, 'empty')),
               ],
             ),
           ),
           actions: <Widget>[
             FlatButton(
-              child: textGreen('Add'),
+              child: textGreen(getTranslated(this.context, 'add')),
               onPressed: () {
                 Circle circle;
                 if (_circles != null && _circles.isNotEmpty) {
@@ -598,12 +598,12 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                   _showSuccessDialog(getTranslated(this.context, 'successfullyAddedNewWorkplace'));
                 }).catchError((onError) {
                   setState(() => _isAddButtonTapped = false);
-                  ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+                  ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
                 });
               },
             ),
             FlatButton(
-                child: textRed('Do not add'),
+                child: textRed(getTranslated(this.context, 'doNotAdd')),
                 onPressed: () {
                   Navigator.of(context).pop();
                   setState(() => _isAddButtonTapped = false);
@@ -644,7 +644,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                   if (errorMsg.contains("SOMEONE_IS_WORKING_IN_WORKPLACE_FOR_DELETE")) {
                     setState(() => _isDeleteButtonTapped = false);
                     Navigator.pop(this.context);
-                    _showErrorDialog(errorMsg.substring(19));
+                    _showErrorDialog();
                     return;
                   }
                   setState(() => _isDeleteButtonTapped = false);
@@ -662,14 +662,14 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
     );
   }
 
-  void _showErrorDialog(String workplaceIds) {
+  void _showErrorDialog() {
     showDialog(
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: DARK,
-          title: textWhite(getTranslated(context, 'failure')),
+          title: textWhite(getTranslated(this.context, 'failure')),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
@@ -677,7 +677,6 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     textCenter20White(getTranslated(this.context, 'cannotDeleteWorkplaceWhenSomeoneWorkingThere')),
-                    textCenter20GreenBold(workplaceIds),
                   ],
                 ),
               ],
@@ -690,7 +689,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
               minWidth: double.maxFinite,
               shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
               color: GREEN,
-              child: text20WhiteBold(getTranslated(context, 'close')),
+              child: text20WhiteBold(getTranslated(this.context, 'close')),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ],
@@ -719,7 +718,10 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold('Edit workplace')),
+                  Padding(
+                    padding: EdgeInsets.only(top: 50),
+                    child: text20GreenBold(getTranslated(context, 'editWorkplace')),
+                  ),
                   SizedBox(height: 20),
                   Padding(
                     padding: EdgeInsets.only(left: 25, right: 25),

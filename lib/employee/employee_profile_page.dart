@@ -159,7 +159,9 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                                       child: Column(
                                         children: <Widget>[
                                           text20White(getTranslated(this.context, 'money')),
-                                          textCenter14White(_employeePageDto.tsCurrency != null ? '(' + _employeePageDto.tsCurrency + ')' : getTranslated(this.context, 'noCurrency')),
+                                          textCenter14White(
+                                            _employeePageDto.tsCurrency != null ? '(' + _employeePageDto.tsCurrency + ')' : getTranslated(this.context, 'noCurrency'),
+                                          ),
                                           Countup(
                                             begin: 0,
                                             end: _employeePageDto.tsEarnedMoney,

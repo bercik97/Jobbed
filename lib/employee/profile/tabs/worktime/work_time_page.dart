@@ -72,7 +72,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
   Widget build(BuildContext context) {
     _progressDialog = new ProgressDialog(context);
     _progressDialog.style(
-      message: 'Looking for workplaces in your location ...',
+      message: getTranslated(context, 'lookingForWorkplacesInYourLocation') + ' ...',
       messageTextStyle: TextStyle(color: DARK),
       progressWidget: circularProgressIndicator(),
     );
@@ -150,11 +150,11 @@ class _WorkTimePageState extends State<WorkTimePage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text("Can't get gurrent location"),
-              content: const Text('Please make sure you enable GPS and try again'),
+              title: Text(getTranslated(context, 'cannotGetCurrentLocation')),
+              content: Text(getTranslated(context, 'enableGpsAndTryAgain')),
               actions: <Widget>[
                 FlatButton(
-                  child: Text('Ok'),
+                  child: Text(getTranslated(context, 'ok')),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -239,7 +239,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
         children: [
           textCenter18Green(getTranslated(context, 'pressBtnToPause')),
           SizedBox(height: 5),
-          textCenter15Red('Note: You can only finish your work when you are in the place where you started to work!'),
+          textCenter15Red(getTranslated(context, 'noteFinishWorkInPlaceWhereYouStarted')),
         ],
       ),
     );
@@ -254,7 +254,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
         _showStartConfirmDialog(res);
         setState(() => _isStartDialogButtonTapped = false);
       }).catchError((onError) {
-        ToastService.showErrorToast('Cannot find workplace by your location!');
+        ToastService.showErrorToast(getTranslated(context, 'cannotFindWorkplaceByLocation'));
         setState(() => _isStartDialogButtonTapped = false);
       });
     }).catchError((onError) {
@@ -282,9 +282,9 @@ class _WorkTimePageState extends State<WorkTimePage> {
                     padding: EdgeInsets.all(10),
                     child: Column(
                       children: <Widget>[
-                        textCenter19White('We have found several workplaces in your location.'),
+                        textCenter19White(getTranslated(context, 'followingWorkplacesHaveBeenFoundInYourLocation')),
                         SizedBox(height: 5),
-                        textCenter18Green('Hint: Select the button next to where you want to start working.'),
+                        textCenter18Green(getTranslated(context, 'selecBtnNextToWhereYouWantToStartWork')),
                         SizedBox(height: 20),
                         SingleChildScrollView(
                           scrollDirection: Axis.vertical,
@@ -315,13 +315,13 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                                 builder: (BuildContext context) {
                                                   return AlertDialog(
                                                     backgroundColor: DARK,
-                                                    title: textGreenBold(getTranslated(context, 'confirmation')),
+                                                    title: textGreenBold(getTranslated(this.context, 'confirmation')),
                                                     content: SingleChildScrollView(
                                                       child: Column(
                                                         children: [
-                                                          textCenterWhite('Are you sure you want to START your work in the workplace below?'),
+                                                          textCenterWhite(getTranslated(this.context, 'areYouSureYouWantToStartYourWork')),
                                                           SizedBox(height: 10),
-                                                          textCenterGreenBold(getTranslated(context, 'workplaceName')),
+                                                          textCenterGreenBold(getTranslated(this.context, 'workplaceName')),
                                                           SizedBox(height: 2),
                                                           textCenterWhite(workplaces[i].name),
                                                         ],
@@ -329,10 +329,10 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                                     ),
                                                     actions: <Widget>[
                                                       FlatButton(
-                                                        child: textGreen('Yes, I want to start work'),
+                                                        child: textGreen(getTranslated(this.context, 'yesIWantToStart')),
                                                         onPressed: () => _isStartWorkButtonTapped ? null : _startWork(workplaces[i].id),
                                                       ),
-                                                      FlatButton(child: textWhite('No'), onPressed: () => Navigator.of(context).pop()),
+                                                      FlatButton(child: textWhite(getTranslated(this.context, 'no')), onPressed: () => Navigator.of(context).pop()),
                                                     ],
                                                   );
                                                 },
@@ -397,7 +397,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
         _showPauseConfirmDialog(res);
         setState(() => _isPauseWorkButtonTapped = false);
       }).catchError((onError) {
-        ToastService.showErrorToast('Cannot find workplace where you started by your current location!');
+        ToastService.showErrorToast(getTranslated(context, 'cannotFindWorkplaceWhereYouStarted'));
         setState(() => _isPauseWorkButtonTapped = false);
       });
     }).catchError((onError) {
@@ -414,12 +414,12 @@ class _WorkTimePageState extends State<WorkTimePage> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: DARK,
-          title: textGreen(getTranslated(context, 'confirmation')),
+          title: textGreen(getTranslated(this.context, 'confirmation')),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 textCenter20Green(
-                  getTranslated(context, 'pauseWorkConfirmation'),
+                  getTranslated(this.context, 'pauseWorkConfirmation'),
                 )
               ],
             ),
@@ -428,10 +428,10 @@ class _WorkTimePageState extends State<WorkTimePage> {
             Row(
               children: [
                 FlatButton(
-                  child: textWhite(getTranslated(context, 'workIsDone')),
+                  child: textWhite(getTranslated(this.context, 'workIsDone')),
                   onPressed: () => _isPauseWorkButtonTapped ? null : _finishWork(),
                 ),
-                FlatButton(child: textWhite(getTranslated(context, 'no')), onPressed: () => Navigator.of(context).pop()),
+                FlatButton(child: textWhite(getTranslated(this.context, 'no')), onPressed: () => Navigator.of(context).pop()),
               ],
             ),
           ],
