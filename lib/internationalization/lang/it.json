@@ -506,5 +506,6 @@
   "yesIWantToStart": "Ja, jeg vil begynne å jobbe",
   "cannotFindWorkplaceWhereYouStarted": "Finner ikke arbeidsplassen der du startet med din nåværende posisjon!",
   "workplaceNameExists": "Arbeidsplassenavnet eksisterer allerede! Velg et annet navn ...",
-  "workplaceAreNotSetted": "Sett opp arbeidsområdet ditt"
+  "workplaceAreNotSetted": "Sett opp arbeidsområdet ditt",
+  "cannotStartWorkWithoutTS": "Du kan ikke begynne å jobbe når du ikke har timeliste for inneværende måned. Be lederen din om å lage et timeliste for deg."
 }

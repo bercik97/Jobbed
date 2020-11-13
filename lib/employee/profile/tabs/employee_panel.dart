@@ -28,7 +28,7 @@ Container employeePanel(BuildContext context, User user, EmployeePageDto employe
                       onTap: () {
                         int todayWorkdayId = employee.todayWorkdayId;
                         if (todayWorkdayId == 0) {
-                          ToastService.showErrorToast('You cannot start work when you do not have timesheet for current month. Ask your manager to generate a timesheet for you.');
+                          ToastService.showErrorToast(getTranslated(context, 'cannotStartWorkWithoutTS'));
                           return;
                         }
                         Navigator.push(

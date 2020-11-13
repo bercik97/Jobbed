@@ -506,5 +506,6 @@
   "yesIWantToStart": "Ja, ich möchte mit der Arbeit beginnen",
   "cannotFindWorkplaceWhereYouStarted": "Kann keinen Arbeitsplatz finden, an dem Sie an Ihrem aktuellen Standort begonnen haben!",
   "workplaceNameExists": "Arbeitsplatzname existiert bereits! Bitte wählen Sie einen anderen Namen ...",
-  "workplaceAreNotSetted": "Bitte richten Sie Ihren Arbeitsplatz ein"
+  "workplaceAreNotSetted": "Bitte richten Sie Ihren Arbeitsplatz ein",
+  "cannotStartWorkWithoutTS": "Sie können nicht mit der Arbeit beginnen, wenn Sie keine Arbeitszeittabelle für den aktuellen Monat haben. Bitten Sie Ihren Manager, eine Arbeitszeittabelle für Sie zu erstellen."
 }

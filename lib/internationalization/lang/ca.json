@@ -506,5 +506,6 @@
   "yesIWantToStart": "Ja, jag vill börja arbeta",
   "cannotFindWorkplaceWhereYouStarted": "Det går inte att hitta en arbetsplats där du började med din nuvarande plats!",
   "workplaceNameExists": "Arbetsplatsnamn finns redan! Välj ett annat namn ...",
-  "workplaceAreNotSetted": "Ställ in din arbetsplats"
+  "workplaceAreNotSetted": "Ställ in din arbetsplats",
+  "cannotStartWorkWithoutTS": "Du kan inte börja arbeta när du inte har tidrapport för aktuell månad. Be din chef skapa en tidrapport åt dig."
 }

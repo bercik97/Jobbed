@@ -506,5 +506,6 @@
   "yesIWantToStart": "Tak, chcę rozpocząć pracę",
   "cannotFindWorkplaceWhereYouStarted": "Nie znaleziono miejsca pracy, w którym zacząłęs swoją pracę na podstawie Twojej lokalizacji!",
   "workplaceNameExists": "Nazwa miejsca pracy aktualnie istnieje! Proszę wybierz inna nazwę ...",
-  "workplaceAreNotSetted": "Proszę wybierz obszar miejsca pracy"
+  "workplaceAreNotSetted": "Proszę wybierz obszar miejsca pracy",
+  "cannotStartWorkWithoutTS": "Nie możesz rozpocząć pracy, jeśli nie posiadasz arkusza czasu pracy na bieżący miesiąc. Poproś swojego menadżera o wygenerowanie arkusza czasu pracy dla Ciebie."
 }
