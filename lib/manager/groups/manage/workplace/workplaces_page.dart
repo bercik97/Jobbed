@@ -399,7 +399,9 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                         shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.close)],
+                          children: <Widget>[
+                            iconWhite(Icons.close),
+                          ],
                         ),
                         color: Colors.red,
                         onPressed: () {
@@ -494,7 +496,12 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                 });
               },
             ),
-            FlatButton(child: textRed('Do not add'), onPressed: () => Navigator.of(context).pop()),
+            FlatButton(
+                child: textRed('Do not add'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  setState(() => _isAddButtonTapped = false);
+                }),
           ],
         );
       },
