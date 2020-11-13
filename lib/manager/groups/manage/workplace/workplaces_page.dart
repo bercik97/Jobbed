@@ -58,7 +58,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
   List<Marker> _markersList = new List();
   Set<Circle> _circles = new Set();
 
-  double _distance = 0;
+  double _radius = 0.01;
 
   ScrollController _scrollController = new ScrollController();
 
@@ -197,7 +197,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                                   alignment: Alignment.topLeft,
                                                   child: Row(
                                                     children: [
-                                                      textWhite('Distance: '),
+                                                      textWhite('Radius: '),
                                                       textGreen(workplace.radiusLength.toString() + ' KM'),
                                                     ],
                                                   ),
@@ -306,7 +306,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                       ),
                     ),
                   ),
-                  _buildGoogleMapButton('Set workplace area'),
+                  _buildAddGoogleMapButton(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -326,7 +326,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                           Navigator.pop(context);
                           _markersList.clear();
                           _circles.clear();
-                          _distance = 0;
+                          _radius = 0;
                         },
                       ),
                       SizedBox(width: 25),
@@ -352,11 +352,11 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
     );
   }
 
-  _buildGoogleMapButton(String title) {
+  _buildAddGoogleMapButton() {
     return Padding(
       padding: const EdgeInsets.only(top: 10, bottom: 20),
       child: MaterialButton(
-        child: textDarkBold(title),
+        child: textDarkBold('Set workplace area'),
         color: GREEN,
         onPressed: () {
           showGeneralDialog(
@@ -392,7 +392,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                               new Circle(
                                 circleId: CircleId('${51.9189046}-${19.1343786}'),
                                 center: LatLng(coordinates.latitude, coordinates.longitude),
-                                radius: _distance * 1000,
+                                radius: _radius * 1000,
                               ),
                             );
                             setState(() {});
@@ -401,10 +401,10 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                         bottomNavigationBar: Container(
                           height: 100,
                           child: SfSlider(
-                            min: 0.0,
-                            max: 20.0,
-                            value: _distance,
-                            interval: 4,
+                            min: 0.01,
+                            max: 0.25,
+                            value: _radius,
+                            interval: 0.03,
                             showTicks: true,
                             showLabels: true,
                             showTooltip: true,
@@ -416,10 +416,114 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                 new Circle(
                                   circleId: CircleId('${circle.circleId}'),
                                   center: circle.center,
-                                  radius: _distance * 1000,
+                                  radius: _radius * 1000,
                                 ),
                               );
-                              setState(() => _distance = value);
+                              setState(() => _radius = value);
+                            },
+                          ),
+                        ),
+                      ),
+                      onWillPop: onWillPop,
+                    );
+                  },
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  _buildEditGoogleMapButton(double latitude, double longitude, double radiusLength) {
+    this._radius = radiusLength;
+    return Padding(
+      padding: const EdgeInsets.only(top: 10, bottom: 20),
+      child: MaterialButton(
+        child: textDarkBold('Edit workplace area'),
+        color: GREEN,
+        onPressed: () {
+          showGeneralDialog(
+            context: context,
+            barrierColor: DARK.withOpacity(0.95),
+            barrierDismissible: false,
+            barrierLabel: getTranslated(context, 'contact'),
+            transitionDuration: Duration(milliseconds: 400),
+            pageBuilder: (_, __, ___) {
+              return SizedBox.expand(
+                child: StatefulBuilder(
+                  builder: (context, setState) {
+                    return WillPopScope(
+                      child: Scaffold(
+                        body: GoogleMap(
+                          initialCameraPosition: _cameraPosition,
+                          markers: _markersList.toSet(),
+                          onMapCreated: (controller) {
+                            this._controller = controller;
+                            LatLng currentLatLng = new LatLng(latitude, longitude);
+                            this._cameraPosition = new CameraPosition(target: currentLatLng);
+                            _controller.animateCamera(CameraUpdate.newLatLng(currentLatLng));
+                            _markersList.clear();
+                            _markersList.add(
+                              new Marker(
+                                position: currentLatLng,
+                                markerId: MarkerId('$latitude-$longitude'),
+                              ),
+                            );
+                            _circles.clear();
+                            _circles.add(
+                              new Circle(
+                                circleId: CircleId('$latitude-$longitude'),
+                                center: LatLng(latitude, longitude),
+                                radius: radiusLength * 1000,
+                              ),
+                            );
+                            setState(() {});
+                          },
+                          circles: _circles,
+                          onTap: (coordinates) {
+                            _controller.animateCamera(CameraUpdate.newLatLng(coordinates));
+                            _markersList.clear();
+                            _markersList.add(
+                              new Marker(
+                                position: coordinates,
+                                markerId: MarkerId('${coordinates.latitude}-${coordinates.longitude}'),
+                              ),
+                            );
+                            _circles.clear();
+                            _circles.add(
+                              new Circle(
+                                circleId: CircleId('${coordinates.latitude}-${coordinates.longitude}'),
+                                center: LatLng(coordinates.latitude, coordinates.longitude),
+                                radius: _radius * 1000,
+                              ),
+                            );
+                            setState(() {});
+                          },
+                        ),
+                        bottomNavigationBar: Container(
+                          height: 100,
+                          child: SfSlider(
+                            min: 0.01,
+                            max: 0.25,
+                            value: _radius,
+                            interval: 0.03,
+                            showTicks: true,
+                            showLabels: true,
+                            showTooltip: true,
+                            minorTicksPerInterval: 1,
+                            onChanged: (dynamic value) {
+                              Circle circle = _circles.elementAt(0);
+                              _circles.clear();
+                              _circles.add(
+                                new Circle(
+                                  circleId: CircleId('${circle.circleId}'),
+                                  center: circle.center,
+                                  radius: _radius * 1000,
+                                ),
+                              );
+                              setState(() => _radius = value);
                             },
                           ),
                         ),
@@ -438,9 +542,9 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
 
   Future<bool> onWillPop() async {
     if (_markersList.isEmpty) {
-      ToastService.showErrorToast('Workplace area is still not setted ✘');
+      ToastService.showErrorToast('Workplace area is not setted ✘');
     } else {
-      String km = _distance.toString().substring(0, 4);
+      String km = _radius.toString().substring(0, 4);
       ToastService.showSuccessToast('Workplace area is setted to $km KM ✓');
     }
     return true;
@@ -467,8 +571,8 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                 textCenterWhite('Workplace name: '),
                 textCenter16GreenBold(workplace),
                 SizedBox(height: 5),
-                textCenterWhite('Workplace area distance: '),
-                textCenter16GreenBold(_distance != 0 ? _distance.toString().substring(0, 4) : getTranslated(context, 'empty')),
+                textCenterWhite('Workplace area radius: '),
+                textCenter16GreenBold(_radius != 0 ? _radius.toString().substring(0, 4) + ' KM' : getTranslated(context, 'empty')),
               ],
             ),
           ),
@@ -483,7 +587,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                 dto = new WorkplaceDto(
                   id: int.parse(_user.companyId),
                   name: workplace,
-                  radiusLength: _distance != 0 ? double.parse(_distance.toString().substring(0, 4)) : 0,
+                  radiusLength: _radius != 0 ? double.parse(_radius.toString().substring(0, 4)) : 0,
                   latitude: circle != null ? circle.center.latitude : 0,
                   longitude: circle != null ? circle.center.longitude : 0,
                 );
@@ -537,7 +641,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                         })
                     .catchError((onError) {
                   String errorMsg = onError.toString();
-                  if (errorMsg.substring(0, 17) == "EMPLOYEES_IN_WORK") {
+                  if (errorMsg.contains("SOMEONE_IS_WORKING_IN_WORKPLACE_FOR_DELETE")) {
                     setState(() => _isDeleteButtonTapped = false);
                     Navigator.pop(this.context);
                     _showErrorDialog(errorMsg.substring(19));
@@ -641,7 +745,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                       ),
                     ),
                   ),
-                  _buildGoogleMapButton('Edit workplace area'),
+                  _buildEditGoogleMapButton(latitude, longitude, radiusLength),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -682,7 +786,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                             workplace.id,
                             {
                               'name': name,
-                              'radiusLength': _distance != 0 ? double.parse(_distance.toString().substring(0, 4)) : 0,
+                              'radiusLength': _radius != 0 ? double.parse(_radius.toString().substring(0, 4)) : 0,
                               'latitude': circle != null ? circle.center.latitude : 0,
                               'longitude': circle != null ? circle.center.longitude : 0,
                             },
@@ -757,7 +861,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
         _filteredWorkplaces = _workplaces;
         _markersList.clear();
         _circles.clear();
-        _distance = 0;
+        _radius = 0;
         _loading = false;
       });
     });
