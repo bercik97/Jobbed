@@ -183,10 +183,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                                   duration: Duration(milliseconds: 100),
                                                   scaleFactor: 2,
                                                   onPressed: () => _editWorkplace(workplace),
-                                                  child: IconButton(
-                                                    icon: icon30Green(Icons.border_color),
-                                                    onPressed: () => _editWorkplace(workplace),
-                                                  ),
+                                                  child: icon30Green(Icons.border_color),
                                                 ),
                                               ),
                                             ),
