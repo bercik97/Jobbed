@@ -177,14 +177,7 @@ class _GroupEditMoneyPerHourPageState extends State<GroupEditMoneyPerHourPage> {
                                           Navigator.push(
                                             this.context,
                                             MaterialPageRoute(
-                                              builder: (context) => EmployeeProfilPage(
-                                                _model,
-                                                nationality,
-                                                currency,
-                                                employee.employeeId,
-                                                info,
-                                                employee.moneyPerHour,
-                                              ),
+                                              builder: (context) => EmployeeProfilPage(_model, nationality, currency, employee.employeeId, info),
                                             ),
                                           );
                                         },

@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
@@ -15,14 +14,11 @@ import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/profile/manager_profile_page.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/toastr_service.dart';
-import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/circular_progress_indicator.dart';
 import 'package:give_job/shared/widget/contact_section.dart';
-import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/silver_app_bar_delegate.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
@@ -37,16 +33,8 @@ class EmployeeProfilPage extends StatefulWidget {
   final String _currency;
   final int _employeeId;
   final String _employeeInfo;
-  final double _employeeMoneyPerHour;
 
-  const EmployeeProfilPage(
-    this._model,
-    this._employeeNationality,
-    this._currency,
-    this._employeeId,
-    this._employeeInfo,
-    this._employeeMoneyPerHour,
-  );
+  const EmployeeProfilPage(this._model, this._employeeNationality, this._currency, this._employeeId, this._employeeInfo);
 
   @override
   _EmployeeProfilPageState createState() => _EmployeeProfilPageState();
@@ -63,7 +51,6 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
   String _currency;
   int _employeeId;
   String _employeeInfo;
-  double _employeeMoneyPerHour;
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +62,6 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
     this._currency = widget._currency;
     this._employeeId = widget._employeeId;
     this._employeeInfo = widget._employeeInfo;
-    this._employeeMoneyPerHour = widget._employeeMoneyPerHour;
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -151,7 +137,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                         tabs: [
                           Tab(icon: Icon(Icons.event_note), text: getTranslated(this.context, 'timesheets')),
                           Tab(icon: Icon(Icons.import_contacts), text: getTranslated(this.context, 'contact')),
-                          Tab(icon: Icon(Icons.border_color), text: getTranslated(this.context, 'edit')),
+                          Tab(icon: Icon(Icons.info), text: getTranslated(this.context, 'informations')),
                         ],
                       ),
                     ),
@@ -165,7 +151,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                   children: <Widget>[
                     _buildTimesheetsSection(),
                     _buildContactSection(),
-                    _buildEditSection(),
+                    _buildInformationSection(),
                   ],
                 ),
               ),
@@ -231,6 +217,14 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                                         Align(
                                             child: Row(
                                               children: <Widget>[
+                                                textWhite(getTranslated(this.context, 'company') + ': '),
+                                                textGreenBold(timesheet.companyName != null ? utf8.decode(timesheet.companyName.runes.toList()) : getTranslated(this.context, 'empty')),
+                                              ],
+                                            ),
+                                            alignment: Alignment.topLeft),
+                                        Align(
+                                            child: Row(
+                                              children: <Widget>[
                                                 textWhite(getTranslated(this.context, 'hours') + ': '),
                                                 textGreenBold(timesheet.numberOfHoursWorked.toString() + 'h'),
                                               ],
@@ -290,154 +284,75 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
     );
   }
 
-  Widget _buildEditSection() {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          _buildButton(getTranslated(context, 'changeMoneyPerHour'), Icons.monetization_on, () => _changeCurrentMoneyPerHour(_employeeMoneyPerHour.toString())),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildButton(String content, IconData icon, Function() fun) {
-    return Padding(
-      padding: EdgeInsets.only(top: 20),
-      child: MaterialButton(
-        elevation: 0,
-        height: 50,
-        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-        onPressed: () => fun(),
-        color: GREEN,
-        child: Container(
-          width: 285,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              text20White(content),
-              iconWhite(icon),
-            ],
-          ),
-        ),
-        textColor: Colors.white,
-      ),
-    );
-  }
-
-  void _changeCurrentMoneyPerHour(String employeeMoneyPerHour) {
-    TextEditingController _moneyPerHourController = new TextEditingController();
-    showGeneralDialog(
-      context: context,
-      barrierColor: DARK.withOpacity(0.95),
-      barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'moneyPerHour'),
-      transitionDuration: Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return SizedBox.expand(
-          child: Scaffold(
-            backgroundColor: Colors.black12,
-            body: Center(
-              child: Padding(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 50),
-                      child: Column(
-                        children: [
-                          text20GreenBold(getTranslated(context, 'moneyPerHourUpperCase')),
-                          text20GreenBold(getTranslated(context, 'currentlyHourlyWage') + ': $employeeMoneyPerHour'),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 7.5),
-                    textGreen(getTranslated(context, 'changeMoneyPerHourForEmployee')),
-                    SizedBox(height: 5.0),
-                    textCenter15Red(getTranslated(context, 'theRateWillNotBeSetToPreviouslyFilledHours')),
-                    textCenter15Red(getTranslated(context, 'updateAmountsOfPrevSheetsOverwrite')),
-                    SizedBox(height: 2.5),
-                    Container(
-                      width: 150,
-                      child: TextFormField(
-                        autofocus: true,
-                        controller: _moneyPerHourController,
-                        keyboardType: TextInputType.numberWithOptions(decimal: true),
-                        inputFormatters: <TextInputFormatter>[
-                          WhitelistingTextInputFormatter(RegExp(r'^\d+\.?\d{0,2}')),
-                        ],
-                        maxLength: 6,
-                        cursorColor: WHITE,
-                        textAlignVertical: TextAlignVertical.center,
-                        style: TextStyle(color: WHITE),
-                        decoration: InputDecoration(
-                          counterStyle: TextStyle(color: WHITE),
-                          labelStyle: TextStyle(color: WHITE),
-                          labelText: '(0-200)',
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        MaterialButton(
-                          elevation: 0,
-                          height: 50,
-                          minWidth: 40,
-                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[iconWhite(Icons.close)],
-                          ),
-                          color: Colors.red,
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                        SizedBox(width: 25),
-                        MaterialButton(
-                          elevation: 0,
-                          height: 50,
-                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[iconWhite(Icons.check)],
-                          ),
-                          color: GREEN,
-                          onPressed: () {
-                            double moneyPerHour;
-                            try {
-                              moneyPerHour = double.parse(_moneyPerHourController.text);
-                            } catch (FormatException) {
-                              ToastService.showErrorToast(getTranslated(context, 'newHourlyRateIsRequired'));
-                              return;
-                            }
-                            String invalidMessage = ValidatorService.validateMoneyPerHour(moneyPerHour, context);
-                            if (invalidMessage != null) {
-                              ToastService.showErrorToast(invalidMessage);
-                              return;
-                            }
-                            _employeeService.updateFieldsValuesById(
-                              _employeeId,
-                              {
-                                'moneyPerHour': moneyPerHour,
-                              },
-                            ).then(
-                              (value) {
-                                Navigator.pop(context);
-                                ToastService.showSuccessToast(getTranslated(context, 'moneyPerHourUpdatedSuccessfullyFor') + utf8.decode(_employeeInfo != null ? _employeeInfo.runes.toList() : '-') + '!');
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+  Widget _buildInformationSection() {
+    return FutureBuilder(
+      future: _employeeService.findEmployeeAndUserAndCompanyFieldsValuesById(_employeeId, [
+        'fatherName',
+        'motherName',
+        'dateOfBirth',
+        'moneyPerHour',
+        'expirationDateOfWork',
+        'nip',
+        'bankAccountNumber',
+        'drivingLicense',
+        'locality',
+        'zipCode',
+        'street',
+        'houseNumber',
+        'passportNumber',
+        'passportReleaseDate',
+        'passportExpirationDate',
+      ]),
+      builder: (BuildContext context, AsyncSnapshot<Map<String, Object>> snapshot) {
+        Map<String, Object> res = snapshot.data;
+        if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
+          return Center(child: circularProgressIndicator());
+        } else {
+          String fatherName = res['fatherName'];
+          String motherName = res['motherName'];
+          String dateOfBirth = res['dateOfBirth'];
+          double moneyPerHour = res['moneyPerHour'];
+          String expirationDateOfWork = res['expirationDateOfWork'];
+          String nip = res['nip'];
+          String bankAccountNumber = res['bankAccountNumber'];
+          String drivingLicense = res['drivingLicense'];
+          String locality = res['locality'];
+          String zipCode = res['zipCode'];
+          String street = res['street'];
+          String houseNumber = res['houseNumber'];
+          String passportNumber = res['passportNumber'];
+          String passportReleaseDate = res['passportReleaseDate'];
+          String passportExpirationDate = res['passportExpirationDate'];
+          return SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                _buildListTile(this.context, 'fatherName', fatherName),
+                _buildListTile(this.context, 'motherName', motherName),
+                _buildListTile(this.context, 'dateOfBirth', dateOfBirth),
+                _buildListTile(this.context, 'moneyPerHour', moneyPerHour.toString()),
+                _buildListTile(this.context, 'expirationDateOfWork', expirationDateOfWork),
+                _buildListTile(this.context, 'nip', nip),
+                _buildListTile(this.context, 'bankAccountNumber', bankAccountNumber),
+                _buildListTile(this.context, 'drivingLicense', drivingLicense),
+                _buildListTile(this.context, 'locality', locality),
+                _buildListTile(this.context, 'zipCode', zipCode),
+                _buildListTile(this.context, 'street', street),
+                _buildListTile(this.context, 'houseNumber', houseNumber),
+                _buildListTile(this.context, 'passportNumber', passportNumber),
+                _buildListTile(this.context, 'passportReleaseDate', passportReleaseDate),
+                _buildListTile(this.context, 'passportExpirationDate', passportExpirationDate),
+              ],
             ),
-          ),
-        );
+          );
+        }
       },
+    );
+  }
+
+  Widget _buildListTile(BuildContext context, String title, String value) {
+    return ListTile(
+      title: text16GreenBold(getTranslated(context, title)),
+      subtitle: text16White(value != null && value != '' ? value : getTranslated(context, 'empty')),
     );
   }
 

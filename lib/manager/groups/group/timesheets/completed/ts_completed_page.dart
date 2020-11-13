@@ -158,7 +158,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                                         Navigator.push(
                                           this.context,
                                           MaterialPageRoute(
-                                            builder: (context) => EmployeeProfilPage(_model, nationality, currency, employee.id, info, employee.moneyPerHour),
+                                            builder: (context) => EmployeeProfilPage(_model, nationality, currency, employee.id, info),
                                           ),
                                         );
                                       },
