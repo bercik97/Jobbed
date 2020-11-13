@@ -742,6 +742,9 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
         _workplaces = res;
         _workplaces.forEach((e) => _checked.add(false));
         _filteredWorkplaces = _workplaces;
+        _markersList.clear();
+        _circles.clear();
+        _distance = 0;
         _loading = false;
       });
     });
