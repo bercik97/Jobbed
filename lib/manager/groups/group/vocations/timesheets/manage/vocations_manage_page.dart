@@ -11,7 +11,6 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_without_status_dto.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/vocations/vocations_ts_page.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -256,8 +255,6 @@ class _VocationsManagePageState extends State<VocationsManagePage> {
               ],
             ),
           ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-          floatingActionButton: groupFloatingActionButton(context, _model),
         ),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, VocationsTsPage(_model)),

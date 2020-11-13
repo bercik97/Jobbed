@@ -8,7 +8,6 @@ import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/group_page.dart';
 import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
-import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/timesheets/add/add_ts_page.dart';
 import 'package:give_job/manager/groups/group/timesheets/delete/delete_ts_page.dart';
@@ -237,8 +236,6 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
               ],
             ),
           ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-          floatingActionButton: groupFloatingActionButton(context, _model),
           bottomNavigationBar: Container(
             height: 40,
             child: Row(

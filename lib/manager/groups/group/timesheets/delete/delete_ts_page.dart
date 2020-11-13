@@ -22,7 +22,6 @@ import '../../../../../shared/widget/loader.dart';
 import '../../../../../shared/widget/texts.dart';
 import '../../../../shared/manager_app_bar.dart';
 import '../../../../shared/manager_side_bar.dart';
-import '../../shared/group_floating_action_button.dart';
 import '../../shared/group_model.dart';
 import '../ts_page.dart';
 
@@ -234,8 +233,6 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
               ],
             ),
           ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-          floatingActionButton: groupFloatingActionButton(context, _model),
         ),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, ManagerTsPage(_model)),

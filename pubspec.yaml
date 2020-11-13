@@ -26,7 +26,6 @@ dependencies:
   dropdown_formfield: ^0.1.2
   flutter_plugin_pdf_viewer: ^1.0.7
   slide_popup_dialog: ^0.0.2
-  flutter_speed_dial: ^1.2.1
   date_range_picker: ^1.0.6
   date_util: ^0.1.4
   intl: ^0.16.0
