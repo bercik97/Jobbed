@@ -149,20 +149,18 @@ class _WorkTimePageState extends State<WorkTimePage> {
           barrierDismissible: false,
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text(getTranslated(context, 'cannotGetCurrentLocation')),
-              content: Text(getTranslated(context, 'enableGpsAndTryAgain')),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text(getTranslated(context, 'ok')),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => EmployeeProfilPage(_user)),
-                    );
-                  },
-                )
-              ],
+            return WillPopScope(
+              child: AlertDialog(
+                title: Text(getTranslated(context, 'cannotGetCurrentLocation')),
+                content: Text(getTranslated(context, 'enableGpsAndTryAgain')),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text(getTranslated(context, 'ok')),
+                    onPressed: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => EmployeeProfilPage(_user)), (e) => false),
+                  )
+                ],
+              ),
+              onWillPop: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => EmployeeProfilPage(_user)), (e) => false),
             );
           },
         );
