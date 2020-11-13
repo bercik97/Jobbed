@@ -550,12 +550,16 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
     return true;
   }
 
-  _handleAddWorkplace(String workplace) {
+  _handleAddWorkplace(String workplaceName) {
     setState(() => _isAddButtonTapped = true);
-    String invalidMessage = ValidatorService.validateWorkplace(workplace, context);
+    String invalidMessage = ValidatorService.validateWorkplace(workplaceName, context);
     if (invalidMessage != null) {
       setState(() => _isAddButtonTapped = false);
       ToastService.showErrorToast(invalidMessage);
+      return;
+    } else if (_markersList.isEmpty) {
+      setState(() => _isAddButtonTapped = false);
+      ToastService.showErrorToast(getTranslated(context, 'workplaceAreNotSetted'));
       return;
     }
     WorkplaceDto dto;
@@ -569,7 +573,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
             child: Column(
               children: [
                 textCenterWhite(getTranslated(this.context, 'workplaceName') + ': '),
-                textCenter16GreenBold(workplace),
+                textCenter16GreenBold(workplaceName),
                 SizedBox(height: 5),
                 textCenterWhite(getTranslated(this.context, 'workplaceAreaRadius') + ': '),
                 textCenter16GreenBold(_radius != 0 ? _radius.toString().substring(0, 4) + ' KM' : getTranslated(context, 'empty')),
@@ -586,7 +590,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                 }
                 dto = new WorkplaceDto(
                   id: int.parse(_user.companyId),
-                  name: workplace,
+                  name: workplaceName,
                   radiusLength: _radius != 0 ? double.parse(_radius.toString().substring(0, 4)) : 0,
                   latitude: circle != null ? circle.center.latitude : 0,
                   longitude: circle != null ? circle.center.longitude : 0,
@@ -598,7 +602,12 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                   _showSuccessDialog(getTranslated(this.context, 'successfullyAddedNewWorkplace'));
                 }).catchError((onError) {
                   setState(() => _isAddButtonTapped = false);
-                  ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+                  String errorMsg = onError.toString();
+                  if (errorMsg.contains("WORKPLACE_NAME_EXISTS")) {
+                    ToastService.showErrorToast(getTranslated(this.context, 'workplaceNameExists'));
+                  } else {
+                    ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+                  }
                 });
               },
             ),
@@ -797,7 +806,12 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                             _refresh();
                             ToastService.showSuccessToast(getTranslated(context, 'workplaceUpdatedSuccessfully'));
                           }).catchError((onError) {
-                            ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+                            String errorMsg = onError.toString();
+                            if (errorMsg.contains("WORKPLACE_NAME_EXISTS")) {
+                              ToastService.showErrorToast(getTranslated(context, 'workplaceNameExists'));
+                            } else {
+                              ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+                            }
                           });
                         },
                       ),

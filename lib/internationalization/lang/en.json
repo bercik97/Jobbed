@@ -504,5 +504,7 @@
   "selecBtnNextToWhereYouWantToStartWork": "Hint: Select the button next to where you want to start working.",
   "areYouSureYouWantToStartYourWork": "Are you sure you want to START your work in the workplace below?",
   "yesIWantToStart": "Yes, I want to start work",
-  "cannotFindWorkplaceWhereYouStarted": "Cannot find workplace where you started by your current location!"
+  "cannotFindWorkplaceWhereYouStarted": "Cannot find workplace where you started by your current location!",
+  "workplaceNameExists": "Workplace name already exists! Please choose other name ...",
+  "workplaceAreNotSetted": "Please set up your workplace area"
 }

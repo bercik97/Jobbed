@@ -504,5 +504,7 @@
   "selecBtnNextToWhereYouWantToStartWork": "Hint: Selecteer de knop naast waar je wilt beginnen met werken.",
   "areYouSureYouWantToStartYourWork": "Weet u zeker dat u met uw werk wilt beginnen op de onderstaande werkplek?",
   "yesIWantToStart": "Ja, ik wil aan het werk",
-  "cannotFindWorkplaceWhereYouStarted": "Kan de werkplek waar je begonnen bent niet vinden op basis van je huidige locatie!"
+  "cannotFindWorkplaceWhereYouStarted": "Kan de werkplek waar je begonnen bent niet vinden op basis van je huidige locatie!",
+  "workplaceNameExists": "Werkpleknaam bestaat al! Kies een andere naam ...",
+  "workplaceAreNotSetted": "Stel uw werkplek in"
 }

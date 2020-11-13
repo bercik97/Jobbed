@@ -504,5 +504,7 @@
   "selecBtnNextToWhereYouWantToStartWork": "Hinweis: Wählen Sie die Schaltfläche neben der Stelle, an der Sie mit der Arbeit beginnen möchten.",
   "areYouSureYouWantToStartYourWork": "Sind Sie sicher, dass Sie Ihre Arbeit am unten aufgeführten Arbeitsplatz beginnen möchten?",
   "yesIWantToStart": "Ja, ich möchte mit der Arbeit beginnen",
-  "cannotFindWorkplaceWhereYouStarted": "Kann keinen Arbeitsplatz finden, an dem Sie an Ihrem aktuellen Standort begonnen haben!"
+  "cannotFindWorkplaceWhereYouStarted": "Kann keinen Arbeitsplatz finden, an dem Sie an Ihrem aktuellen Standort begonnen haben!",
+  "workplaceNameExists": "Arbeitsplatzname existiert bereits! Bitte wählen Sie einen anderen Namen ...",
+  "workplaceAreNotSetted": "Bitte richten Sie Ihren Arbeitsplatz ein"
 }

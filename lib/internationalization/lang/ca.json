@@ -504,5 +504,7 @@
   "selecBtnNextToWhereYouWantToStartWork": "Tips: Välj knappen bredvid där du vill börja arbeta.",
   "areYouSureYouWantToStartYourWork": "Är du säker på att du vill börja ditt arbete på arbetsplatsen nedan?",
   "yesIWantToStart": "Ja, jag vill börja arbeta",
-  "cannotFindWorkplaceWhereYouStarted": "Det går inte att hitta en arbetsplats där du började med din nuvarande plats!"
+  "cannotFindWorkplaceWhereYouStarted": "Det går inte att hitta en arbetsplats där du började med din nuvarande plats!",
+  "workplaceNameExists": "Arbetsplatsnamn finns redan! Välj ett annat namn ...",
+  "workplaceAreNotSetted": "Ställ in din arbetsplats"
 }

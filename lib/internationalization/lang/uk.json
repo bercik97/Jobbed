@@ -504,5 +504,7 @@
   "selecBtnNextToWhereYouWantToStartWork": "Підказка: виберіть кнопку поруч із місцем, де ви хочете почати працювати.",
   "areYouSureYouWantToStartYourWork": "Ви впевнені, що хочете ПОЧАТИ свою роботу на робочому місці нижче?",
   "yesIWantToStart": "Так, я хочу розпочати роботу",
-  "cannotFindWorkplaceWhereYouStarted": "Не вдається знайти робоче місце, де ви починали, за поточним місцезнаходженням!"
+  "cannotFindWorkplaceWhereYouStarted": "Не вдається знайти робоче місце, де ви починали, за поточним місцезнаходженням!",
+  "workplaceNameExists": "Назва робочого місця вже існує! Виберіть інше ім'я ...",
+  "workplaceAreNotSetted": "Будь ласка, налаштуйте робоче місце"
 }

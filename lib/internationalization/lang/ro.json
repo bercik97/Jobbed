@@ -504,5 +504,7 @@
   "selecBtnNextToWhereYouWantToStartWork": "Sugestie: Selectați butonul de lângă locul în care doriți să începeți să lucrați.",
   "areYouSureYouWantToStartYourWork": "Sigur doriți să ÎNCEPEȚI munca la locul de muncă de mai jos?",
   "yesIWantToStart": "Da, vreau să încep lucrul",
-  "cannotFindWorkplaceWhereYouStarted": "Nu se poate găsi locul de muncă unde ați început după locația dvs. curentă!"
+  "cannotFindWorkplaceWhereYouStarted": "Nu se poate găsi locul de muncă unde ați început după locația dvs. curentă!",
+  "workplaceNameExists": "Numele locului de muncă există deja! Vă rugăm să alegeți alt nume ...",
+  "workplaceAreNotSetted": "Vă rugăm să vă configurați zona de lucru"
 }

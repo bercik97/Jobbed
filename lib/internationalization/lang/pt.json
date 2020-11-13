@@ -504,5 +504,7 @@
   "selecBtnNextToWhereYouWantToStartWork": "მინიშნება: აირჩიეთ ღილაკი, სადაც გსურთ მუშაობის დაწყება.",
   "areYouSureYouWantToStartYourWork": "დარწმუნებული ხართ, რომ გსურთ დაიწყოთ თქვენი სამუშაო ქვემოთ სამუშაო ადგილზე?",
   "yesIWantToStart": "დიახ, მე მინდა დავიწყო მუშაობა",
-  "cannotFindWorkplaceWhereYouStarted": "ვერ ვპოულობ სამუშაო ადგილს, სადაც დაიწყეთ თქვენი ამჟამინდელი მდებარეობით!"
+  "cannotFindWorkplaceWhereYouStarted": "ვერ ვპოულობ სამუშაო ადგილს, სადაც დაიწყეთ თქვენი ამჟამინდელი მდებარეობით!",
+  "workplaceNameExists": "სამუშაო ადგილის სახელი უკვე არსებობს! გთხოვთ აირჩიოთ სხვა სახელი ...",
+  "workplaceAreNotSetted": "გთხოვთ, დააყენოთ თქვენი სამუშაო ადგილი"
 }
