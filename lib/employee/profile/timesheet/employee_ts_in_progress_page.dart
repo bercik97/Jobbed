@@ -168,7 +168,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             DataColumn(label: textWhiteBold(getTranslated(this.context, 'plan'))),
                             DataColumn(label: textWhiteBold(getTranslated(this.context, 'note'))),
                             DataColumn(label: textWhiteBold(getTranslated(this.context, 'workTimes'))),
-                            DataColumn(label: textWhiteBold(getTranslated(this.context, 'workplaces'))),
                           ],
                           rows: this
                               .workdays
@@ -197,16 +196,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                         ],
                                       ),
                                       onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workday.workTimes),
-                                    ),
-                                    DataCell(
-                                      Wrap(
-                                        children: <Widget>[
-                                          workday.workplaces != null && workday.workplaces.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
-                                        ],
-                                      ),
-                                      onTap: () => {
-                                        WorkdayUtil.showScrollableWorkplacesDialog(this.context, getTranslated(this.context, 'workplaces'), workday.workplaces),
-                                      },
                                     ),
                                   ],
                                 ),

@@ -11,7 +11,6 @@ import 'package:give_job/api/workday/util/workday_util.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
-import 'package:give_job/manager/groups/group/workplaces/select_workplaces_for_selected_workdays.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
@@ -110,7 +109,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
               IconsLegend.buildRow('images/green-rate-icon.png', getTranslated(context, 'settingRating')),
               IconsLegend.buildRow('images/green-plan-icon.png', getTranslated(context, 'settingPlan')),
               IconsLegend.buildRow('images/green-opinion-icon.png', getTranslated(context, 'settingOpinion')),
-              IconsLegend.buildRow('images/green-workplace-icon.png', getTranslated(context, 'settingWorkplace')),
               IconsLegend.buildRow('images/small-vocation-icon.png', getTranslated(context, 'settingVocation')),
             ],
             _user),
@@ -187,7 +185,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             DataColumn(label: textWhiteBold(getTranslated(context, 'plan')), onSort: (columnIndex, ascending) => _onSortPlans(columnIndex, ascending)),
                             DataColumn(label: textWhiteBold(getTranslated(context, 'opinion')), onSort: (columnIndex, ascending) => _onSortOpinions(columnIndex, ascending)),
                             DataColumn(label: textWhiteBold(getTranslated(context, 'workTimes'))),
-                            DataColumn(label: textWhiteBold(getTranslated(context, 'workplaces'))),
                             DataColumn(label: textWhiteBold(getTranslated(context, 'vocations'))),
                           ],
                           rows: this
@@ -222,16 +219,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                         ],
                                       ),
                                       onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workday.workTimes),
-                                    ),
-                                    DataCell(
-                                      Wrap(
-                                        children: <Widget>[
-                                          workday.workplaces != null && workday.workplaces.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
-                                        ],
-                                      ),
-                                      onTap: () => {
-                                        WorkdayUtil.showScrollableWorkplacesDialog(this.context, getTranslated(this.context, 'workplaces'), workday.workplaces),
-                                      },
                                     ),
                                     DataCell(
                                         Wrap(
@@ -315,32 +302,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                     if (selectedIds.isNotEmpty) {
                       _opinionController.clear();
                       _showUpdateOpinionDialog(selectedIds);
-                    } else {
-                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                    }
-                  },
-                ),
-              ),
-              SizedBox(width: 2.5),
-              Expanded(
-                child: MaterialButton(
-                  color: GREEN,
-                  child: Image(image: AssetImage('images/dark-workplace-icon.png')),
-                  onPressed: () {
-                    if (selectedIds.isNotEmpty) {
-                      Navigator.push(
-                        this.context,
-                        MaterialPageRoute(
-                          builder: (context) => SelectWorkplacesForSelectedWorkdaysPage(
-                            _model,
-                            _timesheet,
-                            _employeeInfo,
-                            _employeeNationality,
-                            _currency,
-                            selectedIds,
-                          ),
-                        ),
-                      );
                     } else {
                       showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
                     }

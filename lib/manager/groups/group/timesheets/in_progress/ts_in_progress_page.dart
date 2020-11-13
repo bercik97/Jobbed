@@ -17,7 +17,6 @@ import 'package:give_job/manager/groups/group/employee/employee_profil_page.dart
 import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
 import 'package:give_job/manager/groups/group/shared/group_floating_action_button.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
-import 'package:give_job/manager/groups/group/workplaces/select_workplaces_for_employees.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
@@ -107,7 +106,6 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                 IconsLegend.buildRow('images/green-rate-icon.png', getTranslated(context, 'settingRating')),
                 IconsLegend.buildRow('images/green-plan-icon.png', getTranslated(context, 'settingPlan')),
                 IconsLegend.buildRow('images/green-opinion-icon.png', getTranslated(context, 'settingOpinion')),
-                IconsLegend.buildRow('images/green-workplace-icon.png', getTranslated(context, 'settingWorkplace')),
               ],
               _model.user),
           drawer: managerSideBar(context, _model.user),
@@ -319,21 +317,6 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                     child: Image(image: AssetImage('images/dark-opinion-icon.png')),
                     onPressed: () => {
                       if (_selectedIds.isNotEmpty) {_opinionController.clear(), _showUpdateOpinionDialog(_selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
-                    },
-                  ),
-                ),
-                SizedBox(width: 5),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-workplace-icon.png')),
-                    onPressed: () => {
-                      if (_selectedIds.isNotEmpty)
-                        {
-                          _showUpdateWorkplaceDialog(_selectedIds),
-                        }
-                      else
-                        {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
                     },
                   ),
                 ),
@@ -819,24 +802,6 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
             ),
           );
         },
-      );
-    }
-  }
-
-  void _showUpdateWorkplaceDialog(LinkedHashSet<int> selectedIds) async {
-    int year = _timesheet.year;
-    int monthNum = MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
-    int days = DateUtil().daysInMonth(monthNum, year);
-    final List<DateTime> picked = await DateRagePicker.showDatePicker(context: context, initialFirstDate: new DateTime(year, monthNum, 1), initialLastDate: new DateTime(year, monthNum, days), firstDate: new DateTime(year, monthNum, 1), lastDate: new DateTime(year, monthNum, days));
-    if (picked.length == 1) {
-      picked.add(picked[0]);
-    }
-    if (picked != null && picked.length == 2) {
-      String dateFrom = DateFormat('yyyy-MM-dd').format(picked[0]);
-      String dateTo = DateFormat('yyyy-MM-dd').format(picked[1]);
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => SelectWorkplacesForEmployeesPage(_model, _timesheet, year, monthNum, dateFrom, dateTo, selectedIds)),
       );
     }
   }
