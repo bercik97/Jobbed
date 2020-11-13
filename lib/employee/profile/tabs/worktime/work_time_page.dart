@@ -1,4 +1,3 @@
-import 'package:android_intent/android_intent.dart';
 import 'package:async/async.dart';
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -157,9 +156,6 @@ class _WorkTimePageState extends State<WorkTimePage> {
                 FlatButton(
                   child: Text('Ok'),
                   onPressed: () {
-                    final AndroidIntent intent = AndroidIntent(action: 'android.settings.LOCATION_SOURCE_SETTINGS');
-                    intent.launch();
-                    _gpsService();
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => EmployeeProfilPage(_user)),
