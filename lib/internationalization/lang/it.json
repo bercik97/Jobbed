@@ -494,7 +494,7 @@
   "add": "Legge til",
   "doNotAdd": "Ikke legg til",
   "editWorkplace": "Rediger arbeidsplass",
-  "lookingForWorkplacesInYourLocation": "Ser etter arbeidsplasser der du befinner deg",
+  "lookingForWorkplacesInYourLocation": "Ser etter arbeidsplasser der du befinner deg (estimert tid 10 sek)",
   "cannotGetCurrentLocation": "Kan ikke få nåværende plassering",
   "enableGpsAndTryAgain": "Pass på at du aktiverer GPS og prøv på nytt",
   "noteFinishWorkInPlaceWhereYouStarted": "Merk: Du kan bare fullføre arbeidet ditt når du er på stedet der du begynte å jobbe!",

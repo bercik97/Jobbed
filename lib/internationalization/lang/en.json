@@ -494,7 +494,7 @@
   "add": "Add",
   "doNotAdd": "Do not add",
   "editWorkplace": "Edit workplace",
-  "lookingForWorkplacesInYourLocation": "Looking for workplaces in your location",
+  "lookingForWorkplacesInYourLocation": "Looking for workplaces in your location (estimated time 10 sec)",
   "cannotGetCurrentLocation": "Cannot get gurrent location",
   "enableGpsAndTryAgain": "Please make sure you enable GPS and try again",
   "noteFinishWorkInPlaceWhereYouStarted": "Note: You can only finish your work when you are in the place where you started to work!",

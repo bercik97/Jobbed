@@ -494,7 +494,7 @@
   "add": "Lägg till",
   "doNotAdd": "Lägg inte till",
   "editWorkplace": "Redigera arbetsplats",
-  "lookingForWorkplacesInYourLocation": "Letar du efter arbetsplatser på din plats",
+  "lookingForWorkplacesInYourLocation": "Letar du efter arbetsplatser på din plats (beräknad tid 10 sek)",
   "cannotGetCurrentLocation": "Kan inte få aktuell plats",
   "enableGpsAndTryAgain": "Se till att du aktiverar GPS och försök igen",
   "noteFinishWorkInPlaceWhereYouStarted": "Obs! Du kan bara avsluta ditt arbete när du är på den plats där du började arbeta!",

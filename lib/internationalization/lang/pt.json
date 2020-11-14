@@ -494,7 +494,7 @@
   "add": "დამატება",
   "doNotAdd": "არ დაამატო",
   "editWorkplace": "სამუშაო ადგილის რედაქტირება",
-  "lookingForWorkplacesInYourLocation": "ვეძებ სამუშაო ადგილებს შენს ადგილას",
+  "lookingForWorkplacesInYourLocation": "ვეძებ სამუშაო ადგილებს შენს ადგილას (სავარაუდო დრო 10 წმ)",
   "cannotGetCurrentLocation": "ვერ ხერხდება ადგილმდებარეობის მიღება",
   "enableGpsAndTryAgain": "დარწმუნდით, რომ ჩართეთ GPS და სცადეთ ხელახლა",
   "noteFinishWorkInPlaceWhereYouStarted": "შენიშვნა: სამუშაოს დასრულება მხოლოდ მაშინ შეგიძლიათ, როდესაც იმ ადგილზე ხართ, სადაც დაიწყო მუშაობა!",
