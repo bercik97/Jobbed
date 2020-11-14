@@ -68,10 +68,6 @@ class _GroupEditPageState extends State<GroupEditPage> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 20, left: 20, top: 10, bottom: 10),
-                    child: textCenter14Green(getTranslated(context, 'hintEditGroupDetails')),
-                  ),
                   _buildButton(getTranslated(context, 'groupName'), () => _updateGroupName(context, _model.groupName)),
                   _buildButton(getTranslated(context, 'groupDescription'), () => _updateGroupDescription(context, _model.groupDescription)),
                   _buildButton(
