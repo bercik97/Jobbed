@@ -60,24 +60,41 @@ class _GroupEditPageState extends State<GroupEditPage> {
                         ListTile(
                           title: text18WhiteBold(getTranslated(context, 'groupName')),
                           subtitle: text16White(_model.groupName),
+                          trailing: Ink(
+                            decoration: ShapeDecoration(color: GREEN, shape: CircleBorder()),
+                            child: IconButton(
+                              icon: iconDark(Icons.border_color),
+                              onPressed: () => _updateGroupName(context, _model.groupName),
+                            ),
+                          ),
                         ),
                         ListTile(
                           title: text18WhiteBold(getTranslated(context, 'groupDescription')),
                           subtitle: text16White(_model.groupDescription),
+                          trailing: Ink(
+                            decoration: ShapeDecoration(color: GREEN, shape: CircleBorder()),
+                            child: IconButton(
+                              icon: iconDark(Icons.border_color),
+                              onPressed: () => _updateGroupDescription(context, _model.groupDescription),
+                            ),
+                          ),
+                        ),
+                        ListTile(
+                          title: text18WhiteBold(getTranslated(context, 'hourlyGroupRates')),
+                          trailing: Ink(
+                            decoration: ShapeDecoration(color: GREEN, shape: CircleBorder()),
+                            child: IconButton(
+                              icon: iconDark(Icons.border_color),
+                              onPressed: () {
+                                Navigator.push(
+                                  this.context,
+                                  MaterialPageRoute(builder: (context) => GroupEditMoneyPerHourPage(_model)),
+                                );
+                              },
+                            ),
+                          ),
                         ),
                       ],
-                    ),
-                  ),
-                  _buildButton(getTranslated(context, 'groupName'), () => _updateGroupName(context, _model.groupName)),
-                  _buildButton(getTranslated(context, 'groupDescription'), () => _updateGroupDescription(context, _model.groupDescription)),
-                  _buildButton(
-                    getTranslated(context, 'hourlyGroupRates'),
-                    () => Navigator.of(context).push(
-                      CupertinoPageRoute<Null>(
-                        builder: (BuildContext context) {
-                          return GroupEditMoneyPerHourPage(_model);
-                        },
-                      ),
                     ),
                   ),
                 ],
@@ -87,27 +104,6 @@ class _GroupEditPageState extends State<GroupEditPage> {
         ),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model)),
-    );
-  }
-
-  Widget _buildButton(String text, Function() fun) {
-    return Padding(
-      padding: EdgeInsets.only(top: 20),
-      child: MaterialButton(
-        elevation: 0,
-        height: 50,
-        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-        onPressed: () => fun(),
-        color: GREEN,
-        child: Container(
-          width: 250,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[text20White(text)],
-          ),
-        ),
-        textColor: Colors.white,
-      ),
     );
   }
 
