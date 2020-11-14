@@ -507,5 +507,6 @@
   "cannotFindWorkplaceWhereYouStarted": "Cannot find workplace where you started by your current location!",
   "workplaceNameExists": "Workplace name already exists! Please choose other name ...",
   "workplaceAreNotSetted": "Please set up your workplace area",
-  "cannotStartWorkWithoutTS": "You cannot start work when you do not have timesheet for current month. Ask your manager to generate a timesheet for you."
+  "cannotStartWorkWithoutTS": "You cannot start work when you do not have timesheet for current month. Ask your manager to generate a timesheet for you.",
+  "workInProgress": "Work in progress"
 }

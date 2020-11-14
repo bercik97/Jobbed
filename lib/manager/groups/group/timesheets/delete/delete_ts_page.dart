@@ -100,7 +100,13 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
                 Container(
                   padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
                   child: Column(
-                    children: [textCenter18WhiteBold(getTranslated(context, 'removeSelectedTsForChosenEmployees')), SizedBox(height: 5), textCenter20GreenBold(_year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month))],
+                    children: [
+                      textCenter18WhiteBold(getTranslated(context, 'removeSelectedTsForChosenEmployees')),
+                      SizedBox(height: 5),
+                      textCenter20GreenBold(
+                        _year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month),
+                      ),
+                    ],
                   ),
                 ),
                 Container(
@@ -110,7 +116,14 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
                     autocorrect: true,
                     cursorColor: WHITE,
                     style: TextStyle(color: WHITE),
-                    decoration: InputDecoration(enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)), counterStyle: TextStyle(color: WHITE), border: OutlineInputBorder(), labelText: getTranslated(this.context, 'search'), prefixIcon: iconWhite(Icons.search), labelStyle: TextStyle(color: WHITE)),
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+                      counterStyle: TextStyle(color: WHITE),
+                      border: OutlineInputBorder(),
+                      labelText: getTranslated(this.context, 'search'),
+                      prefixIcon: iconWhite(Icons.search),
+                      labelStyle: TextStyle(color: WHITE),
+                    ),
                     onChanged: (string) {
                       setState(
                         () {

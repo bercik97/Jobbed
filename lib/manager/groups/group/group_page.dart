@@ -78,10 +78,19 @@ class _GroupPageState extends State<GroupPage> {
                     ),
                     subtitle: Column(
                       children: <Widget>[
-                        Align(child: textWhite(utf8.decode(_model.groupDescription != null ? _model.groupDescription.runes.toList() : getTranslated(context, 'empty'))), alignment: Alignment.topLeft),
+                        Align(
+                          child: textWhite(utf8.decode(_model.groupDescription != null ? _model.groupDescription.runes.toList() : getTranslated(context, 'empty'))),
+                          alignment: Alignment.topLeft,
+                        ),
                         SizedBox(height: 5),
-                        Align(child: textWhite(getTranslated(context, 'numberOfEmployees') + ': ' + _model.numberOfEmployees.toString()), alignment: Alignment.topLeft),
-                        Align(child: textWhite(getTranslated(context, 'groupCountryOfWork') + ': ' + LanguageUtil.findFlagByNationality(_model.countryOfWork.toString())), alignment: Alignment.topLeft),
+                        Align(
+                          child: textWhite(getTranslated(context, 'numberOfEmployees') + ': ' + _model.numberOfEmployees.toString()),
+                          alignment: Alignment.topLeft,
+                        ),
+                        Align(
+                          child: textWhite(getTranslated(context, 'groupCountryOfWork') + ': ' + LanguageUtil.findFlagByNationality(_model.countryOfWork.toString())),
+                          alignment: Alignment.topLeft,
+                        ),
                       ],
                     ),
                     trailing: Ink(
@@ -241,7 +250,17 @@ class _GroupPageState extends State<GroupPage> {
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
-          children: <Widget>[Image(height: 100, image: AssetImage(imagePath)), text18WhiteBold(getTranslated(context, title)), Padding(padding: EdgeInsets.only(left: 10, right: 10), child: textCenter13White(getTranslated(context, subtitle))), SizedBox(height: 10)],
+          children: <Widget>[
+            Image(height: 100, image: AssetImage(imagePath)),
+            text18WhiteBold(getTranslated(context, title)),
+            Padding(
+              padding: EdgeInsets.only(left: 10, right: 10),
+              child: textCenter13White(
+                getTranslated(context, subtitle),
+              ),
+            ),
+            SizedBox(height: 10),
+          ],
         ),
       ),
     );

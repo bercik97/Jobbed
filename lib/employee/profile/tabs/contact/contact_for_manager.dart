@@ -25,7 +25,10 @@ void showContactForManager(BuildContext context, String manager, String phone, S
               children: <Widget>[
                 textCenter20GreenBold(utf8.decode(manager.runes.toList())),
                 SizedBox(height: 20),
-                Padding(padding: EdgeInsets.only(left: 85), child: buildContactSection(context, phone, viber, whatsApp)),
+                Padding(
+                  padding: EdgeInsets.only(left: 85),
+                  child: buildContactSection(context, phone, viber, whatsApp),
+                ),
                 SizedBox(height: 20),
                 Container(
                   width: 80,

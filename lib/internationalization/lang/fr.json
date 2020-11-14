@@ -507,5 +507,6 @@
   "cannotFindWorkplaceWhereYouStarted": "Impossible de trouver le lieu de travail où vous avez commencé par votre emplacement actuel!",
   "workplaceNameExists": "Le nom du lieu de travail existe déjà! Veuillez choisir un autre nom ...",
   "workplaceAreNotSetted": "Veuillez configurer votre espace de travail",
-  "cannotStartWorkWithoutTS": "Vous ne pouvez pas commencer à travailler si vous n'avez pas de feuille de temps pour le mois en cours. Demandez à votre responsable de générer une feuille de temps pour vous."
+  "cannotStartWorkWithoutTS": "Vous ne pouvez pas commencer à travailler si vous n'avez pas de feuille de temps pour le mois en cours. Demandez à votre responsable de générer une feuille de temps pour vous.",
+  "workInProgress": "Travail en cours"
 }

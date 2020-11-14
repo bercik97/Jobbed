@@ -22,7 +22,13 @@ Drawer managerSideBar(BuildContext context, User user) {
           Container(
             width: double.infinity,
             padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [WHITE, GREEN])),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [WHITE, GREEN],
+              ),
+            ),
             child: Center(
               child: Column(
                 children: <Widget>[

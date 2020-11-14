@@ -64,7 +64,12 @@ class _LoginPageState extends State<LoginPage> {
     );
     return Scaffold(
       backgroundColor: DARK,
-      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0, automaticallyImplyLeading: true, leading: _buildBackIconButton()),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        automaticallyImplyLeading: true,
+        leading: _buildBackIconButton(),
+      ),
       body: Center(
         child: ListView(
           shrinkWrap: true,
@@ -370,7 +375,9 @@ class _LoginPageState extends State<LoginPage> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                textWhite(isCorrect ? getTranslated(context, 'tokenIsCorrect') + '\n\n' + getTranslated(context, 'redirectToRegistration') : getTranslated(context, 'tokenIsIncorrect')),
+                textWhite(
+                  isCorrect ? getTranslated(context, 'tokenIsCorrect') + '\n\n' + getTranslated(context, 'redirectToRegistration') : getTranslated(context, 'tokenIsIncorrect'),
+                ),
               ],
             ),
           ),

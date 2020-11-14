@@ -339,7 +339,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                                         child: textGreen(getTranslated(this.context, 'yesIWantToStart')),
                                                         onPressed: () => _isStartWorkButtonTapped ? null : _startWork(workplaces[i].id),
                                                       ),
-                                                      FlatButton(child: textWhite(getTranslated(this.context, 'no')), onPressed: () => Navigator.of(context).pop()),
+                                                      FlatButton(child: textWhite(getTranslated(this.context, 'no'),), onPressed: () => Navigator.of(context).pop()),
                                                     ],
                                                   );
                                                 },

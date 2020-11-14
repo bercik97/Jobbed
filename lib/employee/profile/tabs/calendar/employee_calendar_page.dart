@@ -139,7 +139,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
                         SizedBox(height: 10),
                         _buildLegendItem(iconOrange(Icons.error_outline), getTranslated(context, 'plannedDay')),
                         _buildLegendItem(iconGreen(Icons.check), getTranslated(context, 'workedDay')),
-                        _buildLegendItem(iconOrange(Icons.arrow_circle_up), 'Work in progress'),
+                        _buildLegendItem(iconOrange(Icons.arrow_circle_up), getTranslated(context, 'workInProgress')),
                         _buildLegendItem(iconYellow(Icons.beach_access), getTranslated(context, 'confirmedVocation')),
                         _buildLegendItem(iconRed(Icons.beach_access), getTranslated(context, 'notConfirmedVocation')),
                       ],
@@ -363,7 +363,11 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
     int hours = workday.hours;
     return Column(
       children: [
-        hours != 0 ? textCenter16GreenBold(getTranslated(context, 'workedDay') + ' ' + _selectedDay.toString().substring(0, 10)) : textCenter16OrangeBold('Work in progress' + ' ' + _selectedDay.toString().substring(0, 10)),
+        hours != 0
+            ? textCenter16GreenBold(getTranslated(context, 'workedDay') + ' ' + _selectedDay.toString().substring(0, 10))
+            : textCenter16OrangeBold(
+                getTranslated(context, 'workInProgress') + ' ' + _selectedDay.toString().substring(0, 10),
+              ),
         ListTile(
           trailing: hours != 0 ? icon50Green(Icons.check) : icon50Orange(Icons.arrow_circle_up),
           title: Row(

@@ -66,7 +66,14 @@ class _VocationsManagePageState extends State<VocationsManagePage> {
     this._timesheet = widget._timeSheet;
     super.initState();
     _loading = true;
-    _employeeService.findAllByGroupIdAndTsYearMonthStatusForManageVocations(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_IN_PROGRESS).then((res) {
+    _employeeService
+        .findAllByGroupIdAndTsYearMonthStatusForManageVocations(
+      _model.groupId,
+      _timesheet.year,
+      MonthUtil.findMonthNumberByMonthName(context, _timesheet.month),
+      STATUS_IN_PROGRESS,
+    )
+        .then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
@@ -481,7 +488,14 @@ class _VocationsManagePageState extends State<VocationsManagePage> {
   }
 
   Future<Null> _refresh() {
-    return _employeeService.findAllByGroupIdAndTsYearMonthStatusForManageVocations(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_IN_PROGRESS).then((res) {
+    return _employeeService
+        .findAllByGroupIdAndTsYearMonthStatusForManageVocations(
+      _model.groupId,
+      _timesheet.year,
+      MonthUtil.findMonthNumberByMonthName(context, _timesheet.month),
+      STATUS_IN_PROGRESS,
+    )
+        .then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));

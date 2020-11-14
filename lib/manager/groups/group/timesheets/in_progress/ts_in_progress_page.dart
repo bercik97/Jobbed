@@ -75,7 +75,14 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
     this._timesheet = widget._timeSheet;
     super.initState();
     _loading = true;
-    _employeeService.findAllByGroupIdAndTsYearAndMonthAndStatus(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_IN_PROGRESS).then((res) {
+    _employeeService
+        .findAllByGroupIdAndTsYearAndMonthAndStatus(
+      _model.groupId,
+      _timesheet.year,
+      MonthUtil.findMonthNumberByMonthName(context, _timesheet.month),
+      STATUS_IN_PROGRESS,
+    )
+        .then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
@@ -121,7 +128,14 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                     autocorrect: true,
                     cursorColor: WHITE,
                     style: TextStyle(color: WHITE),
-                    decoration: InputDecoration(enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)), counterStyle: TextStyle(color: WHITE), border: OutlineInputBorder(), labelText: getTranslated(this.context, 'search'), prefixIcon: iconWhite(Icons.search), labelStyle: TextStyle(color: WHITE)),
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+                      counterStyle: TextStyle(color: WHITE),
+                      border: OutlineInputBorder(),
+                      labelText: getTranslated(this.context, 'search'),
+                      prefixIcon: iconWhite(Icons.search),
+                      labelStyle: TextStyle(color: WHITE),
+                    ),
                     onChanged: (string) {
                       setState(
                         () {
@@ -284,8 +298,13 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                   child: MaterialButton(
                     color: GREEN,
                     child: Image(image: AssetImage('images/dark-hours-icon.png')),
-                    onPressed: () => {
-                      if (_selectedIds.isNotEmpty) {_hoursController.clear(), _showUpdateHoursDialog(_selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
+                    onPressed: () {
+                      if (_selectedIds.isNotEmpty) {
+                        _hoursController.clear();
+                        _showUpdateHoursDialog(_selectedIds);
+                      } else {
+                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                      }
                     },
                   ),
                 ),
@@ -294,8 +313,13 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                   child: MaterialButton(
                     color: GREEN,
                     child: Image(image: AssetImage('images/dark-rate-icon.png')),
-                    onPressed: () => {
-                      if (_selectedIds.isNotEmpty) {_ratingController.clear(), _showUpdateRatingDialog(_selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
+                    onPressed: () {
+                      if (_selectedIds.isNotEmpty) {
+                        _ratingController.clear();
+                        _showUpdateRatingDialog(_selectedIds);
+                      } else {
+                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                      }
                     },
                   ),
                 ),
@@ -304,8 +328,13 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                   child: MaterialButton(
                     color: GREEN,
                     child: Image(image: AssetImage('images/dark-plan-icon.png')),
-                    onPressed: () => {
-                      if (_selectedIds.isNotEmpty) {_planController.clear(), _showUpdatePlanDialog(_selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
+                    onPressed: () {
+                      if (_selectedIds.isNotEmpty) {
+                        _planController.clear();
+                        _showUpdatePlanDialog(_selectedIds);
+                      } else {
+                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                      }
                     },
                   ),
                 ),
@@ -314,8 +343,13 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                   child: MaterialButton(
                     color: GREEN,
                     child: Image(image: AssetImage('images/dark-opinion-icon.png')),
-                    onPressed: () => {
-                      if (_selectedIds.isNotEmpty) {_opinionController.clear(), _showUpdateOpinionDialog(_selectedIds)} else {showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'))}
+                    onPressed: () {
+                      if (_selectedIds.isNotEmpty) {
+                        _opinionController.clear();
+                        _showUpdateOpinionDialog(_selectedIds);
+                      } else {
+                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                      }
                     },
                   ),
                 ),
@@ -333,7 +367,13 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
     int year = _timesheet.year;
     int monthNum = MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
     int days = DateUtil().daysInMonth(monthNum, year);
-    final List<DateTime> picked = await DateRagePicker.showDatePicker(context: context, initialFirstDate: new DateTime(year, monthNum, 1), initialLastDate: new DateTime(year, monthNum, days), firstDate: new DateTime(year, monthNum, 1), lastDate: new DateTime(year, monthNum, days));
+    final List<DateTime> picked = await DateRagePicker.showDatePicker(
+      context: context,
+      initialFirstDate: new DateTime(year, monthNum, 1),
+      initialLastDate: new DateTime(year, monthNum, days),
+      firstDate: new DateTime(year, monthNum, 1),
+      lastDate: new DateTime(year, monthNum, days),
+    );
     if (picked != null && picked.length == 1) {
       picked.add(picked[0]);
     }
@@ -452,7 +492,13 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
     int year = _timesheet.year;
     int monthNum = MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
     int days = DateUtil().daysInMonth(monthNum, year);
-    final List<DateTime> picked = await DateRagePicker.showDatePicker(context: context, initialFirstDate: new DateTime(year, monthNum, 1), initialLastDate: new DateTime(year, monthNum, days), firstDate: new DateTime(year, monthNum, 1), lastDate: new DateTime(year, monthNum, days));
+    final List<DateTime> picked = await DateRagePicker.showDatePicker(
+      context: context,
+      initialFirstDate: new DateTime(year, monthNum, 1),
+      initialLastDate: new DateTime(year, monthNum, days),
+      firstDate: new DateTime(year, monthNum, 1),
+      lastDate: new DateTime(year, monthNum, days),
+    );
     if (picked.length == 1) {
       picked.add(picked[0]);
     }
@@ -572,7 +618,13 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
     int year = _timesheet.year;
     int monthNum = MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
     int days = DateUtil().daysInMonth(monthNum, year);
-    final List<DateTime> picked = await DateRagePicker.showDatePicker(context: context, initialFirstDate: new DateTime(year, monthNum, 1), initialLastDate: new DateTime(year, monthNum, days), firstDate: new DateTime(year, monthNum, 1), lastDate: new DateTime(year, monthNum, days));
+    final List<DateTime> picked = await DateRagePicker.showDatePicker(
+      context: context,
+      initialFirstDate: new DateTime(year, monthNum, 1),
+      initialLastDate: new DateTime(year, monthNum, days),
+      firstDate: new DateTime(year, monthNum, 1),
+      lastDate: new DateTime(year, monthNum, days),
+    );
     if (picked.length == 1) {
       picked.add(picked[0]);
     }
@@ -691,7 +743,13 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
     int year = _timesheet.year;
     int monthNum = MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
     int days = DateUtil().daysInMonth(monthNum, year);
-    final List<DateTime> picked = await DateRagePicker.showDatePicker(context: context, initialFirstDate: new DateTime(year, monthNum, 1), initialLastDate: new DateTime(year, monthNum, days), firstDate: new DateTime(year, monthNum, 1), lastDate: new DateTime(year, monthNum, days));
+    final List<DateTime> picked = await DateRagePicker.showDatePicker(
+      context: context,
+      initialFirstDate: new DateTime(year, monthNum, 1),
+      initialLastDate: new DateTime(year, monthNum, days),
+      firstDate: new DateTime(year, monthNum, 1),
+      lastDate: new DateTime(year, monthNum, days),
+    );
     if (picked.length == 1) {
       picked.add(picked[0]);
     }
@@ -812,7 +870,14 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
   }
 
   Future<Null> _refresh() {
-    return _employeeService.findAllByGroupIdAndTsYearAndMonthAndStatus(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_IN_PROGRESS).then((res) {
+    return _employeeService
+        .findAllByGroupIdAndTsYearAndMonthAndStatus(
+      _model.groupId,
+      _timesheet.year,
+      MonthUtil.findMonthNumberByMonthName(context, _timesheet.month),
+      STATUS_IN_PROGRESS,
+    )
+        .then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));

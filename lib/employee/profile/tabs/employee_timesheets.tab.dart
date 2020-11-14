@@ -88,7 +88,10 @@ Widget employeeTimesheetsTab(BuildContext context, User user, List timesheets) {
                           ],
                         ),
                         trailing: Wrap(
-                          children: <Widget>[textGreenBold(timesheet.amountOfEarnedMoney.toString()), textGreenBold(" " + timesheet.groupCountryCurrency.toString())],
+                          children: <Widget>[
+                            textGreenBold(timesheet.amountOfEarnedMoney.toString()),
+                            textGreenBold(" " + timesheet.groupCountryCurrency.toString()),
+                          ],
                         ),
                       ),
                     ),

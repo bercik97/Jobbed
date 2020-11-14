@@ -216,7 +216,13 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                                     alignment: Alignment.topLeft,
                                   ),
                                   Align(
-                                    child: textWhite(getTranslated(this.context, 'groupCountryOfWork') + ': ' + LanguageUtil.findFlagByNationality(_groups[index].countryOfWork.toString())),
+                                    child: textWhite(
+                                      getTranslated(this.context, 'groupCountryOfWork') +
+                                          ': ' +
+                                          LanguageUtil.findFlagByNationality(
+                                            _groups[index].countryOfWork.toString(),
+                                          ),
+                                    ),
                                     alignment: Alignment.topLeft,
                                   ),
                                   SizedBox(height: 5),

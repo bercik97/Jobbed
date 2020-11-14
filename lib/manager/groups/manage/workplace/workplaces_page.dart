@@ -104,7 +104,14 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                     autocorrect: true,
                     cursorColor: WHITE,
                     style: TextStyle(color: WHITE),
-                    decoration: InputDecoration(enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)), counterStyle: TextStyle(color: WHITE), border: OutlineInputBorder(), labelText: getTranslated(context, 'search'), prefixIcon: iconWhite(Icons.search), labelStyle: TextStyle(color: WHITE)),
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+                      counterStyle: TextStyle(color: WHITE),
+                      border: OutlineInputBorder(),
+                      labelText: getTranslated(context, 'search'),
+                      prefixIcon: iconWhite(Icons.search),
+                      labelStyle: TextStyle(color: WHITE),
+                    ),
                     onChanged: (string) {
                       setState(
                         () {

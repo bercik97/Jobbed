@@ -67,7 +67,14 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
     this._timesheetService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
     super.initState();
     _loading = true;
-    _employeeService.findEmployeesByGroupIdAndTsInYearAndMonthAndStatus(_model.groupId, _year, _month, _status == STATUS_COMPLETED ? STATUS_IN_PROGRESS : STATUS_COMPLETED).then((res) {
+    _employeeService
+        .findEmployeesByGroupIdAndTsInYearAndMonthAndStatus(
+      _model.groupId,
+      _year,
+      _month,
+      _status == STATUS_COMPLETED ? STATUS_IN_PROGRESS : STATUS_COMPLETED,
+    )
+        .then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
@@ -100,7 +107,15 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
                 Container(
                   padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
                   child: Column(
-                    children: [textCenter18WhiteBold(getTranslated(context, 'updateSelectedTsStatusForChosenEmployees')), SizedBox(height: 5), _status == STATUS_COMPLETED ? textCenter20GreenBold(_year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month) + ' ' + getTranslated(context, 'forNewStatus') + '→ ' + getTranslated(context, _status).toUpperCase()) : textCenter20OrangeBold(_year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month) + ' ' + getTranslated(context, 'forNewStatus') + '→ ' + getTranslated(context, _status).toUpperCase())],
+                    children: [
+                      textCenter18WhiteBold(getTranslated(context, 'updateSelectedTsStatusForChosenEmployees')),
+                      SizedBox(height: 5),
+                      _status == STATUS_COMPLETED
+                          ? textCenter20GreenBold(_year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month) + ' ' + getTranslated(context, 'forNewStatus') + '→ ' + getTranslated(context, _status).toUpperCase())
+                          : textCenter20OrangeBold(
+                              _year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month) + ' ' + getTranslated(context, 'forNewStatus') + '→ ' + getTranslated(context, _status).toUpperCase(),
+                            ),
+                    ],
                   ),
                 ),
                 Container(
@@ -110,7 +125,14 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
                     autocorrect: true,
                     cursorColor: WHITE,
                     style: TextStyle(color: WHITE),
-                    decoration: InputDecoration(enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)), counterStyle: TextStyle(color: WHITE), border: OutlineInputBorder(), labelText: getTranslated(this.context, 'search'), prefixIcon: iconWhite(Icons.search), labelStyle: TextStyle(color: WHITE)),
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+                      counterStyle: TextStyle(color: WHITE),
+                      border: OutlineInputBorder(),
+                      labelText: getTranslated(this.context, 'search'),
+                      prefixIcon: iconWhite(Icons.search),
+                      labelStyle: TextStyle(color: WHITE),
+                    ),
                     onChanged: (string) {
                       setState(
                         () {
@@ -270,7 +292,14 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
   }
 
   Future<Null> _refresh() {
-    return _employeeService.findEmployeesByGroupIdAndTsInYearAndMonthAndStatus(_model.groupId, _year, _month, _status == STATUS_COMPLETED ? STATUS_IN_PROGRESS : STATUS_COMPLETED).then((res) {
+    return _employeeService
+        .findEmployeesByGroupIdAndTsInYearAndMonthAndStatus(
+      _model.groupId,
+      _year,
+      _month,
+      _status == STATUS_COMPLETED ? STATUS_IN_PROGRESS : STATUS_COMPLETED,
+    )
+        .then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));

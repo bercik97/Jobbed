@@ -56,7 +56,14 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
     this._timesheet = widget._timesheet;
     super.initState();
     _loading = true;
-    _employeeService.findAllByGroupIdAndTsYearAndMonthAndStatus(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_COMPLETED).then((res) {
+    _employeeService
+        .findAllByGroupIdAndTsYearAndMonthAndStatus(
+      _model.groupId,
+      _timesheet.year,
+      MonthUtil.findMonthNumberByMonthName(context, _timesheet.month),
+      STATUS_COMPLETED,
+    )
+        .then((res) {
       setState(() {
         _employees = res;
         _filteredEmployees = _employees;
@@ -79,7 +86,11 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _model.user, _timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' - ' + getTranslated(context, STATUS_COMPLETED)),
+          appBar: managerAppBar(
+            context,
+            _model.user,
+            _timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' - ' + getTranslated(context, STATUS_COMPLETED),
+          ),
           drawer: managerSideBar(context, _model.user),
           body: Column(
             children: <Widget>[
