@@ -494,7 +494,7 @@
   "add": "Toevoegen",
   "doNotAdd": "Niet toevoegen",
   "editWorkplace": "Werk werkplek bewerken",
-  "lookingForWorkplacesInYourLocation": "Op zoek naar werkplekken op uw locatie (geschatte tijd 10 sec)",
+  "lookingForWorkplacesInYourLocation": "Zoeken naar een baan ...\n(geschatte tijd 10 sec)",
   "cannotGetCurrentLocation": "Kan huidige locatie niet ophalen",
   "enableGpsAndTryAgain": "Zorg ervoor dat u GPS inschakelt en probeer het opnieuw",
   "noteFinishWorkInPlaceWhereYouStarted": "Let op: je kunt je werk alleen afmaken als je op de plek bent waar je begon te werken!",

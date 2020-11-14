@@ -79,7 +79,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
   Widget build(BuildContext context) {
     _progressDialog = new ProgressDialog(context, isDismissible: false);
     _progressDialog.style(
-      message: getTranslated(context, 'lookingForWorkplacesInYourLocation') + ' ...',
+      message: getTranslated(context, 'lookingForWorkplacesInYourLocation'),
       messageTextStyle: TextStyle(color: DARK),
       progressWidget: circularProgressIndicator(),
     );

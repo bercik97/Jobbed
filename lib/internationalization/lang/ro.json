@@ -494,7 +494,7 @@
   "add": "Adăugați",
   "doNotAdd": "Nu adăugați",
   "editWorkplace": "Editați locul de muncă",
-  "lookingForWorkplacesInYourLocation": "Căutați locuri de muncă în locația dvs (timp estimat 10 sec)",
+  "lookingForWorkplacesInYourLocation": "Căutare de locuri de muncă ...\n(timp estimat 10 sec)",
   "cannotGetCurrentLocation": "Nu se poate obține locația curentă",
   "enableGpsAndTryAgain": "Vă rugăm să vă asigurați că activați GPS-ul și încercați din nou",
   "noteFinishWorkInPlaceWhereYouStarted": "Notă: Puteți termina munca numai atunci când vă aflați în locul în care ați început să lucrați!",

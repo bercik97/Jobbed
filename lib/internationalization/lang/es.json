@@ -494,7 +494,7 @@
   "add": "Agregar",
   "doNotAdd": "No agregar",
   "editWorkplace": "Editar lugar de trabajo",
-  "lookingForWorkplacesInYourLocation": "Buscando lugares de trabajo en su ubicación (tiempo estimado 10 segundos)",
+  "lookingForWorkplacesInYourLocation": "Búsqueda de trabajo ...\n(tiempo estimado 10 segundos)",
   "cannotGetCurrentLocation": "No se puede obtener la ubicación actual",
   "enableGpsAndTryAgain": "Asegúrese de habilitar el GPS y vuelva a intentarlo",
   "noteFinishWorkInPlaceWhereYouStarted": "Nota: ¡Solo puede terminar su trabajo cuando esté en el lugar donde comenzó a trabajar!",
