@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:android_intent/android_intent.dart';
 import 'package:async/async.dart';
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/work_time/dto/create_work_time_dto.dart';
@@ -25,6 +28,7 @@ import 'package:give_job/shared/widget/texts.dart';
 import 'package:location/location.dart' as loc;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../employee_profile_page.dart';
 
@@ -60,6 +64,8 @@ class _WorkTimePageState extends State<WorkTimePage> {
   AsyncMemoizer _memoizer;
 
   ProgressDialog _progressDialog;
+
+  final flutterWebviewPlugin = new FlutterWebviewPlugin();
 
   @override
   void initState() {
@@ -255,20 +261,28 @@ class _WorkTimePageState extends State<WorkTimePage> {
   _findWorkplacesByCurrentLocation() async {
     setState(() => _isStartDialogButtonTapped = true);
     _progressDialog.show();
-    await _getUserLocation().then((value) {
-      _workplaceService.findAllWorkplacesByCompanyIdAndLocationParams(int.parse(_user.companyId), _locationData.latitude, _locationData.longitude).then((res) {
-        _progressDialog.hide();
-        _showStartConfirmDialog(res);
-        setState(() => _isStartDialogButtonTapped = false);
-      }).catchError((onError) {
-        ToastService.showErrorToast(getTranslated(context, 'cannotFindWorkplaceByLocation'));
-        _progressDialog.hide();
-        setState(() => _isStartDialogButtonTapped = false);
-      });
-    }).catchError((onError) {
+    flutterWebviewPlugin.launch('https://www.google.pl/maps/preview', hidden: true).catchError((onError) {
       ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
       setState(() => _isStartDialogButtonTapped = false);
       _progressDialog.hide();
+    });
+    Timer(const Duration(seconds: 5), () async {
+      closeWebView();
+      await _getUserLocation().then((value) {
+        _workplaceService.findAllWorkplacesByCompanyIdAndLocationParams(int.parse(_user.companyId), _locationData.latitude, _locationData.longitude).then((res) {
+          _progressDialog.hide();
+          _showStartConfirmDialog(res);
+          setState(() => _isStartDialogButtonTapped = false);
+        }).catchError((onError) {
+          ToastService.showErrorToast(getTranslated(context, 'cannotFindWorkplaceByLocation'));
+          _progressDialog.hide();
+          setState(() => _isStartDialogButtonTapped = false);
+        });
+      }).catchError((onError) {
+        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+        setState(() => _isStartDialogButtonTapped = false);
+        _progressDialog.hide();
+      });
     });
   }
 
@@ -403,20 +417,28 @@ class _WorkTimePageState extends State<WorkTimePage> {
   _showPauseWorkDialog(WorkTimeDto workTime) async {
     setState(() => _isPauseWorkButtonTapped = true);
     _progressDialog.show();
-    await _getUserLocation().then((value) {
-      _workTimeService.canFinishByIdAndLocationParams(workTime.id, _locationData.latitude, _locationData.longitude).then((res) {
-        _progressDialog.hide();
-        _showPauseConfirmDialog(res);
-        setState(() => _isPauseWorkButtonTapped = false);
-      }).catchError((onError) {
-        ToastService.showErrorToast(getTranslated(context, 'cannotFindWorkplaceWhereYouStarted'));
-        setState(() => _isPauseWorkButtonTapped = false);
-        _progressDialog.hide();
-      });
-    }).catchError((onError) {
+    flutterWebviewPlugin.launch('https://www.google.pl/maps/preview', hidden: true).catchError((onError) {
       ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
       setState(() => _isStartDialogButtonTapped = false);
       _progressDialog.hide();
+    });
+    Timer(const Duration(seconds: 5), () async {
+      closeWebView();
+      await _getUserLocation().then((value) {
+        _workTimeService.canFinishByIdAndLocationParams(workTime.id, _locationData.latitude, _locationData.longitude).then((res) {
+          _progressDialog.hide();
+          _showPauseConfirmDialog(res);
+          setState(() => _isPauseWorkButtonTapped = false);
+        }).catchError((onError) {
+          ToastService.showErrorToast(getTranslated(context, 'cannotFindWorkplaceWhereYouStarted'));
+          setState(() => _isPauseWorkButtonTapped = false);
+          _progressDialog.hide();
+        });
+      }).catchError((onError) {
+        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+        setState(() => _isStartDialogButtonTapped = false);
+        _progressDialog.hide();
+      });
     });
   }
 

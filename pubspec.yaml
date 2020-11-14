@@ -39,6 +39,7 @@ dependencies:
   location: ^3.0.1
   permission_handler: ^4.4.0+hotfix.2
   android_intent: ^0.3.6+12
+  flutter_webview_plugin: ^0.3.11
 
 dev_dependencies:
   flutter_test:
