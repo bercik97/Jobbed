@@ -261,11 +261,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
   _findWorkplacesByCurrentLocation() async {
     setState(() => _isStartDialogButtonTapped = true);
     _progressDialog.show();
-    flutterWebviewPlugin.launch('https://www.google.pl/maps/preview', hidden: true).catchError((onError) {
-      ToastService.showErrorToast(getTranslated(context, 'smthWentWrong') + '11');
-      setState(() => _isStartDialogButtonTapped = false);
-      _progressDialog.hide();
-    });
+    flutterWebviewPlugin.launch('https://www.google.pl/maps/preview', hidden: true);
     Timer(const Duration(seconds: 10), () async {
       closeWebView();
       await _getUserLocation().then((value) {
@@ -279,7 +275,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
           setState(() => _isStartDialogButtonTapped = false);
         });
       }).catchError((onError) {
-        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong') + '22');
+        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
         setState(() => _isStartDialogButtonTapped = false);
         _progressDialog.hide();
       });
@@ -417,11 +413,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
   _showPauseWorkDialog(WorkTimeDto workTime) async {
     setState(() => _isPauseWorkButtonTapped = true);
     _progressDialog.show();
-    flutterWebviewPlugin.launch('https://www.google.pl/maps/preview', hidden: true).catchError((onError) {
-      ToastService.showErrorToast(getTranslated(context, 'smthWentWrong') + '33');
-      setState(() => _isStartDialogButtonTapped = false);
-      _progressDialog.hide();
-    });
+    flutterWebviewPlugin.launch('https://www.google.pl/maps/preview', hidden: true);
     Timer(const Duration(seconds: 10), () async {
       closeWebView();
       await _getUserLocation().then((value) {
@@ -435,7 +427,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
           _progressDialog.hide();
         });
       }).catchError((onError) {
-        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong') + '44');
+        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
         setState(() => _isStartDialogButtonTapped = false);
         _progressDialog.hide();
       });
