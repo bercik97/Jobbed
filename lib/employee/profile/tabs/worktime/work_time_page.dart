@@ -71,7 +71,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
 
   @override
   Widget build(BuildContext context) {
-    _progressDialog = new ProgressDialog(context);
+    _progressDialog = new ProgressDialog(context, isDismissible: false);
     _progressDialog.style(
       message: getTranslated(context, 'lookingForWorkplacesInYourLocation') + ' ...',
       messageTextStyle: TextStyle(color: DARK),
@@ -262,6 +262,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
         setState(() => _isStartDialogButtonTapped = false);
       }).catchError((onError) {
         ToastService.showErrorToast(getTranslated(context, 'cannotFindWorkplaceByLocation'));
+        _progressDialog.hide();
         setState(() => _isStartDialogButtonTapped = false);
       });
     }).catchError((onError) {
@@ -339,7 +340,11 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                                         child: textGreen(getTranslated(this.context, 'yesIWantToStart')),
                                                         onPressed: () => _isStartWorkButtonTapped ? null : _startWork(workplaces[i].id),
                                                       ),
-                                                      FlatButton(child: textWhite(getTranslated(this.context, 'no'),), onPressed: () => Navigator.of(context).pop()),
+                                                      FlatButton(
+                                                          child: textWhite(
+                                                            getTranslated(this.context, 'no'),
+                                                          ),
+                                                          onPressed: () => Navigator.of(context).pop()),
                                                     ],
                                                   );
                                                 },
@@ -406,6 +411,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
       }).catchError((onError) {
         ToastService.showErrorToast(getTranslated(context, 'cannotFindWorkplaceWhereYouStarted'));
         setState(() => _isPauseWorkButtonTapped = false);
+        _progressDialog.hide();
       });
     }).catchError((onError) {
       ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
