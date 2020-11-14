@@ -246,7 +246,7 @@ class _GroupPageState extends State<GroupPage> {
 
   Widget _buildScrollableContainer(String imagePath, String title, String subtitle) {
     return Container(
-      height: 160,
+      height: 170,
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
@@ -259,7 +259,6 @@ class _GroupPageState extends State<GroupPage> {
                 getTranslated(context, subtitle),
               ),
             ),
-            SizedBox(height: 10),
           ],
         ),
       ),

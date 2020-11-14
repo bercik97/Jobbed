@@ -91,7 +91,7 @@ Container employeePanel(BuildContext context, User user, EmployeePageDto employe
 
 Widget _buildScrollableContainer(BuildContext context, String imagePath, String title, String subtitle) {
   return Container(
-    height: 160,
+    height: 170,
     child: SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Column(
