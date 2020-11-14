@@ -259,9 +259,9 @@ class _WorkTimePageState extends State<WorkTimePage> {
   }
 
   _findWorkplacesByCurrentLocation() {
-    setState(() => _isStartDialogButtonTapped = true);
-    flutterWebviewPlugin.launch('https://www.google.pl/maps/preview', hidden: true);
     _progressDialog.show();
+    setState(() => _isStartDialogButtonTapped = true);
+    flutterWebviewPlugin.reloadUrl('https://www.givejob.pl');
     Timer(const Duration(seconds: 10), () async {
       closeWebView();
       await _getUserLocation().then((value) {
@@ -411,9 +411,9 @@ class _WorkTimePageState extends State<WorkTimePage> {
   }
 
   _showPauseWorkDialog(WorkTimeDto workTime) {
-    setState(() => _isPauseWorkButtonTapped = true);
     _progressDialog.show();
-    flutterWebviewPlugin.launch('https://www.google.pl/maps/preview', hidden: true);
+    setState(() => _isPauseWorkButtonTapped = true);
+    flutterWebviewPlugin.reloadUrl('https://www.google.pl/maps/preview');
     Timer(const Duration(seconds: 10), () async {
       closeWebView();
       await _getUserLocation().then((value) {
