@@ -71,7 +71,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                   [
                     IconsLegend.buildRowWithWidget(text25Green('+ -'), getTranslated(context, 'manageEmployeesInGroup')),
                     IconsLegend.buildRowWithWidget(icon50Red(Icons.delete), getTranslated(context, 'removingGroup')),
-                    IconsLegend.buildRow('images/big-workplace-icon.png', getTranslated(context, 'manageCompanyWorkplaces')),
+                    IconsLegend.buildRow('images/workplace-icon.png', getTranslated(context, 'manageCompanyWorkplaces')),
                     IconsLegend.buildRowWithWidget(icon50Green(Icons.group_add), getTranslated(context, 'addingGroup')),
                   ],
                   _user,
@@ -135,7 +135,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                     child: Image(
                       width: 75,
                       image: AssetImage(
-                        'images/big-company-icon.png',
+                        'images/company-icon.png',
                       ),
                       fit: BoxFit.cover,
                     ),
@@ -177,7 +177,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                                     child: Image(
                                       width: 75,
                                       image: AssetImage(
-                                        'images/big-group-icon.png',
+                                        'images/group-icon.png',
                                       ),
                                       fit: BoxFit.cover,
                                     ),

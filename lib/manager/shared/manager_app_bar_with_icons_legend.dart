@@ -84,7 +84,7 @@ Widget managerAppBarWithIconsLegend(BuildContext context, String title, List<Wid
         child: IconButton(
           icon: Container(
             child: Image(
-              image: AssetImage('images/big-manager-icon.png'),
+              image: AssetImage('images/manager-icon.png'),
               fit: BoxFit.cover,
             ),
           ),

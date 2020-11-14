@@ -113,7 +113,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                                   height: 120,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    image: DecorationImage(image: AssetImage('images/big-employee-icon.png')),
+                                    image: DecorationImage(image: AssetImage('images/employee-icon.png')),
                                   ),
                                 ),
                                 Ink(

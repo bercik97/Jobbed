@@ -36,7 +36,7 @@ Container employeePanel(BuildContext context, User user, EmployeePageDto employe
                           MaterialPageRoute(builder: (context) => WorkTimePage(user, employee.todayWorkdayId)),
                         );
                       },
-                      child: _buildScrollableContainer(context, 'images/big-employee-work-icon.png', 'workingTime', 'startFinishWork'),
+                      child: _buildScrollableContainer(context, 'images/employee-work-icon.png', 'workingTime', 'startFinishWork'),
                     ),
                   ),
                 ),
@@ -54,7 +54,7 @@ Container employeePanel(BuildContext context, User user, EmployeePageDto employe
                               employee.groupManagerWhatsApp,
                             )
                           : ToastService.showErrorToast(getTranslated(context, 'noManagerAssigned')),
-                      child: _buildScrollableContainer(context, 'images/big-contact-with-manager-icon.png', 'contact', 'contactWithYourManager'),
+                      child: _buildScrollableContainer(context, 'images/contact-with-manager-icon.png', 'contact', 'contactWithYourManager'),
                     ),
                   ),
                 ),
@@ -74,7 +74,7 @@ Container employeePanel(BuildContext context, User user, EmployeePageDto employe
                           },
                         ),
                       ),
-                      child: _buildScrollableContainer(context, 'images/big-documents-icon.png', 'calendar', 'checkYourCalendar'),
+                      child: _buildScrollableContainer(context, 'images/calendar-icon.png', 'calendar', 'checkYourCalendar'),
                     ),
                   ),
                 ),

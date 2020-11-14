@@ -52,7 +52,7 @@ class _ManagerProfilePageState extends State<ManagerProfilePage> {
                       margin: EdgeInsets.only(top: 20),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        image: DecorationImage(image: AssetImage('images/big-manager-icon.png')),
+                        image: DecorationImage(image: AssetImage('images/manager-icon.png')),
                       ),
                     ),
                     Ink(

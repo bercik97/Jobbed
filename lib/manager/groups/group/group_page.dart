@@ -63,7 +63,7 @@ class _GroupPageState extends State<GroupPage> {
                             child: Image(
                               width: 75,
                               image: AssetImage(
-                                'images/big-group-icon.png',
+                                'images/group-icon.png',
                               ),
                               fit: BoxFit.cover,
                             ),
@@ -122,7 +122,7 @@ class _GroupPageState extends State<GroupPage> {
                                 ),
                               );
                             },
-                            child: _buildScrollableContainer('images/big-groups-icon.png', 'backToGroups', 'seeYourAllGroups'),
+                            child: _buildScrollableContainer('images/groups-icon.png', 'backToGroups', 'seeYourAllGroups'),
                           ),
                         ),
                       ),
@@ -132,7 +132,7 @@ class _GroupPageState extends State<GroupPage> {
                           color: BRIGHTER_DARK,
                           child: InkWell(
                             onTap: () => IconsLegend.showIconsLegendDialog(context, _model),
-                            child: _buildScrollableContainer('images/big-help-icon.png', 'iconsLegend', 'iconsLegendDescription'),
+                            child: _buildScrollableContainer('images/help-icon.png', 'iconsLegend', 'iconsLegendDescription'),
                           ),
                         ),
                       ),
@@ -154,7 +154,7 @@ class _GroupPageState extends State<GroupPage> {
                                 ),
                               );
                             },
-                            child: _buildScrollableContainer('images/big-employees-icon.png', 'employees', 'manageSelectedEmployee'),
+                            child: _buildScrollableContainer('images/employees-icon.png', 'employees', 'manageSelectedEmployee'),
                           ),
                         ),
                       ),
@@ -164,7 +164,7 @@ class _GroupPageState extends State<GroupPage> {
                           color: BRIGHTER_DARK,
                           child: InkWell(
                             onTap: () => QuickUpdateDialog.showQuickUpdateDialog(context, _model),
-                            child: _buildScrollableContainer('images/big-quick_update-icon.png', 'quickUpdate', 'quickUpdateDescription'),
+                            child: _buildScrollableContainer('images/quick_update-icon.png', 'quickUpdate', 'quickUpdateDescription'),
                           ),
                         ),
                       ),
@@ -186,7 +186,7 @@ class _GroupPageState extends State<GroupPage> {
                                 ),
                               );
                             },
-                            child: _buildScrollableContainer('images/big-timesheets-icon.png', 'timesheets', 'fillHoursRatingPlans'),
+                            child: _buildScrollableContainer('images/timesheets-icon.png', 'timesheets', 'fillHoursRatingPlans'),
                           ),
                         ),
                       ),
@@ -204,7 +204,7 @@ class _GroupPageState extends State<GroupPage> {
                                 ),
                               ),
                             },
-                            child: _buildScrollableContainer('images/big-vocation-icon.png', 'vocations', 'vocationsDescription'),
+                            child: _buildScrollableContainer('images/vocation-icon.png', 'vocations', 'vocationsDescription'),
                           ),
                         ),
                       ),
@@ -226,7 +226,7 @@ class _GroupPageState extends State<GroupPage> {
                                 ),
                               );
                             },
-                            child: _buildScrollableContainer('images/big-workplace-icon.png', 'workplaces', 'workplacesDescription'),
+                            child: _buildScrollableContainer('images/workplace-icon.png', 'workplaces', 'workplacesDescription'),
                           ),
                         ),
                       ),

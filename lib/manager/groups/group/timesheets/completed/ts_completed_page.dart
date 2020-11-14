@@ -177,7 +177,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                                         highlightColor: WHITE,
                                         child: Image(
                                           image: AssetImage(
-                                            'images/big-employee-icon.png',
+                                            'images/employee-icon.png',
                                           ),
                                           fit: BoxFit.cover,
                                         ),

@@ -185,7 +185,7 @@ class _GroupEditMoneyPerHourPageState extends State<GroupEditMoneyPerHourPage> {
                                           highlightColor: WHITE,
                                           child: Image(
                                             image: AssetImage(
-                                              'images/big-employee-icon.png',
+                                              'images/employee-icon.png',
                                             ),
                                             fit: BoxFit.cover,
                                           ),

@@ -83,7 +83,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                           icon: Container(
                             child: Image(
                               image: AssetImage(
-                                'images/big-manager-icon.png',
+                                'images/manager-icon.png',
                               ),
                               fit: BoxFit.cover,
                             ),
@@ -113,7 +113,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                   image: AssetImage(
-                                    'images/big-employee-icon.png',
+                                    'images/employee-icon.png',
                                   ),
                                   fit: BoxFit.fill),
                             ),

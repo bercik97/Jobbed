@@ -177,7 +177,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                                           children: <Widget>[
                                             workday.vocation != null
                                                 ? Row(
-                                                    children: [Image(height: 35, image: AssetImage('images/big-vocation-icon.png')), workday.vocation.verified == true ? iconGreen(Icons.check) : iconRed(Icons.clear)],
+                                                    children: [Image(height: 35, image: AssetImage('images/vocation-icon.png')), workday.vocation.verified == true ? iconGreen(Icons.check) : iconRed(Icons.clear)],
                                                   )
                                                 : textWhiteBold('-'),
                                           ],

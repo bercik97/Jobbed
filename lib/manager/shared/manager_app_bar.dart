@@ -19,7 +19,7 @@ AppBar managerAppBar(BuildContext context, User user, String title) {
           icon: Container(
             child: Image(
               image: AssetImage(
-                'images/big-manager-icon.png',
+                'images/manager-icon.png',
               ),
               fit: BoxFit.cover,
             ),

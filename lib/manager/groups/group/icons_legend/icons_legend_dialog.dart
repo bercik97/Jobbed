@@ -37,7 +37,7 @@ class IconsLegend {
                       buildRow('images/green-plan-icon.png', getTranslated(context, 'settingPlan')),
                       buildRow('images/green-opinion-icon.png', getTranslated(context, 'settingOpinion')),
                       buildRow('images/green-workplace-icon.png', getTranslated(context, 'manageWorkplaces')),
-                      buildRow('images/small-vocation-icon.png', getTranslated(context, 'settingVocation')),
+                      buildRow('images/green-vocation-icon.png', getTranslated(context, 'settingVocation')),
                     ],
                   ),
                 ),

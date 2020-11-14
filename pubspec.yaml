@@ -85,35 +85,28 @@ flutter:
     - images/play-icon.png
     - images/stop-icon.png
 
-    - images/big-company-icon.png
-    - images/big-group-icon.png
-    - images/big-groups-icon.png
-    - images/big-employees-icon.png
-    - images/big-quick_update-icon.png
-    - images/big-timesheets-icon.png
-    - images/big-vocation-icon.png
-    - images/big-workplace-icon.png
-    - images/big-help-icon.png
-    - images/big-documents-icon.png
-    - images/big-manager-icon.png
-    - images/big-employee-icon.png
-    - images/big-contact-with-manager-icon.png
-    - images/big-employee-work-icon.png
-
-    - images/small-group-icon.png
-    - images/small-groups-icon.png
-    - images/small-employees-icon.png
-    - images/small-quick_update-icon.png
-    - images/small-timesheets-icon.png
-    - images/small-vocation-icon.png
-    - images/small-help-icon.png
-    - images/small-documents-icon.png
+    - images/company-icon.png
+    - images/group-icon.png
+    - images/groups-icon.png
+    - images/employees-icon.png
+    - images/quick_update-icon.png
+    - images/timesheets-icon.png
+    - images/vocation-icon.png
+    - images/workplace-icon.png
+    - images/help-icon.png
+    - images/documents-icon.png
+    - images/manager-icon.png
+    - images/employee-icon.png
+    - images/contact-with-manager-icon.png
+    - images/employee-work-icon.png
+    - images/calendar-icon.png
 
     - images/green-hours-icon.png
     - images/green-rate-icon.png
     - images/green-plan-icon.png
     - images/green-opinion-icon.png
     - images/green-workplace-icon.png
+    - images/green-vocation-icon.png
 
     - images/dark-hours-icon.png
     - images/dark-rate-icon.png

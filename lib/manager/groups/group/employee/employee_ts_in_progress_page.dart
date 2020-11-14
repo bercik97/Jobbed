@@ -108,7 +108,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
               IconsLegend.buildRow('images/green-rate-icon.png', getTranslated(context, 'settingRating')),
               IconsLegend.buildRow('images/green-plan-icon.png', getTranslated(context, 'settingPlan')),
               IconsLegend.buildRow('images/green-opinion-icon.png', getTranslated(context, 'settingOpinion')),
-              IconsLegend.buildRow('images/small-vocation-icon.png', getTranslated(context, 'settingVocation')),
+              IconsLegend.buildRow('images/green-vocation-icon.png', getTranslated(context, 'settingVocation')),
             ],
             _user),
         drawer: managerSideBar(context, _user),
@@ -224,7 +224,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                           children: <Widget>[
                                             workday.vocation != null
                                                 ? Row(
-                                                    children: [Image(height: 35, image: AssetImage('images/big-vocation-icon.png')), workday.vocation.verified == true ? iconGreen(Icons.check) : iconRed(Icons.clear)],
+                                                    children: [Image(height: 35, image: AssetImage('images/vocation-icon.png')), workday.vocation.verified == true ? iconGreen(Icons.check) : iconRed(Icons.clear)],
                                                   )
                                                 : textWhiteBold('-'),
                                           ],
