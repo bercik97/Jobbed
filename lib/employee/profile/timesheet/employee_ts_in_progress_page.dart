@@ -31,8 +31,9 @@ import '../../employee_profile_page.dart';
 class EmployeeTsInProgressPage extends StatefulWidget {
   final User _user;
   final TimesheetForEmployeeDto _timesheet;
+  final bool _canFillHours;
 
-  EmployeeTsInProgressPage(this._user, this._timesheet);
+  EmployeeTsInProgressPage(this._user, this._timesheet, this._canFillHours);
 
   @override
   _EmployeeTsInProgressPageState createState() => _EmployeeTsInProgressPageState();
@@ -45,6 +46,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   User _user;
   WorkdayService _workdayService;
   TimesheetForEmployeeDto _timesheet;
+  bool _canFillHours;
 
   Set<int> selectedIds = new Set();
   List<WorkdayForEmployeeDto> workdays = new List();
@@ -60,6 +62,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     this._user = widget._user;
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     this._timesheet = widget._timesheet;
+    this._canFillHours = widget._canFillHours;
     this._loading = true;
     super.initState();
     _workdayService.findAllForEmployeeByTimesheetId(_timesheet.id.toString()).then((res) {
@@ -209,44 +212,46 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
               ],
             ),
           ),
-          bottomNavigationBar: Container(
-            height: 40,
-            child: Row(
-              children: <Widget>[
-                SizedBox(width: 1),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-hours-icon.png')),
-                    onPressed: () {
-                      if (selectedIds.isNotEmpty) {
-                        _hoursController.clear();
-                        _showUpdateHoursDialog(selectedIds);
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
+          bottomNavigationBar: _canFillHours
+              ? Container(
+                  height: 40,
+                  child: Row(
+                    children: <Widget>[
+                      SizedBox(width: 1),
+                      Expanded(
+                        child: MaterialButton(
+                          color: GREEN,
+                          child: Image(image: AssetImage('images/dark-hours-icon.png')),
+                          onPressed: () {
+                            if (selectedIds.isNotEmpty) {
+                              _hoursController.clear();
+                              _showUpdateHoursDialog(selectedIds);
+                            } else {
+                              showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                            }
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 2.5),
+                      Expanded(
+                        child: MaterialButton(
+                          color: GREEN,
+                          child: Image(image: AssetImage('images/dark-plan-icon.png')),
+                          onPressed: () {
+                            if (selectedIds.isNotEmpty) {
+                              _noteController.clear();
+                              _showUpdateNotesDialog(selectedIds);
+                            } else {
+                              showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                            }
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 1),
+                    ],
                   ),
-                ),
-                SizedBox(width: 2.5),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-plan-icon.png')),
-                    onPressed: () {
-                      if (selectedIds.isNotEmpty) {
-                        _noteController.clear();
-                        _showUpdateNotesDialog(selectedIds);
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
-                  ),
-                ),
-                SizedBox(width: 1),
-              ],
-            ),
-          ),
+                )
+              : SizedBox(width: 0),
         ),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilPage(_user)),

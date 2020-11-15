@@ -33,6 +33,7 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
   List todayWorkTimes = dto.todayWorkTimes;
   String todayPlan = dto.todayPlan;
   String todayNote = dto.todayNote;
+  bool canFillHours = dto.canFillHours;
   return Container(
     child: SingleChildScrollView(
       child: Padding(
@@ -78,12 +79,12 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                             text15White(getTranslated(context, 'workTimes') + ': '),
                             todayWorkTimes != null && todayWorkTimes.isNotEmpty
                                 ? Row(
-                              children: [
-                                text15GreenBold(getTranslated(context, 'yes') + ' '),
-                                iconGreen(Icons.search),
-                                textGreen('(' + getTranslated(context, 'checkDetails') + ')'),
-                              ],
-                            )
+                                    children: [
+                                      text15GreenBold(getTranslated(context, 'yes') + ' '),
+                                      iconGreen(Icons.search),
+                                      textGreen('(' + getTranslated(context, 'checkDetails') + ')'),
+                                    ],
+                                  )
                                 : text15RedBold(getTranslated(context, 'empty'))
                           ],
                         ),
@@ -128,12 +129,18 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                 onTap: () => WorkdayUtil.showScrollableWorkTimesAndPlanAndNote(context, todayDate, todayWorkTimes, todayPlan, todayNote),
               ),
             ),
-            SizedBox(height: 10),
-            MaterialButton(
-              color: GREEN,
-              child: Text(getTranslated(context, 'fillHours')),
-              onPressed: () => fillHoursFun(),
-            ),
+            canFillHours
+                ? Column(
+                    children: [
+                      SizedBox(height: 10),
+                      MaterialButton(
+                        color: GREEN,
+                        child: Text(getTranslated(context, 'fillHours')),
+                        onPressed: () => fillHoursFun(),
+                      ),
+                    ],
+                  )
+                : SizedBox(height: 10),
             MaterialButton(
               color: GREEN,
               child: Text(getTranslated(context, 'editNote')),

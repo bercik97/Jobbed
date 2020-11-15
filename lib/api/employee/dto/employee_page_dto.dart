@@ -19,6 +19,7 @@ class EmployeePageDto {
   final List todayWorkTimes;
   final String todayPlan;
   final String todayNote;
+  final bool canFillHours;
   final String groupManager;
   final String groupManagerPhone;
   final String groupManagerViber;
@@ -41,6 +42,7 @@ class EmployeePageDto {
     @required this.todayWorkTimes,
     @required this.todayPlan,
     @required this.todayNote,
+    @required this.canFillHours,
     @required this.groupManager,
     @required this.groupManagerPhone,
     @required this.groupManagerViber,
@@ -65,6 +67,7 @@ class EmployeePageDto {
       todayWorkTimes: json['todayWorkTimes'].map((data) => WorkTimeDto.fromJson(data)).toList(),
       todayPlan: json['todayPlan'] as String,
       todayNote: json['todayNote'] as String,
+      canFillHours: json['canFillHours'] as bool,
       groupManager: json['groupManager'] as String,
       groupManagerPhone: json['groupManagerPhone'] as String,
       groupManagerViber: json['groupManagerViber'] as String,
