@@ -121,6 +121,7 @@ Text text20Red(String text) { return Text(text, style: TextStyle(fontSize: 20, c
 /////////////////////
 /*  TEXT RED BOLD  */
 /////////////////////
+Text textRedBold(String text) { return Text(text, style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)); }
 Text text15RedBold(String text) { return Text(text, style: TextStyle(fontSize: 15, color: Colors.red, fontWeight: FontWeight.bold)); }
 Text text16RedBold(String text) { return Text(text, style: TextStyle(fontSize: 16, color: Colors.red, fontWeight: FontWeight.bold)); }
 Text text20RedBold(String text) { return Text(text, style: TextStyle(fontSize: 20, color: Colors.red, fontWeight: FontWeight.bold)); }

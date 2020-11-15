@@ -52,6 +52,8 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
   List<bool> _checked = new List();
   LinkedHashSet<int> _selectedIds = new LinkedHashSet();
 
+  int _radioValue = -1;
+
   @override
   void initState() {
     this._model = widget._model;
@@ -204,6 +206,14 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                             ],
                                           ),
                                           alignment: Alignment.topLeft),
+                                      Align(
+                                          child: Row(
+                                            children: <Widget>[
+                                              textWhite(getTranslated(this.context, 'selfUpdatingHours') + ': '),
+                                              employee.canFillHours ? textGreenBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
+                                            ],
+                                          ),
+                                          alignment: Alignment.topLeft),
                                     ],
                                   ),
                                   activeColor: GREEN,
@@ -263,6 +273,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                     child: textCenterDark(getTranslated(context, 'selfUpdatingHours')),
                     onPressed: () {
                       if (_selectedIds.isNotEmpty) {
+                        _changePermissionToSelfFillHours();
                       } else {
                         showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
                       }
@@ -376,11 +387,10 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 "moneyPerHour": moneyPerHour,
                               },
                             ).then(
-                              (res) => {
-                                _uncheckAll(),
-                                _refresh(),
-                                Navigator.pop(context),
-                                ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedMoneyPerHourForSelectedEmployees')),
+                              (res) {
+                                _refresh();
+                                Navigator.pop(context);
+                                ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedMoneyPerHourForSelectedEmployees'));
                               },
                             );
                           },
@@ -397,12 +407,119 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
     );
   }
 
-  void _uncheckAll() {
-    _selectedIds.clear();
-    _isChecked = false;
-    List<bool> l = new List();
-    _checked.forEach((b) => l.add(false));
-    _checked = l;
+  void _changePermissionToSelfFillHours() {
+    TextEditingController _moneyPerHourController = new TextEditingController();
+    showGeneralDialog(
+      context: context,
+      barrierColor: DARK.withOpacity(0.95),
+      barrierDismissible: false,
+      barrierLabel: getTranslated(context, 'selfUpdatingHours'),
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: StatefulBuilder(builder: (context, setState) {
+            return Scaffold(
+              backgroundColor: Colors.black12,
+              body: Center(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: 50),
+                        child: Column(
+                          children: [
+                            textCenter20GreenBold(getTranslated(context, 'permissionToSelfUpdatingHoursUpperCase')),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 7.5),
+                      Column(
+                        children: <Widget>[
+                          _buildRadioBtn(
+                            color: GREEN,
+                            title: getTranslated(context, 'yesEmployeeCanFillHoursOnHisOwn'),
+                            value: 0,
+                            onChanged: (newValue) => setState(() => _radioValue = newValue),
+                          ),
+                          _buildRadioBtn(
+                            color: Colors.red,
+                            title: getTranslated(context, 'noEmployeeCannotFillHoursOnHisOwn'),
+                            value: 1,
+                            onChanged: (newValue) => setState(() => _radioValue = newValue),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          MaterialButton(
+                            elevation: 0,
+                            height: 50,
+                            minWidth: 40,
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[iconWhite(Icons.close)],
+                            ),
+                            color: Colors.red,
+                            onPressed: () {
+                              _radioValue = -1;
+                              Navigator.pop(context);
+                            },
+                          ),
+                          SizedBox(width: 25),
+                          MaterialButton(
+                            elevation: 0,
+                            height: 50,
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[iconWhite(Icons.check)],
+                            ),
+                            color: GREEN,
+                            onPressed: () {
+                              if (_radioValue == -1) {
+                                ToastService.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
+                                return;
+                              }
+                              _employeeService.updateFieldsValuesByIds(
+                                _selectedIds.toList(),
+                                {
+                                  "canFillHours": _radioValue == 0 ? true : false,
+                                },
+                              ).then(
+                                (res) {
+                                  _refresh();
+                                  Navigator.pop(context);
+                                  ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees'));
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }),
+        );
+      },
+    );
+  }
+
+  Widget _buildRadioBtn({Color color, String title, int value, Function onChanged}) {
+    return RadioListTile(
+      activeColor: color,
+      value: value,
+      groupValue: _radioValue,
+      onChanged: onChanged,
+      title: textWhite(title),
+    );
   }
 
   Future<Null> _refresh() {

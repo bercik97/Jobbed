@@ -288,6 +288,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
         'motherName',
         'dateOfBirth',
         'moneyPerHour',
+        'canFillHours',
         'expirationDateOfWork',
         'nip',
         'bankAccountNumber',
@@ -309,6 +310,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
           String motherName = res['motherName'];
           String dateOfBirth = res['dateOfBirth'];
           double moneyPerHour = res['moneyPerHour'];
+          bool canFillHours = res['canFillHours'];
           String expirationDateOfWork = res['expirationDateOfWork'];
           String nip = res['nip'];
           String bankAccountNumber = res['bankAccountNumber'];
@@ -327,6 +329,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                 _buildListTile(this.context, 'motherName', motherName),
                 _buildListTile(this.context, 'dateOfBirth', dateOfBirth),
                 _buildListTile(this.context, 'moneyPerHour', moneyPerHour.toString()),
+                _buildListTile(this.context, 'selfUpdatingHours', canFillHours ? getTranslated(this.context, 'yes') : getTranslated(this.context, 'no')),
                 _buildListTile(this.context, 'expirationDateOfWork', expirationDateOfWork),
                 _buildListTile(this.context, 'nip', nip),
                 _buildListTile(this.context, 'bankAccountNumber', bankAccountNumber),

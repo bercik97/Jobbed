@@ -510,5 +510,10 @@
   "workInProgress": "Praca w toku",
   "employeesSettings": "Ustawienia pracowników",
   "employeesSettingsDescription": "Ustalaj stawki, przydzielaj uprawnienia",
-  "selfUpdatingHours": "Samodzielne wypełnianie godzin"
+  "selfUpdatingHours": "Samodzielne wypełnianie godzin",
+  "permissionToSelfUpdatingHoursUpperCase": "UPRAWNIENIE DO SAMODZIELNEGO WYPEŁNIANIA GODZIN",
+  "yesEmployeeCanFillHoursOnHisOwn": "Tak, pracownik może uzupełniać godziny samodzielnie",
+  "noEmployeeCannotFillHoursOnHisOwn": "Nie, pracownik nie może uzupełniać godzin samodzielnie",
+  "successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees": "Pomyślnie zaktualizowano uprawnienie do samodzielnego wypełniania godzin dla wybranych pracowników",
+  "pleaseSelectValue": "Proszę wybierz wartość"
 }
