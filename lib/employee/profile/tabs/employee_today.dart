@@ -133,18 +133,24 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                 ? Column(
                     children: [
                       SizedBox(height: 10),
-                      MaterialButton(
-                        color: GREEN,
-                        child: Text(getTranslated(context, 'fillHours')),
-                        onPressed: () => fillHoursFun(),
+                      ButtonTheme(
+                        minWidth: 200.0,
+                        child: MaterialButton(
+                          color: GREEN,
+                          child: Text(getTranslated(context, 'fillHours')),
+                          onPressed: () => fillHoursFun(),
+                        ),
                       ),
                     ],
                   )
                 : SizedBox(height: 10),
-            MaterialButton(
-              color: GREEN,
-              child: Text(getTranslated(context, 'editNote')),
-              onPressed: () => editNoteFun(),
+            ButtonTheme(
+              minWidth: 200.0,
+              child: MaterialButton(
+                color: GREEN,
+                child: Text(getTranslated(context, 'editNote')),
+                onPressed: () => editNoteFun(),
+              ),
             ),
           ],
         ),
