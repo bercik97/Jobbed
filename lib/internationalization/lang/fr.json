@@ -508,12 +508,12 @@
   "workplaceAreNotSetted": "Veuillez configurer votre espace de travail",
   "cannotStartWorkWithoutTS": "Vous ne pouvez pas commencer à travailler si vous n'avez pas de feuille de temps pour le mois en cours. Demandez à votre responsable de générer une feuille de temps pour vous.",
   "workInProgress": "Travail en cours",
-  "employeesSettings": "Employees settings",
-  "employeesSettingsDescription": "Set hourly wages, assign permissions",
-  "selfUpdatingHours": "Self updating hours",
-  "permissionToSelfUpdatingHoursUpperCase": "PERMISSION FOR SELF UPDATING HOURS",
-  "yesEmployeeCanFillHoursOnHisOwn": "Yes, employee can fill hours on his own",
-  "noEmployeeCannotFillHoursOnHisOwn": "No, employee cannot fill hours on his own",
-  "successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees": "Successfully updated permission to self filling hours for selected employees",
-  "pleaseSelectValue": "Please select a value"
+  "employeesSettings": "Paramètres des employés",
+  "employeesSettingsDescription": "Définir les salaires horaires, attribuer des autorisations",
+  "selfUpdatingHours": "Heures de mise à jour automatique",
+  "permissionToSelfUpdatingHoursUpperCase": "PERMISSION POUR LES HEURES DE MISE À JOUR AUTOMATIQUE",
+  "yesEmployeeCanFillHoursOnHisOwn": "Oui, l'employé peut remplir ses heures seul",
+  "noEmployeeCannotFillHoursOnHisOwn": "Non, l'employé ne peut pas remplir les heures seul",
+  "successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees": "Mise à jour de l'autorisation d'auto-remplissage des heures pour les employés sélectionnés",
+  "pleaseSelectValue": "Veuillez sélectionner une valeur"
 }

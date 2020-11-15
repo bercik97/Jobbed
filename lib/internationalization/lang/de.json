@@ -508,12 +508,12 @@
   "workplaceAreNotSetted": "Bitte richten Sie Ihren Arbeitsplatz ein",
   "cannotStartWorkWithoutTS": "Sie können nicht mit der Arbeit beginnen, wenn Sie keine Arbeitszeittabelle für den aktuellen Monat haben. Bitten Sie Ihren Manager, eine Arbeitszeittabelle für Sie zu erstellen.",
   "workInProgress": "In Arbeit",
-  "employeesSettings": "Employees settings",
-  "employeesSettingsDescription": "Set hourly wages, assign permissions",
-  "selfUpdatingHours": "Self updating hours",
-  "permissionToSelfUpdatingHoursUpperCase": "PERMISSION FOR SELF UPDATING HOURS",
-  "yesEmployeeCanFillHoursOnHisOwn": "Yes, employee can fill hours on his own",
-  "noEmployeeCannotFillHoursOnHisOwn": "No, employee cannot fill hours on his own",
-  "successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees": "Successfully updated permission to self filling hours for selected employees",
-  "pleaseSelectValue": "Please select a value"
+  "employeesSettings": "Mitarbeitereinstellungen",
+  "employeesSettingsDescription": "Stundenlohn festlegen, Berechtigungen zuweisen",
+  "selfUpdatingHours": "Selbstaktualisierende Stunden",
+  "permissionToSelfUpdatingHoursUpperCase": "ERLAUBNIS FÜR SELBST-UPDATING-STUNDEN",
+  "yesEmployeeCanFillHoursOnHisOwn": "Ja, Mitarbeiter können Stunden selbst füllen",
+  "noEmployeeCannotFillHoursOnHisOwn": "Nein, Mitarbeiter können Stunden nicht alleine füllen",
+  "successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees": "Erfolgreich aktualisierte Berechtigung zum Selbstausfüllen von Stunden für ausgewählte Mitarbeiter",
+  "pleaseSelectValue": "Bitte wählen Sie einen Wert"
 }

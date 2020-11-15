@@ -508,12 +508,12 @@
   "workplaceAreNotSetted": "გთხოვთ, დააყენოთ თქვენი სამუშაო ადგილი",
   "cannotStartWorkWithoutTS": "თქვენ ვერ დაიწყებთ მუშაობას, როდესაც არ გაქვთ მოცემული თვის ცხრილი. სთხოვეთ თქვენს მენეჯერს შექმნას თქვენთვის ცხრილი.",
   "workInProgress": "მიმდინარეობს მუშაობა",
-  "employeesSettings": "Employees settings",
-  "employeesSettingsDescription": "Set hourly wages, assign permissions",
-  "selfUpdatingHours": "Self updating hours",
-  "permissionToSelfUpdatingHoursUpperCase": "PERMISSION FOR SELF UPDATING HOURS",
-  "yesEmployeeCanFillHoursOnHisOwn": "Yes, employee can fill hours on his own",
-  "noEmployeeCannotFillHoursOnHisOwn": "No, employee cannot fill hours on his own",
-  "successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees": "Successfully updated permission to self filling hours for selected employees",
-  "pleaseSelectValue": "Please select a value"
+  "employeesSettings": "თანამშრომლების პარამეტრები",
+  "employeesSettingsDescription": "საათობრივი ხელფასის დაყენება, ნებართვების მინიჭება",
+  "selfUpdatingHours": "თვითგანახლების საათები",
+  "permissionToSelfUpdatingHoursUpperCase": "ნებართვა თვით განახლების საათებისათვის",
+  "yesEmployeeCanFillHoursOnHisOwn": "დიახ, თანამშრომელს შეუძლია საათების შევსება თვითონ",
+  "noEmployeeCannotFillHoursOnHisOwn": "არა, თანამშრომელს არ შეუძლია საათების შევსება თავისთავად",
+  "successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees": "წარმატებით განახლდა არჩეული თანამშრომლების თვითგამავსების საათების ნებართვა",
+  "pleaseSelectValue": "გთხოვთ აირჩიოთ მნიშვნელობა"
 }

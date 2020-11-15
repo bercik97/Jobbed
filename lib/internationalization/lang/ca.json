@@ -508,12 +508,12 @@
   "workplaceAreNotSetted": "Ställ in din arbetsplats",
   "cannotStartWorkWithoutTS": "Du kan inte börja arbeta när du inte har tidrapport för aktuell månad. Be din chef skapa en tidrapport åt dig.",
   "workInProgress": "Pågående arbete",
-  "employeesSettings": "Employees settings",
-  "employeesSettingsDescription": "Set hourly wages, assign permissions",
-  "selfUpdatingHours": "Self updating hours",
-  "permissionToSelfUpdatingHoursUpperCase": "PERMISSION FOR SELF UPDATING HOURS",
-  "yesEmployeeCanFillHoursOnHisOwn": "Yes, employee can fill hours on his own",
-  "noEmployeeCannotFillHoursOnHisOwn": "No, employee cannot fill hours on his own",
-  "successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees": "Successfully updated permission to self filling hours for selected employees",
-  "pleaseSelectValue": "Please select a value"
+  "employeesSettings": "Anställdas inställningar",
+  "employeesSettingsDescription": "Ange timlön, tilldela behörigheter",
+  "selfUpdatingHours": "Självuppdaterande timmar",
+  "permissionToSelfUpdatingHoursUpperCase": "TILLSTÅND FÖR SJÄLV UPPDATERINGSTIDAR",
+  "yesEmployeeCanFillHoursOnHisOwn": "Ja, anställd kan fylla timmar på egen hand",
+  "noEmployeeCannotFillHoursOnHisOwn": "Nej, anställd kan inte fylla timmar på egen hand",
+  "successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees": "Uppdaterad behörighet för självfyllande timmar för utvalda anställda",
+  "pleaseSelectValue": "Välj ett värde"
 }

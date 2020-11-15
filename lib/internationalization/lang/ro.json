@@ -508,12 +508,12 @@
   "workplaceAreNotSetted": "Vă rugăm să vă configurați zona de lucru",
   "cannotStartWorkWithoutTS": "Nu puteți începe să lucrați atunci când nu aveți foaia de timp pentru luna curentă. Solicitați managerului dvs. să vă genereze o foaie de timp.",
   "workInProgress": "Lucrare în curs",
-  "employeesSettings": "Employees settings",
-  "employeesSettingsDescription": "Set hourly wages, assign permissions",
-  "selfUpdatingHours": "Self updating hours",
-  "permissionToSelfUpdatingHoursUpperCase": "PERMISSION FOR SELF UPDATING HOURS",
-  "yesEmployeeCanFillHoursOnHisOwn": "Yes, employee can fill hours on his own",
-  "noEmployeeCannotFillHoursOnHisOwn": "No, employee cannot fill hours on his own",
-  "successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees": "Successfully updated permission to self filling hours for selected employees",
-  "pleaseSelectValue": "Please select a value"
+  "employeesSettings": "Setări angajați",
+  "employeesSettingsDescription": "Stabiliți salariile pe oră, atribuiți permisiuni",
+  "selfUpdatingHours": "Ore de auto-actualizare",
+  "permissionToSelfUpdatingHoursUpperCase": "PERMISIE PENTRU AUTO ACTUALIZARE ORE",
+  "yesEmployeeCanFillHoursOnHisOwn": "Da, angajatul poate umple singur orele",
+  "noEmployeeCannotFillHoursOnHisOwn": "Nu, angajatul nu poate umple singur orele",
+  "successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees": "Permisiunea actualizată cu succes pentru orele de completare personală pentru angajații selectați",
+  "pleaseSelectValue": "Vă rugăm să selectați o valoare"
 }

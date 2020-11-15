@@ -508,12 +508,12 @@
   "workplaceAreNotSetted": "Stel uw werkplek in",
   "cannotStartWorkWithoutTS": "U kunt niet aan het werk gaan als u geen urenstaat voor de huidige maand heeft. Vraag uw manager om een urenstaat voor u te genereren.",
   "workInProgress": "Lopende werkzaamheden",
-  "employeesSettings": "Employees settings",
-  "employeesSettingsDescription": "Set hourly wages, assign permissions",
-  "selfUpdatingHours": "Self updating hours",
-  "permissionToSelfUpdatingHoursUpperCase": "PERMISSION FOR SELF UPDATING HOURS",
-  "yesEmployeeCanFillHoursOnHisOwn": "Yes, employee can fill hours on his own",
-  "noEmployeeCannotFillHoursOnHisOwn": "No, employee cannot fill hours on his own",
-  "successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees": "Successfully updated permission to self filling hours for selected employees",
-  "pleaseSelectValue": "Please select a value"
+  "employeesSettings": "Medewerkersinstellingen",
+  "employeesSettingsDescription": "Uurloon instellen, rechten toewijzen",
+  "selfUpdatingHours": "Uren automatisch updaten",
+  "permissionToSelfUpdatingHoursUpperCase": "TOESTEMMING VOOR ZELF BIJWERKINGSUREN",
+  "yesEmployeeCanFillHoursOnHisOwn": "Ja, werknemer kan zelf uren invullen",
+  "noEmployeeCannotFillHoursOnHisOwn": "Nee, werknemer kan zelf geen uren vullen",
+  "successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees ":" Succesvol toestemming bijgewerkt om uren voor geselecteerde werknemers zelf in te vullen ",
+  "pleaseSelectValue": "Selecteer een waarde"
 }

@@ -508,12 +508,12 @@
   "workplaceAreNotSetted": "Configure su área de trabajo",
   "cannotStartWorkWithoutTS": "No puede comenzar a trabajar si no tiene la hoja de horas trabajadas para el mes actual. Pídale a su gerente que le genere una hoja de tiempo.",
   "workInProgress": "Trabajo en progreso",
-  "employeesSettings": "Employees settings",
-  "employeesSettingsDescription": "Set hourly wages, assign permissions",
-  "selfUpdatingHours": "Self updating hours",
-  "permissionToSelfUpdatingHoursUpperCase": "PERMISSION FOR SELF UPDATING HOURS",
-  "yesEmployeeCanFillHoursOnHisOwn": "Yes, employee can fill hours on his own",
-  "noEmployeeCannotFillHoursOnHisOwn": "No, employee cannot fill hours on his own",
-  "successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees": "Successfully updated permission to self filling hours for selected employees",
-  "pleaseSelectValue": "Please select a value"
+  "employeesSettings": "Configuración de empleados",
+  "employeesSettingsDescription": "Establecer salarios por hora, asignar permisos",
+  "selfUpdatingHours": "Horas de actualización automática",
+  "permissionToSelfUpdatingHoursUpperCase": "PERMISO PARA LAS HORAS DE AUTO ACTUALIZACIÓN",
+  "yesEmployeeCanFillHoursOnHisOwn": "Sí, el empleado puede ocupar las horas por su cuenta",
+  "noEmployeeCannotFillHoursOnHisOwn": "No, el empleado no puede ocupar las horas por su cuenta",
+  "successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees": "Permiso actualizado con éxito para autocompletar horas para empleados seleccionados",
+  "pleaseSelectValue": "Seleccione un valor"
 }

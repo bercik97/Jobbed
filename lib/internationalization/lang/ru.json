@@ -508,12 +508,12 @@
   "workplaceAreNotSetted": "Пожалуйста, настройте свое рабочее место",
   "cannotStartWorkWithoutTS": "Вы не можете приступить к работе, если у вас нет расписания на текущий месяц. Попросите вашего менеджера составить для вас расписание.",
   "workInProgress": "Работа в процессе",
-  "employeesSettings": "Employees settings",
-  "employeesSettingsDescription": "Set hourly wages, assign permissions",
-  "selfUpdatingHours": "Self updating hours",
-  "permissionToSelfUpdatingHoursUpperCase": "PERMISSION FOR SELF UPDATING HOURS",
-  "yesEmployeeCanFillHoursOnHisOwn": "Yes, employee can fill hours on his own",
-  "noEmployeeCannotFillHoursOnHisOwn": "No, employee cannot fill hours on his own",
-  "successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees": "Successfully updated permission to self filling hours for selected employees",
-  "pleaseSelectValue": "Please select a value"
+  "employeesSettings": "Настройки сотрудников",
+  "employeesSettingsDescription": "Установить почасовую оплату, назначить разрешения",
+  "selfUpdatingHours": "Часы самообновления",
+  "permissionToSelfUpdatingHoursUpperCase": "РАЗРЕШЕНИЕ НА ЧАСЫ САМООБНОВЛЕНИЯ",
+  "yesEmployeeCanFillHoursOnHisOwn": "Да, сотрудник может заполнять часы самостоятельно",
+  "noEmployeeCannotFillHoursOnHisOwn": "Нет, сотрудник не может заполнять часы самостоятельно",
+  "successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees": "Успешно обновлено разрешение на самостоятельное заполнение часов для выбранных сотрудников",
+  "pleaseSelectValue": "Выберите значение"
 }
