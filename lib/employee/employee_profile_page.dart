@@ -71,166 +71,167 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
 
   Widget _buildPage() {
     return WillPopScope(
-        child: MaterialApp(
-          title: APP_NAME,
-          theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-          debugShowCheckedModeBanner: false,
-          home: Scaffold(
-            drawer: employeeSideBar(context, _user),
-            backgroundColor: DARK,
-            body: DefaultTabController(
-              length: 3,
-              child: NestedScrollView(
-                headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                  return <Widget>[
-                    SliverAppBar(
-                      elevation: 0.0,
-                      actions: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: IconButton(
-                            icon: iconWhite(Icons.settings),
-                            onPressed: () => Navigator.push(
-                              this.context,
-                              MaterialPageRoute(builder: (context) => SettingsPage(_user)),
-                            ),
+      child: MaterialApp(
+        title: APP_NAME,
+        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          drawer: employeeSideBar(context, _user),
+          backgroundColor: DARK,
+          body: DefaultTabController(
+            length: 3,
+            child: NestedScrollView(
+              headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                return <Widget>[
+                  SliverAppBar(
+                    elevation: 0.0,
+                    actions: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(right: 15.0),
+                        child: IconButton(
+                          icon: iconWhite(Icons.settings),
+                          onPressed: () => Navigator.push(
+                            this.context,
+                            MaterialPageRoute(builder: (context) => SettingsPage(_user)),
                           ),
                         ),
-                      ],
-                      iconTheme: IconThemeData(color: WHITE),
-                      expandedHeight: 325.0,
-                      pinned: true,
-                      backgroundColor: BRIGHTER_DARK,
-                      flexibleSpace: FlexibleSpaceBar(
-                        background: Column(
-                          children: <Widget>[
-                            SizedBox(height: 75),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: 120,
-                                  height: 120,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(image: AssetImage('images/employee-icon.png')),
-                                  ),
-                                ),
-                                Ink(
-                                  decoration: ShapeDecoration(color: GREEN, shape: CircleBorder()),
-                                  child: IconButton(
-                                    icon: iconDark(Icons.border_color),
-                                    onPressed: () => Navigator.push(
-                                      this.context,
-                                      MaterialPageRoute(
-                                        builder: (context) => EmployeeEditPage(_employeePageDto.id, _user),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            textCenter18WhiteBold(utf8.decode(_user.info != null ? _user.info.runes.toList() : '-') + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
-                            SizedBox(height: 5),
-                            textCenter18White(getTranslated(this.context, 'employee') + ' #' + _user.id.toString()),
-                            SizedBox(height: 12),
-                            text16GreenBold(getTranslated(this.context, 'statisticsForThe') + _employeePageDto.tsCurrentYear + ' ' + getTranslated(this.context, _employeePageDto.tsCurrentMonth)),
-                            Padding(
-                              padding: EdgeInsets.only(top: 12, right: 12, left: 12),
-                              child: Container(
-                                color: BRIGHTER_DARK,
-                                child: Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: Column(
-                                        children: <Widget>[
-                                          text20White(getTranslated(this.context, 'days')),
-                                          SizedBox(height: 5.0),
-                                          Countup(
-                                            begin: 0,
-                                            end: _employeePageDto.tsDaysWorked.toDouble(),
-                                            duration: Duration(seconds: 2),
-                                            style: TextStyle(fontSize: 18.0, color: WHITE),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        children: <Widget>[
-                                          text20White(getTranslated(this.context, 'money')),
-                                          textCenter14White(
-                                            _employeePageDto.tsCurrency != null ? '(' + _employeePageDto.tsCurrency + ')' : getTranslated(this.context, 'noCurrency'),
-                                          ),
-                                          Countup(
-                                            begin: 0,
-                                            end: _employeePageDto.tsEarnedMoney,
-                                            duration: Duration(seconds: 2),
-                                            separator: ',',
-                                            style: TextStyle(fontSize: 18, color: WHITE),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        children: <Widget>[
-                                          text20White(getTranslated(this.context, 'rating')),
-                                          SizedBox(height: 5.0),
-                                          Countup(
-                                            begin: 0,
-                                            end: _employeePageDto.tsRating,
-                                            precision: 1,
-                                            duration: Duration(seconds: 2),
-                                            style: TextStyle(fontSize: 18.0, color: WHITE),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                      ),
+                    ],
+                    iconTheme: IconThemeData(color: WHITE),
+                    expandedHeight: 325.0,
+                    pinned: true,
+                    backgroundColor: BRIGHTER_DARK,
+                    flexibleSpace: FlexibleSpaceBar(
+                      background: Column(
+                        children: <Widget>[
+                          SizedBox(height: 75),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 120,
+                                height: 120,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(image: AssetImage('images/employee-icon.png')),
                                 ),
                               ),
+                              Ink(
+                                decoration: ShapeDecoration(color: GREEN, shape: CircleBorder()),
+                                child: IconButton(
+                                  icon: iconDark(Icons.border_color),
+                                  onPressed: () => Navigator.push(
+                                    this.context,
+                                    MaterialPageRoute(
+                                      builder: (context) => EmployeeEditPage(_employeePageDto.id, _user),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          textCenter18WhiteBold(utf8.decode(_user.info != null ? _user.info.runes.toList() : '-') + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
+                          SizedBox(height: 5),
+                          textCenter18White(getTranslated(this.context, 'employee') + ' #' + _user.id.toString()),
+                          SizedBox(height: 12),
+                          text16GreenBold(getTranslated(this.context, 'statisticsForThe') + _employeePageDto.tsCurrentYear + ' ' + getTranslated(this.context, _employeePageDto.tsCurrentMonth)),
+                          Padding(
+                            padding: EdgeInsets.only(top: 12, right: 12, left: 12),
+                            child: Container(
+                              color: BRIGHTER_DARK,
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Column(
+                                      children: <Widget>[
+                                        text20White(getTranslated(this.context, 'days')),
+                                        SizedBox(height: 5.0),
+                                        Countup(
+                                          begin: 0,
+                                          end: _employeePageDto.tsDaysWorked.toDouble(),
+                                          duration: Duration(seconds: 2),
+                                          style: TextStyle(fontSize: 18.0, color: WHITE),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      children: <Widget>[
+                                        text20White(getTranslated(this.context, 'money')),
+                                        textCenter14White(
+                                          _employeePageDto.tsCurrency != null ? '(' + _employeePageDto.tsCurrency + ')' : getTranslated(this.context, 'noCurrency'),
+                                        ),
+                                        Countup(
+                                          begin: 0,
+                                          end: _employeePageDto.tsEarnedMoney,
+                                          duration: Duration(seconds: 2),
+                                          separator: ',',
+                                          style: TextStyle(fontSize: 18, color: WHITE),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      children: <Widget>[
+                                        text20White(getTranslated(this.context, 'rating')),
+                                        SizedBox(height: 5.0),
+                                        Countup(
+                                          begin: 0,
+                                          end: _employeePageDto.tsRating,
+                                          precision: 1,
+                                          duration: Duration(seconds: 2),
+                                          style: TextStyle(fontSize: 18.0, color: WHITE),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                    SliverPersistentHeader(
-                      delegate: SliverAppBarDelegate(
-                        TabBar(
-                          labelColor: GREEN,
-                          unselectedLabelColor: Colors.grey,
-                          tabs: <Widget>[
-                            Tab(icon: iconWhite(Icons.assignment), text: getTranslated(this.context, 'timesheets')),
-                            Tab(icon: iconWhite(Icons.timelapse), text: getTranslated(this.context, 'today')),
-                            Tab(icon: iconWhite(Icons.sort), text: getTranslated(this.context, 'panel')),
-                          ],
-                        ),
-                      ),
-                      pinned: true,
-                    ),
-                  ];
-                },
-                body: Padding(
-                  padding: EdgeInsets.all(5),
-                  child: TabBarView(
-                    children: <Widget>[
-                      _buildTab(employeeTimesheetsTab(this.context, _user, _employeePageDto.timeSheets)),
-                      _buildTab(employeeToday(
-                        this.context,
-                        _employeePageDto,
-                        () => _fillHoursFun(_employeePageDto.todayWorkdayId),
-                        () => _editNoteFun(_employeePageDto.todayNote, _employeePageDto.todayWorkdayId),
-                      )),
-                      _buildTab(employeePanel(this.context, _user, _employeePageDto)),
-                    ],
                   ),
+                  SliverPersistentHeader(
+                    delegate: SliverAppBarDelegate(
+                      TabBar(
+                        labelColor: GREEN,
+                        unselectedLabelColor: Colors.grey,
+                        tabs: <Widget>[
+                          Tab(icon: iconWhite(Icons.assignment), text: getTranslated(this.context, 'timesheets')),
+                          Tab(icon: iconWhite(Icons.timelapse), text: getTranslated(this.context, 'today')),
+                          Tab(icon: iconWhite(Icons.sort), text: getTranslated(this.context, 'panel')),
+                        ],
+                      ),
+                    ),
+                    pinned: true,
+                  ),
+                ];
+              },
+              body: Padding(
+                padding: EdgeInsets.all(5),
+                child: TabBarView(
+                  children: <Widget>[
+                    _buildTab(employeeTimesheetsTab(this.context, _user, _employeePageDto.timeSheets)),
+                    _buildTab(employeeToday(
+                      this.context,
+                      _employeePageDto,
+                      () => _fillHoursFun(_employeePageDto.todayWorkdayId),
+                      () => _editNoteFun(_employeePageDto.todayNote, _employeePageDto.todayWorkdayId),
+                    )),
+                    _buildTab(employeePanel(this.context, _user, _employeePageDto)),
+                  ],
                 ),
               ),
             ),
           ),
         ),
-        onWillPop: _onWillPop);
+      ),
+      onWillPop: () => SystemNavigator.pop(),
+    );
   }
 
   RefreshIndicator _buildTab(Widget tab) {
@@ -440,9 +441,5 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
         );
       },
     );
-  }
-
-  Future<bool> _onWillPop() async {
-    return Logout.logout(context) ?? false;
   }
 }

@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:give_job/api/group/dto/group_dashboard_dto.dart';
 import 'package:give_job/api/group/service/group_service.dart';
@@ -113,7 +115,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
           }
         },
       ),
-      onWillPop: _onWillPop,
+      onWillPop: () => SystemNavigator.pop(),
     );
   }
 
@@ -504,9 +506,5 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
         this._groups = res;
       });
     });
-  }
-
-  Future<bool> _onWillPop() async {
-    return Logout.logout(context) ?? false;
   }
 }
