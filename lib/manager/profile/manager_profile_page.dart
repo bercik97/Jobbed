@@ -11,6 +11,7 @@ import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/logout_service.dart';
 import 'package:give_job/shared/settings/settings_page.dart';
 import 'package:give_job/shared/util/language_util.dart';
+import 'package:give_job/shared/widget/buttons.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
@@ -76,62 +77,40 @@ class _ManagerProfilePageState extends State<ManagerProfilePage> {
                     text20White(LanguageUtil.convertShortNameToFullName(this.context, _user.nationality) + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
                     SizedBox(height: 2.5),
                     text18White(getTranslated(context, 'manager') + ' #' + _user.id),
-                    SizedBox(height: 10),
-                    _buildButton(
-                      getTranslated(context, 'seeMyGroups'),
-                      Icons.group,
-                      () => {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => GroupsDashboardPage(_user),
-                          ),
+                    SizedBox(height: 30),
+                    Buttons.standardButton(
+                      minWidth: 200.0,
+                      title: getTranslated(context, 'seeMyGroups'),
+                      fun: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => GroupsDashboardPage(_user),
                         ),
-                      },
+                      ),
                     ),
-                    _buildButton(
-                      getTranslated(context, 'settings'),
-                      Icons.settings,
-                      () => {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SettingsPage(_user),
-                          ),
+                    SizedBox(height: 5),
+                    Buttons.standardButton(
+                      minWidth: 200.0,
+                      title: getTranslated(context, 'settings'),
+                      fun: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SettingsPage(_user),
                         ),
-                      },
+                      ),
                     ),
-                    _buildButton(getTranslated(context, 'logout'), Icons.exit_to_app, () => Logout.logout(context)),
+                    SizedBox(height: 5),
+                    Buttons.standardButton(
+                      minWidth: 200.0,
+                      title: getTranslated(context, 'logout'),
+                      fun: () => Logout.logout(context),
+                    ),
                   ],
                 )
               ],
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildButton(String text, IconData icon, Function() fun) {
-    return Padding(
-      padding: EdgeInsets.only(top: 20),
-      child: MaterialButton(
-        elevation: 0,
-        height: 50,
-        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-        onPressed: () => fun(),
-        color: GREEN,
-        child: Container(
-          width: 250,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              text20White(text),
-              iconWhite(icon),
-            ],
-          ),
-        ),
-        textColor: Colors.white,
       ),
     );
   }

@@ -9,6 +9,7 @@ import 'package:give_job/manager/groups/group/vocations/timesheets/calendar/voca
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
+import 'package:give_job/shared/widget/buttons.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:intl/intl.dart';
@@ -52,11 +53,28 @@ class QuickUpdateDialog {
                   },
                   child: textCenter15RedUnderline(getTranslated(context, 'quickUpdateWarn')),
                 ),
-                SizedBox(height: 10),
-                _buildUpdateButton(getTranslated(context, 'hours'), () => _buildUpdateHoursDialog(context)),
-                _buildUpdateButton(getTranslated(context, 'rating'), () => _buildUpdateRatingDialog(context)),
-                _buildUpdateButton(getTranslated(context, 'plan'), () => _buildUpdatePlanDialog(context)),
-                _buildUpdateButton(getTranslated(context, 'opinion'), () => _buildUpdateOpinionDialog(context)),
+                SizedBox(height: 30),
+                Buttons.standardButton(
+                  minWidth: 200.0,
+                  title: getTranslated(context, 'hours'),
+                  fun: () => _buildUpdateHoursDialog(context),
+                ),
+                Buttons.standardButton(
+                  minWidth: 200.0,
+                  title: getTranslated(context, 'rating'),
+                  fun: () => _buildUpdateRatingDialog(context),
+                ),
+                Buttons.standardButton(
+                  minWidth: 200.0,
+                  title: getTranslated(context, 'plan'),
+                  fun: () => _buildUpdatePlanDialog(context),
+                ),
+                Buttons.standardButton(
+                  minWidth: 200.0,
+                  title: getTranslated(context, 'opinion'),
+                  fun: () => _buildUpdateOpinionDialog(context),
+                ),
+                SizedBox(height: 30),
                 Container(
                   width: 80,
                   child: MaterialButton(

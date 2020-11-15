@@ -4,6 +4,7 @@ import 'package:give_job/api/employee/dto/employee_page_dto.dart';
 import 'package:give_job/api/workday/util/workday_util.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
+import 'package:give_job/shared/widget/buttons.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
@@ -133,24 +134,18 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                 ? Column(
                     children: [
                       SizedBox(height: 10),
-                      ButtonTheme(
+                      Buttons.standardButton(
                         minWidth: 200.0,
-                        child: MaterialButton(
-                          color: GREEN,
-                          child: Text(getTranslated(context, 'fillHours')),
-                          onPressed: () => fillHoursFun(),
-                        ),
+                        title: getTranslated(context, 'fillHours'),
+                        fun: () => fillHoursFun(),
                       ),
                     ],
                   )
                 : SizedBox(height: 10),
-            ButtonTheme(
+            Buttons.standardButton(
               minWidth: 200.0,
-              child: MaterialButton(
-                color: GREEN,
-                child: Text(getTranslated(context, 'editNote')),
-                onPressed: () => editNoteFun(),
-              ),
+              title: getTranslated(context, 'editNote'),
+              fun: () => editNoteFun(),
             ),
           ],
         ),
