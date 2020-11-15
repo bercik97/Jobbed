@@ -507,5 +507,8 @@
   "workplaceNameExists": "Werkpleknaam bestaat al! Kies een andere naam ...",
   "workplaceAreNotSetted": "Stel uw werkplek in",
   "cannotStartWorkWithoutTS": "U kunt niet aan het werk gaan als u geen urenstaat voor de huidige maand heeft. Vraag uw manager om een urenstaat voor u te genereren.",
-  "workInProgress": "Lopende werkzaamheden"
+  "workInProgress": "Lopende werkzaamheden",
+  "employeesSettings": "Employees settings",
+  "employeesSettingsDescription": "Set hourly wages, assign permissions",
+  "selfUpdatingHours": "Self updating hours"
 }

@@ -58,6 +58,12 @@ Text text25Dark(String text) { return Text(text, style: TextStyle(fontSize: 25, 
 
 
 /////////////////////
+/*TEXT CENTER WHITE*/
+/////////////////////
+Text textCenterDark(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(color: DARK)); }
+
+
+/////////////////////
 /* TEXT DARK BOLD  */
 /////////////////////
 Text textDarkBold(String text) { return Text(text, style: TextStyle(color: DARK, fontWeight: FontWeight.bold)); }

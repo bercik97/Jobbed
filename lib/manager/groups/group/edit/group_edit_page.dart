@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:give_job/api/group/service/group_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/edit/money_per_hour/group_edit_money_per_hour.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -76,21 +75,6 @@ class _GroupEditPageState extends State<GroupEditPage> {
                             child: IconButton(
                               icon: iconDark(Icons.border_color),
                               onPressed: () => _updateGroupDescription(context, _model.groupDescription),
-                            ),
-                          ),
-                        ),
-                        ListTile(
-                          title: text18WhiteBold(getTranslated(context, 'hourlyGroupRates')),
-                          trailing: Ink(
-                            decoration: ShapeDecoration(color: GREEN, shape: CircleBorder()),
-                            child: IconButton(
-                              icon: iconDark(Icons.border_color),
-                              onPressed: () {
-                                Navigator.push(
-                                  this.context,
-                                  MaterialPageRoute(builder: (context) => GroupEditMoneyPerHourPage(_model)),
-                                );
-                              },
                             ),
                           ),
                         ),

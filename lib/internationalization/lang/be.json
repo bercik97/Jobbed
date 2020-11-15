@@ -507,5 +507,8 @@
   "workplaceNameExists": "Імя на працоўным месцы ўжо існуе! Калі ласка, абярыце іншае імя ...",
   "workplaceAreNotSetted": "Калі ласка, наладзьце месца вашага працоўнага месца",
   "cannotStartWorkWithoutTS": "Вы не можаце пачаць працу, калі ў вас няма табеля працоўнага часу на бягучы месяц. Папытаеце свайго мэнэджара сфармаваць для вас табель.",
-  "workInProgress": "Незавершаная праца"
+  "workInProgress": "Незавершаная праца",
+  "employeesSettings": "Employees settings",
+  "employeesSettingsDescription": "Set hourly wages, assign permissions",
+  "selfUpdatingHours": "Self updating hours"
 }

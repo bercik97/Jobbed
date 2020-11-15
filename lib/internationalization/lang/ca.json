@@ -507,5 +507,8 @@
   "workplaceNameExists": "Arbetsplatsnamn finns redan! Välj ett annat namn ...",
   "workplaceAreNotSetted": "Ställ in din arbetsplats",
   "cannotStartWorkWithoutTS": "Du kan inte börja arbeta när du inte har tidrapport för aktuell månad. Be din chef skapa en tidrapport åt dig.",
-  "workInProgress": "Pågående arbete"
+  "workInProgress": "Pågående arbete",
+  "employeesSettings": "Employees settings",
+  "employeesSettingsDescription": "Set hourly wages, assign permissions",
+  "selfUpdatingHours": "Self updating hours"
 }

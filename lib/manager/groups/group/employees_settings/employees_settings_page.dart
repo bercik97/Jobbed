@@ -5,12 +5,14 @@ import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:give_job/api/employee/dto/employee_money_per_hour_dto.dart';
+import 'package:give_job/api/employee/dto/employee_settings_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/employee/employee_profil_page.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
+import 'package:give_job/manager/shared/manager_app_bar.dart';
+import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
@@ -20,24 +22,22 @@ import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
+import 'package:give_job/shared/widget/loader.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../../../shared/widget/loader.dart';
-import '../../../../shared/manager_app_bar.dart';
-import '../../../../shared/manager_side_bar.dart';
-import '../group_edit_page.dart';
+import '../group_page.dart';
 
-class GroupEditMoneyPerHourPage extends StatefulWidget {
+class EmployeesSettingsPage extends StatefulWidget {
   final GroupModel _model;
 
-  GroupEditMoneyPerHourPage(this._model);
+  EmployeesSettingsPage(this._model);
 
   @override
-  _GroupEditMoneyPerHourPageState createState() => _GroupEditMoneyPerHourPageState();
+  _EmployeesSettingsPageState createState() => _EmployeesSettingsPageState();
 }
 
-class _GroupEditMoneyPerHourPageState extends State<GroupEditMoneyPerHourPage> {
+class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
   final TextEditingController _moneyPerHourController = new TextEditingController();
 
   GroupModel _model;
@@ -45,8 +45,8 @@ class _GroupEditMoneyPerHourPageState extends State<GroupEditMoneyPerHourPage> {
 
   EmployeeService _employeeService;
 
-  List<EmployeeMoneyPerHourDto> _employees = new List();
-  List<EmployeeMoneyPerHourDto> _filteredEmployees = new List();
+  List<EmployeeSettingsDto> _employees = new List();
+  List<EmployeeSettingsDto> _filteredEmployees = new List();
   bool _loading = false;
   bool _isChecked = false;
   List<bool> _checked = new List();
@@ -59,7 +59,7 @@ class _GroupEditMoneyPerHourPageState extends State<GroupEditMoneyPerHourPage> {
     this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
     super.initState();
     _loading = true;
-    _employeeService.findAllByGroupIdForGroupEditMoneyPerHour(_model.groupId).then((res) {
+    _employeeService.findAllByGroupIdForEmployeesSettings(_model.groupId).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
@@ -84,7 +84,7 @@ class _GroupEditMoneyPerHourPageState extends State<GroupEditMoneyPerHourPage> {
           appBar: managerAppBar(
             context,
             _model.user,
-            getTranslated(context, 'editGroupMoneyPerHour') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
+            getTranslated(context, 'employeesSettings') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
           ),
           drawer: managerSideBar(context, _model.user),
           body: RefreshIndicator(
@@ -143,7 +143,7 @@ class _GroupEditMoneyPerHourPageState extends State<GroupEditMoneyPerHourPage> {
                   child: ListView.builder(
                     itemCount: _filteredEmployees.length,
                     itemBuilder: (BuildContext context, int index) {
-                      EmployeeMoneyPerHourDto employee = _filteredEmployees[index];
+                      EmployeeSettingsDto employee = _filteredEmployees[index];
                       int foundIndex = 0;
                       for (int i = 0; i < _employees.length; i++) {
                         if (_employees[i].employeeId == employee.employeeId) {
@@ -245,15 +245,27 @@ class _GroupEditMoneyPerHourPageState extends State<GroupEditMoneyPerHourPage> {
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: textDarkBold(getTranslated(context, 'setMoneyPerHour')),
-                    onPressed: () => {
-                      if (_selectedIds.isNotEmpty)
-                        {
-                          _moneyPerHourController.clear(),
-                          _changeCurrentMoneyPerHour(),
-                        }
-                      else
-                        {showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'whichYouWantToSetHourlyRate'))}
+                    child: textCenterDark(getTranslated(context, 'moneyPerHour')),
+                    onPressed: () {
+                      if (_selectedIds.isNotEmpty) {
+                        _moneyPerHourController.clear();
+                        _changeCurrentMoneyPerHour();
+                      } else {
+                        showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                      }
+                    },
+                  ),
+                ),
+                SizedBox(width: 1),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: textCenterDark(getTranslated(context, 'selfUpdatingHours')),
+                    onPressed: () {
+                      if (_selectedIds.isNotEmpty) {
+                      } else {
+                        showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                      }
                     },
                   ),
                 ),
@@ -263,7 +275,7 @@ class _GroupEditMoneyPerHourPageState extends State<GroupEditMoneyPerHourPage> {
           ),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupEditPage(_model)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model)),
     );
   }
 
@@ -394,7 +406,7 @@ class _GroupEditMoneyPerHourPageState extends State<GroupEditMoneyPerHourPage> {
   }
 
   Future<Null> _refresh() {
-    return _employeeService.findAllByGroupIdForGroupEditMoneyPerHour(_model.groupId).then((res) {
+    return _employeeService.findAllByGroupIdForEmployeesSettings(_model.groupId).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));

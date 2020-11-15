@@ -507,5 +507,8 @@
   "workplaceNameExists": "Arbeidsplassenavnet eksisterer allerede! Velg et annet navn ...",
   "workplaceAreNotSetted": "Sett opp arbeidsområdet ditt",
   "cannotStartWorkWithoutTS": "Du kan ikke begynne å jobbe når du ikke har timeliste for inneværende måned. Be lederen din om å lage et timeliste for deg.",
-  "workInProgress": "Arbeid pågår"
+  "workInProgress": "Arbeid pågår",
+  "employeesSettings": "Employees settings",
+  "employeesSettingsDescription": "Set hourly wages, assign permissions",
+  "selfUpdatingHours": "Self updating hours"
 }

@@ -507,5 +507,8 @@
   "workplaceNameExists": "სამუშაო ადგილის სახელი უკვე არსებობს! გთხოვთ აირჩიოთ სხვა სახელი ...",
   "workplaceAreNotSetted": "გთხოვთ, დააყენოთ თქვენი სამუშაო ადგილი",
   "cannotStartWorkWithoutTS": "თქვენ ვერ დაიწყებთ მუშაობას, როდესაც არ გაქვთ მოცემული თვის ცხრილი. სთხოვეთ თქვენს მენეჯერს შექმნას თქვენთვის ცხრილი.",
-  "workInProgress": "მიმდინარეობს მუშაობა"
+  "workInProgress": "მიმდინარეობს მუშაობა",
+  "employeesSettings": "Employees settings",
+  "employeesSettingsDescription": "Set hourly wages, assign permissions",
+  "selfUpdatingHours": "Self updating hours"
 }

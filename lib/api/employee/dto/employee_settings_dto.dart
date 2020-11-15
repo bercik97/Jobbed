@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 
-class EmployeeMoneyPerHourDto {
+class EmployeeSettingsDto {
   final int employeeId;
   final String employeeInfo;
   final String employeeNationality;
   final String currency;
   final double moneyPerHour;
 
-  EmployeeMoneyPerHourDto({
+  EmployeeSettingsDto({
     @required this.employeeId,
     @required this.employeeInfo,
     @required this.employeeNationality,
@@ -15,8 +15,8 @@ class EmployeeMoneyPerHourDto {
     @required this.moneyPerHour,
   });
 
-  factory EmployeeMoneyPerHourDto.fromJson(Map<String, dynamic> json) {
-    return EmployeeMoneyPerHourDto(
+  factory EmployeeSettingsDto.fromJson(Map<String, dynamic> json) {
+    return EmployeeSettingsDto(
       employeeId: json['employeeId'] as int,
       employeeInfo: json['employeeInfo'] as String,
       employeeNationality: json['employeeNationality'] as String,

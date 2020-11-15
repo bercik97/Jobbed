@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
+import 'package:give_job/manager/groups/group/employees_settings/employees_settings_page.dart';
 import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/timesheets/ts_page.dart';
@@ -163,8 +164,16 @@ class _GroupPageState extends State<GroupPage> {
                         child: Material(
                           color: BRIGHTER_DARK,
                           child: InkWell(
-                            onTap: () => QuickUpdateDialog.showQuickUpdateDialog(context, _model),
-                            child: _buildScrollableContainer('images/quick_update-icon.png', 'quickUpdate', 'quickUpdateDescription'),
+                            onTap: () {
+                              Navigator.of(context).push(
+                                CupertinoPageRoute<Null>(
+                                  builder: (BuildContext context) {
+                                    return EmployeesSettingsPage(_model);
+                                  },
+                                ),
+                              );
+                            },
+                            child: _buildScrollableContainer('images/employees-settings-icon.png', 'settings', 'employeesSettingsDescription'),
                           ),
                         ),
                       ),
@@ -195,16 +204,8 @@ class _GroupPageState extends State<GroupPage> {
                         child: Material(
                           color: BRIGHTER_DARK,
                           child: InkWell(
-                            onTap: () => {
-                              Navigator.of(context).push(
-                                CupertinoPageRoute<Null>(
-                                  builder: (BuildContext context) {
-                                    return VocationsTsPage(_model);
-                                  },
-                                ),
-                              ),
-                            },
-                            child: _buildScrollableContainer('images/vocation-icon.png', 'vocations', 'vocationsDescription'),
+                            onTap: () => QuickUpdateDialog.showQuickUpdateDialog(context, _model),
+                            child: _buildScrollableContainer('images/quick_update-icon.png', 'quickUpdate', 'quickUpdateDescription'),
                           ),
                         ),
                       ),
@@ -231,7 +232,23 @@ class _GroupPageState extends State<GroupPage> {
                         ),
                       ),
                       SizedBox(width: 10),
-                      Expanded(child: Material(color: BRIGHTER_DARK)),
+                      Expanded(
+                        child: Material(
+                          color: BRIGHTER_DARK,
+                          child: InkWell(
+                            onTap: () => {
+                              Navigator.of(context).push(
+                                CupertinoPageRoute<Null>(
+                                  builder: (BuildContext context) {
+                                    return VocationsTsPage(_model);
+                                  },
+                                ),
+                              ),
+                            },
+                            child: _buildScrollableContainer('images/vocation-icon.png', 'vocations', 'vocationsDescription'),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ],

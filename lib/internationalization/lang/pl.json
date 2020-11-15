@@ -507,5 +507,8 @@
   "workplaceNameExists": "Nazwa miejsca pracy aktualnie istnieje! Proszę wybierz inna nazwę ...",
   "workplaceAreNotSetted": "Proszę wybierz obszar miejsca pracy",
   "cannotStartWorkWithoutTS": "Nie możesz rozpocząć pracy, jeśli nie posiadasz arkusza czasu pracy na bieżący miesiąc. Poproś swojego menadżera o wygenerowanie arkusza czasu pracy dla Ciebie.",
-  "workInProgress": "Praca w toku"
+  "workInProgress": "Praca w toku",
+  "employeesSettings": "Ustawienia pracowników",
+  "employeesSettingsDescription": "Ustalaj stawki, przydzielaj uprawnienia",
+  "selfUpdatingHours": "Samodzielne wypełnianie godzin"
 }

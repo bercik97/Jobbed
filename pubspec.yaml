@@ -100,6 +100,7 @@ flutter:
     - images/contact-with-manager-icon.png
     - images/employee-work-icon.png
     - images/calendar-icon.png
+    - images/employees-settings-icon.png
 
     - images/green-hours-icon.png
     - images/green-rate-icon.png

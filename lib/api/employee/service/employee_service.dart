@@ -5,8 +5,8 @@ import 'package:give_job/api/employee/dto/create_employee_dto.dart';
 import 'package:give_job/api/employee/dto/employee_basic_dto.dart';
 import 'package:give_job/api/employee/dto/employee_for_vocations_ts_dto.dart';
 import 'package:give_job/api/employee/dto/employee_group_dto.dart';
-import 'package:give_job/api/employee/dto/employee_money_per_hour_dto.dart';
 import 'package:give_job/api/employee/dto/employee_page_dto.dart';
+import 'package:give_job/api/employee/dto/employee_settings_dto.dart';
 import 'package:give_job/api/employee/dto/employee_statistics_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/service/logout_service.dart';
@@ -60,13 +60,13 @@ class EmployeeService {
     }
   }
 
-  Future<List<EmployeeMoneyPerHourDto>> findAllByGroupIdForGroupEditMoneyPerHour(int groupId) async {
+  Future<List<EmployeeSettingsDto>> findAllByGroupIdForEmployeesSettings(int groupId) async {
     Response res = await get(
-      '$_url/money-per-hour?group_id=$groupId',
+      '$_url/employees-settings?group_id=$groupId',
       headers: _header,
     );
     if (res.statusCode == 200) {
-      return (json.decode(res.body) as List).map((data) => EmployeeMoneyPerHourDto.fromJson(data)).toList();
+      return (json.decode(res.body) as List).map((data) => EmployeeSettingsDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
       return Logout.handle401WithLogout(_context);
     } else {

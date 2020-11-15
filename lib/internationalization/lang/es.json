@@ -507,5 +507,8 @@
   "workplaceNameExists": "¡El nombre del lugar de trabajo ya existe! Elija otro nombre ...",
   "workplaceAreNotSetted": "Configure su área de trabajo",
   "cannotStartWorkWithoutTS": "No puede comenzar a trabajar si no tiene la hoja de horas trabajadas para el mes actual. Pídale a su gerente que le genere una hoja de tiempo.",
-  "workInProgress": "Trabajo en progreso"
+  "workInProgress": "Trabajo en progreso",
+  "employeesSettings": "Employees settings",
+  "employeesSettingsDescription": "Set hourly wages, assign permissions",
+  "selfUpdatingHours": "Self updating hours"
 }

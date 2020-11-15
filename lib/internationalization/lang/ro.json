@@ -507,5 +507,8 @@
   "workplaceNameExists": "Numele locului de muncă există deja! Vă rugăm să alegeți alt nume ...",
   "workplaceAreNotSetted": "Vă rugăm să vă configurați zona de lucru",
   "cannotStartWorkWithoutTS": "Nu puteți începe să lucrați atunci când nu aveți foaia de timp pentru luna curentă. Solicitați managerului dvs. să vă genereze o foaie de timp.",
-  "workInProgress": "Lucrare în curs"
+  "workInProgress": "Lucrare în curs",
+  "employeesSettings": "Employees settings",
+  "employeesSettingsDescription": "Set hourly wages, assign permissions",
+  "selfUpdatingHours": "Self updating hours"
 }
