@@ -22,4 +22,11 @@ class ItemDto {
       name: json['name'] as String,
     );
   }
+
+  factory ItemDto.toDto(ItemDto dto) {
+    return ItemDto(
+      id: dto.id,
+      name: dto.name,
+    );
+  }
 }

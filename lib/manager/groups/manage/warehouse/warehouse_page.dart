@@ -22,6 +22,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../../shared/widget/loader.dart';
 import '../../../shared/manager_side_bar.dart';
+import 'edit/edit_warehouse_page.dart';
 
 class WarehousePage extends StatefulWidget {
   final User _user;
@@ -155,7 +156,7 @@ class _WarehousePageState extends State<WarehousePage> {
                                   }
                                 }
                                 String name = warehouse.name;
-                                String numberOfItems = warehouse.numberOfItems.toString();
+                                String numberOfItems = warehouse.items.length.toString();
                                 if (name != null && name.length >= 30) {
                                   name = name.substring(0, 30) + ' ...';
                                 }
@@ -179,7 +180,10 @@ class _WarehousePageState extends State<WarehousePage> {
                                                 child: BouncingWidget(
                                                   duration: Duration(milliseconds: 100),
                                                   scaleFactor: 2,
-                                                  onPressed: () => {},
+                                                  onPressed: () => Navigator.push(
+                                                    this.context,
+                                                    MaterialPageRoute(builder: (context) => EditWarehousePage(_user, _previousPage, warehouse)),
+                                                  ),
                                                   child: icon30Green(Icons.search),
                                                 ),
                                               ),

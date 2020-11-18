@@ -537,5 +537,7 @@
   "itemName": "Nazwa przedmiotu",
   "itemNameIsRequired": "Nazwa przedmiotu jest wymagana",
   "givenItemNameAlreadyExists": "Nazwa przedmiotu już istnieje",
-  "chooseOtherWarehouseName": "Wybierz inną nazwę magazynu"
+  "chooseOtherWarehouseName": "Wybierz inną nazwę magazynu",
+  "updateWarehouse": "Aktualizuj magazyn",
+  "successfullyUpdateWarehouse": "Pomyślnie zaaktualizowano magazyn"
 }

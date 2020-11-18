@@ -538,5 +538,7 @@
   "itemName": "Item name",
   "itemNameIsRequired": "Item name is required",
   "givenItemNameAlreadyExists": "Given item name already exists",
-  "chooseOtherWarehouseName": "Choose other warehouse name"
+  "chooseOtherWarehouseName": "Choose other warehouse name",
+  "updateWarehouse": "Update warehouse",
+  "successfullyUpdateWarehouse": "Successfully updated warehouse"
 }

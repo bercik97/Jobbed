@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/warehouse/dto/create_warehouse_dto.dart';
+import 'package:give_job/api/warehouse/dto/update_warehouse_dto.dart';
 import 'package:give_job/api/warehouse/dto/warehouse_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/service/logout_service.dart';
@@ -38,6 +39,22 @@ class WarehouseService {
     );
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => WarehouseDto.fromJson(data)).toList();
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> update(int id, UpdateWarehouseDto dto) async {
+    String url = '$_url/$id';
+    Response res = await put(
+      url,
+      body: jsonEncode(UpdateWarehouseDto.jsonEncode(dto)),
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
     } else if (res.statusCode == 401) {
       return Logout.handle401WithLogout(_context);
     } else {
