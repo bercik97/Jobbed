@@ -97,7 +97,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                         this.context,
                         MaterialPageRoute(builder: (context) => WorkplacesPage(_user, GroupsDashboardPage(_user))),
                       ),
-                      label: getTranslated(context, 'manageWorkplaces'),
+                      label: getTranslated(context, 'manageCompanyWorkplaces'),
                       labelStyle: TextStyle(fontWeight: FontWeight.w500),
                       labelBackgroundColor: GREEN,
                     ),

@@ -540,5 +540,6 @@
   "givenItemNameAlreadyExists": "Given item name already exists",
   "chooseOtherWarehouseName": "Choose other warehouse name",
   "updateWarehouse": "Update warehouse",
-  "successfullyUpdateWarehouse": "Successfully updated warehouse"
+  "successfullyUpdateWarehouse": "Successfully updated warehouse",
+  "manageCompanyWarehouses": "Manage company warehouses"
 }

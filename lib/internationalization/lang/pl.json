@@ -539,5 +539,6 @@
   "givenItemNameAlreadyExists": "Nazwa przedmiotu już istnieje",
   "chooseOtherWarehouseName": "Wybierz inną nazwę magazynu",
   "updateWarehouse": "Aktualizuj magazyn",
-  "successfullyUpdateWarehouse": "Pomyślnie zaaktualizowano magazyn"
+  "successfullyUpdateWarehouse": "Pomyślnie zaaktualizowano magazyn",
+  "manageCompanyWarehouses": "Zarządzaj magazynami firmy"
 }
