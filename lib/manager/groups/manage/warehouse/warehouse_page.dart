@@ -13,6 +13,7 @@ import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -264,8 +265,10 @@ class _WarehousePageState extends State<WarehousePage> {
   }
 
   _handleDeleteByIdIn(LinkedHashSet<int> ids) {
+    setState(() => _isDeleteButtonTapped = true);
     if (ids.isEmpty) {
       showHint(context, getTranslated(context, 'needToSelectWarehouses') + ' ', getTranslated(context, 'whichYouWantToRemove'));
+      setState(() => _isDeleteButtonTapped = false);
       return;
     }
     showDialog(
@@ -278,36 +281,25 @@ class _WarehousePageState extends State<WarehousePage> {
           actions: <Widget>[
             FlatButton(
               child: textWhite(getTranslated(this.context, 'yesDeleteThem')),
-              onPressed: () => {},
+              onPressed: () {
+                _warehouseService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (BuildContext context) => WarehousePage(_user, _previousPage)),
+                    ModalRoute.withName('/'),
+                  );
+                  ToastService.showSuccessToast(getTranslated(this.context, 'selectedWarehousesRemoved'));
+                }).catchError((onError) {
+                  setState(() => _isDeleteButtonTapped = false);
+                  ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+                });
+              },
             ),
             FlatButton(
               child: textWhite(getTranslated(this.context, 'no')),
-              onPressed: () => Navigator.of(this.context).pop(),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  _showSuccessDialog(String msg) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: DARK,
-          title: textGreen(getTranslated(this.context, 'success')),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                textWhite(msg),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: textWhite(getTranslated(this.context, 'ok')),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                Navigator.of(this.context).pop();
+                setState(() => _isDeleteButtonTapped = false);
+              },
             ),
           ],
         );

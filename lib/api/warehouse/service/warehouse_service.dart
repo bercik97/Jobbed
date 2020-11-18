@@ -44,4 +44,18 @@ class WarehouseService {
       return Future.error(res.body);
     }
   }
+
+  Future<dynamic> deleteByIdIn(List<String> ids) async {
+    Response res = await delete(
+      _url + '/$ids',
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
 }
