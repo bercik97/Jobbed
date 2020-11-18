@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/api/warehouse/dto/create_warehouse_dto.dart';
 import 'package:give_job/api/warehouse/service/warehouse_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/groups_dashboard_page.dart';
+import 'package:give_job/manager/groups/manage/warehouse/warehouse_page.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -17,8 +18,9 @@ import 'package:give_job/shared/widget/texts.dart';
 
 class AddWarehousePage extends StatefulWidget {
   final User user;
+  final StatefulWidget _previousPage;
 
-  AddWarehousePage(this.user);
+  AddWarehousePage(this.user, this._previousPage);
 
   @override
   _AddWarehousePageState createState() => _AddWarehousePageState();
@@ -26,6 +28,7 @@ class AddWarehousePage extends StatefulWidget {
 
 class _AddWarehousePageState extends State<AddWarehousePage> {
   User _user;
+  StatefulWidget _previousPage;
 
   WarehouseService _warehouseService;
 
@@ -43,6 +46,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
   @override
   void initState() {
     this._user = widget.user;
+    this._previousPage = widget._previousPage;
     this._warehouseService = ServiceInitializer.initialize(context, _user.authHeader, WarehouseService);
     super.initState();
   }
@@ -50,89 +54,92 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'createWarehouse')),
-          drawer: managerSideBar(context, _user),
-          body: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Form(
-              autovalidate: true,
-              key: formKey,
-              child: Column(
-                children: [
-                  SizedBox(height: 5),
-                  _buildField(
-                    _warehouseNameController,
-                    getTranslated(context, 'textSomeWarehouseName'),
-                    getTranslated(context, 'warehouseName'),
-                    26,
-                    1,
-                    true,
-                    getTranslated(context, 'warehouseNameIsRequired'),
-                  ),
-                  SizedBox(height: 5),
-                  _buildField(
-                    _warehouseDescriptionController,
-                    getTranslated(context, 'textSomeWarehouseDescription'),
-                    getTranslated(context, 'warehouseDescription'),
-                    100,
-                    2,
-                    true,
-                    getTranslated(context, 'warehouseDescriptionIsRequired'),
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.72,
-                        child: _buildField(
-                          _itemNameController,
-                          getTranslated(context, 'textSomeItemName'),
-                          getTranslated(context, 'itemName'),
-                          26,
-                          1,
-                          false,
-                          null,
+        child: MaterialApp(
+          title: APP_NAME,
+          theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+          debugShowCheckedModeBanner: false,
+          home: Scaffold(
+            backgroundColor: DARK,
+            appBar: managerAppBar(context, _user, getTranslated(context, 'createWarehouse')),
+            drawer: managerSideBar(context, _user),
+            body: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Form(
+                autovalidate: true,
+                key: formKey,
+                child: Column(
+                  children: [
+                    SizedBox(height: 5),
+                    _buildField(
+                      _warehouseNameController,
+                      getTranslated(context, 'textSomeWarehouseName'),
+                      getTranslated(context, 'warehouseName'),
+                      26,
+                      1,
+                      true,
+                      getTranslated(context, 'warehouseNameIsRequired'),
+                    ),
+                    SizedBox(height: 5),
+                    _buildField(
+                      _warehouseDescriptionController,
+                      getTranslated(context, 'textSomeWarehouseDescription'),
+                      getTranslated(context, 'warehouseDescription'),
+                      100,
+                      2,
+                      true,
+                      getTranslated(context, 'warehouseDescriptionIsRequired'),
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.72,
+                          child: _buildField(
+                            _itemNameController,
+                            getTranslated(context, 'textSomeItemName'),
+                            getTranslated(context, 'itemName'),
+                            26,
+                            1,
+                            false,
+                            null,
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 25),
-                        child: MaterialButton(
-                          height: 50,
-                          onPressed: () {
-                            String itemName = _itemNameController.text;
-                            if (_itemsToAdd.contains(itemName)) {
-                              ToastService.showErrorToast(getTranslated(context, 'givenItemNameAlreadyExists'));
-                              return;
-                            }
-                            setState(() {
-                              _itemsToAdd.add(itemName);
-                              _itemNameController.clear();
-                            });
-                          },
-                          color: GREEN,
-                          textColor: Colors.white,
-                          child: Icon(Icons.add, size: 25),
-                          shape: CircleBorder(),
-                        ),
-                      )
-                    ],
-                  ),
-                  _buildAddItems(),
-                ],
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 25),
+                          child: MaterialButton(
+                            height: 50,
+                            onPressed: () {
+                              String itemName = _itemNameController.text;
+                              if (itemName == null || itemName.isEmpty) {
+                                ToastService.showErrorToast(getTranslated(context, 'itemNameIsRequired'));
+                                return;
+                              }
+                              if (_itemsToAdd.contains(itemName)) {
+                                ToastService.showErrorToast(getTranslated(context, 'givenItemNameAlreadyExists'));
+                                return;
+                              }
+                              setState(() {
+                                _itemsToAdd.add(itemName);
+                                _itemNameController.clear();
+                              });
+                            },
+                            color: GREEN,
+                            textColor: Colors.white,
+                            child: Icon(Icons.add, size: 25),
+                            shape: CircleBorder(),
+                          ),
+                        )
+                      ],
+                    ),
+                    _buildAddItems(),
+                  ],
+                ),
               ),
             ),
+            bottomNavigationBar: _buildBottomNavigationBar(),
           ),
-          bottomNavigationBar: _buildBottomNavigationBar(),
         ),
-      ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupsDashboardPage(_user)),
-    );
+        onWillPop: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WarehousePage(_user, _previousPage)), (e) => false));
   }
 
   bool _isValid() {
@@ -213,9 +220,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
               children: <Widget>[iconWhite(Icons.close)],
             ),
             color: Colors.red,
-            onPressed: () => {
-              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => GroupsDashboardPage(_user)), (e) => false),
-            },
+            onPressed: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WarehousePage(_user, _previousPage)), (e) => false),
           ),
           SizedBox(width: 25),
           MaterialButton(
@@ -234,7 +239,35 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
     );
   }
 
-  _createWarehouse() {}
+  _createWarehouse() {
+    setState(() => _isAddButtonTapped = true);
+    if (!_isValid()) {
+      ToastService.showErrorToast(getTranslated(context, 'correctInvalidFields'));
+      setState(() => _isAddButtonTapped = false);
+      return;
+    }
+    CreateWarehouseDto dto = new CreateWarehouseDto(
+      companyId: int.parse(_user.companyId),
+      name: _warehouseNameController.text,
+      description: _warehouseDescriptionController.text,
+      itemNames: _itemsToAdd,
+    );
+    _warehouseService.create(dto).then((res) {
+      ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewWarehouse'));
+      Navigator.push(
+        this.context,
+        MaterialPageRoute(builder: (context) => WarehousePage(_user, _previousPage)),
+      );
+    }).catchError((onError) {
+      String errorMsg = onError.toString();
+      if (errorMsg.contains("WAREHOUSE_NAME_EXISTS")) {
+        _errorDialog(getTranslated(context, 'warehouseNameExists') + '\n' + getTranslated(context, 'chooseOtherWarehouseName'));
+      } else {
+        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+      }
+      setState(() => _isAddButtonTapped = false);
+    });
+  }
 
   _errorDialog(String content) {
     return showDialog(

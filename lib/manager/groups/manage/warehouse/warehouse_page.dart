@@ -243,7 +243,7 @@ class _WarehousePageState extends State<WarehousePage> {
                 backgroundColor: GREEN,
                 onPressed: () => Navigator.push(
                   this.context,
-                  MaterialPageRoute(builder: (context) => AddWarehousePage(_user)),
+                  MaterialPageRoute(builder: (context) => AddWarehousePage(_user, _previousPage)),
                 ),
                 child: text25Dark('+'),
               ),

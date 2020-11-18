@@ -536,5 +536,6 @@
   "textSomeItemName": "Napisz nazwę przedmiotu",
   "itemName": "Nazwa przedmiotu",
   "itemNameIsRequired": "Nazwa przedmiotu jest wymagana",
-  "givenItemNameAlreadyExists": "Nazwa przedmiotu już istnieje"
+  "givenItemNameAlreadyExists": "Nazwa przedmiotu już istnieje",
+  "chooseOtherWarehouseName": "Wybierz inną nazwę magazynu"
 }
