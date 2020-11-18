@@ -530,5 +530,12 @@
   "warehouseNameExists": "Warehouse name exists",
   "needToSelectWarehouses": "Need to select warehouses",
   "areYouSureYouWantToDeleteSelectedWarehouses": "Are you sure you want to delete selected warehouses?",
-  "selectedWarehousesRemoved": "Selected warehouses removed"
+  "selectedWarehousesRemoved": "Selected warehouses removed",
+  "warehouseDescription": "Warehouse description",
+  "warehouseNameIsRequired": "Warehouse name is required",
+  "warehouseDescriptionIsRequired": "Warehouse description is required",
+  "textSomeItemName": "Text some item name",
+  "itemName": "Item name",
+  "itemNameIsRequired": "Item name is required",
+  "givenItemNameAlreadyExists": "Given item name already exists"
 }

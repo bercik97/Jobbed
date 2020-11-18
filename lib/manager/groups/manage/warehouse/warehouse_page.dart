@@ -242,7 +242,7 @@ class _WarehousePageState extends State<WarehousePage> {
                 tooltip: getTranslated(context, 'createWarehouse'),
                 backgroundColor: GREEN,
                 onPressed: () => Navigator.push(
-                  context,
+                  this.context,
                   MaterialPageRoute(builder: (context) => AddWarehousePage(_user)),
                 ),
                 child: text25Dark('+'),

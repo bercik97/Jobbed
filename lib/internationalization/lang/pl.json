@@ -529,5 +529,12 @@
   "warehouseNameExists": "Nazwa magazynu już istnieje",
   "needToSelectWarehouses": "Musisz zaznaczyć magazyny",
   "areYouSureYouWantToDeleteSelectedWarehouses": "Czy na pewno chcesz usunąć wybrane magazyny?",
-  "selectedWarehousesRemoved": "Usunięto wybrane magazyny"
+  "selectedWarehousesRemoved": "Usunięto wybrane magazyny",
+  "warehouseDescription": "Opis magazynu",
+  "warehouseNameIsRequired": "Nazwa magazynu jest wymagana",
+  "warehouseDescriptionIsRequired": "Opis magazynu jest wymagany",
+  "textSomeItemName": "Napisz nazwę przedmiotu",
+  "itemName": "Nazwa przedmiotu",
+  "itemNameIsRequired": "Nazwa przedmiotu jest wymagana",
+  "givenItemNameAlreadyExists": "Nazwa przedmiotu już istnieje"
 }
