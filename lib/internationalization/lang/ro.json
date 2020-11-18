@@ -515,5 +515,20 @@
   "yesEmployeeCanFillHoursOnHisOwn": "Da, angajatul poate umple singur orele",
   "noEmployeeCannotFillHoursOnHisOwn": "Nu, angajatul nu poate umple singur orele",
   "successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees": "Permisiunea actualizată cu succes pentru orele de completare personală pentru angajații selectați",
-  "pleaseSelectValue": "Vă rugăm să selectați o valoare"
+  "pleaseSelectValue": "Vă rugăm să selectați o valoare",
+  "manageWarehouses": "Manage warehouses",
+  "warehouse": "Warehouse",
+  "warehouses": "Warehouses",
+  "numberOfItems": "Number of items",
+  "createWarehouse": "Create warehouse",
+  "deleteSelectedWarehouses": "Delete selected warehouses",
+  "textSomeWarehouseName": "Text some warehouse name",
+  "textSomeWarehouseDescription": "Text some warehouse description",
+  "warehouseName": "Warehouse name",
+  "informationAboutNewWarehouse": "Information about new warehouse",
+  "successfullyAddedNewWarehouse": "Successfully added new warehouse",
+  "warehouseNameExists": "Warehouse name exists",
+  "needToSelectWarehouses": "Need to select warehouses",
+  "areYouSureYouWantToDeleteSelectedWarehouses": "Are you sure you want to delete selected warehouses?",
+  "selectedWarehousesRemoved": "Selected warehouses removed"
 }

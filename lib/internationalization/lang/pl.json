@@ -515,5 +515,19 @@
   "yesEmployeeCanFillHoursOnHisOwn": "Tak, pracownik może uzupełniać godziny samodzielnie",
   "noEmployeeCannotFillHoursOnHisOwn": "Nie, pracownik nie może uzupełniać godzin samodzielnie",
   "successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees": "Pomyślnie zaktualizowano uprawnienie do samodzielnego wypełniania godzin dla wybranych pracowników",
-  "pleaseSelectValue": "Proszę wybierz wartość"
+  "pleaseSelectValue": "Proszę wybierz wartość",
+  "manageWarehouses": "Zarządzaj magazynami",
+  "warehouses": "Magazyny",
+  "numberOfItems": "Liczba przedmiotów",
+  "createWarehouse": "Utwórz magazyn",
+  "deleteSelectedWarehouses": "Usuń wybrane magazyny",
+  "textSomeWarehouseName": "Napisz nazwę magazynu",
+  "textSomeWarehouseDescription": "Napisz opis magazynu",
+  "warehouseName": "Nazwa magazynu",
+  "informationAboutNewWarehouse": "Informacje o nowym magazynie",
+  "successfullyAddedNewWarehouse": "Pomyślnie dodano nowy magazyn",
+  "warehouseNameExists": "Nazwa magazynu już istnieje",
+  "needToSelectWarehouses": "Musisz zaznaczyć magazyny",
+  "areYouSureYouWantToDeleteSelectedWarehouses": "Czy na pewno chcesz usunąć wybrane magazyny?",
+  "selectedWarehousesRemoved": "Usunięto wybrane magazyny"
 }

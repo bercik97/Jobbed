@@ -1,22 +1,21 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:give_job/api/group/dto/group_dashboard_dto.dart';
 import 'package:give_job/api/group/service/group_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
-import 'package:give_job/manager/groups/manage/workplace/workplaces_page.dart';
 import 'package:give_job/manager/shared/manager_app_bar_with_icons_legend.dart';
 import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/logout_service.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -29,6 +28,8 @@ import 'group/icons_legend/icons_legend_dialog.dart';
 import 'manage/group/add_group_employees_page.dart';
 import 'manage/group/add_group_page.dart';
 import 'manage/group/delete_group_employees_page.dart';
+import 'manage/warehouse/warehouse_page.dart';
+import 'manage/workplace/workplaces_page.dart';
 
 class GroupsDashboardPage extends StatefulWidget {
   final User _user;
@@ -81,32 +82,47 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                 drawer: managerSideBar(context, _user),
                 body: _groups.isNotEmpty ? _handleGroups() : _handleNoGroups(),
                 floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-                floatingActionButton: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                floatingActionButton: SpeedDial(
+                  animatedIcon: AnimatedIcons.add_event,
+                  backgroundColor: GREEN,
+                  animatedIconTheme: IconThemeData(size: 22.0),
+                  curve: Curves.bounceIn,
                   children: [
-                    FloatingActionButton(
-                      heroTag: "manageWorkplacesBtn",
-                      tooltip: getTranslated(context, 'manageWorkplaces'),
+                    SpeedDialChild(
+                      child: icon30Dark(Icons.group_add),
                       backgroundColor: GREEN,
-                      onPressed: () => Navigator.push(
+                      onTap: () => Navigator.push(
                         this.context,
-                        MaterialPageRoute(builder: (context) => WorkplacesPage(_user, GroupsDashboardPage(_user))),
+                        MaterialPageRoute(builder: (context) => AddGroupPage(_user)),
                       ),
+                      label: getTranslated(context, 'createGroup'),
+                      labelStyle: TextStyle(fontWeight: FontWeight.w500),
+                      labelBackgroundColor: GREEN,
+                    ),
+                    SpeedDialChild(
                       child: Image(
                         image: AssetImage('images/dark-workplace-icon.png'),
                         fit: BoxFit.fitHeight,
                       ),
-                    ),
-                    SizedBox(height: 15),
-                    FloatingActionButton(
-                      heroTag: "createGroupBtn",
-                      tooltip: getTranslated(context, 'createGroup'),
                       backgroundColor: GREEN,
-                      onPressed: () => Navigator.push(
+                      onTap: () => Navigator.push(
                         this.context,
-                        MaterialPageRoute(builder: (context) => AddGroupPage(_user)),
+                        MaterialPageRoute(builder: (context) => WorkplacesPage(_user, GroupsDashboardPage(_user))),
                       ),
-                      child: icon30Dark(Icons.group_add),
+                      label: getTranslated(context, 'manageWorkplaces'),
+                      labelStyle: TextStyle(fontWeight: FontWeight.w500),
+                      labelBackgroundColor: GREEN,
+                    ),
+                    SpeedDialChild(
+                      child: icon30Dark(Icons.add_to_home_screen_outlined),
+                      backgroundColor: GREEN,
+                      onTap: () => Navigator.push(
+                        this.context,
+                        MaterialPageRoute(builder: (context) => WarehousePage(_user, GroupsDashboardPage(_user))),
+                      ),
+                      label: getTranslated(context, 'manageWarehouses'),
+                      labelStyle: TextStyle(fontWeight: FontWeight.w500),
+                      labelBackgroundColor: GREEN,
                     ),
                   ],
                 ),

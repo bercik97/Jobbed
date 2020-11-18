@@ -515,5 +515,20 @@
   "yesEmployeeCanFillHoursOnHisOwn": "Oui, l'employé peut remplir ses heures seul",
   "noEmployeeCannotFillHoursOnHisOwn": "Non, l'employé ne peut pas remplir les heures seul",
   "successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees": "Mise à jour de l'autorisation d'auto-remplissage des heures pour les employés sélectionnés",
-  "pleaseSelectValue": "Veuillez sélectionner une valeur"
+  "pleaseSelectValue": "Veuillez sélectionner une valeur",
+  "manageWarehouses": "Manage warehouses",
+  "warehouse": "Warehouse",
+  "warehouses": "Warehouses",
+  "numberOfItems": "Number of items",
+  "createWarehouse": "Create warehouse",
+  "deleteSelectedWarehouses": "Delete selected warehouses",
+  "textSomeWarehouseName": "Text some warehouse name",
+  "textSomeWarehouseDescription": "Text some warehouse description",
+  "warehouseName": "Warehouse name",
+  "informationAboutNewWarehouse": "Information about new warehouse",
+  "successfullyAddedNewWarehouse": "Successfully added new warehouse",
+  "warehouseNameExists": "Warehouse name exists",
+  "needToSelectWarehouses": "Need to select warehouses",
+  "areYouSureYouWantToDeleteSelectedWarehouses": "Are you sure you want to delete selected warehouses?",
+  "selectedWarehousesRemoved": "Selected warehouses removed"
 }

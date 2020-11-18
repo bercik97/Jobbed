@@ -515,5 +515,20 @@
   "yesEmployeeCanFillHoursOnHisOwn": "Да, сотрудник может заполнять часы самостоятельно",
   "noEmployeeCannotFillHoursOnHisOwn": "Нет, сотрудник не может заполнять часы самостоятельно",
   "successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees": "Успешно обновлено разрешение на самостоятельное заполнение часов для выбранных сотрудников",
-  "pleaseSelectValue": "Выберите значение"
+  "pleaseSelectValue": "Выберите значение",
+  "manageWarehouses": "Manage warehouses",
+  "warehouse": "Warehouse",
+  "warehouses": "Warehouses",
+  "numberOfItems": "Number of items",
+  "createWarehouse": "Create warehouse",
+  "deleteSelectedWarehouses": "Delete selected warehouses",
+  "textSomeWarehouseName": "Text some warehouse name",
+  "textSomeWarehouseDescription": "Text some warehouse description",
+  "warehouseName": "Warehouse name",
+  "informationAboutNewWarehouse": "Information about new warehouse",
+  "successfullyAddedNewWarehouse": "Successfully added new warehouse",
+  "warehouseNameExists": "Warehouse name exists",
+  "needToSelectWarehouses": "Need to select warehouses",
+  "areYouSureYouWantToDeleteSelectedWarehouses": "Are you sure you want to delete selected warehouses?",
+  "selectedWarehousesRemoved": "Selected warehouses removed"
 }

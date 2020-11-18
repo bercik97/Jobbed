@@ -515,5 +515,20 @@
   "yesEmployeeCanFillHoursOnHisOwn": "Ja, anställd kan fylla timmar på egen hand",
   "noEmployeeCannotFillHoursOnHisOwn": "Nej, anställd kan inte fylla timmar på egen hand",
   "successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees": "Uppdaterad behörighet för självfyllande timmar för utvalda anställda",
-  "pleaseSelectValue": "Välj ett värde"
+  "pleaseSelectValue": "Välj ett värde",
+  "manageWarehouses": "Manage warehouses",
+  "warehouse": "Warehouse",
+  "warehouses": "Warehouses",
+  "numberOfItems": "Number of items",
+  "createWarehouse": "Create warehouse",
+  "deleteSelectedWarehouses": "Delete selected warehouses",
+  "textSomeWarehouseName": "Text some warehouse name",
+  "textSomeWarehouseDescription": "Text some warehouse description",
+  "warehouseName": "Warehouse name",
+  "informationAboutNewWarehouse": "Information about new warehouse",
+  "successfullyAddedNewWarehouse": "Successfully added new warehouse",
+  "warehouseNameExists": "Warehouse name exists",
+  "needToSelectWarehouses": "Need to select warehouses",
+  "areYouSureYouWantToDeleteSelectedWarehouses": "Are you sure you want to delete selected warehouses?",
+  "selectedWarehousesRemoved": "Selected warehouses removed"
 }
