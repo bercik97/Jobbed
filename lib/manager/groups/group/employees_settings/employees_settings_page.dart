@@ -52,7 +52,8 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
   List<bool> _checked = new List();
   LinkedHashSet<int> _selectedIds = new LinkedHashSet();
 
-  int _radioValue = -1;
+  int _selfFillingHoursRadioValue = -1;
+  int _pieceworkRadioValue = -1;
 
   @override
   void initState() {
@@ -214,6 +215,14 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                             ],
                                           ),
                                           alignment: Alignment.topLeft),
+                                      Align(
+                                          child: Row(
+                                            children: <Widget>[
+                                              textWhite(getTranslated(this.context, 'piecework') + ': '),
+                                              employee.piecework ? textGreenBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
+                                            ],
+                                          ),
+                                          alignment: Alignment.topLeft),
                                     ],
                                   ),
                                   activeColor: GREEN,
@@ -255,7 +264,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: textCenterDark(getTranslated(context, 'moneyPerHour')),
+                    child: textCenterDark(getTranslated(context, 'hourlyWage')),
                     onPressed: () {
                       if (_selectedIds.isNotEmpty) {
                         _moneyPerHourController.clear();
@@ -270,10 +279,24 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: textCenterDark(getTranslated(context, 'selfUpdatingHours')),
+                    child: textCenterDark(getTranslated(context, 'fillingHours')),
                     onPressed: () {
                       if (_selectedIds.isNotEmpty) {
                         _changePermissionToSelfFillHours();
+                      } else {
+                        showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                      }
+                    },
+                  ),
+                ),
+                SizedBox(width: 1),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: textCenterDark(getTranslated(context, 'piecework')),
+                    onPressed: () {
+                      if (_selectedIds.isNotEmpty) {
+                        _changePermissionToPiecework();
                       } else {
                         showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
                       }
@@ -408,7 +431,6 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
   }
 
   void _changePermissionToSelfFillHours() {
-    TextEditingController _moneyPerHourController = new TextEditingController();
     showGeneralDialog(
       context: context,
       barrierColor: DARK.withOpacity(0.95),
@@ -441,13 +463,15 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                             color: GREEN,
                             title: getTranslated(context, 'yesEmployeeCanFillHoursOnHisOwn'),
                             value: 0,
-                            onChanged: (newValue) => setState(() => _radioValue = newValue),
+                            groupValue: _selfFillingHoursRadioValue,
+                            onChanged: (newValue) => setState(() => _selfFillingHoursRadioValue = newValue),
                           ),
                           _buildRadioBtn(
                             color: Colors.red,
                             title: getTranslated(context, 'noEmployeeCannotFillHoursOnHisOwn'),
                             value: 1,
-                            onChanged: (newValue) => setState(() => _radioValue = newValue),
+                            groupValue: _selfFillingHoursRadioValue,
+                            onChanged: (newValue) => setState(() => _selfFillingHoursRadioValue = newValue),
                           ),
                         ],
                       ),
@@ -466,7 +490,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                             ),
                             color: Colors.red,
                             onPressed: () {
-                              _radioValue = -1;
+                              _selfFillingHoursRadioValue = -1;
                               Navigator.pop(context);
                             },
                           ),
@@ -481,14 +505,14 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                             ),
                             color: GREEN,
                             onPressed: () {
-                              if (_radioValue == -1) {
+                              if (_selfFillingHoursRadioValue == -1) {
                                 ToastService.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
                                 return;
                               }
                               _employeeService.updateFieldsValuesByIds(
                                 _selectedIds.toList(),
                                 {
-                                  "canFillHours": _radioValue == 0 ? true : false,
+                                  "canFillHours": _selfFillingHoursRadioValue == 0 ? true : false,
                                 },
                               ).then(
                                 (res) {
@@ -512,11 +536,117 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
     );
   }
 
-  Widget _buildRadioBtn({Color color, String title, int value, Function onChanged}) {
+  void _changePermissionToPiecework() {
+    showGeneralDialog(
+      context: context,
+      barrierColor: DARK.withOpacity(0.95),
+      barrierDismissible: false,
+      barrierLabel: getTranslated(context, 'piecework'),
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: StatefulBuilder(builder: (context, setState) {
+            return Scaffold(
+              backgroundColor: Colors.black12,
+              body: Center(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: 50),
+                        child: Column(
+                          children: [
+                            textCenter20GreenBold(getTranslated(context, 'permissionToPieceworkUpperCase')),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 7.5),
+                      Column(
+                        children: <Widget>[
+                          _buildRadioBtn(
+                            color: GREEN,
+                            title: getTranslated(context, 'yesEmployeeCanDoPieceworkUsingCompanyPricelist'),
+                            value: 0,
+                            groupValue: _pieceworkRadioValue,
+                            onChanged: (newValue) => setState(() => _pieceworkRadioValue = newValue),
+                          ),
+                          _buildRadioBtn(
+                            color: Colors.red,
+                            title: getTranslated(context, 'noEmployeeCannotDoPiecework'),
+                            value: 1,
+                            groupValue: _pieceworkRadioValue,
+                            onChanged: (newValue) => setState(() => _pieceworkRadioValue = newValue),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          MaterialButton(
+                            elevation: 0,
+                            height: 50,
+                            minWidth: 40,
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[iconWhite(Icons.close)],
+                            ),
+                            color: Colors.red,
+                            onPressed: () {
+                              _pieceworkRadioValue = -1;
+                              Navigator.pop(context);
+                            },
+                          ),
+                          SizedBox(width: 25),
+                          MaterialButton(
+                            elevation: 0,
+                            height: 50,
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[iconWhite(Icons.check)],
+                            ),
+                            color: GREEN,
+                            onPressed: () {
+                              if (_pieceworkRadioValue == -1) {
+                                ToastService.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
+                                return;
+                              }
+                              _employeeService.updateFieldsValuesByIds(
+                                _selectedIds.toList(),
+                                {
+                                  "piecework": _pieceworkRadioValue == 0 ? true : false,
+                                },
+                              ).then(
+                                (res) {
+                                  _refresh();
+                                  Navigator.pop(context);
+                                  ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToPieceworkForSelectedEmployees'));
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }),
+        );
+      },
+    );
+  }
+
+  Widget _buildRadioBtn({Color color, String title, int value, int groupValue, Function onChanged}) {
     return RadioListTile(
       activeColor: color,
       value: value,
-      groupValue: _radioValue,
+      groupValue: groupValue,
       onChanged: onChanged,
       title: textWhite(title),
     );

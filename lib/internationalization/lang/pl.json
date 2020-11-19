@@ -560,5 +560,12 @@
   "pricelistPriceIsRequired": "Cena usługi cennika jest wymagana",
   "managePricelist": "Zarządzaj cennikiem",
   "textSomePricelistPrice": "Napisz cenę usługi",
-  "pricelistsToAddEmpty": "Usługi cennika do dodania są puste"
+  "pricelistsToAddEmpty": "Usługi cennika do dodania są puste",
+  "piecework": "Praca na akord",
+  "hourlyWage": "Stawka godzinowa",
+  "fillingHours": "Wypełnianie godzin",
+  "permissionToPieceworkUpperCase": "UPRAWNIENIE DO PRACY NA AKORD",
+  "yesEmployeeCanDoPieceworkUsingCompanyPricelist": "Tak, pracownik może pracować akordowo używając cennika firmowego",
+  "noEmployeeCannotDoPiecework": "Nie, pracownik nie może pracować akordowo",
+  "successfullyUpdatedPermissionToPieceworkForSelectedEmployees": "Pomyślnie zaktualizowano uprawnienia pracy na akord dla wybranych pracowników"
 }

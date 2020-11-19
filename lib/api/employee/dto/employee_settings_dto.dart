@@ -7,6 +7,7 @@ class EmployeeSettingsDto {
   final String currency;
   final double moneyPerHour;
   final bool canFillHours;
+  final bool piecework;
 
   EmployeeSettingsDto({
     @required this.employeeId,
@@ -15,6 +16,7 @@ class EmployeeSettingsDto {
     @required this.currency,
     @required this.moneyPerHour,
     @required this.canFillHours,
+    @required this.piecework,
   });
 
   factory EmployeeSettingsDto.fromJson(Map<String, dynamic> json) {
@@ -25,6 +27,7 @@ class EmployeeSettingsDto {
       currency: json['currency'] as String,
       moneyPerHour: json['moneyPerHour'] as double,
       canFillHours: json['canFillHours'] as bool,
+      piecework: json['piecework'] as bool,
     );
   }
 }

@@ -561,5 +561,12 @@
   "pricelistPriceIsRequired": "Pricelists service price is required",
   "managePricelist": "Manage pricelist",
   "textSomePricelistPrice": "Text some pricelists service price",
-  "pricelistsToAddEmpty": "Pricelists services for add are empty"
+  "pricelistsToAddEmpty": "Pricelists services for add are empty",
+  "piecework": "Piecework",
+  "hourlyWage": "Hourly wage",
+  "fillingHours": "Filling hours",
+  "permissionToPieceworkUpperCase": "PERMISSION TO PIECEWORK",
+  "yesEmployeeCanDoPieceworkUsingCompanyPricelist": "Yes, an employee can work piecework using the company's price list",
+  "noEmployeeCannotDoPiecework": "No, an employee cannot work piecework",
+  "successfullyUpdatedPermissionToPieceworkForSelectedEmployees": "Successfully updated permission to piecework for selected employees"
 }
