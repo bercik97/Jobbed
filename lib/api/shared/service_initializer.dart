@@ -5,6 +5,7 @@ import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/group/service/group_service.dart';
 import 'package:give_job/api/item/service/item_service.dart';
 import 'package:give_job/api/manager/service/manager_service.dart';
+import 'package:give_job/api/price_list/service/pricelist_service.dart';
 import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/api/token/service/token_service.dart';
 import 'package:give_job/api/user/service/user_service.dart';
@@ -26,6 +27,7 @@ class ServiceInitializer {
       case 'GroupService': return new GroupService(context, header, headers);
       case 'ItemService': return new ItemService(context, header, headers);
       case 'ManagerService': return new ManagerService(context, header, headers);
+      case 'PricelistService': return new PricelistService(context, header, headers);
       case 'TimesheetService': return new TimesheetService(context, header, headers);
       case 'TokenService': return new TokenService();
       case 'UserService': return new UserService(context, headers);

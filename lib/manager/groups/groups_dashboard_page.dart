@@ -11,6 +11,7 @@ import 'package:give_job/api/group/service/group_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
+import 'package:give_job/manager/groups/manage/pricelist/pricelist_page.dart';
 import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -109,6 +110,17 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                         MaterialPageRoute(builder: (context) => WarehousePage(_user, GroupsDashboardPage(_user))),
                       ),
                       label: getTranslated(context, 'manageWarehouses'),
+                      labelStyle: TextStyle(fontWeight: FontWeight.w500),
+                      labelBackgroundColor: GREEN,
+                    ),
+                    SpeedDialChild(
+                      child: icon30Dark(Icons.attach_money),
+                      backgroundColor: GREEN,
+                      onTap: () => Navigator.push(
+                        this.context,
+                        MaterialPageRoute(builder: (context) => PricelistPage(_user, GroupsDashboardPage(_user))),
+                      ),
+                      label: getTranslated(context, 'managePricelist'),
                       labelStyle: TextStyle(fontWeight: FontWeight.w500),
                       labelBackgroundColor: GREEN,
                     ),
