@@ -1,11 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:android_intent/android_intent.dart';
 import 'package:async/async.dart';
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/work_time/dto/create_work_time_dto.dart';
@@ -25,10 +25,9 @@ import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/circular_progress_indicator.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
-import 'package:location/location.dart' as loc;
+import 'package:http/http.dart';
+import 'package:location/location.dart' as locc;
 import 'package:permission_handler/permission_handler.dart';
-import 'package:progress_dialog/progress_dialog.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../employee_profile_page.dart';
 
@@ -58,14 +57,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
   bool _isStartWorkButtonTapped = false;
   bool _isPauseWorkButtonTapped = false;
 
-  loc.Location location = new loc.Location();
-  loc.LocationData _locationData;
-
   AsyncMemoizer _memoizer;
-
-  ProgressDialog _progressDialog;
-
-  final flutterWebviewPlugin = new FlutterWebviewPlugin();
 
   @override
   void initState() {
@@ -77,12 +69,6 @@ class _WorkTimePageState extends State<WorkTimePage> {
 
   @override
   Widget build(BuildContext context) {
-    _progressDialog = new ProgressDialog(context, isDismissible: false);
-    _progressDialog.style(
-      message: getTranslated(context, 'lookingForWorkplacesInYourLocation'),
-      messageTextStyle: TextStyle(color: DARK),
-      progressWidget: circularProgressIndicator(),
-    );
     this._user = widget._user;
     this._todayWorkdayId = widget._todayWorkdayId;
     this._workTimeService = ServiceInitializer.initialize(context, _user.authHeader, WorkTimeService);
@@ -192,11 +178,6 @@ class _WorkTimePageState extends State<WorkTimePage> {
     }
   }
 
-  Future<bool> _getUserLocation() async {
-    _locationData = await location.getLocation();
-    return _locationData != null ? true : false;
-  }
-
   Widget _handleEmployeeInWork(List workTimes) {
     return WillPopScope(
       child: Center(
@@ -258,28 +239,22 @@ class _WorkTimePageState extends State<WorkTimePage> {
     );
   }
 
-  _findWorkplacesByCurrentLocation() {
-    _progressDialog.show();
+  _findWorkplacesByCurrentLocation() async {
+    ToastService.showToast(getTranslated(context, 'lookingForWorkplacesInYourLocation'));
     setState(() => _isStartDialogButtonTapped = true);
-    flutterWebviewPlugin.reloadUrl('https://www.givejob.pl');
-    Timer(const Duration(seconds: 10), () async {
-      closeWebView();
-      await _getUserLocation().then((value) {
-        _workplaceService.findAllWorkplacesByCompanyIdAndLocationParams(int.parse(_user.companyId), _locationData.latitude, _locationData.longitude).then((res) {
-          _progressDialog.hide();
-          _showStartConfirmDialog(res);
-          setState(() => _isStartDialogButtonTapped = false);
-        }).catchError((onError) {
-          ToastService.showErrorToast(getTranslated(context, 'cannotFindWorkplaceByLocation'));
-          _progressDialog.hide();
-          setState(() => _isStartDialogButtonTapped = false);
-        });
-      }).catchError((onError) {
-        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+    locc.Location location = new locc.Location();
+    locc.LocationData _locationData = await location.getLocation();
+    if (_locationData != null) {
+      double latitude = _locationData.latitude;
+      double longitude = _locationData.longitude;
+      _workplaceService.findAllWorkplacesByCompanyIdAndLocationParams(int.parse(_user.companyId), latitude, longitude).then((res) {
+        _showStartConfirmDialog(res);
         setState(() => _isStartDialogButtonTapped = false);
-        _progressDialog.hide();
+      }).catchError((onError) {
+        ToastService.showErrorToast(getTranslated(context, 'cannotFindWorkplaceByLocation'));
+        setState(() => _isStartDialogButtonTapped = false);
       });
-    });
+    }
   }
 
   _showStartConfirmDialog(List<WorkplaceIdNameDto> workplaces) {
@@ -410,28 +385,22 @@ class _WorkTimePageState extends State<WorkTimePage> {
     });
   }
 
-  _showPauseWorkDialog(WorkTimeDto workTime) {
-    _progressDialog.show();
+  _showPauseWorkDialog(WorkTimeDto workTime) async {
+    ToastService.showToast(getTranslated(context, 'lookingForWorkplacesInYourLocation'));
     setState(() => _isPauseWorkButtonTapped = true);
-    flutterWebviewPlugin.reloadUrl('https://www.google.pl/maps/preview');
-    Timer(const Duration(seconds: 10), () async {
-      closeWebView();
-      await _getUserLocation().then((value) {
-        _workTimeService.canFinishByIdAndLocationParams(workTime.id, _locationData.latitude, _locationData.longitude).then((res) {
-          _progressDialog.hide();
-          _showPauseConfirmDialog(res);
-          setState(() => _isPauseWorkButtonTapped = false);
-        }).catchError((onError) {
-          ToastService.showErrorToast(getTranslated(context, 'cannotFindWorkplaceWhereYouStarted'));
-          setState(() => _isPauseWorkButtonTapped = false);
-          _progressDialog.hide();
-        });
+    locc.Location location = new locc.Location();
+    locc.LocationData _locationData = await location.getLocation();
+    if (_locationData != null) {
+      double latitude = _locationData.latitude;
+      double longitude = _locationData.longitude;
+      _workTimeService.canFinishByIdAndLocationParams(workTime.id, latitude, longitude).then((res) {
+        _showPauseConfirmDialog(res);
+        setState(() => _isPauseWorkButtonTapped = false);
       }).catchError((onError) {
-        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
-        setState(() => _isStartDialogButtonTapped = false);
-        _progressDialog.hide();
+        ToastService.showErrorToast(getTranslated(context, 'cannotFindWorkplaceWhereYouStarted'));
+        setState(() => _isPauseWorkButtonTapped = false);
       });
-    });
+    }
   }
 
   _showPauseConfirmDialog(res) {

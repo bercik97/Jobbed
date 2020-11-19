@@ -576,7 +576,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
     if (_markersList.isEmpty) {
       ToastService.showErrorToast(getTranslated(context, 'workplaceAreaIsNotSetted'));
     } else {
-      String km = _radius.toString().substring(0, 4);
+      String km = _radius.toString();
       ToastService.showSuccessToast(getTranslated(context, 'workplaceAreaIsSettedTo') + ' $km KM ✓');
     }
     return true;
@@ -608,7 +608,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                 textCenter16GreenBold(workplaceName),
                 SizedBox(height: 5),
                 textCenterWhite(getTranslated(this.context, 'workplaceAreaRadius') + ': '),
-                textCenter16GreenBold(_radius != 0 ? _radius.toString().substring(0, 4) + ' KM' : getTranslated(context, 'empty')),
+                textCenter16GreenBold(_radius != 0 ? _radius.toString() + ' KM' : getTranslated(context, 'empty')),
               ],
             ),
           ),
@@ -623,7 +623,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                 dto = new WorkplaceDto(
                   id: int.parse(_user.companyId),
                   name: workplaceName,
-                  radiusLength: _radius != 0 ? double.parse(_radius.toString().substring(0, 4)) : 0,
+                  radiusLength: _radius != 0 ? double.parse(_radius.toString()) : 0,
                   latitude: circle != null ? circle.center.latitude : 0,
                   longitude: circle != null ? circle.center.longitude : 0,
                 );
@@ -829,7 +829,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                             workplace.id,
                             {
                               'name': name,
-                              'radiusLength': _radius != 0 ? double.parse(_radius.toString().substring(0, 4)) : 0,
+                              'radiusLength': _radius != 0 ? double.parse(_radius.toString()) : 0,
                               'latitude': circle != null ? circle.center.latitude : 0,
                               'longitude': circle != null ? circle.center.longitude : 0,
                             },
