@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/api/employee/dto/employee_page_dto.dart';
 import 'package:give_job/employee/profile/tabs/calendar/employee_calendar_page.dart';
+import 'package:give_job/employee/profile/tabs/piecework/piecework_page.dart';
 import 'package:give_job/employee/profile/tabs/worktime/work_time_page.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -45,16 +46,22 @@ Container employeePanel(BuildContext context, User user, EmployeePageDto employe
                   child: Material(
                     color: BRIGHTER_DARK,
                     child: InkWell(
-                      onTap: () => employee.groupManager != null
-                          ? showContactForManager(
-                              context,
-                              employee.groupManager,
-                              employee.groupManagerPhone,
-                              employee.groupManagerViber,
-                              employee.groupManagerWhatsApp,
-                            )
-                          : ToastService.showErrorToast(getTranslated(context, 'noManagerAssigned')),
-                      child: _buildScrollableContainer(context, 'images/contact-with-manager-icon.png', 'contact', 'contactWithYourManager'),
+                      onTap: () {
+                        int todayWorkdayId = employee.todayWorkdayId;
+                        if (todayWorkdayId == 0) {
+                          ToastService.showErrorToast(getTranslated(context, 'cannotStartWorkWithoutTS'));
+                          return;
+                        }
+                        if (!employee.piecework) {
+                          ToastService.showErrorToast(getTranslated(context, 'noPermissionForPiecework'));
+                          return;
+                        }
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => PieceworkPage(user, employee.todayWorkdayId)),
+                        );
+                      },
+                      child: _buildScrollableContainer(context, 'images/employee-work-icon.png', 'piecework', 'addNoteAboutPiecework'),
                     ),
                   ),
                 ),
@@ -79,7 +86,23 @@ Container employeePanel(BuildContext context, User user, EmployeePageDto employe
                   ),
                 ),
                 SizedBox(width: 10),
-                Expanded(child: Material(color: BRIGHTER_DARK)),
+                Expanded(
+                  child: Material(
+                    color: BRIGHTER_DARK,
+                    child: InkWell(
+                      onTap: () => employee.groupManager != null
+                          ? showContactForManager(
+                              context,
+                              employee.groupManager,
+                              employee.groupManagerPhone,
+                              employee.groupManagerViber,
+                              employee.groupManagerWhatsApp,
+                            )
+                          : ToastService.showErrorToast(getTranslated(context, 'noManagerAssigned')),
+                      child: _buildScrollableContainer(context, 'images/contact-with-manager-icon.png', 'contact', 'contactWithYourManager'),
+                    ),
+                  ),
+                ),
               ],
             )
           ],

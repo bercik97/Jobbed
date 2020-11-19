@@ -568,5 +568,7 @@
   "permissionToPieceworkUpperCase": "PERMISSION TO PIECEWORK",
   "yesEmployeeCanDoPieceworkUsingCompanyPricelist": "Yes, an employee can work piecework using the company's price list",
   "noEmployeeCannotDoPiecework": "No, an employee cannot work piecework",
-  "successfullyUpdatedPermissionToPieceworkForSelectedEmployees": "Successfully updated permission to piecework for selected employees"
+  "successfullyUpdatedPermissionToPieceworkForSelectedEmployees": "Successfully updated permission to piecework for selected employees",
+  "noPermissionForPiecework": "No permission for piecework",
+  "addNoteAboutPiecework": "Add note about piecework"
 }

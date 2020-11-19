@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:android_intent/android_intent.dart';
 import 'package:async/async.dart';
@@ -25,7 +24,6 @@ import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/circular_progress_indicator.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
-import 'package:http/http.dart';
 import 'package:location/location.dart' as locc;
 import 'package:permission_handler/permission_handler.dart';
 

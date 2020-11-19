@@ -567,5 +567,7 @@
   "permissionToPieceworkUpperCase": "UPRAWNIENIE DO PRACY NA AKORD",
   "yesEmployeeCanDoPieceworkUsingCompanyPricelist": "Tak, pracownik może pracować akordowo używając cennika firmowego",
   "noEmployeeCannotDoPiecework": "Nie, pracownik nie może pracować akordowo",
-  "successfullyUpdatedPermissionToPieceworkForSelectedEmployees": "Pomyślnie zaktualizowano uprawnienia pracy na akord dla wybranych pracowników"
+  "successfullyUpdatedPermissionToPieceworkForSelectedEmployees": "Pomyślnie zaktualizowano uprawnienia pracy na akord dla wybranych pracowników",
+  "noPermissionForPiecework": "Nie posiadasz uprawnień do pracy na akord",
+  "addNoteAboutPiecework": "Dodaj notatkę o pracy na akord"
 }
