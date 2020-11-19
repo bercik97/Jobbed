@@ -34,9 +34,10 @@ dependencies:
   table_calendar: ^2.2.3
   month_picker_dialog: ^0.2.3
   google_maps_flutter: ^1.0.6
+  place_picker: ^0.9.17
   geolocator: ^6.1.6
   syncfusion_flutter_sliders: ^18.3.48-beta
-  location: ^3.0.1
+  location: ^2.3.5
   permission_handler: ^4.4.0+hotfix.2
   android_intent: ^0.3.6+12
   flutter_webview_plugin: ^0.3.11

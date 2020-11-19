@@ -19,6 +19,7 @@ import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:place_picker/place_picker.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
@@ -365,79 +366,103 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
       child: MaterialButton(
         child: textDarkBold(getTranslated(context, 'setWorkplaceArea')),
         color: GREEN,
-        onPressed: () {
-          showGeneralDialog(
-            context: context,
-            barrierColor: DARK.withOpacity(0.95),
-            barrierDismissible: false,
-            barrierLabel: getTranslated(context, 'contact'),
-            transitionDuration: Duration(milliseconds: 400),
-            pageBuilder: (_, __, ___) {
-              return SizedBox.expand(
-                child: StatefulBuilder(
-                  builder: (context, setState) {
-                    return WillPopScope(
-                      child: Scaffold(
-                        body: GoogleMap(
-                          initialCameraPosition: _cameraPosition,
-                          markers: _markersList.toSet(),
-                          onMapCreated: (controller) {
-                            this._controller = controller;
-                          },
-                          circles: _circles,
-                          onTap: (coordinates) {
-                            _controller.animateCamera(CameraUpdate.newLatLng(coordinates));
-                            _markersList.clear();
-                            _markersList.add(
-                              new Marker(
-                                position: coordinates,
-                                markerId: MarkerId('${coordinates.latitude}-${coordinates.longitude}'),
-                              ),
-                            );
-                            _circles.clear();
-                            _circles.add(
-                              new Circle(
-                                circleId: CircleId('${51.9189046}-${19.1343786}'),
-                                center: LatLng(coordinates.latitude, coordinates.longitude),
-                                radius: _radius * 1000,
-                              ),
-                            );
-                            setState(() {});
-                          },
-                        ),
-                        bottomNavigationBar: Container(
-                          height: 100,
-                          child: SfSlider(
-                            min: 0.01,
-                            max: 0.25,
-                            value: _radius,
-                            interval: 0.03,
-                            showTicks: true,
-                            showLabels: true,
-                            showTooltip: true,
-                            minorTicksPerInterval: 1,
-                            onChanged: (dynamic value) {
-                              Circle circle = _circles.elementAt(0);
+        onPressed: () async {
+          LocationResult result = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => PlacePicker("AIzaSyCrRENePPPb2DEztbvO67H-sowEaPXUXAU")));
+          if (result != null) {
+            showGeneralDialog(
+              context: context,
+              barrierColor: DARK.withOpacity(0.95),
+              barrierDismissible: false,
+              barrierLabel: getTranslated(context, 'contact'),
+              transitionDuration: Duration(milliseconds: 400),
+              pageBuilder: (_, __, ___) {
+                return SizedBox.expand(
+                  child: StatefulBuilder(
+                    builder: (context, setState) {
+                      return WillPopScope(
+                        child: Scaffold(
+                          body: GoogleMap(
+                            initialCameraPosition: _cameraPosition,
+                            markers: _markersList.toSet(),
+                            onMapCreated: (controller) {
+                              this._controller = controller;
+                              LatLng currentLatLng = result.latLng;
+                              double latitude = result.latLng.latitude;
+                              double longitude = result.latLng.longitude;
+                              this._cameraPosition = new CameraPosition(target: currentLatLng, zoom: 10);
+                              _controller.animateCamera(CameraUpdate.newLatLng(currentLatLng));
+                              _markersList.clear();
+                              _markersList.add(
+                                new Marker(
+                                  position: currentLatLng,
+                                  markerId: MarkerId('$latitude-$longitude'),
+                                ),
+                              );
                               _circles.clear();
                               _circles.add(
                                 new Circle(
-                                  circleId: CircleId('${circle.circleId}'),
-                                  center: circle.center,
+                                  circleId: CircleId('$latitude-$longitude'),
+                                  center: LatLng(latitude, longitude),
                                   radius: _radius * 1000,
                                 ),
                               );
-                              setState(() => _radius = value);
+                              setState(() {});
+                            },
+                            circles: _circles,
+                            onTap: (coordinates) {
+                              _controller.animateCamera(CameraUpdate.newLatLng(coordinates));
+                              _markersList.clear();
+                              _markersList.add(
+                                new Marker(
+                                  position: coordinates,
+                                  markerId: MarkerId('${coordinates.latitude}-${coordinates.longitude}'),
+                                ),
+                              );
+                              _circles.clear();
+                              _circles.add(
+                                new Circle(
+                                  circleId: CircleId('${51.9189046}-${19.1343786}'),
+                                  center: LatLng(coordinates.latitude, coordinates.longitude),
+                                  radius: _radius * 1000,
+                                ),
+                              );
+                              setState(() {});
                             },
                           ),
+                          bottomNavigationBar: Container(
+                            height: 100,
+                            child: SfSlider(
+                              min: 0.01,
+                              max: 0.25,
+                              value: _radius,
+                              interval: 0.03,
+                              showTicks: true,
+                              showLabels: true,
+                              showTooltip: true,
+                              minorTicksPerInterval: 1,
+                              onChanged: (dynamic value) {
+                                Circle circle = _circles.elementAt(0);
+                                _circles.clear();
+                                _circles.add(
+                                  new Circle(
+                                    circleId: CircleId('${circle.circleId}'),
+                                    center: circle.center,
+                                    radius: _radius * 1000,
+                                  ),
+                                );
+                                setState(() => _radius = value);
+                              },
+                            ),
+                          ),
                         ),
-                      ),
-                      onWillPop: onWillPop,
-                    );
-                  },
-                ),
-              );
-            },
-          );
+                        onWillPop: onWillPop,
+                      );
+                    },
+                  ),
+                );
+              },
+            );
+          }
         },
       ),
     );
