@@ -5,6 +5,7 @@ class EmployeeCalendarDto {
   final int hours;
   final int rating;
   final List workTimes;
+  final List pieceworks;
   final String plan;
   final String note;
   final double money;
@@ -16,6 +17,7 @@ class EmployeeCalendarDto {
     @required this.hours,
     @required this.rating,
     @required this.workTimes,
+    @required this.pieceworks,
     @required this.plan,
     @required this.note,
     @required this.money,
@@ -29,6 +31,7 @@ class EmployeeCalendarDto {
       hours: json['hours'] as int,
       rating: json['rating'] as int,
       workTimes: json['workTimes'].map((data) => WorkTimeDto.fromJson(data)).toList(),
+      pieceworks: json['pieceworks'].map((data) => WorkTimeDto.fromJson(data)).toList(),
       plan: json['plan'] as String,
       note: json['note'] as String,
       money: json['money'] as double,

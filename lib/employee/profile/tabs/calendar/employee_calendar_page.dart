@@ -261,8 +261,8 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
     bool isVocationNotNull = workday.isVocationVerified != null;
     if (isVocationNotNull && workday.isVocationVerified) {
       return Icon(Icons.beach_access, color: Colors.yellow);
-    } else if (workday.hours != 0 || (workday.workTimes != null && workday.workTimes.isNotEmpty)) {
-      return workday.hours != 0 ? icon30Green(Icons.check) : icon30Orange(Icons.arrow_circle_up);
+    } else if (workday.hours != 0 || (workday.workTimes != null && workday.workTimes.isNotEmpty) || workday.money != 0 || (workday.pieceworks != null && workday.pieceworks.isNotEmpty)) {
+      return workday.hours != 0 || workday.money != 0 ? icon30Green(Icons.check) : icon30Orange(Icons.arrow_circle_up);
     } else if (workday.plan != null && workday.plan.isNotEmpty) {
       if (isVocationNotNull && !workday.isVocationVerified) {
         return Row(
@@ -304,7 +304,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
     bool isVocationNotNull = workday.isVocationVerified != null;
     if (isVocationNotNull && workday.isVocationVerified) {
       return _buildVerifiedVocation(workday.vocationReason);
-    } else if (workday.hours != 0 || (workday.workTimes != null && workday.workTimes.isNotEmpty)) {
+    } else if (workday.hours != 0 || (workday.workTimes != null && workday.workTimes.isNotEmpty) || workday.money != 0 || (workday.pieceworks != null && workday.pieceworks.isNotEmpty)) {
       return _buildWorkday(workday);
     } else if (workday.plan != null && workday.plan.isNotEmpty) {
       if (isVocationNotNull && !workday.isVocationVerified) {
@@ -361,15 +361,16 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
     String plan = workday.plan;
     String note = workday.note;
     int hours = workday.hours;
+    double money = workday.money;
     return Column(
       children: [
-        hours != 0
+        hours != 0 || money != 0
             ? textCenter16GreenBold(getTranslated(context, 'workedDay') + ' ' + _selectedDay.toString().substring(0, 10))
             : textCenter16OrangeBold(
                 getTranslated(context, 'workInProgress') + ' ' + _selectedDay.toString().substring(0, 10),
               ),
         ListTile(
-          trailing: hours != 0 ? icon50Green(Icons.check) : icon50Orange(Icons.arrow_circle_up),
+          trailing: hours != 0 || money != 0 ? icon50Green(Icons.check) : icon50Orange(Icons.arrow_circle_up),
           title: Row(
             children: [
               text15White(getTranslated(context, 'amountOfEarnedMoney') + ': '),

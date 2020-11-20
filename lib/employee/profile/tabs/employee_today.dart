@@ -35,6 +35,7 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
   String todayPlan = dto.todayPlan;
   String todayNote = dto.todayNote;
   bool canFillHours = dto.canFillHours;
+  bool workTimeByLocation = dto.workTimeByLocation;
   return Container(
     child: SingleChildScrollView(
       child: Padding(
@@ -46,7 +47,7 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
             Ink(
               color: BRIGHTER_DARK,
               child: ListTile(
-                trailing: todayHours != '0' ? icon50Green(Icons.check) : icon50Red(Icons.close),
+                trailing: todayHours != '0' || todayMoney != '0' ? icon50Green(Icons.check) : icon50Red(Icons.close),
                 title: Row(
                   children: [
                     text15White(getTranslated(context, 'amountOfEarnedMoney') + ': '),
@@ -74,22 +75,24 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                         ),
                         alignment: Alignment.topLeft),
                     SizedBox(height: 5),
-                    Align(
-                        child: Row(
-                          children: <Widget>[
-                            text15White(getTranslated(context, 'workTimes') + ': '),
-                            todayWorkTimes != null && todayWorkTimes.isNotEmpty
-                                ? Row(
-                                    children: [
-                                      text15GreenBold(getTranslated(context, 'yes') + ' '),
-                                      iconGreen(Icons.search),
-                                      textGreen('(' + getTranslated(context, 'checkDetails') + ')'),
-                                    ],
-                                  )
-                                : text15RedBold(getTranslated(context, 'empty'))
-                          ],
-                        ),
-                        alignment: Alignment.topLeft),
+                    workTimeByLocation
+                        ? Align(
+                            child: Row(
+                              children: <Widget>[
+                                text15White(getTranslated(context, 'workTimes') + ': '),
+                                todayWorkTimes != null && todayWorkTimes.isNotEmpty
+                                    ? Row(
+                                        children: [
+                                          text15GreenBold(getTranslated(context, 'yes') + ' '),
+                                          iconGreen(Icons.search),
+                                          textGreen('(' + getTranslated(context, 'checkDetails') + ')'),
+                                        ],
+                                      )
+                                    : text15RedBold(getTranslated(context, 'empty'))
+                              ],
+                            ),
+                            alignment: Alignment.topLeft)
+                        : SizedBox(height: 0),
                     SizedBox(height: 5),
                     Align(
                         child: Row(
