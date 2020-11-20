@@ -590,5 +590,12 @@
   "totalPrice": "Total price",
   "services": "Services",
   "successfullyDeletedPieceworkReport": "Successfully deleted piecework report",
-  "manageCompanyPricelist": "Manage company pricelists"
+  "manageCompanyPricelist": "Manage company pricelists",
+  "noPermissionForWorkTimeByLocation": "No permission for work time by location",
+  "workTimeByLocation": "Work time based on GPS location",
+  "permissionToworkTimeByLocationUpperCase": "PERMISSION TO WORK TIME BASED ON GPS LOCATION",
+  "yesEmployeeCanDoWorkTimeByLocation": "Yes, an employee can start work time which is based on GPS location",
+  "noEmployeeCannotDoworkTimeByLocation": "No, an employee cannot start work time which is based on GPS location",
+  "successfullyUpdatedPermissionToWorkTimeByLocationForSelectedEmployees": "Successfully updated permission to work time based on GPS location for selected employees",
+  "workTimeGPS": "Work time GPS"
 }

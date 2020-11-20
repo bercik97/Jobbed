@@ -20,6 +20,7 @@ class EmployeePageDto {
   final String todayPlan;
   final String todayNote;
   final bool canFillHours;
+  final bool workTimeByLocation;
   final bool piecework;
   final String groupManager;
   final String groupManagerPhone;
@@ -44,6 +45,7 @@ class EmployeePageDto {
     @required this.todayPlan,
     @required this.todayNote,
     @required this.canFillHours,
+    @required this.workTimeByLocation,
     @required this.piecework,
     @required this.groupManager,
     @required this.groupManagerPhone,
@@ -70,6 +72,7 @@ class EmployeePageDto {
       todayPlan: json['todayPlan'] as String,
       todayNote: json['todayNote'] as String,
       canFillHours: json['canFillHours'] as bool,
+      workTimeByLocation: json['workTimeByLocation'] as bool,
       piecework: json['piecework'] as bool,
       groupManager: json['groupManager'] as String,
       groupManagerPhone: json['groupManagerPhone'] as String,

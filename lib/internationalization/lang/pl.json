@@ -589,5 +589,12 @@
   "totalPrice": "Cena całkowita",
   "services": "Usługi",
   "successfullyDeletedPieceworkReport": "Pomyślnie usunięto raport pracy na akord",
-  "manageCompanyPricelist": "Zarządzaj cennikiem firmy"
+  "manageCompanyPricelist": "Zarządzaj cennikiem firmy",
+  "noPermissionForWorkTimeByLocation": "Nie posiadasz uprawnień do pracy na podstawie twojej lokalizacji",
+  "workTimeByLocation": "Praca na podstawie lokalizacji GPS",
+  "permissionToworkTimeByLocationUpperCase": "UPRAWNIENIE DO PRACY NA PODSTAWIE LOKALIZACJI GPS",
+  "yesEmployeeCanDoWorkTimeByLocation": "Tak, pracownik może zaczynać pracę na podstawie lokalizacji GPS",
+  "noEmployeeCannotDoworkTimeByLocation": "Nie, pracownik nie może zaczynać pracy na podstawie lokalizacji GPS",
+  "successfullyUpdatedPermissionToWorkTimeByLocationForSelectedEmployees": "Pomyślnie zaktualizowano uprawnienie do zaczynania czasu pracy na podstawie lokalizacji GPS dla wybranych pracowników",
+  "workTimeGPS": "Czas pracy GPS"
 }

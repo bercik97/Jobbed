@@ -53,6 +53,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
   LinkedHashSet<int> _selectedIds = new LinkedHashSet();
 
   int _selfFillingHoursRadioValue = -1;
+  int _workTimeByLocationRadioValue = -1;
   int _pieceworkRadioValue = -1;
 
   @override
@@ -218,6 +219,14 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                       Align(
                                           child: Row(
                                             children: <Widget>[
+                                              textWhite(getTranslated(this.context, 'workTimeByLocation') + ': '),
+                                              employee.workTimeByLocation ? textGreenBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
+                                            ],
+                                          ),
+                                          alignment: Alignment.topLeft),
+                                      Align(
+                                          child: Row(
+                                            children: <Widget>[
                                               textWhite(getTranslated(this.context, 'piecework') + ': '),
                                               employee.piecework ? textGreenBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
                                             ],
@@ -264,7 +273,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: textCenterDark(getTranslated(context, 'hourlyWage')),
+                    child: textCenter12Dark(getTranslated(context, 'hourlyWage')),
                     onPressed: () {
                       if (_selectedIds.isNotEmpty) {
                         _moneyPerHourController.clear();
@@ -279,7 +288,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: textCenterDark(getTranslated(context, 'fillingHours')),
+                    child: textCenter12Dark(getTranslated(context, 'fillingHours')),
                     onPressed: () {
                       if (_selectedIds.isNotEmpty) {
                         _changePermissionToSelfFillHours();
@@ -293,7 +302,21 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: textCenterDark(getTranslated(context, 'piecework')),
+                    child: textCenter12Dark(getTranslated(context, 'workTimeGPS')),
+                    onPressed: () {
+                      if (_selectedIds.isNotEmpty) {
+                        _changePermissionToWorkTimeByLocation();
+                      } else {
+                        showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                      }
+                    },
+                  ),
+                ),
+                SizedBox(width: 1),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: textCenter12Dark(getTranslated(context, 'piecework')),
                     onPressed: () {
                       if (_selectedIds.isNotEmpty) {
                         _changePermissionToPiecework();
@@ -519,6 +542,112 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                   _refresh();
                                   Navigator.pop(context);
                                   ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees'));
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }),
+        );
+      },
+    );
+  }
+
+  void _changePermissionToWorkTimeByLocation() {
+    showGeneralDialog(
+      context: context,
+      barrierColor: DARK.withOpacity(0.95),
+      barrierDismissible: false,
+      barrierLabel: getTranslated(context, 'workTimeByLocation'),
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: StatefulBuilder(builder: (context, setState) {
+            return Scaffold(
+              backgroundColor: Colors.black12,
+              body: Center(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: 50),
+                        child: Column(
+                          children: [
+                            textCenter20GreenBold(getTranslated(context, 'permissionToworkTimeByLocationUpperCase')),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 7.5),
+                      Column(
+                        children: <Widget>[
+                          _buildRadioBtn(
+                            color: GREEN,
+                            title: getTranslated(context, 'yesEmployeeCanDoWorkTimeByLocation'),
+                            value: 0,
+                            groupValue: _workTimeByLocationRadioValue,
+                            onChanged: (newValue) => setState(() => _workTimeByLocationRadioValue = newValue),
+                          ),
+                          _buildRadioBtn(
+                            color: Colors.red,
+                            title: getTranslated(context, 'noEmployeeCannotDoworkTimeByLocation'),
+                            value: 1,
+                            groupValue: _workTimeByLocationRadioValue,
+                            onChanged: (newValue) => setState(() => _workTimeByLocationRadioValue = newValue),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          MaterialButton(
+                            elevation: 0,
+                            height: 50,
+                            minWidth: 40,
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[iconWhite(Icons.close)],
+                            ),
+                            color: Colors.red,
+                            onPressed: () {
+                              _workTimeByLocationRadioValue = -1;
+                              Navigator.pop(context);
+                            },
+                          ),
+                          SizedBox(width: 25),
+                          MaterialButton(
+                            elevation: 0,
+                            height: 50,
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[iconWhite(Icons.check)],
+                            ),
+                            color: GREEN,
+                            onPressed: () {
+                              if (_workTimeByLocationRadioValue == -1) {
+                                ToastService.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
+                                return;
+                              }
+                              _employeeService.updateFieldsValuesByIds(
+                                _selectedIds.toList(),
+                                {
+                                  "workTimeByLocation": _workTimeByLocationRadioValue == 0 ? true : false,
+                                },
+                              ).then(
+                                (res) {
+                                  _refresh();
+                                  Navigator.pop(context);
+                                  ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToWorkTimeByLocationForSelectedEmployees'));
                                 },
                               );
                             },

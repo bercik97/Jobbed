@@ -58,9 +58,10 @@ Text text25Dark(String text) { return Text(text, style: TextStyle(fontSize: 25, 
 
 
 /////////////////////
-/*TEXT CENTER WHITE*/
+/*TEXT CENTER DARK */
 /////////////////////
 Text textCenterDark(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(color: DARK)); }
+Text textCenter12Dark(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: DARK)); }
 
 
 /////////////////////

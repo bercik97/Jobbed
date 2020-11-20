@@ -32,12 +32,16 @@ Container employeePanel(BuildContext context, User user, EmployeePageDto employe
                           ToastService.showErrorToast(getTranslated(context, 'cannotStartWorkWithoutTS'));
                           return;
                         }
+                        if (!employee.workTimeByLocation) {
+                          ToastService.showErrorToast(getTranslated(context, 'noPermissionForWorkTimeByLocation'));
+                          return;
+                        }
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => WorkTimePage(user, employee.todayWorkdayId)),
                         );
                       },
-                      child: _buildScrollableContainer(context, 'images/employee-work-icon.png', 'workingTime', 'startFinishWork'),
+                      child: _buildScrollableContainer(context, 'images/employee-work-icon.png', 'workTimeGPS', 'startFinishWork'),
                     ),
                   ),
                 ),
