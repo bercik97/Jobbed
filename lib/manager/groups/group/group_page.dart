@@ -8,6 +8,8 @@ import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.d
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/timesheets/ts_page.dart';
 import 'package:give_job/manager/groups/group/vocations/vocations_ts_page.dart';
+import 'package:give_job/manager/groups/manage/pricelist/pricelist_page.dart';
+import 'package:give_job/manager/groups/manage/warehouse/warehouse_page.dart';
 import 'package:give_job/manager/groups/manage/workplace/workplaces_page.dart';
 import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -218,6 +220,24 @@ class _GroupPageState extends State<GroupPage> {
                         child: Material(
                           color: BRIGHTER_DARK,
                           child: InkWell(
+                            onTap: () => {
+                              Navigator.of(context).push(
+                                CupertinoPageRoute<Null>(
+                                  builder: (BuildContext context) {
+                                    return VocationsTsPage(_model);
+                                  },
+                                ),
+                              ),
+                            },
+                            child: _buildScrollableContainer('images/vocation-icon.png', 'vocations', 'vocationsDescription'),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: Material(
+                          color: BRIGHTER_DARK,
+                          child: InkWell(
                             onTap: () {
                               Navigator.of(context).push(
                                 CupertinoPageRoute<Null>(
@@ -227,7 +247,29 @@ class _GroupPageState extends State<GroupPage> {
                                 ),
                               );
                             },
-                            child: _buildScrollableContainer('images/workplace-icon.png', 'workplaces', 'workplacesDescription'),
+                            child: _buildScrollableContainer('images/workplace-icon.png', 'workplaces', 'manageCompanyWorkplaces'),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Material(
+                          color: BRIGHTER_DARK,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                CupertinoPageRoute<Null>(
+                                  builder: (BuildContext context) {
+                                    return WarehousePage(_model.user, GroupPage(_model));
+                                  },
+                                ),
+                              );
+                            },
+                            child: _buildScrollableContainer('images/warehouse-icon.png', 'warehouses', 'manageCompanyWarehouses'),
                           ),
                         ),
                       ),
@@ -240,12 +282,12 @@ class _GroupPageState extends State<GroupPage> {
                               Navigator.of(context).push(
                                 CupertinoPageRoute<Null>(
                                   builder: (BuildContext context) {
-                                    return VocationsTsPage(_model);
+                                    return PricelistPage(_model.user, GroupPage(_model));
                                   },
                                 ),
                               ),
                             },
-                            child: _buildScrollableContainer('images/vocation-icon.png', 'vocations', 'vocationsDescription'),
+                            child: _buildScrollableContainer('images/pricelist-icon.png', 'pricelist', 'manageCompanyPricelist'),
                           ),
                         ),
                       ),
