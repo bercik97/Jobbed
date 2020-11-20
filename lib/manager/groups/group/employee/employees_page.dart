@@ -130,7 +130,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
                                           Navigator.of(this.context).push(
                                             CupertinoPageRoute<Null>(
                                               builder: (BuildContext context) {
-                                                return EmployeeProfilPage(_model, nationality, currency, employee.id, info);
+                                                return EmployeeProfilPage(_model, nationality, currency, employee.id, info, EmployeesPage(_model));
                                               },
                                             ),
                                           );

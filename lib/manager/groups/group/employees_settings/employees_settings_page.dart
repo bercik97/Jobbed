@@ -180,7 +180,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                           Navigator.push(
                                             this.context,
                                             MaterialPageRoute(
-                                              builder: (context) => EmployeeProfilPage(_model, nationality, currency, employee.employeeId, info),
+                                              builder: (context) => EmployeeProfilPage(_model, nationality, currency, employee.employeeId, info, EmployeesSettingsPage(_model)),
                                             ),
                                           );
                                         },

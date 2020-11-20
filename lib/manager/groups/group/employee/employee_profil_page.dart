@@ -32,8 +32,9 @@ class EmployeeProfilPage extends StatefulWidget {
   final String _currency;
   final int _employeeId;
   final String _employeeInfo;
+  final StatefulWidget _previousPage;
 
-  const EmployeeProfilPage(this._model, this._employeeNationality, this._currency, this._employeeId, this._employeeInfo);
+  const EmployeeProfilPage(this._model, this._employeeNationality, this._currency, this._employeeId, this._employeeInfo, this._previousPage);
 
   @override
   _EmployeeProfilPageState createState() => _EmployeeProfilPageState();
@@ -42,6 +43,7 @@ class EmployeeProfilPage extends StatefulWidget {
 class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
   GroupModel _model;
   User _user;
+  StatefulWidget _previousPage;
 
   TimesheetService _tsService;
   EmployeeService _employeeService;
@@ -55,6 +57,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
   Widget build(BuildContext context) {
     this._model = widget._model;
     this._user = _model.user;
+    this._previousPage = widget._previousPage;
     this._tsService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
     this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
     this._employeeNationality = widget._employeeNationality;
@@ -158,7 +161,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
           ),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeesPage(_model)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, _previousPage),
     );
   }
 

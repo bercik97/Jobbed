@@ -204,7 +204,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                           Navigator.push(
                                             this.context,
                                             MaterialPageRoute(
-                                              builder: (context) => EmployeeProfilPage(_model, nationality, currency, employee.id, info),
+                                              builder: (context) => EmployeeProfilPage(_model, nationality, currency, employee.id, info, TsInProgressPage(_model, _timesheet)),
                                             ),
                                           );
                                         },
