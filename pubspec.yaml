@@ -102,6 +102,10 @@ flutter:
     - images/employee-work-icon.png
     - images/calendar-icon.png
     - images/employees-settings-icon.png
+    - images/piecework-icon.png
+    - images/items-icon.png
+    - images/pricelist-icon.png
+    - images/warehouse-icon.png
 
     - images/green-hours-icon.png
     - images/green-rate-icon.png

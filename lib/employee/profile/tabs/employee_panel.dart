@@ -58,10 +58,10 @@ Container employeePanel(BuildContext context, User user, EmployeePageDto employe
                         }
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => PieceworkPage(user, employee.todayWorkdayId)),
+                          MaterialPageRoute(builder: (context) => PieceworkPage(user, employee.todayDate, employee.todayWorkdayId)),
                         );
                       },
-                      child: _buildScrollableContainer(context, 'images/employee-work-icon.png', 'piecework', 'addNoteAboutPiecework'),
+                      child: _buildScrollableContainer(context, 'images/piecework-icon.png', 'piecework', 'addNoteAboutPiecework'),
                     ),
                   ),
                 ),

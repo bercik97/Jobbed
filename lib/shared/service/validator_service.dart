@@ -79,4 +79,13 @@ class ValidatorService {
     }
     return null;
   }
+
+  static String validatePricelistServiceQuantity(int quantity, BuildContext context) {
+    if (quantity < 1) {
+      return getTranslated(context, 'quantityCannotBeLowerThan0');
+    } else if (quantity > 999) {
+      return getTranslated(context, 'quantityCannotBeHigherThan999');
+    }
+    return null;
+  }
 }

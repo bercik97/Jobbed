@@ -281,7 +281,7 @@ class _WarehousePageState extends State<WarehousePage> {
         return AlertDialog(
           backgroundColor: DARK,
           title: textWhite(getTranslated(this.context, 'confirmation')),
-          content: textWhite(getTranslated(this.context, 'areYouSureYouWantToDeleteSelectedWarehouses')),
+          content: textWhite(getTranslated(this.context, '"createReport": "Create report",YouWantToDeleteSelectedWarehouses')),
           actions: <Widget>[
             FlatButton(
               child: textWhite(getTranslated(this.context, 'yesDeleteThem')),

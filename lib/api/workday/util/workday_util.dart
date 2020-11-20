@@ -86,7 +86,7 @@ class WorkdayUtil {
                         SizedBox(height: 20),
                         Column(
                           children: [
-                            for (int i = 0; i < workplaces.length; i++) textCenter20White('#' + (i + 1).toString() + ' ' + workplaces[i].name + '\n'),
+                            for (int i = 0; i < workplaces.length; i++) textCenter20White('#' + (i + 1).toString() + ' ' + workplaces[i].workplaceName + '\n'),
                           ],
                         ),
                         SizedBox(height: 20),
@@ -199,6 +199,78 @@ class WorkdayUtil {
           ),
         ),
       ),
+    );
+  }
+
+  static void buildPieceworkDialog(BuildContext context, List services, List quantities) {
+    showGeneralDialog(
+      context: context,
+      barrierColor: DARK.withOpacity(0.95),
+      barrierDismissible: false,
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: Scaffold(
+            backgroundColor: Colors.black12,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: <Widget>[
+                        SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Theme(
+                              data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
+                              child: DataTable(
+                                columnSpacing: 10,
+                                columns: [
+                                  DataColumn(label: textWhiteBold('No.')),
+                                  DataColumn(label: textWhiteBold(getTranslated(context, 'serviceName'))),
+                                  DataColumn(label: textWhiteBold(getTranslated(context, 'quantity'))),
+                                ],
+                                rows: [
+                                  for (int i = 0; i < services.length; i++)
+                                    DataRow(
+                                      cells: [
+                                        DataCell(textWhite((i + 1).toString())),
+                                        DataCell(textWhite(services[i])),
+                                        DataCell(textWhite(quantities[i].toString())),
+                                      ],
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Container(
+                          width: 80,
+                          child: MaterialButton(
+                            elevation: 0,
+                            height: 50,
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[iconWhite(Icons.close)],
+                            ),
+                            color: Colors.red,
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
