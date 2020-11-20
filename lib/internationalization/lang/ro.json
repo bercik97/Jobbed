@@ -605,5 +605,6 @@
   "priceForServices": "Price for services",
   "notAtWork": "Not at work",
   "todayWorkedTime": "Time worked today",
-  "workStatus": "Work status"
+  "workStatus": "Work status",
+  "pieceworks": "Pieceworks"
 }

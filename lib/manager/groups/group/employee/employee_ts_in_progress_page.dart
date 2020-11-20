@@ -184,6 +184,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             DataColumn(label: textWhiteBold(getTranslated(context, 'plan')), onSort: (columnIndex, ascending) => _onSortPlans(columnIndex, ascending)),
                             DataColumn(label: textWhiteBold(getTranslated(context, 'opinion')), onSort: (columnIndex, ascending) => _onSortOpinions(columnIndex, ascending)),
                             DataColumn(label: textWhiteBold(getTranslated(context, 'workTimes'))),
+                            DataColumn(label: textWhiteBold(getTranslated(context, 'pieceworks'))),
                             DataColumn(label: textWhiteBold(getTranslated(context, 'vocations'))),
                           ],
                           rows: this
@@ -218,6 +219,14 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                         ],
                                       ),
                                       onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workday.workTimes),
+                                    ),
+                                    DataCell(
+                                      Wrap(
+                                        children: <Widget>[
+                                          workday.pieceworks != null && workday.pieceworks.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
+                                        ],
+                                      ),
+                                      onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workday.pieceworks),
                                     ),
                                     DataCell(
                                         Wrap(

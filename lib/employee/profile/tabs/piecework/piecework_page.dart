@@ -156,6 +156,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
                                 context,
                                 _pieceworks[i].services,
                                 _pieceworks[i].quantities,
+                                _pieceworks[i].prices,
                               ),
                             ),
                           ),

@@ -604,5 +604,6 @@
   "priceForServices": "Kwota za usługi",
   "notAtWork": "Nie jest w pracy",
   "todayWorkedTime": "Dzisiejszy przepracowany czas",
-  "workStatus": "Status pracy"
+  "workStatus": "Status pracy",
+  "pieceworks": "Prace na akord"
 }

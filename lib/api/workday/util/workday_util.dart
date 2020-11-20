@@ -168,6 +168,94 @@ class WorkdayUtil {
     );
   }
 
+  static void showScrollablePieceworksDialog(BuildContext context, List pieceworks) {
+    showGeneralDialog(
+      context: context,
+      barrierColor: DARK.withOpacity(0.95),
+      barrierDismissible: false,
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: Scaffold(
+            backgroundColor: Colors.black12,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: <Widget>[
+                        text20GreenBold(getTranslated(context, 'pieceworkReports')),
+                        SizedBox(height: 20),
+                        _buildPieceworksDataTable(context, pieceworks),
+                        SizedBox(height: 20),
+                        Container(
+                          width: 80,
+                          child: MaterialButton(
+                            elevation: 0,
+                            height: 50,
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[iconWhite(Icons.close)],
+                            ),
+                            color: Colors.red,
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  static Widget _buildPieceworksDataTable(BuildContext context, List pieceworks) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Theme(
+          data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
+          child: DataTable(
+            columnSpacing: 10,
+            columns: [
+              DataColumn(label: textWhiteBold(getTranslated(context, 'workplace'))),
+              DataColumn(label: textWhiteBold(getTranslated(context, 'services'))),
+              DataColumn(label: textWhiteBold(getTranslated(context, 'totalPrice'))),
+            ],
+            rows: [
+              for (int i = 0; i < pieceworks.length; i++)
+                DataRow(
+                  cells: [
+                    DataCell(textWhite(pieceworks[i].workplaceName)),
+                    DataCell(
+                      IconButton(
+                        icon: iconWhite(Icons.search),
+                        onPressed: () => WorkdayUtil.buildPieceworkDialog(
+                          context,
+                          pieceworks[i].services,
+                          pieceworks[i].quantities,
+                          pieceworks[i].prices,
+                        ),
+                      ),
+                    ),
+                    DataCell(textGreen(pieceworks[i].totalPrice.toString())),
+                  ],
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   static Widget _buildWorkTimesDataTable(BuildContext context, List workTimes) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
@@ -202,7 +290,7 @@ class WorkdayUtil {
     );
   }
 
-  static void buildPieceworkDialog(BuildContext context, List services, List quantities) {
+  static void buildPieceworkDialog(BuildContext context, List services, List quantities, List prices) {
     showGeneralDialog(
       context: context,
       barrierColor: DARK.withOpacity(0.95),
@@ -232,6 +320,7 @@ class WorkdayUtil {
                                   DataColumn(label: textWhiteBold('No.')),
                                   DataColumn(label: textWhiteBold(getTranslated(context, 'serviceName'))),
                                   DataColumn(label: textWhiteBold(getTranslated(context, 'quantity'))),
+                                  DataColumn(label: textWhiteBold(getTranslated(context, 'price'))),
                                 ],
                                 rows: [
                                   for (int i = 0; i < services.length; i++)
@@ -240,6 +329,7 @@ class WorkdayUtil {
                                         DataCell(textWhite((i + 1).toString())),
                                         DataCell(textWhite(services[i])),
                                         DataCell(textWhite(quantities[i].toString())),
+                                        DataCell(textWhite(prices[i].toString())),
                                       ],
                                     ),
                                 ],

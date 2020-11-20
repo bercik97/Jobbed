@@ -8,10 +8,8 @@ import 'package:give_job/api/workday/dto/workday_for_employee_dto.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/api/workday/util/workday_util.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
-import 'package:give_job/employee/shared/employee_app_bar_with_icons_legend.dart';
 import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
@@ -74,16 +72,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: employeeAppBarWithIconsLegend(
-            context,
-            getTranslated(context, 'workdays') + ' - ' + getTranslated(context, _timesheet.status),
-            [
-              IconsLegend.buildRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
-              IconsLegend.buildRow('images/checked.png', getTranslated(context, 'completedTs')),
-              IconsLegend.buildRowWithWidget(icon50White(Icons.zoom_in), getTranslated(context, 'viewRecordDetails')),
-            ],
-            _user,
-          ),
+          appBar: employeeAppBar(context, _user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, _timesheet.status)),
           drawer: employeeSideBar(context, _user),
           body: RefreshIndicator(
             color: DARK,
@@ -155,6 +144,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                             DataColumn(label: textWhiteBold(getTranslated(this.context, 'plan'))),
                             DataColumn(label: textWhiteBold(getTranslated(this.context, 'note'))),
                             DataColumn(label: textWhiteBold(getTranslated(this.context, 'workTimes'))),
+                            DataColumn(label: textWhiteBold(getTranslated(this.context, 'pieceworks'))),
                           ],
                           rows: this
                               .workdays
@@ -179,6 +169,14 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                                         ],
                                       ),
                                       onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workday.workTimes),
+                                    ),
+                                    DataCell(
+                                      Wrap(
+                                        children: <Widget>[
+                                          workday.pieceworks != null && workday.pieceworks.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
+                                        ],
+                                      ),
+                                      onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workday.pieceworks),
                                     ),
                                   ],
                                 ),

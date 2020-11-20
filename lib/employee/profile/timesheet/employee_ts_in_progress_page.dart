@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:give_job/api/piecework/dto/piecework_dto.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:give_job/api/workday/dto/workday_for_employee_dto.dart';
@@ -30,8 +31,10 @@ class EmployeeTsInProgressPage extends StatefulWidget {
   final User _user;
   final TimesheetForEmployeeDto _timesheet;
   final bool _canFillHours;
+  final bool _workTimeByLocation;
+  final bool _piecework;
 
-  EmployeeTsInProgressPage(this._user, this._timesheet, this._canFillHours);
+  EmployeeTsInProgressPage(this._user, this._timesheet, this._canFillHours, this._workTimeByLocation, this._piecework);
 
   @override
   _EmployeeTsInProgressPageState createState() => _EmployeeTsInProgressPageState();
@@ -44,10 +47,14 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   User _user;
   WorkdayService _workdayService;
   TimesheetForEmployeeDto _timesheet;
+
   bool _canFillHours;
+  bool _workTimeByLocation;
+  bool _piecework;
 
   Set<int> selectedIds = new Set();
   List<WorkdayForEmployeeDto> workdays = new List();
+  List<PieceworkDto> pieceworks = new List();
 
   bool _sort = true;
   bool _sortNo = true;
@@ -61,6 +68,8 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     this._timesheet = widget._timesheet;
     this._canFillHours = widget._canFillHours;
+    this._workTimeByLocation = widget._workTimeByLocation;
+    this._piecework = widget._piecework;
     this._loading = true;
     super.initState();
     _workdayService.findAllForEmployeeByTimesheetId(_timesheet.id.toString()).then((res) {
@@ -156,7 +165,8 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             DataColumn(label: textWhiteBold(getTranslated(this.context, 'money'))),
                             DataColumn(label: textWhiteBold(getTranslated(this.context, 'plan'))),
                             DataColumn(label: textWhiteBold(getTranslated(this.context, 'note'))),
-                            DataColumn(label: textWhiteBold(getTranslated(this.context, 'workTimes'))),
+                            DataColumn(label: _workTimeByLocation ? textWhiteBold(getTranslated(this.context, 'workTimes')) : textRedBold(getTranslated(this.context, 'workTimes'))),
+                            DataColumn(label: _piecework ? textWhiteBold(getTranslated(this.context, 'pieceworks')) : textRedBold(getTranslated(this.context, 'pieceworks'))),
                           ],
                           rows: this
                               .workdays
@@ -187,6 +197,14 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                         ],
                                       ),
                                       onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workday.workTimes),
+                                    ),
+                                    DataCell(
+                                      Wrap(
+                                        children: <Widget>[
+                                          workday.pieceworks != null && workday.pieceworks.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
+                                        ],
+                                      ),
+                                      onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workday.pieceworks),
                                     ),
                                   ],
                                 ),

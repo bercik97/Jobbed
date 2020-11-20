@@ -214,7 +214,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                 padding: EdgeInsets.all(5),
                 child: TabBarView(
                   children: <Widget>[
-                    _buildTab(employeeTimesheetsTab(this.context, _user, _employeePageDto.timeSheets, _employeePageDto.canFillHours)),
+                    _buildTab(employeeTimesheetsTab(this.context, _user, _employeePageDto.timeSheets, _employeePageDto.canFillHours, _employeePageDto.workTimeByLocation, _employeePageDto.piecework)),
                     _buildTab(employeeToday(
                       this.context,
                       _employeePageDto,
