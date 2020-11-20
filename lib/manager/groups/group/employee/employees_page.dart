@@ -155,34 +155,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
                                               title: text20WhiteBold(
                                                 utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality),
                                               ),
-                                              subtitle: Column(
-                                                children: <Widget>[
-                                                  Align(
-                                                      child: Row(
-                                                        children: <Widget>[
-                                                          textWhite(getTranslated(this.context, 'moneyPerHour') + ': '),
-                                                          textGreenBold(employee.moneyPerHour.toString() + ' ' + currency),
-                                                        ],
-                                                      ),
-                                                      alignment: Alignment.topLeft),
-                                                  Align(
-                                                      child: Row(
-                                                        children: <Widget>[
-                                                          textWhite(getTranslated(this.context, 'numberOfHoursWorked') + ': '),
-                                                          textGreenBold(employee.numberOfHoursWorked.toString()),
-                                                        ],
-                                                      ),
-                                                      alignment: Alignment.topLeft),
-                                                  Align(
-                                                      child: Row(
-                                                        children: <Widget>[
-                                                          textWhite(getTranslated(this.context, 'amountOfEarnedMoney') + ': '),
-                                                          textGreenBold(employee.amountOfEarnedMoney.toString() + ' ' + currency),
-                                                        ],
-                                                      ),
-                                                      alignment: Alignment.topLeft),
-                                                ],
-                                              ),
+                                              subtitle: _handleData(employee),
                                             ),
                                           ],
                                         ),
@@ -202,6 +175,146 @@ class _EmployeesPageState extends State<EmployeesPage> {
         ),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model)),
+    );
+  }
+
+  Widget _handleData(EmployeeGroupDto employee) {
+    if (employee.tsStatus == 'Not_Created') {
+      return _handleNotCreatedTs();
+    } else if (employee.workTimeByLocation && employee.piecework) {
+      return _handleWorkTimeByLocationAndEmployeePiecework(employee);
+    } else if (employee.workTimeByLocation) {
+      return _handleWorkTimeByLocation(employee);
+    } else if (employee.piecework) {
+      return _handlePiecework(employee);
+    } else {
+      return _handleStandardWork(employee);
+    }
+  }
+
+  Widget _handleNotCreatedTs() {
+    return Align(
+      child: textRedBold(getTranslated(context, 'employeeDoesNotHaveTsForCurrentMonth')),
+      alignment: Alignment.topLeft,
+    );
+  }
+
+  Widget _handleWorkTimeByLocationAndEmployeePiecework(EmployeeGroupDto employee) {
+    return Column(
+      children: [
+        _handleWorkTimeByLocation(employee),
+        _handlePiecework(employee),
+      ],
+    );
+  }
+
+  Widget _handleWorkTimeByLocation(EmployeeGroupDto employee) {
+    Widget workStatusWidget;
+    if (employee.workStatus == 'NOT_IN_WORK') {
+      workStatusWidget = Row(
+        children: [
+          iconRed(Icons.remove),
+          textRed(' ' + getTranslated(context, 'notAtWork')),
+        ],
+      );
+    } else if (employee.workStatus == 'WORK_IN_PROGRESS') {
+      workStatusWidget = Row(
+        children: [
+          textWhite(getTranslated(context, 'workStatus')),
+          iconOrange(Icons.report_gmailerrorred_outlined),
+          textRed(' ' + getTranslated(context, 'workInProgress')),
+        ],
+      );
+    } else {
+      workStatusWidget = Row(
+        children: [
+          iconGreen(Icons.check),
+          textRed(' ' + getTranslated(context, 'workIsDone')),
+        ],
+      );
+    }
+    return Column(
+      children: [
+        Align(
+            child: Row(
+              children: <Widget>[
+                textWhite(getTranslated(this.context, 'todayHoursWorked') + ': '),
+                textGreenBold(employee.todayHoursWorked),
+              ],
+            ),
+            alignment: Alignment.topLeft),
+        Align(
+            child: Row(
+              children: <Widget>[
+                textWhite(getTranslated(this.context, 'todayMoneyEarned') + ': '),
+                textGreenBold(employee.todayMoneyEarned + ' ' + employee.currency),
+              ],
+            ),
+            alignment: Alignment.topLeft),
+        Align(
+            child: Row(
+              children: <Widget>[
+                textWhite(getTranslated(this.context, 'todayWorkedTime') + ': '),
+                textGreenBold(employee.todayWorkedTime.toString()),
+              ],
+            ),
+            alignment: Alignment.topLeft),
+        Align(child: workStatusWidget, alignment: Alignment.topLeft),
+        Align(
+            child: Row(
+              children: <Widget>[
+                textWhite(getTranslated(this.context, 'workplaceName') + ': '),
+                textGreenBold(employee.workplaceName != null ? employee.workplaceName : getTranslated(this.context, 'empty')),
+              ],
+            ),
+            alignment: Alignment.topLeft),
+      ],
+    );
+  }
+
+  Widget _handlePiecework(EmployeeGroupDto employee) {
+    return Column(
+      children: <Widget>[
+        Align(
+            child: Row(
+              children: <Widget>[
+                textWhite(getTranslated(this.context, 'doneServices') + ': '),
+                textGreenBold(employee.numberOfDoneServices.toString()),
+              ],
+            ),
+            alignment: Alignment.topLeft),
+        Align(
+            child: Row(
+              children: <Widget>[
+                textWhite(getTranslated(this.context, 'priceForServices') + ': '),
+                textGreenBold(employee.totalPriceForServices.toString() + ' ' + employee.currency),
+              ],
+            ),
+            alignment: Alignment.topLeft),
+      ],
+    );
+  }
+
+  Widget _handleStandardWork(EmployeeGroupDto employee) {
+    return Column(
+      children: <Widget>[
+        Align(
+            child: Row(
+              children: <Widget>[
+                textWhite(getTranslated(this.context, 'todayHoursWorked') + ': '),
+                textGreenBold(employee.todayHoursWorked.toString()),
+              ],
+            ),
+            alignment: Alignment.topLeft),
+        Align(
+            child: Row(
+              children: <Widget>[
+                textWhite(getTranslated(this.context, 'todayMoneyEarned') + ': '),
+                textGreenBold(employee.todayMoneyEarned.toString() + ' ' + employee.currency),
+              ],
+            ),
+            alignment: Alignment.topLeft),
+      ],
     );
   }
 

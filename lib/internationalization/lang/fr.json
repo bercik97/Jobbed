@@ -597,5 +597,13 @@
   "yesEmployeeCanDoWorkTimeByLocation": "Yes, an employee can start work time which is based on GPS location",
   "noEmployeeCannotDoworkTimeByLocation": "No, an employee cannot start work time which is based on GPS location",
   "successfullyUpdatedPermissionToWorkTimeByLocationForSelectedEmployees": "Successfully updated permission to work time based on GPS location for selected employees",
-  "workTimeGPS": "Work time GPS"
+  "workTimeGPS": "Work time GPS",
+  "employeeDoesNotHaveTsForCurrentMonth": "Employee does not have a time sheet for the current month",
+  "todayHoursWorked": "Today's hours worked",
+  "todayMoneyEarned": "Today's money earned",
+  "doneServices": "Done services",
+  "priceForServices": "Price for services",
+  "notAtWork": "Not at work",
+  "todayWorkedTime": "Time worked today",
+  "workStatus": "Work status"
 }

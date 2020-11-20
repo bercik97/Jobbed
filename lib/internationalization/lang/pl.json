@@ -596,5 +596,13 @@
   "yesEmployeeCanDoWorkTimeByLocation": "Tak, pracownik może zaczynać pracę na podstawie lokalizacji GPS",
   "noEmployeeCannotDoworkTimeByLocation": "Nie, pracownik nie może zaczynać pracy na podstawie lokalizacji GPS",
   "successfullyUpdatedPermissionToWorkTimeByLocationForSelectedEmployees": "Pomyślnie zaktualizowano uprawnienie do zaczynania czasu pracy na podstawie lokalizacji GPS dla wybranych pracowników",
-  "workTimeGPS": "Czas pracy GPS"
+  "workTimeGPS": "Czas pracy GPS",
+  "employeeDoesNotHaveTsForCurrentMonth": "Pracownik nie posiada arkusza czasu pracy w bieżącym miesiącu",
+  "todayHoursWorked": "Dzisiejsze przepracowane godziny",
+  "todayMoneyEarned": "Dzisiejsze zarobione pieniądze",
+  "doneServices": "Wykonane usługi",
+  "priceForServices": "Kwota za usługi",
+  "notAtWork": "Nie jest w pracy",
+  "todayWorkedTime": "Dzisiejszy przepracowany czas",
+  "workStatus": "Status pracy"
 }
