@@ -605,5 +605,13 @@
   "notAtWork": "Nie jest w pracy",
   "todayWorkedTime": "Dzisiejszy przepracowany czas",
   "workStatus": "Status pracy",
-  "pieceworks": "Prace na akord"
+  "pieceworks": "Prace na akord",
+  "warehouseDetails": "Szczegóły magazynu",
+  "noItems": "Brak rzeczy",
+  "noItemsHint": "Wygląda na to, że nie masz dodanych przedmiotów.\nWybierz przycisk znajdujący się na dole ekranu, aby dodać przedmioty.",
+  "createItem": "Dodaj przedmiot",
+  "deleteSelectedItems": "Usuń wybrane przedmioty",
+  "needToSelectItems": "Musisz zaznaczyć przedmioty",
+  "areYouSureYouWantToDeleteSelectedItems": "Czy na pewno chcesz usunąć wybrane przedmioty?",
+  "selectedItemsRemoved": "Usunięto wybrane przedmioty"
 }

@@ -606,5 +606,13 @@
   "notAtWork": "Not at work",
   "todayWorkedTime": "Time worked today",
   "workStatus": "Work status",
-  "pieceworks": "Pieceworks"
+  "pieceworks": "Pieceworks",
+  "warehouseDetails": "Warehouse details",
+  "noItems": "No items",
+  "noItemsHint": "You seem to have no items added.\nSelect the button at the bottom of the screen to add some items.",
+  "createItem": "Create item",
+  "deleteSelectedItems": "Delete selected items",
+  "needToSelectItems": "Need to select items",
+  "areYouSureYouWantToDeleteSelectedItems": "Are you sure you want to delete selected items?",
+  "selectedItemsRemoved": "Selected items removed"
 }

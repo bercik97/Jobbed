@@ -4,12 +4,13 @@ import 'dart:convert';
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:give_job/api/item/dto/item_dto.dart';
+import 'package:give_job/api/item/service/item_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/warehouse/dto/warehouse_dto.dart';
-import 'package:give_job/api/warehouse/service/warehouse_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/manage/warehouse/add/add_warehouse_page.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
+import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
@@ -17,31 +18,30 @@ import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
+import 'package:give_job/shared/widget/loader.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../../shared/widget/loader.dart';
-import '../../../shared/manager_side_bar.dart';
-import 'details/warehouse_details_page.dart';
-
-class WarehousePage extends StatefulWidget {
+class WarehouseDetailsPage extends StatefulWidget {
   final User _user;
   final StatefulWidget _previousPage;
+  final WarehouseDto _warehouseDto;
 
-  WarehousePage(this._user, this._previousPage);
+  WarehouseDetailsPage(this._user, this._previousPage, this._warehouseDto);
 
   @override
-  _WarehousePageState createState() => _WarehousePageState();
+  _WarehouseDetailsPageState createState() => _WarehouseDetailsPageState();
 }
 
-class _WarehousePageState extends State<WarehousePage> {
+class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
   User _user;
   StatefulWidget _previousPage;
+  WarehouseDto _warehouseDto;
 
-  WarehouseService _warehouseService;
+  ItemService _itemService;
 
-  List<WarehouseDto> _warehouses = new List();
-  List<WarehouseDto> _filteredWarehouses = new List();
+  List<ItemDto> _items = new List();
+  List<ItemDto> _filteredItems = new List();
 
   bool _loading = false;
   bool _isChecked = false;
@@ -56,14 +56,15 @@ class _WarehousePageState extends State<WarehousePage> {
   void initState() {
     this._user = widget._user;
     this._previousPage = widget._previousPage;
-    this._warehouseService = ServiceInitializer.initialize(context, _user.authHeader, WarehouseService);
+    this._warehouseDto = widget._warehouseDto;
+    this._itemService = ServiceInitializer.initialize(context, _user.authHeader, ItemService);
     super.initState();
     _loading = true;
-    _warehouseService.findAllByCompanyId(int.parse(_user.companyId)).then((res) {
+    _itemService.findAllByWarehouseId(_warehouseDto.id).then((res) {
       setState(() {
-        _warehouses = res;
-        _warehouses.forEach((e) => _checked.add(false));
-        _filteredWarehouses = _warehouses;
+        _items = res;
+        _items.forEach((e) => _checked.add(false));
+        _filteredItems = _items;
         _loading = false;
       });
     });
@@ -81,12 +82,36 @@ class _WarehousePageState extends State<WarehousePage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'warehouses')),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'warehouseDetails')),
           drawer: managerSideBar(context, _user),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
               children: <Widget>[
+                ListTile(
+                  leading: Tab(
+                    icon: Container(
+                      child: Container(
+                        child: Image(
+                          width: 75,
+                          image: AssetImage(
+                            'images/warehouse-icon.png',
+                          ),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                  title: text18WhiteBold(_warehouseDto.name),
+                  subtitle: Column(
+                    children: <Widget>[
+                      Align(
+                        child: textWhite(_warehouseDto.description),
+                        alignment: Alignment.topLeft,
+                      ),
+                    ],
+                  ),
+                ),
                 Container(
                   padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
                   child: TextFormField(
@@ -105,7 +130,7 @@ class _WarehousePageState extends State<WarehousePage> {
                     onChanged: (string) {
                       setState(
                         () {
-                          _filteredWarehouses = _warehouses.where((w) => ((w.name + w.description).toLowerCase().contains(string.toLowerCase()))).toList();
+                          _filteredItems = _items.where((i) => ((i.name + i.quantity.toString()).toLowerCase().contains(string.toLowerCase()))).toList();
                         },
                       );
                     },
@@ -125,7 +150,7 @@ class _WarehousePageState extends State<WarehousePage> {
                         _checked.forEach((b) => l.add(value));
                         _checked = l;
                         if (value) {
-                          _selectedIds.addAll(_filteredWarehouses.map((e) => e.id));
+                          _selectedIds.addAll(_filteredItems.map((e) => e.id));
                         } else
                           _selectedIds.clear();
                       });
@@ -133,8 +158,8 @@ class _WarehousePageState extends State<WarehousePage> {
                     controlAffinity: ListTileControlAffinity.leading,
                   ),
                 ),
-                _warehouses.isEmpty
-                    ? _handleNoWarehouses()
+                _items.isEmpty
+                    ? _handleNoItems()
                     : Expanded(
                         flex: 2,
                         child: RefreshIndicator(
@@ -146,20 +171,17 @@ class _WarehousePageState extends State<WarehousePage> {
                             controller: _scrollController,
                             child: ListView.builder(
                               controller: _scrollController,
-                              itemCount: _filteredWarehouses.length,
+                              itemCount: _filteredItems.length,
                               itemBuilder: (BuildContext context, int index) {
-                                WarehouseDto warehouse = _filteredWarehouses[index];
+                                ItemDto item = _filteredItems[index];
                                 int foundIndex = 0;
-                                for (int i = 0; i < _warehouses.length; i++) {
-                                  if (_warehouses[i].id == warehouse.id) {
+                                for (int i = 0; i < _items.length; i++) {
+                                  if (_items[i].id == item.id) {
                                     foundIndex = i;
                                   }
                                 }
-                                String name = warehouse.name;
-                                String numberOfItems = warehouse.items.length.toString();
-                                if (name != null && name.length >= 30) {
-                                  name = name.substring(0, 30) + ' ...';
-                                }
+                                String name = item.name;
+                                String quantity = item.quantity.toString();
                                 return Card(
                                   color: DARK,
                                   child: Column(
@@ -182,7 +204,7 @@ class _WarehousePageState extends State<WarehousePage> {
                                                   scaleFactor: 2,
                                                   onPressed: () => Navigator.push(
                                                     this.context,
-                                                    MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_user, WarehouseDetailsPage(_user, _previousPage, warehouse), warehouse)),
+                                                    MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_user, _previousPage, _warehouseDto)),
                                                   ),
                                                   child: icon30Green(Icons.search),
                                                 ),
@@ -198,8 +220,8 @@ class _WarehousePageState extends State<WarehousePage> {
                                                   alignment: Alignment.topLeft,
                                                   child: Row(
                                                     children: [
-                                                      textWhite(getTranslated(this.context, 'numberOfItems') + ': '),
-                                                      textGreenBold(numberOfItems),
+                                                      textWhite(getTranslated(this.context, 'quantity') + ': '),
+                                                      textGreenBold(quantity),
                                                     ],
                                                   ),
                                                 ),
@@ -212,12 +234,12 @@ class _WarehousePageState extends State<WarehousePage> {
                                               setState(() {
                                                 _checked[foundIndex] = value;
                                                 if (value) {
-                                                  _selectedIds.add(_warehouses[foundIndex].id);
+                                                  _selectedIds.add(_items[foundIndex].id);
                                                 } else {
-                                                  _selectedIds.remove(_warehouses[foundIndex].id);
+                                                  _selectedIds.remove(_items[foundIndex].id);
                                                 }
                                                 int selectedIdsLength = _selectedIds.length;
-                                                if (selectedIdsLength == _warehouses.length) {
+                                                if (selectedIdsLength == _items.length) {
                                                   _isChecked = true;
                                                 } else if (selectedIdsLength == 0) {
                                                   _isChecked = false;
@@ -244,18 +266,15 @@ class _WarehousePageState extends State<WarehousePage> {
             children: [
               FloatingActionButton(
                 heroTag: "plusBtn",
-                tooltip: getTranslated(context, 'createWarehouse'),
+                tooltip: getTranslated(context, 'createItem'),
                 backgroundColor: GREEN,
-                onPressed: () => Navigator.push(
-                  this.context,
-                  MaterialPageRoute(builder: (context) => AddWarehousePage(_user, _previousPage)),
-                ),
+                onPressed: () {},
                 child: text25Dark('+'),
               ),
               SizedBox(height: 15),
               FloatingActionButton(
                 heroTag: "deleteBtn",
-                tooltip: getTranslated(context, 'deleteSelectedWarehouses'),
+                tooltip: getTranslated(context, 'deleteSelectedItems'),
                 backgroundColor: Colors.red,
                 onPressed: () => _isDeleteButtonTapped ? null : _handleDeleteByIdIn(_selectedIds),
                 child: Icon(Icons.delete),
@@ -271,7 +290,7 @@ class _WarehousePageState extends State<WarehousePage> {
   _handleDeleteByIdIn(LinkedHashSet<int> ids) {
     setState(() => _isDeleteButtonTapped = true);
     if (ids.isEmpty) {
-      showHint(context, getTranslated(context, 'needToSelectWarehouses') + ' ', getTranslated(context, 'whichYouWantToRemove'));
+      showHint(context, getTranslated(context, 'needToSelectItems') + ' ', getTranslated(context, 'whichYouWantToRemove'));
       setState(() => _isDeleteButtonTapped = false);
       return;
     }
@@ -281,17 +300,17 @@ class _WarehousePageState extends State<WarehousePage> {
         return AlertDialog(
           backgroundColor: DARK,
           title: textWhite(getTranslated(this.context, 'confirmation')),
-          content: textWhite(getTranslated(this.context, 'areYouSureYouWantToDeleteSelectedWarehouses')),
+          content: textWhite(getTranslated(this.context, 'areYouSureYouWantToDeleteSelectedItems')),
           actions: <Widget>[
             FlatButton(
               child: textWhite(getTranslated(this.context, 'yesDeleteThem')),
               onPressed: () {
-                _warehouseService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
+                _itemService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
                   Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (BuildContext context) => WarehousePage(_user, _previousPage)),
+                    MaterialPageRoute(builder: (BuildContext context) => WarehouseDetailsPage(_user, _previousPage, _warehouseDto)),
                     ModalRoute.withName('/'),
                   );
-                  ToastService.showSuccessToast(getTranslated(this.context, 'selectedWarehousesRemoved'));
+                  ToastService.showSuccessToast(getTranslated(this.context, 'selectedItemsRemoved'));
                 }).catchError((onError) {
                   setState(() => _isDeleteButtonTapped = false);
                   ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
@@ -311,16 +330,16 @@ class _WarehousePageState extends State<WarehousePage> {
     );
   }
 
-  Widget _handleNoWarehouses() {
+  Widget _handleNoItems() {
     return Column(
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(top: 20),
-          child: Align(alignment: Alignment.center, child: text20GreenBold(getTranslated(this.context, 'noWarehouses'))),
+          child: Align(alignment: Alignment.center, child: text20GreenBold(getTranslated(this.context, 'noItems'))),
         ),
         Padding(
           padding: EdgeInsets.only(right: 30, left: 30, top: 10),
-          child: Align(alignment: Alignment.center, child: textCenter19White(getTranslated(this.context, 'noWarehousesHint'))),
+          child: Align(alignment: Alignment.center, child: textCenter19White(getTranslated(this.context, 'noItemsHint'))),
         ),
       ],
     );
@@ -328,12 +347,12 @@ class _WarehousePageState extends State<WarehousePage> {
 
   Future<Null> _refresh() {
     _loading = true;
-    return _warehouseService.findAllByCompanyId(int.parse(_user.companyId)).then((res) {
+    return _itemService.findAllByWarehouseId(_warehouseDto.id).then((res) {
       setState(() {
         _isDeleteButtonTapped = false;
-        _warehouses = res;
-        _warehouses.forEach((e) => _checked.add(false));
-        _filteredWarehouses = _warehouses;
+        _items = res;
+        _items.forEach((e) => _checked.add(false));
+        _filteredItems = _items;
         _loading = false;
       });
     });

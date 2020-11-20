@@ -3,16 +3,19 @@ import 'package:flutter/cupertino.dart';
 class ItemDto {
   final int id;
   final String name;
+  final int quantity;
 
   ItemDto({
     @required this.id,
     @required this.name,
+    @required this.quantity,
   });
 
   static Map<String, dynamic> jsonEncode(ItemDto dto) {
     Map<String, dynamic> map = new Map();
     map['id'] = dto.id;
     map['name'] = dto.name;
+    map['quantity'] = dto.quantity;
     return map;
   }
 
@@ -20,6 +23,7 @@ class ItemDto {
     return ItemDto(
       id: json['id'] as int,
       name: json['name'] as String,
+      quantity: json['quantity'] as int,
     );
   }
 
@@ -27,6 +31,7 @@ class ItemDto {
     return ItemDto(
       id: dto.id,
       name: dto.name,
+      quantity: dto.quantity,
     );
   }
 }
