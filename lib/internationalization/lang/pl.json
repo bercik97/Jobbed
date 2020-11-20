@@ -588,5 +588,6 @@
   "pieceworkReports": "Raporty pracy akordowej",
   "totalPrice": "Cena całkowita",
   "services": "Usługi",
-  "successfullyDeletedPieceworkReport": "Pomyślnie usunięto raport pracy na akord"
+  "successfullyDeletedPieceworkReport": "Pomyślnie usunięto raport pracy na akord",
+  "manageCompanyPricelist": "Zarządzaj cennikiem firmy"
 }

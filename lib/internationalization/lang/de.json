@@ -589,5 +589,6 @@
   "pieceworkReports": "Piecework reports",
   "totalPrice": "Total price",
   "services": "Services",
-  "successfullyDeletedPieceworkReport": "Successfully deleted piecework report"
+  "successfullyDeletedPieceworkReport": "Successfully deleted piecework report",
+  "manageCompanyPricelist": "Manage company pricelists"
 }

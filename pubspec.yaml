@@ -120,6 +120,8 @@ flutter:
     - images/dark-opinion-icon.png
     - images/dark-workplace-icon.png
     - images/dark-vocation-icon.png
+    - images/dark-warehouse-icon.png
+    - images/dark-pricelist-icon.png
 
     - docs/regulations.pdf
     - docs/privacy_policy.pdf

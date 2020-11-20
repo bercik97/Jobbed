@@ -103,24 +103,30 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                       labelBackgroundColor: GREEN,
                     ),
                     SpeedDialChild(
-                      child: icon30Dark(Icons.add_to_home_screen_outlined),
+                      child: Image(
+                        image: AssetImage('images/dark-warehouse-icon.png'),
+                        fit: BoxFit.fitHeight,
+                      ),
                       backgroundColor: GREEN,
                       onTap: () => Navigator.push(
                         this.context,
                         MaterialPageRoute(builder: (context) => WarehousePage(_user, GroupsDashboardPage(_user))),
                       ),
-                      label: getTranslated(context, 'manageWarehouses'),
+                      label: getTranslated(context, 'manageCompanyWarehouses'),
                       labelStyle: TextStyle(fontWeight: FontWeight.w500),
                       labelBackgroundColor: GREEN,
                     ),
                     SpeedDialChild(
-                      child: icon30Dark(Icons.attach_money),
+                      child: Image(
+                        image: AssetImage('images/dark-pricelist-icon.png'),
+                        fit: BoxFit.fitHeight,
+                      ),
                       backgroundColor: GREEN,
                       onTap: () => Navigator.push(
                         this.context,
                         MaterialPageRoute(builder: (context) => PricelistPage(_user, GroupsDashboardPage(_user))),
                       ),
-                      label: getTranslated(context, 'managePricelist'),
+                      label: getTranslated(context, 'manageCompanyPricelist'),
                       labelStyle: TextStyle(fontWeight: FontWeight.w500),
                       labelBackgroundColor: GREEN,
                     ),
