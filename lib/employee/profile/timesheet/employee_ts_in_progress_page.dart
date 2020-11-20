@@ -162,10 +162,12 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                               .workdays
                               .map(
                                 (workday) => DataRow(
-                                  selected: selectedIds.contains(workday.id),
-                                  onSelectChanged: (bool selected) {
-                                    _onSelectedRow(selected, workday.id);
-                                  },
+                                  selected: _canFillHours ? selectedIds.contains(workday.id) : false,
+                                  onSelectChanged: _canFillHours
+                                      ? (bool selected) {
+                                          _onSelectedRow(selected, workday.id);
+                                        }
+                                      : null,
                                   cells: [
                                     DataCell(textWhite(workday.number.toString())),
                                     DataCell(textWhite(workday.hours.toString())),
