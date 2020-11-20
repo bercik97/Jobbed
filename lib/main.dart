@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:give_job/employee/employee_profile_page.dart';
-import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/groups_dashboard_page.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -15,7 +14,6 @@ import 'package:give_job/unauthenticated/login_page.dart';
 
 import 'internationalization/localization/demo_localization.dart';
 import 'internationalization/localization/localization_constants.dart';
-import 'manager/groups/group/group_page.dart';
 
 final storage = new FlutterSecureStorage();
 
@@ -63,7 +61,6 @@ class _MyAppState extends State<MyApp> {
     var nationality = await storage.read(key: 'nationality');
     var companyId = await storage.read(key: 'companyId');
     var companyName = await storage.read(key: 'companyName');
-    var containsMoreThanOneGroup = await storage.read(key: 'containsMoreThanOneGroup');
     var groupId = await storage.read(key: 'groupId');
     var groupName = await storage.read(key: 'groupName');
     var groupDescription = await storage.read(key: 'groupDescription');
@@ -79,7 +76,6 @@ class _MyAppState extends State<MyApp> {
     map['nationality'] = nationality;
     map['companyId'] = companyId;
     map['companyName'] = companyName;
-    map['containsMoreThanOneGroup'] = containsMoreThanOneGroup;
     map['groupId'] = groupId;
     map['groupName'] = groupName;
     map['groupDescription'] = groupDescription;
@@ -146,7 +142,7 @@ class _MyAppState extends State<MyApp> {
             if (role == ROLE_EMPLOYEE) {
               return EmployeeProfilPage(user);
             } else if (role == ROLE_MANAGER) {
-              return _chooseManagerPage(data, user);
+              return GroupsDashboardPage(user);
             } else {
               return LoginPage();
             }
@@ -154,19 +150,5 @@ class _MyAppState extends State<MyApp> {
         ),
       );
     }
-  }
-
-  Widget _chooseManagerPage(Map<String, String> data, User user) {
-    String containsMoreThanOneGroup = data['containsMoreThanOneGroup'];
-    if (containsMoreThanOneGroup == 'true' || containsMoreThanOneGroup == null) {
-      return GroupsDashboardPage(user);
-    }
-    int groupId = data['groupId'] as int;
-    String groupName = data['groupName'];
-    String groupDescription = data['groupDescription'];
-    String numberOfEmployees = data['numberOfEmployees'];
-    String countryOfWork = data['countryOfWork'];
-    GroupModel model = new GroupModel(user, groupId, groupName, groupDescription, numberOfEmployees, countryOfWork);
-    return GroupPage(model);
   }
 }
