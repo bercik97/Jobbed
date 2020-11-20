@@ -9,10 +9,8 @@ import 'package:give_job/api/workday/dto/workday_for_employee_dto.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/api/workday/util/workday_util.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
-import 'package:give_job/employee/shared/employee_app_bar_with_icons_legend.dart';
 import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
@@ -85,19 +83,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: employeeAppBarWithIconsLegend(
-            context,
-            getTranslated(context, 'workdays') + ' - ' + getTranslated(context, _timesheet.status),
-            [
-              IconsLegend.buildRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
-              IconsLegend.buildRow('images/checked.png', getTranslated(context, 'completedTs')),
-              IconsLegend.buildRowWithWidget(icon50White(Icons.zoom_in), getTranslated(context, 'viewRecordDetails')),
-              IconsLegend.buildRowWithWidget(text50Green('+'), getTranslated(context, 'addNote')),
-              IconsLegend.buildRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
-              IconsLegend.buildRow('images/green-plan-icon.png', getTranslated(context, 'settingNote')),
-            ],
-            _user,
-          ),
+          appBar: employeeAppBar(context, _user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, _timesheet.status)),
           drawer: employeeSideBar(context, _user),
           body: RefreshIndicator(
             color: DARK,
