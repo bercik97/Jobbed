@@ -621,5 +621,6 @@
   "successfullyAddedNewItems": "Successfully added new items",
   "chooseOtherItemName": "Choose other item name",
   "numberOfTypeOfItems": "Number of item types",
-  "totalNumberOfItems": "Total number of items"
+  "totalNumberOfItems": "Total number of items",
+  "manageCompanyItemPlaces": "Manage places of company items"
 }

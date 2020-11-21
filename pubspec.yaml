@@ -122,6 +122,7 @@ flutter:
     - images/dark-vocation-icon.png
     - images/dark-warehouse-icon.png
     - images/dark-pricelist-icon.png
+    - images/dark-items-icon.png
 
     - docs/regulations.pdf
     - docs/privacy_policy.pdf

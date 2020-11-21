@@ -27,6 +27,7 @@ import 'group/group_page.dart';
 import 'manage/group/add_group_employees_page.dart';
 import 'manage/group/add_group_page.dart';
 import 'manage/group/delete_group_employees_page.dart';
+import 'manage/itemplaces/item_places_page.dart';
 import 'manage/warehouse/warehouse_page.dart';
 import 'manage/workplace/workplaces_page.dart';
 
@@ -72,7 +73,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                 body: _groups.isNotEmpty ? _handleGroups() : _handleNoGroups(),
                 floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
                 floatingActionButton: SpeedDial(
-                  animatedIcon: AnimatedIcons.add_event,
+                  animatedIcon: AnimatedIcons.search_ellipsis,
                   backgroundColor: GREEN,
                   animatedIconTheme: IconThemeData(size: 22.0),
                   curve: Curves.bounceIn,
@@ -99,6 +100,20 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                         MaterialPageRoute(builder: (context) => WorkplacesPage(_user, GroupsDashboardPage(_user))),
                       ),
                       label: getTranslated(context, 'manageCompanyWorkplaces'),
+                      labelStyle: TextStyle(fontWeight: FontWeight.w500),
+                      labelBackgroundColor: GREEN,
+                    ),
+                    SpeedDialChild(
+                      child: Image(
+                        image: AssetImage('images/dark-items-icon.png'),
+                        fit: BoxFit.fitHeight,
+                      ),
+                      backgroundColor: GREEN,
+                      onTap: () => Navigator.push(
+                        this.context,
+                        MaterialPageRoute(builder: (context) => ItemPlacesPage(_user)),
+                      ),
+                      label: getTranslated(context, 'manageCompanyItemPlaces'),
                       labelStyle: TextStyle(fontWeight: FontWeight.w500),
                       labelBackgroundColor: GREEN,
                     ),

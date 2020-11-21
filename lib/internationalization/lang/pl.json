@@ -620,5 +620,6 @@
   "successfullyAddedNewItems": "Pomyślnie dodano nowe przedmioty",
   "chooseOtherItemName": "Wybierz inną nazwę przedmiotu",
   "numberOfTypeOfItems": "Liczba typów przedmiotów",
-  "totalNumberOfItems": "Łączna ilość przedmiotów"
+  "totalNumberOfItems": "Łączna ilość przedmiotów",
+  "manageCompanyItemPlaces": "Zarządzaj miejscami przedmiotów firmy"
 }
