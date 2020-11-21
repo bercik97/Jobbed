@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:give_job/api/item/dto/item_dto.dart';
+import 'package:give_job/api/item/service/item_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/api/warehouse/dto/create_warehouse_dto.dart';
-import 'package:give_job/api/warehouse/service/warehouse_service.dart';
+import 'package:give_job/api/warehouse/dto/warehouse_dashboard_dto.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/manage/warehouse/warehouse_page.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -17,22 +17,24 @@ import 'package:give_job/shared/widget/buttons.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
-class AddWarehousePage extends StatefulWidget {
-  final User user;
+import '../../warehouse_details_page.dart';
 
-  AddWarehousePage(this.user);
+class AddItemsPage extends StatefulWidget {
+  final User user;
+  final WarehouseDashboardDto _warehouseDto;
+
+  AddItemsPage(this.user, this._warehouseDto);
 
   @override
-  _AddWarehousePageState createState() => _AddWarehousePageState();
+  _AddItemsPageState createState() => _AddItemsPageState();
 }
 
-class _AddWarehousePageState extends State<AddWarehousePage> {
+class _AddItemsPageState extends State<AddItemsPage> {
   User _user;
+  WarehouseDashboardDto _warehouseDto;
 
-  WarehouseService _warehouseService;
+  ItemService _itemService;
 
-  final TextEditingController _warehouseNameController = new TextEditingController();
-  final TextEditingController _warehouseDescriptionController = new TextEditingController();
   final TextEditingController _itemNameController = new TextEditingController();
   final TextEditingController _quantityController = new TextEditingController();
 
@@ -40,13 +42,15 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
 
   bool _isAddButtonTapped = false;
 
-  Map<String, int> _itemNamesWithQuantities = new Map();
+  List<ItemDto> _itemsToAdd = new List();
+  List<String> _itemNames = new List();
   ScrollController _scrollController = new ScrollController();
 
   @override
   void initState() {
     this._user = widget.user;
-    this._warehouseService = ServiceInitializer.initialize(context, _user.authHeader, WarehouseService);
+    this._warehouseDto = widget._warehouseDto;
+    this._itemService = ServiceInitializer.initialize(context, _user.authHeader, ItemService);
     super.initState();
   }
 
@@ -59,7 +63,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
           debugShowCheckedModeBanner: false,
           home: Scaffold(
             backgroundColor: DARK,
-            appBar: managerAppBar(context, _user, getTranslated(context, 'createWarehouse')),
+            appBar: managerAppBar(context, _user, getTranslated(context, 'createItem')),
             drawer: managerSideBar(context, _user),
             body: Padding(
               padding: const EdgeInsets.all(12.0),
@@ -70,35 +74,15 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
                   children: [
                     SizedBox(height: 5),
                     _buildField(
-                      _warehouseNameController,
-                      getTranslated(context, 'textSomeWarehouseName'),
-                      getTranslated(context, 'warehouseName'),
-                      26,
-                      1,
-                      true,
-                      getTranslated(context, 'warehouseNameIsRequired'),
-                    ),
-                    SizedBox(height: 5),
-                    _buildField(
-                      _warehouseDescriptionController,
-                      getTranslated(context, 'textSomeWarehouseDescription'),
-                      getTranslated(context, 'warehouseDescription'),
-                      100,
-                      2,
-                      true,
-                      getTranslated(context, 'warehouseDescriptionIsRequired'),
-                    ),
-                    SizedBox(height: 10),
-                    _buildField(
                       _itemNameController,
                       getTranslated(context, 'textSomeItemName'),
                       getTranslated(context, 'itemName'),
-                      26,
-                      1,
-                      false,
-                      null,
+                      100,
+                      2,
+                      true,
+                      getTranslated(context, 'itemNameIsRequired'),
                     ),
-                    SizedBox(height: 5),
+                    SizedBox(height: 10),
                     TextFormField(
                       controller: _quantityController,
                       keyboardType: TextInputType.number,
@@ -118,29 +102,27 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
                         labelStyle: TextStyle(color: WHITE),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 15),
                     Buttons.standardButton(
                       minWidth: double.infinity,
                       title: getTranslated(context, 'add'),
                       fun: () {
-                        String itemName = _itemNameController.text;
-                        if (itemName == null || itemName.isEmpty) {
-                          ToastService.showErrorToast(getTranslated(context, 'itemNameIsRequired'));
+                        if (!_isValid()) {
+                          ToastService.showErrorToast(getTranslated(context, 'correctInvalidFields'));
                           return;
                         }
-                        if (_itemNamesWithQuantities.containsKey(itemName)) {
-                          ToastService.showErrorToast(getTranslated(context, 'givenItemNameAlreadyExists'));
+                        if (_itemNames.contains(_itemNameController.text)) {
+                          ToastService.showErrorToast(getTranslated(context, 'itemNameExists'));
                           return;
                         }
-                        int quantity;
-                        try {
-                          quantity = int.parse(_quantityController.text);
-                        } catch (FormatException) {
-                          ToastService.showErrorToast(getTranslated(context, 'quantityIsRequired'));
-                          return;
-                        }
+                        ItemDto dto = new ItemDto(
+                          id: _warehouseDto.id,
+                          name: _itemNameController.text,
+                          quantity: int.parse(_quantityController.text),
+                        );
                         setState(() {
-                          _itemNamesWithQuantities[itemName] = quantity;
+                          _itemsToAdd.add(dto);
+                          _itemNames.add(dto.name);
                           _itemNameController.clear();
                           _quantityController.clear();
                         });
@@ -154,7 +136,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
             bottomNavigationBar: _buildBottomNavigationBar(),
           ),
         ),
-        onWillPop: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WarehousePage(_user)), (e) => false));
+        onWillPop: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_user, _warehouseDto)), (e) => false));
   }
 
   bool _isValid() {
@@ -192,10 +174,8 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
         controller: _scrollController,
         child: ListView.builder(
           controller: _scrollController,
-          itemCount: _itemNamesWithQuantities.length,
+          itemCount: _itemsToAdd.length,
           itemBuilder: (BuildContext context, int index) {
-            String itemName = _itemNamesWithQuantities.keys.elementAt(index);
-            String quantity = _itemNamesWithQuantities.values.elementAt(index).toString();
             return Card(
               color: DARK,
               child: Column(
@@ -205,16 +185,16 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
                   Card(
                     color: BRIGHTER_DARK,
                     child: ListTile(
-                      title: textGreen(itemName),
-                      subtitle: Row(
-                        children: [
-                          textWhite(getTranslated(this.context, 'quantity') + ': '),
-                          textGreen(quantity),
-                        ],
-                      ),
+                      title: textGreen(_itemsToAdd[index].name),
+                      subtitle: textGreen(getTranslated(this.context, 'quantity') + ': ' + _itemsToAdd[index].quantity.toString()),
                       trailing: IconButton(
                         icon: iconRed(Icons.remove),
-                        onPressed: () => setState(() => _itemNamesWithQuantities.remove(itemName)),
+                        onPressed: () {
+                          setState(() {
+                            _itemNames.remove(_itemsToAdd[index].name);
+                            _itemsToAdd.remove(_itemsToAdd[index]);
+                          });
+                        },
                       ),
                     ),
                   ),
@@ -243,7 +223,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
               children: <Widget>[iconWhite(Icons.close)],
             ),
             color: Colors.red,
-            onPressed: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WarehousePage(_user)), (e) => false),
+            onPressed: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_user, _warehouseDto)), (e) => false),
           ),
           SizedBox(width: 25),
           MaterialButton(
@@ -255,36 +235,30 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
               children: <Widget>[iconWhite(Icons.check)],
             ),
             color: GREEN,
-            onPressed: () => _isAddButtonTapped ? null : _createWarehouse(),
+            onPressed: () => _isAddButtonTapped ? null : _createItems(),
           ),
         ],
       ),
     );
   }
 
-  _createWarehouse() {
+  _createItems() {
     setState(() => _isAddButtonTapped = true);
-    if (!_isValid()) {
-      ToastService.showErrorToast(getTranslated(context, 'correctInvalidFields'));
+    if (_itemsToAdd.isEmpty) {
+      ToastService.showErrorToast(getTranslated(context, 'itemsToAddEmpty'));
       setState(() => _isAddButtonTapped = false);
       return;
     }
-    CreateWarehouseDto dto = new CreateWarehouseDto(
-      companyId: int.parse(_user.companyId),
-      name: _warehouseNameController.text,
-      description: _warehouseDescriptionController.text,
-      itemNamesWithQuantities: _itemNamesWithQuantities,
-    );
-    _warehouseService.create(dto).then((res) {
-      ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewWarehouse'));
+    _itemService.create(_itemsToAdd).then((res) {
+      ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewItems'));
       Navigator.push(
         this.context,
-        MaterialPageRoute(builder: (context) => WarehousePage(_user)),
+        MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_user, _warehouseDto)),
       );
     }).catchError((onError) {
       String errorMsg = onError.toString();
-      if (errorMsg.contains("WAREHOUSE_NAME_EXISTS")) {
-        _errorDialog(getTranslated(context, 'warehouseNameExists') + '\n' + getTranslated(context, 'chooseOtherWarehouseName'));
+      if (errorMsg.contains("ITEM_NAME_EXISTS")) {
+        _errorDialog(getTranslated(context, 'itemNameExists') + '\n' + getTranslated(context, 'chooseOtherItemName'));
       } else {
         ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
       }

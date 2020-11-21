@@ -614,5 +614,12 @@
   "deleteSelectedItems": "Delete selected items",
   "needToSelectItems": "Need to select items",
   "areYouSureYouWantToDeleteSelectedItems": "Are you sure you want to delete selected items?",
-  "selectedItemsRemoved": "Selected items removed"
+  "selectedItemsRemoved": "Selected items removed",
+  "textSomeQuantity": "Text some quantity",
+  "itemNameExists": "Item name already exists",
+  "itemsToAddEmpty": "Items to add are empty",
+  "successfullyAddedNewItems": "Successfully added new items",
+  "chooseOtherItemName": "Choose other item name",
+  "numberOfTypeOfItems": "Number of item types",
+  "totalNumberOfItems": "Total number of items"
 }

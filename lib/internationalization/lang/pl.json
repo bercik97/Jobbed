@@ -613,5 +613,12 @@
   "deleteSelectedItems": "Usuń wybrane przedmioty",
   "needToSelectItems": "Musisz zaznaczyć przedmioty",
   "areYouSureYouWantToDeleteSelectedItems": "Czy na pewno chcesz usunąć wybrane przedmioty?",
-  "selectedItemsRemoved": "Usunięto wybrane przedmioty"
+  "selectedItemsRemoved": "Usunięto wybrane przedmioty",
+  "textSomeQuantity": "Wpisz ilość",
+  "itemNameExists": "Nazwa przedmiotu już istnieje",
+  "itemsToAddEmpty": "Brak przedmiotów do dodania",
+  "successfullyAddedNewItems": "Pomyślnie dodano nowe przedmioty",
+  "chooseOtherItemName": "Wybierz inną nazwę przedmiotu",
+  "numberOfTypeOfItems": "Liczba typów przedmiotów",
+  "totalNumberOfItems": "Łączna ilość przedmiotów"
 }

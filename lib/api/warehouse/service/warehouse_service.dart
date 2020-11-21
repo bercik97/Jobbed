@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/warehouse/dto/create_warehouse_dto.dart';
 import 'package:give_job/api/warehouse/dto/update_warehouse_dto.dart';
+import 'package:give_job/api/warehouse/dto/warehouse_dashboard_dto.dart';
 import 'package:give_job/api/warehouse/dto/warehouse_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/service/logout_service.dart';
@@ -32,13 +33,13 @@ class WarehouseService {
     }
   }
 
-  Future<List<WarehouseDto>> findAllByCompanyId(int companyId) async {
+  Future<List<WarehouseDashboardDto>> findAllByCompanyId(int companyId) async {
     Response res = await get(
       _url + '/companies/$companyId',
       headers: _header,
     );
     if (res.statusCode == 200) {
-      return (json.decode(res.body) as List).map((data) => WarehouseDto.fromJson(data)).toList();
+      return (json.decode(res.body) as List).map((data) => WarehouseDashboardDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
       return Logout.handle401WithLogout(_context);
     } else {

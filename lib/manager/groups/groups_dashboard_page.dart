@@ -110,7 +110,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                       backgroundColor: GREEN,
                       onTap: () => Navigator.push(
                         this.context,
-                        MaterialPageRoute(builder: (context) => WarehousePage(_user, GroupsDashboardPage(_user))),
+                        MaterialPageRoute(builder: (context) => WarehousePage(_user)),
                       ),
                       label: getTranslated(context, 'manageCompanyWarehouses'),
                       labelStyle: TextStyle(fontWeight: FontWeight.w500),

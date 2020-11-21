@@ -241,7 +241,7 @@ class _PricelistPageState extends State<PricelistPage> {
                 backgroundColor: GREEN,
                 onPressed: () => Navigator.push(
                   this.context,
-                  MaterialPageRoute(builder: (context) => AddPricelistPage(_user, _previousPage)),
+                  MaterialPageRoute(builder: (context) => AddPricelistPage(_user, PricelistPage(_user, _previousPage))),
                 ),
                 child: text25Dark('+'),
               ),

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:give_job/api/item/dto/item_dto.dart';
 import 'package:give_job/api/item/service/item_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/api/warehouse/dto/warehouse_dto.dart';
+import 'package:give_job/api/warehouse/dto/warehouse_dashboard_dto.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/manager/shared/manager_side_bar.dart';
@@ -22,12 +22,14 @@ import 'package:give_job/shared/widget/loader.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../warehouse_page.dart';
+import 'item/add/add_items_page.dart';
+
 class WarehouseDetailsPage extends StatefulWidget {
   final User _user;
-  final StatefulWidget _previousPage;
-  final WarehouseDto _warehouseDto;
+  final WarehouseDashboardDto _warehouseDto;
 
-  WarehouseDetailsPage(this._user, this._previousPage, this._warehouseDto);
+  WarehouseDetailsPage(this._user, this._warehouseDto);
 
   @override
   _WarehouseDetailsPageState createState() => _WarehouseDetailsPageState();
@@ -36,7 +38,7 @@ class WarehouseDetailsPage extends StatefulWidget {
 class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
   User _user;
   StatefulWidget _previousPage;
-  WarehouseDto _warehouseDto;
+  WarehouseDashboardDto _warehouseDto;
 
   ItemService _itemService;
 
@@ -48,6 +50,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
   List<bool> _checked = new List();
   LinkedHashSet<int> _selectedIds = new LinkedHashSet();
 
+  bool _isAddButtonTapped = false;
   bool _isDeleteButtonTapped = false;
 
   ScrollController _scrollController = new ScrollController();
@@ -55,7 +58,6 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
   @override
   void initState() {
     this._user = widget._user;
-    this._previousPage = widget._previousPage;
     this._warehouseDto = widget._warehouseDto;
     this._itemService = ServiceInitializer.initialize(context, _user.authHeader, ItemService);
     super.initState();
@@ -202,10 +204,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                                                 child: BouncingWidget(
                                                   duration: Duration(milliseconds: 100),
                                                   scaleFactor: 2,
-                                                  onPressed: () => Navigator.push(
-                                                    this.context,
-                                                    MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_user, _previousPage, _warehouseDto)),
-                                                  ),
+                                                  onPressed: () => {},
                                                   child: icon30Green(Icons.search),
                                                 ),
                                               ),
@@ -268,7 +267,10 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                 heroTag: "plusBtn",
                 tooltip: getTranslated(context, 'createItem'),
                 backgroundColor: GREEN,
-                onPressed: () {},
+                onPressed: () => Navigator.push(
+                  this.context,
+                  MaterialPageRoute(builder: (context) => AddItemsPage(_user, _warehouseDto)),
+                ),
                 child: text25Dark('+'),
               ),
               SizedBox(height: 15),
@@ -283,7 +285,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
           ),
         ),
       ),
-      onWillPop: () => _previousPage != null ? NavigatorUtil.onWillPopNavigate(context, _previousPage) : null,
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, WarehousePage(_user)),
     );
   }
 
@@ -307,7 +309,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
               onPressed: () {
                 _itemService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
                   Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (BuildContext context) => WarehouseDetailsPage(_user, _previousPage, _warehouseDto)),
+                    MaterialPageRoute(builder: (BuildContext context) => WarehouseDetailsPage(_user, _warehouseDto)),
                     ModalRoute.withName('/'),
                   );
                   ToastService.showSuccessToast(getTranslated(this.context, 'selectedItemsRemoved'));

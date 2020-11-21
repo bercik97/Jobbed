@@ -15,10 +15,10 @@ class ItemService {
 
   static const String _url = '$SERVER_IP/items';
 
-  Future<String> create(ItemDto dto) async {
+  Future<dynamic> create(List<ItemDto> dto) async {
     Response res = await post(
       _url,
-      body: jsonEncode(ItemDto.jsonEncode(dto)),
+      body: jsonEncode(dto.map((e) => ItemDto.jsonEncode(e)).toList()),
       headers: _headers,
     );
     if (res.statusCode == 200) {

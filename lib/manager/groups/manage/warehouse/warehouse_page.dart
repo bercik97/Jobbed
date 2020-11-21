@@ -5,9 +5,10 @@ import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/api/warehouse/dto/warehouse_dto.dart';
+import 'package:give_job/api/warehouse/dto/warehouse_dashboard_dto.dart';
 import 'package:give_job/api/warehouse/service/warehouse_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
+import 'package:give_job/manager/groups/groups_dashboard_page.dart';
 import 'package:give_job/manager/groups/manage/warehouse/add/add_warehouse_page.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -26,9 +27,8 @@ import 'details/warehouse_details_page.dart';
 
 class WarehousePage extends StatefulWidget {
   final User _user;
-  final StatefulWidget _previousPage;
 
-  WarehousePage(this._user, this._previousPage);
+  WarehousePage(this._user);
 
   @override
   _WarehousePageState createState() => _WarehousePageState();
@@ -36,12 +36,11 @@ class WarehousePage extends StatefulWidget {
 
 class _WarehousePageState extends State<WarehousePage> {
   User _user;
-  StatefulWidget _previousPage;
 
   WarehouseService _warehouseService;
 
-  List<WarehouseDto> _warehouses = new List();
-  List<WarehouseDto> _filteredWarehouses = new List();
+  List<WarehouseDashboardDto> _warehouses = new List();
+  List<WarehouseDashboardDto> _filteredWarehouses = new List();
 
   bool _loading = false;
   bool _isChecked = false;
@@ -55,7 +54,6 @@ class _WarehousePageState extends State<WarehousePage> {
   @override
   void initState() {
     this._user = widget._user;
-    this._previousPage = widget._previousPage;
     this._warehouseService = ServiceInitializer.initialize(context, _user.authHeader, WarehouseService);
     super.initState();
     _loading = true;
@@ -148,7 +146,7 @@ class _WarehousePageState extends State<WarehousePage> {
                               controller: _scrollController,
                               itemCount: _filteredWarehouses.length,
                               itemBuilder: (BuildContext context, int index) {
-                                WarehouseDto warehouse = _filteredWarehouses[index];
+                                WarehouseDashboardDto warehouse = _filteredWarehouses[index];
                                 int foundIndex = 0;
                                 for (int i = 0; i < _warehouses.length; i++) {
                                   if (_warehouses[i].id == warehouse.id) {
@@ -156,10 +154,8 @@ class _WarehousePageState extends State<WarehousePage> {
                                   }
                                 }
                                 String name = warehouse.name;
-                                String numberOfItems = warehouse.items.length.toString();
-                                if (name != null && name.length >= 30) {
-                                  name = name.substring(0, 30) + ' ...';
-                                }
+                                String numberOfTypeOfItems = warehouse.numberOfTypeOfItems.toString();
+                                String totalNumberOfItems = warehouse.totalNumberOfItems.toString();
                                 return Card(
                                   color: DARK,
                                   child: Column(
@@ -182,7 +178,7 @@ class _WarehousePageState extends State<WarehousePage> {
                                                   scaleFactor: 2,
                                                   onPressed: () => Navigator.push(
                                                     this.context,
-                                                    MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_user, WarehouseDetailsPage(_user, _previousPage, warehouse), warehouse)),
+                                                    MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_user, warehouse)),
                                                   ),
                                                   child: icon30Green(Icons.search),
                                                 ),
@@ -198,8 +194,17 @@ class _WarehousePageState extends State<WarehousePage> {
                                                   alignment: Alignment.topLeft,
                                                   child: Row(
                                                     children: [
-                                                      textWhite(getTranslated(this.context, 'numberOfItems') + ': '),
-                                                      textGreenBold(numberOfItems),
+                                                      textWhite(getTranslated(this.context, 'numberOfTypeOfItems') + ': '),
+                                                      textGreenBold(numberOfTypeOfItems),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: Row(
+                                                    children: [
+                                                      textWhite(getTranslated(this.context, 'totalNumberOfItems') + ': '),
+                                                      textGreenBold(totalNumberOfItems),
                                                     ],
                                                   ),
                                                 ),
@@ -248,7 +253,7 @@ class _WarehousePageState extends State<WarehousePage> {
                 backgroundColor: GREEN,
                 onPressed: () => Navigator.push(
                   this.context,
-                  MaterialPageRoute(builder: (context) => AddWarehousePage(_user, _previousPage)),
+                  MaterialPageRoute(builder: (context) => AddWarehousePage(_user)),
                 ),
                 child: text25Dark('+'),
               ),
@@ -264,7 +269,7 @@ class _WarehousePageState extends State<WarehousePage> {
           ),
         ),
       ),
-      onWillPop: () => _previousPage != null ? NavigatorUtil.onWillPopNavigate(context, _previousPage) : null,
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupsDashboardPage(_user)),
     );
   }
 
@@ -288,7 +293,7 @@ class _WarehousePageState extends State<WarehousePage> {
               onPressed: () {
                 _warehouseService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
                   Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (BuildContext context) => WarehousePage(_user, _previousPage)),
+                    MaterialPageRoute(builder: (BuildContext context) => WarehousePage(_user)),
                     ModalRoute.withName('/'),
                   );
                   ToastService.showSuccessToast(getTranslated(this.context, 'selectedWarehousesRemoved'));

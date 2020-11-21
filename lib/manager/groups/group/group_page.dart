@@ -264,7 +264,7 @@ class _GroupPageState extends State<GroupPage> {
                               Navigator.of(context).push(
                                 CupertinoPageRoute<Null>(
                                   builder: (BuildContext context) {
-                                    return WarehousePage(_model.user, GroupPage(_model));
+                                    return WarehousePage(_model.user);
                                   },
                                 ),
                               );
