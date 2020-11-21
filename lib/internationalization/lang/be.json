@@ -623,5 +623,18 @@
   "numberOfTypeOfItems": "Number of item types",
   "totalNumberOfItems": "Total number of items",
   "manageCompanyItemPlaces": "Manage places of company items",
-  "itemPlaces": "Item places"
+  "itemPlaces": "Item places",
+  "location": "Location",
+  "createItemplace": "Create itemplace",
+  "deleteSelectedItemplaces": "Delete selected itemplaces",
+  "itemplace": "Itemplace",
+  "textSomeLocation": "Text some location",
+  "noItemplaces": "No itemplaces",
+  "noItemplacesHint": "You seem to have no itemplaces added.\nSelect the button at the bottom of the screen to add some itemplaces.",
+  "itemplaceLocationIsRequired": "Itemplace location is required",
+  "successfullyAddedNewItemplace": "Successfully added new itemplace",
+  "itemplaceLocationExists": "Itemplace location exists",
+  "needToSelectItemplaces": "Need to select itemplaces",
+  "areYouSureYouWantToDeleteSelectedItemplaces": "Are you sure you want to delete selected itemplaces?",
+  "selectedItemplacesRemoved": "Selected itemplaces removed"
 }

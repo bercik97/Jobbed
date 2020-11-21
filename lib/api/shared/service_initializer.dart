@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/group/service/group_service.dart';
 import 'package:give_job/api/item/service/item_service.dart';
+import 'package:give_job/api/itemplace/service/itemplace_service.dart';
 import 'package:give_job/api/manager/service/manager_service.dart';
 import 'package:give_job/api/piecework/service/piecework_service.dart';
 import 'package:give_job/api/price_list/service/pricelist_service.dart';
@@ -27,6 +28,7 @@ class ServiceInitializer {
       case 'EmployeeService': return new EmployeeService(context, header, headers);
       case 'GroupService': return new GroupService(context, header, headers);
       case 'ItemService': return new ItemService(context, header, headers);
+      case 'ItemplaceService': return new ItemplaceService(context, header, headers);
       case 'ManagerService': return new ManagerService(context, header, headers);
       case 'PieceworkService': return new PieceworkService(context, header, headers);
       case 'PricelistService': return new PricelistService(context, header, headers);

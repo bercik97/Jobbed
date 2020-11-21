@@ -25,7 +25,7 @@ import '../groups_dashboard_page.dart';
 import 'edit/group_edit_page.dart';
 import 'employee/employees_page.dart';
 import 'icons_legend/icons_legend_dialog.dart';
-import 'itemplaces/item_places_page.dart';
+import 'itemplaces/itemplaces_page.dart';
 
 class GroupPage extends StatefulWidget {
   final GroupModel _model;
@@ -225,7 +225,7 @@ class _GroupPageState extends State<GroupPage> {
                               Navigator.of(context).push(
                                 CupertinoPageRoute<Null>(
                                   builder: (BuildContext context) {
-                                    return ItemPlacesPage(_model);
+                                    return ItemplacesPage(_model);
                                   },
                                 ),
                               ),

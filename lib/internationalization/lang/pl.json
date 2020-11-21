@@ -622,5 +622,18 @@
   "numberOfTypeOfItems": "Liczba typów przedmiotów",
   "totalNumberOfItems": "Łączna ilość przedmiotów",
   "manageCompanyItemPlaces": "Zarządzaj miejscami przedmiotów firmy",
-  "itemPlaces": "Miejsca przedmiotów"
+  "itemPlaces": "Miejsca przedmiotów",
+  "location": "Lokalizacja",
+  "createItemplace": "Dodaj miejsce przedmiotów",
+  "deleteSelectedItemplaces": "Usuń wybrane miejsca przedmiotów",
+  "itemplace": "Miejsce przedmiotów",
+  "textSomeLocation": "Wpisz lokalizację",
+  "noItemplaces": "Brak miejsc przedmiotów",
+  "noItemplacesHint": "Wygląda na to, że nie masz dodanych miejsc przedmiotów.\nWybierz przycisk znajdujący się na dole ekranu, aby dodać miejsca składowania przedmiotów.",
+  "itemplaceLocationIsRequired": "Lokalizacja miejsca przedmiotów jest wymagana",
+  "successfullyAddedNewItemplace": "Pomyślnie dodano nowe miejsce przedmiotów",
+  "itemplaceLocationExists": "Lokalizacja miejsca przedmiotów już istnieje",
+  "needToSelectItemplaces": "Musisz zaznaczyć miejsca przedmiotów",
+  "areYouSureYouWantToDeleteSelectedItemplaces": "Czy na pewno chcesz usunąć wybrane miejsca przedmiotów?",
+  "selectedItemplacesRemoved": "Wybrane miejsca przedmiotów zostały usunięte"
 }
