@@ -8,6 +8,7 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/workplace/dto/workplace_dto.dart';
 import 'package:give_job/api/workplace/service/workplace_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
+import 'package:give_job/manager/groups/group/group_page.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -22,23 +23,23 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:place_picker/place_picker.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
+import 'package:give_job/manager/groups/group/shared/group_model.dart';
 
 import '../../../../shared/widget/loader.dart';
 import '../../../shared/manager_side_bar.dart';
 
 class WorkplacesPage extends StatefulWidget {
-  final User _user;
-  final StatefulWidget _previousPage;
+  final GroupModel _model;
 
-  WorkplacesPage(this._user, this._previousPage);
+  WorkplacesPage(this._model);
 
   @override
   _WorkplacesPageState createState() => _WorkplacesPageState();
 }
 
 class _WorkplacesPageState extends State<WorkplacesPage> {
+  GroupModel _model;
   User _user;
-  StatefulWidget _previousPage;
 
   WorkplaceService _workplaceService;
 
@@ -65,8 +66,8 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
 
   @override
   void initState() {
-    this._user = widget._user;
-    this._previousPage = widget._previousPage;
+    this._model = widget._model;
+    this._user = _model.user;
     this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
     super.initState();
     _loading = true;
@@ -268,7 +269,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
           ),
         ),
       ),
-      onWillPop: () => _previousPage != null ? NavigatorUtil.onWillPopNavigate(context, _previousPage) : null,
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model)),
     );
   }
 
@@ -675,7 +676,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                     .deleteByIdIn(ids.map((e) => e.toString()).toList())
                     .then((res) => {
                           Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (BuildContext context) => WorkplacesPage(_user, null)),
+                            MaterialPageRoute(builder: (BuildContext context) => WorkplacesPage(_model)),
                             ModalRoute.withName('/'),
                           ),
                           ToastService.showSuccessToast(getTranslated(this.context, 'selectedWorkplacesRemoved')),

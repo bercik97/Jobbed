@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:give_job/api/price_list/dto/price_list_dto.dart';
-import 'package:give_job/api/price_list/service/pricelist_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/api/warehouse/dto/create_warehouse_dto.dart';
+import 'package:give_job/api/warehouse/service/warehouse_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
+import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -16,40 +17,40 @@ import 'package:give_job/shared/widget/buttons.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
-import '../pricelist_page.dart';
+import '../warehouse_page.dart';
 
-class AddPricelistPage extends StatefulWidget {
-  final User user;
-  final StatefulWidget _previousPage;
+class AddWarehousePage extends StatefulWidget {
+  final GroupModel _model;
 
-  AddPricelistPage(this.user, this._previousPage);
+  AddWarehousePage(this._model);
 
   @override
-  _AddPricelistPageState createState() => _AddPricelistPageState();
+  _AddWarehousePageState createState() => _AddWarehousePageState();
 }
 
-class _AddPricelistPageState extends State<AddPricelistPage> {
+class _AddWarehousePageState extends State<AddWarehousePage> {
+  GroupModel _model;
   User _user;
-  StatefulWidget _previousPage;
 
-  PricelistService _pricelistService;
+  WarehouseService _warehouseService;
 
-  final TextEditingController _pricelistNameController = new TextEditingController();
-  final TextEditingController _pricelistPriceController = new TextEditingController();
+  final TextEditingController _warehouseNameController = new TextEditingController();
+  final TextEditingController _warehouseDescriptionController = new TextEditingController();
+  final TextEditingController _itemNameController = new TextEditingController();
+  final TextEditingController _quantityController = new TextEditingController();
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   bool _isAddButtonTapped = false;
 
-  List<PricelistDto> _pricelistsToAdd = new List();
-  List<String> _pricelistNames = new List();
+  Map<String, int> _itemNamesWithQuantities = new Map();
   ScrollController _scrollController = new ScrollController();
 
   @override
   void initState() {
-    this._user = widget.user;
-    this._previousPage = widget._previousPage;
-    this._pricelistService = ServiceInitializer.initialize(context, _user.authHeader, PricelistService);
+    this._model = widget._model;
+    this._user = _model.user;
+    this._warehouseService = ServiceInitializer.initialize(context, _user.authHeader, WarehouseService);
     super.initState();
   }
 
@@ -62,7 +63,7 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
           debugShowCheckedModeBanner: false,
           home: Scaffold(
             backgroundColor: DARK,
-            appBar: managerAppBar(context, _user, getTranslated(context, 'createPricelist')),
+            appBar: managerAppBar(context, _user, getTranslated(context, 'createWarehouse')),
             drawer: managerSideBar(context, _user),
             body: Padding(
               padding: const EdgeInsets.all(12.0),
@@ -73,57 +74,79 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
                   children: [
                     SizedBox(height: 5),
                     _buildField(
-                      _pricelistNameController,
-                      getTranslated(context, 'textSomePricelistName'),
-                      getTranslated(context, 'pricelistName'),
+                      _warehouseNameController,
+                      getTranslated(context, 'textSomeWarehouseName'),
+                      getTranslated(context, 'warehouseName'),
+                      26,
+                      1,
+                      true,
+                      getTranslated(context, 'warehouseNameIsRequired'),
+                    ),
+                    SizedBox(height: 5),
+                    _buildField(
+                      _warehouseDescriptionController,
+                      getTranslated(context, 'textSomeWarehouseDescription'),
+                      getTranslated(context, 'warehouseDescription'),
                       100,
                       2,
                       true,
-                      getTranslated(context, 'pricelistNameIsRequired'),
+                      getTranslated(context, 'warehouseDescriptionIsRequired'),
                     ),
                     SizedBox(height: 10),
+                    _buildField(
+                      _itemNameController,
+                      getTranslated(context, 'textSomeItemName'),
+                      getTranslated(context, 'itemName'),
+                      26,
+                      1,
+                      false,
+                      null,
+                    ),
+                    SizedBox(height: 5),
                     TextFormField(
-                      controller: _pricelistPriceController,
-                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      controller: _quantityController,
+                      keyboardType: TextInputType.number,
                       inputFormatters: <TextInputFormatter>[
-                        WhitelistingTextInputFormatter(RegExp(r'^\d+\.?\d{0,2}')),
+                        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                       ],
-                      maxLength: 7,
+                      maxLength: 3,
                       cursorColor: WHITE,
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: WHITE),
-                      validator: RequiredValidator(errorText: getTranslated(context, 'pricelistPriceIsRequired')),
+                      validator: RequiredValidator(errorText: getTranslated(context, 'quantityIsRequired')),
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
                         counterStyle: TextStyle(color: WHITE),
                         border: OutlineInputBorder(),
-                        hintText: getTranslated(context, 'textSomePricelistPrice'),
+                        hintText: getTranslated(context, 'textSomeQuantity'),
                         labelStyle: TextStyle(color: WHITE),
                       ),
                     ),
-                    SizedBox(height: 15),
+                    SizedBox(height: 10),
                     Buttons.standardButton(
                       minWidth: double.infinity,
                       title: getTranslated(context, 'add'),
                       fun: () {
-                        if (!_isValid()) {
-                          ToastService.showErrorToast(getTranslated(context, 'correctInvalidFields'));
+                        String itemName = _itemNameController.text;
+                        if (itemName == null || itemName.isEmpty) {
+                          ToastService.showErrorToast(getTranslated(context, 'itemNameIsRequired'));
                           return;
                         }
-                        if (_pricelistNames.contains(_pricelistNameController.text)) {
-                          ToastService.showErrorToast(getTranslated(context, 'pricelistServiceNameExists'));
+                        if (_itemNamesWithQuantities.containsKey(itemName)) {
+                          ToastService.showErrorToast(getTranslated(context, 'givenItemNameAlreadyExists'));
                           return;
                         }
-                        PricelistDto dto = new PricelistDto(
-                          id: int.parse(_user.companyId),
-                          name: _pricelistNameController.text,
-                          price: double.parse(_pricelistPriceController.text),
-                        );
+                        int quantity;
+                        try {
+                          quantity = int.parse(_quantityController.text);
+                        } catch (FormatException) {
+                          ToastService.showErrorToast(getTranslated(context, 'quantityIsRequired'));
+                          return;
+                        }
                         setState(() {
-                          _pricelistsToAdd.add(dto);
-                          _pricelistNames.add(dto.name);
-                          _pricelistNameController.clear();
-                          _pricelistPriceController.clear();
+                          _itemNamesWithQuantities[itemName] = quantity;
+                          _itemNameController.clear();
+                          _quantityController.clear();
                         });
                       },
                     ),
@@ -135,7 +158,7 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
             bottomNavigationBar: _buildBottomNavigationBar(),
           ),
         ),
-        onWillPop: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => PricelistPage(_user, _previousPage)), (e) => false));
+        onWillPop: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WarehousePage(_model)), (e) => false));
   }
 
   bool _isValid() {
@@ -173,8 +196,10 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
         controller: _scrollController,
         child: ListView.builder(
           controller: _scrollController,
-          itemCount: _pricelistsToAdd.length,
+          itemCount: _itemNamesWithQuantities.length,
           itemBuilder: (BuildContext context, int index) {
+            String itemName = _itemNamesWithQuantities.keys.elementAt(index);
+            String quantity = _itemNamesWithQuantities.values.elementAt(index).toString();
             return Card(
               color: DARK,
               child: Column(
@@ -184,16 +209,16 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
                   Card(
                     color: BRIGHTER_DARK,
                     child: ListTile(
-                      title: textGreen(_pricelistsToAdd[index].name),
-                      subtitle: textGreen(getTranslated(this.context, 'price') + ': ' + _pricelistsToAdd[index].price.toString()),
+                      title: textGreen(itemName),
+                      subtitle: Row(
+                        children: [
+                          textWhite(getTranslated(this.context, 'quantity') + ': '),
+                          textGreen(quantity),
+                        ],
+                      ),
                       trailing: IconButton(
                         icon: iconRed(Icons.remove),
-                        onPressed: () {
-                          setState(() {
-                            _pricelistNames.remove(_pricelistsToAdd[index].name);
-                            _pricelistsToAdd.remove(_pricelistsToAdd[index]);
-                          });
-                        },
+                        onPressed: () => setState(() => _itemNamesWithQuantities.remove(itemName)),
                       ),
                     ),
                   ),
@@ -222,7 +247,7 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
               children: <Widget>[iconWhite(Icons.close)],
             ),
             color: Colors.red,
-            onPressed: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => PricelistPage(_user, _previousPage)), (e) => false),
+            onPressed: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WarehousePage(_model)), (e) => false),
           ),
           SizedBox(width: 25),
           MaterialButton(
@@ -234,30 +259,36 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
               children: <Widget>[iconWhite(Icons.check)],
             ),
             color: GREEN,
-            onPressed: () => _isAddButtonTapped ? null : _createPricelistServices(),
+            onPressed: () => _isAddButtonTapped ? null : _createWarehouse(),
           ),
         ],
       ),
     );
   }
 
-  _createPricelistServices() {
+  _createWarehouse() {
     setState(() => _isAddButtonTapped = true);
-    if (_pricelistsToAdd.isEmpty) {
-      ToastService.showErrorToast(getTranslated(context, 'pricelistsToAddEmpty'));
+    if (!_isValid()) {
+      ToastService.showErrorToast(getTranslated(context, 'correctInvalidFields'));
       setState(() => _isAddButtonTapped = false);
       return;
     }
-    _pricelistService.create(_pricelistsToAdd).then((res) {
-      ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewPricelistServices'));
+    CreateWarehouseDto dto = new CreateWarehouseDto(
+      companyId: int.parse(_user.companyId),
+      name: _warehouseNameController.text,
+      description: _warehouseDescriptionController.text,
+      itemNamesWithQuantities: _itemNamesWithQuantities,
+    );
+    _warehouseService.create(dto).then((res) {
+      ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewWarehouse'));
       Navigator.push(
         this.context,
-        MaterialPageRoute(builder: (context) => PricelistPage(_user, _previousPage)),
+        MaterialPageRoute(builder: (context) => WarehousePage(_model)),
       );
     }).catchError((onError) {
       String errorMsg = onError.toString();
-      if (errorMsg.contains("PRICELIST_NAME_EXISTS")) {
-        _errorDialog(getTranslated(context, 'pricelistServiceNameExists') + '\n' + getTranslated(context, 'chooseOtherPricelistServiceName'));
+      if (errorMsg.contains("WAREHOUSE_NAME_EXISTS")) {
+        _errorDialog(getTranslated(context, 'warehouseNameExists') + '\n' + getTranslated(context, 'chooseOtherWarehouseName'));
       } else {
         ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
       }

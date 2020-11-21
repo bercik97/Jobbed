@@ -8,6 +8,8 @@ import 'package:give_job/api/price_list/dto/price_list_dto.dart';
 import 'package:give_job/api/price_list/service/pricelist_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
+import 'package:give_job/manager/groups/group/group_page.dart';
+import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -24,18 +26,17 @@ import '../../../shared/manager_side_bar.dart';
 import 'add/add_pricelist_page.dart';
 
 class PricelistPage extends StatefulWidget {
-  final User _user;
-  final StatefulWidget _previousPage;
+  final GroupModel _model;
 
-  PricelistPage(this._user, this._previousPage);
+  PricelistPage(this._model);
 
   @override
   _PricelistPageState createState() => _PricelistPageState();
 }
 
 class _PricelistPageState extends State<PricelistPage> {
+  GroupModel _model;
   User _user;
-  StatefulWidget _previousPage;
 
   PricelistService _pricelistService;
 
@@ -53,8 +54,8 @@ class _PricelistPageState extends State<PricelistPage> {
 
   @override
   void initState() {
-    this._user = widget._user;
-    this._previousPage = widget._previousPage;
+    this._model = widget._model;
+    this._user = _model.user;
     this._pricelistService = ServiceInitializer.initialize(context, _user.authHeader, PricelistService);
     super.initState();
     _loading = true;
@@ -241,7 +242,7 @@ class _PricelistPageState extends State<PricelistPage> {
                 backgroundColor: GREEN,
                 onPressed: () => Navigator.push(
                   this.context,
-                  MaterialPageRoute(builder: (context) => AddPricelistPage(_user, PricelistPage(_user, _previousPage))),
+                  MaterialPageRoute(builder: (context) => AddPricelistPage(_model)),
                 ),
                 child: text25Dark('+'),
               ),
@@ -257,7 +258,7 @@ class _PricelistPageState extends State<PricelistPage> {
           ),
         ),
       ),
-      onWillPop: () => _previousPage != null ? NavigatorUtil.onWillPopNavigate(context, _previousPage) : null,
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model)),
     );
   }
 
@@ -281,7 +282,7 @@ class _PricelistPageState extends State<PricelistPage> {
               onPressed: () {
                 _pricelistService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
                   Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (BuildContext context) => PricelistPage(_user, _previousPage)),
+                    MaterialPageRoute(builder: (BuildContext context) => PricelistPage(_model)),
                     ModalRoute.withName('/'),
                   );
                   ToastService.showSuccessToast(getTranslated(this.context, 'selectedPricelistsRemoved'));

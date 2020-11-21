@@ -7,6 +7,7 @@ import 'package:give_job/api/item/service/item_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/warehouse/dto/warehouse_dashboard_dto.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
+import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -20,16 +21,17 @@ import 'package:give_job/shared/widget/texts.dart';
 import '../../warehouse_details_page.dart';
 
 class AddItemsPage extends StatefulWidget {
-  final User user;
+  final GroupModel _model;
   final WarehouseDashboardDto _warehouseDto;
 
-  AddItemsPage(this.user, this._warehouseDto);
+  AddItemsPage(this._model, this._warehouseDto);
 
   @override
   _AddItemsPageState createState() => _AddItemsPageState();
 }
 
 class _AddItemsPageState extends State<AddItemsPage> {
+  GroupModel _model;
   User _user;
   WarehouseDashboardDto _warehouseDto;
 
@@ -48,7 +50,8 @@ class _AddItemsPageState extends State<AddItemsPage> {
 
   @override
   void initState() {
-    this._user = widget.user;
+    this._model = widget._model;
+    this._user = _model.user;
     this._warehouseDto = widget._warehouseDto;
     this._itemService = ServiceInitializer.initialize(context, _user.authHeader, ItemService);
     super.initState();
@@ -136,7 +139,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
             bottomNavigationBar: _buildBottomNavigationBar(),
           ),
         ),
-        onWillPop: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_user, _warehouseDto)), (e) => false));
+        onWillPop: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_model, _warehouseDto)), (e) => false));
   }
 
   bool _isValid() {
@@ -223,7 +226,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
               children: <Widget>[iconWhite(Icons.close)],
             ),
             color: Colors.red,
-            onPressed: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_user, _warehouseDto)), (e) => false),
+            onPressed: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_model, _warehouseDto)), (e) => false),
           ),
           SizedBox(width: 25),
           MaterialButton(
@@ -253,7 +256,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
       ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewItems'));
       Navigator.push(
         this.context,
-        MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_user, _warehouseDto)),
+        MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_model, _warehouseDto)),
       );
     }).catchError((onError) {
       String errorMsg = onError.toString();

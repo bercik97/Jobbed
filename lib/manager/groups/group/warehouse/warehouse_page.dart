@@ -8,8 +8,8 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/warehouse/dto/warehouse_dashboard_dto.dart';
 import 'package:give_job/api/warehouse/service/warehouse_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/groups_dashboard_page.dart';
-import 'package:give_job/manager/groups/manage/warehouse/add/add_warehouse_page.dart';
+import 'package:give_job/manager/groups/group/group_page.dart';
+import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -23,18 +23,20 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../../shared/widget/loader.dart';
 import '../../../shared/manager_side_bar.dart';
+import 'add/add_warehouse_page.dart';
 import 'details/warehouse_details_page.dart';
 
 class WarehousePage extends StatefulWidget {
-  final User _user;
+  final GroupModel _model;
 
-  WarehousePage(this._user);
+  WarehousePage(this._model);
 
   @override
   _WarehousePageState createState() => _WarehousePageState();
 }
 
 class _WarehousePageState extends State<WarehousePage> {
+  GroupModel _model;
   User _user;
 
   WarehouseService _warehouseService;
@@ -53,7 +55,8 @@ class _WarehousePageState extends State<WarehousePage> {
 
   @override
   void initState() {
-    this._user = widget._user;
+    this._model = widget._model;
+    this._user = _model.user;
     this._warehouseService = ServiceInitializer.initialize(context, _user.authHeader, WarehouseService);
     super.initState();
     _loading = true;
@@ -178,7 +181,7 @@ class _WarehousePageState extends State<WarehousePage> {
                                                   scaleFactor: 2,
                                                   onPressed: () => Navigator.push(
                                                     this.context,
-                                                    MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_user, warehouse)),
+                                                    MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_model, warehouse)),
                                                   ),
                                                   child: icon30Green(Icons.search),
                                                 ),
@@ -253,7 +256,7 @@ class _WarehousePageState extends State<WarehousePage> {
                 backgroundColor: GREEN,
                 onPressed: () => Navigator.push(
                   this.context,
-                  MaterialPageRoute(builder: (context) => AddWarehousePage(_user)),
+                  MaterialPageRoute(builder: (context) => AddWarehousePage(_model)),
                 ),
                 child: text25Dark('+'),
               ),
@@ -269,7 +272,7 @@ class _WarehousePageState extends State<WarehousePage> {
           ),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupsDashboardPage(_user)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model)),
     );
   }
 
@@ -293,7 +296,7 @@ class _WarehousePageState extends State<WarehousePage> {
               onPressed: () {
                 _warehouseService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
                   Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (BuildContext context) => WarehousePage(_user)),
+                    MaterialPageRoute(builder: (BuildContext context) => WarehousePage(_model)),
                     ModalRoute.withName('/'),
                   );
                   ToastService.showSuccessToast(getTranslated(this.context, 'selectedWarehousesRemoved'));

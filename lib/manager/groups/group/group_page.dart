@@ -4,13 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/employees_settings/employees_settings_page.dart';
+import 'package:give_job/manager/groups/group/pricelist/pricelist_page.dart';
 import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/timesheets/ts_page.dart';
 import 'package:give_job/manager/groups/group/vocations/vocations_ts_page.dart';
-import 'package:give_job/manager/groups/manage/pricelist/pricelist_page.dart';
-import 'package:give_job/manager/groups/manage/warehouse/warehouse_page.dart';
-import 'package:give_job/manager/groups/manage/workplace/workplaces_page.dart';
+import 'package:give_job/manager/groups/group/warehouse/warehouse_page.dart';
+import 'package:give_job/manager/groups/group/workplace/workplaces_page.dart';
 import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -25,6 +25,7 @@ import '../groups_dashboard_page.dart';
 import 'edit/group_edit_page.dart';
 import 'employee/employees_page.dart';
 import 'icons_legend/icons_legend_dialog.dart';
+import 'itemplaces/item_places_page.dart';
 
 class GroupPage extends StatefulWidget {
   final GroupModel _model;
@@ -224,12 +225,12 @@ class _GroupPageState extends State<GroupPage> {
                               Navigator.of(context).push(
                                 CupertinoPageRoute<Null>(
                                   builder: (BuildContext context) {
-                                    return VocationsTsPage(_model);
+                                    return ItemPlacesPage(_model);
                                   },
                                 ),
                               ),
                             },
-                            child: _buildScrollableContainer('images/vocation-icon.png', 'vocations', 'vocationsDescription'),
+                            child: _buildScrollableContainer('images/items-icon.png', 'itemPlaces', 'manageCompanyItemPlaces'),
                           ),
                         ),
                       ),
@@ -242,7 +243,7 @@ class _GroupPageState extends State<GroupPage> {
                               Navigator.of(context).push(
                                 CupertinoPageRoute<Null>(
                                   builder: (BuildContext context) {
-                                    return WorkplacesPage(_model.user, GroupPage(_model));
+                                    return WorkplacesPage(_model);
                                   },
                                 ),
                               );
@@ -264,7 +265,7 @@ class _GroupPageState extends State<GroupPage> {
                               Navigator.of(context).push(
                                 CupertinoPageRoute<Null>(
                                   builder: (BuildContext context) {
-                                    return WarehousePage(_model.user);
+                                    return WarehousePage(_model);
                                   },
                                 ),
                               );
@@ -282,7 +283,7 @@ class _GroupPageState extends State<GroupPage> {
                               Navigator.of(context).push(
                                 CupertinoPageRoute<Null>(
                                   builder: (BuildContext context) {
-                                    return PricelistPage(_model.user, GroupPage(_model));
+                                    return PricelistPage(_model);
                                   },
                                 ),
                               ),
@@ -291,6 +292,30 @@ class _GroupPageState extends State<GroupPage> {
                           ),
                         ),
                       ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Material(
+                          color: BRIGHTER_DARK,
+                          child: InkWell(
+                            onTap: () => {
+                              Navigator.of(context).push(
+                                CupertinoPageRoute<Null>(
+                                  builder: (BuildContext context) {
+                                    return VocationsTsPage(_model);
+                                  },
+                                ),
+                              ),
+                            },
+                            child: _buildScrollableContainer('images/vocation-icon.png', 'vocations', 'vocationsDescription'),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(child: Material(color: BRIGHTER_DARK)),
                     ],
                   ),
                 ],

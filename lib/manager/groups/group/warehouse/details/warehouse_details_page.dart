@@ -21,23 +21,24 @@ import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/loader.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:give_job/manager/groups/group/shared/group_model.dart';
 
 import '../warehouse_page.dart';
 import 'item/add/add_items_page.dart';
 
 class WarehouseDetailsPage extends StatefulWidget {
-  final User _user;
+  final GroupModel _model;
   final WarehouseDashboardDto _warehouseDto;
 
-  WarehouseDetailsPage(this._user, this._warehouseDto);
+  WarehouseDetailsPage(this._model, this._warehouseDto);
 
   @override
   _WarehouseDetailsPageState createState() => _WarehouseDetailsPageState();
 }
 
 class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
+  GroupModel _model;
   User _user;
-  StatefulWidget _previousPage;
   WarehouseDashboardDto _warehouseDto;
 
   ItemService _itemService;
@@ -57,7 +58,8 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
 
   @override
   void initState() {
-    this._user = widget._user;
+    this._model = widget._model;
+    this._user = _model.user;
     this._warehouseDto = widget._warehouseDto;
     this._itemService = ServiceInitializer.initialize(context, _user.authHeader, ItemService);
     super.initState();
@@ -269,7 +271,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                 backgroundColor: GREEN,
                 onPressed: () => Navigator.push(
                   this.context,
-                  MaterialPageRoute(builder: (context) => AddItemsPage(_user, _warehouseDto)),
+                  MaterialPageRoute(builder: (context) => AddItemsPage(_model, _warehouseDto)),
                 ),
                 child: text25Dark('+'),
               ),
@@ -285,7 +287,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
           ),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, WarehousePage(_user)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, WarehousePage(_model)),
     );
   }
 
@@ -309,7 +311,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
               onPressed: () {
                 _itemService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
                   Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (BuildContext context) => WarehouseDetailsPage(_user, _warehouseDto)),
+                    MaterialPageRoute(builder: (BuildContext context) => WarehouseDetailsPage(_model, _warehouseDto)),
                     ModalRoute.withName('/'),
                   );
                   ToastService.showSuccessToast(getTranslated(this.context, 'selectedItemsRemoved'));

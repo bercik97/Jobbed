@@ -621,5 +621,6 @@
   "chooseOtherItemName": "Wybierz inną nazwę przedmiotu",
   "numberOfTypeOfItems": "Liczba typów przedmiotów",
   "totalNumberOfItems": "Łączna ilość przedmiotów",
-  "manageCompanyItemPlaces": "Zarządzaj miejscami przedmiotów firmy"
+  "manageCompanyItemPlaces": "Zarządzaj miejscami przedmiotów firmy",
+  "itemPlaces": "Miejsca przedmiotów"
 }
