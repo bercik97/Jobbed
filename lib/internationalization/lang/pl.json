@@ -642,5 +642,8 @@
   "date": "Data",
   "previousQuantity": "Poprzednia ilość",
   "newQuantity": "Nowa ilość",
-  "warehouseHistoryIsEmpty": "Historia magazynu jest pusta"
+  "warehouseHistoryIsEmpty": "Historia magazynu jest pusta",
+  "release": "Wydaj",
+  "return": "Zwróć",
+  "whichYouWantToReleaseToItemplace": "które chcesz wydać do wybranego miejsca przedmiotów"
 }

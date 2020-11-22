@@ -31,6 +31,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../warehouse_page.dart';
 import 'item/add/add_items_page.dart';
+import 'item/release/release_items_page.dart';
 
 class WarehouseDetailsPage extends StatefulWidget {
   final GroupModel _model;
@@ -57,6 +58,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
   bool _isChecked = false;
   List<bool> _checked = new List();
   LinkedHashSet<int> _selectedIds = new LinkedHashSet();
+  LinkedHashSet<ItemDto> _selectedItems = new LinkedHashSet();
 
   bool _isAddButtonTapped = false;
   bool _isDeleteButtonTapped = false;
@@ -187,8 +189,11 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                         _checked = l;
                         if (value) {
                           _selectedIds.addAll(_filteredItems.map((e) => e.id));
-                        } else
+                          _selectedItems.addAll(_filteredItems);
+                        } else {
                           _selectedIds.clear();
+                          _selectedItems.clear();
+                        }
                       });
                     },
                     controlAffinity: ListTileControlAffinity.leading,
@@ -268,8 +273,10 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                                                 _checked[foundIndex] = value;
                                                 if (value) {
                                                   _selectedIds.add(_items[foundIndex].id);
+                                                  _selectedItems.add(_items[foundIndex]);
                                                 } else {
                                                   _selectedIds.remove(_items[foundIndex].id);
+                                                  _selectedItems.remove(_items[foundIndex]);
                                                 }
                                                 int selectedIdsLength = _selectedIds.length;
                                                 if (selectedIdsLength == _items.length) {
@@ -290,6 +297,31 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                           ),
                         ),
                       ),
+              ],
+            ),
+          ),
+          bottomNavigationBar: Container(
+            height: 40,
+            child: Row(
+              children: <Widget>[
+                SizedBox(width: 1),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: textDarkBold(getTranslated(context, 'release')),
+                    onPressed: () {
+                      if (_selectedItems.isEmpty) {
+                        showHint(context, getTranslated(context, 'needToSelectItems') + ' ', getTranslated(context, 'whichYouWantToReleaseToItemplace'));
+                        return;
+                      }
+                      Navigator.push(
+                        this.context,
+                        MaterialPageRoute(builder: (context) => ReleaseItemsPage(_user, _selectedItems)),
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(width: 1),
               ],
             ),
           ),

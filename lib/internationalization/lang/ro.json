@@ -643,5 +643,8 @@
   "date": "Date",
   "previousQuantity": "Previous quantity",
   "newQuantity": "New quantity",
-  "warehouseHistoryIsEmpty": "Warehouse history is empty"
+  "warehouseHistoryIsEmpty": "Warehouse history is empty",
+  "release": "Release",
+  "return": "Return",
+  "whichYouWantToReleaseToItemplace": "which you want to release to itemplace"
 }
