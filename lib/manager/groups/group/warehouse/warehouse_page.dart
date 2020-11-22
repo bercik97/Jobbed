@@ -191,14 +191,14 @@ class _WarehousePageState extends State<WarehousePage> {
                                               children: [
                                                 Align(
                                                   alignment: Alignment.topLeft,
-                                                  child: textWhiteBold(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
+                                                  child: textGreen(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
                                                 ),
                                                 Align(
                                                   alignment: Alignment.topLeft,
                                                   child: Row(
                                                     children: [
-                                                      textWhite(getTranslated(this.context, 'numberOfTypeOfItems') + ': '),
-                                                      textGreenBold(numberOfTypeOfItems),
+                                                      text13White(getTranslated(this.context, 'numberOfTypeOfItems') + ': '),
+                                                      textGreen(numberOfTypeOfItems),
                                                     ],
                                                   ),
                                                 ),
@@ -206,8 +206,8 @@ class _WarehousePageState extends State<WarehousePage> {
                                                   alignment: Alignment.topLeft,
                                                   child: Row(
                                                     children: [
-                                                      textWhite(getTranslated(this.context, 'totalNumberOfItems') + ': '),
-                                                      textGreenBold(totalNumberOfItems),
+                                                      text13White(getTranslated(this.context, 'totalNumberOfItems') + ': '),
+                                                      textGreen(totalNumberOfItems),
                                                     ],
                                                   ),
                                                 ),
