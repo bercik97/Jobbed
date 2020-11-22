@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/itemplace/dto/assign_items_dto.dart';
 import 'package:give_job/api/itemplace/dto/itemplace_dashboard_dto.dart';
+import 'package:give_job/api/itemplace/dto/itemplace_details_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/service/logout_service.dart';
 import 'package:http/http.dart';
@@ -39,6 +40,20 @@ class ItemplaceService {
     );
     if (res.statusCode == 200) {
       return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<List<ItemplaceDetailsDto>> findAllItemsById(int id) async {
+    Response res = await get(
+      _url + '/$id/items',
+      headers: _header,
+    );
+    if (res.statusCode == 200) {
+      return (json.decode(res.body) as List).map((data) => ItemplaceDetailsDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
       return Logout.handle401WithLogout(_context);
     } else {

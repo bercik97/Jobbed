@@ -517,6 +517,7 @@
   "successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees": "Pomyślnie zaktualizowano uprawnienie do samodzielnego wypełniania godzin dla wybranych pracowników",
   "pleaseSelectValue": "Proszę wybierz wartość",
   "manageWarehouses": "Zarządzaj magazynami",
+  "warehouse": "Magazyn",
   "warehouses": "Magazyny",
   "numberOfItems": "Liczba przedmiotów",
   "createWarehouse": "Utwórz magazyn",
@@ -650,5 +651,9 @@
   "noItemplacesToReleaseItems": "Brak miejsc rzeczy do wydania przedmiotów, prosze dodaj miejsca.",
   "goToWarehousesPage": "Powrót do sekcji magazynów",
   "someOfItemsDoNotHaveEnoughQuantity": "Niektóre przedmioty nie posiadają wystarczającej ilości. Proszę spróbuj ponownie!",
-  "successfullyReleaseItemsToSelectedItemplace": "Przedmioty zostały pomyślnie wydane do wybranego miejsca rzeczy"
+  "successfullyReleaseItemsToSelectedItemplace": "Przedmioty zostały pomyślnie wydane do wybranego miejsca rzeczy",
+  "noItemsInItemplaceHint": "Wygląda na to, że nie masz przypisanych przedmiotów do wybranego miejsca.\nPrzejdź do modułu magazyn, aby dodać przedmioty",
+  "returnToWarehouse": "Zwróć do magazynu",
+  "whichYouWantToReturnToWarehouse": "które chcesz zwrócić do magazynu",
+  "itemplaceDetails": "Szczegóły miejsca przedmiotów"
 }

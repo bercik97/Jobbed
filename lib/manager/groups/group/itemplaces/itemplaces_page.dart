@@ -181,7 +181,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
                                                   scaleFactor: 2,
                                                   onPressed: () => Navigator.push(
                                                     this.context,
-                                                    MaterialPageRoute(builder: (context) => ItemplacesDetailsPage()),
+                                                    MaterialPageRoute(builder: (context) => ItemplacesDetailsPage(_model, itemplace)),
                                                   ),
                                                   child: icon30Green(Icons.search),
                                                 ),

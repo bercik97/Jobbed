@@ -294,7 +294,7 @@ class WorkdayUtil {
                                           DataCell(textWhite((i + 1).toString())),
                                           DataCell(textWhite(warehouseHistory[i].action.toString())),
                                           DataCell(textWhite(warehouseHistory[i].date.toString())),
-                                          DataCell(textWhite(warehouseHistory[i].itemName.toString())),
+                                          DataCell(textWhite(warehouseHistory[i].name.toString())),
                                           DataCell(textWhite(warehouseHistory[i].previousQuantity.toString())),
                                           DataCell(textWhite(warehouseHistory[i].newQuantity.toString())),
                                         ],

@@ -651,5 +651,9 @@
   "noItemplacesToReleaseItems": "No itemplaces to release items, please add them.",
   "goToWarehousesPage": "Back to the warehouses page",
   "someOfItemsDoNotHaveEnoughQuantity": "Some of items do not have enough quantity. Please try again!",
-  "successfullyReleaseItemsToSelectedItemplace": "Items have been successfully released to the selected item place"
+  "successfullyReleaseItemsToSelectedItemplace": "Items have been successfully released to the selected item place",
+  "noItemsInItemplaceHint": "You seem to have no items assigned.\nGo to the warehouse module and add some items",
+  "returnToWarehouse": "Return to warehouse",
+  "whichYouWantToReturnToWarehouse": "which you want to return to warehouse",
+  "itemplaceDetails": "Itemplace details"
 }
