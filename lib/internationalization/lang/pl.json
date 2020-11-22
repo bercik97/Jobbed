@@ -635,5 +635,12 @@
   "itemplaceLocationExists": "Lokalizacja miejsca przedmiotów już istnieje",
   "needToSelectItemplaces": "Musisz zaznaczyć miejsca przedmiotów",
   "areYouSureYouWantToDeleteSelectedItemplaces": "Czy na pewno chcesz usunąć wybrane miejsca przedmiotów?",
-  "selectedItemplacesRemoved": "Wybrane miejsca przedmiotów zostały usunięte"
+  "selectedItemplacesRemoved": "Wybrane miejsca przedmiotów zostały usunięte",
+  "itemQuantityUpdatedSuccessfully": "Ilość przedmiotu została pomyślnie zaktualizowana",
+  "warehouseHistory": "Historia magazynu",
+  "action": "Akcja",
+  "date": "Data",
+  "previousQuantity": "Poprzednia ilość",
+  "newQuantity": "Nowa ilość",
+  "warehouseHistoryIsEmpty": "Historia magazynu jest pusta"
 }

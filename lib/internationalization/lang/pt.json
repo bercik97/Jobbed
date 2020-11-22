@@ -636,5 +636,12 @@
   "itemplaceLocationExists": "Itemplace location exists",
   "needToSelectItemplaces": "Need to select itemplaces",
   "areYouSureYouWantToDeleteSelectedItemplaces": "Are you sure you want to delete selected itemplaces?",
-  "selectedItemplacesRemoved": "Selected itemplaces removed"
+  "selectedItemplacesRemoved": "Selected itemplaces removed",
+  "itemQuantityUpdatedSuccessfully": "Item quantity has been successfully updated",
+  "warehouseHistory": "Warehouse history",
+  "action": "Action",
+  "date": "Date",
+  "previousQuantity": "Previous quantity",
+  "newQuantity": "New quantity",
+  "warehouseHistoryIsEmpty": "Warehouse history is empty"
 }
