@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:give_job/api/item/dto/item_dto.dart';
+import 'package:give_job/api/item/dto/create_item_dto.dart';
 import 'package:give_job/api/item/service/item_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/warehouse/dto/warehouse_dashboard_dto.dart';
@@ -44,7 +44,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
 
   bool _isAddButtonTapped = false;
 
-  List<ItemDto> _itemsToAdd = new List();
+  List<CreateItemDto> _itemsToAdd = new List();
   List<String> _itemNames = new List();
   ScrollController _scrollController = new ScrollController();
 
@@ -118,8 +118,8 @@ class _AddItemsPageState extends State<AddItemsPage> {
                           ToastService.showErrorToast(getTranslated(context, 'itemNameExists'));
                           return;
                         }
-                        ItemDto dto = new ItemDto(
-                          id: _warehouseDto.id,
+                        CreateItemDto dto = new CreateItemDto(
+                          warehouseId: _warehouseDto.id,
                           name: _itemNameController.text,
                           quantity: int.parse(_quantityController.text),
                         );

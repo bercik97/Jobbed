@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:give_job/api/item/dto/create_item_dto.dart';
 import 'package:give_job/api/item/dto/item_dto.dart';
 import 'package:give_job/api/item/service/item_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';

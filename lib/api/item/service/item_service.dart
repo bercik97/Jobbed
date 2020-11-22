@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:give_job/api/item/dto/create_item_dto.dart';
 import 'package:give_job/api/item/dto/item_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/service/logout_service.dart';
@@ -15,10 +16,10 @@ class ItemService {
 
   static const String _url = '$SERVER_IP/items';
 
-  Future<dynamic> create(List<ItemDto> dto) async {
+  Future<dynamic> create(List<CreateItemDto> dto) async {
     Response res = await post(
       _url,
-      body: jsonEncode(dto.map((e) => ItemDto.jsonEncode(e)).toList()),
+      body: jsonEncode(dto.map((e) => CreateItemDto.jsonEncode(e)).toList()),
       headers: _headers,
     );
     if (res.statusCode == 200) {
