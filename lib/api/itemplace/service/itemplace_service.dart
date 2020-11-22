@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:give_job/api/itemplace/dto/assign_items_dto.dart';
 import 'package:give_job/api/itemplace/dto/itemplace_dashboard_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/service/logout_service.dart';
@@ -23,6 +24,21 @@ class ItemplaceService {
     );
     if (res.statusCode == 200) {
       return res.body.toString();
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> assignNewItems(AssignItemsDto dto) async {
+    Response res = await put(
+      _url + '/assign',
+      body: jsonEncode(AssignItemsDto.jsonEncode(dto)),
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
     } else if (res.statusCode == 401) {
       return Logout.handle401WithLogout(_context);
     } else {

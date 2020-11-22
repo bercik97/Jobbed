@@ -646,5 +646,10 @@
   "warehouseHistoryIsEmpty": "Warehouse history is empty",
   "release": "Release",
   "return": "Return",
-  "whichYouWantToReleaseToItemplace": "which you want to release to itemplace"
+  "whichYouWantToReleaseToItemplace": "which you want to release to itemplace",
+  "releaseItems": "Release items to itemplace",
+  "noItemplacesToReleaseItems": "No itemplaces to release items, please add them.",
+  "goToWarehousesPage": "Back to the warehouses page",
+  "someOfItemsDoNotHaveEnoughQuantity": "Some of items do not have enough quantity. Please try again!",
+  "successfullyReleaseItemsToSelectedItemplace": "Items have been successfully released to the selected item place"
 }

@@ -40,6 +40,7 @@ dependencies:
   location: ^2.3.5
   permission_handler: ^4.4.0+hotfix.2
   android_intent: ^0.3.6+12
+  number_inc_dec: ^0.6.6
 
 dev_dependencies:
   flutter_test:

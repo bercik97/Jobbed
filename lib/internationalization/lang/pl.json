@@ -645,5 +645,10 @@
   "warehouseHistoryIsEmpty": "Historia magazynu jest pusta",
   "release": "Wydaj",
   "return": "Zwróć",
-  "whichYouWantToReleaseToItemplace": "które chcesz wydać do wybranego miejsca przedmiotów"
+  "whichYouWantToReleaseToItemplace": "które chcesz wydać do wybranego miejsca przedmiotów",
+  "releaseItems": "Wydawanie przedmiotów do miejsca rzeczy",
+  "noItemplacesToReleaseItems": "Brak miejsc rzeczy do wydania przedmiotów, prosze dodaj miejsca.",
+  "goToWarehousesPage": "Powrót do sekcji magazynów",
+  "someOfItemsDoNotHaveEnoughQuantity": "Niektóre przedmioty nie posiadają wystarczającej ilości. Proszę spróbuj ponownie!",
+  "successfullyReleaseItemsToSelectedItemplace": "Przedmioty zostały pomyślnie wydane do wybranego miejsca rzeczy"
 }

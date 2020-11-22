@@ -316,7 +316,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                       }
                       Navigator.push(
                         this.context,
-                        MaterialPageRoute(builder: (context) => ReleaseItemsPage(_user, _selectedItems)),
+                        MaterialPageRoute(builder: (context) => ReleaseItemsPage(_model, _warehouseDto, _selectedItems.toList())),
                       );
                     },
                   ),
