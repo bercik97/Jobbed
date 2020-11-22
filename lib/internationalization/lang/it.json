@@ -656,5 +656,7 @@
   "returnToWarehouse": "Return to warehouse",
   "whichYouWantToReturnToWarehouse": "which you want to return to warehouse",
   "itemplaceDetails": "Itemplace details",
-  "returnItems": "Return items"
+  "returnItems": "Return items",
+  "goToItemplacesDetailsPage": "Back to the itemplaces page",
+  "successfullyReturnItemsToWarehouses": "Successfully return items to warehouses"
 }

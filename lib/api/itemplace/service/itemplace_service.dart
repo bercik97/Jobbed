@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/itemplace/dto/assign_items_dto.dart';
 import 'package:give_job/api/itemplace/dto/itemplace_dashboard_dto.dart';
 import 'package:give_job/api/itemplace/dto/itemplace_details_dto.dart';
+import 'package:give_job/api/itemplace/dto/return_items_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/service/logout_service.dart';
 import 'package:http/http.dart';
@@ -36,6 +37,21 @@ class ItemplaceService {
     Response res = await put(
       _url + '/assign',
       body: jsonEncode(AssignItemsDto.jsonEncode(dto)),
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> returnItems(ReturnItemsDto dto) async {
+    Response res = await put(
+      _url + '/return',
+      body: jsonEncode(ReturnItemsDto.jsonEncode(dto)),
       headers: _headers,
     );
     if (res.statusCode == 200) {

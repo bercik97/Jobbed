@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/api/itemplace/dto/itemplace_dashboard_dto.dart';
 import 'package:give_job/api/itemplace/dto/itemplace_details_dto.dart';
+import 'package:give_job/api/itemplace/dto/return_items_dto.dart';
 import 'package:give_job/api/itemplace/service/itemplace_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
@@ -12,6 +13,7 @@ import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -178,10 +180,86 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
               children: <Widget>[iconWhite(Icons.check)],
             ),
             color: GREEN,
-            onPressed: () {},
+            onPressed: () => _isAddButtonTapped ? null : _handleAddBtn(),
           ),
         ],
       ),
+    );
+  }
+
+  void _handleAddBtn() {
+    setState(() => _isAddButtonTapped = true);
+    Map<String, Map<String, int>> warehouseIdsAndItemsWithQuantities = new Map();
+    for (int i = 0; i < _itemplaces.length; i++) {
+      int warehouseId = _itemplaces[i].warehouseId;
+      if (warehouseIdsAndItemsWithQuantities.containsKey(warehouseId)) {
+        Map<String, int> itemsWithQuantities = warehouseIdsAndItemsWithQuantities[warehouseId];
+        itemsWithQuantities[_itemplaces[i].name] = int.parse(_textEditingItemControllers[i].text);
+      } else {
+        Map<String, int> itemsWithQuantities = new Map();
+        itemsWithQuantities[_itemplaces[i].name] = int.parse(_textEditingItemControllers[i].text);
+        warehouseIdsAndItemsWithQuantities[warehouseId.toString()] = itemsWithQuantities;
+      }
+    }
+    ReturnItemsDto dto = new ReturnItemsDto(
+      itemPlaceId: _itemplaceDto.id,
+      warehouseIdsAndItemsWithQuantities: warehouseIdsAndItemsWithQuantities,
+    );
+    _itemPlaceService.returnItems(dto).then((value) {
+      ToastService.showSuccessToast(getTranslated(context, 'successfullyReturnItemsToWarehouses'));
+      Navigator.push(
+        this.context,
+        MaterialPageRoute(builder: (context) => ItemplacesDetailsPage(_model, _itemplaceDto)),
+      );
+    }).catchError((onError) {
+      String errorMsg = onError.toString();
+      if (errorMsg.contains("NOT_ENOUGH_QUANTITY")) {
+        _showFailureDialogWithNavigate(getTranslated(context, 'someOfItemsDoNotHaveEnoughQuantity'));
+      } else {
+        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+      }
+      setState(() => _isAddButtonTapped = false);
+    });
+  }
+
+  _showFailureDialogWithNavigate(String content) {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return WillPopScope(
+          child: AlertDialog(
+            backgroundColor: DARK,
+            title: textGreen(getTranslated(this.context, 'failure')),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  textWhite(content),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: textWhite(getTranslated(this.context, 'goToItemplacesDetailsPage')),
+                onPressed: () => _resetAndOpenPage(),
+              ),
+            ],
+          ),
+          onWillPop: _navigateToItemplacesDetailsPage,
+        );
+      },
+    );
+  }
+
+  Future<bool> _navigateToItemplacesDetailsPage() async {
+    _resetAndOpenPage();
+    return true;
+  }
+
+  void _resetAndOpenPage() {
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (BuildContext context) => ItemplacesDetailsPage(_model, _itemplaceDto)),
+      ModalRoute.withName('/'),
     );
   }
 }

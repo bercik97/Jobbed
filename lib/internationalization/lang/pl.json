@@ -656,5 +656,7 @@
   "returnToWarehouse": "Zwróć do magazynu",
   "whichYouWantToReturnToWarehouse": "które chcesz zwrócić do magazynu",
   "itemplaceDetails": "Szczegóły miejsca przedmiotów",
-  "returnItems": "Zwróć przedmioty"
+  "returnItems": "Zwróć przedmioty",
+  "goToItemplacesDetailsPage": "Powrót do sekcji miejsc przedmiotów",
+  "successfullyReturnItemsToWarehouses": "Pomyślnie zwrócono przedmioty do magazynów"
 }
