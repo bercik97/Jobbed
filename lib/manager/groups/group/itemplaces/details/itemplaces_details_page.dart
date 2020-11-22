@@ -243,7 +243,7 @@ class _ItemplacesDetailsPageState extends State<ItemplacesDetailsPage> {
                       }
                       Navigator.push(
                         this.context,
-                        MaterialPageRoute(builder: (context) => ReturnItemsPage()),
+                        MaterialPageRoute(builder: (context) => ReturnItemsPage(_model, _itemplaceDto, _selectedItems.toList())),
                       );
                     },
                   ),

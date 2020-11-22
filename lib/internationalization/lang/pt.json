@@ -655,5 +655,6 @@
   "noItemsInItemplaceHint": "You seem to have no items assigned.\nGo to the warehouse module and add some items",
   "returnToWarehouse": "Return to warehouse",
   "whichYouWantToReturnToWarehouse": "which you want to return to warehouse",
-  "itemplaceDetails": "Itemplace details"
+  "itemplaceDetails": "Itemplace details",
+  "returnItems": "Return items"
 }

@@ -655,5 +655,6 @@
   "noItemsInItemplaceHint": "Wygląda na to, że nie masz przypisanych przedmiotów do wybranego miejsca.\nPrzejdź do modułu magazyn, aby dodać przedmioty",
   "returnToWarehouse": "Zwróć do magazynu",
   "whichYouWantToReturnToWarehouse": "które chcesz zwrócić do magazynu",
-  "itemplaceDetails": "Szczegóły miejsca przedmiotów"
+  "itemplaceDetails": "Szczegóły miejsca przedmiotów",
+  "returnItems": "Zwróć przedmioty"
 }
