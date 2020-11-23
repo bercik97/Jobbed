@@ -660,5 +660,7 @@
   "returnItems": "Повернути елементи",
   "goToItemplacesDetailsPage": "Повернутися на сторінку позицій",
   "successfullyReturnItemsToWarehouses": "Успішно повернути товари на склади",
-  "choosePlaceWhereSelectedItemsWillBePlaced": "Виберіть місце, де будуть розміщені вибрані предмети з кількістю"
+  "choosePlaceWhereSelectedItemsWillBePlaced": "Виберіть місце, де будуть розміщені вибрані предмети з кількістю",
+  "noQuantitySettedForRelease": "Будь ласка, встановіть кількість товарів, які ви хочете випустити",
+  "noQuantitySettedForReturn": "Будь ласка, встановіть кількість товарів, які потрібно повернути"
 }

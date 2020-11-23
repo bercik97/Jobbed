@@ -149,6 +149,11 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
           setState(() => value = max);
         }
       },
+      onSubmitted: (value) {
+        if (value >= max) {
+          setState(() => controller.text = max.toString());
+        }
+      },
       controller: controller,
       min: 0,
       max: max,
@@ -292,7 +297,15 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
     setState(() => _isAddButtonTapped = true);
     Map<String, int> itemsWithQuantities = new Map();
     for (int i = 0; i < _items.length; i++) {
-      itemsWithQuantities[_items[i].name] = int.parse(_textEditingItemControllers[i].text);
+      int quantity = int.parse(_textEditingItemControllers[i].text);
+      if (quantity != 0) {
+        itemsWithQuantities[_items[i].name] = quantity;
+      }
+    }
+    if (itemsWithQuantities.isEmpty) {
+      ToastService.showErrorToast(getTranslated(context, 'noQuantitySettedForRelease'));
+      setState(() => _isAddButtonTapped = false);
+      return;
     }
     AssignItemsDto dto = new AssignItemsDto(
       warehouseId: _warehouseDto.id,

@@ -144,6 +144,11 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
           setState(() => value = max);
         }
       },
+      onSubmitted: (value) {
+        if (value >= max) {
+          setState(() => controller.text = max.toString());
+        }
+      },
       controller: controller,
       min: 0,
       max: max,
@@ -194,12 +199,23 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
       int warehouseId = _itemplaces[i].warehouseId;
       if (warehouseIdsAndItemsWithQuantities.containsKey(warehouseId)) {
         Map<String, int> itemsWithQuantities = warehouseIdsAndItemsWithQuantities[warehouseId];
-        itemsWithQuantities[_itemplaces[i].name] = int.parse(_textEditingItemControllers[i].text);
+        int quantity = int.parse(_textEditingItemControllers[i].text);
+        if (quantity != 0) {
+          itemsWithQuantities[_itemplaces[i].name] = quantity;
+        }
       } else {
         Map<String, int> itemsWithQuantities = new Map();
-        itemsWithQuantities[_itemplaces[i].name] = int.parse(_textEditingItemControllers[i].text);
-        warehouseIdsAndItemsWithQuantities[warehouseId.toString()] = itemsWithQuantities;
+        int quantity = int.parse(_textEditingItemControllers[i].text);
+        if (quantity != 0) {
+          itemsWithQuantities[_itemplaces[i].name] = quantity;
+          warehouseIdsAndItemsWithQuantities[warehouseId.toString()] = itemsWithQuantities;
+        }
       }
+    }
+    if (warehouseIdsAndItemsWithQuantities.isEmpty) {
+      ToastService.showErrorToast(getTranslated(context, 'noQuantitySettedForReturn'));
+      setState(() => _isAddButtonTapped = false);
+      return;
     }
     ReturnItemsDto dto = new ReturnItemsDto(
       itemPlaceId: _itemplaceDto.id,

@@ -660,5 +660,7 @@
   "returnItems": "Zwróć przedmioty",
   "goToItemplacesDetailsPage": "Powrót do sekcji miejsc przedmiotów",
   "successfullyReturnItemsToWarehouses": "Pomyślnie zwrócono przedmioty do magazynów",
-  "choosePlaceWhereSelectedItemsWillBePlaced": "Wybierz miejsce, w którym zostaną umieszczone wybrane przedmioty"
+  "choosePlaceWhereSelectedItemsWillBePlaced": "Wybierz miejsce, w którym zostaną umieszczone wybrane przedmioty",
+  "noQuantitySettedForRelease": "Nie podano ilości przedmiotów, które chcesz wydać",
+  "noQuantitySettedForReturn": "Nie podano ilości przedmiotów, które chcesz zwrócić"
 }

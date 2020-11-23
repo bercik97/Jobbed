@@ -660,5 +660,7 @@
   "returnItems": "Возвращаемые товары",
   "goToItemplacesDetailsPage": "Вернуться на страницу элементов размещения",
   "successfullyReturnItemsToWarehouses": "Успешно вернуть товары на склады",
-  "choosePlaceWhereSelectedItemsWillBePlaced": "Выберите место, где будут размещены выбранные предметы с указанием количества"
+  "choosePlaceWhereSelectedItemsWillBePlaced": "Выберите место, где будут размещены выбранные предметы с указанием количества",
+  "noQuantitySettedForRelease": "Укажите количество товаров, которые вы хотите выпустить",
+  "noQuantitySettedForReturn": "Укажите количество товаров, которые вы хотите вернуть"
 }

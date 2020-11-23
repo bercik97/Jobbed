@@ -660,5 +660,7 @@
   "returnItems": "დააბრუნე საგნები",
   "goToItemplacesDetailsPage": "ნივთების ადგილების გვერდზე დაბრუნება",
   "successfullyReturnItemsToWarehouses": "წარმატებით დააბრუნე საგნები საწყობებში",
-  "choosePlaceWhereSelectedItemsWillBePlaced": "შეარჩიეთ ადგილი, სადაც განთავსდება შერჩეული საგნები რაოდენობით"
+  "choosePlaceWhereSelectedItemsWillBePlaced": "შეარჩიეთ ადგილი, სადაც განთავსდება შერჩეული საგნები რაოდენობით",
+  "noQuantitySettedForRelease": "გთხოვთ, დააყენოთ იმ ნივთების რაოდენობა, რომელთა გამოშვებაც გსურთ",
+  "noQuantitySettedForReturn": "გთხოვთ, დააყენოთ იმ ნივთების რაოდენობა, რომელთა დაბრუნება გსურთ"
 }

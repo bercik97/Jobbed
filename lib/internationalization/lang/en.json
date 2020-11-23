@@ -660,5 +660,7 @@
   "returnItems": "Return items",
   "goToItemplacesDetailsPage": "Back to the itemplaces page",
   "successfullyReturnItemsToWarehouses": "Successfully return items to warehouses",
-  "choosePlaceWhereSelectedItemsWillBePlaced": "Choose place where selected items with quantites will be placed"
+  "choosePlaceWhereSelectedItemsWillBePlaced": "Choose place where selected items with quantites will be placed",
+  "noQuantitySettedForRelease": "Please set quantity of items you want to release",
+  "noQuantitySettedForReturn": "Please set quantity of items you want to return"
 }
