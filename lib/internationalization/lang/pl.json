@@ -662,5 +662,7 @@
   "successfullyReturnItemsToWarehouses": "Pomyślnie zwrócono przedmioty do magazynów",
   "choosePlaceWhereSelectedItemsWillBePlaced": "Wybierz miejsce, w którym zostaną umieszczone wybrane przedmioty",
   "noQuantitySettedForRelease": "Nie podano ilości przedmiotów, które chcesz wydać",
-  "noQuantitySettedForReturn": "Nie podano ilości przedmiotów, które chcesz zwrócić"
+  "noQuantitySettedForReturn": "Nie podano ilości przedmiotów, które chcesz zwrócić",
+  "cannotRemovePlacesWithItems": "Nie możesz usunąć miejsc w których znajdują sie przedmioty",
+  "hintReturnItems": "Podpowiedź: Zwróć przedmioty do magazynu aby usunąć miejsce składowania przedmiotów"
 }

@@ -45,7 +45,9 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
   bool _loading = false;
   bool _isChecked = false;
   List<bool> _checked = new List();
+
   LinkedHashSet<int> _selectedIds = new LinkedHashSet();
+  LinkedHashSet<ItemplaceDashboardDto> _selectedItemplaces = new LinkedHashSet();
 
   bool _isAddButtonTapped = false;
   bool _isDeleteButtonTapped = false;
@@ -127,8 +129,11 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
                         _checked = l;
                         if (value) {
                           _selectedIds.addAll(_filteredItemplaces.map((e) => e.id));
-                        } else
+                          _selectedItemplaces.addAll(_filteredItemplaces.map((e) => e));
+                        } else {
                           _selectedIds.clear();
+                          _selectedItemplaces.clear();
+                        }
                       });
                     },
                     controlAffinity: ListTileControlAffinity.leading,
@@ -221,8 +226,10 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
                                                 _checked[foundIndex] = value;
                                                 if (value) {
                                                   _selectedIds.add(_itemplaces[foundIndex].id);
+                                                  _selectedItemplaces.add(_itemplaces[foundIndex]);
                                                 } else {
                                                   _selectedIds.remove(_itemplaces[foundIndex].id);
+                                                  _selectedItemplaces.remove(_itemplaces[foundIndex]);
                                                 }
                                                 int selectedIdsLength = _selectedIds.length;
                                                 if (selectedIdsLength == _itemplaces.length) {
@@ -262,7 +269,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
                 heroTag: "deleteBtn",
                 tooltip: getTranslated(context, 'deleteSelectedItemplaces'),
                 backgroundColor: Colors.red,
-                onPressed: () => _isDeleteButtonTapped ? null : _handleDeleteByIdIn(_selectedIds),
+                onPressed: () => _isDeleteButtonTapped ? null : _handleDeleteByIdIn(_selectedIds, _selectedItemplaces),
                 child: Icon(Icons.delete),
               ),
             ],
@@ -377,9 +384,13 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
     });
   }
 
-  _handleDeleteByIdIn(LinkedHashSet<int> ids) {
+  _handleDeleteByIdIn(LinkedHashSet<int> ids, LinkedHashSet<ItemplaceDashboardDto> selectedItemplaces) {
     if (ids.isEmpty) {
       showHint(context, getTranslated(context, 'needToSelectItemplaces') + ' ', getTranslated(context, 'whichYouWantToRemove'));
+      return;
+    }
+    if (selectedItemplaces.any((element) => element.numberOfTypeOfItems != 0)) {
+      showHint(context, getTranslated(context, 'cannotRemovePlacesWithItems') + ' ', getTranslated(context, 'hintReturnItems'));
       return;
     }
     showDialog(
