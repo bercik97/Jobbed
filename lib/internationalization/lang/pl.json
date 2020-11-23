@@ -550,6 +550,7 @@
   "areYouSureYouWantToDeleteSelectedPricelists": "Czy na pewno chcesz usunąć wybrane usługi cennika?",
   "selectedPricelistsRemoved": "Usunięto wybrane usługi cennika",
   "noPricelists": "Brak usług cennika",
+  "noWarehouses": "Brak magazynów",
   "noWarehousesHint": "Wygląda na to, że nie posiadasz dodanych magazynów.\nWybierz przycisk znajdujący się na dole aby dodać magazyn.",
   "noPricelistsHint": "Wygląda na to, że nie posiadasz dodanych usług do cennika.\nWybierz przycisk znajdujący się na dole aby dodać usługę.",
   "successfullyAddedNewPricelistServices": "Pomyślnie dodano nowe usługi cennika",

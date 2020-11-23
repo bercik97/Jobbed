@@ -550,6 +550,7 @@
   "areYouSureYouWantToDeleteSelectedPricelists": "Are you sure you want to delete selected pricelist services?",
   "selectedPricelistsRemoved": "Selected pricelist services removed",
   "noPricelists": "No pricelist services",
+  "noWarehouses": "No warehouses",
   "noWarehousesHint": "You seem to have no warehouses added.\nSelect the button at the bottom of the screen to add some warehouses.",
   "noPricelistsHint": "You seem to have no pricelist services added.\nSelect the button at the bottom of the screen to add some services.",
   "successfullyAddedNewPricelistServices": "Successfully added new pricelist services",
