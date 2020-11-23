@@ -235,6 +235,25 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                                                 ),
                                               ],
                                             ),
+                                            subtitle: Column(
+                                              children: [
+                                                SizedBox(height: 10),
+                                                for (int i = 0; i < item.locationInfoAboutItems.length; i++)
+                                                  Column(
+                                                    children: [
+                                                      Align(
+                                                        alignment: Alignment.topLeft,
+                                                        child: textWhiteBold(item.locationInfoAboutItems[i].name + ' x ' + item.locationInfoAboutItems[i].quantity),
+                                                      ),
+                                                      Align(
+                                                        alignment: Alignment.topLeft,
+                                                        child: textWhiteBold(item.locationInfoAboutItems[i].itemplace),
+                                                      ),
+                                                      SizedBox(height: 5),
+                                                    ],
+                                                  ),
+                                              ],
+                                            ),
                                             activeColor: GREEN,
                                             checkColor: WHITE,
                                             value: _checked[foundIndex],
