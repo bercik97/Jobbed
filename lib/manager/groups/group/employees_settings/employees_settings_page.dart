@@ -124,7 +124,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                 ListTileTheme(
                   contentPadding: EdgeInsets.only(left: 3),
                   child: CheckboxListTile(
-                    title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
+                    title: text13White(getTranslated(this.context, 'selectUnselectAll')),
                     value: _isChecked,
                     activeColor: GREEN,
                     checkColor: WHITE,
@@ -203,7 +203,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                       Align(
                                           child: Row(
                                             children: <Widget>[
-                                              textWhite(getTranslated(this.context, 'moneyPerHour') + ': '),
+                                              text13White(getTranslated(this.context, 'moneyPerHour') + ': '),
                                               textGreenBold(employee.moneyPerHour.toString() + ' ' + currency),
                                             ],
                                           ),
@@ -211,7 +211,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                       Align(
                                           child: Row(
                                             children: <Widget>[
-                                              textWhite(getTranslated(this.context, 'selfUpdatingHours') + ': '),
+                                              text13White(getTranslated(this.context, 'selfUpdatingHours') + ': '),
                                               employee.canFillHours ? textGreenBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
                                             ],
                                           ),
@@ -219,7 +219,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                       Align(
                                           child: Row(
                                             children: <Widget>[
-                                              textWhite(getTranslated(this.context, 'workTimeByLocation') + ': '),
+                                              text13White(getTranslated(this.context, 'workTimeByLocation') + ': '),
                                               employee.workTimeByLocation ? textGreenBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
                                             ],
                                           ),
@@ -227,7 +227,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                       Align(
                                           child: Row(
                                             children: <Widget>[
-                                              textWhite(getTranslated(this.context, 'piecework') + ': '),
+                                              text13White(getTranslated(this.context, 'piecework') + ': '),
                                               employee.piecework ? textGreenBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
                                             ],
                                           ),
@@ -777,7 +777,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
       value: value,
       groupValue: groupValue,
       onChanged: onChanged,
-      title: textWhite(title),
+      title: text13White(title),
     );
   }
 
