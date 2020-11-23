@@ -18,14 +18,14 @@ class ItemplaceService {
 
   static const String _url = '$SERVER_IP/itemplaces';
 
-  Future<String> create(String location) async {
+  Future<dynamic> create(int companyId, String location) async {
     Response res = await post(
-      _url,
-      body: jsonEncode(location),
+      _url + '/companies/$companyId',
+      body: location,
       headers: _headers,
     );
     if (res.statusCode == 200) {
-      return res.body.toString();
+      return res;
     } else if (res.statusCode == 401) {
       return Logout.handle401WithLogout(_context);
     } else {

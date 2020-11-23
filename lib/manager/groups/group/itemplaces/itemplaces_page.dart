@@ -368,11 +368,12 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
       ToastService.showErrorToast(getTranslated(this.context, 'itemplaceLocationIsRequired'));
       return;
     }
-    _itemplaceService.create(location).then((res) {
-      Navigator.pop(context);
-      Navigator.pop(context);
-      _refresh();
-      _showSuccessDialog(getTranslated(this.context, 'successfullyAddedNewItemplace'));
+    _itemplaceService.create(int.parse(_user.companyId), location).then((res) {
+      ToastService.showSuccessToast(getTranslated(this.context, 'successfullyAddedNewItemplace'));
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ItemplacesPage(_model)),
+      );
     }).catchError((onError) {
       setState(() => _isAddButtonTapped = false);
       String errorMsg = onError.toString();
