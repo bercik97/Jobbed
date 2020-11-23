@@ -58,18 +58,10 @@ flutter:
   uses-material-design: true
 
   assets:
-    - lib/internationalization/lang/be.json
     - lib/internationalization/lang/en.json
-    - lib/internationalization/lang/fr.json
     - lib/internationalization/lang/pt.json
-    - lib/internationalization/lang/de.json
-    - lib/internationalization/lang/ro.json
-    - lib/internationalization/lang/nl.json
-    - lib/internationalization/lang/it.json
     - lib/internationalization/lang/pl.json
     - lib/internationalization/lang/ru.json
-    - lib/internationalization/lang/es.json
-    - lib/internationalization/lang/ca.json
     - lib/internationalization/lang/uk.json
 
     - images/logo.png

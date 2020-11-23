@@ -96,18 +96,10 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(primarySwatch: MaterialColor(0xFFB5D76D, GREEN_RGBO)),
         locale: _locale,
         supportedLocales: [
-          Locale('be', 'BY'),
           Locale('en', 'EN'),
-          Locale('fr', 'FR'),
           Locale('pt', 'PT'), // GEORGIA
-          Locale('de', 'DE'),
-          Locale('ro', 'RO'),
-          Locale('nl', 'NL'),
-          Locale('it', 'IT'), // NORWAY
           Locale('pl', 'PL'),
           Locale('ru', 'RU'),
-          Locale('es', 'ES'),
-          Locale('ca', 'CA'), // SWEDEN
           Locale('uk', 'UA'),
         ],
         debugShowMaterialGrid: false,
