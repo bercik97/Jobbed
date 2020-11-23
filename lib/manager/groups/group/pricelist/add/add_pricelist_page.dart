@@ -98,6 +98,7 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
                         counterStyle: TextStyle(color: WHITE),
                         border: OutlineInputBorder(),
                         hintText: getTranslated(context, 'textSomePricelistPrice'),
+                        labelText: getTranslated(context, 'price'),
                         labelStyle: TextStyle(color: WHITE),
                       ),
                     ),
