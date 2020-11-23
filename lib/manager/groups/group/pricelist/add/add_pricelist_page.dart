@@ -86,9 +86,9 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
                       controller: _pricelistPriceController,
                       keyboardType: TextInputType.numberWithOptions(decimal: true),
                       inputFormatters: <TextInputFormatter>[
-                        WhitelistingTextInputFormatter(RegExp(r'^\d+\.?\d{0,2}')),
+                        WhitelistingTextInputFormatter(RegExp(r'^\d+\.?\d{0,3}')),
                       ],
-                      maxLength: 7,
+                      maxLength: 8,
                       cursorColor: WHITE,
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: WHITE),
