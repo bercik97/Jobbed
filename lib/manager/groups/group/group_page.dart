@@ -336,7 +336,7 @@ class _GroupPageState extends State<GroupPage> {
         child: Column(
           children: <Widget>[
             Image(height: 100, image: AssetImage(imagePath)),
-            text18WhiteBold(getTranslated(context, title)),
+            textCenter18WhiteBold(getTranslated(context, title)),
             Padding(
               padding: EdgeInsets.only(left: 10, right: 10),
               child: textCenter13White(
