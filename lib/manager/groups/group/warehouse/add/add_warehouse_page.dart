@@ -113,12 +113,12 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
                       cursorColor: WHITE,
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: WHITE),
-                      validator: RequiredValidator(errorText: getTranslated(context, 'quantityIsRequired')),
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
                         counterStyle: TextStyle(color: WHITE),
                         border: OutlineInputBorder(),
                         hintText: getTranslated(context, 'textSomeQuantity'),
+                        labelText: getTranslated(context, 'quantity'),
                         labelStyle: TextStyle(color: WHITE),
                       ),
                     ),

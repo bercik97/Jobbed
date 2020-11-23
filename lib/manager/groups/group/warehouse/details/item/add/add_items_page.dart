@@ -102,6 +102,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
                         counterStyle: TextStyle(color: WHITE),
                         border: OutlineInputBorder(),
                         hintText: getTranslated(context, 'textSomeQuantity'),
+                        labelText: getTranslated(context, 'quantity'),
                         labelStyle: TextStyle(color: WHITE),
                       ),
                     ),
