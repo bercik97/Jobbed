@@ -52,10 +52,9 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
   bool _loading = false;
   bool _isChecked = false;
   List<bool> _checked = new List();
-  LinkedHashSet<int> _selectedIds = new LinkedHashSet();
+  LinkedHashSet<String> _selectedNames = new LinkedHashSet();
   LinkedHashSet<ItemDto> _selectedItems = new LinkedHashSet();
 
-  bool _isAddButtonTapped = false;
   bool _isDeleteButtonTapped = false;
 
   ScrollController _scrollController = new ScrollController();
@@ -158,10 +157,10 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                         _checked.forEach((b) => l.add(value));
                         _checked = l;
                         if (value) {
-                          _selectedIds.addAll(_filteredItems.map((e) => e.id));
+                          _selectedNames.addAll(_filteredItems.map((e) => e.name));
                           _selectedItems.addAll(_filteredItems);
                         } else {
-                          _selectedIds.clear();
+                          _selectedNames.clear();
                           _selectedItems.clear();
                         }
                       });
@@ -261,13 +260,13 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                                               setState(() {
                                                 _checked[foundIndex] = value;
                                                 if (value) {
-                                                  _selectedIds.add(_items[foundIndex].id);
+                                                  _selectedNames.add(_items[foundIndex].name);
                                                   _selectedItems.add(_items[foundIndex]);
                                                 } else {
-                                                  _selectedIds.remove(_items[foundIndex].id);
+                                                  _selectedNames.remove(_items[foundIndex].name);
                                                   _selectedItems.remove(_items[foundIndex]);
                                                 }
-                                                int selectedIdsLength = _selectedIds.length;
+                                                int selectedIdsLength = _selectedNames.length;
                                                 if (selectedIdsLength == _items.length) {
                                                   _isChecked = true;
                                                 } else if (selectedIdsLength == 0) {
@@ -333,7 +332,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                 heroTag: "deleteBtn",
                 tooltip: getTranslated(context, 'deleteSelectedItems'),
                 backgroundColor: Colors.red,
-                onPressed: () => _isDeleteButtonTapped ? null : _handleDeleteByIdIn(_selectedIds),
+                onPressed: () => _isDeleteButtonTapped ? null : _handleDeleteByIdIn(_selectedNames),
                 child: Icon(Icons.delete),
               ),
             ],
@@ -444,9 +443,9 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
     );
   }
 
-  _handleDeleteByIdIn(LinkedHashSet<int> ids) {
+  _handleDeleteByIdIn(LinkedHashSet<String> names) {
     setState(() => _isDeleteButtonTapped = true);
-    if (ids.isEmpty) {
+    if (names.isEmpty) {
       showHint(context, getTranslated(context, 'needToSelectItems') + ' ', getTranslated(context, 'whichYouWantToRemove'));
       setState(() => _isDeleteButtonTapped = false);
       return;
@@ -462,7 +461,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
             FlatButton(
               child: textWhite(getTranslated(this.context, 'yesDeleteThem')),
               onPressed: () {
-                _itemService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
+                _itemService.deleteByNamesIn(names.map((e) => e.toString()).toList()).then((res) {
                   Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (BuildContext context) => WarehouseDetailsPage(_model, _warehouseDto)),
                     ModalRoute.withName('/'),

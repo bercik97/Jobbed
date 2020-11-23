@@ -61,9 +61,9 @@ class ItemService {
     }
   }
 
-  Future<dynamic> deleteByIdIn(List<String> ids) async {
+  Future<dynamic> deleteByNamesIn(List<String> names) async {
     Response res = await delete(
-      _url + '/$ids',
+      _url + '/$names',
       headers: _headers,
     );
     if (res.statusCode == 200) {
