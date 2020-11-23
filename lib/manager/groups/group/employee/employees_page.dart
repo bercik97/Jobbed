@@ -222,14 +222,14 @@ class _EmployeesPageState extends State<EmployeesPage> {
         children: [
           textWhite(getTranslated(context, 'workStatus')),
           iconOrange(Icons.report_gmailerrorred_outlined),
-          textRed(' ' + getTranslated(context, 'workInProgress')),
+          textOrange(' ' + getTranslated(context, 'workInProgress')),
         ],
       );
     } else {
       workStatusWidget = Row(
         children: [
           iconGreen(Icons.check),
-          textRed(' ' + getTranslated(context, 'workIsDone')),
+          textGreen(' ' + getTranslated(context, 'workIsDone')),
         ],
       );
     }

@@ -142,6 +142,12 @@ Text textCenter15RedUnderline(String text) { return Text(text, textAlign: TextAl
 
 
 /////////////////////
+/*     TEXT RED    */
+/////////////////////
+Text textOrange(String text) { return Text(text, style: TextStyle(color: Colors.orange)); }
+
+
+/////////////////////
 /* TEXT ORANGE BOLD*/
 /////////////////////
 Text text20OrangeBold(String text) { return Text(text, style: TextStyle(fontSize: 20, color: Colors.orange, fontWeight: FontWeight.bold)); }
