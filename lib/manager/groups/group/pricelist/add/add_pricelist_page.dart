@@ -256,7 +256,7 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
       );
     }).catchError((onError) {
       String errorMsg = onError.toString();
-      if (errorMsg.contains("PRICELIST_NAME_EXISTS")) {
+      if (errorMsg.contains("PRICE_LIST_NAME_EXISTS")) {
         _errorDialog(getTranslated(context, 'pricelistServiceNameExists') + '\n' + getTranslated(context, 'chooseOtherPricelistServiceName'));
       } else {
         ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
