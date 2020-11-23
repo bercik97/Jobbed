@@ -6,14 +6,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:give_job/api/item/dto/create_item_dto.dart';
 import 'package:give_job/api/item/dto/item_dto.dart';
 import 'package:give_job/api/item/service/item_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/warehouse/dto/warehouse_dashboard_dto.dart';
-import 'package:give_job/api/warehouse_history/dto/warehouse_history_dto.dart';
-import 'package:give_job/api/warehouse_history/service/warehouse_history_service.dart';
-import 'package:give_job/api/workday/util/workday_util.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
@@ -23,7 +19,6 @@ import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/circular_progress_indicator.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/loader.dart';
@@ -50,7 +45,6 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
   WarehouseDashboardDto _warehouseDto;
 
   ItemService _itemService;
-  WarehouseHistoryService _warehouseHistoryService;
 
   List<ItemDto> _items = new List();
   List<ItemDto> _filteredItems = new List();
@@ -72,7 +66,6 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
     this._user = _model.user;
     this._warehouseDto = widget._warehouseDto;
     this._itemService = ServiceInitializer.initialize(context, _user.authHeader, ItemService);
-    this._warehouseHistoryService = ServiceInitializer.initialize(context, _user.authHeader, WarehouseHistoryService);
     super.initState();
     _loading = true;
     _itemService.findAllByWarehouseId(_warehouseDto.id).then((res) {
@@ -125,30 +118,6 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                         alignment: Alignment.topLeft,
                       ),
                     ],
-                  ),
-                  trailing: IconButton(
-                    icon: icon30Orange(Icons.history),
-                    onPressed: () {
-                      showGeneralDialog(
-                        context: context,
-                        barrierColor: DARK.withOpacity(0.95),
-                        barrierDismissible: false,
-                        transitionDuration: Duration(milliseconds: 400),
-                        pageBuilder: (_, __, ___) {
-                          return FutureBuilder<List<WarehouseHistoryDto>>(
-                            future: _warehouseHistoryService.findAllByWarehouseId(_warehouseDto.id),
-                            builder: (BuildContext context, AsyncSnapshot<List<WarehouseHistoryDto>> snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
-                                return Center(child: circularProgressIndicator());
-                              } else {
-                                List<WarehouseHistoryDto> history = snapshot.data;
-                                return WorkdayUtil.buildWarehouseHistoryDataTable(this.context, history);
-                              }
-                            },
-                          );
-                        },
-                      );
-                    },
                   ),
                 ),
                 Container(
