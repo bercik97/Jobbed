@@ -659,5 +659,6 @@
   "itemplaceDetails": "ნივთის ადგილის დეტალები",
   "returnItems": "დააბრუნე საგნები",
   "goToItemplacesDetailsPage": "ნივთების ადგილების გვერდზე დაბრუნება",
-  "successfullyReturnItemsToWarehouses": "წარმატებით დააბრუნე საგნები საწყობებში"
+  "successfullyReturnItemsToWarehouses": "წარმატებით დააბრუნე საგნები საწყობებში",
+  "choosePlaceWhereSelectedItemsWillBePlaced": "შეარჩიეთ ადგილი, სადაც განთავსდება შერჩეული საგნები რაოდენობით"
 }

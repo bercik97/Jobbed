@@ -659,5 +659,6 @@
   "itemplaceDetails": "Деталі місця товару",
   "returnItems": "Повернути елементи",
   "goToItemplacesDetailsPage": "Повернутися на сторінку позицій",
-  "successfullyReturnItemsToWarehouses": "Успішно повернути товари на склади"
+  "successfullyReturnItemsToWarehouses": "Успішно повернути товари на склади",
+  "choosePlaceWhereSelectedItemsWillBePlaced": "Виберіть місце, де будуть розміщені вибрані предмети з кількістю"
 }

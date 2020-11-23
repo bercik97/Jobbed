@@ -659,5 +659,6 @@
   "itemplaceDetails": "Szczegóły miejsca przedmiotów",
   "returnItems": "Zwróć przedmioty",
   "goToItemplacesDetailsPage": "Powrót do sekcji miejsc przedmiotów",
-  "successfullyReturnItemsToWarehouses": "Pomyślnie zwrócono przedmioty do magazynów"
+  "successfullyReturnItemsToWarehouses": "Pomyślnie zwrócono przedmioty do magazynów",
+  "choosePlaceWhereSelectedItemsWillBePlaced": "Wybierz miejsce, w którym zostaną umieszczone wybrane przedmioty"
 }

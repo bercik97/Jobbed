@@ -659,5 +659,6 @@
   "itemplaceDetails": "Детали места размещения",
   "returnItems": "Возвращаемые товары",
   "goToItemplacesDetailsPage": "Вернуться на страницу элементов размещения",
-  "successfullyReturnItemsToWarehouses": "Успешно вернуть товары на склады"
+  "successfullyReturnItemsToWarehouses": "Успешно вернуть товары на склады",
+  "choosePlaceWhereSelectedItemsWillBePlaced": "Выберите место, где будут размещены выбранные предметы с указанием количества"
 }

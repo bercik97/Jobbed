@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:give_job/api/item/dto/create_item_dto.dart';
 import 'package:give_job/api/item/dto/item_dto.dart';
 import 'package:give_job/api/itemplace/dto/assign_items_dto.dart';
 import 'package:give_job/api/itemplace/dto/itemplace_dashboard_dto.dart';
@@ -214,7 +213,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
                         padding: EdgeInsets.only(top: 50),
                         child: Column(
                           children: [
-                            textCenter20GreenBold('Choose place where selected items with quantites will be placed'),
+                            textCenter20GreenBold(getTranslated(this.context, 'choosePlaceWhereSelectedItemsWillBePlaced')),
                           ],
                         ),
                       ),
