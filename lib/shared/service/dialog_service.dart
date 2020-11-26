@@ -21,10 +21,12 @@ class DialogService {
               ),
             ),
             actions: actions == null
-                ? FlatButton(
-                    child: textWhite(getTranslated(context, 'close')),
-                    onPressed: () => Navigator.of(context).pop(),
-                  )
+                ? <Widget>[
+                    FlatButton(
+                      child: textWhite(getTranslated(context, 'close')),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ]
                 : actions,
           ),
           onWillPop: () => onWillPop,
