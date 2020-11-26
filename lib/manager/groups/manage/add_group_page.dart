@@ -17,6 +17,7 @@ import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
@@ -393,7 +394,11 @@ class _AddGroupPageState extends State<AddGroupPage> {
   void _createGroup() {
     setState(() => _isAddButtonTapped = true);
     if (!_isValid()) {
-      _errorDialog(getTranslated(context, 'correctInvalidFields'));
+      DialogService.showCustomDialog(
+        context: context,
+        titleWidget: textRed(getTranslated(context, 'error')),
+        content: getTranslated(context, 'correctInvalidFields'),
+      );
       setState(() => _isAddButtonTapped = false);
       return;
     }
@@ -418,37 +423,19 @@ class _AddGroupPageState extends State<AddGroupPage> {
     }).catchError((onError) {
       String errorMsg = onError.toString();
       if (errorMsg.contains("GROUP_NAME_EXISTS")) {
-        _errorDialog(getTranslated(context, 'groupNameExists') + '\n' + getTranslated(context, 'chooseOtherGroupName'));
+        DialogService.showCustomDialog(
+          context: context,
+          titleWidget: textRed(getTranslated(context, 'error')),
+          content: getTranslated(context, 'groupNameExists') + '\n' + getTranslated(context, 'chooseOtherGroupName'),
+        );
       } else if (errorMsg.contains("SOME_EMPLOYEES_ARE_IN_OTHER_GROUP")) {
-        _errorDialog(getTranslated(context, 'someEmployeesAreInOtherGroup'));
+        DialogService.showCustomDialog(
+          context: context,
+          titleWidget: textRed(getTranslated(context, 'error')),
+          content: getTranslated(context, 'someEmployeesAreInOtherGroup'),
+        );
       }
       setState(() => _isAddButtonTapped = false);
     });
-  }
-
-  _errorDialog(String content) {
-    return showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: DARK,
-          title: textGreen(getTranslated(context, 'error')),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                textWhite(content),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: textWhite(getTranslated(context, 'close')),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
-        );
-      },
-    );
   }
 }

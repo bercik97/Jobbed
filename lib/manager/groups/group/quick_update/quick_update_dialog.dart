@@ -7,6 +7,7 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/vocations/timesheets/calendar/vocations_calendar_page.dart';
 import 'package:give_job/shared/libraries/colors.dart';
+import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/widget/buttons.dart';
@@ -97,24 +98,6 @@ class QuickUpdateDialog {
     );
   }
 
-  static Widget _buildUpdateButton(String title, Function() fun) {
-    return Column(
-      children: <Widget>[
-        MaterialButton(
-          elevation: 0,
-          minWidth: 200,
-          height: 50,
-          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-          onPressed: () => fun(),
-          color: GREEN,
-          child: text20White(title),
-          textColor: Colors.white,
-        ),
-        SizedBox(height: 15),
-      ],
-    );
-  }
-
   static void _buildUpdateHoursDialog(BuildContext context) {
     TextEditingController _hoursController = new TextEditingController();
     showGeneralDialog(
@@ -195,12 +178,18 @@ class QuickUpdateDialog {
                           _initialize(context, _model.user.authHeader);
                           _timesheetService.updateHoursByGroupIdAndDate(_model.groupId, _todaysDate, hours).then((res) {
                             ToastService.showSuccessToast(getTranslated(context, 'todaysGroupHoursUpdatedSuccessfully'));
-                          }).catchError((onError) {
-                            String s = onError.toString();
-                            if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
-                              _errorDialog(context, getTranslated(context, 'cannotUpdateTodaysHours'));
-                            }
-                          });
+                          }).catchError(
+                            (onError) {
+                              String s = onError.toString();
+                              if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
+                                DialogService.showCustomDialog(
+                                  context: context,
+                                  titleWidget: textRed(getTranslated(context, 'error')),
+                                  content: getTranslated(context, 'cannotUpdateTodaysHours'),
+                                );
+                              }
+                            },
+                          );
                         },
                       ),
                     ],
@@ -297,7 +286,11 @@ class QuickUpdateDialog {
                           }).catchError((onError) {
                             String s = onError.toString();
                             if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
-                              _errorDialog(context, getTranslated(context, 'cannotUpdateTodaysRating'));
+                              DialogService.showCustomDialog(
+                                context: context,
+                                titleWidget: textRed(getTranslated(context, 'error')),
+                                content: getTranslated(context, 'cannotUpdateTodaysRating'),
+                              );
                             }
                           });
                         },
@@ -393,12 +386,18 @@ class QuickUpdateDialog {
                           _initialize(context, _model.user.authHeader);
                           _timesheetService.updatePlanByGroupIdAndDate(_model.groupId, _todaysDate, plan).then((res) {
                             ToastService.showSuccessToast(getTranslated(context, 'todaysGroupPlanUpdatedSuccessfully'));
-                          }).catchError((onError) {
-                            String s = onError.toString();
-                            if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
-                              _errorDialog(context, getTranslated(context, 'cannotUpdateTodaysPlan'));
-                            }
-                          });
+                          }).catchError(
+                            (onError) {
+                              String s = onError.toString();
+                              if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
+                                DialogService.showCustomDialog(
+                                  context: context,
+                                  titleWidget: textRed(getTranslated(context, 'error')),
+                                  content: getTranslated(context, 'cannotUpdateTodaysPlan'),
+                                );
+                              }
+                            },
+                          );
                         },
                       ),
                     ],
@@ -495,7 +494,11 @@ class QuickUpdateDialog {
                           }).catchError((onError) {
                             String s = onError.toString();
                             if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
-                              _errorDialog(context, getTranslated(context, 'cannotUpdateTodaysOpinion'));
+                              DialogService.showCustomDialog(
+                                context: context,
+                                titleWidget: textRed(getTranslated(context, 'error')),
+                                content: getTranslated(context, 'cannotUpdateTodaysOpinion'),
+                              );
                             }
                           });
                         },
@@ -513,31 +516,5 @@ class QuickUpdateDialog {
 
   static _initialize(BuildContext context, String authHeader) {
     _timesheetService = ServiceInitializer.initialize(context, authHeader, TimesheetService);
-  }
-
-  static _errorDialog(BuildContext context, String content) {
-    return showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: DARK,
-          title: textGreen(getTranslated(context, 'error')),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                textWhite(content),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: textWhite(getTranslated(context, 'close')),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
-        );
-      },
-    );
   }
 }

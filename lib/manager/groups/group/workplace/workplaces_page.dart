@@ -13,6 +13,7 @@ import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
@@ -686,7 +687,11 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                   if (errorMsg.contains("SOMEONE_IS_WORKING_IN_WORKPLACE_FOR_DELETE")) {
                     setState(() => _isDeleteButtonTapped = false);
                     Navigator.pop(this.context);
-                    _showErrorDialog();
+                    DialogService.showCustomDialog(
+                      context: context,
+                      titleWidget: textRed(getTranslated(context, 'error')),
+                      content: getTranslated(context, 'cannotDeleteWorkplaceWhenSomeoneWorkingThere'),
+                    );
                     return;
                   }
                   setState(() => _isDeleteButtonTapped = false);
@@ -697,42 +702,6 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
             FlatButton(
               child: textWhite(getTranslated(this.context, 'no')),
               onPressed: () => Navigator.of(this.context).pop(),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showErrorDialog() {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: DARK,
-          title: textWhite(getTranslated(this.context, 'failure')),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    textCenter20White(getTranslated(this.context, 'cannotDeleteWorkplaceWhenSomeoneWorkingThere')),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            MaterialButton(
-              elevation: 0,
-              height: 50,
-              minWidth: double.maxFinite,
-              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-              color: GREEN,
-              child: text20WhiteBold(getTranslated(this.context, 'close')),
-              onPressed: () => Navigator.of(context).pop(),
             ),
           ],
         );

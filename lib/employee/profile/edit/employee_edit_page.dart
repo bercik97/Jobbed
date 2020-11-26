@@ -12,6 +12,7 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
@@ -668,7 +669,11 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
           shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
           onPressed: () {
             if (!_isValid()) {
-              _errorDialog(getTranslated(context, 'correctInvalidFields'));
+              DialogService.showCustomDialog(
+                context: context,
+                titleWidget: textRed(getTranslated(context, 'error')),
+                content: getTranslated(context, 'correctInvalidFields'),
+              );
               return;
             } else {
               _employeeService.updateEmployeeAndUserFieldsValuesById(
@@ -701,11 +706,15 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
                 _user.nationality = _nationality;
                 _user.info = _nameController.text + ' ' + _surnameController.text;
                 _user.username = _usernameController.text;
-              }).catchError((onError) {
-                _errorDialog(
-                  getTranslated(context, 'smthWentWrong'),
-                );
-              });
+              }).catchError(
+                (onError) {
+                  DialogService.showCustomDialog(
+                    context: context,
+                    titleWidget: textRed(getTranslated(context, 'error')),
+                    content: getTranslated(context, 'smthWentWrong'),
+                  );
+                },
+              );
             }
           },
           color: GREEN,
@@ -713,32 +722,6 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
           textColor: Colors.white,
         ),
       ],
-    );
-  }
-
-  _errorDialog(String content) {
-    return showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: DARK,
-          title: textGreen(getTranslated(context, 'error')),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                textWhite(content),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: textWhite(getTranslated(context, 'close')),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
-        );
-      },
     );
   }
 }
