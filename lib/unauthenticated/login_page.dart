@@ -7,16 +7,14 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/token/service/token_service.dart';
 import 'package:give_job/employee/employee_profile_page.dart';
 import 'package:give_job/main.dart';
-import 'package:give_job/manager/groups/group/group_page.dart';
-import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/groups_dashboard_page.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
-import 'package:give_job/shared/widget/circular_progress_indicator.dart';
 import 'package:give_job/shared/widget/icons.dart';
+import 'package:give_job/shared/widget/progress_dialog_initializer.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:give_job/unauthenticated/get_started_page.dart';
 import 'package:give_job/unauthenticated/register/employee_register_page.dart';
@@ -34,6 +32,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   TokenService _tokenService;
+  ProgressDialog _progressDialog;
 
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -42,8 +41,6 @@ class _LoginPageState extends State<LoginPage> {
   bool _passwordVisible;
   bool _isLoginButtonTapped;
   bool _isConfirmTokenButtonTapped;
-
-  ProgressDialog _progressDialog;
 
   @override
   void initState() {
@@ -56,12 +53,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    _progressDialog = new ProgressDialog(context);
-    _progressDialog.style(
-      message: '  ' + getTranslated(context, 'loading'),
-      messageTextStyle: TextStyle(color: DARK),
-      progressWidget: circularProgressIndicator(),
-    );
+    this._progressDialog = ProgressDialogInitializer.initializeProgressDialog(context);
     return Scaffold(
       backgroundColor: DARK,
       appBar: AppBar(
@@ -226,7 +218,7 @@ class _LoginPageState extends State<LoginPage> {
         if (role == ROLE_EMPLOYEE) {
           Navigator.push(context, MaterialPageRoute(builder: (context) => EmployeeProfilPage(user)));
         } else if (role == ROLE_MANAGER) {
-          _chooseManagerPage(map, user);
+          Navigator.push(context, MaterialPageRoute(builder: (context) => GroupsDashboardPage(user)));
         }
         ToastService.showSuccessToast(getTranslated(context, 'loginSuccessfully'));
       } else if (res.statusCode == 200 && !resNotNullOrEmpty) {
@@ -248,21 +240,6 @@ class _LoginPageState extends State<LoginPage> {
     String basicAuth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
     var res = await http.get('$SERVER_IP/login', headers: {'authorization': basicAuth});
     return res;
-  }
-
-  void _chooseManagerPage(Map data, User user) {
-    String containsMoreThanOneGroup = data['containsMoreThanOneGroup'];
-    if (containsMoreThanOneGroup == 'true' || containsMoreThanOneGroup == null || containsMoreThanOneGroup == 'null') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => GroupsDashboardPage(user)));
-      return;
-    }
-    int groupId = int.parse(data['groupId']);
-    String groupName = data['groupName'];
-    String groupDescription = data['groupDescription'];
-    String numberOfEmployees = data['numberOfEmployees'];
-    String countryOfWork = data['countryOfWork'];
-    GroupModel model = new GroupModel(user, groupId, groupName, groupDescription, numberOfEmployees, countryOfWork);
-    Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage(model)));
   }
 
   _buildCreateAccountDialog() {
