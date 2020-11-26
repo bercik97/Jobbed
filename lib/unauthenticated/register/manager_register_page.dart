@@ -315,7 +315,6 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
             counterStyle: TextStyle(color: WHITE),
-            suffixIcon: iconGreen(Icons.assignment_turned_in_outlined),
             border: OutlineInputBorder(),
             prefixIcon: iconWhite(icon),
             labelText: name,
