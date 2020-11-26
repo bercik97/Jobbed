@@ -237,8 +237,9 @@ class _LoginPageState extends State<LoginPage> {
         ToastService.showErrorToast(getTranslated(context, 'wrongUsernameOrPassword'));
       }
     }, onError: (e) {
-      _progressDialog.hide(); // TODO progress dialog doesn't hide when error is catched
-      ToastService.showErrorToast(getTranslated(context, 'cannotConnectToServer'));
+      Future.delayed(Duration(seconds: 1)).then((value) {
+        _progressDialog.hide().whenComplete(() => ToastService.showErrorToast(getTranslated(context, 'cannotConnectToServer')));
+      });
     });
     setState(() => _isLoginButtonTapped = false);
   }
