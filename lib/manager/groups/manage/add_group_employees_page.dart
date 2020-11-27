@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/employee/dto/employee_basic_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/group/service/group_service.dart';
@@ -301,15 +302,20 @@ class _AddGroupEmployeesPageState extends State<AddGroupEmployeesPage> {
       setState(() => _isAddButtonTapped = false);
       return;
     }
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _groupService.addGroupEmployees(_groupId, _selectedIds.map((e) => e.toInt()).toList()).then((value) {
-      ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedGroupEmployees'));
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => GroupsDashboardPage(_user)),
-      );
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedGroupEmployees'));
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => GroupsDashboardPage(_user)),
+        );
+      });
     }).catchError((onError) {
-      ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
-      setState(() => _isAddButtonTapped = false);
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+        setState(() => _isAddButtonTapped = false);
+      });
     });
   }
 }

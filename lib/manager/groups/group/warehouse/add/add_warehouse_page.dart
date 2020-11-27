@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/warehouse/dto/create_warehouse_dto.dart';
@@ -274,6 +275,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
       setState(() => _isAddButtonTapped = false);
       return;
     }
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     CreateWarehouseDto dto = new CreateWarehouseDto(
       companyId: int.parse(_user.companyId),
       name: _warehouseNameController.text,
@@ -281,23 +283,27 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
       itemNamesWithQuantities: _itemNamesWithQuantities,
     );
     _warehouseService.create(dto).then((res) {
-      ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewWarehouse'));
-      Navigator.push(
-        this.context,
-        MaterialPageRoute(builder: (context) => WarehousePage(_model)),
-      );
-    }).catchError((onError) {
-      String errorMsg = onError.toString();
-      if (errorMsg.contains("WAREHOUSE_NAME_EXISTS")) {
-        DialogService.showCustomDialog(
-          context: context,
-          titleWidget: textRed(getTranslated(context, 'error')),
-          content: getTranslated(context, 'warehouseNameExists') + '\n' + getTranslated(context, 'chooseOtherWarehouseName'),
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewWarehouse'));
+        Navigator.push(
+          this.context,
+          MaterialPageRoute(builder: (context) => WarehousePage(_model)),
         );
-      } else {
-        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
-      }
-      setState(() => _isAddButtonTapped = false);
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        String errorMsg = onError.toString();
+        if (errorMsg.contains("WAREHOUSE_NAME_EXISTS")) {
+          DialogService.showCustomDialog(
+            context: context,
+            titleWidget: textRed(getTranslated(context, 'error')),
+            content: getTranslated(context, 'warehouseNameExists') + '\n' + getTranslated(context, 'chooseOtherWarehouseName'),
+          );
+        } else {
+          ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+        }
+        setState(() => _isAddButtonTapped = false);
+      });
     });
   }
 }

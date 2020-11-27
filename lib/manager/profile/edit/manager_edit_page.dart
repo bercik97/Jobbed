@@ -2,6 +2,7 @@ import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_job/api/manager/service/manager_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
@@ -344,6 +345,7 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
               );
               return;
             } else {
+              showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
               _managerService.updateManagerAndUserFieldsValuesById(
                 int.parse(_user.id),
                 {
@@ -355,16 +357,20 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
                   "whatsApp": _whatsAppController.text,
                 },
               ).then((res) {
-                ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedInformationAboutYou'));
-                _user.nationality = _nationality;
-                _user.info = _nameController.text + ' ' + _surnameController.text;
-                _user.username = _usernameController.text;
+                Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                  ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedInformationAboutYou'));
+                  _user.nationality = _nationality;
+                  _user.info = _nameController.text + ' ' + _surnameController.text;
+                  _user.username = _usernameController.text;
+                });
               }).catchError((onError) {
-                DialogService.showCustomDialog(
-                  context: context,
-                  titleWidget: textRed(getTranslated(context, 'error')),
-                  content: getTranslated(context, 'smthWentWrong'),
-                );
+                Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                  DialogService.showCustomDialog(
+                    context: context,
+                    titleWidget: textRed(getTranslated(context, 'error')),
+                    content: getTranslated(context, 'smthWentWrong'),
+                  );
+                });
               });
             }
           },

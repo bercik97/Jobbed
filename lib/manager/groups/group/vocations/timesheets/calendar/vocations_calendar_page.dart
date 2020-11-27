@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/api/vocation/dto/vocation_employee_dto.dart';
@@ -58,15 +59,10 @@ class _VocationsCalendarPageState extends State<VocationsCalendarPage> with Tick
     _timesheetService.findVocationCalendarInfoForGroup(_model.groupId).then((res) {
       setState(() {
         _loading = false;
-        res.forEach((key, value) {
-          _events[key] = value;
-        });
+        res.forEach((key, value) => _events[key] = value);
         DateTime currentDate = DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()));
         _selectedEvents = _events[currentDate] ?? [];
-        _animationController = AnimationController(
-          vsync: this,
-          duration: const Duration(milliseconds: 400),
-        );
+        _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
         _animationController.forward();
       });
     });
@@ -353,18 +349,18 @@ class _VocationsCalendarPageState extends State<VocationsCalendarPage> with Tick
   }
 
   void verifyVocation(int id) {
-    _vocationService.updateFieldsValuesById(
-      id,
-      {
-        'isVerified': true,
-      },
-    ).then(
-      (value) => {
-        _refresh(),
-        Navigator.of(context).pop(),
-        ToastService.showSuccessToast(getTranslated(context, 'vocationVerifiedSuccessfully')),
-      },
-    );
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _vocationService.updateFieldsValuesById(id, {'isVerified': true}).then((value) {
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        _refresh();
+        Navigator.of(context).pop();
+        ToastService.showSuccessToast(getTranslated(context, 'vocationVerifiedSuccessfully'));
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+      });
+    });
   }
 
   Widget _buildRemoveVocationButton(String employeeInfo, int vocationId) {
@@ -385,13 +381,18 @@ class _VocationsCalendarPageState extends State<VocationsCalendarPage> with Tick
   }
 
   void removeVocation(int vocationId) {
-    _vocationService.removeVocation(vocationId).then(
-          (value) => {
-            _refresh(),
-            Navigator.of(context).pop(),
-            ToastService.showSuccessToast(getTranslated(context, 'vocationRemovedSuccessfully')),
-          },
-        );
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _vocationService.removeVocation(vocationId).then((value) {
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        _refresh();
+        Navigator.of(context).pop();
+        ToastService.showSuccessToast(getTranslated(context, 'vocationRemovedSuccessfully'));
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+      });
+    });
   }
 
   void _showConfirmationDialog(String title, String firstContent, String secondContent, String employeeInfo, Text confirmationBtnText, Text disagreeBtnText, Function() fun) {
@@ -429,15 +430,10 @@ class _VocationsCalendarPageState extends State<VocationsCalendarPage> with Tick
       setState(() {
         _loading = false;
         _events.clear();
-        res.forEach((key, value) {
-          _events[key] = value;
-        });
+        res.forEach((key, value) => _events[key] = value);
         DateTime currentDate = DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()));
         _selectedEvents = _events[currentDate] ?? [];
-        _animationController = AnimationController(
-          vsync: this,
-          duration: const Duration(milliseconds: 400),
-        );
+        _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
         _animationController.forward();
       });
     });

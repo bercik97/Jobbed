@@ -4,11 +4,13 @@ import 'dart:convert';
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/workplace/dto/workplace_dto.dart';
 import 'package:give_job/api/workplace/service/workplace_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/group_page.dart';
+import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -24,7 +26,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:place_picker/place_picker.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
-import 'package:give_job/manager/groups/group/shared/group_model.dart';
 
 import '../../../../shared/widget/loader.dart';
 import '../../../shared/manager_side_bar.dart';
@@ -618,6 +619,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
             FlatButton(
               child: textGreen(getTranslated(this.context, 'add')),
               onPressed: () {
+                showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                 Circle circle;
                 if (_circles != null && _circles.isNotEmpty) {
                   circle = _circles.elementAt(0);
@@ -630,27 +632,32 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                   longitude: circle != null ? circle.center.longitude : 0,
                 );
                 _workplaceService.create(dto).then((res) {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  _refresh();
-                  _showSuccessDialog(getTranslated(this.context, 'successfullyAddedNewWorkplace'));
+                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    _refresh();
+                    _showSuccessDialog(getTranslated(this.context, 'successfullyAddedNewWorkplace'));
+                  });
                 }).catchError((onError) {
-                  setState(() => _isAddButtonTapped = false);
-                  String errorMsg = onError.toString();
-                  if (errorMsg.contains("WORKPLACE_NAME_EXISTS")) {
-                    ToastService.showErrorToast(getTranslated(this.context, 'workplaceNameExists'));
-                  } else {
-                    ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
-                  }
+                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                    setState(() => _isAddButtonTapped = false);
+                    String errorMsg = onError.toString();
+                    if (errorMsg.contains("WORKPLACE_NAME_EXISTS")) {
+                      ToastService.showErrorToast(getTranslated(this.context, 'workplaceNameExists'));
+                    } else {
+                      ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+                    }
+                  });
                 });
               },
             ),
             FlatButton(
-                child: textRed(getTranslated(this.context, 'doNotAdd')),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  setState(() => _isAddButtonTapped = false);
-                }),
+              child: textRed(getTranslated(this.context, 'doNotAdd')),
+              onPressed: () {
+                Navigator.of(context).pop();
+                setState(() => _isAddButtonTapped = false);
+              },
+            ),
           ],
         );
       },
@@ -672,31 +679,33 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
           actions: <Widget>[
             FlatButton(
               child: textWhite(getTranslated(this.context, 'yesDeleteThem')),
-              onPressed: () => {
-                _workplaceService
-                    .deleteByIdIn(ids.map((e) => e.toString()).toList())
-                    .then((res) => {
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (BuildContext context) => WorkplacesPage(_model)),
-                            ModalRoute.withName('/'),
-                          ),
-                          ToastService.showSuccessToast(getTranslated(this.context, 'selectedWorkplacesRemoved')),
-                        })
-                    .catchError((onError) {
-                  String errorMsg = onError.toString();
-                  if (errorMsg.contains("SOMEONE_IS_WORKING_IN_WORKPLACE_FOR_DELETE")) {
-                    setState(() => _isDeleteButtonTapped = false);
-                    Navigator.pop(this.context);
-                    DialogService.showCustomDialog(
-                      context: context,
-                      titleWidget: textRed(getTranslated(context, 'error')),
-                      content: getTranslated(context, 'cannotDeleteWorkplaceWhenSomeoneWorkingThere'),
+              onPressed: () {
+                showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+                _workplaceService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
+                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (BuildContext context) => WorkplacesPage(_model)),
+                      ModalRoute.withName('/'),
                     );
-                    return;
-                  }
-                  setState(() => _isDeleteButtonTapped = false);
-                  ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
-                }),
+                    ToastService.showSuccessToast(getTranslated(this.context, 'selectedWorkplacesRemoved'));
+                  });
+                }).catchError((onError) {
+                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                    String errorMsg = onError.toString();
+                    if (errorMsg.contains("SOMEONE_IS_WORKING_IN_WORKPLACE_FOR_DELETE")) {
+                      setState(() => _isDeleteButtonTapped = false);
+                      Navigator.pop(this.context);
+                      DialogService.showCustomDialog(
+                        context: context,
+                        titleWidget: textRed(getTranslated(context, 'error')),
+                        content: getTranslated(context, 'cannotDeleteWorkplaceWhenSomeoneWorkingThere'),
+                      );
+                      return;
+                    }
+                    setState(() => _isDeleteButtonTapped = false);
+                    ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+                  });
+                });
               },
             ),
             FlatButton(
@@ -791,6 +800,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
+                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           Circle circle;
                           if (_circles != null && _circles.isNotEmpty) {
                             circle = _circles.elementAt(0);
@@ -804,16 +814,20 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                               'longitude': circle != null ? circle.center.longitude : 0,
                             },
                           ).then((res) {
-                            Navigator.pop(context);
-                            _refresh();
-                            ToastService.showSuccessToast(getTranslated(context, 'workplaceUpdatedSuccessfully'));
+                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Navigator.pop(context);
+                              _refresh();
+                              ToastService.showSuccessToast(getTranslated(context, 'workplaceUpdatedSuccessfully'));
+                            });
                           }).catchError((onError) {
-                            String errorMsg = onError.toString();
-                            if (errorMsg.contains("WORKPLACE_NAME_EXISTS")) {
-                              ToastService.showErrorToast(getTranslated(context, 'workplaceNameExists'));
-                            } else {
-                              ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
-                            }
+                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              String errorMsg = onError.toString();
+                              if (errorMsg.contains("WORKPLACE_NAME_EXISTS")) {
+                                ToastService.showErrorToast(getTranslated(context, 'workplaceNameExists'));
+                              } else {
+                                ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+                              }
+                            });
                           });
                         },
                       ),

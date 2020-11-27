@@ -5,6 +5,7 @@ import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_job/api/item/dto/item_dto.dart';
 import 'package:give_job/api/item/service/item_service.dart';
@@ -421,14 +422,19 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                             ToastService.showErrorToast(getTranslated(context, 'quantityCannotBeLowerThan0'));
                             return;
                           }
+                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _itemService.updateQuantity(item.id, quantity).then((value) {
-                            ToastService.showSuccessToast(getTranslated(context, 'itemQuantityUpdatedSuccessfully'));
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_model, _warehouseDto)),
-                            );
+                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              ToastService.showSuccessToast(getTranslated(context, 'itemQuantityUpdatedSuccessfully'));
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_model, _warehouseDto)),
+                              );
+                            });
                           }).catchError((onError) {
-                            ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+                            });
                           });
                         },
                       ),
@@ -461,15 +467,20 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
             FlatButton(
               child: textWhite(getTranslated(this.context, 'yesDeleteThem')),
               onPressed: () {
+                showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                 _itemService.deleteByNamesIn(names.map((e) => e.toString()).toList()).then((res) {
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (BuildContext context) => WarehouseDetailsPage(_model, _warehouseDto)),
-                    ModalRoute.withName('/'),
-                  );
-                  ToastService.showSuccessToast(getTranslated(this.context, 'selectedItemsRemoved'));
+                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (BuildContext context) => WarehouseDetailsPage(_model, _warehouseDto)),
+                      ModalRoute.withName('/'),
+                    );
+                    ToastService.showSuccessToast(getTranslated(this.context, 'selectedItemsRemoved'));
+                  });
                 }).catchError((onError) {
-                  setState(() => _isDeleteButtonTapped = false);
-                  ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                    setState(() => _isDeleteButtonTapped = false);
+                    ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+                  });
                 });
               },
             ),

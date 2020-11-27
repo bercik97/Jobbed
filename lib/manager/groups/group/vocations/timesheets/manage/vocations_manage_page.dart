@@ -5,6 +5,7 @@ import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:date_util/date_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/employee/dto/employee_for_vocations_ts_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
@@ -234,13 +235,12 @@ class _VocationsManagePageState extends State<VocationsManagePage> {
                   child: MaterialButton(
                     color: GREEN,
                     child: textDarkBold(getTranslated(context, 'manage')),
-                    onPressed: () => {
-                      if (_selectedIds.isNotEmpty)
-                        {
-                          _manageVocations(),
-                        }
-                      else
-                        {_showHint(getTranslated(context, 'manageLowerCase'))}
+                    onPressed: () {
+                      if (_selectedIds.isNotEmpty) {
+                        _manageVocations();
+                      } else {
+                        _showHint(getTranslated(context, 'manageLowerCase'));
+                      }
                     },
                   ),
                 ),
@@ -249,13 +249,12 @@ class _VocationsManagePageState extends State<VocationsManagePage> {
                     child: MaterialButton(
                   color: Colors.red,
                   child: textWhiteBold(getTranslated(context, 'remove')),
-                  onPressed: () => {
-                    if (_selectedIds.isNotEmpty)
-                      {
-                        _removeVocations(),
-                      }
-                    else
-                      {_showHint(getTranslated(context, 'removeLowerCase'))}
+                  onPressed: () {
+                    if (_selectedIds.isNotEmpty) {
+                      _removeVocations();
+                    } else {
+                      _showHint(getTranslated(context, 'removeLowerCase'));
+                    }
                   },
                 )),
                 SizedBox(width: 1),
@@ -361,6 +360,7 @@ class _VocationsManagePageState extends State<VocationsManagePage> {
                               ToastService.showErrorToast(invalidMessage);
                               return;
                             }
+                            showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                             _workdayService
                                 .createOrUpdateEmployeesVocation(
                               reason,
@@ -371,14 +371,18 @@ class _VocationsManagePageState extends State<VocationsManagePage> {
                               monthNum,
                               STATUS_IN_PROGRESS,
                             )
-                                .then(
-                              (res) {
+                                .then((res) {
+                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 _uncheckAll();
                                 _refresh();
                                 Navigator.of(context).pop();
                                 ToastService.showSuccessToast(getTranslated(context, 'vocationManagedSuccessfully'));
-                              },
-                            );
+                              });
+                            }).catchError((onError) {
+                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+                              });
+                            });
                           },
                         ),
                       ],

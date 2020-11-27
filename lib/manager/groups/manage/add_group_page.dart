@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_job/api/employee/dto/employee_basic_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
@@ -407,6 +408,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
       setState(() => _isAddButtonTapped = false);
       return;
     }
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     CreateGroupDto dto = new CreateGroupDto(
       name: _groupNameController.text,
       description: _groupDescriptionController.text,
@@ -415,27 +417,31 @@ class _AddGroupPageState extends State<AddGroupPage> {
       employeeIds: _selectedIds.map((el) => el.toString()).toList(),
     );
     _groupService.create(dto).then((res) {
-      ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewGroup'));
-      Navigator.push(
-        this.context,
-        MaterialPageRoute(builder: (context) => GroupsDashboardPage(_user)),
-      );
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewGroup'));
+        Navigator.push(
+          this.context,
+          MaterialPageRoute(builder: (context) => GroupsDashboardPage(_user)),
+        );
+      });
     }).catchError((onError) {
-      String errorMsg = onError.toString();
-      if (errorMsg.contains("GROUP_NAME_EXISTS")) {
-        DialogService.showCustomDialog(
-          context: context,
-          titleWidget: textRed(getTranslated(context, 'error')),
-          content: getTranslated(context, 'groupNameExists') + '\n' + getTranslated(context, 'chooseOtherGroupName'),
-        );
-      } else if (errorMsg.contains("SOME_EMPLOYEES_ARE_IN_OTHER_GROUP")) {
-        DialogService.showCustomDialog(
-          context: context,
-          titleWidget: textRed(getTranslated(context, 'error')),
-          content: getTranslated(context, 'someEmployeesAreInOtherGroup'),
-        );
-      }
-      setState(() => _isAddButtonTapped = false);
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        String errorMsg = onError.toString();
+        if (errorMsg.contains("GROUP_NAME_EXISTS")) {
+          DialogService.showCustomDialog(
+            context: context,
+            titleWidget: textRed(getTranslated(context, 'error')),
+            content: getTranslated(context, 'groupNameExists') + '\n' + getTranslated(context, 'chooseOtherGroupName'),
+          );
+        } else if (errorMsg.contains("SOME_EMPLOYEES_ARE_IN_OTHER_GROUP")) {
+          DialogService.showCustomDialog(
+            context: context,
+            titleWidget: textRed(getTranslated(context, 'error')),
+            content: getTranslated(context, 'someEmployeesAreInOtherGroup'),
+          );
+        }
+        setState(() => _isAddButtonTapped = false);
+      });
     });
   }
 }

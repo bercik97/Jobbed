@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/itemplace/dto/itemplace_dashboard_dto.dart';
 import 'package:give_job/api/itemplace/service/itemplace_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
@@ -368,20 +369,25 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
       ToastService.showErrorToast(getTranslated(this.context, 'itemplaceLocationIsRequired'));
       return;
     }
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _itemplaceService.create(int.parse(_user.companyId), location).then((res) {
-      ToastService.showSuccessToast(getTranslated(this.context, 'successfullyAddedNewItemplace'));
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => ItemplacesPage(_model)),
-      );
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showSuccessToast(getTranslated(this.context, 'successfullyAddedNewItemplace'));
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ItemplacesPage(_model)),
+        );
+      });
     }).catchError((onError) {
-      setState(() => _isAddButtonTapped = false);
-      String errorMsg = onError.toString();
-      if (errorMsg.contains("ITEM_PLACE_LOCATION_EXISTS")) {
-        ToastService.showErrorToast(getTranslated(this.context, 'itemplaceLocationExists'));
-      } else {
-        ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
-      }
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        setState(() => _isAddButtonTapped = false);
+        String errorMsg = onError.toString();
+        if (errorMsg.contains("ITEM_PLACE_LOCATION_EXISTS")) {
+          ToastService.showErrorToast(getTranslated(this.context, 'itemplaceLocationExists'));
+        } else {
+          ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+        }
+      });
     });
   }
 
@@ -404,50 +410,27 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
           actions: <Widget>[
             FlatButton(
               child: textWhite(getTranslated(this.context, 'yesDeleteThem')),
-              onPressed: () => {
-                _itemplaceService
-                    .deleteByIdIn(ids.map((e) => e.toString()).toList())
-                    .then((res) => {
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (BuildContext context) => ItemplacesPage(_model)),
-                            ModalRoute.withName('/'),
-                          ),
-                          ToastService.showSuccessToast(getTranslated(this.context, 'selectedItemplacesRemoved')),
-                        })
-                    .catchError((onError) {
-                  setState(() => _isDeleteButtonTapped = false);
-                  ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
-                }),
+              onPressed: () {
+                showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+                _itemplaceService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
+                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (BuildContext context) => ItemplacesPage(_model)),
+                      ModalRoute.withName('/'),
+                    );
+                    ToastService.showSuccessToast(getTranslated(this.context, 'selectedItemplacesRemoved'));
+                  });
+                }).catchError((onError) {
+                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                    setState(() => _isDeleteButtonTapped = false);
+                    ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+                  });
+                });
               },
             ),
             FlatButton(
               child: textWhite(getTranslated(this.context, 'no')),
               onPressed: () => Navigator.of(this.context).pop(),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  _showSuccessDialog(String msg) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: DARK,
-          title: textGreen(getTranslated(this.context, 'success')),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                textWhite(msg),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: textWhite(getTranslated(this.context, 'ok')),
-              onPressed: () => Navigator.pop(context),
             ),
           ],
         );

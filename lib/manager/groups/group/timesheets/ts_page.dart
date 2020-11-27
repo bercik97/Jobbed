@@ -61,9 +61,13 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
     _loading = true;
     _timesheetService.findAllWithStatusByGroupId(_model.groupId).then((res) {
       setState(() {
-        res.forEach((ts) => {
-              if (ts.status == STATUS_IN_PROGRESS) {_inProgressTimesheets.add(ts)} else {_completedTimesheets.add(ts)},
-            });
+        res.forEach((ts) {
+          if (ts.status == STATUS_IN_PROGRESS) {
+            _inProgressTimesheets.add(ts);
+          } else {
+            _completedTimesheets.add(ts);
+          }
+        });
         _loading = false;
       });
     });

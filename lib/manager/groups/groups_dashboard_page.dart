@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/group/dto/group_dashboard_dto.dart';
 import 'package:give_job/api/group/service/group_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
@@ -39,11 +40,8 @@ class GroupsDashboardPage extends StatefulWidget {
 class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
   User _user;
   GroupService _groupService;
-
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
   List<GroupDashboardDto> _groups = new List();
-
   ScrollController _scrollController = new ScrollController();
 
   @override
@@ -421,21 +419,26 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                               );
                               return;
                             }
+                            showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                             _groupService.deleteByName(_nameController.text).then((value) {
-                              ToastService.showSuccessToast(getTranslated(context, 'successfullyDeletedGroup'));
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => GroupsDashboardPage(_user)),
-                              );
-                            }).catchError((onError) {
-                              String errorMsg = onError.toString();
-                              if (errorMsg.contains("GROUP_DOES_NOT_EXISTS")) {
-                                DialogService.showCustomDialog(
-                                  context: context,
-                                  titleWidget: textRed(getTranslated(context, 'error')),
-                                  content: getTranslated(context, 'groupDoesNotExists'),
+                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                ToastService.showSuccessToast(getTranslated(context, 'successfullyDeletedGroup'));
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => GroupsDashboardPage(_user)),
                                 );
-                              }
+                              });
+                            }).catchError((onError) {
+                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                String errorMsg = onError.toString();
+                                if (errorMsg.contains("GROUP_DOES_NOT_EXISTS")) {
+                                  DialogService.showCustomDialog(
+                                    context: context,
+                                    titleWidget: textRed(getTranslated(context, 'error')),
+                                    content: getTranslated(context, 'groupDoesNotExists'),
+                                  );
+                                }
+                              });
                             });
                           },
                         ),
@@ -457,9 +460,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
 
   Future<Null> _refresh() {
     return _groupService.findAllByManagerId(_user.id).then((res) {
-      setState(() {
-        this._groups = res;
-      });
+      setState(() => this._groups = res);
     });
   }
 }

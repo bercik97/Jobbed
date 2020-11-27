@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/employee/dto/employee_group_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/group/service/group_service.dart';
@@ -300,15 +301,20 @@ class _DeleteGroupEmployeesPageState extends State<DeleteGroupEmployeesPage> {
       setState(() => _isDeleteButtonTapped = false);
       return;
     }
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _groupService.deleteGroupEmployees(_groupId, _selectedIds.map((e) => e.toString()).toList()).then((value) {
-      ToastService.showSuccessToast(getTranslated(context, 'successfullyRemovedGroupEmployees'));
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => GroupsDashboardPage(_user)),
-      );
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showSuccessToast(getTranslated(context, 'successfullyRemovedGroupEmployees'));
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => GroupsDashboardPage(_user)),
+        );
+      });
     }).catchError((onError) {
-      ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
-      setState(() => _isDeleteButtonTapped = false);
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+        setState(() => _isDeleteButtonTapped = false);
+      });
     });
   }
 }

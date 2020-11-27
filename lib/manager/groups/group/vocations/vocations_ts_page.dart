@@ -53,28 +53,20 @@ class _VocationsTsPageState extends State<VocationsTsPage> {
     this._timesheetService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
     super.initState();
     _loading = true;
-    _timesheetService
-        .findAllWithoutStatusByGroupIdAndStatus(
-      _model.groupId,
-      STATUS_IN_PROGRESS,
-    )
-        .then((res) {
+    _timesheetService.findAllWithoutStatusByGroupIdAndStatus(_model.groupId, STATUS_IN_PROGRESS).then((res) {
       setState(() {
         int _counter = 0;
-        res.forEach((ts) => {
-              _inProgressTimesheets.add(ts),
-              _elements.add(
-                RadioElement(
-                  index: _counter++,
-                  id: ts.id,
-                  title: ts.year.toString() + ' ' + MonthUtil.translateMonth(context, ts.month),
-                ),
-              ),
-              if (_currentRadioElement == null)
-                {
-                  _currentRadioElement = _elements[0],
-                }
-            });
+        res.forEach((ts) {
+          _inProgressTimesheets.add(ts);
+          _elements.add(RadioElement(
+            index: _counter++,
+            id: ts.id,
+            title: ts.year.toString() + ' ' + MonthUtil.translateMonth(context, ts.month),
+          ));
+          if (_currentRadioElement == null) {
+            _currentRadioElement = _elements[0];
+          }
+        });
         _loading = false;
       });
     });
@@ -253,30 +245,22 @@ class _VocationsTsPageState extends State<VocationsTsPage> {
   }
 
   Future<Null> _refresh() {
-    return _timesheetService
-        .findAllWithoutStatusByGroupIdAndStatus(
-      _model.groupId,
-      STATUS_IN_PROGRESS,
-    )
-        .then((res) {
+    return _timesheetService.findAllWithoutStatusByGroupIdAndStatus(_model.groupId, STATUS_IN_PROGRESS).then((res) {
       setState(() {
         _inProgressTimesheets.clear();
         _elements.clear();
         int _counter = 0;
-        res.forEach((ts) => {
-              _inProgressTimesheets.add(ts),
-              _elements.add(
-                RadioElement(
-                  index: _counter++,
-                  id: ts.id,
-                  title: ts.year.toString() + ' ' + MonthUtil.translateMonth(context, ts.month),
-                ),
-              ),
-              if (_currentRadioElement == null)
-                {
-                  _currentRadioElement = _elements[0],
-                }
-            });
+        res.forEach((ts) {
+          _inProgressTimesheets.add(ts);
+          _elements.add(RadioElement(
+            index: _counter++,
+            id: ts.id,
+            title: ts.year.toString() + ' ' + MonthUtil.translateMonth(context, ts.month),
+          ));
+          if (_currentRadioElement == null) {
+            _currentRadioElement = _elements[0];
+          }
+        });
         _loading = false;
       });
     });

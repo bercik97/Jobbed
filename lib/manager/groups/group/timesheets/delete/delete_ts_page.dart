@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/employee/dto/employee_basic_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
@@ -259,14 +260,17 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
       setState(() => _isDeleteBtnTapped = false);
       return;
     }
-    _timesheetService.deleteForEmployeesByYearAndMonthAndStatus(_selectedIds.map((el) => el.toString()).toList(), _year, _month, _status).then(
-      (res) {
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _timesheetService.deleteForEmployeesByYearAndMonthAndStatus(_selectedIds.map((el) => el.toString()).toList(), _year, _month, _status).then((res) {
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'timesheetSuccessfullyDeleted'));
         Navigator.push(context, MaterialPageRoute(builder: (context) => ManagerTsPage(_model)));
-      },
-    ).catchError((onError) {
-      ToastService.showErrorToast('smthWentWrong');
-      setState(() => _isDeleteBtnTapped = false);
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showErrorToast('smthWentWrong');
+        setState(() => _isDeleteBtnTapped = false);
+      });
     });
   }
 

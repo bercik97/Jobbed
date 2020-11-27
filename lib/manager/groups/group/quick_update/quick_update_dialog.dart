@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
@@ -176,18 +177,23 @@ class QuickUpdateDialog {
                           }
                           Navigator.of(context).pop();
                           _initialize(context, _model.user.authHeader);
+                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _timesheetService.updateHoursByGroupIdAndDate(_model.groupId, _todaysDate, hours).then((res) {
-                            ToastService.showSuccessToast(getTranslated(context, 'todaysGroupHoursUpdatedSuccessfully'));
+                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              ToastService.showSuccessToast(getTranslated(context, 'todaysGroupHoursUpdatedSuccessfully'));
+                            });
                           }).catchError(
                             (onError) {
-                              String s = onError.toString();
-                              if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
-                                DialogService.showCustomDialog(
-                                  context: context,
-                                  titleWidget: textRed(getTranslated(context, 'error')),
-                                  content: getTranslated(context, 'cannotUpdateTodaysHours'),
-                                );
-                              }
+                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                String s = onError.toString();
+                                if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
+                                  DialogService.showCustomDialog(
+                                    context: context,
+                                    titleWidget: textRed(getTranslated(context, 'error')),
+                                    content: getTranslated(context, 'cannotUpdateTodaysHours'),
+                                  );
+                                }
+                              });
                             },
                           );
                         },
@@ -281,17 +287,22 @@ class QuickUpdateDialog {
                           }
                           Navigator.of(context).pop();
                           _initialize(context, _model.user.authHeader);
+                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _timesheetService.updateRatingByGroupIdAndDate(_model.groupId, _todaysDate, rating).then((res) {
-                            ToastService.showSuccessToast(getTranslated(context, 'todaysGroupRatingUpdatedSuccessfully'));
+                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              ToastService.showSuccessToast(getTranslated(context, 'todaysGroupRatingUpdatedSuccessfully'));
+                            });
                           }).catchError((onError) {
-                            String s = onError.toString();
-                            if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
-                              DialogService.showCustomDialog(
-                                context: context,
-                                titleWidget: textRed(getTranslated(context, 'error')),
-                                content: getTranslated(context, 'cannotUpdateTodaysRating'),
-                              );
-                            }
+                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              String s = onError.toString();
+                              if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
+                                DialogService.showCustomDialog(
+                                  context: context,
+                                  titleWidget: textRed(getTranslated(context, 'error')),
+                                  content: getTranslated(context, 'cannotUpdateTodaysRating'),
+                                );
+                              }
+                            });
                           });
                         },
                       ),
@@ -384,18 +395,23 @@ class QuickUpdateDialog {
                           }
                           Navigator.of(context).pop();
                           _initialize(context, _model.user.authHeader);
+                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _timesheetService.updatePlanByGroupIdAndDate(_model.groupId, _todaysDate, plan).then((res) {
-                            ToastService.showSuccessToast(getTranslated(context, 'todaysGroupPlanUpdatedSuccessfully'));
+                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              ToastService.showSuccessToast(getTranslated(context, 'todaysGroupPlanUpdatedSuccessfully'));
+                            });
                           }).catchError(
                             (onError) {
-                              String s = onError.toString();
-                              if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
-                                DialogService.showCustomDialog(
-                                  context: context,
-                                  titleWidget: textRed(getTranslated(context, 'error')),
-                                  content: getTranslated(context, 'cannotUpdateTodaysPlan'),
-                                );
-                              }
+                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                String s = onError.toString();
+                                if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
+                                  DialogService.showCustomDialog(
+                                    context: context,
+                                    titleWidget: textRed(getTranslated(context, 'error')),
+                                    content: getTranslated(context, 'cannotUpdateTodaysPlan'),
+                                  );
+                                }
+                              });
                             },
                           );
                         },
@@ -487,19 +503,24 @@ class QuickUpdateDialog {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
+                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           Navigator.of(context).pop();
                           _initialize(context, _model.user.authHeader);
                           _timesheetService.updateOpinionByGroupIdAndDate(_model.groupId, _todaysDate, opinion).then((res) {
-                            ToastService.showSuccessToast(getTranslated(context, 'todaysGroupOpinionUpdatedSuccessfully'));
+                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              ToastService.showSuccessToast(getTranslated(context, 'todaysGroupOpinionUpdatedSuccessfully'));
+                            });
                           }).catchError((onError) {
-                            String s = onError.toString();
-                            if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
-                              DialogService.showCustomDialog(
-                                context: context,
-                                titleWidget: textRed(getTranslated(context, 'error')),
-                                content: getTranslated(context, 'cannotUpdateTodaysOpinion'),
-                              );
-                            }
+                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              String s = onError.toString();
+                              if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
+                                DialogService.showCustomDialog(
+                                  context: context,
+                                  titleWidget: textRed(getTranslated(context, 'error')),
+                                  content: getTranslated(context, 'cannotUpdateTodaysOpinion'),
+                                );
+                              }
+                            });
                           });
                         },
                       ),

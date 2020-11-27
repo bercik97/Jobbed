@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/price_list/dto/price_list_dto.dart';
 import 'package:give_job/api/price_list/service/pricelist_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
@@ -280,15 +281,20 @@ class _PricelistPageState extends State<PricelistPage> {
             FlatButton(
               child: textWhite(getTranslated(this.context, 'yesDeleteThem')),
               onPressed: () {
+                showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                 _pricelistService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (BuildContext context) => PricelistPage(_model)),
-                    ModalRoute.withName('/'),
-                  );
-                  ToastService.showSuccessToast(getTranslated(this.context, 'selectedPricelistsRemoved'));
+                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (BuildContext context) => PricelistPage(_model)),
+                      ModalRoute.withName('/'),
+                    );
+                    ToastService.showSuccessToast(getTranslated(this.context, 'selectedPricelistsRemoved'));
+                  });
                 }).catchError((onError) {
-                  setState(() => _isDeleteButtonTapped = false);
-                  ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                    setState(() => _isDeleteButtonTapped = false);
+                    ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+                  });
                 });
               },
             ),

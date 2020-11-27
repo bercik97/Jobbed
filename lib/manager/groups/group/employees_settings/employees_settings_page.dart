@@ -5,6 +5,7 @@ import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/employee/dto/employee_settings_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
@@ -427,16 +428,14 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                               ToastService.showErrorToast(invalidMessage);
                               return;
                             }
-                            _employeeService.updateFieldsValuesByIds(
-                              _selectedIds.toList(),
-                              {
-                                "moneyPerHour": moneyPerHour,
-                              },
-                            ).then(
+                            showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+                            _employeeService.updateFieldsValuesByIds(_selectedIds.toList(), {"moneyPerHour": moneyPerHour}).then(
                               (res) {
-                                _refresh();
-                                Navigator.pop(context);
-                                ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedMoneyPerHourForSelectedEmployees'));
+                                Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                  _refresh();
+                                  Navigator.pop(context);
+                                  ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedMoneyPerHourForSelectedEmployees'));
+                                });
                               },
                             );
                           },
@@ -532,16 +531,14 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 ToastService.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
                                 return;
                               }
-                              _employeeService.updateFieldsValuesByIds(
-                                _selectedIds.toList(),
-                                {
-                                  "canFillHours": _selfFillingHoursRadioValue == 0 ? true : false,
-                                },
-                              ).then(
+                              showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+                              _employeeService.updateFieldsValuesByIds(_selectedIds.toList(), {"canFillHours": _selfFillingHoursRadioValue == 0 ? true : false}).then(
                                 (res) {
-                                  _refresh();
-                                  Navigator.pop(context);
-                                  ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees'));
+                                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                    _refresh();
+                                    Navigator.pop(context);
+                                    ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees'));
+                                  });
                                 },
                               );
                             },
@@ -638,16 +635,14 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 ToastService.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
                                 return;
                               }
-                              _employeeService.updateFieldsValuesByIds(
-                                _selectedIds.toList(),
-                                {
-                                  "workTimeByLocation": _workTimeByLocationRadioValue == 0 ? true : false,
-                                },
-                              ).then(
+                              showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+                              _employeeService.updateFieldsValuesByIds(_selectedIds.toList(), {"workTimeByLocation": _workTimeByLocationRadioValue == 0 ? true : false}).then(
                                 (res) {
-                                  _refresh();
-                                  Navigator.pop(context);
-                                  ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToWorkTimeByLocationForSelectedEmployees'));
+                                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                    _refresh();
+                                    Navigator.pop(context);
+                                    ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToWorkTimeByLocationForSelectedEmployees'));
+                                  });
                                 },
                               );
                             },
@@ -744,16 +739,14 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 ToastService.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
                                 return;
                               }
-                              _employeeService.updateFieldsValuesByIds(
-                                _selectedIds.toList(),
-                                {
-                                  "piecework": _pieceworkRadioValue == 0 ? true : false,
-                                },
-                              ).then(
+                              showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+                              _employeeService.updateFieldsValuesByIds(_selectedIds.toList(), {"piecework": _pieceworkRadioValue == 0 ? true : false}).then(
                                 (res) {
-                                  _refresh();
-                                  Navigator.pop(context);
-                                  ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToPieceworkForSelectedEmployees'));
+                                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                    _refresh();
+                                    Navigator.pop(context);
+                                    ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToPieceworkForSelectedEmployees'));
+                                  });
                                 },
                               );
                             },

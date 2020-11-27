@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/warehouse/dto/warehouse_dashboard_dto.dart';
 import 'package:give_job/api/warehouse/service/warehouse_service.dart';
@@ -294,15 +295,20 @@ class _WarehousePageState extends State<WarehousePage> {
             FlatButton(
               child: textWhite(getTranslated(this.context, 'yesDeleteThem')),
               onPressed: () {
+                showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                 _warehouseService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (BuildContext context) => WarehousePage(_model)),
-                    ModalRoute.withName('/'),
-                  );
-                  ToastService.showSuccessToast(getTranslated(this.context, 'selectedWarehousesRemoved'));
+                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (BuildContext context) => WarehousePage(_model)),
+                      ModalRoute.withName('/'),
+                    );
+                    ToastService.showSuccessToast(getTranslated(this.context, 'selectedWarehousesRemoved'));
+                  });
                 }).catchError((onError) {
-                  setState(() => _isDeleteButtonTapped = false);
-                  ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                    setState(() => _isDeleteButtonTapped = false);
+                    ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+                  });
                 });
               },
             ),

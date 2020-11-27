@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_job/api/item/dto/create_item_dto.dart';
 import 'package:give_job/api/item/service/item_service.dart';
@@ -254,24 +255,29 @@ class _AddItemsPageState extends State<AddItemsPage> {
       setState(() => _isAddButtonTapped = false);
       return;
     }
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _itemService.create(_itemsToAdd).then((res) {
-      ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewItems'));
-      Navigator.push(
-        this.context,
-        MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_model, _warehouseDto)),
-      );
-    }).catchError((onError) {
-      String errorMsg = onError.toString();
-      if (errorMsg.contains("ITEM_NAME_EXISTS")) {
-        DialogService.showCustomDialog(
-          context: context,
-          titleWidget: textRed(getTranslated(context, 'error')),
-          content: getTranslated(context, 'itemNameExists') + '\n' + getTranslated(context, 'chooseOtherItemName'),
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewItems'));
+        Navigator.push(
+          this.context,
+          MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_model, _warehouseDto)),
         );
-      } else {
-        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
-      }
-      setState(() => _isAddButtonTapped = false);
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        String errorMsg = onError.toString();
+        if (errorMsg.contains("ITEM_NAME_EXISTS")) {
+          DialogService.showCustomDialog(
+            context: context,
+            titleWidget: textRed(getTranslated(context, 'error')),
+            content: getTranslated(context, 'itemNameExists') + '\n' + getTranslated(context, 'chooseOtherItemName'),
+          );
+        } else {
+          ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+        }
+        setState(() => _isAddButtonTapped = false);
+      });
     });
   }
 }

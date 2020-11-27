@@ -7,6 +7,7 @@ import 'package:date_util/date_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/employee/dto/employee_statistics_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
@@ -457,6 +458,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                 ToastService.showErrorToast(invalidMessage);
                                 return;
                               }
+                              showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                               _workdayService
                                   .updateEmployeesHours(
                                 hours,
@@ -467,14 +469,18 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                 monthNum,
                                 STATUS_IN_PROGRESS,
                               )
-                                  .then(
-                                (res) {
+                                  .then((res) {
+                                Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                   Navigator.of(context).pop();
                                   ToastService.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
                                   _uncheckAll();
                                   _refresh();
-                                },
-                              );
+                                });
+                              }).catchError((onError) {
+                                Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                  ToastService.showErrorToast('smthWentWrong');
+                                });
+                              });
                             },
                           ),
                         ],
@@ -582,6 +588,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                               ToastService.showErrorToast(invalidMessage);
                               return;
                             }
+                            showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                             _workdayService
                                 .updateEmployeesRating(
                               rating,
@@ -592,14 +599,18 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                               monthNum,
                               STATUS_IN_PROGRESS,
                             )
-                                .then(
-                              (res) {
+                                .then((res) {
+                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 _uncheckAll();
                                 _refresh();
                                 Navigator.of(context).pop();
                                 ToastService.showSuccessToast(getTranslated(context, 'ratingUpdatedSuccessfully'));
-                              },
-                            );
+                              });
+                            }).catchError((onError) {
+                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                ToastService.showErrorToast('smthWentWrong');
+                              });
+                            });
                           },
                         ),
                       ],
@@ -707,6 +718,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                               ToastService.showErrorToast(invalidMessage);
                               return;
                             }
+                            showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                             _workdayService
                                 .updateEmployeesPlan(
                               plan,
@@ -717,14 +729,18 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                               monthNum,
                               STATUS_IN_PROGRESS,
                             )
-                                .then(
-                              (res) {
+                                .then((res) {
+                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 _uncheckAll();
                                 _refresh();
                                 Navigator.of(context).pop();
                                 ToastService.showSuccessToast(getTranslated(context, 'planUpdatedSuccessfully'));
-                              },
-                            );
+                              });
+                            }).catchError((onError) {
+                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                ToastService.showErrorToast('smthWentWrong');
+                              });
+                            });
                           },
                         ),
                       ],
@@ -829,6 +845,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                               ToastService.showErrorToast(invalidMessage);
                               return;
                             }
+                            showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                             _workdayService
                                 .updateEmployeesOpinion(
                               opinion,
@@ -839,14 +856,18 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                               monthNum,
                               STATUS_IN_PROGRESS,
                             )
-                                .then(
-                              (res) {
+                                .then((res) {
+                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 _uncheckAll();
                                 _refresh();
                                 Navigator.of(context).pop();
                                 ToastService.showSuccessToast(getTranslated(context, 'opinionUpdatedSuccessfully'));
-                              },
-                            );
+                              });
+                            }).catchError((onError) {
+                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                ToastService.showErrorToast('smthWentWrong');
+                              });
+                            });
                           },
                         ),
                       ],

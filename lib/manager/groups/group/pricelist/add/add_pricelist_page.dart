@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_job/api/price_list/dto/price_list_dto.dart';
 import 'package:give_job/api/price_list/service/pricelist_service.dart';
@@ -250,24 +251,29 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
       setState(() => _isAddButtonTapped = false);
       return;
     }
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _pricelistService.create(_pricelistsToAdd).then((res) {
-      ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewPricelistServices'));
-      Navigator.push(
-        this.context,
-        MaterialPageRoute(builder: (context) => PricelistPage(_model)),
-      );
-    }).catchError((onError) {
-      String errorMsg = onError.toString();
-      if (errorMsg.contains("PRICE_LIST_NAME_EXISTS")) {
-        DialogService.showCustomDialog(
-          context: context,
-          titleWidget: textRed(getTranslated(context, 'error')),
-          content: getTranslated(context, 'pricelistServiceNameExists') + '\n' + getTranslated(context, 'chooseOtherPricelistServiceName'),
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewPricelistServices'));
+        Navigator.push(
+          this.context,
+          MaterialPageRoute(builder: (context) => PricelistPage(_model)),
         );
-      } else {
-        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
-      }
-      setState(() => _isAddButtonTapped = false);
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        String errorMsg = onError.toString();
+        if (errorMsg.contains("PRICE_LIST_NAME_EXISTS")) {
+          DialogService.showCustomDialog(
+            context: context,
+            titleWidget: textRed(getTranslated(context, 'error')),
+            content: getTranslated(context, 'pricelistServiceNameExists') + '\n' + getTranslated(context, 'chooseOtherPricelistServiceName'),
+          );
+        } else {
+          ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+        }
+        setState(() => _isAddButtonTapped = false);
+      });
     });
   }
 }

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/group/service/group_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
@@ -169,37 +170,25 @@ class _GroupEditPageState extends State<GroupEditPage> {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
-                          _groupService
-                              .update(
-                                _model.groupId,
-                                {
-                                  'name': name,
-                                },
-                              )
-                              .then(
-                                (res) => {
-                                  ToastService.showSuccessToast(getTranslated(context, 'groupNameUpdatedSuccessfully')),
-                                  _model.groupName = name,
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => GroupPage(_model),
-                                    ),
-                                  ),
-                                },
-                              )
-                              .catchError(
-                                (onError) {
-                                  String s = onError.toString();
-                                  if (s.contains('GROUP_NAME_TAKEN')) {
-                                    DialogService.showCustomDialog(
-                                      context: context,
-                                      titleWidget: textRed(getTranslated(context, 'error')),
-                                      content: getTranslated(context, 'groupNameNeedToBeUnique'),
-                                    );
-                                  }
-                                },
-                              );
+                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+                          _groupService.update(_model.groupId, {'name': name}).then((res) {
+                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              ToastService.showSuccessToast(getTranslated(context, 'groupNameUpdatedSuccessfully'));
+                              _model.groupName = name;
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage(_model)));
+                            });
+                          }).catchError((onError) {
+                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              String s = onError.toString();
+                              if (s.contains('GROUP_NAME_TAKEN')) {
+                                DialogService.showCustomDialog(
+                                  context: context,
+                                  titleWidget: textRed(getTranslated(context, 'error')),
+                                  content: getTranslated(context, 'groupNameNeedToBeUnique'),
+                                );
+                              }
+                            });
+                          });
                         },
                       ),
                     ],
@@ -290,21 +279,18 @@ class _GroupEditPageState extends State<GroupEditPage> {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
-                          _groupService.update(
-                            _model.groupId,
-                            {'description': description},
-                          ).then(
-                            (res) => {
-                              ToastService.showSuccessToast(getTranslated(context, 'groupDescriptionUpdatedSuccessfully')),
-                              _model.groupDescription = description,
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => GroupPage(_model),
-                                ),
-                              ),
-                            },
-                          );
+                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+                          _groupService.update(_model.groupId, {'description': description}).then((res) {
+                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              ToastService.showSuccessToast(getTranslated(context, 'groupDescriptionUpdatedSuccessfully'));
+                              _model.groupDescription = description;
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage(_model)));
+                            });
+                          }).catchError((onError) {
+                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+                            });
+                          });
                         },
                       ),
                     ],

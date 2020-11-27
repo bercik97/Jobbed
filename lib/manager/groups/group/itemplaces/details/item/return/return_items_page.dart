@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/itemplace/dto/itemplace_dashboard_dto.dart';
 import 'package:give_job/api/itemplace/dto/itemplace_details_dto.dart';
 import 'package:give_job/api/itemplace/dto/return_items_dto.dart';
@@ -193,6 +194,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
   }
 
   void _handleAddBtn() {
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     setState(() => _isAddButtonTapped = true);
     Map<String, Map<String, int>> warehouseIdsAndItemsWithQuantities = new Map();
     for (int i = 0; i < _itemplaces.length; i++) {
@@ -213,8 +215,10 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
       }
     }
     if (warehouseIdsAndItemsWithQuantities.isEmpty) {
-      ToastService.showErrorToast(getTranslated(context, 'noQuantitySettedForReturn'));
-      setState(() => _isAddButtonTapped = false);
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showErrorToast(getTranslated(context, 'noQuantitySettedForReturn'));
+        setState(() => _isAddButtonTapped = false);
+      });
       return;
     }
     ReturnItemsDto dto = new ReturnItemsDto(
@@ -222,19 +226,23 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
       warehouseIdsAndItemsWithQuantities: warehouseIdsAndItemsWithQuantities,
     );
     _itemPlaceService.returnItems(dto).then((value) {
-      ToastService.showSuccessToast(getTranslated(context, 'successfullyReturnItemsToWarehouses'));
-      Navigator.push(
-        this.context,
-        MaterialPageRoute(builder: (context) => ItemplacesDetailsPage(_model, _itemplaceDto)),
-      );
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showSuccessToast(getTranslated(context, 'successfullyReturnItemsToWarehouses'));
+        Navigator.push(
+          this.context,
+          MaterialPageRoute(builder: (context) => ItemplacesDetailsPage(_model, _itemplaceDto)),
+        );
+      });
     }).catchError((onError) {
-      String errorMsg = onError.toString();
-      if (errorMsg.contains("NOT_ENOUGH_QUANTITY")) {
-        _showFailureDialogWithNavigate(getTranslated(context, 'someOfItemsDoNotHaveEnoughQuantity'));
-      } else {
-        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
-      }
-      setState(() => _isAddButtonTapped = false);
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        String errorMsg = onError.toString();
+        if (errorMsg.contains("NOT_ENOUGH_QUANTITY")) {
+          _showFailureDialogWithNavigate(getTranslated(context, 'someOfItemsDoNotHaveEnoughQuantity'));
+        } else {
+          ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+        }
+        setState(() => _isAddButtonTapped = false);
+      });
     });
   }
 

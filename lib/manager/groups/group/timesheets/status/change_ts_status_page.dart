@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/employee/dto/employee_basic_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
@@ -277,17 +278,20 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
       setState(() => _isChangeBtnTapped = false);
       return;
     }
-    _timesheetService.updateEmployeesTsStatus(_selectedIds.map((el) => el.toString()).toList(), newStatusId, _year, _month, status, _model.groupId).then(
-      (res) {
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _timesheetService.updateEmployeesTsStatus(_selectedIds.map((el) => el.toString()).toList(), newStatusId, _year, _month, status, _model.groupId).then((res) {
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'timesheetStatusSuccessfullyUpdated'));
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => ManagerTsPage(_model)),
         );
-      },
-    ).catchError((onError) {
-      ToastService.showErrorToast('smthWentWrong');
-      setState(() => _isChangeBtnTapped = false);
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showErrorToast('smthWentWrong');
+        setState(() => _isChangeBtnTapped = false);
+      });
     });
   }
 
