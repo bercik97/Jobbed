@@ -15,8 +15,6 @@ import 'package:give_job/shared/widget/buttons.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
-import 'edit/manager_edit_page.dart';
-
 class ManagerProfilePage extends StatefulWidget {
   final User _user;
 
@@ -44,31 +42,14 @@ class _ManagerProfilePageState extends State<ManagerProfilePage> {
           child: Center(
             child: Column(
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 150,
-                      height: 150,
-                      margin: EdgeInsets.only(top: 20),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(image: AssetImage('images/manager-icon.png')),
-                      ),
-                    ),
-                    Ink(
-                      decoration: ShapeDecoration(color: GREEN, shape: CircleBorder()),
-                      child: IconButton(
-                        icon: iconDark(Icons.border_color),
-                        onPressed: () => Navigator.push(
-                          this.context,
-                          MaterialPageRoute(
-                            builder: (context) => ManagerEditPage(_user),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                Container(
+                  width: 150,
+                  height: 150,
+                  margin: EdgeInsets.only(top: 20),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(image: AssetImage('images/manager-icon.png')),
+                  ),
                 ),
                 Column(
                   children: <Widget>[

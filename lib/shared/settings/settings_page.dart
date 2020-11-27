@@ -4,10 +4,12 @@ import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/user/service/user_service.dart';
+import 'package:give_job/employee/profile/edit/employee_edit_page.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
 import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/internationalization/model/language.dart';
+import 'package:give_job/manager/profile/edit/manager_edit_page.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -86,100 +88,119 @@ class _SettingsPageState extends State<SettingsPage> {
             Container(
                 margin: EdgeInsets.only(left: 15),
                 child: InkWell(
-                    onTap: () => {
-                          showGeneralDialog(
-                            context: context,
-                            barrierColor: DARK.withOpacity(0.95),
-                            barrierDismissible: false,
-                            barrierLabel: getTranslated(context, 'changePassword'),
-                            transitionDuration: Duration(milliseconds: 400),
-                            pageBuilder: (_, __, ___) {
-                              return SizedBox.expand(
-                                child: Scaffold(
-                                  backgroundColor: Colors.black12,
-                                  body: Center(
-                                    child: Form(
-                                      autovalidate: true,
-                                      key: formKey,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(left: 30, right: 30),
-                                        child: Column(
+                    onTap: () {
+                      showGeneralDialog(
+                        context: context,
+                        barrierColor: DARK.withOpacity(0.95),
+                        barrierDismissible: false,
+                        barrierLabel: getTranslated(context, 'changePassword'),
+                        transitionDuration: Duration(milliseconds: 400),
+                        pageBuilder: (_, __, ___) {
+                          return SizedBox.expand(
+                            child: Scaffold(
+                              backgroundColor: Colors.black12,
+                              body: Center(
+                                child: Form(
+                                  autovalidate: true,
+                                  key: formKey,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 30, right: 30),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        _buildPasswordTextField(),
+                                        _buildRePasswordTextField(),
+                                        Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: <Widget>[
-                                            _buildPasswordTextField(),
-                                            _buildRePasswordTextField(),
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: <Widget>[
-                                                MaterialButton(
-                                                  elevation: 0,
-                                                  height: 50,
-                                                  minWidth: 40,
-                                                  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                                                  child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: <Widget>[iconWhite(Icons.close)],
-                                                  ),
-                                                  color: Colors.red,
-                                                  onPressed: () => {_passwordController.clear(), _rePasswordController.clear(), Navigator.pop(context)},
-                                                ),
-                                                SizedBox(width: 25),
-                                                MaterialButton(
-                                                  elevation: 0,
-                                                  height: 50,
-                                                  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                                                  child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: <Widget>[iconWhite(Icons.check)],
-                                                  ),
-                                                  color: GREEN,
-                                                  onPressed: () {
-                                                    if (_isValid == null || !_isValid()) {
-                                                      return;
-                                                    }
-                                                    slideDialog.showSlideDialog(
-                                                      context: context,
-                                                      backgroundColor: DARK,
-                                                      child: Padding(
-                                                        padding: EdgeInsets.all(10),
-                                                        child: Column(
-                                                          children: <Widget>[
-                                                            text20GreenBold(getTranslated(context, 'warning')),
-                                                            SizedBox(height: 10),
-                                                            textCenter20White(getTranslated(context, 'changingLanguageWarning')),
-                                                            SizedBox(height: 10),
-                                                            FlatButton(
-                                                              child: textWhite(getTranslated(context, 'changeMyPassword')),
-                                                              onPressed: () {
-                                                                showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                                                                _userService.updatePasswordByUsername(_user.username, _passwordController.text).then((res) {
-                                                                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                                                    Navigator.of(context).pop();
-                                                                    Logout.logoutWithoutConfirm(context, getTranslated(context, 'passwordUpdatedSuccessfully'));
-                                                                  });
-                                                                });
-                                                              },
-                                                            ),
-                                                            FlatButton(child: textWhite(getTranslated(context, 'doNotChangeMyPassword')), onPressed: () => Navigator.of(context).pop()),
-                                                          ],
+                                            MaterialButton(
+                                              elevation: 0,
+                                              height: 50,
+                                              minWidth: 40,
+                                              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: <Widget>[iconWhite(Icons.close)],
+                                              ),
+                                              color: Colors.red,
+                                              onPressed: () => {_passwordController.clear(), _rePasswordController.clear(), Navigator.pop(context)},
+                                            ),
+                                            SizedBox(width: 25),
+                                            MaterialButton(
+                                              elevation: 0,
+                                              height: 50,
+                                              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: <Widget>[iconWhite(Icons.check)],
+                                              ),
+                                              color: GREEN,
+                                              onPressed: () {
+                                                if (_isValid == null || !_isValid()) {
+                                                  return;
+                                                }
+                                                slideDialog.showSlideDialog(
+                                                  context: context,
+                                                  backgroundColor: DARK,
+                                                  child: Padding(
+                                                    padding: EdgeInsets.all(10),
+                                                    child: Column(
+                                                      children: <Widget>[
+                                                        text20GreenBold(getTranslated(context, 'warning')),
+                                                        SizedBox(height: 10),
+                                                        textCenter20White(getTranslated(context, 'changingLanguageWarning')),
+                                                        SizedBox(height: 10),
+                                                        FlatButton(
+                                                          child: textWhite(getTranslated(context, 'changeMyPassword')),
+                                                          onPressed: () {
+                                                            showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+                                                            _userService.updatePasswordByUsername(_user.username, _passwordController.text).then((res) {
+                                                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                                                Navigator.of(context).pop();
+                                                                Logout.logoutWithoutConfirm(context, getTranslated(context, 'passwordUpdatedSuccessfully'));
+                                                              });
+                                                            });
+                                                          },
                                                         ),
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                              ],
+                                                        FlatButton(child: textWhite(getTranslated(context, 'doNotChangeMyPassword')), onPressed: () => Navigator.of(context).pop()),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
                                             ),
                                           ],
                                         ),
-                                      ),
+                                      ],
                                     ),
                                   ),
                                 ),
-                              );
-                            },
-                          ),
+                              ),
+                            ),
+                          );
                         },
+                      );
+                    },
                     child: _subtitleInkWellContainer(getTranslated(context, 'changePassword')))),
+            Container(
+              margin: EdgeInsets.only(left: 15, top: 10),
+              child: InkWell(
+                child: _subtitleInkWellContainer(getTranslated(context, 'aboutMe')),
+                onTap: () {
+                  if (widget._user.role == ROLE_EMPLOYEE) {
+                    Navigator.push(
+                      this.context,
+                      MaterialPageRoute(builder: (context) => EmployeeEditPage(int.parse(_user.id), _user)), //_employeePageDto.id
+                    );
+                  } else {
+                    Navigator.push(
+                      this.context,
+                      MaterialPageRoute(builder: (context) => ManagerEditPage(_user)),
+                    );
+                  }
+                },
+              ),
+            ),
             _titleContainer(getTranslated(context, 'other')),
             Container(
               margin: EdgeInsets.only(left: 15),

@@ -105,30 +105,13 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                       background: Column(
                         children: <Widget>[
                           SizedBox(height: MediaQuery.of(context).size.height * 0.06),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 100,
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(image: AssetImage('images/employee-icon.png')),
-                                ),
-                              ),
-                              Ink(
-                                decoration: ShapeDecoration(color: GREEN, shape: CircleBorder()),
-                                child: IconButton(
-                                  icon: iconDark(Icons.border_color),
-                                  onPressed: () => Navigator.push(
-                                    this.context,
-                                    MaterialPageRoute(
-                                      builder: (context) => EmployeeEditPage(_employeePageDto.id, _user),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                          Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(image: AssetImage('images/employee-icon.png')),
+                            ),
                           ),
                           textCenterWhite(utf8.decode(_user.info != null ? _user.info.runes.toList() : '-') + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
                           SizedBox(height: 5),
