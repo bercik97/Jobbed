@@ -38,7 +38,6 @@ Text textCenter13White(String text) { return Text(text, textAlign: TextAlign.cen
 Text textCenter14White(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 14, color: WHITE)); }
 Text textCenter15White(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 15, color: WHITE)); }
 Text textCenter16White(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 16, color: WHITE)); }
-Text textCenter18White(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 18, color: WHITE)); }
 Text textCenter19White(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 19, color: WHITE)); }
 Text textCenter20White(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: WHITE)); }
 Text textCenter28White(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 28, color: WHITE)); }
@@ -62,7 +61,6 @@ Text text25Dark(String text) { return Text(text, style: TextStyle(fontSize: 25, 
 /////////////////////
 /*TEXT CENTER DARK */
 /////////////////////
-Text textCenterDark(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(color: DARK)); }
 Text textCenter12Dark(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: DARK)); }
 
 
@@ -79,7 +77,6 @@ Text textGreen(String text) { return Text(text, style: TextStyle(color: GREEN));
 Text text15Green(String text) { return Text(text, style: TextStyle(fontSize: 15, color: GREEN)); }
 Text text20Green(String text) { return Text(text, style: TextStyle(fontSize: 20, color: GREEN)); }
 Text text25Green(String text) { return Text(text, style: TextStyle(fontSize: 25, color: GREEN)); }
-Text text50Green(String text) { return Text(text, style: TextStyle(fontSize: 50, color: GREEN)); }
 
 
 /////////////////////////////////
@@ -91,7 +88,6 @@ Text text25GreenUnderline(String text) { return Text(text, style: TextStyle(font
 ////////////////////////////
 /*    TEXT CENTER GREEN   */
 ////////////////////////////
-Text textCenterGreen(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(color: GREEN)); }
 Text textCenter14Green(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 14, color: GREEN)); }
 Text textCenter18Green(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 18, color: GREEN)); }
 Text textCenter20Green(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: GREEN)); }
