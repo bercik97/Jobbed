@@ -23,7 +23,6 @@ dependencies:
   pin_code_text_field: ^1.7.1
   form_field_validator: ^1.0.1
   dropdown_formfield: ^0.1.2
-  flutter_plugin_pdf_viewer: ^1.0.7
   slide_popup_dialog: ^0.0.2
   date_range_picker: ^1.0.6
   date_util: ^0.1.4
@@ -41,6 +40,8 @@ dependencies:
   android_intent: ^0.3.6+12
   number_inc_dec: ^0.6.6
   flutter_progress_dialog: ^0.1.0
+  upgrader: ^2.7.3
+  xml: ^4.5.1
 
 dev_dependencies:
   flutter_test:

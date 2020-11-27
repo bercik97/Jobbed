@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_plugin_pdf_viewer/flutter_plugin_pdf_viewer.dart';
+//import 'package:flutter_plugin_pdf_viewer/flutter_plugin_pdf_viewer.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
 import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
@@ -25,8 +25,8 @@ class DocumentsPage extends StatefulWidget {
 class _DocumentsPageState extends State<DocumentsPage> {
   bool _isLoading = true;
   bool _isInit = true;
-  PDFDocument regulationsPDF;
-  PDFDocument privacyPolicyPDF;
+  //PDFDocument regulationsPDF;
+  //PDFDocument privacyPolicyPDF;
 
   @override
   Widget build(BuildContext context) {
@@ -70,15 +70,15 @@ class _DocumentsPageState extends State<DocumentsPage> {
   Widget _buildBody() {
     return Column(
       children: <Widget>[
-        Expanded(
-          child: Center(
-            child: _isInit
-                ? textCenter28White(getTranslated(context, 'pressButtonToChooseInterestedDocument'))
-                : _isLoading
-                    ? Center(child: circularProgressIndicator())
-                    : PDFViewer(document: regulationsPDF),
-          ),
-        ),
+        // Expanded(
+        //   child: Center(
+        //     child: _isInit
+        //         ? textCenter28White(getTranslated(context, 'pressButtonToChooseInterestedDocument'))
+        //         : _isLoading
+        //             ? Center(child: circularProgressIndicator())
+        //             : PDFViewer(document: regulationsPDF),
+        //   ),
+        // ),
         Row(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
@@ -107,7 +107,7 @@ class _DocumentsPageState extends State<DocumentsPage> {
       _isInit = false;
       _isLoading = true;
     });
-    regulationsPDF = await PDFDocument.fromAsset('docs/regulations.pdf');
+    //regulationsPDF = await PDFDocument.fromAsset('docs/regulations.pdf');
     setState(() {
       _isLoading = false;
     });
@@ -118,7 +118,7 @@ class _DocumentsPageState extends State<DocumentsPage> {
       _isInit = false;
       _isLoading = true;
     });
-    regulationsPDF = await PDFDocument.fromAsset('docs/privacy_policy.pdf');
+    //regulationsPDF = await PDFDocument.fromAsset('docs/privacy_policy.pdf');
     setState(() {
       _isLoading = false;
     });

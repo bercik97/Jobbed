@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:give_job/employee/employee_profile_page.dart';
@@ -11,6 +12,7 @@ import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/own_http_overrides.dart';
 import 'package:give_job/unauthenticated/get_started_page.dart';
 import 'package:give_job/unauthenticated/login_page.dart';
+import 'package:upgrader/upgrader.dart';
 
 import 'internationalization/localization/demo_localization.dart';
 import 'internationalization/localization/localization_constants.dart';
@@ -91,6 +93,8 @@ class _MyAppState extends State<MyApp> {
         child: Center(child: CircularProgressIndicator()),
       );
     } else {
+      final appcastURL = 'https://givejob.pl/mobile-app/appcast.xml';
+      final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ['android']);
       return MaterialApp(
         title: APP_NAME,
         theme: ThemeData(primarySwatch: MaterialColor(0xFFB5D76D, GREEN_RGBO)),
@@ -118,27 +122,37 @@ class _MyAppState extends State<MyApp> {
           return supportedLocales.first;
         },
         debugShowCheckedModeBanner: false,
-        home: FutureBuilder(
-          future: authOrEmpty,
-          builder: (context, snapshot) {
-            Map<String, String> data = snapshot.data;
-            if (data == null) {
-              return GetStartedPage();
-            }
-            String getStartedClick = data['getStartedClick'];
-            if (getStartedClick == null) {
-              return GetStartedPage();
-            }
-            User user = new User().create(data);
-            String role = user.role;
-            if (role == ROLE_EMPLOYEE) {
-              return EmployeeProfilPage(user);
-            } else if (role == ROLE_MANAGER) {
-              return GroupsDashboardPage(user);
-            } else {
-              return LoginPage();
-            }
-          },
+        home: WillPopScope(
+          child: UpgradeAlert(
+            appcastConfig: cfg,
+            debugLogging: true,
+            showIgnore: false,
+            showLater: false,
+            canDismissDialog: false,
+            child: FutureBuilder(
+              future: authOrEmpty,
+              builder: (context, snapshot) {
+                Map<String, String> data = snapshot.data;
+                if (data == null) {
+                  return GetStartedPage();
+                }
+                String getStartedClick = data['getStartedClick'];
+                if (getStartedClick == null) {
+                  return GetStartedPage();
+                }
+                User user = new User().create(data);
+                String role = user.role;
+                if (role == ROLE_EMPLOYEE) {
+                  return EmployeeProfilPage(user);
+                } else if (role == ROLE_MANAGER) {
+                  return GroupsDashboardPage(user);
+                } else {
+                  return LoginPage();
+                }
+              },
+            ),
+          ),
+          onWillPop: () => SystemNavigator.pop(),
         ),
       );
     }
