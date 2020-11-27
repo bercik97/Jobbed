@@ -147,7 +147,6 @@ class _MyAppState extends State<MyApp> {
               appcastConfig: cfg,
               debugLogging: true,
               showLater: false,
-              debugAlwaysUpgrade: true,
               messages: OwnUpgraderMessages(
                 getTranslated(context, 'updateTitle'),
                 getTranslated(context, 'newVersionOfApp'),
