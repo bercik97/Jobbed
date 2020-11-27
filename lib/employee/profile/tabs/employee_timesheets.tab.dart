@@ -43,13 +43,6 @@ Widget employeeTimesheetsTab(BuildContext context, User user, List timesheets, b
                         );
                       },
                       child: ListTile(
-                        leading: Padding(
-                          padding: EdgeInsets.only(bottom: 15),
-                          child: Image(
-                            image: timesheet.status == STATUS_IN_PROGRESS ? AssetImage('images/unchecked.png') : AssetImage('images/checked.png'),
-                            fit: BoxFit.fitHeight,
-                          ),
-                        ),
                         title: textWhiteBold(timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, timesheet.month)),
                         subtitle: Column(
                           children: <Widget>[
@@ -82,6 +75,14 @@ Widget employeeTimesheetsTab(BuildContext context, User user, List timesheets, b
                                   children: <Widget>[
                                     textWhite(getTranslated(context, 'averageRating') + ': '),
                                     textGreenBold(timesheet.averageRating.toString()),
+                                  ],
+                                ),
+                                alignment: Alignment.topLeft),
+                            Align(
+                                child: Row(
+                                  children: <Widget>[
+                                    textWhite(getTranslated(context, 'status') + ': '),
+                                    timesheet.status == STATUS_IN_PROGRESS ? textOrangeBold(getTranslated(context, STATUS_IN_PROGRESS)) : textGreenBold(getTranslated(context, STATUS_COMPLETED)),
                                   ],
                                 ),
                                 alignment: Alignment.topLeft),

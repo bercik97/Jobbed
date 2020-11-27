@@ -47,6 +47,7 @@ Text textCenter30White(String text) { return Text(text, textAlign: TextAlign.cen
 //////////////////////////
 /*TEXT CENTER WHITE BOLD*/
 /////////////////////////
+Text textCenter16WhiteBold(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 16, color: WHITE, fontWeight: FontWeight.bold)); }
 Text textCenter18WhiteBold(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 18, color: WHITE, fontWeight: FontWeight.bold)); }
 
 
@@ -150,6 +151,7 @@ Text textOrange(String text) { return Text(text, style: TextStyle(color: Colors.
 /////////////////////
 /* TEXT ORANGE BOLD*/
 /////////////////////
+Text textOrangeBold(String text) { return Text(text, style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold)); }
 Text text20OrangeBold(String text) { return Text(text, style: TextStyle(fontSize: 20, color: Colors.orange, fontWeight: FontWeight.bold)); }
 
 

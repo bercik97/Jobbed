@@ -664,5 +664,6 @@
   "noQuantitySettedForRelease": "Please set quantity of items you want to release",
   "noQuantitySettedForReturn": "Please set quantity of items you want to return",
   "cannotRemovePlacesWithItems": "You cannot remove item places with items",
-  "hintReturnItems": "Hint: Return items to the warehouse for delete selected item place"
+  "hintReturnItems": "Hint: Return items to the warehouse for delete selected item place",
+  "status": "Status"
 }

@@ -42,15 +42,13 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
         padding: const EdgeInsets.all(12.0),
         child: Column(
           children: <Widget>[
-            Align(alignment: Alignment.center, child: text20GreenBold(todayDate)),
-            SizedBox(height: 10),
             Ink(
               color: BRIGHTER_DARK,
               child: ListTile(
                 trailing: todayHours != '0' || todayMoney != '0' ? icon50Green(Icons.check) : icon50Red(Icons.close),
                 title: Row(
                   children: [
-                    text15White(getTranslated(context, 'amountOfEarnedMoney') + ': '),
+                    text15White(getTranslated(context, 'money') + ': '),
                     text15GreenBold(todayMoney),
                   ],
                 ),
@@ -60,7 +58,7 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                     Align(
                         child: Row(
                           children: <Widget>[
-                            text15White(getTranslated(context, 'numberOfHoursWorked') + ': '),
+                            text15White(getTranslated(context, 'hours') + ': '),
                             text15GreenBold(todayHours),
                           ],
                         ),

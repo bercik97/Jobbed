@@ -98,19 +98,19 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                       ),
                     ],
                     iconTheme: IconThemeData(color: WHITE),
-                    expandedHeight: 325.0,
+                    expandedHeight: 260,
                     pinned: true,
                     backgroundColor: BRIGHTER_DARK,
                     flexibleSpace: FlexibleSpaceBar(
                       background: Column(
                         children: <Widget>[
-                          SizedBox(height: 75),
+                          SizedBox(height: MediaQuery.of(context).size.height * 0.06),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                width: 120,
-                                height: 120,
+                                width: 100,
+                                height: 100,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   image: DecorationImage(image: AssetImage('images/employee-icon.png')),
@@ -130,11 +130,11 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                               ),
                             ],
                           ),
-                          textCenter18WhiteBold(utf8.decode(_user.info != null ? _user.info.runes.toList() : '-') + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
+                          textCenterWhite(utf8.decode(_user.info != null ? _user.info.runes.toList() : '-') + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
                           SizedBox(height: 5),
-                          textCenter18White(getTranslated(this.context, 'employee') + ' #' + _user.id.toString()),
+                          textCenterWhite(getTranslated(this.context, 'employee') + ' #' + _user.id.toString()),
                           SizedBox(height: 12),
-                          text16GreenBold(getTranslated(this.context, 'statisticsForThe') + _employeePageDto.tsCurrentYear + ' ' + getTranslated(this.context, _employeePageDto.tsCurrentMonth)),
+                          textGreenBold(getTranslated(this.context, 'statisticsForThe') + _employeePageDto.tsCurrentYear + ' ' + getTranslated(this.context, _employeePageDto.tsCurrentMonth)),
                           Padding(
                             padding: EdgeInsets.only(top: 12, right: 12, left: 12),
                             child: Container(
@@ -144,7 +144,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                                   Expanded(
                                     child: Column(
                                       children: <Widget>[
-                                        text20White(getTranslated(this.context, 'days')),
+                                        textWhite(getTranslated(this.context, 'days')),
                                         SizedBox(height: 5.0),
                                         Countup(
                                           begin: 0,
@@ -158,8 +158,8 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                                   Expanded(
                                     child: Column(
                                       children: <Widget>[
-                                        text20White(getTranslated(this.context, 'money')),
-                                        textCenter14White(
+                                        textWhite(getTranslated(this.context, 'money')),
+                                        textCenterWhite(
                                           _employeePageDto.tsCurrency != null ? '(' + _employeePageDto.tsCurrency + ')' : getTranslated(this.context, 'noCurrency'),
                                         ),
                                         Countup(
@@ -175,7 +175,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                                   Expanded(
                                     child: Column(
                                       children: <Widget>[
-                                        text20White(getTranslated(this.context, 'rating')),
+                                        textWhite(getTranslated(this.context, 'rating')),
                                         SizedBox(height: 5.0),
                                         Countup(
                                           begin: 0,
