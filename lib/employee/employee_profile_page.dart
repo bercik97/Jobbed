@@ -113,11 +113,11 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                               image: DecorationImage(image: AssetImage('images/employee-icon.png')),
                             ),
                           ),
-                          textCenterWhite(utf8.decode(_user.info != null ? _user.info.runes.toList() : '-') + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
+                          textCenter15White(utf8.decode(_user.info != null ? _user.info.runes.toList() : '-') + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
                           SizedBox(height: 5),
-                          textCenterWhite(getTranslated(this.context, 'employee') + ' #' + _user.id.toString()),
+                          textCenter15White(getTranslated(this.context, 'employee') + ' #' + _user.id.toString()),
                           SizedBox(height: 12),
-                          textGreenBold(getTranslated(this.context, 'statisticsForThe') + _employeePageDto.tsCurrentYear + ' ' + getTranslated(this.context, _employeePageDto.tsCurrentMonth)),
+                          textCenter15GreenBold(getTranslated(this.context, 'statisticsForThe') + _employeePageDto.tsCurrentYear + ' ' + getTranslated(this.context, _employeePageDto.tsCurrentMonth)),
                           Padding(
                             padding: EdgeInsets.only(top: 12, right: 12, left: 12),
                             child: Container(
@@ -142,7 +142,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                                     child: Column(
                                       children: <Widget>[
                                         textWhite(getTranslated(this.context, 'money')),
-                                        textCenterWhite(
+                                        textCenter15White(
                                           _employeePageDto.tsCurrency != null ? '(' + _employeePageDto.tsCurrency + ')' : getTranslated(this.context, 'noCurrency'),
                                         ),
                                         Countup(
