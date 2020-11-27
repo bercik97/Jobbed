@@ -2,6 +2,7 @@ import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_job/api/employee/dto/create_employee_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
@@ -846,6 +847,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
       setState(() => _isRegisterButtonTapped = false);
       return;
     }
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     dto = new CreateEmployeeDto(
       username: _usernameController.text,
       password: _passwordController.text,
@@ -873,41 +875,45 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
       accountExpirationDate: widget._accountExpirationDate,
     );
     _employeeService.create(dto).then((res) {
-      DialogService.showCustomDialog(
-        context: context,
-        titleWidget: textGreen(getTranslated(this.context, 'success')),
-        content: getTranslated(this.context, 'registerSuccess'),
-        actions: <Widget>[
-          FlatButton(
-            child: textWhite(getTranslated(context, 'close')),
-            onPressed: () => _resetAndOpenPage(),
-          ),
-        ],
-        onWillPop: _navigateToLoginPage(),
-      );
-    }).catchError((onError) {
-      String s = onError.toString();
-      if (s.contains('USERNAME_EXISTS')) {
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
         DialogService.showCustomDialog(
           context: context,
-          titleWidget: textRed(getTranslated(context, 'error')),
-          content: getTranslated(context, 'usernameExists') + '\n' + getTranslated(context, 'chooseOtherUsername'),
-        );
-      } else if (s.contains('TOKEN_EXPIRED')) {
-        DialogService.showCustomDialog(
-          context: context,
-          titleWidget: textRed(getTranslated(context, 'error')),
-          content: getTranslated(context, 'tokenIsIncorrect') + '\n' + getTranslated(context, 'askAdministratorWhatWentWrong'),
+          titleWidget: textGreen(getTranslated(this.context, 'success')),
+          content: getTranslated(this.context, 'registerSuccess'),
+          actions: <Widget>[
+            FlatButton(
+              child: textWhite(getTranslated(context, 'close')),
+              onPressed: () => _resetAndOpenPage(),
+            ),
+          ],
           onWillPop: _navigateToLoginPage(),
         );
-      } else {
-        DialogService.showCustomDialog(
-          context: context,
-          titleWidget: textRed(getTranslated(context, 'error')),
-          content: getTranslated(context, 'smthWentWrong'),
-        );
-      }
-      setState(() => _isRegisterButtonTapped = false);
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        String s = onError.toString();
+        if (s.contains('USERNAME_EXISTS')) {
+          DialogService.showCustomDialog(
+            context: context,
+            titleWidget: textRed(getTranslated(context, 'error')),
+            content: getTranslated(context, 'usernameExists') + '\n' + getTranslated(context, 'chooseOtherUsername'),
+          );
+        } else if (s.contains('TOKEN_EXPIRED')) {
+          DialogService.showCustomDialog(
+            context: context,
+            titleWidget: textRed(getTranslated(context, 'error')),
+            content: getTranslated(context, 'tokenIsIncorrect') + '\n' + getTranslated(context, 'askAdministratorWhatWentWrong'),
+            onWillPop: _navigateToLoginPage(),
+          );
+        } else {
+          DialogService.showCustomDialog(
+            context: context,
+            titleWidget: textRed(getTranslated(context, 'error')),
+            content: getTranslated(context, 'smthWentWrong'),
+          );
+        }
+        setState(() => _isRegisterButtonTapped = false);
+      });
     });
   }
 

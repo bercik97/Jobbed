@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/piecework/dto/piecework_dto.dart';
 import 'package:give_job/api/piecework/service/piecework_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
@@ -166,14 +167,19 @@ class _PieceworkPageState extends State<PieceworkPage> {
                               child: iconWhite(Icons.close),
                               color: Colors.red,
                               onPressed: () {
+                                showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                                 _pieceworkService.deleteById(_pieceworks[i].id).then((value) {
-                                  ToastService.showSuccessToast(getTranslated(context, 'successfullyDeletedPieceworkReport'));
-                                  Navigator.push(
-                                    this.context,
-                                    MaterialPageRoute(builder: (context) => PieceworkPage(_user, _todayDate, _todayWorkdayId)),
-                                  );
+                                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                    ToastService.showSuccessToast(getTranslated(context, 'successfullyDeletedPieceworkReport'));
+                                    Navigator.push(
+                                      this.context,
+                                      MaterialPageRoute(builder: (context) => PieceworkPage(_user, _todayDate, _todayWorkdayId)),
+                                    );
+                                  });
                                 }).catchError((onError) {
-                                  ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+                                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                    ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+                                  });
                                 });
                               },
                             ),

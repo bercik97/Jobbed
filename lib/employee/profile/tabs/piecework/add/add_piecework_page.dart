@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_job/api/piecework/dto/create_piecework_dto.dart';
 import 'package:give_job/api/piecework/service/piecework_service.dart';
@@ -484,20 +485,25 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
       setState(() => _isAddButtonTapped = false);
       return;
     }
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     CreatePieceworkDto dto = new CreatePieceworkDto(
       workdayId: _todayWorkdayId,
       workplaceName: _workplaceNameController.text,
       serviceWithQuantity: serviceWithQuantity,
     );
     _pieceworkService.create(dto).then((res) {
-      ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewReportAboutPiecework'));
-      Navigator.push(
-        this.context,
-        MaterialPageRoute(builder: (context) => PieceworkPage(_user, _todayDate, _todayWorkdayId)),
-      );
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewReportAboutPiecework'));
+        Navigator.push(
+          this.context,
+          MaterialPageRoute(builder: (context) => PieceworkPage(_user, _todayDate, _todayWorkdayId)),
+        );
+      });
     }).catchError((onError) {
-      ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
-      setState(() => _isAddButtonTapped = false);
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+        setState(() => _isAddButtonTapped = false);
+      });
     });
   }
 }

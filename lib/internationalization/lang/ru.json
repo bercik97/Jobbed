@@ -494,7 +494,7 @@
   "add": "Добавить",
   "doNotAdd": "Не добавлять",
   "editWorkplace": "Редактировать рабочее место",
-  "lookingForWorkplacesInYourLocation": "Поиск работы ...\n(расчетное время 10 сек)",
+  "lookingForWorkplacesInYourLocation": "Поиск работы",
   "cannotGetCurrentLocation": "Невозможно получить текущее местоположение",
   "enableGpsAndTryAgain": "Убедитесь, что вы включили GPS, и повторите попытку",
   "noteFinishWorkInPlaceWhereYouStarted": "Примечание. Вы можете закончить свою работу только тогда, когда находитесь на том месте, где начали работать!",

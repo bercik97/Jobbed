@@ -17,7 +17,6 @@ dependencies:
   http: ^0.12.1
   flutter_secure_storage: ^3.3.3
   fluttertoast: ^4.0.0
-  progress_dialog: ^1.2.4
   countup: ^0.1.0
   open_appstore: ^1.0.2
   url_launcher: ^5.4.2
@@ -41,6 +40,7 @@ dependencies:
   permission_handler: ^4.4.0+hotfix.2
   android_intent: ^0.3.6+12
   number_inc_dec: ^0.6.6
+  flutter_progress_dialog: ^0.1.0
 
 dev_dependencies:
   flutter_test:

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/piecework/dto/piecework_dto.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
@@ -450,19 +451,20 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
-                          _workdayService
-                              .updateHoursByIds(
-                            selectedIds.map((el) => el.toString()).toList(),
-                            hours,
-                          )
-                              .then(
-                            (res) {
+                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+                          _workdayService.updateHoursByIds(selectedIds.map((el) => el.toString()).toList(), hours).then((res) {
+                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.of(context).pop();
                               selectedIds.clear();
                               ToastService.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
                               _refresh();
-                            },
-                          );
+                            });
+                          }).catchError(() {
+                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Navigator.of(context).pop();
+                              ToastService.showSuccessToast(getTranslated(context, 'smthWentWrong'));
+                            });
+                          });
                         },
                       ),
                     ],
@@ -545,14 +547,19 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                         ),
                         color: GREEN,
                         onPressed: () {
+                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           String note = _noteController.text;
-                          _workdayService.updateFieldsValuesByIds(
-                            selectedIds.map((el) => el.toString()).toList(),
-                            {'note': note},
-                          ).then((res) {
-                            Navigator.of(context).pop();
-                            ToastService.showSuccessToast(getTranslated(context, 'notesSavedSuccessfully'));
-                            _refresh();
+                          _workdayService.updateFieldsValuesByIds(selectedIds.map((el) => el.toString()).toList(), {'note': note}).then((res) {
+                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Navigator.of(context).pop();
+                              ToastService.showSuccessToast(getTranslated(context, 'notesSavedSuccessfully'));
+                              _refresh();
+                            });
+                          }).catchError(() {
+                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Navigator.of(context).pop();
+                              ToastService.showSuccessToast(getTranslated(context, 'smthWentWrong'));
+                            });
                           });
                         },
                       ),

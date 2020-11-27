@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/token/service/token_service.dart';
 import 'package:give_job/employee/employee_profile_page.dart';
@@ -14,14 +15,12 @@ import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/progress_dialog_initializer.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:give_job/unauthenticated/get_started_page.dart';
 import 'package:give_job/unauthenticated/register/employee_register_page.dart';
 import 'package:give_job/unauthenticated/register/manager_register_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:pin_code_text_field/pin_code_text_field.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 
 import '../internationalization/localization/localization_constants.dart';
 
@@ -32,7 +31,6 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   TokenService _tokenService;
-  ProgressDialog _progressDialog;
 
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -53,7 +51,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    this._progressDialog = ProgressDialogInitializer.initializeProgressDialog(context);
     return Scaffold(
       backgroundColor: DARK,
       appBar: AppBar(
@@ -185,7 +182,7 @@ class _LoginPageState extends State<LoginPage> {
       setState(() => _isLoginButtonTapped = false);
       return;
     }
-    _progressDialog.show();
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _login(_usernameController.text, _passwordController.text).then((res) {
       FocusScope.of(context).unfocus();
       bool resNotNullOrEmpty = res.body != null && res.body != '{}';
@@ -215,23 +212,19 @@ class _LoginPageState extends State<LoginPage> {
         user.companyId = companyId;
         user.companyName = companyName;
         user.authHeader = authHeader;
-        if (role == ROLE_EMPLOYEE) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => EmployeeProfilPage(user)));
-        } else if (role == ROLE_MANAGER) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => GroupsDashboardPage(user)));
-        }
-        ToastService.showSuccessToast(getTranslated(context, 'loginSuccessfully'));
-      } else if (res.statusCode == 200 && !resNotNullOrEmpty) {
-        _progressDialog.hide();
-        ToastService.showErrorToast(getTranslated(context, 'userIsNotVerified'));
+        Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+          if (role == ROLE_EMPLOYEE) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => EmployeeProfilPage(user)));
+          } else if (role == ROLE_MANAGER) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => GroupsDashboardPage(user)));
+          }
+          ToastService.showSuccessToast(getTranslated(context, 'loginSuccessfully'));
+        });
       } else {
-        _progressDialog.hide();
-        ToastService.showErrorToast(getTranslated(context, 'wrongUsernameOrPassword'));
+        Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() => ToastService.showErrorToast(getTranslated(context, 'wrongUsernameOrPassword')));
       }
     }, onError: (e) {
-      Future.delayed(Duration(seconds: 1)).then((value) {
-        _progressDialog.hide().whenComplete(() => ToastService.showErrorToast(getTranslated(context, 'cannotConnectToServer')));
-      });
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() => ToastService.showErrorToast(getTranslated(context, 'cannotConnectToServer')));
     });
     setState(() => _isLoginButtonTapped = false);
   }
@@ -325,20 +318,27 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _handleConfirmTokenButton() {
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     setState(() => _isConfirmTokenButtonTapped = true);
     _tokenService.findFieldsValuesById(_tokenController.text, ['role', 'companyName', 'accountExpirationDate']).then(
       (res) {
         if (res == null) {
-          _tokenAlertDialog(false, null, null, null);
-          setState(() => _isConfirmTokenButtonTapped = false);
+          Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+            _tokenAlertDialog(false, null, null, null);
+            setState(() => _isConfirmTokenButtonTapped = false);
+          });
           return;
         }
-        _tokenAlertDialog(true, res['role'], res['companyName'], res['accountExpirationDate']);
-        setState(() => _isConfirmTokenButtonTapped = false);
+        Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+          _tokenAlertDialog(true, res['role'], res['companyName'], res['accountExpirationDate']);
+          setState(() => _isConfirmTokenButtonTapped = false);
+        });
       },
     ).catchError((onError) {
-      _tokenAlertDialog(false, null, null, null);
-      setState(() => _isConfirmTokenButtonTapped = false);
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        _tokenAlertDialog(false, null, null, null);
+        setState(() => _isConfirmTokenButtonTapped = false);
+      });
     });
   }
 

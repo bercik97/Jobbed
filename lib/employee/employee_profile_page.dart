@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/employee/dto/employee_page_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
@@ -322,6 +323,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
+                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _workdayService
                               .updateHoursByIds(
                             [workdayId].map((e) => e.toString()).toList(),
@@ -329,9 +331,16 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                           )
                               .then(
                             (res) {
-                              Navigator.of(context).pop();
-                              ToastService.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
-                              _refresh();
+                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                Navigator.of(context).pop();
+                                ToastService.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
+                                _refresh();
+                              }).catchError(() {
+                                Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                  Navigator.of(context).pop();
+                                  ToastService.showSuccessToast(getTranslated(context, 'smthWentWrong'));
+                                });
+                              });
                             },
                           );
                         },
@@ -418,6 +427,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                         ),
                         color: GREEN,
                         onPressed: () {
+                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           String note = _noteController.text;
                           _workdayService.updateFieldsValuesById(
                             workdayId,
@@ -425,9 +435,16 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                               'note': note,
                             },
                           ).then((res) {
-                            Navigator.of(context).pop();
-                            ToastService.showSuccessToast(getTranslated(context, 'noteSavedSuccessfully'));
-                            _refresh();
+                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Navigator.of(context).pop();
+                              ToastService.showSuccessToast(getTranslated(context, 'noteSavedSuccessfully'));
+                              _refresh();
+                            });
+                          }).catchError(() {
+                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Navigator.of(context).pop();
+                              ToastService.showSuccessToast(getTranslated(context, 'smthWentWrong'));
+                            });
                           });
                         },
                       ),

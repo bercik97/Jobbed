@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/user/service/user_service.dart';
@@ -17,10 +18,8 @@ import 'package:give_job/shared/settings/bug_report_dialog.dart';
 import 'package:give_job/shared/settings/documents_page.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/url_util.dart';
-import 'package:give_job/shared/widget/circular_progress_indicator.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 
 import '../../main.dart';
@@ -65,19 +64,11 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final ProgressDialog progressDialog = new ProgressDialog(context);
-    progressDialog.style(
-      message: '  ' + getTranslated(context, 'changingLanguage') + ' ...',
-      messageTextStyle: TextStyle(color: DARK),
-      progressWidget: circularProgressIndicator(),
-    );
-
     void _changeLanguage(Language language, BuildContext context) async {
-      progressDialog.show();
+      showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
       Locale _temp = await setLocale(language.languageCode);
-      MyApp.setLocale(context, _temp);
-      Future.delayed(Duration(seconds: 1)).then((value) {
-        progressDialog.hide();
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        MyApp.setLocale(context, _temp);
       });
     }
 
@@ -159,12 +150,15 @@ class _SettingsPageState extends State<SettingsPage> {
                                                             SizedBox(height: 10),
                                                             FlatButton(
                                                               child: textWhite(getTranslated(context, 'changeMyPassword')),
-                                                              onPressed: () => _userService.updatePasswordByUsername(_user.username, _passwordController.text).then(
-                                                                (res) {
-                                                                  Navigator.of(context).pop();
-                                                                  Logout.logoutWithoutConfirm(context, getTranslated(context, 'passwordUpdatedSuccessfully'));
-                                                                },
-                                                              ),
+                                                              onPressed: () {
+                                                                showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+                                                                _userService.updatePasswordByUsername(_user.username, _passwordController.text).then((res) {
+                                                                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                                                    Navigator.of(context).pop();
+                                                                    Logout.logoutWithoutConfirm(context, getTranslated(context, 'passwordUpdatedSuccessfully'));
+                                                                  });
+                                                                });
+                                                              },
                                                             ),
                                                             FlatButton(child: textWhite(getTranslated(context, 'doNotChangeMyPassword')), onPressed: () => Navigator.of(context).pop()),
                                                           ],
