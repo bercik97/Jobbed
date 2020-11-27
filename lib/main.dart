@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:give_job/employee/employee_profile_page.dart';
@@ -10,6 +9,7 @@ import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/own_http_overrides.dart';
+import 'package:give_job/shared/own_upgrader_messages.dart';
 import 'package:give_job/unauthenticated/get_started_page.dart';
 import 'package:give_job/unauthenticated/login_page.dart';
 import 'package:upgrader/upgrader.dart';
@@ -122,37 +122,42 @@ class _MyAppState extends State<MyApp> {
           return supportedLocales.first;
         },
         debugShowCheckedModeBanner: false,
-        home: WillPopScope(
-          child: UpgradeAlert(
-            appcastConfig: cfg,
-            debugLogging: true,
-            showIgnore: false,
-            showLater: false,
-            canDismissDialog: false,
-            child: FutureBuilder(
-              future: authOrEmpty,
-              builder: (context, snapshot) {
-                Map<String, String> data = snapshot.data;
-                if (data == null) {
-                  return GetStartedPage();
-                }
-                String getStartedClick = data['getStartedClick'];
-                if (getStartedClick == null) {
-                  return GetStartedPage();
-                }
-                User user = new User().create(data);
-                String role = user.role;
-                if (role == ROLE_EMPLOYEE) {
-                  return EmployeeProfilPage(user);
-                } else if (role == ROLE_MANAGER) {
-                  return GroupsDashboardPage(user);
-                } else {
-                  return LoginPage();
-                }
-              },
-            ),
-          ),
-          onWillPop: () => SystemNavigator.pop(),
+        home: FutureBuilder(
+          future: authOrEmpty,
+          builder: (context, snapshot) {
+            Map<String, String> data = snapshot.data;
+            if (data == null) {
+              return GetStartedPage();
+            }
+            StatefulWidget pageToReturn;
+            String getStartedClick = data['getStartedClick'];
+            if (getStartedClick == null) {
+              pageToReturn = GetStartedPage();
+            }
+            User user = new User().create(data);
+            String role = user.role;
+            if (role == ROLE_EMPLOYEE) {
+              pageToReturn = EmployeeProfilPage(user);
+            } else if (role == ROLE_MANAGER) {
+              pageToReturn = GroupsDashboardPage(user);
+            } else {
+              pageToReturn = LoginPage();
+            }
+            return UpgradeAlert(
+              appcastConfig: cfg,
+              debugLogging: true,
+              showLater: false,
+              debugAlwaysUpgrade: true,
+              messages: OwnUpgraderMessages(
+                getTranslated(context, 'updateTitle'),
+                getTranslated(context, 'newVersionOfApp'),
+                getTranslated(context, 'prompt'),
+                getTranslated(context, 'ignore'),
+                getTranslated(context, 'updateNow'),
+              ),
+              child: pageToReturn,
+            );
+          },
         ),
       );
     }

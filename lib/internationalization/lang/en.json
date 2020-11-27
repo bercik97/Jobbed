@@ -666,5 +666,10 @@
   "cannotRemovePlacesWithItems": "You cannot remove item places with items",
   "hintReturnItems": "Hint: Return items to the warehouse for delete selected item place",
   "status": "Status",
-  "aboutMe": "About me"
+  "aboutMe": "About me",
+  "updateTitle": "Update",
+  "newVersionOfApp": "A new version of GiveJob is available!",
+  "prompt": "Please update the application as some functionalities may not work with your current version.",
+  "ignore": "IGNORE",
+  "updateNow": "UPDATE NOW"
 }

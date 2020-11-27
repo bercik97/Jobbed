@@ -666,5 +666,10 @@
   "cannotRemovePlacesWithItems": "Nie możesz usunąć miejsc w których znajdują sie przedmioty",
   "hintReturnItems": "Podpowiedź: Zwróć przedmioty do magazynu aby usunąć miejsce składowania przedmiotów",
   "status": "Status",
-  "aboutMe": "O mnie"
+  "aboutMe": "O mnie",
+  "updateTitle": "Aktualizacja",
+  "newVersionOfApp": "Nowa wersja aplikacji GiveJob jest dostępna!",
+  "prompt": "Proszę zaktualizuj aplikację, ponieważ niektóre funkcjonalności mogą nie działać z Twoją aktualną wersją.",
+  "ignore": "IGNORUJ",
+  "updateNow": "ZAKTUALIZUJ"
 }
