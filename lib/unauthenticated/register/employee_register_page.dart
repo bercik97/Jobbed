@@ -93,21 +93,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
           automaticallyImplyLeading: true,
           leading: IconButton(
             icon: iconWhite(Icons.arrow_back),
-            onPressed: () => DialogService.showCustomDialog(
-              context: context,
-              titleWidget: textGreen(getTranslated(context, 'confirmation')),
-              content: getTranslated(context, 'exitRegistrationContent'),
-              actions: <Widget>[
-                FlatButton(
-                  child: textWhite(getTranslated(context, 'exitAgree')),
-                  onPressed: () => {Navigator.of(context).pop(), _resetAndOpenPage()},
-                ),
-                FlatButton(
-                  child: textWhite(getTranslated(context, 'no')),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-              ],
-            ),
+            onPressed: () => _exitDialog(),
           ),
         ),
         body: Padding(
@@ -881,51 +867,106 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
       accountExpirationDate: widget._accountExpirationDate,
     );
     _employeeService.create(dto).then((res) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        DialogService.showCustomDialog(
-          context: context,
-          titleWidget: textGreen(getTranslated(this.context, 'success')),
-          content: getTranslated(this.context, 'registerSuccess'),
-          actions: <Widget>[
-            FlatButton(
-              child: textWhite(getTranslated(context, 'close')),
-              onPressed: () => _resetAndOpenPage(),
-            ),
-          ],
-          onWillPop: _navigateToLoginPage(),
-        );
-      });
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() => _showSuccessDialog());
     }).catchError((onError) {
       Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String s = onError.toString();
         if (s.contains('USERNAME_EXISTS')) {
-          DialogService.showCustomDialog(
-            context: context,
-            titleWidget: textRed(getTranslated(context, 'error')),
-            content: getTranslated(context, 'usernameExists') + '\n' + getTranslated(context, 'chooseOtherUsername'),
-          );
+          _errorDialog(getTranslated(context, 'usernameExists') + '\n' + getTranslated(context, 'chooseOtherUsername'));
         } else if (s.contains('TOKEN_EXPIRED')) {
-          DialogService.showCustomDialog(
-            context: context,
-            titleWidget: textRed(getTranslated(context, 'error')),
-            content: getTranslated(context, 'tokenIsIncorrect') + '\n' + getTranslated(context, 'askAdministratorWhatWentWrong'),
-            onWillPop: _navigateToLoginPage(),
-          );
+          _errorDialogWithNavigate(getTranslated(context, 'tokenIsIncorrect') + '\n' + getTranslated(context, 'askAdministratorWhatWentWrong'));
         } else {
-          DialogService.showCustomDialog(
-            context: context,
-            titleWidget: textRed(getTranslated(context, 'error')),
-            content: getTranslated(context, 'smthWentWrong'),
-          );
+          _errorDialog(getTranslated(context, 'smthWentWrong'));
         }
         setState(() => _isRegisterButtonTapped = false);
       });
     });
   }
 
+  _errorDialog(String content) {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: DARK,
+          title: textGreen(getTranslated(context, 'error')),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                textWhite(content),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: textWhite(getTranslated(context, 'close')),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  _showSuccessDialog() {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return WillPopScope(
+          child: AlertDialog(
+            backgroundColor: DARK,
+            title: textGreen(getTranslated(this.context, 'success')),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  textWhite(getTranslated(this.context, 'registerSuccess')),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: textWhite(getTranslated(this.context, 'goToLoginPage')),
+                onPressed: () => _resetAndOpenPage(),
+              ),
+            ],
+          ),
+          onWillPop: _navigateToLoginPage,
+        );
+      },
+    );
+  }
+
   Future<bool> _navigateToLoginPage() async {
     _resetAndOpenPage();
     return true;
+  }
+
+  _errorDialogWithNavigate(String errorMsg) {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: DARK,
+          title: textGreen(getTranslated(this.context, 'close')),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                textWhite(errorMsg),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: textWhite(getTranslated(this.context, 'close')),
+              onPressed: () => _resetAndOpenPage(),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _resetAndOpenPage() {
@@ -936,10 +977,23 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
   }
 
   Future<bool> _onWillPop() async {
-    return DialogService.showCustomDialog(
-          context: context,
-          titleWidget: textGreen(getTranslated(context, 'confirmation')),
-          content: getTranslated(context, 'exitRegistrationContent'),
+    return _exitDialog() ?? false;
+  }
+
+  _exitDialog() {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: DARK,
+          title: textGreen(getTranslated(context, 'confirmation')),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                textWhite(getTranslated(context, 'exitRegistrationContent')),
+              ],
+            ),
+          ),
           actions: <Widget>[
             FlatButton(
               child: textWhite(getTranslated(context, 'exitAgree')),
@@ -950,7 +1004,8 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
               onPressed: () => Navigator.of(context).pop(),
             ),
           ],
-        ) ??
-        false;
+        );
+      },
+    );
   }
 }

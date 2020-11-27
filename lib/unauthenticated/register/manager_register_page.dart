@@ -78,21 +78,7 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
           automaticallyImplyLeading: true,
           leading: IconButton(
             icon: iconWhite(Icons.arrow_back),
-            onPressed: () => DialogService.showCustomDialog(
-              context: context,
-              titleWidget: textGreen(getTranslated(context, 'confirmation')),
-              content: getTranslated(context, 'exitRegistrationContent'),
-              actions: <Widget>[
-                FlatButton(
-                  child: textWhite(getTranslated(context, 'exitAgree')),
-                  onPressed: () => {Navigator.of(context).pop(), _resetAndOpenPage()},
-                ),
-                FlatButton(
-                  child: textWhite(getTranslated(context, 'no')),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-              ],
-            ),
+            onPressed: () => _exitDialog(),
           ),
         ),
         body: Padding(
@@ -550,46 +536,106 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
       accountExpirationDate: _accountExpirationDate,
     );
     _managerService.create(_dto).then((res) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        DialogService.showCustomDialog(
-          context: context,
-          titleWidget: textGreen(getTranslated(this.context, 'success')),
-          content: getTranslated(this.context, 'registerSuccess'),
-          actions: <Widget>[
-            FlatButton(
-              child: textWhite(getTranslated(context, 'close')),
-              onPressed: () => _resetAndOpenPage(),
-            ),
-          ],
-          onWillPop: _navigateToLoginPage(),
-        );
-      });
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() => _showSuccessDialog());
     }).catchError((onError) {
       Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        String msg = onError.toString();
-        if (msg.contains("USERNAME_EXISTS")) {
-          DialogService.showCustomDialog(
-            context: context,
-            titleWidget: textRed(getTranslated(context, 'error')),
-            content: getTranslated(context, 'usernameExists') + '\n' + getTranslated(context, 'chooseOtherUsername'),
-          );
-        } else if (msg.contains("TOKEN_EXPIRED")) {
-          DialogService.showCustomDialog(
-            context: context,
-            titleWidget: textRed(getTranslated(context, 'error')),
-            content: getTranslated(context, 'tokenIsIncorrect') + '\n' + getTranslated(context, 'askAdministratorWhatWentWrong'),
-            onWillPop: _navigateToLoginPage(),
-          );
+        String s = onError.toString();
+        if (s.contains('USERNAME_EXISTS')) {
+          _errorDialog(getTranslated(context, 'usernameExists') + '\n' + getTranslated(context, 'chooseOtherUsername'));
+        } else if (s.contains('TOKEN_EXPIRED')) {
+          _errorDialogWithNavigate(getTranslated(context, 'tokenIsIncorrect') + '\n' + getTranslated(context, 'askAdministratorWhatWentWrong'));
         } else {
-          DialogService.showCustomDialog(
-            context: context,
-            titleWidget: textRed(getTranslated(context, 'error')),
-            content: getTranslated(context, 'smthWentWrong'),
-          );
+          _errorDialog(getTranslated(context, 'smthWentWrong'));
         }
         setState(() => _isRegisterButtonTapped = false);
       });
     });
+  }
+
+  _errorDialog(String content) {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: DARK,
+          title: textGreen(getTranslated(context, 'error')),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                textWhite(content),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: textWhite(getTranslated(context, 'close')),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  _showSuccessDialog() {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return WillPopScope(
+          child: AlertDialog(
+            backgroundColor: DARK,
+            title: textGreen(getTranslated(this.context, 'success')),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  textWhite(getTranslated(this.context, 'registerSuccess')),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: textWhite(getTranslated(this.context, 'goToLoginPage')),
+                onPressed: () => _resetAndOpenPage(),
+              ),
+            ],
+          ),
+          onWillPop: _navigateToLoginPage,
+        );
+      },
+    );
+  }
+
+  Future<bool> _navigateToLoginPage() async {
+    _resetAndOpenPage();
+    return true;
+  }
+
+  _errorDialogWithNavigate(String errorMsg) {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: DARK,
+          title: textGreen(getTranslated(this.context, 'close')),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                textWhite(errorMsg),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: textWhite(getTranslated(this.context, 'close')),
+              onPressed: () => _resetAndOpenPage(),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _resetAndOpenPage() {
@@ -599,16 +645,24 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
     );
   }
 
-  Future<bool> _navigateToLoginPage() async {
-    _resetAndOpenPage();
-    return true;
+  Future<bool> _onWillPop() async {
+    return _exitDialog() ?? false;
   }
 
-  Future<bool> _onWillPop() async {
-    return DialogService.showCustomDialog(
-          context: context,
-          titleWidget: textGreen(getTranslated(context, 'confirmation')),
-          content: getTranslated(context, 'exitRegistrationContent'),
+  _exitDialog() {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: DARK,
+          title: textGreen(getTranslated(context, 'confirmation')),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                textWhite(getTranslated(context, 'exitRegistrationContent')),
+              ],
+            ),
+          ),
           actions: <Widget>[
             FlatButton(
               child: textWhite(getTranslated(context, 'exitAgree')),
@@ -619,7 +673,8 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
               onPressed: () => Navigator.of(context).pop(),
             ),
           ],
-        ) ??
-        false;
+        );
+      },
+    );
   }
 }
