@@ -155,11 +155,9 @@
   "otherSection": "OTHER SECTION",
   "termsOfUse": "TERMS OF USE",
   "termsOfUseIsRequired": "Accept regulations and privacy policy to complete registration.",
-  "seeDocumentsHint": "To view the documents, click on the link below.",
-  "seeDocuments": "See documents",
-  "acceptRegulations": "I accept the regulations",
   "acceptRegulationsIsRequired": "Confirmation of the regulations is required.",
-  "acceptPrivacyPolicy": "I accept the privacy policy",
+  "acceptPrivacyPolicy": "privacy policy",
+  "acceptRegulations": "regulations",
   "acceptPrivacyPolicyIsRequired": "Confirmation of the privacy policy is required.",
   "oneOfThreeContactsIsRequired": "Please provide one of the three forms of contact.",
   "passwordIsRequired": "Password is required",
@@ -671,5 +669,6 @@
   "newVersionOfApp": "A new version of GiveJob is available!",
   "prompt": "Please update the application as some functionalities may not work with your current version.",
   "ignore": "IGNORE",
-  "updateNow": "UPDATE NOW"
+  "updateNow": "UPDATE NOW",
+  "accept": "I accept the"
 }

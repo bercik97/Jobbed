@@ -155,11 +155,9 @@
   "otherSection": "ІНШИЙ РОЗДІЛ",
   "termsOfUse": "УМОВИ ВИКОРИСТАННЯ",
   "termsOfUseIsRequired": "Прийміть правила та політику конфіденційності, щоб завершити реєстрацію.",
-  "seeDocumentsHint": "Щоб переглянути документи, натисніть на посилання нижче.",
-  "seeDocuments": "Переглянути документи",
-  "acceptRegulations": "Я приймаю правила",
   "acceptRegulationsIsRequired": "Потрібне підтвердження правил.",
-  "acceptPrivacyPolicy": "Я приймаю політику конфіденційності",
+  "acceptPrivacyPolicy": "політика конфіденційності",
+  "acceptRegulations": "нормативних актів",
   "acceptPrivacyPolicyIsRequired": "Потрібно підтвердити політику конфіденційності.",
   "oneOfThreeContactsIsRequired": "Будь ласка, надайте одну з трьох форм контакту.",
   "passwordIsRequired": "Потрібен пароль",
@@ -671,5 +669,6 @@
   "newVersionOfApp": "Доступна нова версія GiveJob!",
   "prompt": "Оновіть програму, оскільки деякі функції можуть не працювати з поточною версією.",
   "ignore": "ІГНОРУВАТИ",
-  "updateNow": "ОНОВИТИ ЗАРАЗ"
+  "updateNow": "ОНОВИТИ ЗАРАЗ",
+  "accept": "я приймаю"
 }

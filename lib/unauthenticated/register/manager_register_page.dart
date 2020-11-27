@@ -9,8 +9,8 @@ import 'package:give_job/api/manager/service/manager_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
+import 'package:give_job/shared/pdf_viewer_from_asset.dart';
 import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/settings/documents_page.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -222,39 +222,27 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
           getTranslated(context, 'termsOfUse'),
           getTranslated(context, 'termsOfUseIsRequired'),
         ),
-        GestureDetector(
-          onTap: () {
-            Navigator.of(context).push(
-              CupertinoPageRoute<Null>(
-                builder: (BuildContext context) {
-                  return DocumentsPage(null);
-                },
-              ),
-            );
-          },
-          child: Column(
-            children: <Widget>[
-              Align(
-                alignment: Alignment.topLeft,
-                child: textWhite(
-                  getTranslated(context, 'seeDocumentsHint'),
-                ),
-              ),
-              SizedBox(height: 1),
-              Align(
-                alignment: Alignment.topLeft,
-                child: textWhiteBoldUnderline(
-                  getTranslated(context, 'seeDocuments'),
-                ),
-              )
-            ],
-          ),
-        ),
         ListTileTheme(
           contentPadding: EdgeInsets.all(0),
           child: CheckboxListTile(
-            title: textWhite(
-              getTranslated(context, 'acceptRegulations'),
+            title: Row(
+              children: [
+                textWhite(getTranslated(context, 'accept') + ' '),
+                GestureDetector(
+                  child: textWhiteBoldUnderline(getTranslated(context, 'acceptRegulations')),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<dynamic>(
+                        builder: (_) => PDFViewerFromAsset(
+                          title: getTranslated(context, 'regulations'),
+                          pdfAssetPath: 'docs/regulations.pdf',
+                        ),
+                      ),
+                    );
+                  },
+                )
+              ],
             ),
             subtitle: !_regulationsCheckbox
                 ? text13Red(
@@ -273,8 +261,24 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
         ListTileTheme(
           contentPadding: EdgeInsets.all(0),
           child: CheckboxListTile(
-            title: textWhite(
-              getTranslated(context, 'acceptPrivacyPolicy'),
+            title: Row(
+              children: [
+                textWhite(getTranslated(context, 'accept') + ' '),
+                GestureDetector(
+                  child: textWhiteBoldUnderline(getTranslated(context, 'acceptPrivacyPolicy')),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<dynamic>(
+                        builder: (_) => PDFViewerFromAsset(
+                          title: getTranslated(context, 'privacyPolicy'),
+                          pdfAssetPath: 'docs/privacy_policy.pdf',
+                        ),
+                      ),
+                    );
+                  },
+                )
+              ],
             ),
             subtitle: !_privacyPolicyCheckbox
                 ? text13Red(

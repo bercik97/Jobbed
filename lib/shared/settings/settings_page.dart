@@ -17,7 +17,6 @@ import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/logout_service.dart';
 import 'package:give_job/shared/settings/bug_report_dialog.dart';
-import 'package:give_job/shared/settings/documents_page.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/url_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -25,6 +24,7 @@ import 'package:give_job/shared/widget/texts.dart';
 import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 
 import '../../main.dart';
+import '../pdf_viewer_from_asset.dart';
 
 class SettingsPage extends StatefulWidget {
   final User _user;
@@ -225,16 +225,33 @@ class _SettingsPageState extends State<SettingsPage> {
             Container(
                 margin: EdgeInsets.only(left: 15, top: 10),
                 child: InkWell(
-                    onTap: () => {
-                          Navigator.of(context).push(
-                            CupertinoPageRoute<Null>(
-                              builder: (BuildContext context) {
-                                return DocumentsPage(widget._user);
-                              },
-                            ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute<dynamic>(
+                          builder: (_) => PDFViewerFromAsset(
+                            title: getTranslated(context, 'regulations'),
+                            pdfAssetPath: 'docs/regulations.pdf',
                           ),
-                        },
-                    child: _subtitleInkWellContainer(getTranslated(context, 'termsOfUseLowerCase')))),
+                        ),
+                      );
+                    },
+                    child: _subtitleInkWellContainer(getTranslated(context, 'regulations')))),
+            Container(
+                margin: EdgeInsets.only(left: 15, top: 10),
+                child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute<dynamic>(
+                          builder: (_) => PDFViewerFromAsset(
+                            title: getTranslated(context, 'privacyPolicy'),
+                            pdfAssetPath: 'docs/privacy_policy.pdf',
+                          ),
+                        ),
+                      );
+                    },
+                    child: _subtitleInkWellContainer(getTranslated(context, 'privacyPolicy')))),
             Container(margin: EdgeInsets.only(left: 15, top: 10), child: InkWell(onTap: () => bugReportDialog(context), child: _subtitleInkWellContainer(getTranslated(context, 'bugReport')))),
             Container(margin: EdgeInsets.only(left: 25), alignment: Alignment.centerLeft, height: 30, child: text13White(getTranslated(context, 'version') + ': 1.0.15+16')),
             _titleContainer(getTranslated(context, 'graphics')),
