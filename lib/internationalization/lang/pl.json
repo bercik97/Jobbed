@@ -349,7 +349,6 @@
   "setNewPlan": "Ustaw nowy plan",
   "checkYourCalendar": "Sprawdź swój kalendarz",
   "legend": "Legenda",
-  "calendarLegend": "Legenda kalendarza",
   "plannedDay": "Zaplanowany dzień",
   "workedDay": "Przepracowany dzień",
   "confirmedVocation": "Potwierdzony urlop",
@@ -458,7 +457,7 @@
   "noteSavedSuccessfully": "Notatka została zapisana pomyślnie",
   "noteFor": "Notatka dla",
   "today": "Dzisiaj",
-  "checkDetails": "Sprawdź szczegóły",
+  "checkingDetails": "Sprawdź szczegóły",
   "fillHours": "Uzupełnij godziny",
   "editNote": "Edytuj notatkę",
   "youDontHaveTsForCurrentMonth": "Nie posiadasz arkusza czasu pracy na bieżący miesiąc",
@@ -670,5 +669,11 @@
   "prompt": "Proszę zaktualizuj aplikację, ponieważ niektóre funkcjonalności mogą nie działać z Twoją aktualną wersją.",
   "ignore": "IGNORUJ",
   "updateNow": "ZAKTUALIZUJ",
-  "accept": "Akceptuję"
+  "accept": "Akceptuję",
+  "settingNotes": "Wpisywanie notatek",
+  "checkDetails": "Sprawdzanie szczegółów",
+  "tsCompleted": "Zaakceptowany arkusz czasu pracy",
+  "employeeProfile": "Wyświetlenie profilu pracownika",
+  "notVerifiedVocation": "Niezweryfikowany urlop",
+  "verifiedVocation": "Zweryfikowany urlop"
 }

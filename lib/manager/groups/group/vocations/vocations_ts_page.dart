@@ -6,7 +6,7 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_without_status_dto.dart';
 import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/shared/group_model.dart';
+import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/vocations/timesheets/calendar/vocations_calendar_page.dart';
 import 'package:give_job/manager/groups/group/vocations/timesheets/manage/vocations_manage_page.dart';
 import 'package:give_job/shared/libraries/colors.dart';

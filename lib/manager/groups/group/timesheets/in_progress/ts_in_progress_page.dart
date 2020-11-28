@@ -15,25 +15,25 @@ import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/employee/employee_profil_page.dart';
-import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
-import 'package:give_job/manager/groups/group/shared/group_model.dart';
+import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
+import 'package:give_job/shared/util/icons_legend_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
+import 'package:give_job/shared/widget/icons_legend_dialog.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../../shared/widget/loader.dart';
 import '../../../../shared/manager_app_bar.dart';
-import '../../../../shared/manager_app_bar_with_icons_legend.dart';
 import '../../../../shared/manager_side_bar.dart';
 import '../ts_page.dart';
 
@@ -105,16 +105,11 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBarWithIconsLegend(
-              context,
-              _timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' - ' + getTranslated(context, STATUS_IN_PROGRESS),
-              [
-                IconsLegend.buildRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
-                IconsLegend.buildRow('images/green-rate-icon.png', getTranslated(context, 'settingRating')),
-                IconsLegend.buildRow('images/green-plan-icon.png', getTranslated(context, 'settingPlan')),
-                IconsLegend.buildRow('images/green-opinion-icon.png', getTranslated(context, 'settingOpinion')),
-              ],
-              _model.user),
+          appBar: managerAppBar(
+            context,
+            _model.user,
+            _timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' - ' + getTranslated(context, STATUS_IN_PROGRESS),
+          ),
           drawer: managerSideBar(context, _model.user),
           body: RefreshIndicator(
             color: DARK,
@@ -357,6 +352,17 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                 SizedBox(width: 1),
               ],
             ),
+          ),
+          floatingActionButton: iconsLegendDialog(
+            context,
+            getTranslated(context, 'iconsLegend'),
+            [
+              IconsLegendUtil.buildImageRow('images/employee-icon.png', getTranslated(context, 'employeeProfile')),
+              IconsLegendUtil.buildImageRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
+              IconsLegendUtil.buildImageRow('images/green-rate-icon.png', getTranslated(context, 'settingRating')),
+              IconsLegendUtil.buildImageRow('images/green-plan-icon.png', getTranslated(context, 'settingPlan')),
+              IconsLegendUtil.buildImageRow('images/green-opinion-icon.png', getTranslated(context, 'settingOpinion')),
+            ],
           ),
         ),
       ),

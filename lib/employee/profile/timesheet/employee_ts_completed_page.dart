@@ -8,11 +8,13 @@ import 'package:give_job/api/workday/dto/workday_for_employee_dto.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/api/workday/util/workday_util.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
+import 'package:give_job/shared/widget/icons_legend_dialog.dart';
 import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/util/icons_legend_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
@@ -71,126 +73,133 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
         theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          backgroundColor: DARK,
-          appBar: employeeAppBar(context, _user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, _timesheet.status)),
-          drawer: employeeSideBar(context, _user),
-          body: RefreshIndicator(
-            color: DARK,
-            backgroundColor: WHITE,
-            onRefresh: _refresh,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  color: BRIGHTER_DARK,
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: 5),
-                    child: ListTile(
-                      leading: Padding(
-                        padding: EdgeInsets.only(bottom: 15),
-                        child: Image(
-                          image: _timesheet.status == STATUS_COMPLETED ? AssetImage('images/checked.png') : AssetImage('images/unchecked.png'),
-                          fit: BoxFit.fitHeight,
+            backgroundColor: DARK,
+            appBar: employeeAppBar(context, _user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, _timesheet.status)),
+            drawer: employeeSideBar(context, _user),
+            body: RefreshIndicator(
+              color: DARK,
+              backgroundColor: WHITE,
+              onRefresh: _refresh,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    color: BRIGHTER_DARK,
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 5),
+                      child: ListTile(
+                        leading: Padding(
+                          padding: EdgeInsets.only(bottom: 15),
+                          child: Image(
+                            image: _timesheet.status == STATUS_COMPLETED ? AssetImage('images/checked.png') : AssetImage('images/unchecked.png'),
+                            fit: BoxFit.fitHeight,
+                          ),
                         ),
-                      ),
-                      title: textWhiteBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
-                      subtitle: Column(
-                        children: <Widget>[
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: textWhiteBold(_user.info != null ? utf8.decode(_user.info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(_user.nationality) : getTranslated(context, 'empty')),
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: textWhite(getTranslated(context, 'hours') + ': '),
-                              ),
-                              textGreenBold(_timesheet.numberOfHoursWorked.toString() + 'h'),
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: textWhite(getTranslated(context, 'averageRating') + ': '),
-                              ),
-                              textGreenBold(widget._timesheet.averageRating.toString()),
-                            ],
-                          ),
-                        ],
-                      ),
-                      trailing: Wrap(
-                        children: <Widget>[
-                          text20GreenBold(_timesheet.amountOfEarnedMoney.toString()),
-                          text20GreenBold(' ' + _timesheet.groupCountryCurrency),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Theme(
-                        data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
-                        child: DataTable(
-                          columnSpacing: 10,
-                          columns: [
-                            DataColumn(label: textWhiteBold('No.'), onSort: (columnIndex, ascending) => _onSortNo(columnIndex, ascending)),
-                            DataColumn(label: textWhiteBold(getTranslated(this.context, 'hours'))),
-                            DataColumn(label: textWhiteBold(getTranslated(this.context, 'money'))),
-                            DataColumn(label: textWhiteBold(getTranslated(this.context, 'plan'))),
-                            DataColumn(label: textWhiteBold(getTranslated(this.context, 'note'))),
-                            DataColumn(label: textWhiteBold(getTranslated(this.context, 'workTimes'))),
-                            DataColumn(label: textWhiteBold(getTranslated(this.context, 'pieceworks'))),
-                          ],
-                          rows: this
-                              .workdays
-                              .map(
-                                (workday) => DataRow(
-                                  cells: [
-                                    DataCell(textWhite(workday.number.toString())),
-                                    DataCell(textWhite(workday.hours.toString())),
-                                    DataCell(textWhite(workday.money.toString())),
-                                    DataCell(
-                                      Wrap(children: <Widget>[workday.plan != null && workday.plan != '' ? iconWhite(Icons.zoom_in) : text20Red('-')]),
-                                      onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'planDetails'), workday.plan),
-                                    ),
-                                    DataCell(
-                                      Wrap(children: <Widget>[workday.note != null && workday.note != '' ? iconWhite(Icons.zoom_in) : text20Red('-')]),
-                                      onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'note'), workday.note),
-                                    ),
-                                    DataCell(
-                                      Wrap(
-                                        children: <Widget>[
-                                          workday.workTimes != null && workday.workTimes.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
-                                        ],
-                                      ),
-                                      onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workday.workTimes),
-                                    ),
-                                    DataCell(
-                                      Wrap(
-                                        children: <Widget>[
-                                          workday.pieceworks != null && workday.pieceworks.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
-                                        ],
-                                      ),
-                                      onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workday.pieceworks),
-                                    ),
-                                  ],
+                        title: textWhiteBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
+                        subtitle: Column(
+                          children: <Widget>[
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: textWhiteBold(_user.info != null ? utf8.decode(_user.info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(_user.nationality) : getTranslated(context, 'empty')),
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: textWhite(getTranslated(context, 'hours') + ': '),
                                 ),
-                              )
-                              .toList(),
+                                textGreenBold(_timesheet.numberOfHoursWorked.toString() + 'h'),
+                              ],
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: textWhite(getTranslated(context, 'averageRating') + ': '),
+                                ),
+                                textGreenBold(widget._timesheet.averageRating.toString()),
+                              ],
+                            ),
+                          ],
+                        ),
+                        trailing: Wrap(
+                          children: <Widget>[
+                            text20GreenBold(_timesheet.amountOfEarnedMoney.toString()),
+                            text20GreenBold(' ' + _timesheet.groupCountryCurrency),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Theme(
+                          data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
+                          child: DataTable(
+                            columnSpacing: 10,
+                            columns: [
+                              DataColumn(label: textWhiteBold('No.'), onSort: (columnIndex, ascending) => _onSortNo(columnIndex, ascending)),
+                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'hours'))),
+                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'money'))),
+                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'plan'))),
+                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'note'))),
+                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'workTimes'))),
+                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'pieceworks'))),
+                            ],
+                            rows: this
+                                .workdays
+                                .map(
+                                  (workday) => DataRow(
+                                    cells: [
+                                      DataCell(textWhite(workday.number.toString())),
+                                      DataCell(textWhite(workday.hours.toString())),
+                                      DataCell(textWhite(workday.money.toString())),
+                                      DataCell(
+                                        Wrap(children: <Widget>[workday.plan != null && workday.plan != '' ? iconWhite(Icons.zoom_in) : text20Red('-')]),
+                                        onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'planDetails'), workday.plan),
+                                      ),
+                                      DataCell(
+                                        Wrap(children: <Widget>[workday.note != null && workday.note != '' ? iconWhite(Icons.zoom_in) : text20Red('-')]),
+                                        onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'note'), workday.note),
+                                      ),
+                                      DataCell(
+                                        Wrap(
+                                          children: <Widget>[
+                                            workday.workTimes != null && workday.workTimes.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
+                                          ],
+                                        ),
+                                        onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workday.workTimes),
+                                      ),
+                                      DataCell(
+                                        Wrap(
+                                          children: <Widget>[
+                                            workday.pieceworks != null && workday.pieceworks.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
+                                          ],
+                                        ),
+                                        onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workday.pieceworks),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ),
+            floatingActionButton: iconsLegendDialog(
+              this.context,
+              getTranslated(context, 'iconsLegend'),
+              [
+                IconsLegendUtil.buildImageRow('images/checked.png', getTranslated(context, 'tsCompleted')),
+                IconsLegendUtil.buildIconRow(iconWhite(Icons.search), getTranslated(context, 'checkDetails')),
+              ],
+            )),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilPage(_user)),
     );

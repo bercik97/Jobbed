@@ -11,6 +11,7 @@ import 'package:give_job/api/workday/dto/workday_for_employee_dto.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/api/workday/util/workday_util.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
+import 'package:give_job/shared/widget/icons_legend_dialog.dart';
 import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -18,6 +19,7 @@ import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
+import 'package:give_job/shared/util/icons_legend_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
@@ -219,6 +221,27 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
               ],
             ),
           ),
+          floatingActionButton: _canFillHours
+              ? iconsLegendDialog(
+                  this.context,
+                  getTranslated(context, 'iconsLegend'),
+                  [
+                    IconsLegendUtil.buildImageRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
+                    IconsLegendUtil.buildIconRow(iconGreen(Icons.add), getTranslated(context, 'addNote')),
+                    IconsLegendUtil.buildIconRow(iconWhite(Icons.search), getTranslated(context, 'checkDetails')),
+                    IconsLegendUtil.buildImageRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
+                    IconsLegendUtil.buildImageRow('images/green-plan-icon.png', getTranslated(context, 'settingNotes')),
+                  ],
+                )
+              : iconsLegendDialog(
+                  this.context,
+                  getTranslated(context, 'iconsLegend'),
+                  [
+                    IconsLegendUtil.buildImageRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
+                    IconsLegendUtil.buildIconRow(iconGreen(Icons.add), getTranslated(context, 'addNote')),
+                    IconsLegendUtil.buildIconRow(iconWhite(Icons.search), getTranslated(context, 'checkDetails')),
+                  ],
+                ),
           bottomNavigationBar: _canFillHours
               ? Container(
                   height: 40,

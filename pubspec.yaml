@@ -43,6 +43,7 @@ dependencies:
   upgrader: ^2.7.3
   xml: ^4.5.1
   flutter_cached_pdfview: ^0.3.1
+  draggable_widget: ^1.0.1
 
 dev_dependencies:
   flutter_test:
@@ -117,6 +118,7 @@ flutter:
     - images/dark-warehouse-icon.png
     - images/dark-pricelist-icon.png
     - images/dark-items-icon.png
+    - images/dark-help-icon.png
 
     - docs/regulations.pdf
     - docs/privacy_policy.pdf

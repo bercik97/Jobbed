@@ -23,7 +23,7 @@ import '../../../../../shared/widget/loader.dart';
 import '../../../../../shared/widget/texts.dart';
 import '../../../../shared/manager_app_bar.dart';
 import '../../../../shared/manager_side_bar.dart';
-import '../../shared/group_model.dart';
+import '../../../../shared/group_model.dart';
 import '../ts_page.dart';
 
 class ChangeTsStatusPage extends StatefulWidget {

@@ -6,7 +6,7 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/manager/groups/group/employees_settings/employees_settings_page.dart';
 import 'package:give_job/manager/groups/group/pricelist/pricelist_page.dart';
 import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.dart';
-import 'package:give_job/manager/groups/group/shared/group_model.dart';
+import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/timesheets/ts_page.dart';
 import 'package:give_job/manager/groups/group/vocations/vocations_ts_page.dart';
 import 'package:give_job/manager/groups/group/warehouse/warehouse_page.dart';
@@ -24,7 +24,6 @@ import '../../shared/manager_app_bar.dart';
 import '../groups_dashboard_page.dart';
 import 'edit/group_edit_page.dart';
 import 'employee/employees_page.dart';
-import 'icons_legend/icons_legend_dialog.dart';
 import 'itemplaces/itemplaces_page.dart';
 
 class GroupPage extends StatefulWidget {
@@ -135,8 +134,16 @@ class _GroupPageState extends State<GroupPage> {
                         child: Material(
                           color: BRIGHTER_DARK,
                           child: InkWell(
-                            onTap: () => IconsLegend.showIconsLegendDialog(context, _model),
-                            child: _buildScrollableContainer('images/help-icon.png', 'iconsLegend', 'iconsLegendDescription'),
+                            onTap: () {
+                              Navigator.of(context).push(
+                                CupertinoPageRoute<Null>(
+                                  builder: (BuildContext context) {
+                                    return EmployeesSettingsPage(_model);
+                                  },
+                                ),
+                              );
+                            },
+                            child: _buildScrollableContainer('images/employees-settings-icon.png', 'settings', 'employeesSettingsDescription'),
                           ),
                         ),
                       ),
@@ -171,28 +178,6 @@ class _GroupPageState extends State<GroupPage> {
                               Navigator.of(context).push(
                                 CupertinoPageRoute<Null>(
                                   builder: (BuildContext context) {
-                                    return EmployeesSettingsPage(_model);
-                                  },
-                                ),
-                              );
-                            },
-                            child: _buildScrollableContainer('images/employees-settings-icon.png', 'settings', 'employeesSettingsDescription'),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Material(
-                          color: BRIGHTER_DARK,
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                CupertinoPageRoute<Null>(
-                                  builder: (BuildContext context) {
                                     return ManagerTsPage(_model);
                                   },
                                 ),
@@ -202,7 +187,11 @@ class _GroupPageState extends State<GroupPage> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 10),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: <Widget>[
                       Expanded(
                         child: Material(
                           color: BRIGHTER_DARK,
@@ -212,11 +201,7 @@ class _GroupPageState extends State<GroupPage> {
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: <Widget>[
+                      SizedBox(width: 10),
                       Expanded(
                         child: Material(
                           color: BRIGHTER_DARK,
@@ -231,6 +216,28 @@ class _GroupPageState extends State<GroupPage> {
                               );
                             },
                             child: _buildScrollableContainer('images/workplace-icon.png', 'workplaces', 'manageCompanyWorkplaces'),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Material(
+                          color: BRIGHTER_DARK,
+                          child: InkWell(
+                            onTap: () => {
+                              Navigator.of(context).push(
+                                CupertinoPageRoute<Null>(
+                                  builder: (BuildContext context) {
+                                    return VocationsTsPage(_model);
+                                  },
+                                ),
+                              ),
+                            },
+                            child: _buildScrollableContainer('images/vocation-icon.png', 'vocations', 'vocationsDescription'),
                           ),
                         ),
                       ),
@@ -292,30 +299,6 @@ class _GroupPageState extends State<GroupPage> {
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Material(
-                          color: BRIGHTER_DARK,
-                          child: InkWell(
-                            onTap: () => {
-                              Navigator.of(context).push(
-                                CupertinoPageRoute<Null>(
-                                  builder: (BuildContext context) {
-                                    return VocationsTsPage(_model);
-                                  },
-                                ),
-                              ),
-                            },
-                            child: _buildScrollableContainer('images/vocation-icon.png', 'vocations', 'vocationsDescription'),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(child: Material(color: BRIGHTER_DARK)),
                     ],
                   ),
                 ],

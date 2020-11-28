@@ -10,23 +10,23 @@ import 'package:give_job/api/workday/dto/workday_dto.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/api/workday/util/workday_util.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
+import 'package:give_job/shared/util/icons_legend_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
+import 'package:give_job/shared/widget/icons_legend_dialog.dart';
 import 'package:give_job/shared/widget/loader.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
 import '../../../../shared/libraries/constants.dart';
 import '../../../shared/manager_app_bar.dart';
-import '../../../shared/manager_app_bar_with_icons_legend.dart';
 import '../../../shared/manager_side_bar.dart';
-import '../shared/group_model.dart';
+import '../../../shared/group_model.dart';
 
 class EmployeeTsInProgressPage extends StatefulWidget {
   final GroupModel _model;
@@ -101,17 +101,11 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBarWithIconsLegend(
-            context,
-            getTranslated(context, 'workdays') + ' - ' + getTranslated(context, STATUS_IN_PROGRESS),
-            [
-              IconsLegend.buildRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
-              IconsLegend.buildRow('images/green-rate-icon.png', getTranslated(context, 'settingRating')),
-              IconsLegend.buildRow('images/green-plan-icon.png', getTranslated(context, 'settingPlan')),
-              IconsLegend.buildRow('images/green-opinion-icon.png', getTranslated(context, 'settingOpinion')),
-              IconsLegend.buildRow('images/green-vocation-icon.png', getTranslated(context, 'settingVocation')),
-            ],
-            _user),
+        appBar: managerAppBar(
+          context,
+          _user,
+          getTranslated(context, 'workdays') + ' - ' + getTranslated(context, STATUS_IN_PROGRESS),
+        ),
         drawer: managerSideBar(context, _user),
         body: RefreshIndicator(
           color: DARK,
@@ -335,6 +329,21 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
               SizedBox(width: 1),
             ],
           ),
+        ),
+        floatingActionButton: iconsLegendDialog(
+          this.context,
+          getTranslated(context, 'iconsLegend'),
+          [
+            IconsLegendUtil.buildImageRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
+            IconsLegendUtil.buildIconRow(iconWhite(Icons.search), getTranslated(context, 'checkDetails')),
+            IconsLegendUtil.buildImageRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
+            IconsLegendUtil.buildImageRow('images/green-rate-icon.png', getTranslated(context, 'settingRating')),
+            IconsLegendUtil.buildImageRow('images/green-plan-icon.png', getTranslated(context, 'settingPlan')),
+            IconsLegendUtil.buildImageRow('images/green-opinion-icon.png', getTranslated(context, 'settingOpinion')),
+            IconsLegendUtil.buildImageRow('images/green-vocation-icon.png', getTranslated(context, 'settingVocation')),
+            IconsLegendUtil.buildImageWithIconRow('images/green-vocation-icon.png', iconRed(Icons.clear), getTranslated(context, 'notVerifiedVocation')),
+            IconsLegendUtil.buildImageWithIconRow('images/green-vocation-icon.png', iconGreen(Icons.check), getTranslated(context, 'verifiedVocation')),
+          ],
         ),
       ),
     );

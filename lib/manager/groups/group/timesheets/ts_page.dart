@@ -7,17 +7,18 @@ import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
 import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/group_page.dart';
-import 'package:give_job/manager/groups/group/icons_legend/icons_legend_dialog.dart';
-import 'package:give_job/manager/groups/group/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/timesheets/add/add_ts_page.dart';
 import 'package:give_job/manager/groups/group/timesheets/delete/delete_ts_page.dart';
 import 'package:give_job/manager/groups/group/timesheets/status/change_ts_status_page.dart';
+import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/util/icons_legend_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
+import 'package:give_job/shared/widget/icons_legend_dialog.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 
@@ -25,7 +26,6 @@ import '../../../../internationalization/localization/localization_constants.dar
 import '../../../../shared/widget/loader.dart';
 import '../../../../shared/widget/texts.dart';
 import '../../../shared/manager_app_bar.dart';
-import '../../../shared/manager_app_bar_with_icons_legend.dart';
 import '../../../shared/manager_side_bar.dart';
 import 'completed/ts_completed_page.dart';
 import 'in_progress/ts_in_progress_page.dart';
@@ -85,16 +85,11 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBarWithIconsLegend(
-              context,
-              getTranslated(context, 'timesheets') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
-              [
-                IconsLegend.buildRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
-                IconsLegend.buildRow('images/checked.png', getTranslated(context, 'completedTs')),
-                IconsLegend.buildRowWithWidget(icon50Orange(Icons.arrow_downward), getTranslated(context, 'settingTsStatusToInProgress')),
-                IconsLegend.buildRowWithWidget(icon50Green(Icons.arrow_upward), getTranslated(context, 'settingTsStatusToCompleted')),
-              ],
-              _model.user),
+          appBar: managerAppBar(
+            context,
+            _model.user,
+            getTranslated(context, 'timesheets') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
+          ),
           drawer: managerSideBar(context, _model.user),
           body: SingleChildScrollView(
             child: Column(
@@ -255,6 +250,16 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                 SizedBox(width: 1),
               ],
             ),
+          ),
+          floatingActionButton: iconsLegendDialog(
+            context,
+            getTranslated(context, 'iconsLegend'),
+            [
+              IconsLegendUtil.buildImageRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
+              IconsLegendUtil.buildImageRow('images/checked.png', getTranslated(context, 'tsCompleted')),
+              IconsLegendUtil.buildIconRow(iconGreen(Icons.arrow_upward), getTranslated(context, 'settingTsStatusToCompleted')),
+              IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_downward), getTranslated(context, 'settingTsStatusToInProgress')),
+            ],
           ),
         ),
       ),

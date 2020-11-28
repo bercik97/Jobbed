@@ -6,17 +6,17 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/api/workday/util/workday_util.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
+import 'package:give_job/shared/widget/icons_legend_dialog.dart';
 import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/settings/settings_page.dart';
+import 'package:give_job/shared/util/icons_legend_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:intl/intl.dart';
-import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../shared/widget/loader.dart';
@@ -96,7 +96,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: _buildAppBar(),
+          appBar: employeeAppBar(context, _user, getTranslated(context, 'calendar')),
           drawer: employeeSideBar(context, _user),
           body: Column(
             mainAxisSize: MainAxisSize.max,
@@ -105,81 +105,20 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
               Expanded(child: _buildEventList()),
             ],
           ),
+          floatingActionButton: iconsLegendDialog(
+            this.context,
+            getTranslated(context, 'iconsLegend'),
+            [
+              IconsLegendUtil.buildIconRow(iconOrange(Icons.error_outline), getTranslated(context, 'plannedDay')),
+              IconsLegendUtil.buildIconRow(iconGreen(Icons.check), getTranslated(context, 'workedDay')),
+              IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_circle_up), getTranslated(context, 'workInProgress')),
+              IconsLegendUtil.buildIconRow(iconYellow(Icons.beach_access), getTranslated(context, 'confirmedVocation')),
+              IconsLegendUtil.buildIconRow(iconRed(Icons.beach_access), getTranslated(context, 'notConfirmedVocation')),
+            ],
+          ),
         ),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilPage(_user)),
-    );
-  }
-
-  Widget _buildAppBar() {
-    return AppBar(
-      iconTheme: IconThemeData(color: WHITE),
-      backgroundColor: BRIGHTER_DARK,
-      elevation: 0.0,
-      bottomOpacity: 0.0,
-      title: Row(
-        children: [
-          text15White(getTranslated(context, 'calendar')),
-          SizedBox(width: 10),
-          Container(
-            height: 30,
-            child: FloatingActionButton(
-              mini: true,
-              tooltip: getTranslated(context, 'legend'),
-              backgroundColor: GREEN,
-              onPressed: () {
-                slideDialog.showSlideDialog(
-                  context: context,
-                  backgroundColor: DARK,
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      children: <Widget>[
-                        text20GreenBold(getTranslated(context, 'calendarLegend')),
-                        SizedBox(height: 10),
-                        _buildLegendItem(iconOrange(Icons.error_outline), getTranslated(context, 'plannedDay')),
-                        _buildLegendItem(iconGreen(Icons.check), getTranslated(context, 'workedDay')),
-                        _buildLegendItem(iconOrange(Icons.arrow_circle_up), getTranslated(context, 'workInProgress')),
-                        _buildLegendItem(iconYellow(Icons.beach_access), getTranslated(context, 'confirmedVocation')),
-                        _buildLegendItem(iconRed(Icons.beach_access), getTranslated(context, 'notConfirmedVocation')),
-                      ],
-                    ),
-                  ),
-                );
-              },
-              child: text25Dark('?'),
-            ),
-          ),
-        ],
-      ),
-      actions: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(right: 15.0),
-          child: IconButton(
-            icon: iconWhite(Icons.settings),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SettingsPage(_user)),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildLegendItem(Icon icon, String text) {
-    return Padding(
-      padding: EdgeInsets.only(top: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          icon,
-          SizedBox(width: 5),
-          text18White(text),
-        ],
-      ),
     );
   }
 

@@ -10,7 +10,7 @@ import 'package:give_job/api/warehouse/dto/warehouse_dashboard_dto.dart';
 import 'package:give_job/api/warehouse/service/warehouse_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/group_page.dart';
-import 'package:give_job/manager/groups/group/shared/group_model.dart';
+import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';

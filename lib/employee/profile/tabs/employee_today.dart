@@ -45,7 +45,7 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
             Ink(
               color: BRIGHTER_DARK,
               child: ListTile(
-                trailing: todayHours != '0' || todayMoney != '0' ? icon50Green(Icons.check) : icon50Red(Icons.close),
+                trailing: todayHours != '0' || todayMoney != '0.0' ? icon50Green(Icons.check) : icon50Red(Icons.close),
                 title: Row(
                   children: [
                     text15White(getTranslated(context, 'money') + ': '),
@@ -83,7 +83,7 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                                         children: [
                                           text15GreenBold(getTranslated(context, 'yes') + ' '),
                                           iconGreen(Icons.search),
-                                          textGreen('(' + getTranslated(context, 'checkDetails') + ')'),
+                                          textGreen('(' + getTranslated(context, 'checkingDetails') + ')'),
                                         ],
                                       )
                                     : text15RedBold(getTranslated(context, 'empty'))
@@ -101,7 +101,7 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                                     children: [
                                       text15GreenBold(getTranslated(context, 'yes') + ' '),
                                       iconGreen(Icons.search),
-                                      textGreen('(' + getTranslated(context, 'checkDetails') + ')'),
+                                      textGreen('(' + getTranslated(context, 'checkingDetails') + ')'),
                                     ],
                                   )
                                 : text15RedBold(getTranslated(context, 'empty'))
@@ -118,7 +118,7 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                                     children: [
                                       text15GreenBold(getTranslated(context, 'yes') + ' '),
                                       iconGreen(Icons.search),
-                                      textGreen('(' + getTranslated(context, 'checkDetails') + ')'),
+                                      textGreen('(' + getTranslated(context, 'checkingDetails') + ')'),
                                     ],
                                   )
                                 : text15RedBold(getTranslated(context, 'empty'))

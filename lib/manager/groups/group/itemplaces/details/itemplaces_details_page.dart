@@ -8,7 +8,7 @@ import 'package:give_job/api/itemplace/service/itemplace_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/itemplaces/itemplaces_page.dart';
-import 'package:give_job/manager/groups/group/shared/group_model.dart';
+import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';

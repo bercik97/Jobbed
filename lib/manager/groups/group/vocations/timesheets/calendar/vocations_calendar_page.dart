@@ -7,7 +7,7 @@ import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/api/vocation/dto/vocation_employee_dto.dart';
 import 'package:give_job/api/vocation/service/vocation_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/shared/group_model.dart';
+import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';

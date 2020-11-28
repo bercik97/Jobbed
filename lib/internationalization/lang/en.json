@@ -349,7 +349,6 @@
   "setNewPlan": "Set new plan",
   "checkYourCalendar": "Check your calendar",
   "legend": "Legend",
-  "calendarLegend": "Calendar legend",
   "plannedDay": "Planned day",
   "workedDay": "Worked day",
   "confirmedVocation": "Confirmed vocation",
@@ -458,7 +457,7 @@
   "noteSavedSuccessfully": "Note has been saved successfully",
   "noteFor": "Note for",
   "today": "Today",
-  "checkDetails": "Check details",
+  "checkingDetails": "Check details",
   "fillHours": "Fill hours",
   "editNote": "Edit note",
   "youDontHaveTsForCurrentMonth": "You do not have a time sheet for the current month",
@@ -670,5 +669,11 @@
   "prompt": "Please update the application as some functionalities may not work with your current version.",
   "ignore": "IGNORE",
   "updateNow": "UPDATE NOW",
-  "accept": "I accept the"
+  "accept": "I accept the",
+  "settingNotes": "Writing notes",
+  "checkDetails": "Check details",
+  "tsCompleted": "Completed timesheet",
+  "employeeProfile": "Display employee's profile",
+  "notVerifiedVocation": "Not verified vocation",
+  "verifiedVocation": "Verified vocation"
 }

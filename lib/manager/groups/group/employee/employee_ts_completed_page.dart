@@ -10,16 +10,18 @@ import 'package:give_job/api/workday/util/workday_util.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/util/icons_legend_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
 import 'package:give_job/shared/widget/circular_progress_indicator.dart';
 import 'package:give_job/shared/widget/icons.dart';
+import 'package:give_job/shared/widget/icons_legend_dialog.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
 import '../../../../shared/libraries/constants.dart';
+import '../../../shared/group_model.dart';
 import '../../../shared/manager_app_bar.dart';
 import '../../../shared/manager_side_bar.dart';
-import '../shared/group_model.dart';
 
 class EmployeeTsCompletedPage extends StatefulWidget {
   final GroupModel _model;
@@ -203,6 +205,16 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                 }
               },
             ),
+          ],
+        ),
+        floatingActionButton: iconsLegendDialog(
+          this.context,
+          getTranslated(context, 'iconsLegend'),
+          [
+            IconsLegendUtil.buildImageRow('images/checked.png', getTranslated(context, 'tsCompleted')),
+            IconsLegendUtil.buildIconRow(iconWhite(Icons.search), getTranslated(context, 'checkDetails')),
+            IconsLegendUtil.buildImageWithIconRow('images/green-vocation-icon.png', iconRed(Icons.clear), getTranslated(context, 'notVerifiedVocation')),
+            IconsLegendUtil.buildImageWithIconRow('images/green-vocation-icon.png', iconGreen(Icons.check), getTranslated(context, 'verifiedVocation')),
           ],
         ),
       ),
