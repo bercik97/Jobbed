@@ -89,8 +89,6 @@ flutter:
     - images/timesheets-icon.png
     - images/vocation-icon.png
     - images/workplace-icon.png
-    - images/help-icon.png
-    - images/documents-icon.png
     - images/manager-icon.png
     - images/employee-icon.png
     - images/contact-with-manager-icon.png
@@ -113,11 +111,7 @@ flutter:
     - images/dark-rate-icon.png
     - images/dark-plan-icon.png
     - images/dark-opinion-icon.png
-    - images/dark-workplace-icon.png
     - images/dark-vocation-icon.png
-    - images/dark-warehouse-icon.png
-    - images/dark-pricelist-icon.png
-    - images/dark-items-icon.png
     - images/dark-help-icon.png
 
     - docs/regulations.pdf
