@@ -61,6 +61,7 @@ class _ManagerProfilePageState extends State<ManagerProfilePage> {
                     SizedBox(height: 30),
                     Buttons.standardButton(
                       minWidth: 200.0,
+                      color: GREEN,
                       title: getTranslated(context, 'seeMyGroups'),
                       fun: () => Navigator.push(
                         context,
@@ -72,6 +73,7 @@ class _ManagerProfilePageState extends State<ManagerProfilePage> {
                     SizedBox(height: 5),
                     Buttons.standardButton(
                       minWidth: 200.0,
+                      color: GREEN,
                       title: getTranslated(context, 'settings'),
                       fun: () => Navigator.push(
                         context,
@@ -83,6 +85,7 @@ class _ManagerProfilePageState extends State<ManagerProfilePage> {
                     SizedBox(height: 5),
                     Buttons.standardButton(
                       minWidth: 200.0,
+                      color: GREEN,
                       title: getTranslated(context, 'logout'),
                       fun: () => Logout.logout(context),
                     ),

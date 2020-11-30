@@ -58,21 +58,25 @@ class QuickUpdateDialog {
                 SizedBox(height: 30),
                 Buttons.standardButton(
                   minWidth: 200.0,
+                  color: GREEN,
                   title: getTranslated(context, 'hours'),
                   fun: () => _buildUpdateHoursDialog(context),
                 ),
                 Buttons.standardButton(
                   minWidth: 200.0,
+                  color: GREEN,
                   title: getTranslated(context, 'rating'),
                   fun: () => _buildUpdateRatingDialog(context),
                 ),
                 Buttons.standardButton(
                   minWidth: 200.0,
+                  color: GREEN,
                   title: getTranslated(context, 'plan'),
                   fun: () => _buildUpdatePlanDialog(context),
                 ),
                 Buttons.standardButton(
                   minWidth: 200.0,
+                  color: GREEN,
                   title: getTranslated(context, 'opinion'),
                   fun: () => _buildUpdateOpinionDialog(context),
                 ),

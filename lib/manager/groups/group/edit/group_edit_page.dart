@@ -60,23 +60,23 @@ class _GroupEditPageState extends State<GroupEditPage> {
                         SizedBox(height: 10),
                         ListTile(
                           title: text18WhiteBold(getTranslated(context, 'groupName')),
-                          subtitle: text16White(_model.groupName),
+                          subtitle: text16White(utf8.decode(_model.groupName.runes.toList())),
                           trailing: Ink(
                             decoration: ShapeDecoration(color: GREEN, shape: CircleBorder()),
                             child: IconButton(
                               icon: iconDark(Icons.border_color),
-                              onPressed: () => _updateGroupName(context, _model.groupName),
+                              onPressed: () => _updateGroupName(context, utf8.decode(_model.groupName.runes.toList())),
                             ),
                           ),
                         ),
                         ListTile(
                           title: text18WhiteBold(getTranslated(context, 'groupDescription')),
-                          subtitle: text16White(_model.groupDescription),
+                          subtitle: text16White(utf8.decode(_model.groupDescription.runes.toList())),
                           trailing: Ink(
                             decoration: ShapeDecoration(color: GREEN, shape: CircleBorder()),
                             child: IconButton(
                               icon: iconDark(Icons.border_color),
-                              onPressed: () => _updateGroupDescription(context, _model.groupDescription),
+                              onPressed: () => _updateGroupDescription(context, utf8.decode(_model.groupDescription.runes.toList())),
                             ),
                           ),
                         ),

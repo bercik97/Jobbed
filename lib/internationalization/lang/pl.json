@@ -675,5 +675,6 @@
   "tsCompleted": "Zaakceptowany arkusz czasu pracy",
   "employeeProfile": "Wyświetlenie profilu pracownika",
   "notVerifiedVocation": "Niezweryfikowany urlop",
-  "verifiedVocation": "Zweryfikowany urlop"
+  "verifiedVocation": "Zweryfikowany urlop",
+  "availableQuantity": "Dostępna ilość"
 }

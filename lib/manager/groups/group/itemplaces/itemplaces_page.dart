@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:convert';
 
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -162,7 +163,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
                                     foundIndex = i;
                                   }
                                 }
-                                String location = itemplace.location;
+                                String location = utf8.decode(itemplace.location.runes.toList());
                                 String numberOfTypeOfItems = itemplace.numberOfTypeOfItems.toString();
                                 String totalNumberOfItems = itemplace.totalNumberOfItems.toString();
                                 return Card(

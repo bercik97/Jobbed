@@ -127,6 +127,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
                     SizedBox(height: 10),
                     Buttons.standardButton(
                       minWidth: double.infinity,
+                      color: GREEN,
                       title: getTranslated(context, 'add'),
                       fun: () {
                         String itemName = _itemNameController.text;

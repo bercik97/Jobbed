@@ -675,5 +675,6 @@
   "tsCompleted": "Заповнений графік роботи",
   "employeeProfile": "Відображення профілю працівника",
   "notVerifiedVocation": "Не підтверджене покликання",
-  "verifiedVocation": "Перевірене покликання"
+  "verifiedVocation": "Перевірене покликання",
+  "availableQuantity": "Доступна кількість"
 }

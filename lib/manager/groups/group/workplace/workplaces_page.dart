@@ -720,7 +720,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
 
   void _editWorkplace(WorkplaceDto workplace) {
     TextEditingController _workplaceController = new TextEditingController();
-    _workplaceController.text = workplace.name;
+    _workplaceController.text = utf8.decode(workplace.name.runes.toList());
     double latitude = workplace.latitude;
     double longitude = workplace.longitude;
     double radiusLength = workplace.radiusLength;

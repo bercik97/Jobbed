@@ -110,11 +110,11 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                       ),
                     ),
                   ),
-                  title: text18WhiteBold(_warehouseDto.name),
+                  title: text18WhiteBold(utf8.decode(_warehouseDto.name.runes.toList())),
                   subtitle: Column(
                     children: <Widget>[
                       Align(
-                        child: textWhite(_warehouseDto.description),
+                        child: textWhite(utf8.decode(_warehouseDto.description.runes.toList())),
                         alignment: Alignment.topLeft,
                       ),
                     ],
@@ -214,7 +214,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                                                   duration: Duration(milliseconds: 100),
                                                   scaleFactor: 2,
                                                   onPressed: () => _editItem(item),
-                                                  child: icon30Green(Icons.border_color),
+                                                  child: icon30Green(Icons.search),
                                                 ),
                                               ),
                                             ),
@@ -228,7 +228,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                                                   alignment: Alignment.topLeft,
                                                   child: Row(
                                                     children: [
-                                                      textWhite(getTranslated(this.context, 'quantity') + ': '),
+                                                      textWhiteBold(getTranslated(this.context, 'availableQuantity') + ': '),
                                                       textGreenBold(quantity),
                                                     ],
                                                   ),
@@ -243,11 +243,11 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                                                     children: [
                                                       Align(
                                                         alignment: Alignment.topLeft,
-                                                        child: textWhiteBold(item.locationInfoAboutItems[i].name + ' x ' + item.locationInfoAboutItems[i].quantity),
+                                                        child: textWhite(utf8.decode(item.locationInfoAboutItems[i].name.runes.toList()) + ' x ' + item.locationInfoAboutItems[i].quantity),
                                                       ),
                                                       Align(
                                                         alignment: Alignment.topLeft,
-                                                        child: textWhiteBold(item.locationInfoAboutItems[i].itemplace),
+                                                        child: textWhite(utf8.decode(item.locationInfoAboutItems[i].itemplace.runes.toList())),
                                                       ),
                                                       SizedBox(height: 5),
                                                     ],
@@ -360,7 +360,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  textCenter18Green(item.name),
+                  textCenter18Green(utf8.decode(item.name.runes.toList())),
                   SizedBox(height: 10),
                   Padding(
                     padding: EdgeInsets.only(left: 25, right: 25),

@@ -111,6 +111,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
                     SizedBox(height: 15),
                     Buttons.standardButton(
                       minWidth: double.infinity,
+                      color: GREEN,
                       title: getTranslated(context, 'add'),
                       fun: () {
                         if (!_isValid()) {

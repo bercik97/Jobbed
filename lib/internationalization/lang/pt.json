@@ -675,5 +675,6 @@
   "tsCompleted": "დასრულებულია დროის ცხრილი",
   "employeeProfile": "თანამშრომლის პროფილის ჩვენება",
   "notVerifiedVocation": "გადამოწმებული პროფესია",
-  "verifiedVocation": "გადამოწმებული მოწოდება"
+  "verifiedVocation": "გადამოწმებული მოწოდება",
+  "availableQuantity": "ხელმისაწვდომი რაოდენობა"
 }

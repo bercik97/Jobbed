@@ -137,6 +137,7 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                       SizedBox(height: 10),
                       Buttons.standardButton(
                         minWidth: 200.0,
+                        color: GREEN,
                         title: getTranslated(context, 'fillHours'),
                         fun: () => fillHoursFun(),
                       ),
@@ -145,6 +146,7 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                 : SizedBox(height: 10),
             Buttons.standardButton(
               minWidth: 200.0,
+              color: GREEN,
               title: getTranslated(context, 'editNote'),
               fun: () => editNoteFun(),
             ),

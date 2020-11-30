@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
@@ -230,7 +232,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
                           for (int i = 0; i < _itemPlaces.length; i++)
                             _buildRadioBtn(
                               color: GREEN,
-                              title: _itemPlaces[i].location,
+                              title: utf8.decode(_itemPlaces[i].location.runes.toList()),
                               value: 0,
                               groupValue: _itemPlacesRadioValues[i],
                               onChanged: (newValue) => setState(

@@ -10,8 +10,8 @@ import 'package:give_job/api/group/dto/group_dashboard_dto.dart';
 import 'package:give_job/api/group/service/group_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/manager/groups/manage/add_group_page.dart';
+import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -19,6 +19,7 @@ import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
+import 'package:give_job/shared/widget/buttons.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
@@ -73,11 +74,10 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                       heroTag: "plusBtn",
                       tooltip: getTranslated(context, 'createGroup'),
                       backgroundColor: GREEN,
-                      onPressed: () =>
-                          Navigator.push(
-                            this.context,
-                            MaterialPageRoute(builder: (context) => AddGroupPage(_user)),
-                          ),
+                      onPressed: () => Navigator.push(
+                        this.context,
+                        MaterialPageRoute(builder: (context) => AddGroupPage(_user)),
+                      ),
                       child: text25Dark('+'),
                     ),
                   ],
@@ -260,46 +260,19 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                       child: text20GreenBold(getTranslated(context, 'manageGroupEmployees')),
                     ),
                     SizedBox(height: 2.5),
-                    textWhite(getTranslated(context, 'groupName') + ': ' + groupName),
+                    textWhite(utf8.decode(groupName.runes.toList())),
                     SizedBox(height: 20),
-                    MaterialButton(
-                      elevation: 0,
-                      height: 50,
-                      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                      onPressed: () =>
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => AddGroupEmployeesPage(_user, groupId)),
-                          ),
+                    Buttons.standardButton(
+                      minWidth: 200.0,
                       color: GREEN,
-                      child: Container(
-                        width: 250,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[text20White(getTranslated(context, 'addEmployees'))],
-                        ),
-                      ),
-                      textColor: Colors.white,
+                      title: getTranslated(context, 'addEmployees'),
+                      fun: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddGroupEmployeesPage(_user, groupId))),
                     ),
-                    SizedBox(height: 20),
-                    MaterialButton(
-                      elevation: 0,
-                      height: 50,
-                      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                      onPressed: () =>
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => DeleteGroupEmployeesPage(_user, groupId)),
-                          ),
+                    Buttons.standardButton(
+                      minWidth: 200.0,
                       color: Colors.red,
-                      child: Container(
-                        width: 250,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[text20White(getTranslated(context, 'deleteEmployees'))],
-                        ),
-                      ),
-                      textColor: Colors.white,
+                      title: getTranslated(context, 'deleteEmployees'),
+                      fun: () => Navigator.push(context, MaterialPageRoute(builder: (context) => DeleteGroupEmployeesPage(_user, groupId))),
                     ),
                     SizedBox(height: 30),
                     Container(
@@ -350,7 +323,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                       child: text20RedBold(getTranslated(context, 'deleteGroup')),
                     ),
                     SizedBox(height: 2.5),
-                    textRed(getTranslated(context, 'groupNameForDelete') + ': ' + groupName),
+                    textRed(utf8.decode(groupName.runes.toList())),
                     SizedBox(height: 20),
                     Padding(
                       padding: EdgeInsets.only(left: 25, right: 25),
@@ -444,7 +417,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
   }
 
   _validateGroupName(String value, String groupName) {
-    return value != groupName ? getTranslated(context, 'groupNameForDeleteInvalid') : null;
+    return value != utf8.decode(groupName.runes.toList()) ? getTranslated(context, 'groupNameForDeleteInvalid') : null;
   }
 
   Future<Null> _refresh() {

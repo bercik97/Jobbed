@@ -675,5 +675,6 @@
   "tsCompleted": "Заполненный табель учета рабочего времени",
   "employeeProfile": "Показать профиль сотрудника",
   "notVerifiedVocation": "Не подтвержденное призвание",
-  "verifiedVocation": "Подтвержденное призвание"
+  "verifiedVocation": "Подтвержденное призвание",
+  "availableQuantity": "Доступное количество"
 }

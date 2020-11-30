@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -99,7 +100,7 @@ class _ItemplacesDetailsPageState extends State<ItemplacesDetailsPage> {
                       ),
                     ),
                   ),
-                  title: text18WhiteBold(_itemplaceDto.location),
+                  title: text18WhiteBold(utf8.decode(_itemplaceDto.location.runes.toList())),
                 ),
                 ListTileTheme(
                   contentPadding: EdgeInsets.only(left: 3),
@@ -144,8 +145,8 @@ class _ItemplacesDetailsPageState extends State<ItemplacesDetailsPage> {
                                   foundIndex = i;
                                 }
                               }
-                              String warehouseName = item.warehouseName;
-                              String name = item.name;
+                              String warehouseName = utf8.decode(item.warehouseName.runes.toList());
+                              String name = utf8.decode(item.name.runes.toList());
                               String quantity = item.quantity;
                               return Card(
                                 color: DARK,

@@ -107,6 +107,7 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
                     SizedBox(height: 15),
                     Buttons.standardButton(
                       minWidth: double.infinity,
+                      color: GREEN,
                       title: getTranslated(context, 'add'),
                       fun: () {
                         if (!_isValid()) {
