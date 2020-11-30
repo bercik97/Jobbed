@@ -73,10 +73,11 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                       heroTag: "plusBtn",
                       tooltip: getTranslated(context, 'createGroup'),
                       backgroundColor: GREEN,
-                      onPressed: () => Navigator.push(
-                        this.context,
-                        MaterialPageRoute(builder: (context) => AddGroupPage(_user)),
-                      ),
+                      onPressed: () =>
+                          Navigator.push(
+                            this.context,
+                            MaterialPageRoute(builder: (context) => AddGroupPage(_user)),
+                          ),
                       child: text25Dark('+'),
                     ),
                   ],
@@ -143,20 +144,6 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                           Card(
                             color: BRIGHTER_DARK,
                             child: ListTile(
-                              leading: Tab(
-                                icon: Padding(
-                                  padding: EdgeInsets.only(top: 13),
-                                  child: Container(
-                                    child: Image(
-                                      width: 75,
-                                      image: AssetImage(
-                                        'images/group-icon.png',
-                                      ),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                              ),
                               onTap: () {
                                 GroupDashboardDto group = _groups[index];
                                 Navigator.of(this.context).push(
@@ -279,10 +266,11 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                       elevation: 0,
                       height: 50,
                       shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => AddGroupEmployeesPage(_user, groupId)),
-                      ),
+                      onPressed: () =>
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => AddGroupEmployeesPage(_user, groupId)),
+                          ),
                       color: GREEN,
                       child: Container(
                         width: 250,
@@ -298,10 +286,11 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                       elevation: 0,
                       height: 50,
                       shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => DeleteGroupEmployeesPage(_user, groupId)),
-                      ),
+                      onPressed: () =>
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => DeleteGroupEmployeesPage(_user, groupId)),
+                          ),
                       color: Colors.red,
                       child: Container(
                         width: 250,
