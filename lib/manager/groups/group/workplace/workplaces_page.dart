@@ -194,7 +194,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                                   duration: Duration(milliseconds: 100),
                                                   scaleFactor: 2,
                                                   onPressed: () => _editWorkplace(workplace),
-                                                  child: icon30Green(Icons.border_color),
+                                                  child: icon30Green(Icons.search),
                                                 ),
                                               ),
                                             ),
