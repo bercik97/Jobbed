@@ -10,8 +10,10 @@ import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/own_http_overrides.dart';
 import 'package:give_job/shared/own_upgrader_messages.dart';
+import 'package:give_job/shared/widget/texts.dart';
 import 'package:give_job/unauthenticated/get_started_page.dart';
 import 'package:give_job/unauthenticated/login_page.dart';
+import 'package:splashscreen/splashscreen.dart';
 import 'package:upgrader/upgrader.dart';
 
 import 'internationalization/localization/demo_localization.dart';
@@ -89,9 +91,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     if (_locale == null) {
-      return Container(
-        child: Center(child: CircularProgressIndicator()),
-      );
+      return Container(child: Center(child: CircularProgressIndicator()));
     } else {
       final appcastURL = 'https://givejob.pl/mobile-app/appcast.xml';
       final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ['android']);
@@ -122,41 +122,48 @@ class _MyAppState extends State<MyApp> {
           return supportedLocales.first;
         },
         debugShowCheckedModeBanner: false,
-        home: FutureBuilder(
-          future: authOrEmpty,
-          builder: (context, snapshot) {
-            Map<String, String> data = snapshot.data;
-            if (data == null) {
-              return GetStartedPage();
-            }
-            StatefulWidget pageToReturn;
-            String getStartedClick = data['getStartedClick'];
-            if (getStartedClick == null) {
-              pageToReturn = GetStartedPage();
-            }
-            User user = new User().create(data);
-            String role = user.role;
-            if (role == ROLE_EMPLOYEE) {
-              pageToReturn = EmployeeProfilPage(user);
-            } else if (role == ROLE_MANAGER) {
-              pageToReturn = GroupsDashboardPage(user);
-            } else {
-              pageToReturn = LoginPage();
-            }
-            return UpgradeAlert(
-              appcastConfig: cfg,
-              debugLogging: true,
-              showLater: false,
-              messages: OwnUpgraderMessages(
-                getTranslated(context, 'updateTitle'),
-                getTranslated(context, 'newVersionOfApp'),
-                getTranslated(context, 'prompt'),
-                getTranslated(context, 'ignore'),
-                getTranslated(context, 'updateNow'),
-              ),
-              child: pageToReturn,
-            );
-          },
+        home: SplashScreen(
+          seconds: 3,
+          image: new Image.asset('images/logo.png'),
+          backgroundColor: DARK,
+          photoSize: 50,
+          loaderColor: GREEN,
+          navigateAfterSeconds: FutureBuilder(
+            future: authOrEmpty,
+            builder: (context, snapshot) {
+              Map<String, String> data = snapshot.data;
+              if (data == null) {
+                return GetStartedPage();
+              }
+              StatefulWidget pageToReturn;
+              String getStartedClick = data['getStartedClick'];
+              if (getStartedClick == null) {
+                pageToReturn = GetStartedPage();
+              }
+              User user = new User().create(data);
+              String role = user.role;
+              if (role == ROLE_EMPLOYEE) {
+                pageToReturn = EmployeeProfilPage(user);
+              } else if (role == ROLE_MANAGER) {
+                pageToReturn = GroupsDashboardPage(user);
+              } else {
+                pageToReturn = LoginPage();
+              }
+              return UpgradeAlert(
+                appcastConfig: cfg,
+                debugLogging: true,
+                showLater: false,
+                messages: OwnUpgraderMessages(
+                  getTranslated(context, 'updateTitle'),
+                  getTranslated(context, 'newVersionOfApp'),
+                  getTranslated(context, 'prompt'),
+                  getTranslated(context, 'ignore'),
+                  getTranslated(context, 'updateNow'),
+                ),
+                child: pageToReturn,
+              );
+            },
+          ),
         ),
       );
     }
