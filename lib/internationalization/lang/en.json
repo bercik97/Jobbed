@@ -676,5 +676,6 @@
   "employeeProfile": "Display employee's profile",
   "notVerifiedVocation": "Not verified vocation",
   "verifiedVocation": "Verified vocation",
-  "availableQuantity": "Available quantity"
+  "availableQuantity": "Available quantity",
+  "generateExcel": "Generating an Excel file"
 }

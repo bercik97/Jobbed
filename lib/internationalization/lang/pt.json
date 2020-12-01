@@ -676,5 +676,6 @@
   "employeeProfile": "თანამშრომლის პროფილის ჩვენება",
   "notVerifiedVocation": "გადამოწმებული პროფესია",
   "verifiedVocation": "გადამოწმებული მოწოდება",
-  "availableQuantity": "ხელმისაწვდომი რაოდენობა"
+  "availableQuantity": "ხელმისაწვდომი რაოდენობა",
+  "generateExcel": "Excel ფაილის გენერირება"
 }

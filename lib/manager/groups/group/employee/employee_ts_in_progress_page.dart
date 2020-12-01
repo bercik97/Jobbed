@@ -161,6 +161,13 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                         ),
                       ],
                     ),
+                    trailing: InkWell(
+                      onTap: () {},
+                      child: Image(
+                        image: AssetImage('images/excel-icon.png'),
+                        fit: BoxFit.fitHeight,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -341,6 +348,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
           getTranslated(context, 'iconsLegend'),
           [
             IconsLegendUtil.buildImageRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
+            IconsLegendUtil.buildImageRow('images/excel-icon.png', getTranslated(context, 'generateExcel')),
             IconsLegendUtil.buildIconRow(iconWhite(Icons.search), getTranslated(context, 'checkDetails')),
             IconsLegendUtil.buildImageRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
             IconsLegendUtil.buildImageRow('images/green-rate-icon.png', getTranslated(context, 'settingRating')),

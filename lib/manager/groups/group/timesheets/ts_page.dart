@@ -137,6 +137,14 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
+                                InkWell(
+                                  onTap: () {},
+                                  child: Image(
+                                    image: AssetImage('images/excel-icon.png'),
+                                    height: 30,
+                                  ),
+                                ),
+                                SizedBox(width: 10),
                                 IconButton(
                                   icon: iconGreen(Icons.arrow_upward),
                                   onPressed: () => Navigator.push(
@@ -146,6 +154,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                                     ),
                                   ),
                                 ),
+                                SizedBox(width: 5),
                                 IconButton(
                                   icon: iconRed(Icons.delete),
                                   onPressed: () => Navigator.push(
@@ -157,7 +166,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                                 ),
                               ],
                             ),
-                            title: text18WhiteBold(inProgressTs.year.toString() + ' ' + MonthUtil.translateMonth(context, inProgressTs.month)),
+                            title: textWhiteBold(inProgressTs.year.toString() + ' ' + MonthUtil.translateMonth(context, inProgressTs.month)),
                           ),
                         ],
                       ),
@@ -206,6 +215,14 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
+                                InkWell(
+                                  onTap: () {},
+                                  child: Image(
+                                    image: AssetImage('images/excel-icon.png'),
+                                    height: 30,
+                                  ),
+                                ),
+                                SizedBox(width: 10),
                                 IconButton(
                                   icon: iconOrange(Icons.arrow_downward),
                                   onPressed: () => Navigator.push(
@@ -215,6 +232,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                                     ),
                                   ),
                                 ),
+                                SizedBox(width: 5),
                                 IconButton(
                                   icon: iconRed(Icons.delete),
                                   onPressed: () => Navigator.push(
@@ -226,7 +244,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                                 ),
                               ],
                             ),
-                            title: text18WhiteBold(completedTs.year.toString() + ' ' + MonthUtil.translateMonth(context, completedTs.month)),
+                            title: textWhiteBold(completedTs.year.toString() + ' ' + MonthUtil.translateMonth(context, completedTs.month)),
                           ),
                         ],
                       ),

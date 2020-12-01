@@ -81,6 +81,7 @@ flutter:
     - images/checked.png
     - images/play-icon.png
     - images/stop-icon.png
+    - images/excel-icon.png
 
     - images/company-icon.png
     - images/group-icon.png

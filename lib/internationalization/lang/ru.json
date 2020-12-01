@@ -676,5 +676,6 @@
   "employeeProfile": "Показать профиль сотрудника",
   "notVerifiedVocation": "Не подтвержденное призвание",
   "verifiedVocation": "Подтвержденное призвание",
-  "availableQuantity": "Доступное количество"
+  "availableQuantity": "Доступное количество",
+  "generateExcel": "Создание файла Excel"
 }

@@ -114,6 +114,13 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                       ),
                     ],
                   ),
+                  trailing: InkWell(
+                    onTap: () {},
+                    child: Image(
+                      image: AssetImage('images/excel-icon.png'),
+                      fit: BoxFit.fitHeight,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -215,6 +222,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
           getTranslated(context, 'iconsLegend'),
           [
             IconsLegendUtil.buildImageRow('images/checked.png', getTranslated(context, 'tsCompleted')),
+            IconsLegendUtil.buildImageRow('images/excel-icon.png', getTranslated(context, 'generateExcel')),
             IconsLegendUtil.buildIconRow(iconWhite(Icons.search), getTranslated(context, 'checkDetails')),
             IconsLegendUtil.buildImageWithIconRow('images/green-vocation-icon.png', iconRed(Icons.clear), getTranslated(context, 'notVerifiedVocation')),
             IconsLegendUtil.buildImageWithIconRow('images/green-vocation-icon.png', iconGreen(Icons.check), getTranslated(context, 'verifiedVocation')),

@@ -676,5 +676,6 @@
   "employeeProfile": "Відображення профілю працівника",
   "notVerifiedVocation": "Не підтверджене покликання",
   "verifiedVocation": "Перевірене покликання",
-  "availableQuantity": "Доступна кількість"
+  "availableQuantity": "Доступна кількість",
+  "generateExcel": "Створення файлу Excel"
 }
