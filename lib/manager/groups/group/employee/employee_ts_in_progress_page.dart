@@ -24,9 +24,9 @@ import 'package:give_job/shared/widget/loader.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
 import '../../../../shared/libraries/constants.dart';
+import '../../../shared/group_model.dart';
 import '../../../shared/manager_app_bar.dart';
 import '../../../shared/manager_side_bar.dart';
-import '../../../shared/group_model.dart';
 
 class EmployeeTsInProgressPage extends StatefulWidget {
   final GroupModel _model;
@@ -150,10 +150,16 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             textGreenBold(widget.timesheet.averageRating.toString()),
                           ],
                         ),
+                        Row(
+                          children: <Widget>[
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: textWhite(getTranslated(context, 'earnedMoney') + ': '),
+                            ),
+                            textGreenBold(widget.timesheet.amountOfEarnedMoney.toString() + ' ' + _currency),
+                          ],
+                        ),
                       ],
-                    ),
-                    trailing: Wrap(
-                      children: <Widget>[text20GreenBold(widget.timesheet.amountOfEarnedMoney.toString()), text20GreenBold(' ' + _currency)],
                     ),
                   ),
                 ),

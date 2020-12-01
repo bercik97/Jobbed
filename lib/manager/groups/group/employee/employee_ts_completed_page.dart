@@ -103,12 +103,15 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                           textGreenBold(widget.timesheet.averageRating.toString()),
                         ],
                       ),
-                    ],
-                  ),
-                  trailing: Wrap(
-                    children: <Widget>[
-                      text20GreenBold(timesheet.amountOfEarnedMoney.toString()),
-                      text20GreenBold(' ' + _currency),
+                      Row(
+                        children: <Widget>[
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: textWhite(getTranslated(context, 'earnedMoney') + ': '),
+                          ),
+                          textGreenBold(timesheet.amountOfEarnedMoney.toString() + ' ' + _currency),
+                        ],
+                      ),
                     ],
                   ),
                 ),
