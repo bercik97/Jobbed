@@ -677,5 +677,6 @@
   "notVerifiedVocation": "Не підтверджене покликання",
   "verifiedVocation": "Перевірене покликання",
   "availableQuantity": "Доступна кількість",
-  "generateExcel": "Створення файлу Excel"
+  "generateExcel": "Створення файлу Excel",
+  "successfullyGeneratedExcelAndSendEmail": "Файл Excel успішно створено та надіслано до"
 }

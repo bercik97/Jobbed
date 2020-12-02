@@ -677,5 +677,6 @@
   "notVerifiedVocation": "Niezweryfikowany urlop",
   "verifiedVocation": "Zweryfikowany urlop",
   "availableQuantity": "Dostępna ilość",
-  "generateExcel": "Generowanie pliku Excel"
+  "generateExcel": "Generowanie pliku Excel",
+  "successfullyGeneratedExcelAndSendEmail": "Pomyślnie wygenerowano plik Excel i wysłano na"
 }

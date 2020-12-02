@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
+import 'package:give_job/api/excel/service/excel_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
 import 'package:give_job/api/timesheet/service/timesheet_service.dart';
@@ -14,6 +16,7 @@ import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/icons_legend_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
@@ -44,11 +47,13 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
   User _user;
 
   TimesheetService _timesheetService;
+  ExcelService _excelService;
 
   List<TimesheetWithStatusDto> _inProgressTimesheets = new List();
   List<TimesheetWithStatusDto> _completedTimesheets = new List();
 
   bool _loading = false;
+  bool _isGenerateExcelAndSendEmailBtnTapped = false;
 
   DateTime selectedDate = DateTime.now();
 
@@ -57,6 +62,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
     this._model = widget._model;
     this._user = _model.user;
     this._timesheetService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
+    this._excelService = ServiceInitializer.initialize(context, _user.authHeader, ExcelService);
     super.initState();
     _loading = true;
     _timesheetService.findAllWithStatusByGroupId(_model.groupId).then((res) {
@@ -138,7 +144,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () => _isGenerateExcelAndSendEmailBtnTapped ? null : _handleGenerateExcelAndSendEmail(inProgressTs.year, inProgressTs.month, inProgressTs.status),
                                   child: Image(
                                     image: AssetImage('images/excel-icon.png'),
                                     height: 30,
@@ -216,7 +222,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () => _isGenerateExcelAndSendEmailBtnTapped ? null : _handleGenerateExcelAndSendEmail(completedTs.year, completedTs.month, completedTs.status),
                                   child: Image(
                                     image: AssetImage('images/excel-icon.png'),
                                     height: 30,
@@ -275,6 +281,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
             [
               IconsLegendUtil.buildImageRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
               IconsLegendUtil.buildImageRow('images/checked.png', getTranslated(context, 'tsCompleted')),
+              IconsLegendUtil.buildImageRow('images/excel-icon.png', getTranslated(context, 'generateExcel')),
               IconsLegendUtil.buildIconRow(iconGreen(Icons.arrow_upward), getTranslated(context, 'settingTsStatusToCompleted')),
               IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_downward), getTranslated(context, 'settingTsStatusToInProgress')),
             ],
@@ -283,6 +290,22 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model)),
     );
+  }
+
+  _handleGenerateExcelAndSendEmail(int year, String monthName, String status) {
+    setState(() => _isGenerateExcelAndSendEmailBtnTapped = true);
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _excelService.generateExcelAndSendToEmail(year, MonthUtil.findMonthNumberByMonthName(context, monthName), status, _model.groupId).then((res) {
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showSuccessToast(getTranslated(context, 'successfullyGeneratedExcelAndSendEmail') + ' ' + 'email!');
+        setState(() => _isGenerateExcelAndSendEmailBtnTapped = false);
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+        setState(() => _isGenerateExcelAndSendEmailBtnTapped = false);
+      });
+    });
   }
 
   _addNewTs() {

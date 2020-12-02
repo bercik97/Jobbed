@@ -677,5 +677,6 @@
   "notVerifiedVocation": "გადამოწმებული პროფესია",
   "verifiedVocation": "გადამოწმებული მოწოდება",
   "availableQuantity": "ხელმისაწვდომი რაოდენობა",
-  "generateExcel": "Excel ფაილის გენერირება"
+  "generateExcel": "Excel ფაილის გენერირება",
+  "successfullyGeneratedExcelAndSendEmail": "Excel ფაილი წარმატებით გენერირდება და იგზავნება"
 }

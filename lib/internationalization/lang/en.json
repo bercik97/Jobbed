@@ -677,5 +677,6 @@
   "notVerifiedVocation": "Not verified vocation",
   "verifiedVocation": "Verified vocation",
   "availableQuantity": "Available quantity",
-  "generateExcel": "Generating an Excel file"
+  "generateExcel": "Generating an Excel file",
+  "successfullyGeneratedExcelAndSendEmail": "Excel file generated successfully and sent to"
 }

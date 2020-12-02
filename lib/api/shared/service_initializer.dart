@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
+import 'package:give_job/api/excel/service/excel_service.dart';
 import 'package:give_job/api/group/service/group_service.dart';
 import 'package:give_job/api/item/service/item_service.dart';
 import 'package:give_job/api/itemplace/service/itemplace_service.dart';
@@ -26,6 +27,7 @@ class ServiceInitializer {
     };
     switch (obj.toString()) {
       case 'EmployeeService': return new EmployeeService(context, header, headers);
+      case 'ExcelService': return new ExcelService(context, header, headers);
       case 'GroupService': return new GroupService(context, header, headers);
       case 'ItemService': return new ItemService(context, header, headers);
       case 'ItemplaceService': return new ItemplaceService(context, header, headers);

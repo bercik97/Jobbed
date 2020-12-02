@@ -677,5 +677,6 @@
   "notVerifiedVocation": "Не подтвержденное призвание",
   "verifiedVocation": "Подтвержденное призвание",
   "availableQuantity": "Доступное количество",
-  "generateExcel": "Создание файла Excel"
+  "generateExcel": "Создание файла Excel",
+  "successfullyGeneratedExcelAndSendEmail": "Файл Excel успешно создан и отправлен в"
 }
