@@ -678,5 +678,7 @@
   "verifiedVocation": "Zweryfikowany urlop",
   "availableQuantity": "Dostępna ilość",
   "generateExcel": "Generowanie pliku Excel",
-  "successfullyGeneratedExcelAndSendEmail": "Pomyślnie wygenerowano plik Excel i wysłano na"
+  "successfullyGeneratedExcelAndSendEmail": "Pomyślnie wygenerowano plik Excel i wysłano na",
+  "emailWrongFormat": "Błędny format adresu email",
+  "emailIsRequired": "Email jest wymagany"
 }

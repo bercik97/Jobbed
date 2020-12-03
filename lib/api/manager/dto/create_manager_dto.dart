@@ -5,6 +5,7 @@ class CreateManagerDto {
   final String password;
   final String name;
   final String surname;
+  final String email;
   final String nationality;
   final String phone;
   final String viber;
@@ -17,6 +18,7 @@ class CreateManagerDto {
     @required this.password,
     @required this.name,
     @required this.surname,
+    @required this.email,
     @required this.nationality,
     @required this.phone,
     @required this.viber,
@@ -31,6 +33,7 @@ class CreateManagerDto {
     map['password'] = dto.password;
     map['name'] = dto.name;
     map['surname'] = dto.surname;
+    map['email'] = dto.email;
     map['nationality'] = dto.nationality;
     map['phone'] = dto.phone;
     map['viber'] = dto.viber;

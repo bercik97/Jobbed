@@ -41,12 +41,14 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
 
   final TextEditingController _usernameController = new TextEditingController();
   final TextEditingController _phoneController = new TextEditingController();
+  final TextEditingController _emailController = new TextEditingController();
   final TextEditingController _viberController = new TextEditingController();
   final TextEditingController _whatsAppController = new TextEditingController();
   final TextEditingController _nameController = new TextEditingController();
   final TextEditingController _surnameController = new TextEditingController();
-
   String _nationality;
+
+  final Pattern _emailPattern = r"^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$";
 
   bool _loading;
 
@@ -63,6 +65,7 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
         'username',
         'name',
         'surname',
+        'email',
         'nationality',
         'phone',
         'viber',
@@ -78,6 +81,7 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
           _usernameController.text = this._fieldsValues['username'];
           _nameController.text = this._fieldsValues['name'];
           _surnameController.text = this._fieldsValues['surname'];
+          _emailController.text = this._fieldsValues['email'];
           _nationality = this._fieldsValues['nationality'];
           _phoneController.text = this._fieldsValues['phone'];
           _viberController.text = this._fieldsValues['viber'];
@@ -175,6 +179,7 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
           getTranslated(context, 'surnameIsRequired'),
           Icons.person_outline,
         ),
+        _buildEmailField(),
         _buildNationalityDropdown(),
       ],
     );
@@ -288,6 +293,39 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
     );
   }
 
+  Widget _buildEmailField() {
+    validate(String value) {
+      if (value.isEmpty) {
+        return getTranslated(context, 'emailIsRequired');
+      } else if (RegExp(_emailPattern).hasMatch(value)) {
+        return getTranslated(context, 'emailWrongFormat');
+      }
+      return null;
+    }
+
+    return Column(
+      children: <Widget>[
+        TextFormField(
+          autocorrect: true,
+          cursorColor: WHITE,
+          maxLength: 255,
+          controller: _emailController,
+          style: TextStyle(color: WHITE),
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+            counterStyle: TextStyle(color: WHITE),
+            border: OutlineInputBorder(),
+            labelText: 'Email',
+            prefixIcon: iconWhite(Icons.alternate_email),
+            labelStyle: TextStyle(color: WHITE),
+          ),
+          validator: (value) => validate(value),
+        ),
+        SizedBox(height: 10),
+      ],
+    );
+  }
+
   Widget _buildNationalityDropdown() {
     return Theme(
       data: ThemeData(hintColor: DARK, splashColor: GREEN),
@@ -351,6 +389,7 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
                 {
                   "name": _nameController.text,
                   "surname": _surnameController.text,
+                  "email": _emailController.text,
                   "nationality": _nationality,
                   "phone": _phoneController.text,
                   "viber": _viberController.text,

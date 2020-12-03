@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
@@ -18,6 +19,12 @@ class DialogService {
               ],
             ),
           ),
+          actions: [
+            FlatButton(
+              child: textWhite(getTranslated(context, 'close')),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
         );
       },
     );

@@ -678,5 +678,7 @@
   "verifiedVocation": "გადამოწმებული მოწოდება",
   "availableQuantity": "ხელმისაწვდომი რაოდენობა",
   "generateExcel": "Excel ფაილის გენერირება",
-  "successfullyGeneratedExcelAndSendEmail": "Excel ფაილი წარმატებით გენერირდება და იგზავნება"
+  "successfullyGeneratedExcelAndSendEmail": "Excel ფაილი წარმატებით გენერირდება და იგზავნება",
+  "emailWrongFormat": "ელ.ფოსტის არასწორი ფორმატია",
+  "emailIsRequired": "ელექტრონული ფოსტა აუცილებელია"
 }

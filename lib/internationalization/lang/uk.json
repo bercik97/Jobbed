@@ -678,5 +678,7 @@
   "verifiedVocation": "Перевірене покликання",
   "availableQuantity": "Доступна кількість",
   "generateExcel": "Створення файлу Excel",
-  "successfullyGeneratedExcelAndSendEmail": "Файл Excel успішно створено та надіслано до"
+  "successfullyGeneratedExcelAndSendEmail": "Файл Excel успішно створено та надіслано до",
+  "emailWrongFormat": "Електронна пошта має неправильний формат",
+  "emailIsRequired": "Електронна адреса потрібна"
 }

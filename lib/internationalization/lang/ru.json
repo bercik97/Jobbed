@@ -678,5 +678,7 @@
   "verifiedVocation": "Подтвержденное призвание",
   "availableQuantity": "Доступное количество",
   "generateExcel": "Создание файла Excel",
-  "successfullyGeneratedExcelAndSendEmail": "Файл Excel успешно создан и отправлен в"
+  "successfullyGeneratedExcelAndSendEmail": "Файл Excel успешно создан и отправлен в",
+  "emailWrongFormat": "Электронная почта имеет неправильный формат",
+  "emailIsRequired": "Электронная почта требуется"
 }

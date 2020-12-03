@@ -678,5 +678,7 @@
   "verifiedVocation": "Verified vocation",
   "availableQuantity": "Available quantity",
   "generateExcel": "Generating an Excel file",
-  "successfullyGeneratedExcelAndSendEmail": "Excel file generated successfully and sent to"
+  "successfullyGeneratedExcelAndSendEmail": "Excel file generated successfully and sent to",
+  "emailWrongFormat": "Email has wrong format",
+  "emailIsRequired": "Email is required"
 }
