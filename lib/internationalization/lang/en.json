@@ -678,7 +678,7 @@
   "verifiedVocation": "Verified vocation",
   "availableQuantity": "Available quantity",
   "generateExcel": "Generating an Excel file",
-  "successfullyGeneratedExcelAndSendEmail": "Excel file generated successfully and sent to",
+  "successfullyGeneratedExcelAndSendEmail": "Excel file generated successfully and sent to your email",
   "emailWrongFormat": "Email has wrong format",
-  "emailIsRequired": "Email is required"
+  "excelEmailIsEmpty": "Cannot generate excel file because you don't have email address. Please go to the 'settings' section and then 'about me' to enter your email address."
 }

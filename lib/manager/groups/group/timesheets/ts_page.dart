@@ -16,6 +16,7 @@ import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/icons_legend_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
@@ -295,14 +296,23 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
   _handleGenerateExcelAndSendEmail(int year, String monthName, String status) {
     setState(() => _isGenerateExcelAndSendEmailBtnTapped = true);
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _excelService.generateExcelAndSendToEmail(year, MonthUtil.findMonthNumberByMonthName(context, monthName), status, _model.groupId).then((res) {
+    _excelService.generateExcelAndSendToEmail(year, MonthUtil.findMonthNumberByMonthName(context, monthName), status, _model.groupId, _model.user.username).then((res) {
       Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(context, 'successfullyGeneratedExcelAndSendEmail') + ' ' + 'email!');
+        ToastService.showSuccessToast(getTranslated(context, 'successfullyGeneratedExcelAndSendEmail') + '!');
         setState(() => _isGenerateExcelAndSendEmailBtnTapped = false);
       });
     }).catchError((onError) {
       Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+        String errorMsg = onError.toString();
+        if (errorMsg.contains("EMAIL_IS_NULL")) {
+          DialogService.showCustomDialog(
+            context: context,
+            titleWidget: textRed(getTranslated(context, 'error')),
+            content: getTranslated(context, 'excelEmailIsEmpty'),
+          );
+        } else {
+          ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+        }
         setState(() => _isGenerateExcelAndSendEmailBtnTapped = false);
       });
     });

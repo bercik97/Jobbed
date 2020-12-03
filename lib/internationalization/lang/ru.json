@@ -678,7 +678,7 @@
   "verifiedVocation": "Подтвержденное призвание",
   "availableQuantity": "Доступное количество",
   "generateExcel": "Создание файла Excel",
-  "successfullyGeneratedExcelAndSendEmail": "Файл Excel успешно создан и отправлен в",
+  "successfullyGeneratedExcelAndSendEmail": "Файл Excel успешно создан и отправлен на вашу электронную почту",
   "emailWrongFormat": "Электронная почта имеет неправильный формат",
-  "emailIsRequired": "Электронная почта требуется"
+  "excelEmailIsEmpty": "Невозможно создать файл Excel, потому что у вас нет адреса электронной почты. Перейдите в раздел «Настройки», а затем «Обо мне», чтобы ввести свой адрес электронной почты."
 }

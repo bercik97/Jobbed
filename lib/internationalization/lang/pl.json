@@ -678,7 +678,7 @@
   "verifiedVocation": "Zweryfikowany urlop",
   "availableQuantity": "Dostępna ilość",
   "generateExcel": "Generowanie pliku Excel",
-  "successfullyGeneratedExcelAndSendEmail": "Pomyślnie wygenerowano plik Excel i wysłano na",
+  "successfullyGeneratedExcelAndSendEmail": "Pomyślnie wygenerowano plik Excel i wysłano Twój email",
   "emailWrongFormat": "Błędny format adresu email",
-  "emailIsRequired": "Email jest wymagany"
+  "excelEmailIsEmpty": "Nie można wygenerować pliku excel, ponieważ nie posiadasz adresu email. Proszę wejdź do sekcji 'ustawienia', a następnie 'o mnie' aby wpisać adres email."
 }
