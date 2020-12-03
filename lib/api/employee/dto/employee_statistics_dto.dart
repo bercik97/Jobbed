@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 class EmployeeStatisticsDto {
   final int id;
   final String info;
+  final String sex;
   final String nationality;
   final String currency;
   final double averageRating;
@@ -13,6 +14,7 @@ class EmployeeStatisticsDto {
   EmployeeStatisticsDto({
     @required this.id,
     @required this.info,
+    @required this.sex,
     @required this.nationality,
     @required this.currency,
     @required this.averageRating,
@@ -25,6 +27,7 @@ class EmployeeStatisticsDto {
     return EmployeeStatisticsDto(
       id: json['id'] as int,
       info: json['info'] as String,
+      sex: json['sex'] as String,
       nationality: json['nationality'] as String,
       currency: json['currency'] as String,
       averageRating: json['averageEmployeeRating'] as double,

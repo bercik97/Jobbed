@@ -21,6 +21,7 @@ import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
+import 'package:give_job/shared/util/avatars_util.dart';
 import 'package:give_job/shared/util/icons_legend_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
@@ -177,6 +178,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                       String info = employee.info;
                       String nationality = employee.nationality;
                       String currency = employee.currency;
+                      String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.sex, info.substring(0, 1));
                       return Card(
                         color: DARK,
                         child: Column(
@@ -200,7 +202,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                           Navigator.push(
                                             this.context,
                                             MaterialPageRoute(
-                                              builder: (context) => EmployeeProfilPage(_model, nationality, currency, employee.id, info, TsInProgressPage(_model, _timesheet)),
+                                              builder: (context) => EmployeeProfilPage(_model, nationality, currency, employee.id, info, avatarPath, TsInProgressPage(_model, _timesheet)),
                                             ),
                                           );
                                         },
@@ -208,9 +210,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                           baseColor: GREEN,
                                           highlightColor: WHITE,
                                           child: Image(
-                                            image: AssetImage(
-                                              'images/employee-icon.png',
-                                            ),
+                                            image: AssetImage(avatarPath),
                                             fit: BoxFit.cover,
                                           ),
                                         ),

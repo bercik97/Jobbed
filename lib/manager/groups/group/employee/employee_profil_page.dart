@@ -8,8 +8,8 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/manager/profile/manager_profile_page.dart';
+import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/util/language_util.dart';
@@ -31,9 +31,10 @@ class EmployeeProfilPage extends StatefulWidget {
   final String _currency;
   final int _employeeId;
   final String _employeeInfo;
+  final String _avatarPath;
   final StatefulWidget _previousPage;
 
-  const EmployeeProfilPage(this._model, this._employeeNationality, this._currency, this._employeeId, this._employeeInfo, this._previousPage);
+  const EmployeeProfilPage(this._model, this._employeeNationality, this._currency, this._employeeId, this._employeeInfo, this._avatarPath, this._previousPage);
 
   @override
   _EmployeeProfilPageState createState() => _EmployeeProfilPageState();
@@ -51,6 +52,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
   String _currency;
   int _employeeId;
   String _employeeInfo;
+  String _avatarPath;
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +65,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
     this._currency = widget._currency;
     this._employeeId = widget._employeeId;
     this._employeeInfo = widget._employeeInfo;
+    this._avatarPath = widget._avatarPath;
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -99,7 +102,6 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                         ),
                       ),
                     ],
-                    title: text15White(getTranslated(this.context, 'employee')),
                     iconTheme: IconThemeData(color: WHITE),
                     expandedHeight: 250.0,
                     pinned: true,
@@ -113,13 +115,10 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                             margin: EdgeInsets.only(top: 70, bottom: 10),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                    'images/employee-icon.png',
-                                  ),
-                                  fit: BoxFit.fill),
+                              image: DecorationImage(image: AssetImage(_avatarPath), fit: BoxFit.fill),
                             ),
                           ),
+                          SizedBox(height: 5),
                           text25WhiteBold(utf8.decode(_employeeInfo != null ? _employeeInfo.runes.toList() : '-')),
                           SizedBox(height: 2.5),
                           text20White(LanguageUtil.convertShortNameToFullName(this.context, _employeeNationality) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality)),

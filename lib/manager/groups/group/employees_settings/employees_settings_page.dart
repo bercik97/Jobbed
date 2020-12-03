@@ -19,6 +19,7 @@ import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
+import 'package:give_job/shared/util/avatars_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
@@ -158,6 +159,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                       String info = employee.employeeInfo;
                       String nationality = employee.employeeNationality;
                       String currency = employee.currency;
+                      String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.employeeSex, info.substring(0, 1));
                       return Card(
                         color: DARK,
                         child: Column(
@@ -181,19 +183,13 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                           Navigator.push(
                                             this.context,
                                             MaterialPageRoute(
-                                              builder: (context) => EmployeeProfilPage(_model, nationality, currency, employee.employeeId, info, EmployeesSettingsPage(_model)),
+                                              builder: (context) => EmployeeProfilPage(_model, nationality, currency, employee.employeeId, info, avatarPath, EmployeesSettingsPage(_model)),
                                             ),
                                           );
                                         },
-                                        child: Shimmer.fromColors(
-                                          baseColor: GREEN,
-                                          highlightColor: WHITE,
-                                          child: Image(
-                                            image: AssetImage(
-                                              'images/employee-icon.png',
-                                            ),
-                                            fit: BoxFit.cover,
-                                          ),
+                                        child: Image(
+                                          image: AssetImage(avatarPath),
+                                          fit: BoxFit.cover,
                                         ),
                                       ),
                                     ),

@@ -10,7 +10,6 @@ import 'package:give_job/api/employee/dto/employee_page_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
-import 'package:give_job/employee/profile/edit/employee_edit_page.dart';
 import 'package:give_job/employee/profile/tabs/employee_panel.dart';
 import 'package:give_job/employee/profile/tabs/employee_timesheets.tab.dart';
 import 'package:give_job/employee/profile/tabs/employee_today.dart';
@@ -23,6 +22,7 @@ import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/settings/settings_page.dart';
+import 'package:give_job/shared/util/avatars_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/silver_app_bar_delegate.dart';
@@ -98,21 +98,22 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                       ),
                     ],
                     iconTheme: IconThemeData(color: WHITE),
-                    expandedHeight: 260,
+                    expandedHeight: 270,
                     pinned: true,
                     backgroundColor: BRIGHTER_DARK,
                     flexibleSpace: FlexibleSpaceBar(
                       background: Column(
                         children: <Widget>[
-                          SizedBox(height: MediaQuery.of(context).size.height * 0.06),
+                          SizedBox(height: MediaQuery.of(context).size.height * 0.08),
                           Container(
                             width: 100,
                             height: 100,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              image: DecorationImage(image: AssetImage('images/employee-icon.png')),
+                              image: DecorationImage(image: AssetImage(AvatarsUtil.getAvatarPathByLetter(_employeePageDto.sex, _user.info.substring(0, 1)))),
                             ),
                           ),
+                          SizedBox(height: 5),
                           textCenter15White(utf8.decode(_user.info != null ? _user.info.runes.toList() : '-') + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
                           SizedBox(height: 5),
                           textCenter15White(getTranslated(this.context, 'employee') + ' #' + _user.id.toString()),
@@ -174,6 +175,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                               ),
                             ),
                           ),
+                          SizedBox(height: 5),
                         ],
                       ),
                     ),

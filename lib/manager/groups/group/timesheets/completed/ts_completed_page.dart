@@ -15,12 +15,12 @@ import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/util/avatars_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '../../../../../shared/widget/loader.dart';
 import '../../../../shared/manager_app_bar.dart';
@@ -126,6 +126,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                     String info = employee.info;
                     String nationality = employee.nationality;
                     String currency = employee.currency;
+                    String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.sex, info.substring(0, 1));
                     return Card(
                       color: DARK,
                       child: InkWell(
@@ -168,19 +169,13 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                                         Navigator.push(
                                           this.context,
                                           MaterialPageRoute(
-                                            builder: (context) => EmployeeProfilPage(_model, nationality, currency, employee.id, info, TsCompletedPage(_model, _timesheet)),
+                                            builder: (context) => EmployeeProfilPage(_model, nationality, currency, employee.id, info, avatarPath, TsCompletedPage(_model, _timesheet)),
                                           ),
                                         );
                                       },
-                                      child: Shimmer.fromColors(
-                                        baseColor: GREEN,
-                                        highlightColor: WHITE,
-                                        child: Image(
-                                          image: AssetImage(
-                                            'images/employee-icon.png',
-                                          ),
-                                          fit: BoxFit.cover,
-                                        ),
+                                      child: Image(
+                                        image: AssetImage(avatarPath),
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
                                   ),
