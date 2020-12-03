@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
@@ -91,7 +93,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
                               Card(
                                 color: BRIGHTER_DARK,
                                 child: ListTile(
-                                  title: textGreen(itemName),
+                                  title: textGreen(utf8.decode(itemName.runes.toList())),
                                   subtitle: Column(
                                     children: [
                                       Row(
@@ -108,7 +110,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
                                             alignment: Alignment.topLeft,
                                           ),
                                           Align(
-                                            child: textGreen(warehouseName),
+                                            child: textGreen(utf8.decode(warehouseName.runes.toList())),
                                             alignment: Alignment.topLeft,
                                           ),
                                         ],
@@ -203,13 +205,13 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
         Map<String, int> itemsWithQuantities = warehouseIdsAndItemsWithQuantities[warehouseId];
         int quantity = int.parse(_textEditingItemControllers[i].text);
         if (quantity != 0) {
-          itemsWithQuantities[_itemplaces[i].name] = quantity;
+          itemsWithQuantities[utf8.decode(_itemplaces[i].name.runes.toList())] = quantity;
         }
       } else {
         Map<String, int> itemsWithQuantities = new Map();
         int quantity = int.parse(_textEditingItemControllers[i].text);
         if (quantity != 0) {
-          itemsWithQuantities[_itemplaces[i].name] = quantity;
+          itemsWithQuantities[utf8.decode(_itemplaces[i].name.runes.toList())] = quantity;
           warehouseIdsAndItemsWithQuantities[warehouseId.toString()] = itemsWithQuantities;
         }
       }

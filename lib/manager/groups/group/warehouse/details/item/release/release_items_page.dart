@@ -10,8 +10,8 @@ import 'package:give_job/api/itemplace/service/itemplace_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/warehouse/dto/warehouse_dashboard_dto.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/warehouse/details/warehouse_details_page.dart';
+import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -115,7 +115,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
                               Card(
                                 color: BRIGHTER_DARK,
                                 child: ListTile(
-                                  title: textGreen(itemName),
+                                  title: textGreen(utf8.decode(itemName.runes.toList())),
                                   subtitle: Row(
                                     children: [
                                       textWhite(getTranslated(this.context, 'quantity') + ': '),
@@ -303,7 +303,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
     for (int i = 0; i < _items.length; i++) {
       int quantity = int.parse(_textEditingItemControllers[i].text);
       if (quantity != 0) {
-        itemsWithQuantities[_items[i].name] = quantity;
+        itemsWithQuantities[utf8.decode(_items[i].name.runes.toList())] = quantity;
       }
     }
     if (itemsWithQuantities.isEmpty) {
