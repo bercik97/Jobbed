@@ -95,6 +95,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
             icon: iconWhite(Icons.arrow_back),
             onPressed: () => _exitDialog(),
           ),
+          title: textCenterWhite(getTranslated(context, 'registrationForm')),
         ),
         body: Padding(
           padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
@@ -104,8 +105,6 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
               key: formKey,
               child: Column(
                 children: <Widget>[
-                  textCenter20GreenBold(getTranslated(context, 'registrationForm')),
-                  Divider(color: WHITE),
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(
@@ -139,10 +138,24 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
   Widget _buildReadOnlySection() {
     return Column(
       children: [
-        _buildSectionHeader(getTranslated(context, 'informationSection'), getTranslated(context, 'informationSectionDescription')),
-        _buildReadOnlyField(getTranslated(context, 'companyName'), _companyName, Icons.business),
-        _buildReadOnlyField(getTranslated(context, 'accountExpirationDate'), _accountExpirationDate, Icons.access_time_outlined),
-        _buildReadOnlyField(getTranslated(context, 'role'), getTranslated(context, 'employee'), Icons.nature_people_sharp),
+        ListTile(
+          dense: true,
+          contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+          title: text16GreenBold(getTranslated(context, 'companyName')),
+          subtitle: text16White(_companyName),
+        ),
+        ListTile(
+          dense: true,
+          contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+          title: text16GreenBold(getTranslated(context, 'accountExpirationDate')),
+          subtitle: text16White(_accountExpirationDate != null ? _accountExpirationDate : getTranslated(context, 'empty')),
+        ),
+        ListTile(
+          dense: true,
+          contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+          title: text16GreenBold(getTranslated(context, 'role')),
+          subtitle: text16White(getTranslated(context, 'employee')),
+        ),
       ],
     );
   }
@@ -405,27 +418,6 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
         SizedBox(height: 5),
         Align(alignment: Alignment.topLeft, child: text13White(subtitle)),
         SizedBox(height: 20),
-      ],
-    );
-  }
-
-  Widget _buildReadOnlyField(String name, String value, IconData icon) {
-    return Column(
-      children: <Widget>[
-        TextFormField(
-          readOnly: true,
-          initialValue: value == null ? getTranslated(context, 'empty') : value,
-          style: TextStyle(color: WHITE),
-          decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            counterStyle: TextStyle(color: WHITE),
-            border: OutlineInputBorder(),
-            prefixIcon: iconWhite(icon),
-            labelText: name,
-            labelStyle: TextStyle(color: WHITE),
-          ),
-        ),
-        SizedBox(height: 10),
       ],
     );
   }

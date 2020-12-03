@@ -81,6 +81,7 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
             icon: iconWhite(Icons.arrow_back),
             onPressed: () => _exitDialog(),
           ),
+          title: textCenterWhite(getTranslated(context, 'registrationForm')),
         ),
         body: Padding(
           padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
@@ -90,8 +91,6 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
               key: formKey,
               child: Column(
                 children: <Widget>[
-                  textCenter20GreenBold(getTranslated(context, 'registrationForm')),
-                  Divider(color: WHITE),
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(
@@ -122,10 +121,24 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
   Widget _buildReadOnlySection() {
     return Column(
       children: [
-        _buildSectionHeader(getTranslated(context, 'informationSection'), getTranslated(context, 'informationSectionDescription')),
-        _buildReadOnlyField(getTranslated(context, 'companyName'), _companyName, Icons.business),
-        _buildReadOnlyField(getTranslated(context, 'accountExpirationDate'), _accountExpirationDate, Icons.access_time_outlined),
-        _buildReadOnlyField(getTranslated(context, 'role'), getTranslated(context, 'manager'), Icons.nature_people_sharp),
+        ListTile(
+          dense: true,
+          contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+          title: text16GreenBold(getTranslated(context, 'companyName')),
+          subtitle: text16White(_companyName),
+        ),
+        ListTile(
+          dense: true,
+          contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+          title: text16GreenBold(getTranslated(context, 'accountExpirationDate')),
+          subtitle: text16White(_accountExpirationDate != null ? _accountExpirationDate : getTranslated(context, 'empty')),
+        ),
+        ListTile(
+          dense: true,
+          contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+          title: text16GreenBold(getTranslated(context, 'role')),
+          subtitle: text16White(getTranslated(context, 'manager')),
+        ),
       ],
     );
   }
