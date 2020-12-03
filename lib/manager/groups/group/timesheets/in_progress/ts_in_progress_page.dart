@@ -206,13 +206,9 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                             ),
                                           );
                                         },
-                                        child: Shimmer.fromColors(
-                                          baseColor: GREEN,
-                                          highlightColor: WHITE,
-                                          child: Image(
-                                            image: AssetImage(avatarPath),
-                                            fit: BoxFit.cover,
-                                          ),
+                                        child: Image(
+                                          image: AssetImage(avatarPath),
+                                          fit: BoxFit.cover,
                                         ),
                                       ),
                                     ),
