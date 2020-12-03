@@ -159,7 +159,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                       String info = employee.employeeInfo;
                       String nationality = employee.employeeNationality;
                       String currency = employee.currency;
-                      String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.employeeSex, info.substring(0, 1));
+                      String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.employeeGender, info.substring(0, 1));
                       return Card(
                         color: DARK,
                         child: Column(

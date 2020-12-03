@@ -9,6 +9,7 @@ class CreateEmployeeDto {
   final String phone;
   final String viber;
   final String whatsApp;
+  final String gender;
   final String fatherName;
   final String motherName;
   final String dateOfBirth;
@@ -35,6 +36,7 @@ class CreateEmployeeDto {
     @required this.phone,
     @required this.viber,
     @required this.whatsApp,
+    @required this.gender,
     @required this.fatherName,
     @required this.motherName,
     @required this.dateOfBirth,
@@ -63,6 +65,7 @@ class CreateEmployeeDto {
     map['phone'] = dto.phone;
     map['viber'] = dto.viber;
     map['whatsApp'] = dto.whatsApp;
+    map['gender'] = dto.gender;
     map['fatherName'] = dto.fatherName;
     map['motherName'] = dto.motherName;
     map['dateOfBirth'] = dto.dateOfBirth;

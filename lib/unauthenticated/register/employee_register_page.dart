@@ -62,6 +62,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
   DateTime _passportReleaseDate;
   DateTime _passportExpirationDate;
   DateTime _expirationDateOfWork;
+  int _genderRadioValue = -1;
   String _nationality;
   bool _regulationsCheckbox = false;
   bool _privacyPolicyCheckbox = false;
@@ -187,6 +188,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
           getTranslated(context, 'basicSection'),
           getTranslated(context, 'basicSectionDescription'),
         ),
+        _buildGenderRadioButtons(),
         _buildRequiredTextField(
           _nameController,
           26,
@@ -422,6 +424,17 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
     );
   }
 
+  Widget _buildRadioBtn({Color color, String title, int value, int groupValue, Function onChanged}) {
+    return RadioListTile(
+      activeColor: color,
+      dense: true,
+      value: value,
+      groupValue: groupValue,
+      onChanged: onChanged,
+      title: text15White(title),
+    );
+  }
+
   Widget _buildRequiredTextField(TextEditingController controller, int maxLength, String labelText, String errorText, IconData icon) {
     return Column(
       children: <Widget>[
@@ -645,6 +658,44 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
     }
   }
 
+  Widget _buildGenderRadioButtons() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: text18White(getTranslated(context, 'chooseGender')),
+          ),
+          Row(
+            children: [
+              Flexible(
+                fit: FlexFit.loose,
+                child: _buildRadioBtn(
+                  color: Colors.blueAccent,
+                  title: getTranslated(context, 'male'),
+                  value: 0,
+                  groupValue: _genderRadioValue,
+                  onChanged: (newValue) => setState(() => _genderRadioValue = newValue),
+                ),
+              ),
+              Flexible(
+                fit: FlexFit.loose,
+                child: _buildRadioBtn(
+                  color: Colors.pinkAccent,
+                  title: getTranslated(context, 'female'),
+                  value: 1,
+                  groupValue: _genderRadioValue,
+                  onChanged: (newValue) => setState(() => _genderRadioValue = newValue),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
   Widget _buildNationalityDropdown() {
     return Theme(
       data: ThemeData(hintColor: DARK, splashColor: GREEN),
@@ -822,7 +873,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
 
   _handleRegisterButton() {
     setState(() => _isRegisterButtonTapped = true);
-    if (!_isValid() || !_regulationsCheckbox || !_privacyPolicyCheckbox) {
+    if (!_isValid() || !_regulationsCheckbox || !_privacyPolicyCheckbox || _genderRadioValue == -1) {
       DialogService.showCustomDialog(
         context: context,
         titleWidget: textRed(getTranslated(context, 'error')),
@@ -841,6 +892,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
       phone: _phoneController.text,
       viber: _viberController.text,
       whatsApp: _whatsAppController.text,
+      gender: _genderRadioValue == 0 ? 'male' : 'female',
       fatherName: _fatherNameController.text,
       motherName: _motherNameController.text,
       dateOfBirth: _dateOfBirth != null ? _dateOfBirth.toString().substring(0, 10) : null,

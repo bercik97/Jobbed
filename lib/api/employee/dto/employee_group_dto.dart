@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 class EmployeeGroupDto {
   final int id;
   final String info;
-  final String sex;
+  final String gender;
   final String nationality;
   final String currency;
   final String tsStatus;
@@ -20,7 +20,7 @@ class EmployeeGroupDto {
   EmployeeGroupDto({
     @required this.id,
     @required this.info,
-    @required this.sex,
+    @required this.gender,
     @required this.nationality,
     @required this.currency,
     @required this.tsStatus,
@@ -39,7 +39,7 @@ class EmployeeGroupDto {
     return EmployeeGroupDto(
       id: json['id'] as int,
       info: json['info'] as String,
-      sex: json['sex'] as String,
+      gender: json['gender'] as String,
       nationality: json['nationality'] as String,
       currency: json['currency'] as String,
       tsStatus: json['tsStatus'] as String,

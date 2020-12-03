@@ -117,7 +117,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
                               String info = employee.info;
                               String nationality = employee.nationality;
                               String currency = employee.currency;
-                              String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.sex, info.substring(0, 1));
+                              String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.gender, info.substring(0, 1));
                               return Card(
                                 color: DARK,
                                 child: Column(

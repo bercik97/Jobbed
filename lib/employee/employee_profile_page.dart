@@ -110,7 +110,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                             height: 100,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              image: DecorationImage(image: AssetImage(AvatarsUtil.getAvatarPathByLetter(_employeePageDto.sex, _user.info.substring(0, 1)))),
+                              image: DecorationImage(image: AssetImage(AvatarsUtil.getAvatarPathByLetter(_employeePageDto.gender, _user.info.substring(0, 1)))),
                             ),
                           ),
                           SizedBox(height: 5),

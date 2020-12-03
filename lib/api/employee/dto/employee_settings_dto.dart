@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 class EmployeeSettingsDto {
   final int employeeId;
   final String employeeInfo;
-  final String employeeSex;
+  final String employeeGender;
   final String employeeNationality;
   final String currency;
   final double moneyPerHour;
@@ -14,7 +14,7 @@ class EmployeeSettingsDto {
   EmployeeSettingsDto({
     @required this.employeeId,
     @required this.employeeInfo,
-    @required this.employeeSex,
+    @required this.employeeGender,
     @required this.employeeNationality,
     @required this.currency,
     @required this.moneyPerHour,
@@ -27,7 +27,7 @@ class EmployeeSettingsDto {
     return EmployeeSettingsDto(
       employeeId: json['employeeId'] as int,
       employeeInfo: json['employeeInfo'] as String,
-      employeeSex: json['employeeSex'] as String,
+      employeeGender: json['employeeGender'] as String,
       employeeNationality: json['employeeNationality'] as String,
       currency: json['currency'] as String,
       moneyPerHour: json['moneyPerHour'] as double,

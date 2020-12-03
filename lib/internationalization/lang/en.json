@@ -680,5 +680,8 @@
   "generateExcel": "Generating an Excel file",
   "successfullyGeneratedExcelAndSendEmail": "Excel file generated successfully and sent to your email",
   "emailWrongFormat": "Email has wrong format",
-  "excelEmailIsEmpty": "Cannot generate excel file because you don't have email address. Please go to the 'settings' section and then 'about me' to enter your email address."
+  "excelEmailIsEmpty": "Cannot generate excel file because you don't have email address. Please go to the 'settings' section and then 'about me' to enter your email address.",
+  "chooseGender": "Please, choose your gender",
+  "male": "Male",
+  "female": "Female"
 }

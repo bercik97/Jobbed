@@ -4,7 +4,7 @@ import 'package:give_job/api/work_time/dto/work_time_dto.dart';
 
 class EmployeePageDto {
   final int id;
-  final String sex;
+  final String gender;
   final String tsCurrentYear;
   final String tsCurrentMonth;
   final String tsCurrency;
@@ -30,7 +30,7 @@ class EmployeePageDto {
 
   EmployeePageDto({
     @required this.id,
-    @required this.sex,
+    @required this.gender,
     @required this.tsCurrentYear,
     @required this.tsCurrentMonth,
     @required this.tsCurrency,
@@ -58,7 +58,7 @@ class EmployeePageDto {
   factory EmployeePageDto.fromJson(Map<String, dynamic> json) {
     return EmployeePageDto(
       id: json['id'] as int,
-      sex: json['sex'] as String,
+      gender: json['gender'] as String,
       tsCurrentYear: json['tsCurrentYear'] as String,
       tsCurrentMonth: json['tsCurrentMonth'] as String,
       tsCurrency: json['tsCurrency'] as String,

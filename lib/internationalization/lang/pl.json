@@ -680,5 +680,8 @@
   "generateExcel": "Generowanie pliku Excel",
   "successfullyGeneratedExcelAndSendEmail": "Pomyślnie wygenerowano plik Excel i wysłano Twój email",
   "emailWrongFormat": "Błędny format adresu email",
-  "excelEmailIsEmpty": "Nie można wygenerować pliku excel, ponieważ nie posiadasz adresu email. Proszę wejdź do sekcji 'ustawienia', a następnie 'o mnie' aby wpisać adres email."
+  "excelEmailIsEmpty": "Nie można wygenerować pliku excel, ponieważ nie posiadasz adresu email. Proszę wejdź do sekcji 'ustawienia', a następnie 'o mnie' aby wpisać adres email.",
+  "chooseGender": "Proszę, wybierz swoją płeć",
+  "male": "Mężczyzna",
+  "female": "Kobieta"
 }
