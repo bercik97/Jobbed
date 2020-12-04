@@ -132,7 +132,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                       child: InkWell(
                         onTap: () {
                           TimesheetForEmployeeDto _completedTimesheet = new TimesheetForEmployeeDto(
-                            id: _timesheet.id,
+                            id: employee.timesheetId,
                             year: _timesheet.year,
                             month: _timesheet.month,
                             companyName: null,

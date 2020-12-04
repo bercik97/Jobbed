@@ -6,6 +6,7 @@ class EmployeeStatisticsDto {
   final String gender;
   final String nationality;
   final String currency;
+  final int timesheetId;
   final double averageRating;
   final int numberOfHoursWorked;
   final double moneyPerHour;
@@ -17,6 +18,7 @@ class EmployeeStatisticsDto {
     @required this.gender,
     @required this.nationality,
     @required this.currency,
+    @required this.timesheetId,
     @required this.averageRating,
     @required this.numberOfHoursWorked,
     @required this.moneyPerHour,
@@ -30,6 +32,7 @@ class EmployeeStatisticsDto {
       gender: json['gender'] as String,
       nationality: json['nationality'] as String,
       currency: json['currency'] as String,
+      timesheetId: json['timesheetId'] as int,
       averageRating: json['averageEmployeeRating'] as double,
       numberOfHoursWorked: json['numberOfHoursWorked'] as int,
       moneyPerHour: json['moneyPerHour'] as double,
