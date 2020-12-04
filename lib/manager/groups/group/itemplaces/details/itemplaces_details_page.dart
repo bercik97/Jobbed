@@ -45,7 +45,7 @@ class _ItemplacesDetailsPageState extends State<ItemplacesDetailsPage> {
   bool _loading = false;
   bool _isChecked = false;
   List<bool> _checked = new List();
-  LinkedHashSet<int> _selectedIds = new LinkedHashSet();
+  LinkedHashSet<String> _selectedNames = new LinkedHashSet();
   LinkedHashSet<ItemplaceDetailsDto> _selectedItems = new LinkedHashSet();
 
   ScrollController _scrollController = new ScrollController();
@@ -116,10 +116,10 @@ class _ItemplacesDetailsPageState extends State<ItemplacesDetailsPage> {
                         _checked.forEach((b) => l.add(value));
                         _checked = l;
                         if (value) {
-                          _selectedIds.addAll(_filteredItems.map((e) => e.warehouseId));
+                          _selectedNames.addAll(_filteredItems.map((e) => utf8.decode(e.name.runes.toList())));
                           _selectedItems.addAll(_filteredItems);
                         } else {
-                          _selectedIds.clear();
+                          _selectedNames.clear();
                           _selectedItems.clear();
                         }
                       });
@@ -141,7 +141,7 @@ class _ItemplacesDetailsPageState extends State<ItemplacesDetailsPage> {
                               ItemplaceDetailsDto item = _filteredItems[index];
                               int foundIndex = 0;
                               for (int i = 0; i < _items.length; i++) {
-                                if (_items[i].warehouseId == item.warehouseId) {
+                                if (utf8.decode(_items[i].name.runes.toList()) == utf8.decode(item.name.runes.toList())) {
                                   foundIndex = i;
                                 }
                               }
@@ -201,13 +201,13 @@ class _ItemplacesDetailsPageState extends State<ItemplacesDetailsPage> {
                                             setState(() {
                                               _checked[foundIndex] = value;
                                               if (value) {
-                                                _selectedIds.add(_items[foundIndex].warehouseId);
+                                                _selectedNames.add(utf8.decode(_items[foundIndex].name.runes.toList()));
                                                 _selectedItems.add(_items[foundIndex]);
                                               } else {
-                                                _selectedIds.remove(_items[foundIndex].warehouseId);
+                                                _selectedNames.remove(utf8.decode(_items[foundIndex].name.runes.toList()));
                                                 _selectedItems.remove(_items[foundIndex]);
                                               }
-                                              int selectedIdsLength = _selectedIds.length;
+                                              int selectedIdsLength = _selectedNames.length;
                                               if (selectedIdsLength == _items.length) {
                                                 _isChecked = true;
                                               } else if (selectedIdsLength == 0) {

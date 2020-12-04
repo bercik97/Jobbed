@@ -81,7 +81,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
                       controller: _scrollController,
                       itemCount: _itemplaces.length,
                       itemBuilder: (BuildContext context, int index) {
-                        String itemName = _itemplaces[index].name;
+                        String itemName = utf8.decode(_itemplaces[index].name.runes.toList());
                         String quantity = _itemplaces[index].quantity.toString();
                         String warehouseName = _itemplaces[index].warehouseName.toString();
                         return Card(
@@ -93,7 +93,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
                               Card(
                                 color: BRIGHTER_DARK,
                                 child: ListTile(
-                                  title: textGreen(utf8.decode(itemName.runes.toList())),
+                                  title: textGreen(itemName),
                                   subtitle: Column(
                                     children: [
                                       Row(
@@ -200,7 +200,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
     setState(() => _isAddButtonTapped = true);
     Map<String, Map<String, int>> warehouseIdsAndItemsWithQuantities = new Map();
     for (int i = 0; i < _itemplaces.length; i++) {
-      int warehouseId = _itemplaces[i].warehouseId;
+      String warehouseId = _itemplaces[i].warehouseId.toString();
       if (warehouseIdsAndItemsWithQuantities.containsKey(warehouseId)) {
         Map<String, int> itemsWithQuantities = warehouseIdsAndItemsWithQuantities[warehouseId];
         int quantity = int.parse(_textEditingItemControllers[i].text);
