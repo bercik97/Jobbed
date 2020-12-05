@@ -36,7 +36,7 @@ Widget employeeTimesheetsTab(BuildContext context, User user, List timesheets, b
                               if (timesheet.status == STATUS_IN_PROGRESS) {
                                 return EmployeeTsInProgressPage(user, timesheet, canFillHours, workTimeByLocation, piecework);
                               } else {
-                                return EmployeeTsCompletedPage(user, timesheet);
+                                return EmployeeTsCompletedPage(user, timesheet, workTimeByLocation, piecework);
                               }
                             },
                           ),
