@@ -47,11 +47,14 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
   EmployeePageDto _employeePageDto;
   bool _refreshCalled = false;
 
+  double expandedHeight;
+
   @override
   Widget build(BuildContext context) {
     this._user = widget._user;
     this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
+    this._calculateExpandedHeight();
     if (_refreshCalled) {
       return _buildPage();
     } else {
@@ -66,6 +69,18 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
           }
         },
       );
+    }
+  }
+
+  void _calculateExpandedHeight() {
+    double expandedHeight = MediaQuery.of(context).size.height * 0.08 + 215;
+    double deviceHeight = MediaQuery.of(context).size.height;
+    if (deviceHeight <= 600) {
+      this.expandedHeight = expandedHeight;
+    } else if (deviceHeight <= 800) {
+      this.expandedHeight = expandedHeight - 20;
+    } else {
+      this.expandedHeight = expandedHeight - 10;
     }
   }
 
@@ -98,7 +113,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                       ),
                     ],
                     iconTheme: IconThemeData(color: WHITE),
-                    expandedHeight: 270,
+                    expandedHeight: expandedHeight,
                     pinned: true,
                     backgroundColor: BRIGHTER_DARK,
                     flexibleSpace: FlexibleSpaceBar(
@@ -107,7 +122,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                           SizedBox(height: MediaQuery.of(context).size.height * 0.08),
                           Container(
                             width: 100,
-                            height: 100,
+                            height: 75,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(image: AssetImage(AvatarsUtil.getAvatarPathByLetter(_employeePageDto.gender, _user.info.substring(0, 1)))),
@@ -117,65 +132,59 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                           textCenter15White(utf8.decode(_user.info != null ? _user.info.runes.toList() : '-') + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
                           SizedBox(height: 5),
                           textCenter15White(getTranslated(this.context, 'employee') + ' #' + _user.id.toString()),
-                          SizedBox(height: 12),
+                          SizedBox(height: 10),
                           textCenter15GreenBold(getTranslated(this.context, 'statisticsForThe') + _employeePageDto.tsCurrentYear + ' ' + getTranslated(this.context, _employeePageDto.tsCurrentMonth)),
-                          Padding(
-                            padding: EdgeInsets.only(top: 12, right: 12, left: 12),
-                            child: Container(
-                              color: BRIGHTER_DARK,
-                              child: Row(
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Column(
-                                      children: <Widget>[
-                                        textWhite(getTranslated(this.context, 'days')),
-                                        SizedBox(height: 5.0),
-                                        Countup(
-                                          begin: 0,
-                                          end: _employeePageDto.tsDaysWorked.toDouble(),
-                                          duration: Duration(seconds: 2),
-                                          style: TextStyle(fontSize: 18.0, color: WHITE),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      children: <Widget>[
-                                        textWhite(getTranslated(this.context, 'money')),
-                                        textCenter15White(
-                                          _employeePageDto.tsCurrency != null ? '(' + _employeePageDto.tsCurrency + ')' : getTranslated(this.context, 'noCurrency'),
-                                        ),
-                                        Countup(
-                                          begin: 0,
-                                          end: _employeePageDto.tsEarnedMoney,
-                                          duration: Duration(seconds: 2),
-                                          separator: ',',
-                                          style: TextStyle(fontSize: 18, color: WHITE),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      children: <Widget>[
-                                        textWhite(getTranslated(this.context, 'rating')),
-                                        SizedBox(height: 5.0),
-                                        Countup(
-                                          begin: 0,
-                                          end: _employeePageDto.tsRating,
-                                          precision: 1,
-                                          duration: Duration(seconds: 2),
-                                          style: TextStyle(fontSize: 18.0, color: WHITE),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
                           SizedBox(height: 5),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Column(
+                                  children: <Widget>[
+                                    textWhite(getTranslated(this.context, 'days')),
+                                    SizedBox(height: 5.0),
+                                    Countup(
+                                      begin: 0,
+                                      end: _employeePageDto.tsDaysWorked.toDouble(),
+                                      duration: Duration(seconds: 2),
+                                      style: TextStyle(fontSize: 18.0, color: WHITE),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  children: <Widget>[
+                                    textWhite(getTranslated(this.context, 'money')),
+                                    textCenter15White(
+                                      _employeePageDto.tsCurrency != null ? '(' + _employeePageDto.tsCurrency + ')' : getTranslated(this.context, 'noCurrency'),
+                                    ),
+                                    Countup(
+                                      begin: 0,
+                                      end: _employeePageDto.tsEarnedMoney,
+                                      duration: Duration(seconds: 2),
+                                      separator: ',',
+                                      style: TextStyle(fontSize: 18, color: WHITE),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  children: <Widget>[
+                                    textWhite(getTranslated(this.context, 'rating')),
+                                    SizedBox(height: 5.0),
+                                    Countup(
+                                      begin: 0,
+                                      end: _employeePageDto.tsRating,
+                                      precision: 1,
+                                      duration: Duration(seconds: 2),
+                                      style: TextStyle(fontSize: 18.0, color: WHITE),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),

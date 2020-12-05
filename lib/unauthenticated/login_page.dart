@@ -409,7 +409,7 @@ class _LoginPageState extends State<LoginPage> {
 
   _buildFooterLogo() {
     return Padding(
-      padding: const EdgeInsets.only(top: 100),
+      padding: const EdgeInsets.only(top: 100, bottom: 10),
       child: Align(
         alignment: Alignment.bottomCenter,
         child: Row(
