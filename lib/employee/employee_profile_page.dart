@@ -118,6 +118,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                     backgroundColor: BRIGHTER_DARK,
                     flexibleSpace: FlexibleSpaceBar(
                       background: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           SizedBox(height: MediaQuery.of(context).size.height * 0.08),
                           Container(
