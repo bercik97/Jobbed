@@ -414,7 +414,6 @@
   "role": "Role",
   "informationSection": "Information section",
   "informationSectionDescription": "Following section provides information about the account",
-  "uneditableSection": "Uneditable section",
   "editableSection": "Editable section",
   "companyGroups": "Groups in the company",
   "createGroup": "Create group",

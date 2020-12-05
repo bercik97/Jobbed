@@ -107,7 +107,7 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'edit')),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'informationAboutYou')),
           drawer: managerSideBar(context, _user),
           body: Padding(
             padding: EdgeInsets.fromLTRB(25, 0, 25, 25),
@@ -117,10 +117,6 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
                 key: formKey,
                 child: Column(
                   children: <Widget>[
-                    SizedBox(height: 10),
-                    textCenter20GreenBold(getTranslated(context, 'informationAboutYou')),
-                    Divider(color: WHITE),
-                    SizedBox(height: 10),
                     Expanded(
                       child: SingleChildScrollView(
                         child: Column(
@@ -151,13 +147,30 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
   Widget _buildReadOnlySection() {
     return Column(
       children: [
-        SizedBox(height: 5),
-        Align(alignment: Alignment.topLeft, child: text25GreenUnderline(getTranslated(context, 'uneditableSection'))),
-        SizedBox(height: 20),
-        _buildReadOnlyField(getTranslated(context, 'companyName'), _companyName, Icons.business),
-        _buildReadOnlyField(getTranslated(context, 'accountExpirationDate'), _accountExpirationDate, Icons.access_time_outlined),
-        _buildReadOnlyField(getTranslated(context, 'role'), getTranslated(context, 'manager'), Icons.nature_people_sharp),
-        _buildReadOnlyField(getTranslated(context, 'username'), _usernameController.text, Icons.person),
+        ListTile(
+          dense: true,
+          contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+          title: text16GreenBold(getTranslated(context, 'companyName')),
+          subtitle: text16White(_companyName),
+        ),
+        ListTile(
+          dense: true,
+          contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+          title: text16GreenBold(getTranslated(context, 'accountExpirationDate')),
+          subtitle: text16White(_accountExpirationDate != null ? _accountExpirationDate : getTranslated(context, 'empty')),
+        ),
+        ListTile(
+          dense: true,
+          contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+          title: text16GreenBold(getTranslated(context, 'role')),
+          subtitle: text16White(getTranslated(context, 'manager')),
+        ),
+        ListTile(
+          dense: true,
+          contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+          title: text16GreenBold(getTranslated(context, 'username')),
+          subtitle: text16White(_usernameController.text),
+        ),
       ],
     );
   }

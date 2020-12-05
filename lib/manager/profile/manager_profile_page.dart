@@ -13,6 +13,8 @@ import 'package:give_job/shared/widget/buttons.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
+import 'edit/manager_edit_page.dart';
+
 class ManagerProfilePage extends StatefulWidget {
   final User _user;
 
@@ -65,6 +67,17 @@ class _ManagerProfilePageState extends State<ManagerProfilePage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => GroupsDashboardPage(_user),
+                        ),
+                      ),
+                    ),
+                    Buttons.standardButton(
+                      minWidth: 200.0,
+                      color: GREEN,
+                      title: getTranslated(context, 'aboutMe'),
+                      fun: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ManagerEditPage(_user),
                         ),
                       ),
                     ),
