@@ -57,15 +57,16 @@ class _GetStartedPageState extends State<GetStartedPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                SizedBox(height: MediaQuery.of(context).size.height * 0.08),
                 Image.asset('images/logo.png', height: 100),
-                SizedBox(height: 20),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                 textCenter30White(getTranslated(context, 'getStartedTitle')),
                 textCenter30White('$APP_NAME !'),
-                SizedBox(height: 30),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 Container(child: textCenter19White(getTranslated(context, 'getStartedDescription'))),
-                SizedBox(height: 30),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 Center(child: textCenter19White(getTranslated(context, 'getStartedLanguage'))),
-                SizedBox(height: 5),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                 Container(
                   child: Center(
                     child: Theme(
