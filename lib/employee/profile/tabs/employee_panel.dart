@@ -50,7 +50,7 @@ Container employeePanel(BuildContext context, User user, EmployeePageDto employe
                   child: Material(
                     color: BRIGHTER_DARK,
                     child: InkWell(
-                      onTap: () {
+                      onTap: () async {
                         int todayWorkdayId = employee.todayWorkdayId;
                         if (todayWorkdayId == 0) {
                           ToastService.showErrorToast(getTranslated(context, 'cannotStartWorkWithoutTS'));
@@ -60,7 +60,7 @@ Container employeePanel(BuildContext context, User user, EmployeePageDto employe
                           ToastService.showErrorToast(getTranslated(context, 'noPermissionForPiecework'));
                           return;
                         }
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(builder: (context) => PieceworkPage(user, employee.todayDate, employee.todayWorkdayId)),
                         );
