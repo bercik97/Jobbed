@@ -173,9 +173,11 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                                           ),
                                         );
                                       },
-                                      child: Image(
-                                        image: AssetImage(avatarPath),
-                                        fit: BoxFit.cover,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Image(image: AssetImage(avatarPath), height: 40),
+                                        ],
                                       ),
                                     ),
                                   ),
