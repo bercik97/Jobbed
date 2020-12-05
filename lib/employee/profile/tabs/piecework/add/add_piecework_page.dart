@@ -284,7 +284,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
           itemCount: _filteredPricelists.length,
           itemBuilder: (BuildContext context, int index) {
             PricelistDto pricelist = _filteredPricelists[index];
-            String name = pricelist.name;
+            String name = utf8.decode(pricelist.name.runes.toList());
             String price = pricelist.price.toString();
             return Card(
               color: DARK,
@@ -307,7 +307,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
                           },
                         ),
                       ),
-                      title: text20WhiteBold(utf8.decode(name.runes.toList())),
+                      title: text20WhiteBold(name),
                       subtitle: Row(
                         children: [
                           textWhite(getTranslated(this.context, 'price') + ': '),

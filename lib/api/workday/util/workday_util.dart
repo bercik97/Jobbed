@@ -327,7 +327,7 @@ class WorkdayUtil {
                                     DataRow(
                                       cells: [
                                         DataCell(textWhite((i + 1).toString())),
-                                        DataCell(textWhite(services[i])),
+                                        DataCell(textWhite(utf8.decode(services[i].runes.toList()))),
                                         DataCell(textWhite(quantities[i].toString())),
                                         DataCell(textWhite(prices[i].toString())),
                                       ],
