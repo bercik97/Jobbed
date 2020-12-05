@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -77,8 +79,10 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
           _loading = false;
           _fieldsValues = res;
           _usernameController.text = this._fieldsValues['username'];
-          _nameController.text = this._fieldsValues['name'];
-          _surnameController.text = this._fieldsValues['surname'];
+          String name = this._fieldsValues['name'];
+          _nameController.text = utf8.decode(name.runes.toList());
+          String surname = this._fieldsValues['surname'];
+          _surnameController.text = utf8.decode(surname.runes.toList());
           _emailController.text = this._fieldsValues['email'];
           _nationality = this._fieldsValues['nationality'];
           _phoneController.text = this._fieldsValues['phone'];

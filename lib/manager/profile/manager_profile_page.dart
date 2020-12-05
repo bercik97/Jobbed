@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
@@ -53,7 +51,7 @@ class _ManagerProfilePageState extends State<ManagerProfilePage> {
                 ),
                 Column(
                   children: <Widget>[
-                    text25WhiteBold(utf8.decode(_user.info != null ? _user.info.runes.toList() : '-')),
+                    text25WhiteBold(_user.info),
                     SizedBox(height: 2.5),
                     text20White(LanguageUtil.convertShortNameToFullName(this.context, _user.nationality) + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
                     SizedBox(height: 2.5),
