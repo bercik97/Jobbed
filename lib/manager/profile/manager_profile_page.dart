@@ -83,7 +83,6 @@ class _ManagerProfilePageState extends State<ManagerProfilePage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 5),
                     Buttons.standardButton(
                       minWidth: 200.0,
                       color: GREEN,
@@ -95,7 +94,6 @@ class _ManagerProfilePageState extends State<ManagerProfilePage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 5),
                     Buttons.standardButton(
                       minWidth: 200.0,
                       color: GREEN,
