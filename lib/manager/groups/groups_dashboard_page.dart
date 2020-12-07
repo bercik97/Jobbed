@@ -45,47 +45,54 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
   List<GroupDashboardDto> _groups = new List();
   ScrollController _scrollController = new ScrollController();
 
+  bool _loading = false;
+
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     this._user = widget._user;
     this._groupService = ServiceInitializer.initialize(context, _user.authHeader, GroupService);
+    this._loading = true;
+    _groupService.findAllByManagerId(_user.id).then((res) {
+      setState(() {
+        _groups = res;
+        _loading = false;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_loading) {
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
+    }
     return WillPopScope(
-      child: FutureBuilder<List<GroupDashboardDto>>(
-        future: _groupService.findAllByManagerId(_user.id),
-        builder: (BuildContext context, AsyncSnapshot<List<GroupDashboardDto>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
-            return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
-          } else {
-            this._groups = snapshot.data;
-            return MaterialApp(
-              title: APP_NAME,
-              theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-              debugShowCheckedModeBanner: false,
-              home: Scaffold(
-                backgroundColor: DARK,
-                appBar: managerAppBar(context, _user, getTranslated(context, 'companyGroups')),
-                drawer: managerSideBar(context, _user),
-                body: _groups.isNotEmpty ? _handleGroups() : _handleNoGroups(),
-                floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-                floatingActionButton: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    FloatingActionButton(
-                      heroTag: "plusBtn",
-                      tooltip: getTranslated(context, 'createGroup'),
-                      backgroundColor: GREEN,
-                      onPressed: () => Navigator.push(
-                        this.context,
-                        MaterialPageRoute(builder: (context) => AddGroupPage(_user)),
-                      ),
-                      child: text25Dark('+'),
-                    ),
-                  ],
+      child: MaterialApp(
+        title: APP_NAME,
+        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: DARK,
+          appBar: managerAppBar(context, _user, getTranslated(context, 'companyGroups')),
+          drawer: managerSideBar(context, _user),
+          body: _groups.isNotEmpty ? _handleGroups() : _handleNoGroups(),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          floatingActionButton: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FloatingActionButton(
+                heroTag: "plusBtn",
+                tooltip: getTranslated(context, 'createGroup'),
+                backgroundColor: GREEN,
+                onPressed: () => Navigator.push(
+                  this.context,
+                  MaterialPageRoute(builder: (context) => AddGroupPage(_user)),
                 ),
+                child: text25Dark('+'),
               ),
-            );
-          }
-        },
+            ],
+          ),
+        ),
       ),
       onWillPop: () => SystemNavigator.pop(),
     );
@@ -124,90 +131,85 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
           SizedBox(height: 10),
           Expanded(
             flex: 2,
-            child: RefreshIndicator(
-              color: DARK,
-              backgroundColor: WHITE,
-              onRefresh: _refresh,
-              child: Scrollbar(
-                isAlwaysShown: true,
+            child: Scrollbar(
+              isAlwaysShown: true,
+              controller: _scrollController,
+              child: ListView.builder(
                 controller: _scrollController,
-                child: ListView.builder(
-                  controller: _scrollController,
-                  itemCount: _groups.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                      color: DARK,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Card(
-                            color: BRIGHTER_DARK,
-                            child: ListTile(
-                              onTap: () {
-                                GroupDashboardDto group = _groups[index];
-                                Navigator.of(this.context).push(
-                                  CupertinoPageRoute<Null>(
-                                    builder: (BuildContext context) {
-                                      return GroupPage(
-                                        new GroupModel(
-                                          _user,
-                                          group.id,
-                                          group.name,
-                                          group.description,
-                                          group.numberOfEmployees.toString(),
-                                          group.countryOfWork,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                );
-                              },
-                              title: text18WhiteBold(
-                                utf8.decode(
-                                  _groups[index].name != null ? _groups[index].name.runes.toList() : getTranslated(this.context, 'empty'),
+                itemCount: _groups.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                    color: DARK,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Card(
+                          color: BRIGHTER_DARK,
+                          child: ListTile(
+                            onTap: () {
+                              GroupDashboardDto group = _groups[index];
+                              Navigator.of(this.context).push(
+                                CupertinoPageRoute<Null>(
+                                  builder: (BuildContext context) {
+                                    return GroupPage(
+                                      new GroupModel(
+                                        _user,
+                                        group.id,
+                                        group.name,
+                                        group.description,
+                                        group.numberOfEmployees.toString(),
+                                        group.countryOfWork,
+                                      ),
+                                    );
+                                  },
                                 ),
-                              ),
-                              subtitle: Column(
-                                children: <Widget>[
-                                  SizedBox(height: 5),
-                                  Align(
-                                    child: textWhite(getTranslated(this.context, 'numberOfEmployees') + ': ' + _groups[index].numberOfEmployees.toString()),
-                                    alignment: Alignment.topLeft,
-                                  ),
-                                  Align(
-                                    child: textWhite(
-                                      getTranslated(this.context, 'groupCountryOfWork') +
-                                          ': ' +
-                                          LanguageUtil.findFlagByNationality(
-                                            _groups[index].countryOfWork.toString(),
-                                          ),
-                                    ),
-                                    alignment: Alignment.topLeft,
-                                  ),
-                                  SizedBox(height: 5),
-                                ],
-                              ),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    icon: text25Green('+ -'),
-                                    onPressed: () => _manageGroupEmployees(_groups[index].name, _groups[index].id),
-                                  ),
-                                  IconButton(
-                                    icon: icon30Red(Icons.delete),
-                                    onPressed: () => _showDeleteGroupDialog(_groups[index].name),
-                                  ),
-                                ],
+                              );
+                            },
+                            title: text18WhiteBold(
+                              utf8.decode(
+                                _groups[index].name != null ? _groups[index].name.runes.toList() : getTranslated(this.context, 'empty'),
                               ),
                             ),
+                            subtitle: Column(
+                              children: <Widget>[
+                                SizedBox(height: 5),
+                                Align(
+                                  child: textWhite(getTranslated(this.context, 'numberOfEmployees') + ': ' + _groups[index].numberOfEmployees.toString()),
+                                  alignment: Alignment.topLeft,
+                                ),
+                                Align(
+                                  child: textWhite(
+                                    getTranslated(this.context, 'groupCountryOfWork') +
+                                        ': ' +
+                                        LanguageUtil.findFlagByNationality(
+                                          _groups[index].countryOfWork.toString(),
+                                        ),
+                                  ),
+                                  alignment: Alignment.topLeft,
+                                ),
+                                SizedBox(height: 5),
+                              ],
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: text25Green('+ -'),
+                                  onPressed: () => _manageGroupEmployees(_groups[index].name, _groups[index].id),
+                                ),
+                                IconButton(
+                                  icon: icon30Red(Icons.delete),
+                                  onPressed: () => _showDeleteGroupDialog(_groups[index].name),
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ),
           )
@@ -418,11 +420,5 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
 
   _validateGroupName(String value, String groupName) {
     return value != utf8.decode(groupName.runes.toList()) ? getTranslated(context, 'groupNameForDeleteInvalid') : null;
-  }
-
-  Future<Null> _refresh() {
-    return _groupService.findAllByManagerId(_user.id).then((res) {
-      setState(() => this._groups = res);
-    });
   }
 }
