@@ -280,7 +280,7 @@ class WorkdayUtil {
                     DataCell(textWhite(workTimes[i].startTime.toString())),
                     DataCell(textWhite(workTimes[i].endTime != null ? workTimes[i].endTime.toString() : '-')),
                     DataCell(textWhite(workTimes[i].totalTime != null ? workTimes[i].totalTime.toString() : '-')),
-                    DataCell(textWhite(workTimes[i].workplaceName.toString())),
+                    DataCell(textWhite(utf8.decode(workTimes[i].workplaceName.toString().runes.toList()))),
                   ],
                 ),
             ],

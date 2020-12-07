@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:android_intent/android_intent.dart';
 import 'package:async/async.dart';
@@ -305,7 +306,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                     DataRow(
                                       cells: [
                                         DataCell(textWhite((i + 1).toString())),
-                                        DataCell(textWhite(workplaces[i].name)),
+                                        DataCell(textWhite(utf8.decode(workplaces[i].name.runes.toList()))),
                                         DataCell(
                                           MaterialButton(
                                             child: Text(getTranslated(context, 'startUpperCase')),
@@ -324,7 +325,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                                           SizedBox(height: 10),
                                                           textCenterGreenBold(getTranslated(this.context, 'workplaceName')),
                                                           SizedBox(height: 2),
-                                                          textCenterWhite(workplaces[i].name),
+                                                          textCenterWhite(utf8.decode(workplaces[i].name.runes.toList())),
                                                         ],
                                                       ),
                                                     ),
@@ -334,10 +335,9 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                                         onPressed: () => _isStartWorkButtonTapped ? null : _startWork(workplaces[i].id),
                                                       ),
                                                       FlatButton(
-                                                          child: textWhite(
-                                                            getTranslated(this.context, 'no'),
-                                                          ),
-                                                          onPressed: () => Navigator.of(context).pop()),
+                                                        child: textWhite(getTranslated(this.context, 'no')),
+                                                        onPressed: () => Navigator.of(context).pop(),
+                                                      ),
                                                     ],
                                                   );
                                                 },
@@ -490,7 +490,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                     DataCell(textWhite(workTimes[i].startTime)),
                     DataCell(textWhite(workTimes[i].endTime != null ? workTimes[i].endTime : '-')),
                     DataCell(textWhite(workTimes[i].totalTime != null ? workTimes[i].totalTime : '-')),
-                    DataCell(textWhite(workTimes[i].workplaceName != null ? workTimes[i].workplaceName : '-')),
+                    DataCell(textWhite(workTimes[i].workplaceName != null ? utf8.decode(workTimes[i].workplaceName.runes.toList()) : '-')),
                   ],
                 ),
             ],

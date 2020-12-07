@@ -29,10 +29,11 @@ Widget employeeTimesheetsTab(BuildContext context, User user, List timesheets, b
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          CupertinoPageRoute<Null>(
-                            builder: (BuildContext context) {
+                      onTap: () async {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
                               if (timesheet.status == STATUS_IN_PROGRESS) {
                                 return EmployeeTsInProgressPage(user, timesheet, canFillHours, workTimeByLocation, piecework);
                               } else {
