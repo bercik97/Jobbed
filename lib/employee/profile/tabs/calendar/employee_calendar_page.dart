@@ -229,10 +229,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
                 borderRadius: BorderRadius.circular(12.0),
               ),
               margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-              child: ListTile(
-                title: _buildDay(workday),
-                onTap: () => print('object'),
-              ),
+              child: ListTile(title: _buildDay(workday)),
             ),
           )
           .toList(),
