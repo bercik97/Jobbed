@@ -572,7 +572,7 @@
   "noPricelist": "Firma nie posiada cennika",
   "goToTheEmployeeProfilPage": "Wróć do profilu pracownika",
   "writeWorkplaceName": "Napisz nazwę miejsca pracy",
-  "noAddedItemsFromPricelist": "Nie dodałeś wykonanych usług z cennika",
+  "noAddedItemsFromPricelist": "Nie dodałeś ilości wykonanych usług z cennika",
   "serviceName": "Nazwa usługi",
   "quantity": "Ilość",
   "quantityIsRequired": "Ilość wykonanej usługi jest wymagana",
