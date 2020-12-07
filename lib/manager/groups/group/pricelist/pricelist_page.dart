@@ -167,22 +167,9 @@ class _PricelistPageState extends State<PricelistPage> {
                                       Container(
                                         color: BRIGHTER_DARK,
                                         child: ListTileTheme(
-                                          contentPadding: EdgeInsets.only(right: 10),
+                                          contentPadding: EdgeInsets.only(right: 10, left: 10),
                                           child: CheckboxListTile(
                                             controlAffinity: ListTileControlAffinity.trailing,
-                                            secondary: Padding(
-                                              padding: EdgeInsets.only(left: 10),
-                                              child: Shimmer.fromColors(
-                                                baseColor: GREEN,
-                                                highlightColor: WHITE,
-                                                child: BouncingWidget(
-                                                  duration: Duration(milliseconds: 100),
-                                                  scaleFactor: 2,
-                                                  onPressed: () => {},
-                                                  child: icon30Green(Icons.search),
-                                                ),
-                                              ),
-                                            ),
                                             title: Column(
                                               children: [
                                                 Align(
