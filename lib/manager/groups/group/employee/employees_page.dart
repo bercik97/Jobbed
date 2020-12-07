@@ -259,7 +259,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
             child: Row(
               children: <Widget>[
                 textWhite(getTranslated(this.context, 'workplaceName') + ': '),
-                textGreenBold(employee.workplaceName != null ? employee.workplaceName : getTranslated(this.context, 'empty')),
+                textGreenBold(employee.workplaceName != null ? utf8.decode(employee.workplaceName.runes.toList()) : getTranslated(this.context, 'empty')),
               ],
             ),
             alignment: Alignment.topLeft),
