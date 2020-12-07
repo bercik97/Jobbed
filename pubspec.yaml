@@ -97,7 +97,7 @@ flutter:
     - images/employee-work-icon.png
     - images/calendar-icon.png
     - images/employees-settings-icon.png
-    - images/piecework-icon.png
+    - images/green-piecework-icon.png
     - images/items-icon.png
     - images/pricelist-icon.png
     - images/warehouse-icon.png
@@ -110,6 +110,7 @@ flutter:
     - images/green-vocation-icon.png
 
     - images/dark-hours-icon.png
+    - images/dark-piecework-icon.png
     - images/dark-rate-icon.png
     - images/dark-plan-icon.png
     - images/dark-opinion-icon.png

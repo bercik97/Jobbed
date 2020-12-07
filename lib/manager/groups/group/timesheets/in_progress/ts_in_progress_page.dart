@@ -306,6 +306,20 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
+                    child: Image(image: AssetImage('images/dark-piecework-icon.png')),
+                    onPressed: () {
+                      if (_selectedIds.isNotEmpty) {
+                        //
+                      } else {
+                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                      }
+                    },
+                  ),
+                ),
+                SizedBox(width: 5),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
                     child: Image(image: AssetImage('images/dark-rate-icon.png')),
                     onPressed: () {
                       if (_selectedIds.isNotEmpty) {
@@ -357,6 +371,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
             [
               IconsLegendUtil.buildImageRow('images/letters/male/unknown_letter.png', getTranslated(context, 'employeeProfile')),
               IconsLegendUtil.buildImageRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
+              IconsLegendUtil.buildImageRow('images/green-piecework-icon.png', getTranslated(context, 'settingPiecework')),
               IconsLegendUtil.buildImageRow('images/green-rate-icon.png', getTranslated(context, 'settingRating')),
               IconsLegendUtil.buildImageRow('images/green-plan-icon.png', getTranslated(context, 'settingPlan')),
               IconsLegendUtil.buildImageRow('images/green-opinion-icon.png', getTranslated(context, 'settingOpinion')),
