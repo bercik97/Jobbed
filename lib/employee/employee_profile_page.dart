@@ -45,46 +45,31 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
 
   User _user;
   EmployeePageDto _employeePageDto;
-  bool _refreshCalled = false;
+  bool _loading = false;
 
   double expandedHeight;
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     this._user = widget._user;
     this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
+    this._loading = true;
+    _employeeService.findByIdForEmployeePage(_user.id).then((res) {
+      setState(() {
+        _employeePageDto = res;
+        _loading = false;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_loading) {
+      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading')), employeeSideBar(context, _user));
+    }
     this._calculateExpandedHeight();
-    if (_refreshCalled) {
-      return _buildPage();
-    } else {
-      return FutureBuilder<EmployeePageDto>(
-        future: _employeeService.findByIdForEmployeePage(_user.id),
-        builder: (BuildContext context, AsyncSnapshot<EmployeePageDto> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
-            return loader(employeeAppBar(context, _user, getTranslated(context, 'loading')), employeeSideBar(context, _user));
-          } else {
-            this._employeePageDto = snapshot.data;
-            return _buildPage();
-          }
-        },
-      );
-    }
-  }
-
-  void _calculateExpandedHeight() {
-    double expandedHeight = MediaQuery.of(context).size.height * 0.08 + 215;
-    double deviceHeight = MediaQuery.of(context).size.height;
-    if (deviceHeight <= 600) {
-      this.expandedHeight = expandedHeight;
-    } else if (deviceHeight <= 800) {
-      this.expandedHeight = expandedHeight - 20;
-    } else {
-      this.expandedHeight = expandedHeight - 10;
-    }
-  }
-
-  Widget _buildPage() {
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -229,6 +214,18 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
     );
   }
 
+  void _calculateExpandedHeight() {
+    double expandedHeight = MediaQuery.of(context).size.height * 0.08 + 215;
+    double deviceHeight = MediaQuery.of(context).size.height;
+    if (deviceHeight <= 600) {
+      this.expandedHeight = expandedHeight;
+    } else if (deviceHeight <= 800) {
+      this.expandedHeight = expandedHeight - 20;
+    } else {
+      this.expandedHeight = expandedHeight - 10;
+    }
+  }
+
   RefreshIndicator _buildTab(Widget tab) {
     return RefreshIndicator(color: DARK, backgroundColor: WHITE, onRefresh: _refresh, child: tab);
   }
@@ -237,7 +234,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
     return _employeeService.findByIdForEmployeePage(_user.id.toString()).then((employee) {
       setState(() {
         _employeePageDto = employee;
-        _refreshCalled = true;
+        _loading = false;
       });
     });
   }
