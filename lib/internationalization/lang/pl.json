@@ -683,5 +683,7 @@
   "chooseGender": "Proszę, wybierz swoją płeć",
   "male": "Mężczyzna",
   "female": "Kobieta",
-  "settingPiecework": "Ustawianie pracy akordowej"
+  "settingPiecework": "Ustawianie pracy akordowej",
+  "goToTheTsInProgressPage": "Wroć do widoku arkusza czasu pracy w toku",
+  "successfullyAddedNewReportsAboutPiecework": "Pomyślnie dodano nowe raporty dotyczące pracy akordowej"
 }

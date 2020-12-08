@@ -15,6 +15,7 @@ import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/employee/employee_profil_page.dart';
+import 'package:give_job/manager/groups/group/timesheets/in_progress/piecework/add_piecework_for_selected_employees_page.dart';
 import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -31,7 +32,6 @@ import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/icons_legend_dialog.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:intl/intl.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '../../../../../shared/widget/loader.dart';
 import '../../../../shared/manager_app_bar.dart';
@@ -309,7 +309,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                     child: Image(image: AssetImage('images/dark-piecework-icon.png')),
                     onPressed: () {
                       if (_selectedIds.isNotEmpty) {
-                        //
+                        _showUpdatePiecework(_selectedIds);
                       } else {
                         showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
                       }
@@ -401,115 +401,151 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
       String dateFrom = DateFormat('yyyy-MM-dd').format(picked[0]);
       String dateTo = DateFormat('yyyy-MM-dd').format(picked[1]);
       showGeneralDialog(
-          context: context,
-          barrierColor: DARK.withOpacity(0.95),
-          barrierDismissible: false,
-          barrierLabel: 'Hours',
-          transitionDuration: Duration(milliseconds: 400),
-          pageBuilder: (_, __, ___) {
-            return SizedBox.expand(
-              child: Scaffold(
-                backgroundColor: Colors.black12,
-                body: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'hoursUpperCase'))),
-                      SizedBox(height: 2.5),
-                      textGreen(getTranslated(context, 'setHoursForSelectedEmployee')),
-                      SizedBox(height: 2.5),
-                      textGreenBold('[' + dateFrom + ' - ' + dateTo + ']'),
-                      SizedBox(height: 2.5),
-                      Container(
-                        width: 150,
-                        child: TextFormField(
-                          autofocus: true,
-                          controller: _hoursController,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
-                          maxLength: 2,
-                          cursorColor: WHITE,
-                          textAlignVertical: TextAlignVertical.center,
-                          style: TextStyle(color: WHITE),
-                          decoration: InputDecoration(
-                            counterStyle: TextStyle(color: WHITE),
-                            labelStyle: TextStyle(color: WHITE),
-                            labelText: getTranslated(context, 'newHours') + ' (0-24)',
-                          ),
+        context: context,
+        barrierColor: DARK.withOpacity(0.95),
+        barrierDismissible: false,
+        barrierLabel: 'Hours',
+        transitionDuration: Duration(milliseconds: 400),
+        pageBuilder: (_, __, ___) {
+          return SizedBox.expand(
+            child: Scaffold(
+              backgroundColor: Colors.black12,
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'hoursUpperCase'))),
+                    SizedBox(height: 2.5),
+                    textGreen(getTranslated(context, 'setHoursForSelectedEmployee')),
+                    SizedBox(height: 2.5),
+                    textGreenBold('[' + dateFrom + ' - ' + dateTo + ']'),
+                    SizedBox(height: 2.5),
+                    Container(
+                      width: 150,
+                      child: TextFormField(
+                        autofocus: true,
+                        controller: _hoursController,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
+                        maxLength: 2,
+                        cursorColor: WHITE,
+                        textAlignVertical: TextAlignVertical.center,
+                        style: TextStyle(color: WHITE),
+                        decoration: InputDecoration(
+                          counterStyle: TextStyle(color: WHITE),
+                          labelStyle: TextStyle(color: WHITE),
+                          labelText: getTranslated(context, 'newHours') + ' (0-24)',
                         ),
                       ),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          MaterialButton(
-                            elevation: 0,
-                            height: 50,
-                            minWidth: 40,
-                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[iconWhite(Icons.close)],
-                            ),
-                            color: Colors.red,
-                            onPressed: () => Navigator.pop(context),
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        MaterialButton(
+                          elevation: 0,
+                          height: 50,
+                          minWidth: 40,
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[iconWhite(Icons.close)],
                           ),
-                          SizedBox(width: 25),
-                          MaterialButton(
-                            elevation: 0,
-                            height: 50,
-                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[iconWhite(Icons.check)],
-                            ),
-                            color: GREEN,
-                            onPressed: () {
-                              int hours;
-                              try {
-                                hours = int.parse(_hoursController.text);
-                              } catch (FormatException) {
-                                ToastService.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
-                                return;
-                              }
-                              String invalidMessage = ValidatorService.validateUpdatingHours(hours, context);
-                              if (invalidMessage != null) {
-                                ToastService.showErrorToast(invalidMessage);
-                                return;
-                              }
-                              showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                              _workdayService
-                                  .updateEmployeesHours(
-                                hours,
-                                dateFrom,
-                                dateTo,
-                                _selectedIds.map((el) => el.toString()).toList(),
-                                year,
-                                monthNum,
-                                STATUS_IN_PROGRESS,
-                              )
-                                  .then((res) {
-                                Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                  Navigator.of(context).pop();
-                                  ToastService.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
-                                  _uncheckAll();
-                                  _refresh();
-                                });
-                              }).catchError((onError) {
-                                Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                  ToastService.showErrorToast('smthWentWrong');
-                                });
+                          color: Colors.red,
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                        SizedBox(width: 25),
+                        MaterialButton(
+                          elevation: 0,
+                          height: 50,
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[iconWhite(Icons.check)],
+                          ),
+                          color: GREEN,
+                          onPressed: () {
+                            int hours;
+                            try {
+                              hours = int.parse(_hoursController.text);
+                            } catch (FormatException) {
+                              ToastService.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
+                              return;
+                            }
+                            String invalidMessage = ValidatorService.validateUpdatingHours(hours, context);
+                            if (invalidMessage != null) {
+                              ToastService.showErrorToast(invalidMessage);
+                              return;
+                            }
+                            showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+                            _workdayService
+                                .updateEmployeesHours(
+                              hours,
+                              dateFrom,
+                              dateTo,
+                              _selectedIds.map((el) => el.toString()).toList(),
+                              year,
+                              monthNum,
+                              STATUS_IN_PROGRESS,
+                            )
+                                .then((res) {
+                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                Navigator.of(context).pop();
+                                ToastService.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
+                                _uncheckAll();
+                                _refresh();
                               });
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                            }).catchError((onError) {
+                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                ToastService.showErrorToast('smthWentWrong');
+                              });
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-            );
-          });
+            ),
+          );
+        },
+      );
+    }
+  }
+
+  void _showUpdatePiecework(LinkedHashSet<int> selectedIds) async {
+    int year = _timesheet.year;
+    int monthNum = MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
+    int days = DateUtil().daysInMonth(monthNum, year);
+    final List<DateTime> picked = await DateRagePicker.showDatePicker(
+      context: context,
+      initialFirstDate: new DateTime(year, monthNum, 1),
+      initialLastDate: new DateTime(year, monthNum, days),
+      firstDate: new DateTime(year, monthNum, 1),
+      lastDate: new DateTime(year, monthNum, days),
+    );
+    if (picked != null && picked.length == 1) {
+      picked.add(picked[0]);
+    }
+    if (picked != null && picked.length == 2) {
+      String dateFrom = DateFormat('yyyy-MM-dd').format(picked[0]);
+      String dateTo = DateFormat('yyyy-MM-dd').format(picked[1]);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AddPieceworkForSelectedEmployeesPage(
+            _model,
+            _timesheet,
+            dateFrom,
+            dateTo,
+            _selectedIds.map((el) => el.toString()).toList(),
+            year,
+            monthNum,
+            STATUS_IN_PROGRESS,
+          ),
+        ),
+      );
     }
   }
 

@@ -683,5 +683,7 @@
   "chooseGender": "გთხოვთ, აირჩიოთ სქესი",
   "male": "კაცი",
   "female": "ქალი",
-  "settingPiecework": "აკორდის სამუშაოს დაყენება"
+  "settingPiecework": "აკორდის სამუშაოს დაყენება",
+  "goToTheTsInProgressPage": "გადადით მიმდინარე ცხრილის გვერდზე",
+  "successfullyAddedNewReportsAboutPiecework": "წარმატებით დაემატა ახალი მოხსენებები დანაწევრების შესახებ"
 }

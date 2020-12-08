@@ -683,5 +683,7 @@
   "chooseGender": "Пожалуйста, выберите свой пол",
   "мужчина": "мужчина",
   "female": "женский",
-  "settingPiecework": "Настройка аккорда на работу"
+  "settingPiecework": "Настройка аккорда на работу",
+  "goToTheTsInProgressPage": "Перейти на страницу текущего расписания",
+  "successfullyAddedNewReportsAboutPiecework": "Успешно добавлены новые отчеты о сдельной работе"
 }

@@ -683,5 +683,7 @@
   "chooseGender": "Будь ласка, оберіть свою стать",
   "male": "Самець",
   "female": "Самка",
-  "settingPiecework": "Налаштування роботи акорду"
+  "settingPiecework": "Налаштування роботи акорду",
+  "goToTheTsInProgressPage": "Перейдіть на сторінку обліку робочого часу",
+  "successfullyAddedNewReportsAboutPiecework": "Успішно додано нові звіти про відрядні роботи"
 }

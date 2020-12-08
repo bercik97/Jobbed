@@ -683,5 +683,7 @@
   "chooseGender": "Please, choose your gender",
   "male": "Male",
   "female": "Female",
-  "settingPiecework": "Setting piecework"
+  "settingPiecework": "Setting piecework",
+  "goToTheTsInProgressPage": "Go to the timesheet in progress page",
+  "successfullyAddedNewReportsAboutPiecework": "Successfully added new reports about piecework"
 }
