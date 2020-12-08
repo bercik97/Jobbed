@@ -6,16 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:give_job/api/piecework/service/piecework_service.dart';
 import 'package:give_job/api/price_list/dto/price_list_dto.dart';
 import 'package:give_job/api/price_list/service/pricelist_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
-import 'package:give_job/api/workday/service/workday_service.dart';
-import 'package:give_job/employee/shared/employee_app_bar.dart';
-import 'package:give_job/employee/shared/employee_side_bar.dart';
+import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/timesheets/in_progress/ts_in_progress_page.dart';
 import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/manager/shared/manager_side_bar.dart';
@@ -30,36 +25,26 @@ import 'package:give_job/shared/widget/loader.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
-class AddPieceworkForSelectedEmployeesPage extends StatefulWidget {
-  final GroupModel _model;
-  final TimesheetWithStatusDto _timeSheet;
-  final String dateFrom;
-  final String dateTo;
-  final List<String> employeeIds;
-  final int tsYear;
-  final int tsMonth;
-  final String tsStatus;
+import '../group_page.dart';
 
-  AddPieceworkForSelectedEmployeesPage(this._model, this._timeSheet, this.dateFrom, this.dateTo, this.employeeIds, this.tsYear, this.tsMonth, this.tsStatus);
+class AddPieceworkForQuickUpdate extends StatefulWidget {
+  final GroupModel _model;
+  final String _todaysDate;
+
+  AddPieceworkForQuickUpdate(this._model, this._todaysDate);
 
   @override
-  _AddPieceworkForSelectedEmployeesPageState createState() => _AddPieceworkForSelectedEmployeesPageState();
+  _AddPieceworkForQuickUpdateState createState() => _AddPieceworkForQuickUpdateState();
 }
 
-class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSelectedEmployeesPage> {
+class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate> {
   GroupModel _model;
-  TimesheetWithStatusDto _timeSheet;
-  String _dateFrom;
-  String _dateTo;
-  List<String> _employeeIds;
-  int _tsYear;
-  int _tsMonth;
-  String _tsStatus;
+  String _todaysDate;
 
   User _user;
 
   PricelistService _pricelistService;
-  WorkdayService _workdayService;
+  TimesheetService _timesheetService;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -79,15 +64,9 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
   void initState() {
     this._model = widget._model;
     this._user = _model.user;
-    this._timeSheet = widget._timeSheet;
-    this._dateFrom = widget.dateFrom;
-    this._dateTo = widget.dateTo;
-    this._employeeIds = widget.employeeIds;
-    this._tsYear = widget.tsYear;
-    this._tsMonth = widget.tsMonth;
-    this._tsStatus = widget.tsStatus;
+    this._todaysDate = widget._todaysDate;
     this._pricelistService = ServiceInitializer.initialize(context, _user.authHeader, PricelistService);
-    this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
+    this._timesheetService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
     super.initState();
     _loading = true;
     _pricelistService.findAllByCompanyId(int.parse(_user.companyId)).then((res) {
@@ -119,25 +98,25 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
             ),
             actions: <Widget>[
               FlatButton(
-                child: textWhite(getTranslated(this.context, 'goToTheTsInProgressPage')),
+                child: textWhite(getTranslated(this.context, 'goToTheGroupPage')),
                 onPressed: () => _resetAndOpenPage(),
               ),
             ],
           ),
-          onWillPop: _navigateToTimesheetInProgressPage,
+          onWillPop: _navigateToGroupPage,
         );
       },
     );
   }
 
-  Future<bool> _navigateToTimesheetInProgressPage() async {
+  Future<bool> _navigateToGroupPage() async {
     _resetAndOpenPage();
     return true;
   }
 
   void _resetAndOpenPage() {
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (BuildContext context) => TsInProgressPage(_model, _timeSheet)),
+      MaterialPageRoute(builder: (BuildContext context) => GroupPage(_model)),
       ModalRoute.withName('/'),
     );
   }
@@ -154,7 +133,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, _dateFrom + ' - ' + _dateTo),
+          appBar: managerAppBar(context, _user, _todaysDate),
           drawer: managerSideBar(context, _user),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
@@ -181,7 +160,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
           bottomNavigationBar: _buildBottomNavigationBar(),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, TsInProgressPage(_model, _timeSheet)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model)),
     );
   }
 
@@ -286,7 +265,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
             ),
             color: Colors.red,
             onPressed: () => {
-              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TsInProgressPage(_model, _timeSheet)), (e) => false),
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => GroupPage(_model)), (e) => false),
             },
           ),
           SizedBox(width: 25),
@@ -333,29 +312,27 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workdayService
-        .updateEmployeesPiecework(
-      _workplaceNameController.text,
-      serviceWithQuantity,
-      _dateFrom,
-      _dateTo,
-      _employeeIds,
-      _tsYear,
-      _tsMonth,
-      _tsStatus,
-    )
-        .then((res) {
+    _timesheetService.updatePieceworkByGroupIdAndDate(_model.groupId, _todaysDate, _workplaceNameController.text, serviceWithQuantity).then((res) {
       Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewReportsAboutPiecework'));
         Navigator.push(
           this.context,
-          MaterialPageRoute(builder: (context) => TsInProgressPage(_model, _timeSheet)),
+          MaterialPageRoute(builder: (context) => GroupPage(_model)),
         );
       });
     }).catchError((onError) {
+      String s = onError.toString();
       Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
         setState(() => _isAddButtonTapped = false);
+        if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
+          DialogService.showCustomDialog(
+            context: context,
+            titleWidget: textRed(getTranslated(context, 'error')),
+            content: getTranslated(context, 'cannotUpdateTodaysPiecework'),
+          );
+        } else {
+          ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+        }
       });
     });
   }

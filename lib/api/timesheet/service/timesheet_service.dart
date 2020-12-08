@@ -129,6 +129,24 @@ class TimesheetService {
     }
   }
 
+  Future<dynamic> updatePieceworkByGroupIdAndDate(int groupId, String date, String workplaceName, Map<String, int> serviceWithQuantity) async {
+    Response res = await put(
+      '$_url/piecework/groups/$groupId?date=$date',
+      body: jsonEncode({
+        'workplaceName': workplaceName,
+        'serviceWithQuantity': serviceWithQuantity,
+      }),
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
   Future<dynamic> updateRatingByGroupIdAndDate(int groupId, String date, int rating) async {
     Response res = await put(
       '$_url/rating/groups/$groupId?date=$date',

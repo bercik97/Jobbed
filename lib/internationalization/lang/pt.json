@@ -685,5 +685,7 @@
   "female": "ქალი",
   "settingPiecework": "აკორდის სამუშაოს დაყენება",
   "goToTheTsInProgressPage": "გადადით მიმდინარე ცხრილის გვერდზე",
-  "successfullyAddedNewReportsAboutPiecework": "წარმატებით დაემატა ახალი მოხსენებები დანაწევრების შესახებ"
+  "successfullyAddedNewReportsAboutPiecework": "წარმატებით დაემატა ახალი მოხსენებები დანაწევრების შესახებ",
+  "goToTheGroupPage": "გადადით ჯგუფის გვერდზე",
+  "cannotUpdateTodaysPiecework": "თქვენ არ შეგიძლიათ განაახლოთ დღევანდელი ნაჭერი დავალება, რადგან ჯგუფს არ აქვს დროის ცხრილი მიმდინარე თვისთვის"
 }

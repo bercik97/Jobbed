@@ -685,5 +685,7 @@
   "female": "Female",
   "settingPiecework": "Setting piecework",
   "goToTheTsInProgressPage": "Go to the timesheet in progress page",
-  "successfullyAddedNewReportsAboutPiecework": "Successfully added new reports about piecework"
+  "successfullyAddedNewReportsAboutPiecework": "Successfully added new reports about piecework",
+  "goToTheGroupPage": "Go to the group page",
+  "cannotUpdateTodaysPiecework": "Cannot update today's piecework cause group does not have a timesheet for today."
 }

@@ -685,5 +685,7 @@
   "female": "женский",
   "settingPiecework": "Настройка аккорда на работу",
   "goToTheTsInProgressPage": "Перейти на страницу текущего расписания",
-  "successfullyAddedNewReportsAboutPiecework": "Успешно добавлены новые отчеты о сдельной работе"
+  "successfullyAddedNewReportsAboutPiecework": "Успешно добавлены новые отчеты о сдельной работе",
+  "goToTheGroupPage": "Перейти на страницу группы",
+  "cannotUpdateTodaysPiecework": "Вы не можете обновить сегодняшнюю сдельную работу, потому что у группы нет расписания на текущий месяц"
 }
