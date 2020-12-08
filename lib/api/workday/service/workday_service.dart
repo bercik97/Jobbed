@@ -89,6 +89,24 @@ class WorkdayService {
     }
   }
 
+  Future<dynamic> updatePieceworkByIds(List<String> ids, String workplaceName, Map<String, int> serviceWithQuantity) async {
+    Response res = await put(
+      '$_url/piecework?ids=$ids',
+      body: jsonEncode({
+        'workplaceName': workplaceName,
+        'serviceWithQuantity': serviceWithQuantity,
+      }),
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
   Future<dynamic> createOrUpdateVocationsByIds(List<String> ids, String reason, int tsYear, int tsMonth, String tsStatus) async {
     Response res = await put(
       '$_url/vocations?ids=$ids',

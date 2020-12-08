@@ -687,5 +687,7 @@
   "goToTheTsInProgressPage": "Wroć do widoku arkusza czasu pracy w toku",
   "successfullyAddedNewReportsAboutPiecework": "Pomyślnie dodano nowe raporty dotyczące pracy akordowej",
   "goToTheGroupPage": "Wróć do widoku grupy",
-  "cannotUpdateTodaysPiecework": "Nie można zaktualizować dzisiejszej pracy na akord, ponieważ grupa nie posiada arkusza czasu pracy w bieżącym miesiącu"
+  "cannotUpdateTodaysPiecework": "Nie można zaktualizować dzisiejszej pracy na akord, ponieważ grupa nie posiada arkusza czasu pracy w bieżącym miesiącu",
+  "goToTheTimesheetPage": "Wróć do widoku arkusza czasu pracy",
+  "pieceworkForSelectedWorkdays": "Praca akordowa dla wybranych dni"
 }

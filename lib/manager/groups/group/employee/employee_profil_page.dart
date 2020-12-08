@@ -193,7 +193,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                                   Navigator.of(this.context).push(
                                     CupertinoPageRoute<Null>(
                                       builder: (BuildContext context) {
-                                        return EmployeeTsInProgressPage(_model, _employeeInfo, _employeeNationality, _currency, timesheet);
+                                        return EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _currency, timesheet, _avatarPath, _previousPage);
                                       },
                                     ),
                                   );
