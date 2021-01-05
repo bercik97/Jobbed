@@ -53,6 +53,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
   List<bool> _checked = new List();
   LinkedHashSet<int> _selectedIds = new LinkedHashSet();
 
+  int _moneyRadioValue = -1;
   int _selfFillingHoursRadioValue = -1;
   int _workTimeByLocationRadioValue = -1;
   int _pieceworkRadioValue = -1;
@@ -352,106 +353,136 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
       transitionDuration: Duration(milliseconds: 400),
       pageBuilder: (_, __, ___) {
         return SizedBox.expand(
-          child: Scaffold(
-            backgroundColor: Colors.black12,
-            body: Center(
-              child: Padding(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 50),
-                      child: Column(
-                        children: [
-                          text20GreenBold(getTranslated(context, 'moneyPerHourUpperCase')),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 7.5),
-                    textGreen(getTranslated(context, 'changeMoneyPerHourForEmployees')),
-                    SizedBox(height: 5.0),
-                    textCenter15Red(getTranslated(context, 'theRateWillNotBeSetToPreviouslyFilledHours')),
-                    textCenter15Red(getTranslated(context, 'updateAmountsOfPrevSheetsOverwrite')),
-                    SizedBox(height: 2.5),
-                    Container(
-                      width: 150,
-                      child: TextFormField(
-                        autofocus: true,
-                        controller: _moneyPerHourController,
-                        keyboardType: TextInputType.numberWithOptions(decimal: true),
-                        inputFormatters: <TextInputFormatter>[
-                          WhitelistingTextInputFormatter(RegExp(r'^\d+\.?\d{0,3}')),
-                        ],
-                        maxLength: 8,
-                        cursorColor: WHITE,
-                        textAlignVertical: TextAlignVertical.center,
-                        style: TextStyle(color: WHITE),
-                        decoration: InputDecoration(
-                          counterStyle: TextStyle(color: WHITE),
-                          labelStyle: TextStyle(color: WHITE),
-                          labelText: '(0-200)',
+            child: StatefulBuilder(builder: (context, setState) {
+            return Scaffold(
+              backgroundColor: Colors.black12,
+              body: Center(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: 50),
+                        child: Column(
+                          children: [
+                            text20GreenBold(getTranslated(context, 'moneyPerHourUpperCase')),
+                          ],
                         ),
                       ),
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        MaterialButton(
-                          elevation: 0,
-                          height: 50,
-                          minWidth: 40,
-                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[iconWhite(Icons.close)],
+                      SizedBox(height: 7.5),
+                      textGreen(getTranslated(context, 'changeMoneyPerHourForEmployeesOrCompany')),
+                      SizedBox(height: 5.0),
+                      textCenter15Red(getTranslated(context, 'theRateWillNotBeSetToPreviouslyFilledHours')),
+                      textCenter15Red(getTranslated(context, 'updateAmountsOfPrevSheetsOverwrite')),
+                      SizedBox(height: 7.5),
+                      Column(
+                        children: <Widget>[
+                          _buildRadioBtn(
+                            color: GREEN,
+                            title: getTranslated(context, 'moneyPerHour'),
+                            value: 0,
+                            groupValue: _moneyRadioValue,
+                            onChanged: (newValue) => setState(() => _moneyRadioValue = newValue),
                           ),
-                          color: Colors.red,
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                        SizedBox(width: 25),
-                        MaterialButton(
-                          elevation: 0,
-                          height: 50,
-                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[iconWhite(Icons.check)],
+                          _buildRadioBtn(
+                            color: GREEN,
+                            title: getTranslated(context, 'moneyPerHourForCompany'),
+                            value: 1,
+                            groupValue: _moneyRadioValue,
+                            onChanged: (newValue) => setState(() => _moneyRadioValue = newValue),
                           ),
-                          color: GREEN,
-                          onPressed: () {
-                            double moneyPerHour;
-                            try {
-                              moneyPerHour = double.parse(_moneyPerHourController.text);
-                            } catch (FormatException) {
-                              ToastService.showErrorToast(getTranslated(context, 'newHourlyRateIsRequired'));
-                              return;
-                            }
-                            String invalidMessage = ValidatorService.validateMoneyPerHour(moneyPerHour, context);
-                            if (invalidMessage != null) {
-                              ToastService.showErrorToast(invalidMessage);
-                              return;
-                            }
-                            showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                            _employeeService.updateFieldsValuesByIds(_selectedIds.toList(), {"moneyPerHour": moneyPerHour}).then(
-                              (res) {
-                                Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                  _refresh();
-                                  Navigator.pop(context);
-                                  ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedMoneyPerHourForSelectedEmployees'));
-                                });
-                              },
-                            );
-                          },
+                        ],
+                      ),
+                      SizedBox(height: 2.5),
+                      Container(
+                        width: 150,
+                        child: TextFormField(
+                          autofocus: true,
+                          controller: _moneyPerHourController,
+                          keyboardType: TextInputType.numberWithOptions(decimal: true),
+                          inputFormatters: <TextInputFormatter>[
+                            WhitelistingTextInputFormatter(RegExp(r'^\d+\.?\d{0,3}')),
+                          ],
+                          maxLength: 8,
+                          cursorColor: WHITE,
+                          textAlignVertical: TextAlignVertical.center,
+                          style: TextStyle(color: WHITE),
+                          decoration: InputDecoration(
+                            counterStyle: TextStyle(color: WHITE),
+                            labelStyle: TextStyle(color: WHITE),
+                            labelText: '(0-200)',
+                          ),
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          MaterialButton(
+                            elevation: 0,
+                            height: 50,
+                            minWidth: 40,
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[iconWhite(Icons.close)],
+                            ),
+                            color: Colors.red,
+                            onPressed: () {
+                              _moneyRadioValue = -1;
+                              Navigator.pop(context);
+                            },
+                          ),
+                          SizedBox(width: 25),
+                          MaterialButton(
+                            elevation: 0,
+                            height: 50,
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[iconWhite(Icons.check)],
+                            ),
+                            color: GREEN,
+                            onPressed: () {
+                              if (_moneyRadioValue == -1) {
+                                ToastService.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
+                                return;
+                              }
+                              double money;
+                              try {
+                                money = double.parse(_moneyPerHourController.text);
+                              } catch (FormatException) {
+                                ToastService.showErrorToast(getTranslated(context, 'newHourlyRateIsRequired'));
+                                return;
+                              }
+                              String invalidMessage = ValidatorService.validateMoneyPerHour(money, context);
+                              if (invalidMessage != null) {
+                                ToastService.showErrorToast(invalidMessage);
+                                return;
+                              }
+                              showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+                              String fieldToUpdate = _moneyRadioValue == 0 ? 'moneyPerHour' : 'moneyPerHourForCompany';
+                              _employeeService.updateFieldsValuesByIds(_selectedIds.toList(), {fieldToUpdate: money}).then(
+                                (res) {
+                                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                    _refresh();
+                                    Navigator.pop(context);
+                                    String msgKey =  _moneyRadioValue == 0 ? 'successfullyUpdatedMoneyPerHourForSelectedEmployees' : 'successfullyUpdatedMoneyPerHourForCompanyForSelectedEmployees';
+                                    ToastService.showSuccessToast(getTranslated(context, msgKey));
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          }),
         );
       },
     );
