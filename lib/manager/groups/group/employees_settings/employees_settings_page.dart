@@ -26,7 +26,6 @@ import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/loader.dart';
 import 'package:give_job/shared/widget/texts.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '../group_page.dart';
 
@@ -204,6 +203,14 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                             children: <Widget>[
                                               text13White(getTranslated(this.context, 'moneyPerHour') + ': '),
                                               textGreenBold(employee.moneyPerHour.toString() + ' ' + currency),
+                                            ],
+                                          ),
+                                          alignment: Alignment.topLeft),
+                                      Align(
+                                          child: Row(
+                                            children: <Widget>[
+                                              text13White(getTranslated(this.context, 'moneyPerHourForCompany') + ': '),
+                                              textGreenBold(employee.moneyPerHourForCompany.toString() + ' ' + currency),
                                             ],
                                           ),
                                           alignment: Alignment.topLeft),

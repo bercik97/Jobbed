@@ -73,6 +73,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   bool _sortHours = true;
   bool _sortRatings = true;
   bool _sortMoney = true;
+  bool _sortMoneyForCompany = true;
   bool _sortPlans = true;
   bool _sortOpinions = true;
   bool _sort = true;
@@ -195,6 +196,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                               DataColumn(label: textWhiteBold(getTranslated(context, 'hours')), onSort: (columnIndex, ascending) => _onSortHours(columnIndex, ascending)),
                               DataColumn(label: textWhiteBold(getTranslated(context, 'rating')), onSort: (columnIndex, ascending) => _onSortRatings(columnIndex, ascending)),
                               DataColumn(label: textWhiteBold(getTranslated(context, 'money')), onSort: (columnIndex, ascending) => _onSortMoney(columnIndex, ascending)),
+                              DataColumn(label: textWhiteBold(getTranslated(context, 'moneyForCompany')), onSort: (columnIndex, ascending) => _onSortMoneyForCompany(columnIndex, ascending)),
                               DataColumn(label: textWhiteBold(getTranslated(context, 'plan')), onSort: (columnIndex, ascending) => _onSortPlans(columnIndex, ascending)),
                               DataColumn(label: textWhiteBold(getTranslated(context, 'opinion')), onSort: (columnIndex, ascending) => _onSortOpinions(columnIndex, ascending)),
                               DataColumn(label: textWhiteBold(getTranslated(context, 'workTimes'))),
@@ -214,6 +216,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                       DataCell(textWhite(workday.hours.toString())),
                                       DataCell(textWhite(workday.rating.toString())),
                                       DataCell(textWhite(workday.money.toString())),
+                                      DataCell(textWhite(workday.moneyForCompany.toString())),
                                       DataCell(
                                         Wrap(children: <Widget>[workday.plan != null && workday.plan != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-')]),
                                         onTap: () => _editPlan(this.context, workday.id, workday.plan),
@@ -469,6 +472,21 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
         _sort = _sortMoney;
       }
       workdays.sort((a, b) => a.money.compareTo(b.money));
+      if (!_sort) {
+        workdays = workdays.reversed.toList();
+      }
+    });
+  }
+
+  void _onSortMoneyForCompany(columnIndex, ascending) {
+    setState(() {
+      if (columnIndex == _sortColumnIndex) {
+        _sort = _sortMoneyForCompany = ascending;
+      } else {
+        _sortColumnIndex = columnIndex;
+        _sort = _sortMoneyForCompany;
+      }
+      workdays.sort((a, b) => a.moneyForCompany.compareTo(b.moneyForCompany));
       if (!_sort) {
         workdays = workdays.reversed.toList();
       }

@@ -689,5 +689,7 @@
   "goToTheGroupPage": "გადადით ჯგუფის გვერდზე",
   "cannotUpdateTodaysPiecework": "თქვენ არ შეგიძლიათ განაახლოთ დღევანდელი ნაჭერი დავალება, რადგან ჯგუფს არ აქვს დროის ცხრილი მიმდინარე თვისთვის",
   "goToTheTimesheetPage": "გადადით დროის ცხრილის გვერდზე",
-  "pieceworkForSelectedWorkdays": "ნაჭერი სამუშაო დღისთვის"
+  "pieceworkForSelectedWorkdays": "ნაჭერი სამუშაო დღისთვის",
+  "moneyForCompany": "ფული (კომპანია)",
+  "moneyPerHourForCompany": "საათობრივი ხელფასი (კომპანია)"
 }

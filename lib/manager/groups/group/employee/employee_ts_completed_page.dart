@@ -28,9 +28,9 @@ class EmployeeTsCompletedPage extends StatefulWidget {
   final String _employeeInfo;
   final String _employeeNationality;
   final String _currency;
-  final TimesheetForEmployeeDto timesheet;
+  final TimesheetForEmployeeDto _timesheet;
 
-  const EmployeeTsCompletedPage(this._model, this._employeeInfo, this._employeeNationality, this._currency, this.timesheet);
+  const EmployeeTsCompletedPage(this._model, this._employeeInfo, this._employeeNationality, this._currency, this._timesheet);
 
   @override
   _EmployeeTsCompletedPageState createState() => _EmployeeTsCompletedPageState();
@@ -45,7 +45,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
   String _employeeInfo;
   String _employeeNationality;
   String _currency;
-  TimesheetForEmployeeDto timesheet;
+  TimesheetForEmployeeDto _timesheet;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
     this._employeeInfo = widget._employeeInfo;
     this._employeeNationality = widget._employeeNationality;
     this._currency = widget._currency;
-    this.timesheet = widget.timesheet;
+    this._timesheet = widget._timesheet;
     return MaterialApp(
       title: APP_NAME,
       theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
@@ -78,7 +78,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                       fit: BoxFit.fitHeight,
                     ),
                   ),
-                  title: textWhiteBold(timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, timesheet.month)),
+                  title: textWhiteBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
                   subtitle: Column(
                     children: <Widget>[
                       Align(
@@ -91,7 +91,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                             alignment: Alignment.topLeft,
                             child: textWhite(getTranslated(context, 'hours') + ': '),
                           ),
-                          textGreenBold(timesheet.numberOfHoursWorked.toString() + 'h'),
+                          textGreenBold(_timesheet.numberOfHoursWorked.toString() + 'h'),
                         ],
                       ),
                       Row(
@@ -100,7 +100,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                             alignment: Alignment.topLeft,
                             child: textWhite(getTranslated(context, 'averageRating') + ': '),
                           ),
-                          textGreenBold(widget.timesheet.averageRating.toString()),
+                          textGreenBold(widget._timesheet.averageRating.toString()),
                         ],
                       ),
                       Row(
@@ -109,7 +109,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                             alignment: Alignment.topLeft,
                             child: textWhite(getTranslated(context, 'earnedMoney') + ': '),
                           ),
-                          textGreenBold(timesheet.amountOfEarnedMoney.toString() + ' ' + _currency),
+                          textGreenBold(_timesheet.amountOfEarnedMoney.toString() + ' ' + _currency),
                         ],
                       ),
                     ],
@@ -118,7 +118,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
               ),
             ),
             FutureBuilder(
-              future: _workdayService.findAllByTimesheetId(timesheet.id),
+              future: _workdayService.findAllByTimesheetId(_timesheet.id),
               builder: (BuildContext context, AsyncSnapshot<List<WorkdayDto>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
                   return Padding(
@@ -141,6 +141,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'hours'))),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'rating'))),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'money'))),
+                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'moneyForCompany'))),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'plan'))),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'opinion'))),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'workTimes'))),
@@ -155,6 +156,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                                     DataCell(textWhite(workday.hours.toString())),
                                     DataCell(textWhite(workday.rating.toString())),
                                     DataCell(textWhite(workday.money.toString())),
+                                    DataCell(textWhite(workday.moneyForCompany.toString())),
                                     DataCell(
                                         Wrap(
                                           children: <Widget>[

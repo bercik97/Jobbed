@@ -689,5 +689,7 @@
   "goToTheGroupPage": "Перейдіть на сторінку групи",
   "cannotUpdateTodaysPiecework": "Ви не можете оновити сьогоднішні роботи, оскільки група не має табеля обліку робочого часу на поточний місяць",
   "goToTheTimesheetPage": "Перейдіть на сторінку обліку робочого часу",
-  "pieceworkForSelectedWorkdays": "Вироби на обрані робочі дні"
+  "pieceworkForSelectedWorkdays": "Вироби на обрані робочі дні",
+  "moneyForCompany": "Гроші (компанія)",
+  "moneyPerHourForCompany": "Валова погодинна заробітна плата (компанія)"
 }
