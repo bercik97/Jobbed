@@ -53,6 +53,11 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
   List<bool> _checked = new List();
   LinkedHashSet<int> _selectedIds = new LinkedHashSet();
 
+  bool _isMoneyBtnTapped = false;
+  bool _isSelfFillingHoursBtnTapped = false;
+  bool _isWorkTimeByLocationBtnTapped = false;
+  bool _isPieceworkBtnTapped = false;
+
   int _moneyRadioValue = -1;
   int _selfFillingHoursRadioValue = -1;
   int _workTimeByLocationRadioValue = -1;
@@ -282,7 +287,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                     color: GREEN,
                     child: textCenter12Dark(getTranslated(context, 'hourlyWage')),
                     onPressed: () {
-                      if (_selectedIds.isNotEmpty) {
+                      if (_selectedIds.isNotEmpty && !_isMoneyBtnTapped) {
                         _moneyPerHourController.clear();
                         _changeCurrentMoneyPerHour();
                       } else {
@@ -297,7 +302,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                     color: GREEN,
                     child: textCenter12Dark(getTranslated(context, 'fillingHours')),
                     onPressed: () {
-                      if (_selectedIds.isNotEmpty) {
+                      if (_selectedIds.isNotEmpty && !_isSelfFillingHoursBtnTapped) {
                         _changePermissionToSelfFillHours();
                       } else {
                         showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
@@ -311,7 +316,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                     color: GREEN,
                     child: textCenter12Dark(getTranslated(context, 'workTimeGPS')),
                     onPressed: () {
-                      if (_selectedIds.isNotEmpty) {
+                      if (_selectedIds.isNotEmpty && !_isWorkTimeByLocationBtnTapped) {
                         _changePermissionToWorkTimeByLocation();
                       } else {
                         showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
@@ -445,6 +450,9 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                             ),
                             color: GREEN,
                             onPressed: () {
+                              if (_isMoneyBtnTapped) {
+                                return;
+                              }
                               if (_moneyRadioValue == -1) {
                                 ToastService.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
                                 return;
@@ -461,6 +469,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 ToastService.showErrorToast(invalidMessage);
                                 return;
                               }
+                              setState(() => _isMoneyBtnTapped = true);
                               showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                               String fieldToUpdate = _moneyRadioValue == 0 ? 'moneyPerHour' : 'moneyPerHourForCompany';
                               _employeeService.updateFieldsValuesByIds(_selectedIds.toList(), {fieldToUpdate: money}).then(
@@ -470,9 +479,15 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                     Navigator.pop(context);
                                     String msgKey =  _moneyRadioValue == 0 ? 'successfullyUpdatedMoneyPerHourForSelectedEmployees' : 'successfullyUpdatedMoneyPerHourForCompanyForSelectedEmployees';
                                     ToastService.showSuccessToast(getTranslated(context, msgKey));
+                                    _moneyRadioValue = -1;
+                                    setState(() => _isMoneyBtnTapped = false);
                                   });
-                                },
-                              );
+                                }).catchError((onError) {
+                                Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                  ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+                                  setState(() => _isMoneyBtnTapped = false);
+                                });
+                              });
                             },
                           ),
                         ],
@@ -563,10 +578,14 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                             ),
                             color: GREEN,
                             onPressed: () {
+                              if (_isSelfFillingHoursBtnTapped) {
+                                return;
+                              }
                               if (_selfFillingHoursRadioValue == -1) {
                                 ToastService.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
                                 return;
                               }
+                              setState(() => _isSelfFillingHoursBtnTapped = true);
                               showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                               _employeeService.updateFieldsValuesByIds(_selectedIds.toList(), {"canFillHours": _selfFillingHoursRadioValue == 0 ? true : false}).then(
                                 (res) {
@@ -574,9 +593,15 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                     _refresh();
                                     Navigator.pop(context);
                                     ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees'));
+                                    _selfFillingHoursRadioValue = -1;
+                                    setState(() => _isSelfFillingHoursBtnTapped = false);
                                   });
-                                },
-                              );
+                                }).catchError((onError) {
+                                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                  ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+                                  setState(() => _isSelfFillingHoursBtnTapped = false);
+                                });
+                              });
                             },
                           ),
                         ],
@@ -667,10 +692,14 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                             ),
                             color: GREEN,
                             onPressed: () {
+                              if (_isWorkTimeByLocationBtnTapped) {
+                                return;
+                              }
                               if (_workTimeByLocationRadioValue == -1) {
                                 ToastService.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
                                 return;
                               }
+                              setState(() => _isWorkTimeByLocationBtnTapped = true);
                               showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                               _employeeService.updateFieldsValuesByIds(_selectedIds.toList(), {"workTimeByLocation": _workTimeByLocationRadioValue == 0 ? true : false}).then(
                                 (res) {
@@ -678,9 +707,15 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                     _refresh();
                                     Navigator.pop(context);
                                     ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToWorkTimeByLocationForSelectedEmployees'));
+                                    _workTimeByLocationRadioValue = -1;
+                                    setState(() => _isWorkTimeByLocationBtnTapped = false);
                                   });
-                                },
-                              );
+                                }).catchError((onError) {
+                                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                  ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+                                  setState(() => _isWorkTimeByLocationBtnTapped = false);
+                                });
+                              });
                             },
                           ),
                         ],
@@ -771,10 +806,14 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                             ),
                             color: GREEN,
                             onPressed: () {
+                              if (_isPieceworkBtnTapped) {
+                                return;
+                              }
                               if (_pieceworkRadioValue == -1) {
                                 ToastService.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
                                 return;
                               }
+                              setState(() => _isPieceworkBtnTapped = true);
                               showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                               _employeeService.updateFieldsValuesByIds(_selectedIds.toList(), {"piecework": _pieceworkRadioValue == 0 ? true : false}).then(
                                 (res) {
@@ -782,9 +821,15 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                     _refresh();
                                     Navigator.pop(context);
                                     ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToPieceworkForSelectedEmployees'));
+                                    _pieceworkRadioValue = -1;
+                                    setState(() => _isPieceworkBtnTapped = false);
                                   });
-                                },
-                              );
+                                }).catchError((onError) {
+                                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                  ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+                                  setState(() => _isPieceworkBtnTapped = false);
+                                });
+                              });
                             },
                           ),
                         ],
