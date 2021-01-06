@@ -692,5 +692,9 @@
   "goToTheTimesheetPage": "Wróć do widoku arkusza czasu pracy",
   "pieceworkForSelectedWorkdays": "Praca akordowa dla wybranych dni",
   "moneyForCompany": "Pieniądze (firma)",
-  "moneyPerHourForCompany": "Stawka godzinowa brutto (firma)"
+  "moneyPerHourForCompany": "Stawka godzinowa brutto (firma)",
+  "generateExcelFile": "Generowanie pliku excel",
+  "moneyPerHourForEmployees": "Stawka godzinowa brutto (pracownicy)",
+  "moneyPerHourWithPieceworkForEmployees": "Stawka godzinowa brutto i praca akordowa (pracownicy)",
+  "moneyPerHourWithPieceworkForCompany": "Stawka godzinowa brutto i praca akordowa (firma)"
 }

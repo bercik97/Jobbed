@@ -692,5 +692,9 @@
   "goToTheTimesheetPage": "Перейдіть на сторінку обліку робочого часу",
   "pieceworkForSelectedWorkdays": "Вироби на обрані робочі дні",
   "moneyForCompany": "Гроші (компанія)",
-  "moneyPerHourForCompany": "Валова погодинна заробітна плата (компанія)"
+  "moneyPerHourForCompany": "Валова погодинна ставка (компанія)",
+  "generateExcelFile": "Створити файл Excel",
+  "moneyPerHourForEmployees": "Валова погодинна ставка (працівники)",
+  "moneyPerHourWithPieceworkForEmployees": "Валова погодинна ставка та відрядна робота (працівники)",
+  "moneyPerHourWithPieceworkForCompany": "Валова погодинна ставка та відрядна робота (компанія)"
 }

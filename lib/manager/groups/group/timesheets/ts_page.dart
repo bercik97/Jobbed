@@ -58,6 +58,8 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
 
   DateTime selectedDate = DateTime.now();
 
+  int _excelType = -1;
+
   @override
   void initState() {
     this._model = widget._model;
@@ -145,7 +147,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 InkWell(
-                                  onTap: () => _isGenerateExcelAndSendEmailBtnTapped ? null : _handleGenerateExcelAndSendEmail(inProgressTs.year, inProgressTs.month, inProgressTs.status),
+                                  onTap: () => _handleGenerateExcelAndSendEmail(inProgressTs.year, inProgressTs.month, inProgressTs.status),
                                   child: Image(
                                     image: AssetImage('images/excel-icon.png'),
                                     height: 30,
@@ -223,7 +225,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 InkWell(
-                                  onTap: () => _isGenerateExcelAndSendEmailBtnTapped ? null : _handleGenerateExcelAndSendEmail(completedTs.year, completedTs.month, completedTs.status),
+                                  onTap: () => _handleGenerateExcelAndSendEmail(completedTs.year, completedTs.month, completedTs.status),
                                   child: Image(
                                     image: AssetImage('images/excel-icon.png'),
                                     height: 30,
@@ -294,28 +296,141 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
   }
 
   _handleGenerateExcelAndSendEmail(int year, String monthName, String status) {
+    showGeneralDialog(
+      context: context,
+      barrierColor: DARK.withOpacity(0.95),
+      barrierDismissible: false,
+      barrierLabel: getTranslated(context, 'generateExcelFile'),
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: StatefulBuilder(builder: (context, setState) {
+            return Scaffold(
+              backgroundColor: Colors.black12,
+              body: Center(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: 50),
+                        child: Column(
+                          children: [
+                            textCenter20GreenBold(getTranslated(context, 'generateExcelFile')),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 7.5),
+                      Column(
+                        children: <Widget>[
+                          RadioListTile(
+                            activeColor: GREEN,
+                            title: textWhite(getTranslated(context, 'moneyPerHourForEmployees')),
+                            value: 0,
+                            groupValue: _excelType,
+                            onChanged: (newValue) => setState(() => _excelType = newValue),
+                          ),
+                          RadioListTile(
+                            activeColor: GREEN,
+                            title: textWhite(getTranslated(context, 'moneyPerHourForCompany')),
+                            value: 1,
+                            groupValue: _excelType,
+                            onChanged: (newValue) => setState(() => _excelType = newValue),
+                          ),
+                          RadioListTile(
+                            activeColor: GREEN,
+                            title: textWhite(getTranslated(context, 'moneyPerHourWithPieceworkForEmployees')),
+                            value: 2,
+                            groupValue: _excelType,
+                            onChanged: (newValue) => setState(() => _excelType = newValue),
+                          ),
+                          RadioListTile(
+                            activeColor: GREEN,
+                            title: textWhite(getTranslated(context, 'moneyPerHourWithPieceworkForCompany')),
+                            value: 3,
+                            groupValue: _excelType,
+                            onChanged: (newValue) => setState(() => _excelType = newValue),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          MaterialButton(
+                            elevation: 0,
+                            height: 50,
+                            minWidth: 40,
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[iconWhite(Icons.close)],
+                            ),
+                            color: Colors.red,
+                            onPressed: () {
+                              _excelType = -1;
+                              Navigator.pop(context);
+                            },
+                          ),
+                          SizedBox(width: 25),
+                          MaterialButton(
+                            elevation: 0,
+                            height: 50,
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[iconWhite(Icons.check)],
+                            ),
+                            color: GREEN,
+                            onPressed: () => _isGenerateExcelAndSendEmailBtnTapped ? null : _handleGenerateExcel(year, monthName, status),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }),
+        );
+      },
+    );
+  }
+
+  _handleGenerateExcel(int year, String monthName, String status) {
+    if (_excelType == -1) {
+      ToastService.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
+      return;
+    }
     setState(() => _isGenerateExcelAndSendEmailBtnTapped = true);
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _excelService.generateExcelAndSendToEmail(year, MonthUtil.findMonthNumberByMonthName(context, monthName), status, _model.groupId, _model.user.username).then((res) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(context, 'successfullyGeneratedExcelAndSendEmail') + '!');
-        setState(() => _isGenerateExcelAndSendEmailBtnTapped = false);
-      });
-    }).catchError((onError) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        String errorMsg = onError.toString();
-        if (errorMsg.contains("EMAIL_IS_NULL")) {
-          DialogService.showCustomDialog(
-            context: context,
-            titleWidget: textRed(getTranslated(context, 'error')),
-            content: getTranslated(context, 'excelEmailIsEmpty'),
-          );
-        } else {
-          ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
-        }
-        setState(() => _isGenerateExcelAndSendEmailBtnTapped = false);
-      });
-    });
+    if (_excelType == 0 || _excelType == 1) {
+      _excelService.generateMoneyPerHourTimesheetExcel(year, MonthUtil.findMonthNumberByMonthName(context, monthName), status, _model.groupId, _excelType == 0, _model.user.username).then((res) {
+        Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+          ToastService.showSuccessToast(getTranslated(context, 'successfullyGeneratedExcelAndSendEmail') + '!');
+          setState(() => _isGenerateExcelAndSendEmailBtnTapped = false);
+          _excelType = -1;
+          Navigator.pop(context);
+        });
+      }).catchError((onError) {
+        Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+          String errorMsg = onError.toString();
+          if (errorMsg.contains("EMAIL_IS_NULL")) {
+            DialogService.showCustomDialog(
+              context: context,
+              titleWidget: textRed(getTranslated(context, 'error')),
+              content: getTranslated(context, 'excelEmailIsEmpty'),
+            );
+          } else {
+            ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+          }
+          setState(() => _isGenerateExcelAndSendEmailBtnTapped = false);
+        });
+      }); 
+      return;
+    }
+    /* To be implemented! */
   }
 
   _addNewTs() {

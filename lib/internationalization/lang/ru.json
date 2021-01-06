@@ -692,5 +692,9 @@
   "goToTheTimesheetPage": "Перейти на страницу расписания",
   "pieceworkForSelectedWorkdays": "Сдельная работа на выбранные рабочие дни",
   "moneyForCompany": "Деньги (компания)",
-  "moneyPerHourForCompany": "Почасовая оплата брутто (компания)"
+  "moneyPerHourForCompany": "Почасовая оплата брутто (компания)",
+  "generateExcelFile": "Создать файл Excel",
+  "moneyPerHourForEmployees": "Брутто-почасовая ставка (сотрудники)",
+  "moneyPerHourWithPieceworkForEmployees": "Почасовая оплата брутто и сдельная оплата (сотрудники)",
+  "moneyPerHourWithPieceworkForCompany": "Брутто-почасовая оплата и сдельная оплата (компания)"
 }

@@ -692,5 +692,9 @@
   "goToTheTimesheetPage": "Go to the timesheet page",
   "pieceworkForSelectedWorkdays": "Piecework for selected workdays",
   "moneyForCompany": "Money (company)",
-  "moneyPerHourForCompany": "Gross hourly rate (company)"
+  "moneyPerHourForCompany": "Gross hourly rate (company)",
+  "generateExcelFile": "Generate excel file",
+  "moneyPerHourForEmployees": "Gross hourly rate (employees)",
+  "moneyPerHourWithPieceworkForEmployees": "Gross hourly rate and piecework (employees)",
+  "moneyPerHourWithPieceworkForCompany": "Gross hourly rate and piecework (company)"
 }

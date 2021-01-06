@@ -692,5 +692,9 @@
   "goToTheTimesheetPage": "გადადით დროის ცხრილის გვერდზე",
   "pieceworkForSelectedWorkdays": "ნაჭერი სამუშაო დღისთვის",
   "moneyForCompany": "ფული (კომპანია)",
-  "moneyPerHourForCompany": "საათობრივი ხელფასი (კომპანია)"
+  "moneyPerHourForCompany": "მთლიანი საათობრივი კურსი (კომპანია)",
+  "generateExcelFile": "Excel ფაილის გენერირება",
+  "moneyPerHourForEmployees": "მთლიანი საათობრივი განაკვეთი (თანამშრომლები)",
+  "moneyPerHourWithPieceworkForEmployees": "მთლიანი საათობრივი განაკვეთი და სამუშაოების მოცულობა (თანამშრომლები)",
+  "moneyPerHourWithPieceworkForCompany": "მთლიანი საათობრივი განაკვეთი და ნაჭერი სამუშაო (კომპანია)"
 }
