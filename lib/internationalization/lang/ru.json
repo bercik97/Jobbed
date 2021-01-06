@@ -556,9 +556,11 @@
   "textSomePricelistName": "Текстовое название услуги для некоторых прейскурантов",
   "pricelistName": "Название услуги по составлению прайс-листов",
   "pricelistNameIsRequired": "Необходимо указать название услуги для прейскуранта",
-  "pricelistPriceIsRequired": "Требуется цена услуги по прейскуранту",
+  "pricelistPriceForEmployeeIsRequired": "Прейскурант цена услуги для сотрудника обязательна",
+  "pricelistPriceForCompanyIsRequired": "Прайс-листы цена услуги для компании обязательна",
   "managePricelist": "Управление прейскурантом",
-  "textSomePricelistPrice": "Отправьте текст некоторых прайс-листов стоимости услуг",
+  "textSomePricelistPriceForEmployee": "Отправьте текст прайс-листа стоимости услуг для сотрудника",
+  "textSomePricelistPriceForCompany": "Отправьте текст некоторых прейскурантов стоимости услуг для компании",
   "pricelistsToAddEmpty": "Прайс-листы услуг для добавления пусты",
   "piecework": "сдельная работа",
   "hourlyWage": "Почасовая оплата",
@@ -696,5 +698,7 @@
   "generateExcelFile": "Создать файл Excel",
   "moneyPerHourForEmployees": "Брутто-почасовая ставка (сотрудники)",
   "moneyPerHourWithPieceworkForEmployees": "Почасовая оплата брутто и сдельная оплата (сотрудники)",
-  "moneyPerHourWithPieceworkForCompany": "Брутто-почасовая оплата и сдельная оплата (компания)"
+  "moneyPerHourWithPieceworkForCompany": "Брутто-почасовая оплата и сдельная оплата (компания)",
+  "priceForEmployee": "Price (employee)",
+  "priceForCompany": "Price (company)"
 }

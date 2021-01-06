@@ -3,19 +3,22 @@ import 'package:flutter/cupertino.dart';
 class PricelistDto {
   final int id;
   final String name;
-  final double price;
+  final double priceForEmployee;
+  final double priceForCompany;
 
   PricelistDto({
     @required this.id,
     @required this.name,
-    @required this.price,
+    @required this.priceForEmployee,
+    @required this.priceForCompany,
   });
 
   static Map<String, dynamic> jsonEncode(PricelistDto dto) {
     Map<String, dynamic> map = new Map();
     map['id'] = dto.id;
     map['name'] = dto.name;
-    map['price'] = dto.price;
+    map['priceForEmployee'] = dto.priceForEmployee;
+    map['priceForCompany'] = dto.priceForCompany;
     return map;
   }
 
@@ -23,7 +26,8 @@ class PricelistDto {
     return PricelistDto(
       id: json['id'] as int,
       name: json['name'] as String,
-      price: json['price'] as double,
+      priceForEmployee: json['priceForEmployee'] as double,
+      priceForCompany: json['priceForCompany'] as double,
     );
   }
 }

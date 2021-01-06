@@ -155,7 +155,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                                     DataCell(textWhite(workday.number.toString())),
                                     DataCell(textWhite(workday.hours.toString())),
                                     DataCell(textWhite(workday.rating.toString())),
-                                    DataCell(textWhite(workday.money.toString())),
+                                    DataCell(textWhite(workday.moneyForEmployee.toString())),
                                     DataCell(textWhite(workday.moneyForCompany.toString())),
                                     DataCell(
                                         Wrap(

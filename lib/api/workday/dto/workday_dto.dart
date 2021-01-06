@@ -10,7 +10,7 @@ class WorkdayDto {
   final int rating;
   final String plan;
   final String opinion;
-  final double money;
+  final double moneyForEmployee;
   final double moneyForCompany;
   final List workTimes;
   final List pieceworks;
@@ -23,7 +23,7 @@ class WorkdayDto {
     @required this.rating,
     @required this.plan,
     @required this.opinion,
-    @required this.money,
+    @required this.moneyForEmployee,
     @required this.moneyForCompany,
     @required this.workTimes,
     @required this.pieceworks,
@@ -41,7 +41,7 @@ class WorkdayDto {
       rating: json['rating'] as int,
       plan: json['plan'] as String,
       opinion: json['opinion'] as String,
-      money: json['money'] as double,
+      moneyForEmployee: json['moneyForEmployee'] as double,
       moneyForCompany: json['moneyForCompany'] as double,
       workTimes: workTimesAsJson != null ? workTimesAsJson.map((data) => WorkTimeDto.fromJson(data)).toList() : null,
       pieceworks: pieceworksAsJson != null ? pieceworksAsJson.map((data) => PieceworkDto.fromJson(data)).toList() : null,

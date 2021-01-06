@@ -556,9 +556,11 @@
   "textSomePricelistName": "Надіслати текстове повідомлення до списку прайсів назви послуги",
   "pricelistName": "Назва послуги прейскурантів",
   "pricelistNameIsRequired": "Потрібна назва послуги прейскурантів",
-  "pricelistPriceIsRequired": "Потрібна ціна послуги прейскурантів",
+  "pricelistPriceForEmployeeIsRequired": "Потрібна ціна на послуги прайс-листів для працівника",
+  "pricelistPriceForCompanyIsRequired": "Потрібна ціна послуги прейскурантів для компанії",
   "managePricelist": "Керувати прайс-листом",
-  "textSomePricelistPrice": "Надішліть текст деяких прайс-листів",
+  "textSomePricelistPriceForEmployee": "Напишіть деякі прайс-листи про ціну послуги для працівника",
+  "textSomePricelistPriceForCompany": "Напишіть деякі прайс-листи про ціну послуги для компанії",
   "pricelistsToAddEmpty": "Послуги прейскурантів для додавання порожні",
   "piecework": "Шматок",
   "hourlyWage": "Погодинна заробітна плата",
@@ -696,5 +698,7 @@
   "generateExcelFile": "Створити файл Excel",
   "moneyPerHourForEmployees": "Валова погодинна ставка (працівники)",
   "moneyPerHourWithPieceworkForEmployees": "Валова погодинна ставка та відрядна робота (працівники)",
-  "moneyPerHourWithPieceworkForCompany": "Валова погодинна ставка та відрядна робота (компанія)"
+  "moneyPerHourWithPieceworkForCompany": "Валова погодинна ставка та відрядна робота (компанія)",
+  "priceForEmployee": "Price (employee)",
+  "priceForCompany": "Price (company)"
 }

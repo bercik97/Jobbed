@@ -229,7 +229,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
           itemBuilder: (BuildContext context, int index) {
             PricelistDto pricelist = _pricelists[index];
             String name = utf8.decode(pricelist.name.runes.toList());
-            String price = pricelist.price.toString();
+            String price = pricelist.priceForEmployee.toString();
             TextEditingController controller = _textEditingItemControllers[name];
             return Card(
               color: DARK,

@@ -1,7 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
 
-import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
@@ -20,7 +19,6 @@ import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '../../../../shared/widget/loader.dart';
 import '../../../shared/manager_side_bar.dart';
@@ -106,7 +104,7 @@ class _PricelistPageState extends State<PricelistPage> {
                     onChanged: (string) {
                       setState(
                         () {
-                          _filteredPriceLists = _pricelists.where((p) => ((p.name + p.price.toString()).toLowerCase().contains(string.toLowerCase()))).toList();
+                          _filteredPriceLists = _pricelists.where((p) => ((p.name + p.priceForEmployee.toString() + p.priceForCompany.toString()).toLowerCase().contains(string.toLowerCase()))).toList();
                         },
                       );
                     },
@@ -157,7 +155,8 @@ class _PricelistPageState extends State<PricelistPage> {
                                   }
                                 }
                                 String name = pricelist.name;
-                                String price = pricelist.price.toString();
+                                String priceForEmployee = pricelist.priceForEmployee.toString();
+                                String priceForCompany = pricelist.priceForCompany.toString();
                                 return Card(
                                   color: DARK,
                                   child: Column(
@@ -180,8 +179,17 @@ class _PricelistPageState extends State<PricelistPage> {
                                                   alignment: Alignment.topLeft,
                                                   child: Row(
                                                     children: [
-                                                      textWhite(getTranslated(this.context, 'price') + ': '),
-                                                      textGreenBold(price),
+                                                      textWhite(getTranslated(this.context, 'priceForEmployee') + ': '),
+                                                      textGreenBold(priceForEmployee),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: Row(
+                                                    children: [
+                                                      textWhite(getTranslated(this.context, 'priceForCompany') + ': '),
+                                                      textGreenBold(priceForCompany),
                                                     ],
                                                   ),
                                                 ),

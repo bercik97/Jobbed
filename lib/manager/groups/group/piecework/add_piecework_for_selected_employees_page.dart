@@ -227,7 +227,8 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
           itemBuilder: (BuildContext context, int index) {
             PricelistDto pricelist = _pricelists[index];
             String name = utf8.decode(pricelist.name.runes.toList());
-            String price = pricelist.price.toString();
+            String priceForEmployee = pricelist.priceForEmployee.toString();
+            String priceForCompany = pricelist.priceForCompany.toString();
             TextEditingController controller = _textEditingItemControllers[name];
             return Card(
               color: DARK,
@@ -239,10 +240,20 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
                     color: BRIGHTER_DARK,
                     child: ListTile(
                       title: textGreen(name),
-                      subtitle: Row(
+                      subtitle: Column(
                         children: [
-                          textWhite(getTranslated(this.context, 'price') + ': '),
-                          textGreen(price),
+                          Row(
+                            children: [
+                              textWhite(getTranslated(this.context, 'priceForEmployee') + ': '),
+                              textGreen(priceForEmployee),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              textWhite(getTranslated(this.context, 'priceForCompany') + ': '),
+                              textGreen(priceForCompany),
+                            ],
+                          ),
                         ],
                       ),
                       trailing: Container(

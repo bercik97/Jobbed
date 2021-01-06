@@ -215,7 +215,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                       DataCell(textWhite(workday.number.toString())),
                                       DataCell(textWhite(workday.hours.toString())),
                                       DataCell(textWhite(workday.rating.toString())),
-                                      DataCell(textWhite(workday.money.toString())),
+                                      DataCell(textWhite(workday.moneyForEmployee.toString())),
                                       DataCell(textWhite(workday.moneyForCompany.toString())),
                                       DataCell(
                                         Wrap(children: <Widget>[workday.plan != null && workday.plan != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-')]),
@@ -471,7 +471,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
         _sortColumnIndex = columnIndex;
         _sort = _sortMoney;
       }
-      workdays.sort((a, b) => a.money.compareTo(b.money));
+      workdays.sort((a, b) => a.moneyForEmployee.compareTo(b.moneyForEmployee));
       if (!_sort) {
         workdays = workdays.reversed.toList();
       }

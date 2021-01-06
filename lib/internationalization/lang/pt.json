@@ -556,9 +556,11 @@
   "textSomePricelistName": "გაგზავნეთ ფასების ჩამონათვალის ზოგიერთი სერვისის სახელი",
   "pricelistName": "ფასების ჩამონათვალის სერვისის სახელი",
   "pricelistNameIsRequired": "აუცილებელია ფასების ჩამონათვალის სერვისის დასახელება",
-  "pricelistPriceIsRequired": "საჭიროა ფასების ჩამონათვალის მომსახურების ფასი",
+  "pricelistPriceForEmployeeIsRequired": "სავალდებულოა ფასების ჩამონათვალის თანამშრომლის მომსახურების ფასი",
+  "pricelistPriceForCompanyIsRequired": "კომპანიისთვის ფასების ჩამონათვალის მომსახურების ფასი აუცილებელია",
   "managePricelist": "ფასების ჩამონათვალის მართვა",
-  "textSomePricelistPrice": "გაგზავნეთ ფასების ზოგიერთი მომსახურების ფასი",
+  "textSomePricelistPriceForEmployee": "გაგზავნეთ ფასების ჩამონათვალის რამდენიმე ფასი თანამშრომლისთვის",
+  "textSomePricelistPriceForCompany": "გაგზავნეთ კომპანიისთვის ფასების ჩამონათვალის რამდენიმე მომსახურების ფასი",
   "pricelistsToAddEmpty": "ფასების ჩამონათვალის სერვისები ცარიელია",
   "piecework": "ნაჭერი",
   "hourlyWage": "საათობრივი ხელფასი",
@@ -696,5 +698,7 @@
   "generateExcelFile": "Excel ფაილის გენერირება",
   "moneyPerHourForEmployees": "მთლიანი საათობრივი განაკვეთი (თანამშრომლები)",
   "moneyPerHourWithPieceworkForEmployees": "მთლიანი საათობრივი განაკვეთი და სამუშაოების მოცულობა (თანამშრომლები)",
-  "moneyPerHourWithPieceworkForCompany": "მთლიანი საათობრივი განაკვეთი და ნაჭერი სამუშაო (კომპანია)"
+  "moneyPerHourWithPieceworkForCompany": "მთლიანი საათობრივი განაკვეთი და ნაჭერი სამუშაო (კომპანია)",
+  "priceForEmployee": "Price (employee)",
+  "priceForCompany": "Price (company)"
 }

@@ -37,7 +37,8 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
   PricelistService _pricelistService;
 
   final TextEditingController _pricelistNameController = new TextEditingController();
-  final TextEditingController _pricelistPriceController = new TextEditingController();
+  final TextEditingController _pricelistPriceForEmployeeController = new TextEditingController();
+  final TextEditingController _pricelistPriceForCompanyController = new TextEditingController();
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -85,7 +86,7 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
                     ),
                     SizedBox(height: 10),
                     TextFormField(
-                      controller: _pricelistPriceController,
+                      controller: _pricelistPriceForEmployeeController,
                       keyboardType: TextInputType.numberWithOptions(decimal: true),
                       inputFormatters: <TextInputFormatter>[
                         WhitelistingTextInputFormatter(RegExp(r'^\d+\.?\d{0,3}')),
@@ -94,13 +95,34 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
                       cursorColor: WHITE,
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: WHITE),
-                      validator: RequiredValidator(errorText: getTranslated(context, 'pricelistPriceIsRequired')),
+                      validator: RequiredValidator(errorText: getTranslated(context, 'pricelistPriceForEmployeeIsRequired')),
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
                         counterStyle: TextStyle(color: WHITE),
                         border: OutlineInputBorder(),
-                        hintText: getTranslated(context, 'textSomePricelistPrice'),
-                        labelText: getTranslated(context, 'price'),
+                        hintText: getTranslated(context, 'textSomePricelistPriceForEmployee'),
+                        labelText: getTranslated(context, 'priceForEmployee'),
+                        labelStyle: TextStyle(color: WHITE),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    TextFormField(
+                      controller: _pricelistPriceForCompanyController,
+                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: <TextInputFormatter>[
+                        WhitelistingTextInputFormatter(RegExp(r'^\d+\.?\d{0,3}')),
+                      ],
+                      maxLength: 8,
+                      cursorColor: WHITE,
+                      textAlignVertical: TextAlignVertical.center,
+                      style: TextStyle(color: WHITE),
+                      validator: RequiredValidator(errorText: getTranslated(context, 'pricelistPriceForCompanyIsRequired')),
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+                        counterStyle: TextStyle(color: WHITE),
+                        border: OutlineInputBorder(),
+                        hintText: getTranslated(context, 'textSomePricelistPriceForCompany'),
+                        labelText: getTranslated(context, 'priceForCompany'),
                         labelStyle: TextStyle(color: WHITE),
                       ),
                     ),
@@ -121,13 +143,15 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
                         PricelistDto dto = new PricelistDto(
                           id: int.parse(_user.companyId),
                           name: _pricelistNameController.text,
-                          price: double.parse(_pricelistPriceController.text),
+                          priceForEmployee: double.parse(_pricelistPriceForEmployeeController.text),
+                          priceForCompany: double.parse(_pricelistPriceForCompanyController.text),
                         );
                         setState(() {
                           _pricelistsToAdd.add(dto);
                           _pricelistNames.add(dto.name);
                           _pricelistNameController.clear();
-                          _pricelistPriceController.clear();
+                          _pricelistPriceForEmployeeController.clear();
+                          _pricelistPriceForCompanyController.clear();
                         });
                       },
                     ),
@@ -189,7 +213,19 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
                     color: BRIGHTER_DARK,
                     child: ListTile(
                       title: textGreen(_pricelistsToAdd[index].name),
-                      subtitle: textGreen(getTranslated(this.context, 'price') + ': ' + _pricelistsToAdd[index].price.toString()),
+                      subtitle: Column(
+                        children: <Widget>[
+                          Align(
+                            child: textGreen(getTranslated(this.context, 'priceForEmployee') + ': ' + _pricelistsToAdd[index].priceForEmployee.toString()),
+                            alignment: Alignment.topLeft,
+                          ),
+                          SizedBox(height: 5),
+                          Align(
+                            child: textGreen(getTranslated(this.context, 'priceForCompany') + ': ' + _pricelistsToAdd[index].priceForCompany.toString()),
+                            alignment: Alignment.topLeft,
+                          ),
+                        ],
+                      ),
                       trailing: IconButton(
                         icon: iconRed(Icons.remove),
                         onPressed: () {

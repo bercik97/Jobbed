@@ -556,9 +556,11 @@
   "textSomePricelistName": "Text some pricelists service name",
   "pricelistName": "Pricelists service name",
   "pricelistNameIsRequired": "Pricelists service name is required",
-  "pricelistPriceIsRequired": "Pricelists service price is required",
+  "pricelistPriceForEmployeeIsRequired": "Pricelists service price for employee is required",
+  "pricelistPriceForCompanyIsRequired": "Pricelists service price for company is required",
   "managePricelist": "Manage pricelist",
-  "textSomePricelistPrice": "Text some pricelists service price",
+  "textSomePricelistPriceForEmployee": "Text some pricelists service price for employee",
+  "textSomePricelistPriceForCompany": "Text some pricelists service price for company",
   "pricelistsToAddEmpty": "Pricelists services for add are empty",
   "piecework": "Piecework",
   "hourlyWage": "Hourly wage",
@@ -696,5 +698,7 @@
   "generateExcelFile": "Generate excel file",
   "moneyPerHourForEmployees": "Gross hourly rate (employees)",
   "moneyPerHourWithPieceworkForEmployees": "Gross hourly rate and piecework (employees)",
-  "moneyPerHourWithPieceworkForCompany": "Gross hourly rate and piecework (company)"
+  "moneyPerHourWithPieceworkForCompany": "Gross hourly rate and piecework (company)",
+  "priceForEmployee": "Price (employee)",
+  "priceForCompany": "Price (company)"
 }

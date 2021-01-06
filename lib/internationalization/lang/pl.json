@@ -556,9 +556,11 @@
   "textSomePricelistName": "Napisz nazwę usługi",
   "pricelistName": "Nazwa usługi cennika",
   "pricelistNameIsRequired": "Nazwa usługi cennika jest wymagana",
-  "pricelistPriceIsRequired": "Cena usługi cennika jest wymagana",
+  "pricelistPriceForEmployeeIsRequired": "Cena usługi cennika dla pracownika jest wymagana",
+  "pricelistPriceForCompanyIsRequired": "Cena usługi cennika dla firmy jest wymagana",
   "managePricelist": "Zarządzaj cennikiem",
-  "textSomePricelistPrice": "Napisz cenę usługi",
+  "textSomePricelistPriceForEmployee": "Napisz cenę usługi dla pracownika",
+  "textSomePricelistPriceForCompany": "Napisz cenę usługi dla firmy",
   "pricelistsToAddEmpty": "Usługi cennika do dodania są puste",
   "piecework": "Praca na akord",
   "hourlyWage": "Stawka godzinowa",
@@ -696,5 +698,7 @@
   "generateExcelFile": "Generowanie pliku excel",
   "moneyPerHourForEmployees": "Stawka godzinowa brutto (pracownicy)",
   "moneyPerHourWithPieceworkForEmployees": "Stawka godzinowa brutto i praca akordowa (pracownicy)",
-  "moneyPerHourWithPieceworkForCompany": "Stawka godzinowa brutto i praca akordowa (firma)"
+  "moneyPerHourWithPieceworkForCompany": "Stawka godzinowa brutto i praca akordowa (firma)",
+  "priceForEmployee": "Cena (pracownik)",
+  "priceForCompany": "Cena (firma)"
 }
