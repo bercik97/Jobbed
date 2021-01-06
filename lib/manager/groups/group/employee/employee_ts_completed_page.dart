@@ -198,7 +198,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                                                 : textWhiteBold('-'),
                                           ],
                                         ),
-                                        onTap: () => WorkdayUtil.showVocationReasonDetails(this.context, workday.vocation.reason, workday.vocation.verified)),
+                                        onTap: () => WorkdayUtil.showVocationReasonDetails(this.context, workday.vocation)),
                                   ],
                                 ),
                             ],

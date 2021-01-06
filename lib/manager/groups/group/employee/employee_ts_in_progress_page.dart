@@ -255,7 +255,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                                   : textWhiteBold('-'),
                                             ],
                                           ),
-                                          onTap: () => WorkdayUtil.showVocationReasonDetails(this.context, workday.vocation.reason, workday.vocation.verified)),
+                                          onTap: () => WorkdayUtil.showVocationReasonDetails(this.context, workday.vocation)),
                                     ],
                                   ),
                                 )

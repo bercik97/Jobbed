@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:give_job/api/vocation/dto/vocation_dto.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -364,7 +365,10 @@ class WorkdayUtil {
     );
   }
 
-  static void showVocationReasonDetails(BuildContext context, String vocationReason, bool verified) {
+  static void showVocationReasonDetails(BuildContext context, VocationDto vocation) {
+    if (vocation == null) {
+      return;
+    }
     showGeneralDialog(
       context: context,
       barrierColor: DARK.withOpacity(0.95),
@@ -385,9 +389,9 @@ class WorkdayUtil {
                       children: <Widget>[
                         text20GreenBold(getTranslated(context, 'vocationReason')),
                         SizedBox(height: 20),
-                        verified ? text16GreenBold(getTranslated(context, 'verifiedUpperCase')) : text16RedBold(getTranslated(context, 'notVerifiedUpperCase')),
+                        vocation.verified ? text16GreenBold(getTranslated(context, 'verifiedUpperCase')) : text16RedBold(getTranslated(context, 'notVerifiedUpperCase')),
                         SizedBox(height: 20),
-                        textCenter20White(vocationReason != null ? utf8.decode(vocationReason.runes.toList()) : getTranslated(context, 'empty')),
+                        textCenter20White(vocation.reason != null ? utf8.decode(vocation.reason.runes.toList()) : getTranslated(context, 'empty')),
                         SizedBox(height: 20),
                         Container(
                           width: 80,
