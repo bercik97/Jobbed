@@ -441,7 +441,6 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                               interval: 0.03,
                               showTicks: true,
                               showLabels: true,
-                              showTooltip: true,
                               minorTicksPerInterval: 1,
                               onChanged: (dynamic value) {
                                 Circle circle = _circles.elementAt(0);
@@ -546,7 +545,6 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                             interval: 0.03,
                             showTicks: true,
                             showLabels: true,
-                            showTooltip: true,
                             minorTicksPerInterval: 1,
                             onChanged: (dynamic value) {
                               Circle circle = _circles.elementAt(0);
