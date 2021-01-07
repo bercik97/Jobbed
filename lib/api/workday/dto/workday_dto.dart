@@ -10,8 +10,10 @@ class WorkdayDto {
   final int rating;
   final String plan;
   final String opinion;
-  final double moneyForEmployee;
-  final double moneyForCompany;
+  final double moneyHoursForEmployee;
+  final double moneyPieceworkForEmployee;
+  final double moneyHoursForCompany;
+  final double moneyPieceworkForCompany;
   final List workTimes;
   final List pieceworks;
   final VocationDto vocation;
@@ -23,8 +25,10 @@ class WorkdayDto {
     @required this.rating,
     @required this.plan,
     @required this.opinion,
-    @required this.moneyForEmployee,
-    @required this.moneyForCompany,
+    @required this.moneyHoursForEmployee,
+    @required this.moneyPieceworkForEmployee,
+    @required this.moneyHoursForCompany,
+    @required this.moneyPieceworkForCompany,
     @required this.workTimes,
     @required this.pieceworks,
     @required this.vocation,
@@ -41,8 +45,10 @@ class WorkdayDto {
       rating: json['rating'] as int,
       plan: json['plan'] as String,
       opinion: json['opinion'] as String,
-      moneyForEmployee: json['moneyForEmployee'] as double,
-      moneyForCompany: json['moneyForCompany'] as double,
+      moneyHoursForEmployee: json['moneyHoursForEmployee'] as double,
+      moneyPieceworkForEmployee: json['moneyPieceworkForEmployee'] as double,
+      moneyHoursForCompany: json['moneyHoursForCompany'] as double,
+      moneyPieceworkForCompany: json['moneyPieceworkForCompany'] as double,
       workTimes: workTimesAsJson != null ? workTimesAsJson.map((data) => WorkTimeDto.fromJson(data)).toList() : null,
       pieceworks: pieceworksAsJson != null ? pieceworksAsJson.map((data) => PieceworkDto.fromJson(data)).toList() : null,
       vocation: vocationAsJson != null ? VocationDto.fromJson(vocationAsJson) : null,

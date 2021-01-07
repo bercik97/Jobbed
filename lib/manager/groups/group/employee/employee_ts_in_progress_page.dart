@@ -215,8 +215,8 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                       DataCell(textWhite(workday.number.toString())),
                                       DataCell(textWhite(workday.hours.toString())),
                                       DataCell(textWhite(workday.rating.toString())),
-                                      DataCell(textWhite(workday.moneyForEmployee.toString())),
-                                      DataCell(textWhite(workday.moneyForCompany.toString())),
+                                      DataCell(textWhite(workday.moneyHoursForEmployee.toString())),
+                                      DataCell(textWhite(workday.moneyHoursForCompany.toString())),
                                       DataCell(
                                         Wrap(children: <Widget>[workday.plan != null && workday.plan != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-')]),
                                         onTap: () => _editPlan(this.context, workday.id, workday.plan),
@@ -471,7 +471,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
         _sortColumnIndex = columnIndex;
         _sort = _sortMoney;
       }
-      workdays.sort((a, b) => a.moneyForEmployee.compareTo(b.moneyForEmployee));
+      workdays.sort((a, b) => a.moneyHoursForEmployee.compareTo(b.moneyHoursForEmployee));
       if (!_sort) {
         workdays = workdays.reversed.toList();
       }
@@ -486,7 +486,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
         _sortColumnIndex = columnIndex;
         _sort = _sortMoneyForCompany;
       }
-      workdays.sort((a, b) => a.moneyForCompany.compareTo(b.moneyForCompany));
+      workdays.sort((a, b) => a.moneyHoursForCompany.compareTo(b.moneyHoursForCompany));
       if (!_sort) {
         workdays = workdays.reversed.toList();
       }
