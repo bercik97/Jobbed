@@ -492,7 +492,6 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                               Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 Navigator.of(context).pop();
                                 ToastService.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
-                                _uncheckAll();
                                 _refresh();
                               });
                             }).catchError((onError) {
@@ -656,7 +655,6 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                             )
                                 .then((res) {
                               Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                _uncheckAll();
                                 _refresh();
                                 Navigator.of(context).pop();
                                 ToastService.showSuccessToast(getTranslated(context, 'ratingUpdatedSuccessfully'));
@@ -786,7 +784,6 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                             )
                                 .then((res) {
                               Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                _uncheckAll();
                                 _refresh();
                                 Navigator.of(context).pop();
                                 ToastService.showSuccessToast(getTranslated(context, 'planUpdatedSuccessfully'));
@@ -913,7 +910,6 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                             )
                                 .then((res) {
                               Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                _uncheckAll();
                                 _refresh();
                                 Navigator.of(context).pop();
                                 ToastService.showSuccessToast(getTranslated(context, 'opinionUpdatedSuccessfully'));
@@ -935,14 +931,6 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
         },
       );
     }
-  }
-
-  void _uncheckAll() {
-    _selectedIds.clear();
-    _isChecked = false;
-    List<bool> l = new List();
-    _checked.forEach((b) => l.add(false));
-    _checked = l;
   }
 
   Future<Null> _refresh() {
