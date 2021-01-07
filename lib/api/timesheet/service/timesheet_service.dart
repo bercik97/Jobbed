@@ -129,13 +129,10 @@ class TimesheetService {
     }
   }
 
-  Future<dynamic> updatePieceworkByGroupIdAndDate(int groupId, String date, String workplaceName, Map<String, int> serviceWithQuantity) async {
+  Future<dynamic> updatePieceworkByGroupIdAndDate(int groupId, String date, Map<String, int> serviceWithQuantity) async {
     Response res = await put(
       '$_url/piecework/groups/$groupId?date=$date',
-      body: jsonEncode({
-        'workplaceName': workplaceName,
-        'serviceWithQuantity': serviceWithQuantity,
-      }),
+      body: jsonEncode({'serviceWithQuantity': serviceWithQuantity}),
       headers: _headers,
     );
     if (res.statusCode == 200) {

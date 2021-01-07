@@ -3,9 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_job/api/price_list/dto/price_list_dto.dart';
 import 'package:give_job/api/price_list/service/pricelist_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
@@ -66,7 +64,6 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
 
   final ScrollController _scrollController = new ScrollController();
 
-  final TextEditingController _workplaceNameController = new TextEditingController();
   final Map<String, TextEditingController> _textEditingItemControllers = new Map();
 
   List<PricelistDto> _pricelists = new List();
@@ -165,16 +162,6 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
               key: formKey,
               child: Column(
                 children: [
-                  SizedBox(height: 5),
-                  _buildField(
-                    _workplaceNameController,
-                    getTranslated(context, 'writeWorkplaceName'),
-                    getTranslated(context, 'workplaceName'),
-                    26,
-                    1,
-                    getTranslated(context, 'workplaceNameIsRequired'),
-                  ),
-                  SizedBox(height: 10),
                   _buildPricelist(),
                 ],
               ),
@@ -184,36 +171,6 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
         ),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model)),
-    );
-  }
-
-  bool _isValid() {
-    return formKey.currentState.validate();
-  }
-
-  Widget _buildField(TextEditingController controller, String hintText, String labelText, int length, int lines, String errorText) {
-    return Container(
-      padding: EdgeInsets.only(left: 10, right: 10),
-      child: TextFormField(
-        autofocus: false,
-        controller: controller,
-        autocorrect: true,
-        keyboardType: TextInputType.multiline,
-        maxLength: length,
-        maxLines: lines,
-        cursorColor: WHITE,
-        textAlignVertical: TextAlignVertical.center,
-        style: TextStyle(color: WHITE),
-        validator: RequiredValidator(errorText: errorText),
-        decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-          counterStyle: TextStyle(color: WHITE),
-          border: OutlineInputBorder(),
-          hintText: hintText,
-          labelText: labelText,
-          labelStyle: TextStyle(color: WHITE),
-        ),
-      ),
     );
   }
 
@@ -310,15 +267,6 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
 
   void _createNote() {
     setState(() => _isAddButtonTapped = true);
-    if (!_isValid()) {
-      DialogService.showCustomDialog(
-        context: context,
-        titleWidget: textRed(getTranslated(context, 'error')),
-        content: getTranslated(context, 'workplaceNameIsRequired'),
-      );
-      setState(() => _isAddButtonTapped = false);
-      return;
-    }
     _textEditingItemControllers.forEach((name, quantityController) {
       String quantity = quantityController.text;
       if (quantity != '0') {
@@ -335,7 +283,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workdayService.updatePieceworkByIds(_selectedWorkdayIds, _workplaceNameController.text, serviceWithQuantity).then(
+    _workdayService.updatePieceworkByIds(_selectedWorkdayIds, serviceWithQuantity).then(
       (res) {
         Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
           ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewReportsAboutPiecework'));

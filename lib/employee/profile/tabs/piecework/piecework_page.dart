@@ -140,7 +140,6 @@ class _PieceworkPageState extends State<PieceworkPage> {
                 child: DataTable(
                   columnSpacing: 10,
                   columns: [
-                    DataColumn(label: textWhiteBold(getTranslated(context, 'workplace'))),
                     DataColumn(label: textWhiteBold(getTranslated(context, 'services'))),
                     DataColumn(label: textWhiteBold(getTranslated(context, 'totalPrice'))),
                     DataColumn(label: textWhiteBold(getTranslated(context, 'remove'))),
@@ -149,7 +148,6 @@ class _PieceworkPageState extends State<PieceworkPage> {
                     for (int i = 0; i < _pieceworks.length; i++)
                       DataRow(
                         cells: [
-                          DataCell(textWhite(_pieceworks[i].workplaceName)),
                           DataCell(
                             IconButton(
                               icon: iconWhite(Icons.search),

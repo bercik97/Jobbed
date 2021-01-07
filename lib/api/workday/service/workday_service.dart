@@ -89,13 +89,10 @@ class WorkdayService {
     }
   }
 
-  Future<dynamic> updatePieceworkByIds(List<String> ids, String workplaceName, Map<String, int> serviceWithQuantity) async {
+  Future<dynamic> updatePieceworkByIds(List<String> ids, Map<String, int> serviceWithQuantity) async {
     Response res = await put(
       '$_url/piecework?ids=$ids',
-      body: jsonEncode({
-        'workplaceName': workplaceName,
-        'serviceWithQuantity': serviceWithQuantity,
-      }),
+      body: jsonEncode({'serviceWithQuantity': serviceWithQuantity}),
       headers: _headers,
     );
     if (res.statusCode == 200) {
@@ -137,11 +134,10 @@ class WorkdayService {
     }
   }
 
-  Future<dynamic> updateEmployeesPiecework(String workplaceName, Map<String, int> serviceWithQuantity, String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
+  Future<dynamic> updateEmployeesPiecework(Map<String, int> serviceWithQuantity, String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
     Response res = await put(
       '$_url/employees/$employeeIds/piecework',
       body: jsonEncode({
-        'workplaceName': workplaceName,
         'serviceWithQuantity': serviceWithQuantity,
         'dateFrom': dateFrom,
         'dateTo': dateTo,

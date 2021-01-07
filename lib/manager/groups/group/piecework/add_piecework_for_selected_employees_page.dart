@@ -3,17 +3,12 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:form_field_validator/form_field_validator.dart';
-import 'package:give_job/api/piecework/service/piecework_service.dart';
 import 'package:give_job/api/price_list/dto/price_list_dto.dart';
 import 'package:give_job/api/price_list/service/pricelist_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
-import 'package:give_job/employee/shared/employee_app_bar.dart';
-import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/timesheets/in_progress/ts_in_progress_page.dart';
 import 'package:give_job/manager/shared/group_model.dart';
@@ -65,7 +60,6 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
 
   final ScrollController _scrollController = new ScrollController();
 
-  final TextEditingController _workplaceNameController = new TextEditingController();
   final Map<String, TextEditingController> _textEditingItemControllers = new Map();
 
   List<PricelistDto> _pricelists = new List();
@@ -163,16 +157,6 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
               key: formKey,
               child: Column(
                 children: [
-                  SizedBox(height: 5),
-                  _buildField(
-                    _workplaceNameController,
-                    getTranslated(context, 'writeWorkplaceName'),
-                    getTranslated(context, 'workplaceName'),
-                    26,
-                    1,
-                    getTranslated(context, 'workplaceNameIsRequired'),
-                  ),
-                  SizedBox(height: 10),
                   _buildPricelist(),
                 ],
               ),
@@ -182,36 +166,6 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
         ),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, TsInProgressPage(_model, _timeSheet)),
-    );
-  }
-
-  bool _isValid() {
-    return formKey.currentState.validate();
-  }
-
-  Widget _buildField(TextEditingController controller, String hintText, String labelText, int length, int lines, String errorText) {
-    return Container(
-      padding: EdgeInsets.only(left: 10, right: 10),
-      child: TextFormField(
-        autofocus: false,
-        controller: controller,
-        autocorrect: true,
-        keyboardType: TextInputType.multiline,
-        maxLength: length,
-        maxLines: lines,
-        cursorColor: WHITE,
-        textAlignVertical: TextAlignVertical.center,
-        style: TextStyle(color: WHITE),
-        validator: RequiredValidator(errorText: errorText),
-        decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-          counterStyle: TextStyle(color: WHITE),
-          border: OutlineInputBorder(),
-          hintText: hintText,
-          labelText: labelText,
-          labelStyle: TextStyle(color: WHITE),
-        ),
-      ),
     );
   }
 
@@ -319,15 +273,6 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
 
   void _createNote() {
     setState(() => _isAddButtonTapped = true);
-    if (!_isValid()) {
-      DialogService.showCustomDialog(
-        context: context,
-        titleWidget: textRed(getTranslated(context, 'error')),
-        content: getTranslated(context, 'workplaceNameIsRequired'),
-      );
-      setState(() => _isAddButtonTapped = false);
-      return;
-    }
     _textEditingItemControllers.forEach((name, quantityController) {
       String quantity = quantityController.text;
       if (quantity != '0') {
@@ -346,7 +291,6 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _workdayService
         .updateEmployeesPiecework(
-      _workplaceNameController.text,
       serviceWithQuantity,
       _dateFrom,
       _dateTo,

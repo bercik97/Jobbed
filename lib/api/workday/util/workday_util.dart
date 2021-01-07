@@ -227,7 +227,6 @@ class WorkdayUtil {
           child: DataTable(
             columnSpacing: 10,
             columns: [
-              DataColumn(label: textWhiteBold(getTranslated(context, 'workplace'))),
               DataColumn(label: textWhiteBold(getTranslated(context, 'services'))),
               DataColumn(label: textWhiteBold(getTranslated(context, 'totalPrice'))),
             ],
@@ -235,7 +234,6 @@ class WorkdayUtil {
               for (int i = 0; i < pieceworks.length; i++)
                 DataRow(
                   cells: [
-                    DataCell(textWhite(pieceworks[i].workplaceName)),
                     DataCell(
                       IconButton(
                         icon: iconWhite(Icons.search),

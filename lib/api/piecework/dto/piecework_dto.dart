@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 
 class PieceworkDto {
   final int id;
-  final String workplaceName;
   final List services;
   final List quantities;
   final List prices;
@@ -10,7 +9,6 @@ class PieceworkDto {
 
   PieceworkDto({
     @required this.id,
-    @required this.workplaceName,
     @required this.services,
     @required this.quantities,
     @required this.prices,
@@ -20,7 +18,6 @@ class PieceworkDto {
   factory PieceworkDto.fromJson(Map<String, dynamic> json) {
     return PieceworkDto(
       id: json['id'] as int,
-      workplaceName: json['workplaceName'] as String,
       services: json['services'] as List,
       quantities: json['quantities'] as List,
       prices: json['prices'] as List,
