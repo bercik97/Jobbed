@@ -77,57 +77,57 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
                   child: Scrollbar(
                     isAlwaysShown: false,
                     controller: _scrollController,
-                    child: ListView.builder(
-                      controller: _scrollController,
-                      itemCount: _itemplaces.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        String itemName = utf8.decode(_itemplaces[index].name.runes.toList());
-                        String quantity = _itemplaces[index].quantity.toString();
-                        String warehouseName = _itemplaces[index].warehouseName.toString();
-                        return Card(
-                          color: DARK,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
+                    child: SingleChildScrollView(
+                      child: Center(
+                        child: Column(
+                          children: [
+                            for (var i = 0; i < _itemplaces.length; i++)
                               Card(
-                                color: BRIGHTER_DARK,
-                                child: ListTile(
-                                  title: textGreen(itemName),
-                                  subtitle: Column(
-                                    children: [
-                                      Row(
+                              color: DARK,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Card(
+                                    color: BRIGHTER_DARK,
+                                    child: ListTile(
+                                      title: textGreen(utf8.decode(_itemplaces[i].name.runes.toList())),
+                                      subtitle: Column(
                                         children: [
-                                          text15White(getTranslated(this.context, 'quantity') + ': '),
-                                          text15Green(quantity),
+                                          Row(
+                                            children: [
+                                              text15White(getTranslated(this.context, 'quantity') + ': '),
+                                              text15Green(_itemplaces[i].quantity.toString()),
+                                            ],
+                                          ),
+                                          SizedBox(height: 7.5),
+                                          Column(
+                                            children: [
+                                              Align(
+                                                child: textWhite(getTranslated(this.context, 'warehouse') + ': '),
+                                                alignment: Alignment.topLeft,
+                                              ),
+                                              Align(
+                                                child: textGreen(utf8.decode(_itemplaces[i].warehouseName.toString().runes.toList())),
+                                                alignment: Alignment.topLeft,
+                                              ),
+                                            ],
+                                          ),
                                         ],
                                       ),
-                                      SizedBox(height: 7.5),
-                                      Column(
-                                        children: [
-                                          Align(
-                                            child: textWhite(getTranslated(this.context, 'warehouse') + ': '),
-                                            alignment: Alignment.topLeft,
-                                          ),
-                                          Align(
-                                            child: textGreen(utf8.decode(warehouseName.runes.toList())),
-                                            alignment: Alignment.topLeft,
-                                          ),
-                                        ],
+                                      trailing: Container(
+                                        width: 100,
+                                        child: _buildNumberField(_textEditingItemControllers[i], int.parse(_itemplaces[i].quantity)),
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                  trailing: Container(
-                                    width: 100,
-                                    child: _buildNumberField(_textEditingItemControllers[index], int.parse(quantity)),
-                                  ),
-                                ),
+                                ],
                               ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
                   ),
                 ),
               ],

@@ -98,40 +98,41 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
                 Expanded(
                   flex: 2,
                   child: Scrollbar(
-                    isAlwaysShown: false,
+                    isAlwaysShown: true,
                     controller: _scrollController,
-                    child: ListView.builder(
-                      controller: _scrollController,
-                      itemCount: _items.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        String itemName = _items[index].name;
-                        String quantity = _items[index].quantity.toString();
-                        return Card(
-                          color: DARK,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
+                    child: SingleChildScrollView(
+                      child: Center(
+                        child: Column(
+                          children: [
+                            for (var i = 0; i<_items.length; i++)
                               Card(
-                                color: BRIGHTER_DARK,
-                                child: ListTile(
-                                  title: textGreen(utf8.decode(itemName.runes.toList())),
-                                  subtitle: Row(
-                                    children: [
-                                      textWhite(getTranslated(this.context, 'quantity') + ': '),
-                                      textGreen(quantity),
-                                    ],
+                              color: DARK,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Card(
+                                    color: BRIGHTER_DARK,
+                                    child: ListTile(
+                                      title: textGreen(utf8.decode(_items[i].name.runes.toList())),
+                                      subtitle: Row(
+                                        children: [
+                                          textWhite(getTranslated(this.context, 'quantity') + ': '),
+                                          textGreen(_items[i].quantity.toString()),
+                                        ],
+                                      ),
+                                      trailing: Container(
+                                        width: 100,
+                                        child: _buildNumberField(_textEditingItemControllers[i], _items[i].quantity),
+                                      ),
+                                    ),
                                   ),
-                                  trailing: Container(
-                                    width: 100,
-                                    child: _buildNumberField(_textEditingItemControllers[index], int.parse(quantity)),
-                                  ),
-                                ),
+                                ],
                               ),
-                            ],
-                          ),
-                        );
-                      },
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),

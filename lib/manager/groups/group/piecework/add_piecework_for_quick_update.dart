@@ -157,40 +157,39 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
       child: Scrollbar(
         isAlwaysShown: true,
         controller: _scrollController,
-        child: ListView.builder(
-          controller: _scrollController,
-          itemCount: _pricelists.length,
-          itemBuilder: (BuildContext context, int index) {
-            PricelistDto pricelist = _pricelists[index];
-            String name = utf8.decode(pricelist.name.runes.toList());
-            String price = pricelist.priceForEmployee.toString();
-            TextEditingController controller = _textEditingItemControllers[name];
-            return Card(
-              color: DARK,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              children: [
+                for (var pricelist in _pricelists)
                   Card(
-                    color: BRIGHTER_DARK,
-                    child: ListTile(
-                      title: textGreen(name),
-                      subtitle: Row(
-                        children: [
-                          textWhite(getTranslated(this.context, 'price') + ': '),
-                          textGreen(price),
-                        ],
+                  color: DARK,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Card(
+                        color: BRIGHTER_DARK,
+                        child: ListTile(
+                          title: textGreen(utf8.decode(pricelist.name.runes.toList())),
+                          subtitle: Row(
+                            children: [
+                              textWhite(getTranslated(this.context, 'price') + ': '),
+                              textGreen(pricelist.priceForEmployee.toString()),
+                            ],
+                          ),
+                          trailing: Container(
+                            width: 100,
+                            child: _buildNumberField(_textEditingItemControllers[utf8.decode(pricelist.name.runes.toList())]),
+                          ),
+                        ),
                       ),
-                      trailing: Container(
-                        width: 100,
-                        child: _buildNumberField(controller),
-                      ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            );
-          },
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

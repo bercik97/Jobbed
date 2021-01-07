@@ -152,14 +152,10 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
           drawer: managerSideBar(context, _user),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
-            child: Form(
-              autovalidate: true,
-              key: formKey,
-              child: Column(
-                children: [
-                  _buildPricelist(),
-                ],
-              ),
+            child: Column(
+              children: [
+                _buildPricelist(),
+              ],
             ),
           ),
           bottomNavigationBar: _buildBottomNavigationBar(),
@@ -175,52 +171,54 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
       child: Scrollbar(
         isAlwaysShown: true,
         controller: _scrollController,
-        child: ListView.builder(
-          controller: _scrollController,
-          itemCount: _pricelists.length,
-          itemBuilder: (BuildContext context, int index) {
-            PricelistDto pricelist = _pricelists[index];
-            String name = utf8.decode(pricelist.name.runes.toList());
-            String priceForEmployee = pricelist.priceForEmployee.toString();
-            String priceForCompany = pricelist.priceForCompany.toString();
-            TextEditingController controller = _textEditingItemControllers[name];
-            return Card(
-              color: DARK,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              children: [
+                for (var pricelist in _pricelists)
                   Card(
-                    color: BRIGHTER_DARK,
-                    child: ListTile(
-                      title: textGreen(name),
-                      subtitle: Column(
-                        children: [
-                          Row(
-                            children: [
-                              textWhite(getTranslated(this.context, 'priceForEmployee') + ': '),
-                              textGreen(priceForEmployee),
-                            ],
+                    color: DARK,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Card(
+                          color: BRIGHTER_DARK,
+                          child: ListTile(
+                            title: textGreen(utf8.decode(pricelist.name.runes.toList())),
+                            subtitle: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    textWhite(getTranslated(
+                                        this.context, 'priceForEmployee') +
+                                        ': '),
+                                    textGreen(pricelist.priceForEmployee.toString()),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    textWhite(getTranslated(
+                                        this.context, 'priceForCompany') +
+                                        ': '),
+                                    textGreen(pricelist.priceForCompany.toString()),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            trailing: Container(
+                              width: 100,
+                              child: _buildNumberField(_textEditingItemControllers[utf8.decode(pricelist.name.runes.toList())]),
+                            ),
                           ),
-                          Row(
-                            children: [
-                              textWhite(getTranslated(this.context, 'priceForCompany') + ': '),
-                              textGreen(priceForCompany),
-                            ],
-                          ),
-                        ],
-                      ),
-                      trailing: Container(
-                        width: 100,
-                        child: _buildNumberField(controller),
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            );
-          },
-        ),
+              ],
+            )
+          ),
+        )
       ),
     );
   }
