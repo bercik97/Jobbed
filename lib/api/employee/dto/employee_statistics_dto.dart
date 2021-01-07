@@ -10,7 +10,7 @@ class EmployeeStatisticsDto {
   final double averageRating;
   final int numberOfHoursWorked;
   final double moneyPerHour;
-  final double amountOfEarnedMoney;
+  final String amountOfEarnedMoney;
 
   EmployeeStatisticsDto({
     @required this.id,
@@ -36,7 +36,7 @@ class EmployeeStatisticsDto {
       averageRating: json['averageEmployeeRating'] as double,
       numberOfHoursWorked: json['numberOfHoursWorked'] as int,
       moneyPerHour: json['moneyPerHour'] as double,
-      amountOfEarnedMoney: json['amountOfEarnedMoney'] as double,
+      amountOfEarnedMoney: json['amountOfEarnedMoney'] as String,
     );
   }
 }

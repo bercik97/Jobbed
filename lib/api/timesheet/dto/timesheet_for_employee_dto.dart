@@ -10,7 +10,7 @@ class TimesheetForEmployeeDto {
   final String status;
   final int numberOfHoursWorked;
   final double averageRating;
-  final double amountOfEarnedMoney;
+  final String amountOfEarnedMoney;
 
   TimesheetForEmployeeDto({
     @required this.id,
@@ -36,7 +36,7 @@ class TimesheetForEmployeeDto {
       status: json['status'] as String,
       numberOfHoursWorked: json['totalHours'] as int,
       averageRating: json['averageEmployeeRating'] as double,
-      amountOfEarnedMoney: json['totalMoneyEarned'] as double,
+      amountOfEarnedMoney: json['totalMoneyEarned'] as String,
     );
   }
 }
