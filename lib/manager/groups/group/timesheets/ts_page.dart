@@ -427,10 +427,31 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
           }
           setState(() => _isGenerateExcelAndSendEmailBtnTapped = false);
         });
-      }); 
+      });
       return;
     }
-    /* To be implemented! */
+    _excelService.generateMoneyPerHourWithPieceworkTimesheetExcel(year, MonthUtil.findMonthNumberByMonthName(context, monthName), status, _model.groupId, int.parse(_user.companyId), _excelType == 2, _model.user.username).then((res) {
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showSuccessToast(getTranslated(context, 'successfullyGeneratedExcelAndSendEmail') + '!');
+        setState(() => _isGenerateExcelAndSendEmailBtnTapped = false);
+        _excelType = -1;
+        Navigator.pop(context);
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        String errorMsg = onError.toString();
+        if (errorMsg.contains("EMAIL_IS_NULL")) {
+          DialogService.showCustomDialog(
+            context: context,
+            titleWidget: textRed(getTranslated(context, 'error')),
+            content: getTranslated(context, 'excelEmailIsEmpty'),
+          );
+        } else {
+          ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+        }
+        setState(() => _isGenerateExcelAndSendEmailBtnTapped = false);
+      });
+    });
   }
 
   _addNewTs() {
