@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:give_job/api/workday/dto/workday_dto.dart';
@@ -544,18 +545,20 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                   Container(
                     width: 150,
                     child: TextFormField(
-                      autofocus: true,
                       controller: _hoursController,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
-                      maxLength: 2,
+                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: <TextInputFormatter>[
+                        WhitelistingTextInputFormatter(RegExp(r'^\d+\.?\d{0,2}')),
+                      ],
+                      maxLength: 5,
                       cursorColor: WHITE,
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: WHITE),
+                      validator: RequiredValidator(errorText: getTranslated(context, 'hoursAreRequired')),
                       decoration: InputDecoration(
-                        counterStyle: TextStyle(color: WHITE),
-                        labelStyle: TextStyle(color: WHITE),
-                        labelText: getTranslated(context, 'newHours') + ' (0-24)',
+                          counterStyle: TextStyle(color: WHITE),
+                          labelStyle: TextStyle(color: WHITE),
+                          labelText: getTranslated(context, 'newHours') + ' (0-24)'
                       ),
                     ),
                   ),
@@ -586,9 +589,9 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                         ),
                         color: GREEN,
                         onPressed: () {
-                          int hours;
+                          double hours;
                           try {
-                            hours = int.parse(_hoursController.text);
+                            hours = double.parse(_hoursController.text);
                           } catch (FormatException) {
                             ToastService.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
                             return;

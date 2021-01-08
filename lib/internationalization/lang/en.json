@@ -699,5 +699,6 @@
   "moneyPerHourWithPieceworkForEmployees": "Gross hourly rate and piecework (employees)",
   "moneyPerHourWithPieceworkForCompany": "Gross hourly rate and piecework (company)",
   "priceForEmployee": "Price (employee)",
-  "priceForCompany": "Price (company)"
+  "priceForCompany": "Price (company)",
+  "hoursAreRequired": "Hours are required"
 }

@@ -139,7 +139,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                             groupName: _model.groupName,
                             groupCountryCurrency: currency,
                             status: _timesheet.status,
-                            numberOfHoursWorked: _filteredEmployees[index].numberOfHoursWorked,
+                            numberOfHoursWorked: double.parse(_filteredEmployees[index].numberOfHoursWorked),
                             averageRating: _filteredEmployees[index].averageRating,
                             amountOfEarnedMoney: _filteredEmployees[index].amountOfEarnedMoney,
                           );

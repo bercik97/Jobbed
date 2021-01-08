@@ -114,7 +114,7 @@ class TimesheetService {
     }
   }
 
-  Future<dynamic> updateHoursByGroupIdAndDate(int groupId, String date, int hours) async {
+  Future<dynamic> updateHoursByGroupIdAndDate(int groupId, String date, double hours) async {
     Response res = await put(
       '$_url/hours/groups/$groupId?date=$date',
       body: hours.toString(),

@@ -14,7 +14,7 @@ class ValidatorService {
     return null;
   }
 
-  static String validateUpdatingHours(int hours, BuildContext context) {
+  static String validateUpdatingHours(double hours, BuildContext context) {
     if (hours.isNegative) {
       return getTranslated(context, 'hoursCannotBeLowerThan0');
     } else if (hours > 24) {

@@ -479,9 +479,9 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                         ),
                         color: GREEN,
                         onPressed: () {
-                          int hours;
+                          double hours;
                           try {
-                            hours = int.parse(_hoursController.text);
+                            hours = double.parse(_hoursController.text);
                           } catch (FormatException) {
                             ToastService.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
                             return;

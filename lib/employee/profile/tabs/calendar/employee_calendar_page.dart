@@ -296,7 +296,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
     List workTimes = workday.workTimes;
     String plan = workday.plan;
     String note = workday.note;
-    int hours = workday.hours;
+    double hours = workday.hours;
     double money = workday.money;
     return Column(
       children: [

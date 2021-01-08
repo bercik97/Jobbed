@@ -6,7 +6,7 @@ import 'package:give_job/api/work_time/dto/work_time_dto.dart';
 class WorkdayDto {
   final int id;
   final int number;
-  final int hours;
+  final double hours;
   final int rating;
   final String plan;
   final String opinion;
@@ -41,7 +41,7 @@ class WorkdayDto {
     return WorkdayDto(
       id: json['id'] as int,
       number: json['number'] as int,
-      hours: json['hours'] as int,
+      hours: json['hours'] as double,
       rating: json['rating'] as int,
       plan: json['plan'] as String,
       opinion: json['opinion'] as String,

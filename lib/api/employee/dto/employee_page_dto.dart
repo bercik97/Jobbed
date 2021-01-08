@@ -15,7 +15,7 @@ class EmployeePageDto {
   final int todayWorkdayId;
   final String todayDate;
   final num todayMoney;
-  final int todayHours;
+  final double todayHours;
   final int todayRating;
   final List todayWorkTimes;
   final String todayPlan;

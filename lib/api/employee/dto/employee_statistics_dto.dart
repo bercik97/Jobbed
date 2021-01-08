@@ -8,7 +8,7 @@ class EmployeeStatisticsDto {
   final String currency;
   final int timesheetId;
   final double averageRating;
-  final int numberOfHoursWorked;
+  final String numberOfHoursWorked;
   final double moneyPerHour;
   final String amountOfEarnedMoney;
 
@@ -34,7 +34,7 @@ class EmployeeStatisticsDto {
       currency: json['currency'] as String,
       timesheetId: json['timesheetId'] as int,
       averageRating: json['averageEmployeeRating'] as double,
-      numberOfHoursWorked: json['numberOfHoursWorked'] as int,
+      numberOfHoursWorked: json['numberOfHoursWorked'] as String,
       moneyPerHour: json['moneyPerHour'] as double,
       amountOfEarnedMoney: json['amountOfEarnedMoney'] as String,
     );

@@ -698,6 +698,7 @@
   "moneyPerHourForEmployees": "მთლიანი საათობრივი განაკვეთი (თანამშრომლები)",
   "moneyPerHourWithPieceworkForEmployees": "მთლიანი საათობრივი განაკვეთი და სამუშაოების მოცულობა (თანამშრომლები)",
   "moneyPerHourWithPieceworkForCompany": "მთლიანი საათობრივი განაკვეთი და ნაჭერი სამუშაო (კომპანია)",
-  "priceForEmployee": "Price (employee)",
-  "priceForCompany": "Price (company)"
+  "priceForEmployee": "ფასი (თანამშრომელი)",
+  "priceForCompany": "ფასი (კომპანია)",
+  "hoursAreRequired": "საათები აუცილებელია"
 }

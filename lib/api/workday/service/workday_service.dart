@@ -74,7 +74,7 @@ class WorkdayService {
     }
   }
 
-  Future<dynamic> updateHoursByIds(List<String> ids, int hours) async {
+  Future<dynamic> updateHoursByIds(List<String> ids, double hours) async {
     Response res = await put(
       '$_url/hours?ids=$ids',
       body: jsonEncode(hours),
@@ -119,7 +119,7 @@ class WorkdayService {
     }
   }
 
-  Future<dynamic> updateEmployeesHours(int hours, String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
+  Future<dynamic> updateEmployeesHours(double hours, String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
     Response res = await put(
       '$_url/employees/$employeeIds/hours',
       body: jsonEncode({'hours': hours, 'dateFrom': dateFrom, 'dateTo': dateTo, 'tsYear': tsYear, 'tsMonth': tsMonth, 'tsStatus': tsStatus}),

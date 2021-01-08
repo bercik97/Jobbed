@@ -698,6 +698,7 @@
   "moneyPerHourForEmployees": "Валова погодинна ставка (працівники)",
   "moneyPerHourWithPieceworkForEmployees": "Валова погодинна ставка та відрядна робота (працівники)",
   "moneyPerHourWithPieceworkForCompany": "Валова погодинна ставка та відрядна робота (компанія)",
-  "priceForEmployee": "Price (employee)",
-  "priceForCompany": "Price (company)"
+  "priceForEmployee": "Ціна (працівник)",
+  "priceForCompany": "Ціна (компанія)",
+  "hoursAreRequired": "Потрібні години"
 }

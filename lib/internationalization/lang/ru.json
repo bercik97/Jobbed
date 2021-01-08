@@ -698,6 +698,7 @@
   "moneyPerHourForEmployees": "Брутто-почасовая ставка (сотрудники)",
   "moneyPerHourWithPieceworkForEmployees": "Почасовая оплата брутто и сдельная оплата (сотрудники)",
   "moneyPerHourWithPieceworkForCompany": "Брутто-почасовая оплата и сдельная оплата (компания)",
-  "priceForEmployee": "Price (employee)",
-  "priceForCompany": "Price (company)"
+  "priceForEmployee": "Цена (сотрудник)",
+  "priceForCompany": "Цена (компания)",
+  "hoursAreRequired": "Требуются часы"
 }

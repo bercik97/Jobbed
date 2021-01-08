@@ -699,5 +699,6 @@
   "moneyPerHourWithPieceworkForEmployees": "Stawka godzinowa brutto i praca akordowa (pracownicy)",
   "moneyPerHourWithPieceworkForCompany": "Stawka godzinowa brutto i praca akordowa (firma)",
   "priceForEmployee": "Cena (pracownik)",
-  "priceForCompany": "Cena (firma)"
+  "priceForCompany": "Cena (firma)",
+  "hoursAreRequired": "Godziny są wymagane"
 }
