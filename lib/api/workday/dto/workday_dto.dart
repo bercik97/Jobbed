@@ -10,10 +10,10 @@ class WorkdayDto {
   final int rating;
   final String plan;
   final String opinion;
-  final double moneyHoursForEmployee;
-  final double moneyPieceworkForEmployee;
-  final double moneyHoursForCompany;
-  final double moneyPieceworkForCompany;
+  final String moneyHoursForEmployee;
+  final String moneyPieceworkForEmployee;
+  final String moneyHoursForCompany;
+  final String moneyPieceworkForCompany;
   final List workTimes;
   final List pieceworks;
   final VocationDto vocation;
@@ -45,10 +45,10 @@ class WorkdayDto {
       rating: json['rating'] as int,
       plan: json['plan'] as String,
       opinion: json['opinion'] as String,
-      moneyHoursForEmployee: json['moneyHoursForEmployee'] as double,
-      moneyPieceworkForEmployee: json['moneyPieceworkForEmployee'] as double,
-      moneyHoursForCompany: json['moneyHoursForCompany'] as double,
-      moneyPieceworkForCompany: json['moneyPieceworkForCompany'] as double,
+      moneyHoursForEmployee: json['moneyHoursForEmployee'] as String,
+      moneyPieceworkForEmployee: json['moneyPieceworkForEmployee'] as String,
+      moneyHoursForCompany: json['moneyHoursForCompany'] as String,
+      moneyPieceworkForCompany: json['moneyPieceworkForCompany'] as String,
       workTimes: workTimesAsJson != null ? workTimesAsJson.map((data) => WorkTimeDto.fromJson(data)).toList() : null,
       pieceworks: pieceworksAsJson != null ? pieceworksAsJson.map((data) => PieceworkDto.fromJson(data)).toList() : null,
       vocation: vocationAsJson != null ? VocationDto.fromJson(vocationAsJson) : null,
