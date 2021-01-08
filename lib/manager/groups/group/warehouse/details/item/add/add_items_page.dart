@@ -258,7 +258,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _itemService.create(_itemsToAdd).then((res) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewItems'));
         Navigator.push(
           this.context,
@@ -266,7 +266,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
         );
       });
     }).catchError((onError) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String errorMsg = onError.toString();
         if (errorMsg.contains("ITEM_NAME_EXISTS")) {
           DialogService.showCustomDialog(

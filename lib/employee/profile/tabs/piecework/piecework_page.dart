@@ -167,7 +167,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
                               onPressed: () {
                                 showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                                 _pieceworkService.deleteById(_pieceworks[i].id).then((value) {
-                                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                     ToastService.showSuccessToast(getTranslated(context, 'successfullyDeletedPieceworkReport'));
                                     Navigator.push(
                                       this.context,
@@ -175,7 +175,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
                                     );
                                   });
                                 }).catchError((onError) {
-                                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                     ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
                                   });
                                 });

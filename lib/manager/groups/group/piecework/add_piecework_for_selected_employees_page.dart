@@ -298,7 +298,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
       _tsStatus,
     )
         .then((res) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewReportsAboutPiecework'));
         Navigator.push(
           this.context,
@@ -306,7 +306,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
         );
       });
     }).catchError((onError) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
         setState(() => _isAddButtonTapped = false);
       });

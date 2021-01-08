@@ -278,7 +278,7 @@ class _PricelistPageState extends State<PricelistPage> {
               onPressed: () {
                 showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                 _pricelistService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
-                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(builder: (BuildContext context) => PricelistPage(_model)),
                       ModalRoute.withName('/'),
@@ -286,7 +286,7 @@ class _PricelistPageState extends State<PricelistPage> {
                     ToastService.showSuccessToast(getTranslated(this.context, 'selectedPricelistsRemoved'));
                   });
                 }).catchError((onError) {
-                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     setState(() => _isDeleteButtonTapped = false);
                     ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
                   });

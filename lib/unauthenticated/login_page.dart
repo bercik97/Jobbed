@@ -212,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
         user.companyId = companyId;
         user.companyName = companyName;
         user.authHeader = authHeader;
-        Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
           if (role == ROLE_EMPLOYEE) {
             Navigator.push(context, MaterialPageRoute(builder: (context) => EmployeeProfilPage(user)));
           } else if (role == ROLE_MANAGER) {
@@ -221,10 +221,10 @@ class _LoginPageState extends State<LoginPage> {
           ToastService.showSuccessToast(getTranslated(context, 'loginSuccessfully'));
         });
       } else {
-        Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() => ToastService.showErrorToast(getTranslated(context, 'wrongUsernameOrPassword')));
+        Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => ToastService.showErrorToast(getTranslated(context, 'wrongUsernameOrPassword')));
       }
     }, onError: (e) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() => ToastService.showErrorToast(getTranslated(context, 'cannotConnectToServer')));
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => ToastService.showErrorToast(getTranslated(context, 'cannotConnectToServer')));
     });
     setState(() => _isLoginButtonTapped = false);
   }
@@ -323,19 +323,19 @@ class _LoginPageState extends State<LoginPage> {
     _tokenService.findFieldsValuesById(_tokenController.text, ['role', 'companyName', 'accountExpirationDate']).then(
       (res) {
         if (res == null) {
-          Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+          Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
             _tokenAlertDialog(false, null, null, null);
             setState(() => _isConfirmTokenButtonTapped = false);
           });
           return;
         }
-        Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
           _tokenAlertDialog(true, res['role'], res['companyName'], res['accountExpirationDate']);
           setState(() => _isConfirmTokenButtonTapped = false);
         });
       },
     ).catchError((onError) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _tokenAlertDialog(false, null, null, null);
         setState(() => _isConfirmTokenButtonTapped = false);
       });

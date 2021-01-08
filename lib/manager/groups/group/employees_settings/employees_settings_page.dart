@@ -474,7 +474,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                               String fieldToUpdate = _moneyRadioValue == 0 ? 'moneyPerHour' : 'moneyPerHourForCompany';
                               _employeeService.updateFieldsValuesByIds(_selectedIds.toList(), {fieldToUpdate: money}).then(
                                 (res) {
-                                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                     _refresh();
                                     Navigator.pop(context);
                                     String msgKey =  _moneyRadioValue == 0 ? 'successfullyUpdatedMoneyPerHourForSelectedEmployees' : 'successfullyUpdatedMoneyPerHourForCompanyForSelectedEmployees';
@@ -483,7 +483,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                     setState(() => _isMoneyBtnTapped = false);
                                   });
                                 }).catchError((onError) {
-                                Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                   ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
                                   setState(() => _isMoneyBtnTapped = false);
                                 });
@@ -589,7 +589,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                               showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                               _employeeService.updateFieldsValuesByIds(_selectedIds.toList(), {"canFillHours": _selfFillingHoursRadioValue == 0 ? true : false}).then(
                                 (res) {
-                                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                     _refresh();
                                     Navigator.pop(context);
                                     ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees'));
@@ -597,7 +597,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                     setState(() => _isSelfFillingHoursBtnTapped = false);
                                   });
                                 }).catchError((onError) {
-                                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                   ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
                                   setState(() => _isSelfFillingHoursBtnTapped = false);
                                 });
@@ -703,7 +703,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                               showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                               _employeeService.updateFieldsValuesByIds(_selectedIds.toList(), {"workTimeByLocation": _workTimeByLocationRadioValue == 0 ? true : false}).then(
                                 (res) {
-                                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                     _refresh();
                                     Navigator.pop(context);
                                     ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToWorkTimeByLocationForSelectedEmployees'));
@@ -711,7 +711,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                     setState(() => _isWorkTimeByLocationBtnTapped = false);
                                   });
                                 }).catchError((onError) {
-                                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                   ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
                                   setState(() => _isWorkTimeByLocationBtnTapped = false);
                                 });
@@ -817,7 +817,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                               showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                               _employeeService.updateFieldsValuesByIds(_selectedIds.toList(), {"piecework": _pieceworkRadioValue == 0 ? true : false}).then(
                                 (res) {
-                                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                     _refresh();
                                     Navigator.pop(context);
                                     ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToPieceworkForSelectedEmployees'));
@@ -825,7 +825,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                     setState(() => _isPieceworkBtnTapped = false);
                                   });
                                 }).catchError((onError) {
-                                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                   ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
                                   setState(() => _isPieceworkBtnTapped = false);
                                 });

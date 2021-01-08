@@ -196,12 +196,12 @@ class QuickUpdateDialog {
                           _initialize(context, _model.user.authHeader);
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _timesheetService.updateHoursByGroupIdAndDate(_model.groupId, _todaysDate, hours).then((res) {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               ToastService.showSuccessToast(getTranslated(context, 'todaysGroupHoursUpdatedSuccessfully'));
                             });
                           }).catchError(
                             (onError) {
-                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 String s = onError.toString();
                                 if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
                                   DialogService.showCustomDialog(
@@ -306,11 +306,11 @@ class QuickUpdateDialog {
                           _initialize(context, _model.user.authHeader);
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _timesheetService.updateRatingByGroupIdAndDate(_model.groupId, _todaysDate, rating).then((res) {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               ToastService.showSuccessToast(getTranslated(context, 'todaysGroupRatingUpdatedSuccessfully'));
                             });
                           }).catchError((onError) {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               String s = onError.toString();
                               if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
                                 DialogService.showCustomDialog(
@@ -414,12 +414,12 @@ class QuickUpdateDialog {
                           _initialize(context, _model.user.authHeader);
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _timesheetService.updatePlanByGroupIdAndDate(_model.groupId, _todaysDate, plan).then((res) {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               ToastService.showSuccessToast(getTranslated(context, 'todaysGroupPlanUpdatedSuccessfully'));
                             });
                           }).catchError(
                             (onError) {
-                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 String s = onError.toString();
                                 if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
                                   DialogService.showCustomDialog(
@@ -524,11 +524,11 @@ class QuickUpdateDialog {
                           Navigator.of(context).pop();
                           _initialize(context, _model.user.authHeader);
                           _timesheetService.updateOpinionByGroupIdAndDate(_model.groupId, _todaysDate, opinion).then((res) {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               ToastService.showSuccessToast(getTranslated(context, 'todaysGroupOpinionUpdatedSuccessfully'));
                             });
                           }).catchError((onError) {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               String s = onError.toString();
                               if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
                                 DialogService.showCustomDialog(

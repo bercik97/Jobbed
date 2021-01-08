@@ -290,7 +290,7 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _pricelistService.create(_pricelistsToAdd).then((res) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewPricelistServices'));
         Navigator.push(
           this.context,
@@ -298,7 +298,7 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
         );
       });
     }).catchError((onError) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String errorMsg = onError.toString();
         if (errorMsg.contains("PRICE_LIST_NAME_EXISTS")) {
           DialogService.showCustomDialog(

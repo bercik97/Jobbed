@@ -604,7 +604,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _workdayService.updateHoursByIds(selectedIds.map((el) => el.toString()).toList(), hours).then(
                             (res) {
-                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 Navigator.of(context).pop();
                                 ToastService.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
                                 _refresh();
@@ -701,7 +701,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                           }
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _workdayService.updateFieldsValuesByIds(selectedIds.map((el) => el.toString()).toList(), {'rating': rating}).then((res) {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.of(context).pop();
                               ToastService.showSuccessToast(getTranslated(context, 'ratingUpdatedSuccessfully'));
                               _refresh();
@@ -797,7 +797,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                           }
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _workdayService.updateFieldsValuesByIds(selectedIds.map((el) => el.toString()).toList(), {'plan': plan}).then((res) {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.of(context).pop();
                               ToastService.showSuccessToast(getTranslated(context, 'planUpdatedSuccessfully'));
                               _refresh();
@@ -894,7 +894,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           Navigator.of(context).pop();
                           _workdayService.updateFieldsValuesByIds(selectedIds.map((el) => el.toString()).toList(), {'opinion': opinion}).then((res) {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               ToastService.showSuccessToast(getTranslated(context, 'opinionUpdatedSuccessfully'));
                               _refresh();
                             });
@@ -990,7 +990,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           Navigator.of(context).pop();
                           _workdayService.createOrUpdateVocationsByIds(selectedIds.map((el) => el.toString()).toList(), vocationReason, timesheet.year, MonthUtil.findMonthNumberByMonthName(context, timesheet.month), STATUS_IN_PROGRESS).then((res) {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               ToastService.showSuccessToast(getTranslated(context, 'vocationUpdatedSuccessfully'));
                               _refresh();
                             });
@@ -1088,7 +1088,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           Navigator.of(context).pop();
                           _workdayService.updateFieldsValuesById(workdayId, {'plan': plan}).then((res) {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               ToastService.showSuccessToast(getTranslated(context, 'planUpdatedSuccessfully'));
                               _refresh();
                             });
@@ -1186,7 +1186,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           Navigator.of(context).pop();
                           _workdayService.updateFieldsValuesById(workdayId, {'opinion': opinion}).then((res) {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               ToastService.showSuccessToast(getTranslated(context, 'opinionUpdatedSuccessfully'));
                               _refresh();
                             });

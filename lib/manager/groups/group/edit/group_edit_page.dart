@@ -172,13 +172,13 @@ class _GroupEditPageState extends State<GroupEditPage> {
                           }
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _groupService.update(_model.groupId, {'name': name}).then((res) {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               ToastService.showSuccessToast(getTranslated(context, 'groupNameUpdatedSuccessfully'));
                               _model.groupName = name;
                               Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage(_model)));
                             });
                           }).catchError((onError) {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               String s = onError.toString();
                               if (s.contains('GROUP_NAME_TAKEN')) {
                                 DialogService.showCustomDialog(
@@ -281,13 +281,13 @@ class _GroupEditPageState extends State<GroupEditPage> {
                           }
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _groupService.update(_model.groupId, {'description': description}).then((res) {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               ToastService.showSuccessToast(getTranslated(context, 'groupDescriptionUpdatedSuccessfully'));
                               _model.groupDescription = description;
                               Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage(_model)));
                             });
                           }).catchError((onError) {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
                             });
                           });

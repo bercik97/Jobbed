@@ -111,7 +111,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
 
   Future<dynamic> _fetchData() async {
     return this._memoizer.runOnce(() async {
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(Duration(microseconds: 1));
       return Future.wait(
         [_workTimeService.checkIfCurrentDateWorkTimeIsStartedAndNotFinished(_todayWorkdayId)],
       );
@@ -248,18 +248,18 @@ class _WorkTimePageState extends State<WorkTimePage> {
       double latitude = _locationData.latitude;
       double longitude = _locationData.longitude;
       _workplaceService.findAllWorkplacesByCompanyIdAndLocationParams(int.parse(_user.companyId), latitude, longitude).then((res) {
-        Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
           _showStartConfirmDialog(res);
           setState(() => _isStartDialogButtonTapped = false);
         });
       }).catchError((onError) {
-        Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
           ToastService.showErrorToast(getTranslated(context, 'cannotFindWorkplaceByLocation'));
           setState(() => _isStartDialogButtonTapped = false);
         });
       });
     } else {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         Navigator.of(context).pop();
         ToastService.showSuccessToast(getTranslated(context, 'cannotGetCurrentLocation'));
       });
@@ -384,9 +384,9 @@ class _WorkTimePageState extends State<WorkTimePage> {
     setState(() => _isStartWorkButtonTapped = true);
     CreateWorkTimeDto dto = new CreateWorkTimeDto(workplaceId: workplaceId, workdayId: _todayWorkdayId);
     _workTimeService.create(dto).then((res) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() => _refresh());
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => _refresh());
     }).catchError((onError) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
         setState(() => _isStartWorkButtonTapped = false);
       });
@@ -402,18 +402,18 @@ class _WorkTimePageState extends State<WorkTimePage> {
       double latitude = _locationData.latitude;
       double longitude = _locationData.longitude;
       _workTimeService.canFinishByIdAndLocationParams(workTime.id, latitude, longitude).then((res) {
-        Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
           _showPauseConfirmDialog(res);
           setState(() => _isPauseWorkButtonTapped = false);
         });
       }).catchError((onError) {
-        Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
           ToastService.showErrorToast(getTranslated(context, 'cannotFindWorkplaceWhereYouStarted'));
           setState(() => _isPauseWorkButtonTapped = false);
         });
       });
     } else {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         Navigator.of(context).pop();
         ToastService.showSuccessToast(getTranslated(context, 'cannotGetCurrentLocation'));
       });
@@ -457,9 +457,9 @@ class _WorkTimePageState extends State<WorkTimePage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     setState(() => _isPauseWorkButtonTapped = true);
     _workTimeService.finish(_dto.notFinishedWorkTimeId).then((res) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() => _refresh());
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => _refresh());
     }).catchError((onError) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
         setState(() => _isPauseWorkButtonTapped = false);
       });

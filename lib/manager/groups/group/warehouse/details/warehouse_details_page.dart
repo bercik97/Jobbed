@@ -424,7 +424,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                           }
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _itemService.updateQuantity(item.id, quantity).then((value) {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               ToastService.showSuccessToast(getTranslated(context, 'itemQuantityUpdatedSuccessfully'));
                               Navigator.push(
                                 context,
@@ -432,7 +432,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                               );
                             });
                           }).catchError((onError) {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
                             });
                           });
@@ -469,7 +469,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
               onPressed: () {
                 showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                 _itemService.deleteByNamesIn(names.map((e) => e.toString()).toList()).then((res) {
-                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(builder: (BuildContext context) => WarehouseDetailsPage(_model, _warehouseDto)),
                       ModalRoute.withName('/'),
@@ -477,7 +477,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                     ToastService.showSuccessToast(getTranslated(this.context, 'selectedItemsRemoved'));
                   });
                 }).catchError((onError) {
-                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     setState(() => _isDeleteButtonTapped = false);
                     ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
                   });

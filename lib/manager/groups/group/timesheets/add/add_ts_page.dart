@@ -289,7 +289,7 @@ class _AddTsPageState extends State<AddTsPage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _timesheetService.createForEmployees(_selectedIds.map((el) => el.toString()).toList(), _year, _month).then(
       (res) {
-        Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
           ToastService.showSuccessToast(getTranslated(context, 'timesheetsSuccessfullyCreated'));
           Navigator.push(
             context,
@@ -298,7 +298,7 @@ class _AddTsPageState extends State<AddTsPage> {
         });
       },
     ).catchError((onError) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
         setState(() => _isAddBtnTapped = false);
       });

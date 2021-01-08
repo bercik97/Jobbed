@@ -492,13 +492,13 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                               STATUS_IN_PROGRESS,
                             )
                                 .then((res) {
-                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 Navigator.of(context).pop();
                                 ToastService.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
                                 _refresh();
                               });
                             }).catchError((onError) {
-                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 ToastService.showErrorToast('smthWentWrong');
                               });
                             });
@@ -657,13 +657,13 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                               STATUS_IN_PROGRESS,
                             )
                                 .then((res) {
-                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 _refresh();
                                 Navigator.of(context).pop();
                                 ToastService.showSuccessToast(getTranslated(context, 'ratingUpdatedSuccessfully'));
                               });
                             }).catchError((onError) {
-                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 ToastService.showErrorToast('smthWentWrong');
                               });
                             });
@@ -786,13 +786,13 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                               STATUS_IN_PROGRESS,
                             )
                                 .then((res) {
-                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 _refresh();
                                 Navigator.of(context).pop();
                                 ToastService.showSuccessToast(getTranslated(context, 'planUpdatedSuccessfully'));
                               });
                             }).catchError((onError) {
-                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 ToastService.showErrorToast('smthWentWrong');
                               });
                             });
@@ -912,13 +912,13 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                               STATUS_IN_PROGRESS,
                             )
                                 .then((res) {
-                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 _refresh();
                                 Navigator.of(context).pop();
                                 ToastService.showSuccessToast(getTranslated(context, 'opinionUpdatedSuccessfully'));
                               });
                             }).catchError((onError) {
-                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 ToastService.showErrorToast('smthWentWrong');
                               });
                             });

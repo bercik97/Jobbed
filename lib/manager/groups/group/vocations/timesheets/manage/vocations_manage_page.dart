@@ -372,14 +372,14 @@ class _VocationsManagePageState extends State<VocationsManagePage> {
                               STATUS_IN_PROGRESS,
                             )
                                 .then((res) {
-                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 _uncheckAll();
                                 _refresh();
                                 Navigator.of(context).pop();
                                 ToastService.showSuccessToast(getTranslated(context, 'vocationManagedSuccessfully'));
                               });
                             }).catchError((onError) {
-                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
                               });
                             });

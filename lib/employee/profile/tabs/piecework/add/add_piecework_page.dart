@@ -265,7 +265,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
       serviceWithQuantity: serviceWithQuantity,
     );
     _pieceworkService.create(dto).then((res) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewReportAboutPiecework'));
         Navigator.push(
           this.context,
@@ -273,7 +273,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
         );
       });
     }).catchError((onError) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
         setState(() => _isAddButtonTapped = false);
       });

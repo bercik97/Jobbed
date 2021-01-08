@@ -217,7 +217,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
       }
     }
     if (warehouseIdsAndItemsWithQuantities.isEmpty) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showErrorToast(getTranslated(context, 'noQuantitySettedForReturn'));
         setState(() => _isAddButtonTapped = false);
       });
@@ -228,7 +228,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
       warehouseIdsAndItemsWithQuantities: warehouseIdsAndItemsWithQuantities,
     );
     _itemPlaceService.returnItems(dto).then((value) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyReturnItemsToWarehouses'));
         Navigator.push(
           this.context,
@@ -236,7 +236,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
         );
       });
     }).catchError((onError) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String errorMsg = onError.toString();
         if (errorMsg.contains("NOT_ENOUGH_QUANTITY")) {
           _showFailureDialogWithNavigate(getTranslated(context, 'someOfItemsDoNotHaveEnoughQuantity'));

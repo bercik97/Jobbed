@@ -284,7 +284,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
       itemNamesWithQuantities: _itemNamesWithQuantities,
     );
     _warehouseService.create(dto).then((res) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewWarehouse'));
         Navigator.push(
           this.context,
@@ -292,7 +292,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
         );
       });
     }).catchError((onError) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String errorMsg = onError.toString();
         if (errorMsg.contains("WAREHOUSE_NAME_EXISTS")) {
           DialogService.showCustomDialog(

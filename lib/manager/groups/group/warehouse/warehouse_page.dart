@@ -297,7 +297,7 @@ class _WarehousePageState extends State<WarehousePage> {
               onPressed: () {
                 showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                 _warehouseService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
-                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(builder: (BuildContext context) => WarehousePage(_model)),
                       ModalRoute.withName('/'),
@@ -305,7 +305,7 @@ class _WarehousePageState extends State<WarehousePage> {
                     ToastService.showSuccessToast(getTranslated(this.context, 'selectedWarehousesRemoved'));
                   });
                 }).catchError((onError) {
-                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     setState(() => _isDeleteButtonTapped = false);
                     ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
                   });

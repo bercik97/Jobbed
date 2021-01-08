@@ -323,12 +323,12 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                           )
                               .then(
                             (res) {
-                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 Navigator.of(context).pop();
                                 ToastService.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
                                 _refresh();
                               }).catchError(() {
-                                Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                   Navigator.of(context).pop();
                                   ToastService.showSuccessToast(getTranslated(context, 'smthWentWrong'));
                                 });
@@ -427,13 +427,13 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                               'note': note,
                             },
                           ).then((res) {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.of(context).pop();
                               ToastService.showSuccessToast(getTranslated(context, 'noteSavedSuccessfully'));
                               _refresh();
                             });
                           }).catchError(() {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.of(context).pop();
                               ToastService.showSuccessToast(getTranslated(context, 'smthWentWrong'));
                             });

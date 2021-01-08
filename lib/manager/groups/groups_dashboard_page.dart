@@ -385,7 +385,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                             }
                             showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                             _groupService.deleteByName(_nameController.text).then((value) {
-                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 ToastService.showSuccessToast(getTranslated(context, 'successfullyDeletedGroup'));
                                 Navigator.push(
                                   context,
@@ -393,7 +393,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                                 );
                               });
                             }).catchError((onError) {
-                              Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 String errorMsg = onError.toString();
                                 if (errorMsg.contains("GROUP_DOES_NOT_EXISTS")) {
                                   DialogService.showCustomDialog(

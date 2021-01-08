@@ -351,13 +351,13 @@ class _VocationsCalendarPageState extends State<VocationsCalendarPage> with Tick
   void verifyVocation(int id) {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _vocationService.updateFieldsValuesById(id, {'isVerified': true}).then((value) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _refresh();
         Navigator.of(context).pop();
         ToastService.showSuccessToast(getTranslated(context, 'vocationVerifiedSuccessfully'));
       });
     }).catchError((onError) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
       });
     });
@@ -383,13 +383,13 @@ class _VocationsCalendarPageState extends State<VocationsCalendarPage> with Tick
   void removeVocation(int vocationId) {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _vocationService.removeVocation(vocationId).then((value) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _refresh();
         Navigator.of(context).pop();
         ToastService.showSuccessToast(getTranslated(context, 'vocationRemovedSuccessfully'));
       });
     }).catchError((onError) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
       });
     });

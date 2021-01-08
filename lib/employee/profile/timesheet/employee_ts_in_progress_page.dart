@@ -493,14 +493,14 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                           }
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _workdayService.updateHoursByIds(selectedIds.map((el) => el.toString()).toList(), hours).then((res) {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.of(context).pop();
                               selectedIds.clear();
                               ToastService.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
                               _refresh();
                             });
                           }).catchError(() {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.of(context).pop();
                               ToastService.showSuccessToast(getTranslated(context, 'smthWentWrong'));
                             });
@@ -590,13 +590,13 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           String note = _noteController.text;
                           _workdayService.updateFieldsValuesByIds(selectedIds.map((el) => el.toString()).toList(), {'note': note}).then((res) {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.of(context).pop();
                               ToastService.showSuccessToast(getTranslated(context, 'notesSavedSuccessfully'));
                               _refresh();
                             });
                           }).catchError(() {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.of(context).pop();
                               ToastService.showSuccessToast(getTranslated(context, 'smthWentWrong'));
                             });

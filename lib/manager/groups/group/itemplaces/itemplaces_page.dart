@@ -372,7 +372,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _itemplaceService.create(int.parse(_user.companyId), location).then((res) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(this.context, 'successfullyAddedNewItemplace'));
         Navigator.push(
           context,
@@ -380,7 +380,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
         );
       });
     }).catchError((onError) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         setState(() => _isAddButtonTapped = false);
         String errorMsg = onError.toString();
         if (errorMsg.contains("ITEM_PLACE_LOCATION_EXISTS")) {
@@ -414,7 +414,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
               onPressed: () {
                 showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                 _itemplaceService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
-                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(builder: (BuildContext context) => ItemplacesPage(_model)),
                       ModalRoute.withName('/'),
@@ -422,7 +422,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
                     ToastService.showSuccessToast(getTranslated(this.context, 'selectedItemplacesRemoved'));
                   });
                 }).catchError((onError) {
-                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     setState(() => _isDeleteButtonTapped = false);
                     ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
                   });

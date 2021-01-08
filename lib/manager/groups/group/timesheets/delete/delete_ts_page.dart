@@ -262,12 +262,12 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _timesheetService.deleteForEmployeesByYearAndMonthAndStatus(_selectedIds.map((el) => el.toString()).toList(), _year, _month, _status).then((res) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'timesheetSuccessfullyDeleted'));
         Navigator.push(context, MaterialPageRoute(builder: (context) => ManagerTsPage(_model)));
       });
     }).catchError((onError) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showErrorToast('smthWentWrong');
         setState(() => _isDeleteBtnTapped = false);
       });

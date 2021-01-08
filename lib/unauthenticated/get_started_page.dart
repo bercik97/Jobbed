@@ -42,7 +42,7 @@ class _GetStartedPageState extends State<GetStartedPage> {
     void _changeLanguage(Language language, BuildContext context) async {
       showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
       Locale _temp = await setLocale(language.languageCode);
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         MyApp.setLocale(context, _temp);
         setState(() => _selectedLanguage = language);
       });

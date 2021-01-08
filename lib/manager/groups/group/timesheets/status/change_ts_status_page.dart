@@ -280,7 +280,7 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _timesheetService.updateEmployeesTsStatus(_selectedIds.map((el) => el.toString()).toList(), newStatusId, _year, _month, status, _model.groupId).then((res) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'timesheetStatusSuccessfullyUpdated'));
         Navigator.push(
           context,
@@ -288,7 +288,7 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
         );
       });
     }).catchError((onError) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showErrorToast('smthWentWrong');
         setState(() => _isChangeBtnTapped = false);
       });

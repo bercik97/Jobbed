@@ -308,7 +308,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
       }
     }
     if (itemsWithQuantities.isEmpty) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showErrorToast(getTranslated(context, 'noQuantitySettedForRelease'));
         setState(() => _isAddButtonTapped = false);
       });
@@ -320,7 +320,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
       itemsWithQuantities: itemsWithQuantities,
     );
     _itemPlaceService.assignNewItems(dto).then((value) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyReleaseItemsToSelectedItemplace'));
         Navigator.push(
           this.context,
@@ -328,7 +328,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
         );
       });
     }).catchError((onError) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String errorMsg = onError.toString();
         if (errorMsg.contains("NOT_ENOUGH_QUANTITY")) {
           _showFailureDialogWithNavigate(getTranslated(context, 'someOfItemsDoNotHaveEnoughQuantity'));

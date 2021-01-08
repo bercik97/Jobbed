@@ -630,14 +630,14 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                   longitude: circle != null ? circle.center.longitude : 0,
                 );
                 _workplaceService.create(dto).then((res) {
-                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     Navigator.pop(context);
                     Navigator.pop(context);
                     _refresh();
                     _showSuccessDialog(getTranslated(this.context, 'successfullyAddedNewWorkplace'));
                   });
                 }).catchError((onError) {
-                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     setState(() => _isAddButtonTapped = false);
                     String errorMsg = onError.toString();
                     if (errorMsg.contains("WORKPLACE_NAME_EXISTS")) {
@@ -680,7 +680,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
               onPressed: () {
                 showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                 _workplaceService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
-                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(builder: (BuildContext context) => WorkplacesPage(_model)),
                       ModalRoute.withName('/'),
@@ -688,7 +688,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                     ToastService.showSuccessToast(getTranslated(this.context, 'selectedWorkplacesRemoved'));
                   });
                 }).catchError((onError) {
-                  Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     String errorMsg = onError.toString();
                     if (errorMsg.contains("SOMEONE_IS_WORKING_IN_WORKPLACE_FOR_DELETE")) {
                       setState(() => _isDeleteButtonTapped = false);
@@ -812,13 +812,13 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                               'longitude': circle != null ? circle.center.longitude : 0,
                             },
                           ).then((res) {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.pop(context);
                               _refresh();
                               ToastService.showSuccessToast(getTranslated(context, 'workplaceUpdatedSuccessfully'));
                             });
                           }).catchError((onError) {
-                            Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               String errorMsg = onError.toString();
                               if (errorMsg.contains("WORKPLACE_NAME_EXISTS")) {
                                 ToastService.showErrorToast(getTranslated(context, 'workplaceNameExists'));

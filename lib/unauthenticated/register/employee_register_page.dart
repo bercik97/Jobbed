@@ -911,9 +911,9 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
       accountExpirationDate: widget._accountExpirationDate,
     );
     _employeeService.create(dto).then((res) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() => _showSuccessDialog());
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => _showSuccessDialog());
     }).catchError((onError) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String s = onError.toString();
         if (s.contains('USERNAME_EXISTS')) {
           _errorDialog(getTranslated(context, 'usernameExists') + '\n' + getTranslated(context, 'chooseOtherUsername'));

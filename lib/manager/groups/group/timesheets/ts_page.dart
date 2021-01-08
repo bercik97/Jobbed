@@ -407,14 +407,14 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     if (_excelType == 0 || _excelType == 1) {
       _excelService.generateMoneyPerHourTimesheetExcel(year, MonthUtil.findMonthNumberByMonthName(context, monthName), status, _model.groupId, _excelType == 0, _model.user.username).then((res) {
-        Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
           ToastService.showSuccessToast(getTranslated(context, 'successfullyGeneratedExcelAndSendEmail') + '!');
           setState(() => _isGenerateExcelAndSendEmailBtnTapped = false);
           _excelType = -1;
           Navigator.pop(context);
         });
       }).catchError((onError) {
-        Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
           String errorMsg = onError.toString();
           if (errorMsg.contains("EMAIL_IS_NULL")) {
             DialogService.showCustomDialog(
@@ -431,14 +431,14 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
       return;
     }
     _excelService.generateMoneyPerHourWithPieceworkTimesheetExcel(year, MonthUtil.findMonthNumberByMonthName(context, monthName), status, _model.groupId, int.parse(_user.companyId), _excelType == 2, _model.user.username).then((res) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyGeneratedExcelAndSendEmail') + '!');
         setState(() => _isGenerateExcelAndSendEmailBtnTapped = false);
         _excelType = -1;
         Navigator.pop(context);
       });
     }).catchError((onError) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String errorMsg = onError.toString();
         if (errorMsg.contains("EMAIL_IS_NULL")) {
           DialogService.showCustomDialog(

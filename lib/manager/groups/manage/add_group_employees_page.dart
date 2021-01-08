@@ -304,7 +304,7 @@ class _AddGroupEmployeesPageState extends State<AddGroupEmployeesPage> {
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _groupService.addGroupEmployees(_groupId, _selectedIds.map((e) => e.toInt()).toList()).then((value) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedGroupEmployees'));
         Navigator.push(
           context,
@@ -312,7 +312,7 @@ class _AddGroupEmployeesPageState extends State<AddGroupEmployeesPage> {
         );
       });
     }).catchError((onError) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
         setState(() => _isAddButtonTapped = false);
       });

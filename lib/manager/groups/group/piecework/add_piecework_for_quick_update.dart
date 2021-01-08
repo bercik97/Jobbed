@@ -260,7 +260,7 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _timesheetService.updatePieceworkByGroupIdAndDate(_model.groupId, _todaysDate, serviceWithQuantity).then((res) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewReportsAboutPiecework'));
         Navigator.push(
           this.context,
@@ -269,7 +269,7 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
       });
     }).catchError((onError) {
       String s = onError.toString();
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         setState(() => _isAddButtonTapped = false);
         if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
           DialogService.showCustomDialog(

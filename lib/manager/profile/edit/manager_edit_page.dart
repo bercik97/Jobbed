@@ -375,14 +375,14 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
                   "whatsApp": _whatsAppController.text,
                 },
               ).then((res) {
-                Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                   ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedInformationAboutYou'));
                   _user.nationality = _nationality;
                   _user.info = _nameController.text + ' ' + _surnameController.text;
                   _user.username = _usernameController.text;
                 });
               }).catchError((onError) {
-                Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                   DialogService.showCustomDialog(
                     context: context,
                     titleWidget: textRed(getTranslated(context, 'error')),

@@ -417,7 +417,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
       employeeIds: _selectedIds.map((el) => el.toString()).toList(),
     );
     _groupService.create(dto).then((res) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewGroup'));
         Navigator.push(
           this.context,
@@ -425,7 +425,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
         );
       });
     }).catchError((onError) {
-      Future.delayed(Duration(seconds: 1), () => dismissProgressDialog()).whenComplete(() {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String errorMsg = onError.toString();
         if (errorMsg.contains("GROUP_NAME_EXISTS")) {
           DialogService.showCustomDialog(
