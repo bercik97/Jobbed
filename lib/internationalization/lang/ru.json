@@ -574,7 +574,6 @@
   "createReport": "Создать отчет",
   "noPricelist": "У компании нет прейскуранта",
   "goToTheEmployeeProfilPage": "Перейти на страницу профиля сотрудника",
-  "noAddedItemsFromPricelist": "Вы не добавили количество выполненных услуг из прейскуранта",
   "serviceName": "Название службы",
   "quantity": "Количество",
   "quantityIsRequired": "Требуется количество",
@@ -700,5 +699,7 @@
   "moneyPerHourWithPieceworkForCompany": "Брутто-почасовая оплата и сдельная оплата (компания)",
   "priceForEmployee": "Цена (сотрудник)",
   "priceForCompany": "Цена (компания)",
-  "hoursAreRequired": "Требуются часы"
+  "hoursAreRequired": "Требуются часы",
+  "addEmptyPieceworkConfirmation": "Объем сдельной работы не выбран. Вы уверены, что хотите поставить пустую сдельную работу?",
+  "successfullyDeletedReportsAboutPiecework": "Успешно удалены отчеты о сдельной работе"
 }

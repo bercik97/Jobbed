@@ -16,7 +16,6 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -156,43 +155,41 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
     return Expanded(
       flex: 2,
       child: Scrollbar(
-        isAlwaysShown: true,
-        controller: _scrollController,
-        child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              children: [
-                for (var pricelist in _pricelists)
-                  Card(
-                  color: DARK,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Card(
-                        color: BRIGHTER_DARK,
-                        child: ListTile(
-                          title: textGreen(utf8.decode(pricelist.name.runes.toList())),
-                          subtitle: Row(
-                            children: [
-                              textWhite(getTranslated(this.context, 'price') + ': '),
-                              textGreen(pricelist.priceForEmployee.toString()),
-                            ],
+          controller: _scrollController,
+          child: SingleChildScrollView(
+            child: Center(
+              child: Column(
+                children: [
+                  for (var pricelist in _pricelists)
+                    Card(
+                      color: DARK,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Card(
+                            color: BRIGHTER_DARK,
+                            child: ListTile(
+                              title: textGreen(utf8.decode(pricelist.name.runes.toList())),
+                              subtitle: Row(
+                                children: [
+                                  textWhite(getTranslated(this.context, 'price') + ': '),
+                                  textGreen(pricelist.priceForEmployee.toString()),
+                                ],
+                              ),
+                              trailing: Container(
+                                width: 100,
+                                child: _buildNumberField(_textEditingItemControllers[utf8.decode(pricelist.name.runes.toList())]),
+                              ),
+                            ),
                           ),
-                          trailing: Container(
-                            width: 100,
-                            child: _buildNumberField(_textEditingItemControllers[utf8.decode(pricelist.name.runes.toList())]),
-                          ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-              ],
+                    ),
+                ],
+              ),
             ),
-          ),
-        )
-      ),
+          )),
     );
   }
 
@@ -235,14 +232,14 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
               children: <Widget>[iconWhite(Icons.check)],
             ),
             color: GREEN,
-            onPressed: () => _isAddButtonTapped ? null : _createNote(),
+            onPressed: () => _isAddButtonTapped ? null : _handleAdd(),
           ),
         ],
       ),
     );
   }
 
-  void _createNote() {
+  void _handleAdd() {
     setState(() => _isAddButtonTapped = true);
     _textEditingItemControllers.forEach((name, quantityController) {
       String quantity = quantityController.text;
@@ -250,15 +247,6 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
         serviceWithQuantity[name] = int.parse(quantity);
       }
     });
-    if (serviceWithQuantity.isEmpty) {
-      DialogService.showCustomDialog(
-        context: context,
-        titleWidget: textRed(getTranslated(context, 'error')),
-        content: getTranslated(context, 'noAddedItemsFromPricelist'),
-      );
-      setState(() => _isAddButtonTapped = false);
-      return;
-    }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     CreatePieceworkDto dto = new CreatePieceworkDto(
       workdayId: _todayWorkdayId,

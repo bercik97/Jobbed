@@ -574,7 +574,6 @@
   "createReport": "Utwórz raport",
   "noPricelist": "Firma nie posiada cennika",
   "goToTheEmployeeProfilPage": "Wróć do profilu pracownika",
-  "noAddedItemsFromPricelist": "Nie dodałeś ilości wykonanych usług z cennika",
   "serviceName": "Nazwa usługi",
   "quantity": "Ilość",
   "quantityIsRequired": "Ilość wykonanej usługi jest wymagana",
@@ -700,5 +699,7 @@
   "moneyPerHourWithPieceworkForCompany": "Stawka godzinowa brutto i praca akordowa (firma)",
   "priceForEmployee": "Cena (pracownik)",
   "priceForCompany": "Cena (firma)",
-  "hoursAreRequired": "Godziny są wymagane"
+  "hoursAreRequired": "Godziny są wymagane",
+  "addEmptyPieceworkConfirmation": "Nie wybrano ilości pracy akordowaj. Czy na pewno chcesz ustawić pustą pracę akordową?",
+  "successfullyDeletedReportsAboutPiecework": "Pomyślnie usunięto raporty dotyczące pracy akordowej"
 }

@@ -155,7 +155,6 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
     return Expanded(
       flex: 2,
       child: Scrollbar(
-        isAlwaysShown: true,
         controller: _scrollController,
         child: SingleChildScrollView(
           child: Center(
@@ -163,30 +162,30 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
               children: [
                 for (var pricelist in _pricelists)
                   Card(
-                  color: DARK,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Card(
-                        color: BRIGHTER_DARK,
-                        child: ListTile(
-                          title: textGreen(utf8.decode(pricelist.name.runes.toList())),
-                          subtitle: Row(
-                            children: [
-                              textWhite(getTranslated(this.context, 'price') + ': '),
-                              textGreen(pricelist.priceForEmployee.toString()),
-                            ],
-                          ),
-                          trailing: Container(
-                            width: 100,
-                            child: _buildNumberField(_textEditingItemControllers[utf8.decode(pricelist.name.runes.toList())]),
+                    color: DARK,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Card(
+                          color: BRIGHTER_DARK,
+                          child: ListTile(
+                            title: textGreen(utf8.decode(pricelist.name.runes.toList())),
+                            subtitle: Row(
+                              children: [
+                                textWhite(getTranslated(this.context, 'price') + ': '),
+                                textGreen(pricelist.priceForEmployee.toString()),
+                              ],
+                            ),
+                            trailing: Container(
+                              width: 100,
+                              child: _buildNumberField(_textEditingItemControllers[utf8.decode(pricelist.name.runes.toList())]),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
               ],
             ),
           ),
@@ -234,14 +233,14 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
               children: <Widget>[iconWhite(Icons.check)],
             ),
             color: GREEN,
-            onPressed: () => _isAddButtonTapped ? null : _createNote(),
+            onPressed: () => _isAddButtonTapped ? null : _handleAdd(),
           ),
         ],
       ),
     );
   }
 
-  void _createNote() {
+  void _handleAdd() {
     setState(() => _isAddButtonTapped = true);
     _textEditingItemControllers.forEach((name, quantityController) {
       String quantity = quantityController.text;
@@ -250,18 +249,51 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
       }
     });
     if (serviceWithQuantity.isEmpty) {
-      DialogService.showCustomDialog(
-        context: context,
-        titleWidget: textRed(getTranslated(context, 'error')),
-        content: getTranslated(context, 'noAddedItemsFromPricelist'),
-      );
       setState(() => _isAddButtonTapped = false);
+      _showConfirmationDialog(
+        title: getTranslated(context, 'confirmation'),
+        content: getTranslated(context, 'addEmptyPieceworkConfirmation'),
+        fun: () => _add(getTranslated(context, 'successfullyDeletedReportsAboutPiecework')),
+      );
       return;
     }
+    _add(getTranslated(context, 'successfullyAddedNewReportsAboutPiecework'));
+  }
+
+  void _showConfirmationDialog({String title, String content, Function() fun}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: DARK,
+          title: textGreenBold(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                textWhite(content),
+              ],
+            ),
+          ),
+          actions: [
+            FlatButton(
+              child: textWhite(getTranslated(context, 'yes')),
+              onPressed: () => _isAddButtonTapped ? null : fun(),
+            ),
+            FlatButton(
+              child: textWhite(getTranslated(context, 'no')),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _add(String successMsg) {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _timesheetService.updatePieceworkByGroupIdAndDate(_model.groupId, _todaysDate, serviceWithQuantity).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewReportsAboutPiecework'));
+        ToastService.showSuccessToast(successMsg);
         Navigator.push(
           this.context,
           MaterialPageRoute(builder: (context) => GroupPage(_model)),

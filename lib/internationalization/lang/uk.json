@@ -574,7 +574,6 @@
   "createReport": "Створити звіт",
   "noPricelist": "Компанія не має прайс-листа",
   "goToTheEmployeeProfilPage": "Перейти на сторінку профілю працівника",
-  "noAddedItemsFromPricelist": "Ви не додали кількість зроблених послуг із прайс-листа",
   "serviceName": "Назва послуги",
   "quantity": "Кількість",
   "quantityIsRequired": "Кількість потрібна",
@@ -700,5 +699,7 @@
   "moneyPerHourWithPieceworkForCompany": "Валова погодинна ставка та відрядна робота (компанія)",
   "priceForEmployee": "Ціна (працівник)",
   "priceForCompany": "Ціна (компанія)",
-  "hoursAreRequired": "Потрібні години"
+  "hoursAreRequired": "Потрібні години",
+  "addEmptyPieceworkConfirmation": "Об’єм роботи не вибрано. Ви впевнені, що хочете встановити порожні роботи?",
+  "successfullyDeletedReportsAboutPiecework": "Звіти про відрядні роботи успішно видалено"
 }

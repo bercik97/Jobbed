@@ -574,7 +574,6 @@
   "createReport": "ანგარიშის შექმნა",
   "noPricelist": "კომპანიას არ აქვს ფასების ჩამონათვალი",
   "goToTheEmployeeProfilPage": "გადასვლა თანამშრომლის პროფილის გვერდზე",
-  "noAddedItemsFromPricelist": "თქვენ არ დაამატეთ დასრულებული მომსახურების რაოდენობა ფასების სიიდან",
   "serviceName": "სამსახურის სახელი",
   "quantity": "რაოდენობა",
   "quantityIsRequired": "საჭიროა რაოდენობა",
@@ -700,5 +699,7 @@
   "moneyPerHourWithPieceworkForCompany": "მთლიანი საათობრივი განაკვეთი და ნაჭერი სამუშაო (კომპანია)",
   "priceForEmployee": "ფასი (თანამშრომელი)",
   "priceForCompany": "ფასი (კომპანია)",
-  "hoursAreRequired": "საათები აუცილებელია"
+  "hoursAreRequired": "საათები აუცილებელია",
+  "addEmptyPieceworkConfirmation": "ნამუშევრის რაოდენობა არ არის შერჩეული. დარწმუნებული ხართ, რომ გსურთ ცარიელი ნაჭრის დაყენება?",
+  "successfullyDeletedReportsAboutPiecework": "წარმატებით წაიშალა ნაწყვეტები დავალების შესახებ"
 }

@@ -17,7 +17,6 @@ import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -169,56 +168,50 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
     return Expanded(
       flex: 2,
       child: Scrollbar(
-        isAlwaysShown: true,
         controller: _scrollController,
         child: SingleChildScrollView(
           child: Center(
-            child: Column(
-              children: [
-                for (var pricelist in _pricelists)
-                  Card(
-                    color: DARK,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Card(
-                          color: BRIGHTER_DARK,
-                          child: ListTile(
-                            title: textGreen(utf8.decode(pricelist.name.runes.toList())),
-                            subtitle: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    textWhite(getTranslated(
-                                        this.context, 'priceForEmployee') +
-                                        ': '),
-                                    textGreen(pricelist.priceForEmployee.toString()),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    textWhite(getTranslated(
-                                        this.context, 'priceForCompany') +
-                                        ': '),
-                                    textGreen(pricelist.priceForCompany.toString()),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            trailing: Container(
-                              width: 100,
-                              child: _buildNumberField(_textEditingItemControllers[utf8.decode(pricelist.name.runes.toList())]),
-                            ),
+              child: Column(
+            children: [
+              for (var pricelist in _pricelists)
+                Card(
+                  color: DARK,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Card(
+                        color: BRIGHTER_DARK,
+                        child: ListTile(
+                          title: textGreen(utf8.decode(pricelist.name.runes.toList())),
+                          subtitle: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  textWhite(getTranslated(this.context, 'priceForEmployee') + ': '),
+                                  textGreen(pricelist.priceForEmployee.toString()),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  textWhite(getTranslated(this.context, 'priceForCompany') + ': '),
+                                  textGreen(pricelist.priceForCompany.toString()),
+                                ],
+                              ),
+                            ],
+                          ),
+                          trailing: Container(
+                            width: 100,
+                            child: _buildNumberField(_textEditingItemControllers[utf8.decode(pricelist.name.runes.toList())]),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-              ],
-            )
-          ),
-        )
+                ),
+            ],
+          )),
+        ),
       ),
     );
   }
@@ -262,14 +255,14 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
               children: <Widget>[iconWhite(Icons.check)],
             ),
             color: GREEN,
-            onPressed: () => _isAddButtonTapped ? null : _createNote(),
+            onPressed: () => _isAddButtonTapped ? null : _handleAdd(),
           ),
         ],
       ),
     );
   }
 
-  void _createNote() {
+  void _handleAdd() {
     setState(() => _isAddButtonTapped = true);
     _textEditingItemControllers.forEach((name, quantityController) {
       String quantity = quantityController.text;
@@ -278,32 +271,52 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
       }
     });
     if (serviceWithQuantity.isEmpty) {
-      DialogService.showCustomDialog(
-        context: context,
-        titleWidget: textRed(getTranslated(context, 'error')),
-        content: getTranslated(context, 'noAddedItemsFromPricelist'),
-      );
       setState(() => _isAddButtonTapped = false);
+      _showConfirmationDialog(
+        title: getTranslated(context, 'confirmation'),
+        content: getTranslated(context, 'addEmptyPieceworkConfirmation'),
+        fun: () => _add(getTranslated(context, 'successfullyDeletedReportsAboutPiecework')),
+      );
       return;
     }
-    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workdayService
-        .updateEmployeesPiecework(
-      serviceWithQuantity,
-      _dateFrom,
-      _dateTo,
-      _employeeIds,
-      _tsYear,
-      _tsMonth,
-      _tsStatus,
-    )
-        .then((res) {
-      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewReportsAboutPiecework'));
-        Navigator.push(
-          this.context,
-          MaterialPageRoute(builder: (context) => TsInProgressPage(_model, _timeSheet)),
+    _add(getTranslated(context, 'successfullyAddedNewReportsAboutPiecework'));
+  }
+
+  void _showConfirmationDialog({String title, String content, Function() fun}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: DARK,
+          title: textGreenBold(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                textWhite(content),
+              ],
+            ),
+          ),
+          actions: [
+            FlatButton(
+              child: textWhite(getTranslated(context, 'yes')),
+              onPressed: () => _isAddButtonTapped ? null : fun(),
+            ),
+            FlatButton(
+              child: textWhite(getTranslated(context, 'no')),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
         );
+      },
+    );
+  }
+
+  void _add(String successMsg) {
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _workdayService.updateEmployeesPiecework(serviceWithQuantity, _dateFrom, _dateTo, _employeeIds, _tsYear, _tsMonth, _tsStatus).then((res) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showSuccessToast(successMsg);
+        Navigator.push(this.context, MaterialPageRoute(builder: (context) => TsInProgressPage(_model, _timeSheet)));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
