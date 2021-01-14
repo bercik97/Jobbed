@@ -50,9 +50,7 @@ class EmployeeTsInProgressPage extends StatefulWidget {
 
 class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   final TextEditingController _hoursController = new TextEditingController();
-  final TextEditingController _ratingController = new TextEditingController();
-  final TextEditingController _planController = new TextEditingController();
-  final TextEditingController _opinionController = new TextEditingController();
+  final TextEditingController _noteController = new TextEditingController();
   final TextEditingController _vocationReasonController = new TextEditingController();
 
   GroupModel _model;
@@ -72,11 +70,9 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   List<WorkdayDto> workdays = new List();
   bool _sortNo = true;
   bool _sortHours = true;
-  bool _sortRatings = true;
   bool _sortMoney = true;
   bool _sortMoneyForCompany = true;
-  bool _sortPlans = true;
-  bool _sortOpinions = true;
+  bool _sortNotes = true;
   bool _sort = true;
   int _sortColumnIndex;
 
@@ -160,15 +156,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             children: <Widget>[
                               Align(
                                 alignment: Alignment.topLeft,
-                                child: textWhite(getTranslated(context, 'averageRating') + ': '),
-                              ),
-                              textGreenBold(widget.timesheet.averageRating.toString()),
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.topLeft,
                                 child: textWhite(getTranslated(context, 'earnedMoney') + ': '),
                               ),
                               textGreenBold(widget.timesheet.amountOfEarnedMoney.toString() + ' ' + _currency),
@@ -195,11 +182,9 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             columns: [
                               DataColumn(label: textWhiteBold('No.'), onSort: (columnIndex, ascending) => _onSortNo(columnIndex, ascending)),
                               DataColumn(label: textWhiteBold(getTranslated(context, 'hours')), onSort: (columnIndex, ascending) => _onSortHours(columnIndex, ascending)),
-                              DataColumn(label: textWhiteBold(getTranslated(context, 'rating')), onSort: (columnIndex, ascending) => _onSortRatings(columnIndex, ascending)),
                               DataColumn(label: textWhiteBold(getTranslated(context, 'money')), onSort: (columnIndex, ascending) => _onSortMoney(columnIndex, ascending)),
                               DataColumn(label: textWhiteBold(getTranslated(context, 'moneyForCompany')), onSort: (columnIndex, ascending) => _onSortMoneyForCompany(columnIndex, ascending)),
-                              DataColumn(label: textWhiteBold(getTranslated(context, 'plan')), onSort: (columnIndex, ascending) => _onSortPlans(columnIndex, ascending)),
-                              DataColumn(label: textWhiteBold(getTranslated(context, 'opinion')), onSort: (columnIndex, ascending) => _onSortOpinions(columnIndex, ascending)),
+                              DataColumn(label: textWhiteBold(getTranslated(context, 'note')), onSort: (columnIndex, ascending) => _onSortNote(columnIndex, ascending)),
                               DataColumn(label: textWhiteBold(getTranslated(context, 'workTimes'))),
                               DataColumn(label: textWhiteBold(getTranslated(context, 'pieceworks'))),
                               DataColumn(label: textWhiteBold(getTranslated(context, 'vocations'))),
@@ -215,20 +200,11 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                     cells: [
                                       DataCell(textWhite(workday.number.toString())),
                                       DataCell(textWhite(workday.hours.toString())),
-                                      DataCell(textWhite(workday.rating.toString())),
                                       DataCell(textWhite(workday.moneyHoursForEmployee.toString())),
                                       DataCell(textWhite(workday.moneyHoursForCompany.toString())),
                                       DataCell(
-                                        Wrap(children: <Widget>[workday.plan != null && workday.plan != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-')]),
-                                        onTap: () => _editPlan(this.context, workday.id, workday.plan),
-                                      ),
-                                      DataCell(
-                                        Wrap(
-                                          children: <Widget>[
-                                            workday.opinion != null && workday.opinion != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
-                                          ],
-                                        ),
-                                        onTap: () => _editOpinion(this.context, workday.id, workday.opinion),
+                                        Wrap(children: <Widget>[workday.note != null && workday.note != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-')]),
+                                        onTap: () => _editNote(this.context, workday.id, workday.note),
                                       ),
                                       DataCell(
                                         Wrap(
@@ -322,41 +298,11 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
-                    child: Image(image: AssetImage('images/dark-rate-icon.png')),
+                    child: Image(image: AssetImage('images/dark-note-icon.png')),
                     onPressed: () {
                       if (selectedIds.isNotEmpty) {
-                        _ratingController.clear();
-                        _showUpdateRatingDialog(selectedIds);
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
-                  ),
-                ),
-                SizedBox(width: 2.5),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-plan-icon.png')),
-                    onPressed: () {
-                      if (selectedIds.isNotEmpty) {
-                        _planController.clear();
-                        _showUpdatePlanDialog(selectedIds);
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
-                  ),
-                ),
-                SizedBox(width: 2.5),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-opinion-icon.png')),
-                    onPressed: () {
-                      if (selectedIds.isNotEmpty) {
-                        _opinionController.clear();
-                        _showUpdateOpinionDialog(selectedIds);
+                        _noteController.clear();
+                        _showUpdateNoteDialog(selectedIds);
                       } else {
                         showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
                       }
@@ -390,9 +336,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
               IconsLegendUtil.buildIconRow(iconWhite(Icons.search), getTranslated(context, 'checkDetails')),
               IconsLegendUtil.buildImageRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
               IconsLegendUtil.buildImageRow('images/green-piecework-icon.png', getTranslated(context, 'settingPiecework')),
-              IconsLegendUtil.buildImageRow('images/green-rate-icon.png', getTranslated(context, 'settingRating')),
-              IconsLegendUtil.buildImageRow('images/green-plan-icon.png', getTranslated(context, 'settingPlan')),
-              IconsLegendUtil.buildImageRow('images/green-opinion-icon.png', getTranslated(context, 'settingOpinion')),
+              IconsLegendUtil.buildImageRow('images/green-note-icon.png', getTranslated(context, 'settingNote')),
               IconsLegendUtil.buildImageRow('images/green-vocation-icon.png', getTranslated(context, 'settingVocation')),
               IconsLegendUtil.buildImageWithIconRow('images/green-vocation-icon.png', iconRed(Icons.clear), getTranslated(context, 'notVerifiedVocation')),
               IconsLegendUtil.buildImageWithIconRow('images/green-vocation-icon.png', iconGreen(Icons.check), getTranslated(context, 'verifiedVocation')),
@@ -449,21 +393,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     });
   }
 
-  void _onSortRatings(columnIndex, ascending) {
-    setState(() {
-      if (columnIndex == _sortColumnIndex) {
-        _sort = _sortRatings = ascending;
-      } else {
-        _sortColumnIndex = columnIndex;
-        _sort = _sortRatings;
-      }
-      workdays.sort((a, b) => a.rating.compareTo(b.rating));
-      if (!_sort) {
-        workdays = workdays.reversed.toList();
-      }
-    });
-  }
-
   void _onSortMoney(columnIndex, ascending) {
     setState(() {
       if (columnIndex == _sortColumnIndex) {
@@ -494,30 +423,15 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     });
   }
 
-  void _onSortPlans(columnIndex, ascending) {
+  void _onSortNote(columnIndex, ascending) {
     setState(() {
       if (columnIndex == _sortColumnIndex) {
-        _sort = _sortPlans = ascending;
+        _sort = _sortNotes = ascending;
       } else {
         _sortColumnIndex = columnIndex;
-        _sort = _sortPlans;
+        _sort = _sortNotes;
       }
-      workdays.sort((a, b) => a.plan.compareTo(b.plan));
-      if (!_sort) {
-        workdays = workdays.reversed.toList();
-      }
-    });
-  }
-
-  void _onSortOpinions(columnIndex, ascending) {
-    setState(() {
-      if (columnIndex == _sortColumnIndex) {
-        _sort = _sortOpinions = ascending;
-      } else {
-        _sortColumnIndex = columnIndex;
-        _sort = _sortOpinions;
-      }
-      workdays.sort((a, b) => a.opinion.compareTo(b.opinion));
+      workdays.sort((a, b) => a.note.compareTo(b.note));
       if (!_sort) {
         workdays = workdays.reversed.toList();
       }
@@ -555,11 +469,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: WHITE),
                       validator: RequiredValidator(errorText: getTranslated(context, 'hoursAreRequired')),
-                      decoration: InputDecoration(
-                          counterStyle: TextStyle(color: WHITE),
-                          labelStyle: TextStyle(color: WHITE),
-                          labelText: getTranslated(context, 'newHours') + ' (0-24)'
-                      ),
+                      decoration: InputDecoration(counterStyle: TextStyle(color: WHITE), labelStyle: TextStyle(color: WHITE), labelText: getTranslated(context, 'newHours') + ' (0-24)'),
                     ),
                   ),
                   SizedBox(height: 20),
@@ -624,12 +534,12 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     );
   }
 
-  void _showUpdateRatingDialog(Set<int> selectedIds) {
+  void _showUpdateNoteDialog(Set<int> selectedIds) {
     showGeneralDialog(
       context: context,
       barrierColor: DARK.withOpacity(0.95),
       barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'rating'),
+      barrierLabel: getTranslated(context, 'note'),
       transitionDuration: Duration(milliseconds: 400),
       pageBuilder: (_, __, ___) {
         return SizedBox.expand(
@@ -639,111 +549,15 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'ratingUpperCase'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'noteUpperCase'))),
                   SizedBox(height: 2.5),
-                  textGreen(getTranslated(context, 'setRatingForSelectedDays')),
-                  Container(
-                    width: 150,
-                    child: TextFormField(
-                      autofocus: true,
-                      controller: _ratingController,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
-                      maxLength: 2,
-                      cursorColor: WHITE,
-                      textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: WHITE),
-                      decoration: InputDecoration(
-                        counterStyle: TextStyle(color: WHITE),
-                        labelStyle: TextStyle(color: WHITE),
-                        labelText: getTranslated(context, 'newRating') + ' (1-10)',
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        minWidth: 40,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.close)],
-                        ),
-                        color: Colors.red,
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      SizedBox(width: 25),
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.check)],
-                        ),
-                        color: GREEN,
-                        onPressed: () {
-                          int rating;
-                          try {
-                            rating = int.parse(_ratingController.text);
-                          } catch (FormatException) {
-                            ToastService.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
-                            return;
-                          }
-                          String invalidMessage = ValidatorService.validateUpdatingRating(rating, context);
-                          if (invalidMessage != null) {
-                            ToastService.showErrorToast(invalidMessage);
-                            return;
-                          }
-                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                          _workdayService.updateFieldsValuesByIds(selectedIds.map((el) => el.toString()).toList(), {'rating': rating}).then((res) {
-                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              Navigator.of(context).pop();
-                              ToastService.showSuccessToast(getTranslated(context, 'ratingUpdatedSuccessfully'));
-                              _refresh();
-                            });
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void _showUpdatePlanDialog(Set<int> selectedIds) {
-    showGeneralDialog(
-      context: context,
-      barrierColor: DARK.withOpacity(0.95),
-      barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'plan'),
-      transitionDuration: Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return SizedBox.expand(
-          child: Scaffold(
-            backgroundColor: Colors.black12,
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'planUpperCase'))),
-                  SizedBox(height: 2.5),
-                  textGreen(getTranslated(context, 'planForSelectedDays')),
+                  textGreen(getTranslated(context, 'noteForSelectedDays')),
                   SizedBox(height: 20),
                   Padding(
                     padding: EdgeInsets.only(left: 25, right: 25),
                     child: TextFormField(
                       autofocus: false,
-                      controller: _planController,
+                      controller: _noteController,
                       keyboardType: TextInputType.multiline,
                       maxLength: 510,
                       maxLines: 5,
@@ -751,7 +565,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: WHITE),
                       decoration: InputDecoration(
-                        hintText: getTranslated(context, 'textSomePlan'),
+                        hintText: getTranslated(context, 'textSomeNote'),
                         hintStyle: TextStyle(color: MORE_BRIGHTER_DARK),
                         counterStyle: TextStyle(color: WHITE),
                         focusedBorder: OutlineInputBorder(
@@ -789,113 +603,17 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                         ),
                         color: GREEN,
                         onPressed: () {
-                          String plan = _planController.text;
-                          String invalidMessage = ValidatorService.validateUpdatingPlan(plan, context);
+                          String note = _noteController.text;
+                          String invalidMessage = ValidatorService.validateNote(note, context);
                           if (invalidMessage != null) {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                          _workdayService.updateFieldsValuesByIds(selectedIds.map((el) => el.toString()).toList(), {'plan': plan}).then((res) {
+                          _workdayService.updateFieldsValuesByIds(selectedIds.map((el) => el.toString()).toList(), {'note': note}).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.of(context).pop();
-                              ToastService.showSuccessToast(getTranslated(context, 'planUpdatedSuccessfully'));
-                              _refresh();
-                            });
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void _showUpdateOpinionDialog(Set<int> selectedIds) {
-    showGeneralDialog(
-      context: context,
-      barrierColor: DARK.withOpacity(0.95),
-      barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'opinion'),
-      transitionDuration: Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return SizedBox.expand(
-          child: Scaffold(
-            backgroundColor: Colors.black12,
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'opinionUpperCase'))),
-                  SizedBox(height: 2.5),
-                  textGreen(getTranslated(context, 'setOpinionForSelectedDays')),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: EdgeInsets.only(left: 25, right: 25),
-                    child: TextFormField(
-                      autofocus: false,
-                      controller: _opinionController,
-                      keyboardType: TextInputType.multiline,
-                      maxLength: 510,
-                      maxLines: 5,
-                      cursorColor: WHITE,
-                      textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: WHITE),
-                      decoration: InputDecoration(
-                        hintText: getTranslated(context, 'textSomeOpinion'),
-                        hintStyle: TextStyle(color: MORE_BRIGHTER_DARK),
-                        counterStyle: TextStyle(color: WHITE),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: GREEN, width: 2.5),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: GREEN, width: 2.5),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        minWidth: 40,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.close)],
-                        ),
-                        color: Colors.red,
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      SizedBox(width: 25),
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.check)],
-                        ),
-                        color: GREEN,
-                        onPressed: () {
-                          String opinion = _opinionController.text;
-                          String invalidMessage = ValidatorService.validateUpdatingOpinion(opinion, context);
-                          if (invalidMessage != null) {
-                            ToastService.showErrorToast(invalidMessage);
-                            return;
-                          }
-                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                          Navigator.of(context).pop();
-                          _workdayService.updateFieldsValuesByIds(selectedIds.map((el) => el.toString()).toList(), {'opinion': opinion}).then((res) {
-                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              ToastService.showSuccessToast(getTranslated(context, 'opinionUpdatedSuccessfully'));
+                              ToastService.showSuccessToast(getTranslated(context, 'noteUpdatedSuccessfully'));
                               _refresh();
                             });
                           });
@@ -1008,14 +726,14 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     );
   }
 
-  void _editPlan(BuildContext context, int workdayId, String plan) {
-    TextEditingController _planController = new TextEditingController();
-    _planController.text = plan != null ? utf8.decode(plan != null ? plan.runes.toList() : '-') : null;
+  void _editNote(BuildContext context, int workdayId, String note) {
+    TextEditingController _noteController = new TextEditingController();
+    _noteController.text = note != null ? utf8.decode(note != null ? note.runes.toList() : '-') : null;
     showGeneralDialog(
       context: context,
       barrierColor: DARK.withOpacity(0.95),
       barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'planDetails'),
+      barrierLabel: getTranslated(context, 'noteDetails'),
       transitionDuration: Duration(milliseconds: 400),
       pageBuilder: (_, __, ___) {
         return SizedBox.expand(
@@ -1025,15 +743,15 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'planUpperCase'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'noteUpperCase'))),
                   SizedBox(height: 2.5),
-                  textGreen(getTranslated(context, 'setNewPlan')),
+                  textGreen(getTranslated(context, 'setNewNote')),
                   SizedBox(height: 20),
                   Padding(
                     padding: EdgeInsets.only(left: 25, right: 25),
                     child: TextFormField(
                       autofocus: false,
-                      controller: _planController,
+                      controller: _noteController,
                       keyboardType: TextInputType.multiline,
                       maxLength: 510,
                       maxLines: 5,
@@ -1041,7 +759,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: WHITE),
                       decoration: InputDecoration(
-                        hintText: getTranslated(context, 'textSomePlan'),
+                        hintText: getTranslated(context, 'textSomeNote'),
                         hintStyle: TextStyle(color: MORE_BRIGHTER_DARK),
                         counterStyle: TextStyle(color: WHITE),
                         focusedBorder: OutlineInputBorder(
@@ -1079,115 +797,17 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                         ),
                         color: GREEN,
                         onPressed: () {
-                          String plan = _planController.text;
-                          String invalidMessage = ValidatorService.validateUpdatingPlan(plan, context);
+                          String note = _noteController.text;
+                          String invalidMessage = ValidatorService.validateNote(note, context);
                           if (invalidMessage != null) {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           Navigator.of(context).pop();
-                          _workdayService.updateFieldsValuesById(workdayId, {'plan': plan}).then((res) {
+                          _workdayService.updateFieldsValuesById(workdayId, {'note': note}).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              ToastService.showSuccessToast(getTranslated(context, 'planUpdatedSuccessfully'));
-                              _refresh();
-                            });
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void _editOpinion(BuildContext context, int workdayId, String opinion) {
-    TextEditingController _opinionController = new TextEditingController();
-    _opinionController.text = opinion != null ? utf8.decode(opinion != null ? opinion.runes.toList() : '-') : null;
-    showGeneralDialog(
-      context: context,
-      barrierColor: DARK.withOpacity(0.95),
-      barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'opinionDetails'),
-      transitionDuration: Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return SizedBox.expand(
-          child: Scaffold(
-            backgroundColor: Colors.black12,
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'opinionUpperCase'))),
-                  SizedBox(height: 2.5),
-                  textGreen(getTranslated(context, 'setNewOpinion')),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: EdgeInsets.only(left: 25, right: 25),
-                    child: TextFormField(
-                      autofocus: false,
-                      controller: _opinionController,
-                      keyboardType: TextInputType.multiline,
-                      maxLength: 510,
-                      maxLines: 5,
-                      cursorColor: WHITE,
-                      textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: WHITE),
-                      decoration: InputDecoration(
-                        hintText: getTranslated(context, 'textSomeOpinion'),
-                        hintStyle: TextStyle(color: MORE_BRIGHTER_DARK),
-                        counterStyle: TextStyle(color: WHITE),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: GREEN, width: 2.5),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: GREEN, width: 2.5),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        minWidth: 40,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.close)],
-                        ),
-                        color: Colors.red,
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      SizedBox(width: 25),
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.check)],
-                        ),
-                        color: GREEN,
-                        onPressed: () {
-                          String opinion = _opinionController.text;
-                          String invalidMessage = ValidatorService.validateUpdatingOpinion(opinion, context);
-                          if (invalidMessage != null) {
-                            ToastService.showErrorToast(invalidMessage);
-                            return;
-                          }
-                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                          Navigator.of(context).pop();
-                          _workdayService.updateFieldsValuesById(workdayId, {'opinion': opinion}).then((res) {
-                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              ToastService.showSuccessToast(getTranslated(context, 'opinionUpdatedSuccessfully'));
+                              ToastService.showSuccessToast(getTranslated(context, 'noteUpdatedSuccessfully'));
                               _refresh();
                             });
                           });

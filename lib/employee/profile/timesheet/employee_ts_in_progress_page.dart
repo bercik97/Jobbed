@@ -135,15 +135,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             children: <Widget>[
                               Align(
                                 alignment: Alignment.topLeft,
-                                child: textWhite(getTranslated(context, 'averageRating') + ': '),
-                              ),
-                              textGreenBold(widget._timesheet.averageRating.toString()),
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.topLeft,
                                 child: textWhite(getTranslated(context, 'earnedMoney') + ': '),
                               ),
                               textGreenBold(_timesheet.amountOfEarnedMoney.toString() + ' ' + _timesheet.groupCountryCurrency),
@@ -169,7 +160,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             DataColumn(label: textWhiteBold('No.'), onSort: (columnIndex, ascending) => _onSortNo(columnIndex, ascending)),
                             DataColumn(label: textWhiteBold(getTranslated(this.context, 'hours'))),
                             DataColumn(label: textWhiteBold(getTranslated(this.context, 'money'))),
-                            DataColumn(label: textWhiteBold(getTranslated(this.context, 'plan'))),
                             DataColumn(label: textWhiteBold(getTranslated(this.context, 'note'))),
                             _workTimeByLocation ? DataColumn(label: textWhiteBold(getTranslated(this.context, 'workTimes'))) : DataColumn(label: SizedBox(height: 0)),
                             _piecework ? DataColumn(label: textWhiteBold(getTranslated(this.context, 'pieceworks'))) : DataColumn(label: SizedBox(height: 0)),
@@ -189,12 +179,8 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                     DataCell(textWhite(workday.hours.toString())),
                                     DataCell(textWhite(workday.money.toString())),
                                     DataCell(
-                                      Wrap(children: <Widget>[workday.plan != null && workday.plan != '' ? iconWhite(Icons.zoom_in) : textWhite('-')]),
-                                      onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'planDetails'), workday.plan),
-                                    ),
-                                    DataCell(
-                                      Wrap(children: <Widget>[workday.note != null && workday.note != '' ? iconWhite(Icons.zoom_in) : text20Green('+')]),
-                                      onTap: () => _editNote(this.context, workday.id, workday.note),
+                                      Wrap(children: <Widget>[workday.note != null && workday.note != '' ? iconWhite(Icons.zoom_in) : textWhite('-')]),
+                                      onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'noteDetails'), workday.note),
                                     ),
                                     _workTimeByLocation
                                         ? DataCell(
@@ -237,7 +223,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                     IconsLegendUtil.buildIconRow(iconGreen(Icons.add), getTranslated(context, 'addNote')),
                     IconsLegendUtil.buildIconRow(iconWhite(Icons.search), getTranslated(context, 'checkDetails')),
                     IconsLegendUtil.buildImageRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
-                    IconsLegendUtil.buildImageRow('images/green-plan-icon.png', getTranslated(context, 'settingNotes')),
+                    IconsLegendUtil.buildImageRow('images/green-note-icon.png', getTranslated(context, 'settingNotes')),
                   ],
                 )
               : iconsLegendDialog(
@@ -273,7 +259,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                       Expanded(
                         child: MaterialButton(
                           color: GREEN,
-                          child: Image(image: AssetImage('images/dark-plan-icon.png')),
+                          child: Image(image: AssetImage('images/dark-note-icon.png')),
                           onPressed: () {
                             if (selectedIds.isNotEmpty) {
                               _noteController.clear();

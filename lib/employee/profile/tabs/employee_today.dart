@@ -30,9 +30,7 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
   String todayDate = dto.todayDate;
   String todayMoney = dto.todayMoney.toString();
   String todayHours = dto.todayHours.toString();
-  String todayRating = dto.todayRating.toString();
   List todayWorkTimes = dto.todayWorkTimes;
-  String todayPlan = dto.todayPlan;
   String todayNote = dto.todayNote;
   bool canFillHours = dto.canFillHours;
   bool workTimeByLocation = dto.workTimeByLocation;
@@ -64,15 +62,6 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                         ),
                         alignment: Alignment.topLeft),
                     SizedBox(height: 5),
-                    Align(
-                        child: Row(
-                          children: <Widget>[
-                            text15White(getTranslated(context, 'rating') + ': '),
-                            text15GreenBold(todayRating + ' / 10'),
-                          ],
-                        ),
-                        alignment: Alignment.topLeft),
-                    SizedBox(height: 5),
                     workTimeByLocation
                         ? Align(
                             child: Row(
@@ -95,23 +84,6 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                     Align(
                         child: Row(
                           children: <Widget>[
-                            text15White(getTranslated(context, 'plan') + ': '),
-                            todayPlan != null && todayPlan.isNotEmpty
-                                ? Row(
-                                    children: [
-                                      text15GreenBold(getTranslated(context, 'yes') + ' '),
-                                      iconGreen(Icons.search),
-                                      textGreen('(' + getTranslated(context, 'checkingDetails') + ')'),
-                                    ],
-                                  )
-                                : text15RedBold(getTranslated(context, 'empty'))
-                          ],
-                        ),
-                        alignment: Alignment.topLeft),
-                    SizedBox(height: 5),
-                    Align(
-                        child: Row(
-                          children: <Widget>[
                             text15White(getTranslated(context, 'note') + ': '),
                             todayNote != null && todayNote.isNotEmpty
                                 ? Row(
@@ -128,7 +100,7 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                     SizedBox(height: 2.5),
                   ],
                 ),
-                onTap: () => WorkdayUtil.showScrollableWorkTimesAndPlanAndNote(context, todayDate, todayWorkTimes, todayPlan, todayNote),
+                onTap: () => WorkdayUtil.showScrollableWorkTimesAndNote(context, todayDate, todayWorkTimes, todayNote),
               ),
             ),
             canFillHours

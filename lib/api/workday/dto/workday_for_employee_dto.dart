@@ -7,7 +7,6 @@ class WorkdayForEmployeeDto {
   final int number;
   final double hours;
   final String money;
-  final String plan;
   final String note;
   final List workTimes;
   final List pieceworks;
@@ -17,7 +16,6 @@ class WorkdayForEmployeeDto {
     @required this.number,
     @required this.hours,
     @required this.money,
-    @required this.plan,
     @required this.note,
     @required this.workTimes,
     @required this.pieceworks,
@@ -29,7 +27,6 @@ class WorkdayForEmployeeDto {
       number: json['number'] as int,
       hours: json['hours'] as double,
       money: json['money'] as String,
-      plan: json['plan'] as String,
       note: json['note'] as String,
       workTimes: json['workTimes'].map((data) => WorkTimeDto.fromJson(data)).toList(),
       pieceworks: json['pieceworks'].map((data) => PieceworkDto.fromJson(data)).toList(),

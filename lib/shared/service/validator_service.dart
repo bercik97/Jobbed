@@ -23,25 +23,12 @@ class ValidatorService {
     return null;
   }
 
-  static String validateUpdatingRating(int rating, BuildContext context) {
-    if (rating < 1) {
-      return getTranslated(context, 'ratingCannotBeLowerThan1');
-    } else if (rating > 10) {
-      return getTranslated(context, 'ratingCannotBeHigherThan10');
-    }
-    return null;
-  }
-
-  static String validateUpdatingPlan(String plan, BuildContext context) {
-    return plan != null && plan.length > 510 ? getTranslated(context, 'wrongPlanLength') : null;
-  }
-
-  static String validateUpdatingOpinion(String opinion, BuildContext context) {
-    return opinion != null && opinion.length > 510 ? getTranslated(context, 'wrongOpinionLength') : null;
+  static String validateNote(String note, BuildContext context) {
+    return note != null && note.length > 510 ? getTranslated(context, 'wrongNoteLength') : null;
   }
 
   static String validateVocationReason(String reason, BuildContext context) {
-    return reason == null || reason.length > 510 ? getTranslated(context, 'wrongPlanLength') : null;
+    return reason == null || reason.length > 510 ? getTranslated(context, 'wrongVocationReason') : null;
   }
 
   static String validateUpdatingGroupName(String groupName, BuildContext context) {

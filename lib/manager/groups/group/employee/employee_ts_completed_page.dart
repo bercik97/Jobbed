@@ -98,15 +98,6 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                         children: <Widget>[
                           Align(
                             alignment: Alignment.topLeft,
-                            child: textWhite(getTranslated(context, 'averageRating') + ': '),
-                          ),
-                          textGreenBold(widget._timesheet.averageRating.toString()),
-                        ],
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Align(
-                            alignment: Alignment.topLeft,
                             child: textWhite(getTranslated(context, 'earnedMoney') + ': '),
                           ),
                           textGreenBold(_timesheet.amountOfEarnedMoney.toString() + ' ' + _currency),
@@ -139,11 +130,9 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                             columns: [
                               DataColumn(label: textWhiteBold('No.')),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'hours'))),
-                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'rating'))),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'money'))),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'moneyForCompany'))),
-                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'plan'))),
-                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'opinion'))),
+                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'note'))),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'workTimes'))),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'pieceworks'))),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'vocations'))),
@@ -154,23 +143,15 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                                   cells: [
                                     DataCell(textWhite(workday.number.toString())),
                                     DataCell(textWhite(workday.hours.toString())),
-                                    DataCell(textWhite(workday.rating.toString())),
                                     DataCell(textWhite(workday.moneyHoursForEmployee.toString())),
                                     DataCell(textWhite(workday.moneyHoursForCompany.toString())),
                                     DataCell(
-                                        Wrap(
-                                          children: <Widget>[
-                                            workday.plan != null && workday.plan != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
-                                          ],
-                                        ),
-                                        onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'planDetails'), workday.plan)),
-                                    DataCell(
                                       Wrap(
                                         children: <Widget>[
-                                          workday.opinion != null && workday.opinion != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
+                                          workday.note != null && workday.note != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
                                         ],
                                       ),
-                                      onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'opinionDetails'), workday.opinion),
+                                      onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'noteDetails'), workday.note),
                                     ),
                                     DataCell(
                                       Wrap(

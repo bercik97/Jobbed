@@ -66,22 +66,6 @@ Widget employeeTimesheetsTab(BuildContext context, User user, List timesheets, b
                             Align(
                                 child: Row(
                                   children: <Widget>[
-                                    textWhite(getTranslated(context, 'hours') + ': '),
-                                    textGreenBold(timesheet.numberOfHoursWorked.toString()),
-                                  ],
-                                ),
-                                alignment: Alignment.topLeft),
-                            Align(
-                                child: Row(
-                                  children: <Widget>[
-                                    textWhite(getTranslated(context, 'averageRating') + ': '),
-                                    textGreenBold(timesheet.averageRating.toString()),
-                                  ],
-                                ),
-                                alignment: Alignment.topLeft),
-                            Align(
-                                child: Row(
-                                  children: <Widget>[
                                     textWhite(getTranslated(context, 'status') + ': '),
                                     timesheet.status == STATUS_IN_PROGRESS ? textOrangeBold(getTranslated(context, STATUS_IN_PROGRESS)) : textGreenBold(getTranslated(context, STATUS_COMPLETED)),
                                   ],

@@ -9,7 +9,6 @@ class TimesheetForEmployeeDto {
   final String groupCountryCurrency;
   final String status;
   final double numberOfHoursWorked;
-  final double averageRating;
   final String amountOfEarnedMoney;
 
   TimesheetForEmployeeDto({
@@ -21,7 +20,6 @@ class TimesheetForEmployeeDto {
     @required this.groupCountryCurrency,
     @required this.status,
     @required this.numberOfHoursWorked,
-    @required this.averageRating,
     @required this.amountOfEarnedMoney,
   });
 
@@ -35,7 +33,6 @@ class TimesheetForEmployeeDto {
       groupCountryCurrency: json['groupCountryCurrency'] as String,
       status: json['status'] as String,
       numberOfHoursWorked: json['totalHours'] as double,
-      averageRating: json['averageEmployeeRating'] as double,
       amountOfEarnedMoney: json['totalMoneyEarned'] as String,
     );
   }

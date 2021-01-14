@@ -6,7 +6,6 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/api/workday/util/workday_util.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
-import 'package:give_job/shared/widget/icons_legend_dialog.dart';
 import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -15,6 +14,7 @@ import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/util/icons_legend_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
+import 'package:give_job/shared/widget/icons_legend_dialog.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -109,7 +109,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
             this.context,
             getTranslated(context, 'iconsLegend'),
             [
-              IconsLegendUtil.buildIconRow(iconOrange(Icons.error_outline), getTranslated(context, 'plannedDay')),
+              IconsLegendUtil.buildIconRow(iconOrange(Icons.error_outline), getTranslated(context, 'dayWithNote')),
               IconsLegendUtil.buildIconRow(iconGreen(Icons.check), getTranslated(context, 'workedDay')),
               IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_circle_up), getTranslated(context, 'workInProgress')),
               IconsLegendUtil.buildIconRow(iconYellow(Icons.beach_access), getTranslated(context, 'confirmedVocation')),
@@ -202,7 +202,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
       return Icon(Icons.beach_access, color: Colors.yellow);
     } else if (workday.hours != 0 || (workday.workTimes != null && workday.workTimes.isNotEmpty) || workday.money != 0 || (workday.pieceworks != null && workday.pieceworks.isNotEmpty)) {
       return workday.hours != 0 || workday.money != 0 ? icon30Green(Icons.check) : icon30Orange(Icons.arrow_circle_up);
-    } else if (workday.plan != null && workday.plan.isNotEmpty) {
+    } else if (workday.note != null && workday.note.isNotEmpty) {
       if (isVocationNotNull && !workday.isVocationVerified) {
         return Row(
           children: [
@@ -242,11 +242,11 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
       return _buildVerifiedVocation(workday.vocationReason);
     } else if (workday.hours != 0 || (workday.workTimes != null && workday.workTimes.isNotEmpty) || workday.money != 0 || (workday.pieceworks != null && workday.pieceworks.isNotEmpty)) {
       return _buildWorkday(workday);
-    } else if (workday.plan != null && workday.plan.isNotEmpty) {
+    } else if (workday.note != null && workday.note.isNotEmpty) {
       if (isVocationNotNull && !workday.isVocationVerified) {
-        return _buildPlannedDayWithNotVerifiedVocation(workday.plan, workday.vocationReason);
+        return _buildDayWIthNoteWithNotVerifiedVocation(workday.note, workday.vocationReason);
       }
-      return _buildPlannedDay(workday.plan);
+      return _buildDayWithNote(workday.note);
     } else if (isVocationNotNull && !workday.isVocationVerified) {
       return _buildNotVerifiedVocation(workday.vocationReason);
     } else {
@@ -294,7 +294,6 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
 
   Widget _buildWorkday(EmployeeCalendarDto workday) {
     List workTimes = workday.workTimes;
-    String plan = workday.plan;
     String note = workday.note;
     double hours = workday.hours;
     double money = workday.money;
@@ -326,24 +325,8 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
               Align(
                   child: Row(
                     children: <Widget>[
-                      text15White(getTranslated(context, 'rating') + ': '),
-                      text15GreenBold(workday.rating.toString() + ' / 10'),
-                    ],
-                  ),
-                  alignment: Alignment.topLeft),
-              Align(
-                  child: Row(
-                    children: <Widget>[
                       text15White(getTranslated(context, 'workTimes') + ': '),
                       text15GreenBold(workTimes != null && workTimes.isNotEmpty ? getTranslated(context, 'yes') : getTranslated(context, 'empty')),
-                    ],
-                  ),
-                  alignment: Alignment.topLeft),
-              Align(
-                  child: Row(
-                    children: <Widget>[
-                      text15White(getTranslated(context, 'plan') + ': '),
-                      text15GreenBold(plan != null && plan.isNotEmpty ? getTranslated(context, 'yes') : getTranslated(context, 'empty')),
                     ],
                   ),
                   alignment: Alignment.topLeft),
@@ -357,13 +340,13 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
                   alignment: Alignment.topLeft),
             ],
           ),
-          onTap: () => WorkdayUtil.showScrollableWorkTimesAndPlanAndNote(context, _selectedDay.toString(), workTimes, plan, note),
+          onTap: () => WorkdayUtil.showScrollableWorkTimesAndNote(context, _selectedDay.toString(), workTimes, note),
         ),
       ],
     );
   }
 
-  Widget _buildPlannedDay(String plan) {
+  Widget _buildDayWithNote(String note) {
     return Column(
       children: [
         Row(
@@ -371,16 +354,16 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
           children: [
             iconOrange(Icons.error_outline),
             SizedBox(width: 5),
-            text15GreenBold(getTranslated(context, 'planFor') + ' ' + _selectedDay.toString().substring(0, 10)),
+            text15GreenBold(getTranslated(context, 'noteFor') + ' ' + _selectedDay.toString().substring(0, 10)),
           ],
         ),
         SizedBox(height: 5),
-        textWhite(utf8.decode(plan.runes.toList())),
+        textWhite(utf8.decode(note.runes.toList())),
       ],
     );
   }
 
-  Widget _buildPlannedDayWithNotVerifiedVocation(String plan, String vocationReason) {
+  Widget _buildDayWIthNoteWithNotVerifiedVocation(String note, String vocationReason) {
     return Column(
       children: [
         Row(
@@ -388,7 +371,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
           children: [
             iconOrange(Icons.error_outline),
             SizedBox(width: 5),
-            text15GreenBold(getTranslated(context, 'planFor') + ' ' + _selectedDay.toString().substring(0, 10)),
+            text15GreenBold(getTranslated(context, 'noteFor') + ' ' + _selectedDay.toString().substring(0, 10)),
           ],
         ),
         SizedBox(height: 5),
@@ -399,7 +382,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
           child: textCenter15RedUnderline(getTranslated(context, 'dayHaveNotVerifiedVocation')),
         ),
         SizedBox(height: 5),
-        textWhite(utf8.decode(plan.runes.toList())),
+        textWhite(utf8.decode(note.runes.toList())),
       ],
     );
   }

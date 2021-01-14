@@ -183,7 +183,7 @@ class _GroupPageState extends State<GroupPage> {
                                 ),
                               );
                             },
-                            child: _buildScrollableContainer('images/timesheets-icon.png', 'timesheets', 'fillHoursRatingPlans'),
+                            child: _buildScrollableContainer('images/timesheets-icon.png', 'timesheets', 'fillHoursPieceworks'),
                           ),
                         ),
                       ),

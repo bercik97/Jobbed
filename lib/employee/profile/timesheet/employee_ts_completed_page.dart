@@ -120,15 +120,6 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                               children: <Widget>[
                                 Align(
                                   alignment: Alignment.topLeft,
-                                  child: textWhite(getTranslated(context, 'averageRating') + ': '),
-                                ),
-                                textGreenBold(widget._timesheet.averageRating.toString()),
-                              ],
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Align(
-                                  alignment: Alignment.topLeft,
                                   child: textWhite(getTranslated(context, 'earnedMoney') + ': '),
                                 ),
                                 textGreenBold(_timesheet.amountOfEarnedMoney.toString() + ' ' + _timesheet.groupCountryCurrency),
@@ -152,7 +143,6 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                               DataColumn(label: textWhiteBold('No.'), onSort: (columnIndex, ascending) => _onSortNo(columnIndex, ascending)),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'hours'))),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'money'))),
-                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'plan'))),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'note'))),
                               _workTimeByLocation ? DataColumn(label: textWhiteBold(getTranslated(this.context, 'workTimes'))) : DataColumn(label: SizedBox(height: 0)),
                               _piecework ? DataColumn(label: textWhiteBold(getTranslated(this.context, 'pieceworks'))) : DataColumn(label: SizedBox(height: 0)),
@@ -166,12 +156,8 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                                       DataCell(textWhite(workday.hours.toString())),
                                       DataCell(textWhite(workday.money.toString())),
                                       DataCell(
-                                        Wrap(children: <Widget>[workday.plan != null && workday.plan != '' ? iconWhite(Icons.zoom_in) : textWhite('-')]),
-                                        onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'planDetails'), workday.plan),
-                                      ),
-                                      DataCell(
                                         Wrap(children: <Widget>[workday.note != null && workday.note != '' ? iconWhite(Icons.zoom_in) : textWhite('-')]),
-                                        onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'note'), workday.note),
+                                        onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'noteDetails'), workday.note),
                                       ),
                                       _workTimeByLocation
                                           ? DataCell(

@@ -140,7 +140,6 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                             groupCountryCurrency: currency,
                             status: _timesheet.status,
                             numberOfHoursWorked: double.parse(_filteredEmployees[index].numberOfHoursWorked),
-                            averageRating: _filteredEmployees[index].averageRating,
                             amountOfEarnedMoney: _filteredEmployees[index].amountOfEarnedMoney,
                           );
                           Navigator.of(this.context).push(
@@ -185,14 +184,6 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                                 title: text20WhiteBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                 subtitle: Column(
                                   children: <Widget>[
-                                    Align(
-                                        child: Row(
-                                          children: <Widget>[
-                                            textWhite(getTranslated(this.context, 'averageRating') + ': '),
-                                            textGreenBold(_filteredEmployees[index].averageRating.toString()),
-                                          ],
-                                        ),
-                                        alignment: Alignment.topLeft),
                                     Align(
                                         child: Row(
                                           children: <Widget>[

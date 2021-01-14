@@ -10,15 +10,12 @@ class EmployeePageDto {
   final String tsCurrency;
   final num tsDaysWorked;
   final num tsEarnedMoney;
-  final num tsRating;
   final List timeSheets;
   final int todayWorkdayId;
   final String todayDate;
   final num todayMoney;
   final double todayHours;
-  final int todayRating;
   final List todayWorkTimes;
-  final String todayPlan;
   final String todayNote;
   final bool canFillHours;
   final bool workTimeByLocation;
@@ -36,15 +33,12 @@ class EmployeePageDto {
     @required this.tsCurrency,
     @required this.tsDaysWorked,
     @required this.tsEarnedMoney,
-    @required this.tsRating,
     @required this.timeSheets,
     @required this.todayWorkdayId,
     @required this.todayDate,
     @required this.todayMoney,
     @required this.todayHours,
-    @required this.todayRating,
     @required this.todayWorkTimes,
-    @required this.todayPlan,
     @required this.todayNote,
     @required this.canFillHours,
     @required this.workTimeByLocation,
@@ -64,15 +58,12 @@ class EmployeePageDto {
       tsCurrency: json['tsCurrency'] as String,
       tsDaysWorked: json['tsDaysWorked'] as num,
       tsEarnedMoney: json['tsEarnedMoney'] as num,
-      tsRating: json['tsRating'] as num,
       timeSheets: json['timeSheets'].map((data) => TimesheetForEmployeeDto.fromJson(data)).toList(),
       todayWorkdayId: json['todayWorkdayId'] as int,
       todayDate: json['todayDate'] as String,
       todayMoney: json['todayMoney'] as num,
       todayHours: json['todayHours'] as num,
-      todayRating: json['todayRating'] as num,
       todayWorkTimes: json['todayWorkTimes'].map((data) => WorkTimeDto.fromJson(data)).toList(),
-      todayPlan: json['todayPlan'] as String,
       todayNote: json['todayNote'] as String,
       canFillHours: json['canFillHours'] as bool,
       workTimeByLocation: json['workTimeByLocation'] as bool,

@@ -144,40 +144,10 @@ class TimesheetService {
     }
   }
 
-  Future<dynamic> updateRatingByGroupIdAndDate(int groupId, String date, int rating) async {
+  Future<dynamic> updateNoteByGroupIdAndDate(int groupId, String date, String note) async {
     Response res = await put(
-      '$_url/rating/groups/$groupId?date=$date',
-      body: rating.toString(),
-      headers: _headers,
-    );
-    if (res.statusCode == 200) {
-      return res;
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<dynamic> updatePlanByGroupIdAndDate(int groupId, String date, String plan) async {
-    Response res = await put(
-      '$_url/plan/groups/$groupId?date=$date',
-      body: plan,
-      headers: _headers,
-    );
-    if (res.statusCode == 200) {
-      return res;
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<dynamic> updateOpinionByGroupIdAndDate(int groupId, String date, String opinion) async {
-    Response res = await put(
-      '$_url/opinion/groups/$groupId?date=$date',
-      body: opinion,
+      '$_url/note/groups/$groupId?date=$date',
+      body: note,
       headers: _headers,
     );
     if (res.statusCode == 200) {

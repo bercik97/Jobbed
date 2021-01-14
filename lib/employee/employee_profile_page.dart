@@ -123,10 +123,12 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                           SizedBox(height: 5),
                           Row(
                             children: <Widget>[
+                              Spacer(),
                               Expanded(
+                                flex: 2,
                                 child: Column(
                                   children: <Widget>[
-                                    textWhite(getTranslated(this.context, 'days')),
+                                    textCenterWhite(getTranslated(this.context, 'daysWorked')),
                                     SizedBox(height: 5.0),
                                     Countup(
                                       begin: 0,
@@ -137,10 +139,12 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                                   ],
                                 ),
                               ),
+                              Spacer(),
                               Expanded(
+                                flex: 2,
                                 child: Column(
                                   children: <Widget>[
-                                    textWhite(getTranslated(this.context, 'money')),
+                                    textCenterWhite(getTranslated(this.context, 'money')),
                                     textCenter15White(
                                       _employeePageDto.tsCurrency != null ? '(' + _employeePageDto.tsCurrency + ')' : getTranslated(this.context, 'noCurrency'),
                                     ),
@@ -154,21 +158,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                                   ],
                                 ),
                               ),
-                              Expanded(
-                                child: Column(
-                                  children: <Widget>[
-                                    textWhite(getTranslated(this.context, 'rating')),
-                                    SizedBox(height: 5.0),
-                                    Countup(
-                                      begin: 0,
-                                      end: _employeePageDto.tsRating,
-                                      precision: 1,
-                                      duration: Duration(seconds: 2),
-                                      style: TextStyle(fontSize: 18.0, color: WHITE),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              Spacer(),
                             ],
                           ),
                         ],

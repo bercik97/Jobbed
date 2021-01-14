@@ -103,17 +103,13 @@ flutter:
     - images/warehouse-icon.png
 
     - images/green-hours-icon.png
-    - images/green-rate-icon.png
-    - images/green-plan-icon.png
-    - images/green-opinion-icon.png
+    - images/green-note-icon.png
     - images/green-workplace-icon.png
     - images/green-vocation-icon.png
 
     - images/dark-hours-icon.png
     - images/dark-piecework-icon.png
-    - images/dark-rate-icon.png
-    - images/dark-plan-icon.png
-    - images/dark-opinion-icon.png
+    - images/dark-note-icon.png
     - images/dark-vocation-icon.png
     - images/dark-help-icon.png
 

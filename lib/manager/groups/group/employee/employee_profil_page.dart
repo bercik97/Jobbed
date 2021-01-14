@@ -228,15 +228,6 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                                               ],
                                             ),
                                             alignment: Alignment.topLeft),
-                                        Align(
-                                          child: Row(
-                                            children: <Widget>[
-                                              textWhite(getTranslated(this.context, 'averageRating') + ': '),
-                                              textGreenBold(timesheet.averageRating.toString()),
-                                            ],
-                                          ),
-                                          alignment: Alignment.topLeft,
-                                        ),
                                       ],
                                     ),
                                     trailing: Wrap(

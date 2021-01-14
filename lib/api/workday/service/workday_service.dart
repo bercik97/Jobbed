@@ -156,42 +156,10 @@ class WorkdayService {
     }
   }
 
-  Future<dynamic> updateEmployeesRating(int rating, String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
-    Map<String, dynamic> map = {'rating': rating, 'dateFrom': dateFrom, 'dateTo': dateTo, 'tsYear': tsYear, 'tsMonth': tsMonth, 'tsStatus': tsStatus};
+  Future<dynamic> updateEmployeesNote(String note, String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
+    Map<String, dynamic> map = {'note': note, 'dateFrom': dateFrom, 'dateTo': dateTo, 'tsYear': tsYear, 'tsMonth': tsMonth, 'tsStatus': tsStatus};
     Response res = await put(
-      '$_url/employees/$employeeIds/rating',
-      body: jsonEncode(map),
-      headers: _headers,
-    );
-    if (res.statusCode == 200) {
-      return res;
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<dynamic> updateEmployeesPlan(String plan, String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
-    Map<String, dynamic> map = {'plan': plan, 'dateFrom': dateFrom, 'dateTo': dateTo, 'tsYear': tsYear, 'tsMonth': tsMonth, 'tsStatus': tsStatus};
-    Response res = await put(
-      '$_url/employees/$employeeIds/plan',
-      body: jsonEncode(map),
-      headers: _headers,
-    );
-    if (res.statusCode == 200) {
-      return res;
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<dynamic> updateEmployeesOpinion(String opinion, String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
-    Map<String, dynamic> map = {'opinion': opinion, 'dateFrom': dateFrom, 'dateTo': dateTo, 'tsYear': tsYear, 'tsMonth': tsMonth, 'tsStatus': tsStatus};
-    Response res = await put(
-      '$_url/employees/$employeeIds/opinion',
+      '$_url/employees/$employeeIds/note',
       body: jsonEncode(map),
       headers: _headers,
     );
