@@ -30,10 +30,10 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
   String todayDate = dto.todayDate;
   String todayMoney = dto.todayMoney.toString();
   String todayHours = dto.todayHours.toString();
+  List todayPiecework = dto.todayPiecework;
   List todayWorkTimes = dto.todayWorkTimes;
   String todayNote = dto.todayNote;
   bool canFillHours = dto.canFillHours;
-  bool workTimeByLocation = dto.workTimeByLocation;
   return Container(
     child: SingleChildScrollView(
       child: Padding(
@@ -43,14 +43,8 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
             Ink(
               color: BRIGHTER_DARK,
               child: ListTile(
-                trailing: todayHours != '0' || todayMoney != '0.0' ? icon50Green(Icons.check) : icon50Red(Icons.close),
-                title: Row(
-                  children: [
-                    text15White(getTranslated(context, 'money') + ': '),
-                    text15GreenBold(todayMoney),
-                  ],
-                ),
-                subtitle: Column(
+                trailing: todayMoney != '0.0' ? icon50Green(Icons.check) : icon50Red(Icons.close),
+                title: Column(
                   children: <Widget>[
                     SizedBox(height: 5),
                     Align(
@@ -62,11 +56,30 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                         ),
                         alignment: Alignment.topLeft),
                     SizedBox(height: 5),
-                    workTimeByLocation
+                    dto.piecework
                         ? Align(
                             child: Row(
                               children: <Widget>[
-                                text15White(getTranslated(context, 'workTimes') + ': '),
+                                text15White(getTranslated(context, 'accord') + ': '),
+                                todayPiecework != null && todayPiecework.isNotEmpty
+                                    ? Row(
+                                        children: [
+                                          text15GreenBold(getTranslated(context, 'yes') + ' '),
+                                          iconGreen(Icons.search),
+                                          textGreen('(' + getTranslated(context, 'checkingDetails') + ')'),
+                                        ],
+                                      )
+                                    : text15RedBold(getTranslated(context, 'empty'))
+                              ],
+                            ),
+                            alignment: Alignment.topLeft)
+                        : SizedBox(height: 0),
+                    SizedBox(height: 5),
+                    dto.workTimeByLocation
+                        ? Align(
+                            child: Row(
+                              children: <Widget>[
+                                text15White(getTranslated(context, 'time') + ': '),
                                 todayWorkTimes != null && todayWorkTimes.isNotEmpty
                                     ? Row(
                                         children: [
@@ -80,6 +93,13 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                             ),
                             alignment: Alignment.topLeft)
                         : SizedBox(height: 0),
+                    SizedBox(height: 5),
+                    Row(
+                      children: [
+                        text15White(getTranslated(context, 'money') + ' (' + getTranslated(context, 'sum') + '): '),
+                        text15GreenBold(todayMoney + ' ' + dto.tsCurrency),
+                      ],
+                    ),
                     SizedBox(height: 5),
                     Align(
                         child: Row(
@@ -97,10 +117,10 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                           ],
                         ),
                         alignment: Alignment.topLeft),
-                    SizedBox(height: 2.5),
+                    SizedBox(height: 5),
                   ],
                 ),
-                onTap: () => WorkdayUtil.showScrollableWorkTimesAndNote(context, todayDate, todayWorkTimes, todayNote),
+                onTap: () => WorkdayUtil.showScrollableWorkTimesAndNote(context, todayDate, todayPiecework, todayWorkTimes, todayNote),
               ),
             ),
             canFillHours

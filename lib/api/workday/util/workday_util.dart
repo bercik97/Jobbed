@@ -434,8 +434,8 @@ class WorkdayUtil {
     );
   }
 
-  static void showScrollableWorkTimesAndNote(BuildContext context, String date, List workTimes, String note) {
-    if ((workTimes == null || workTimes.isEmpty) && (note == null || note.isEmpty)) {
+  static void showScrollableWorkTimesAndNote(BuildContext context, String date, List pieceworks, List workTimes, String note) {
+    if ((pieceworks == null || pieceworks.isEmpty) && (workTimes == null || workTimes.isEmpty) && (note == null || note.isEmpty)) {
       return;
     }
     showGeneralDialog(
@@ -460,6 +460,10 @@ class WorkdayUtil {
                         text20GreenBold(getTranslated(context, 'workTimes')),
                         SizedBox(height: 5),
                         _buildWorkTimesDataTable(context, workTimes),
+                        SizedBox(height: 5),
+                        text20GreenBold(getTranslated(context, 'pieceworks')),
+                        SizedBox(height: 5),
+                        _buildPieceworksDataTable(context, pieceworks, false),
                         SizedBox(height: 5),
                         text20GreenBold(getTranslated(context, 'note')),
                         SizedBox(height: 5),

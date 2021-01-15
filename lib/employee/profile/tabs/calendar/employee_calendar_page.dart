@@ -293,6 +293,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
   }
 
   Widget _buildWorkday(EmployeeCalendarDto workday) {
+    List pieceworks = workday.pieceworks;
     List workTimes = workday.workTimes;
     String note = workday.note;
     double hours = double.parse(workday.hours);
@@ -325,8 +326,30 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
               Align(
                   child: Row(
                     children: <Widget>[
+                      text15White(getTranslated(context, 'pieceworks') + ': '),
+                      pieceworks != null && pieceworks.isNotEmpty
+                          ? Row(
+                              children: [
+                                text15GreenBold(getTranslated(context, 'yes') + ' '),
+                                iconGreen(Icons.search),
+                              ],
+                            )
+                          : text15RedBold(getTranslated(context, 'empty')),
+                    ],
+                  ),
+                  alignment: Alignment.topLeft),
+              Align(
+                  child: Row(
+                    children: <Widget>[
                       text15White(getTranslated(context, 'workTimes') + ': '),
-                      text15GreenBold(workTimes != null && workTimes.isNotEmpty ? getTranslated(context, 'yes') : getTranslated(context, 'empty')),
+                      workTimes != null && workTimes.isNotEmpty
+                          ? Row(
+                              children: [
+                                text15GreenBold(getTranslated(context, 'yes') + ' '),
+                                iconGreen(Icons.search),
+                              ],
+                            )
+                          : text15RedBold(getTranslated(context, 'empty')),
                     ],
                   ),
                   alignment: Alignment.topLeft),
@@ -334,13 +357,20 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
                   child: Row(
                     children: <Widget>[
                       text15White(getTranslated(context, 'note') + ': '),
-                      text15GreenBold(note != null && note.isNotEmpty ? getTranslated(context, 'yes') : getTranslated(context, 'empty')),
+                      note != null && note.isNotEmpty
+                          ? Row(
+                              children: [
+                                text15GreenBold(getTranslated(context, 'yes') + ' '),
+                                iconGreen(Icons.search),
+                              ],
+                            )
+                          : text15RedBold(getTranslated(context, 'empty')),
                     ],
                   ),
                   alignment: Alignment.topLeft),
             ],
           ),
-          onTap: () => WorkdayUtil.showScrollableWorkTimesAndNote(context, _selectedDay.toString(), workTimes, note),
+          onTap: () => WorkdayUtil.showScrollableWorkTimesAndNote(context, _selectedDay.toString(), pieceworks, workTimes, note),
         ),
       ],
     );

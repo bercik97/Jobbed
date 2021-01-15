@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:give_job/api/piecework/dto/piecework_details_dto.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:give_job/api/work_time/dto/work_time_dto.dart';
 
@@ -15,6 +16,7 @@ class EmployeePageDto {
   final String todayDate;
   final String todayMoney;
   final String todayHours;
+  final List todayPiecework;
   final List todayWorkTimes;
   final String todayNote;
   final bool canFillHours;
@@ -38,6 +40,7 @@ class EmployeePageDto {
     @required this.todayDate,
     @required this.todayMoney,
     @required this.todayHours,
+    @required this.todayPiecework,
     @required this.todayWorkTimes,
     @required this.todayNote,
     @required this.canFillHours,
@@ -63,6 +66,7 @@ class EmployeePageDto {
       todayDate: json['todayDate'] as String,
       todayMoney: json['todayMoney'] as String,
       todayHours: json['todayHours'] as String,
+      todayPiecework: json['todayPiecework'].map((data) => PieceworkDetailsDto.fromJson(data)).toList(),
       todayWorkTimes: json['todayWorkTimes'].map((data) => WorkTimeDto.fromJson(data)).toList(),
       todayNote: json['todayNote'] as String,
       canFillHours: json['canFillHours'] as bool,

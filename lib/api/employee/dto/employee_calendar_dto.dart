@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:give_job/api/piecework/dto/piecework_details_dto.dart';
 import 'package:give_job/api/work_time/dto/work_time_dto.dart';
 
 class EmployeeCalendarDto {
   final String hours;
-  final List workTimes;
   final List pieceworks;
+  final List workTimes;
   final String note;
   final double money;
   final int vocationId;
@@ -25,8 +26,8 @@ class EmployeeCalendarDto {
   factory EmployeeCalendarDto.fromJson(Map<String, dynamic> json) {
     return EmployeeCalendarDto(
       hours: json['hours'] as String,
+      pieceworks: json['pieceworks'].map((data) => PieceworkDetailsDto.fromJson(data)).toList(),
       workTimes: json['workTimes'].map((data) => WorkTimeDto.fromJson(data)).toList(),
-      pieceworks: json['pieceworks'].map((data) => WorkTimeDto.fromJson(data)).toList(),
       note: json['note'] as String,
       money: json['money'] as double,
       vocationId: json['vocationId'] as int,
