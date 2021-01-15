@@ -14,11 +14,15 @@ class ValidatorService {
     return null;
   }
 
-  static String validateUpdatingHours(double hours, BuildContext context) {
+  static String validateUpdatingHoursWithMinutes(double hours, double minutes, BuildContext context) {
     if (hours.isNegative) {
       return getTranslated(context, 'hoursCannotBeLowerThan0');
     } else if (hours > 24) {
       return getTranslated(context, 'hoursCannotBeHigherThan24');
+    } else if (minutes.isNegative) {
+      return getTranslated(context, 'minutesCannotBeLowerThan0');
+    } else if (minutes > 0.59) {
+      return getTranslated(context, 'minutesCannotBeHigherThan59');
     }
     return null;
   }

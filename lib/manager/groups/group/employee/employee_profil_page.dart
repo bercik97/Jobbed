@@ -224,7 +224,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                                             child: Row(
                                               children: <Widget>[
                                                 textWhite(getTranslated(this.context, 'hours') + ': '),
-                                                textGreenBold(timesheet.numberOfHoursWorked.toString() + 'h'),
+                                                textGreenBold(timesheet.numberOfHoursWorked + 'h'),
                                               ],
                                             ),
                                             alignment: Alignment.topLeft),

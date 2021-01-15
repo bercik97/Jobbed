@@ -8,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_job/api/employee/dto/employee_statistics_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
@@ -33,6 +32,7 @@ import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/icons_legend_dialog.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:intl/intl.dart';
+import 'package:number_inc_dec/number_inc_dec.dart';
 
 import '../../../../../shared/widget/loader.dart';
 import '../../../../shared/manager_app_bar.dart';
@@ -51,6 +51,7 @@ class TsInProgressPage extends StatefulWidget {
 
 class _TsInProgressPageState extends State<TsInProgressPage> {
   final TextEditingController _hoursController = new TextEditingController();
+  final TextEditingController _minutesController = new TextEditingController();
   final TextEditingController _noteController = new TextEditingController();
 
   GroupModel _model;
@@ -229,7 +230,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                           child: Row(
                                             children: <Widget>[
                                               textWhite(getTranslated(this.context, 'hours') + ': '),
-                                              textGreenBold(employee.numberOfHoursWorked.toString()),
+                                              textGreenBold(employee.numberOfHoursWorked),
                                             ],
                                           ),
                                           alignment: Alignment.topLeft),
@@ -286,6 +287,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                     onPressed: () {
                       if (_selectedIds.isNotEmpty) {
                         _hoursController.clear();
+                        _minutesController.clear();
                         _showUpdateHoursDialog(_selectedIds);
                       } else {
                         showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
@@ -379,21 +381,67 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                     SizedBox(height: 2.5),
                     textGreenBold('[' + dateFrom + ' - ' + dateTo + ']'),
                     SizedBox(height: 2.5),
-                    Container(
-                      width: 150,
-                      child: TextFormField(
-                        controller: _hoursController,
-                        keyboardType: TextInputType.numberWithOptions(decimal: true),
-                        inputFormatters: <TextInputFormatter>[
-                          WhitelistingTextInputFormatter(RegExp(r'^\d+\.?\d{0,2}')),
-                        ],
-                        maxLength: 5,
-                        cursorColor: WHITE,
-                        textAlignVertical: TextAlignVertical.center,
-                        style: TextStyle(color: WHITE),
-                        validator: RequiredValidator(errorText: getTranslated(context, 'hoursAreRequired')),
-                        decoration: InputDecoration(counterStyle: TextStyle(color: WHITE), labelStyle: TextStyle(color: WHITE), labelText: getTranslated(context, 'newHours') + ' (0-24)'),
-                      ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              children: [
+                                textWhite(getTranslated(context, 'hoursNumber')),
+                                SizedBox(height: 2.5),
+                                NumberInputWithIncrementDecrement(
+                                  controller: _hoursController,
+                                  min: 0,
+                                  max: 24,
+                                  onIncrement: (value) {
+                                    if (value > 24) {
+                                      setState(() => value = 24);
+                                    }
+                                  },
+                                  onSubmitted: (value) {
+                                    if (value >= 24) {
+                                      setState(() => _hoursController.text = 24.toString());
+                                    }
+                                  },
+                                  style: TextStyle(color: GREEN),
+                                  widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              children: [
+                                textWhite(getTranslated(context, 'minutesNumber')),
+                                SizedBox(height: 2.5),
+                                NumberInputWithIncrementDecrement(
+                                  controller: _minutesController,
+                                  min: 0,
+                                  max: 59,
+                                  onIncrement: (value) {
+                                    if (value > 59) {
+                                      setState(() => value = 59);
+                                    }
+                                  },
+                                  onSubmitted: (value) {
+                                    if (value >= 59) {
+                                      setState(() => _minutesController.text = 59.toString());
+                                    }
+                                  },
+                                  style: TextStyle(color: GREEN),
+                                  widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 20),
                     Row(
@@ -423,17 +471,20 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                           color: GREEN,
                           onPressed: () {
                             double hours;
+                            double minutes;
                             try {
                               hours = double.parse(_hoursController.text);
+                              minutes = double.parse(_minutesController.text) * 0.01;
                             } catch (FormatException) {
                               ToastService.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
                               return;
                             }
-                            String invalidMessage = ValidatorService.validateUpdatingHours(hours, context);
+                            String invalidMessage = ValidatorService.validateUpdatingHoursWithMinutes(hours, minutes, context);
                             if (invalidMessage != null) {
                               ToastService.showErrorToast(invalidMessage);
                               return;
                             }
+                            hours += minutes;
                             showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                             _workdayService
                                 .updateEmployeesHours(

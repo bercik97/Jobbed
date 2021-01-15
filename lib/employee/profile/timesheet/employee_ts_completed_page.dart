@@ -113,7 +113,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                                   alignment: Alignment.topLeft,
                                   child: textWhite(getTranslated(context, 'hours') + ': '),
                                 ),
-                                textGreenBold(_timesheet.numberOfHoursWorked.toString() + 'h'),
+                                textGreenBold(_timesheet.numberOfHoursWorked + 'h'),
                               ],
                             ),
                             Row(

@@ -139,7 +139,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                             groupName: _model.groupName,
                             groupCountryCurrency: currency,
                             status: _timesheet.status,
-                            numberOfHoursWorked: double.parse(_filteredEmployees[index].numberOfHoursWorked),
+                            numberOfHoursWorked: _filteredEmployees[index].numberOfHoursWorked,
                             amountOfEarnedMoney: _filteredEmployees[index].amountOfEarnedMoney,
                           );
                           Navigator.of(this.context).push(
@@ -188,7 +188,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                                         child: Row(
                                           children: <Widget>[
                                             textWhite(getTranslated(this.context, 'numberOfHoursWorked') + ': '),
-                                            textGreenBold(_filteredEmployees[index].numberOfHoursWorked.toString()),
+                                            textGreenBold(_filteredEmployees[index].numberOfHoursWorked),
                                           ],
                                         ),
                                         alignment: Alignment.topLeft),

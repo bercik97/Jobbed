@@ -670,5 +670,9 @@
   "noteForSelectedDays": "Note for selected days",
   "setNewNote": "Set new note",
   "dayWithNote": "Day with note",
-  "daysWorked": "Days worked"
+  "daysWorked": "Days worked",
+  "hoursNumber": "Hours number",
+  "minutesNumber": "Minutes number",
+  "minutesCannotBeLowerThan0": "Minutes cannot be lower than 0",
+  "minutesCannotBeHigherThan59": "Minutes cannot be higher than 59"
 }

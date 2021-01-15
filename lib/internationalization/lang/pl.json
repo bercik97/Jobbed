@@ -670,5 +670,9 @@
   "noteForSelectedDays": "Notatka dla wybranych dni",
   "setNewNote": "Ustaw nową notatkę",
   "dayWithNote": "Dzień z notatką",
-  "daysWorked": "Przepracowane dni"
+  "daysWorked": "Przepracowane dni",
+  "hoursNumber": "Liczba godzin",
+  "minutesNumber": "Liczba minut",
+  "minutesCannotBeLowerThan0": "Minuty nie mogą być mniejsze niż 0",
+  "minutesCannotBeHigherThan59": "Minuty nie mogą być większe niż 59"
 }

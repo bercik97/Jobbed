@@ -670,5 +670,9 @@
   "noteForSelectedDays": "Примітка для вибраних днів",
   "setNewNote": "Встановити нову нотатку",
   "dayWithNote": "День із запискою",
-  "daysWorked": "Дні працювали"
+  "daysWorked": "Дні працювали",
+  "hoursNumber": "Кількість годин",
+  "minutesNumber": "Номер хвилини",
+  "minutesCannotBeLowerThan0": "Хвилини не можуть бути нижче 0",
+  "minutesCannotBeHigherThan59": "Хвилини не можуть перевищувати 59"
 }

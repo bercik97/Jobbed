@@ -295,7 +295,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
   Widget _buildWorkday(EmployeeCalendarDto workday) {
     List workTimes = workday.workTimes;
     String note = workday.note;
-    double hours = workday.hours;
+    double hours = double.parse(workday.hours);
     double money = workday.money;
     return Column(
       children: [

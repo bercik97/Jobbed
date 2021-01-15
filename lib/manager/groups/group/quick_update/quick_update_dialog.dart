@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
@@ -17,6 +16,7 @@ import 'package:give_job/shared/widget/buttons.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:intl/intl.dart';
+import 'package:number_inc_dec/number_inc_dec.dart';
 
 import '../../../../internationalization/localization/localization_constants.dart';
 
@@ -104,6 +104,7 @@ class QuickUpdateDialog {
 
   static void _buildUpdateHoursDialog(BuildContext context) {
     TextEditingController _hoursController = new TextEditingController();
+    TextEditingController _minutesController = new TextEditingController();
     showGeneralDialog(
       context: context,
       barrierColor: DARK.withOpacity(0.95),
@@ -121,21 +122,47 @@ class QuickUpdateDialog {
                   Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'hoursUpperCase'))),
                   SizedBox(height: 2.5),
                   textGreen(getTranslated(context, 'fillTodaysGroupHours')),
-                  Container(
-                    width: 150,
-                    child: TextFormField(
-                      controller: _hoursController,
-                      keyboardType: TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: <TextInputFormatter>[
-                        WhitelistingTextInputFormatter(RegExp(r'^\d+\.?\d{0,2}')),
-                      ],
-                      maxLength: 5,
-                      cursorColor: WHITE,
-                      textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: WHITE),
-                      validator: RequiredValidator(errorText: getTranslated(context, 'hoursAreRequired')),
-                      decoration: InputDecoration(counterStyle: TextStyle(color: WHITE), labelStyle: TextStyle(color: WHITE), labelText: getTranslated(context, 'newHours') + ' (0-24)'),
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              textWhite(getTranslated(context, 'hoursNumber')),
+                              SizedBox(height: 2.5),
+                              NumberInputWithIncrementDecrement(
+                                controller: _hoursController,
+                                min: 0,
+                                max: 24,
+                                style: TextStyle(color: GREEN),
+                                widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              textWhite(getTranslated(context, 'minutesNumber')),
+                              SizedBox(height: 2.5),
+                              NumberInputWithIncrementDecrement(
+                                controller: _minutesController,
+                                min: 0,
+                                max: 59,
+                                style: TextStyle(color: GREEN),
+                                widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(height: 20),
                   Row(
@@ -165,17 +192,20 @@ class QuickUpdateDialog {
                         color: GREEN,
                         onPressed: () {
                           double hours;
+                          double minutes;
                           try {
                             hours = double.parse(_hoursController.text);
+                            minutes = double.parse(_minutesController.text) * 0.01;
                           } catch (FormatException) {
                             ToastService.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
                             return;
                           }
-                          String invalidMessage = ValidatorService.validateUpdatingHours(hours, context);
+                          String invalidMessage = ValidatorService.validateUpdatingHoursWithMinutes(hours, minutes, context);
                           if (invalidMessage != null) {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
+                          hours += minutes;
                           Navigator.of(context).pop();
                           _initialize(context, _model.user.authHeader);
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));

@@ -13,8 +13,8 @@ class EmployeePageDto {
   final List timeSheets;
   final int todayWorkdayId;
   final String todayDate;
-  final num todayMoney;
-  final double todayHours;
+  final String todayMoney;
+  final String todayHours;
   final List todayWorkTimes;
   final String todayNote;
   final bool canFillHours;
@@ -61,8 +61,8 @@ class EmployeePageDto {
       timeSheets: json['timeSheets'].map((data) => TimesheetForEmployeeDto.fromJson(data)).toList(),
       todayWorkdayId: json['todayWorkdayId'] as int,
       todayDate: json['todayDate'] as String,
-      todayMoney: json['todayMoney'] as num,
-      todayHours: json['todayHours'] as num,
+      todayMoney: json['todayMoney'] as String,
+      todayHours: json['todayHours'] as String,
       todayWorkTimes: json['todayWorkTimes'].map((data) => WorkTimeDto.fromJson(data)).toList(),
       todayNote: json['todayNote'] as String,
       canFillHours: json['canFillHours'] as bool,

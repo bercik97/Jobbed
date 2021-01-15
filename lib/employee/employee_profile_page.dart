@@ -27,6 +27,7 @@ import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/silver_app_bar_delegate.dart';
 import 'package:give_job/shared/widget/texts.dart';
+import 'package:number_inc_dec/number_inc_dec.dart';
 
 import '../shared/widget/loader.dart';
 
@@ -231,6 +232,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
 
   _fillHoursFun(int workdayId) {
     TextEditingController _hoursController = new TextEditingController();
+    TextEditingController _minutesController = new TextEditingController();
     showGeneralDialog(
       context: context,
       barrierColor: DARK.withOpacity(0.95),
@@ -248,23 +250,67 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                   Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'hoursUpperCase'))),
                   SizedBox(height: 2.5),
                   textGreen(getTranslated(context, 'settingHoursForToday')),
-                  Container(
-                    width: 150,
-                    child: TextFormField(
-                      autofocus: true,
-                      controller: _hoursController,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
-                      maxLength: 2,
-                      cursorColor: WHITE,
-                      textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: WHITE),
-                      decoration: InputDecoration(
-                        counterStyle: TextStyle(color: WHITE),
-                        labelStyle: TextStyle(color: WHITE),
-                        labelText: getTranslated(context, 'hours') + ' (0-24)',
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              textWhite(getTranslated(context, 'hoursNumber')),
+                              SizedBox(height: 2.5),
+                              NumberInputWithIncrementDecrement(
+                                controller: _hoursController,
+                                min: 0,
+                                max: 24,
+                                onIncrement: (value) {
+                                  if (value > 24) {
+                                    setState(() => value = 24);
+                                  }
+                                },
+                                onSubmitted: (value) {
+                                  if (value >= 24) {
+                                    setState(() => _hoursController.text = 24.toString());
+                                  }
+                                },
+                                style: TextStyle(color: GREEN),
+                                widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
+                      Expanded(
+                        flex: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              textWhite(getTranslated(context, 'minutesNumber')),
+                              SizedBox(height: 2.5),
+                              NumberInputWithIncrementDecrement(
+                                controller: _minutesController,
+                                min: 0,
+                                max: 59,
+                                onIncrement: (value) {
+                                  if (value > 59) {
+                                    setState(() => value = 59);
+                                  }
+                                },
+                                onSubmitted: (value) {
+                                  if (value >= 59) {
+                                    setState(() => _minutesController.text = 59.toString());
+                                  }
+                                },
+                                style: TextStyle(color: GREEN),
+                                widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(height: 20),
                   Row(
@@ -294,17 +340,20 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                         color: GREEN,
                         onPressed: () {
                           double hours;
+                          double minutes;
                           try {
                             hours = double.parse(_hoursController.text);
+                            minutes = double.parse(_minutesController.text) * 0.01;
                           } catch (FormatException) {
                             ToastService.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
                             return;
                           }
-                          String invalidMessage = ValidatorService.validateUpdatingHours(hours, context);
+                          String invalidMessage = ValidatorService.validateUpdatingHoursWithMinutes(hours, minutes, context);
                           if (invalidMessage != null) {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
+                          hours += minutes;
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _workdayService
                               .updateHoursByIds(
