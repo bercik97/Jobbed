@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:give_job/api/workday/dto/workday_dto.dart';
@@ -186,9 +185,9 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                               DataColumn(label: textWhiteBold(getTranslated(context, 'hours')), onSort: (columnIndex, ascending) => _onSortHours(columnIndex, ascending)),
                               DataColumn(label: textWhiteBold(getTranslated(context, 'money')), onSort: (columnIndex, ascending) => _onSortMoney(columnIndex, ascending)),
                               DataColumn(label: textWhiteBold(getTranslated(context, 'moneyForCompany')), onSort: (columnIndex, ascending) => _onSortMoneyForCompany(columnIndex, ascending)),
-                              DataColumn(label: textWhiteBold(getTranslated(context, 'note')), onSort: (columnIndex, ascending) => _onSortNote(columnIndex, ascending)),
-                              DataColumn(label: textWhiteBold(getTranslated(context, 'workTimes'))),
                               DataColumn(label: textWhiteBold(getTranslated(context, 'pieceworks'))),
+                              DataColumn(label: textWhiteBold(getTranslated(context, 'workTimes'))),
+                              DataColumn(label: textWhiteBold(getTranslated(context, 'note')), onSort: (columnIndex, ascending) => _onSortNote(columnIndex, ascending)),
                               DataColumn(label: textWhiteBold(getTranslated(context, 'vocations'))),
                             ],
                             rows: this
@@ -205,8 +204,12 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                       DataCell(textWhite(workday.moneyHoursForEmployee.toString())),
                                       DataCell(textWhite(workday.moneyHoursForCompany.toString())),
                                       DataCell(
-                                        Wrap(children: <Widget>[workday.note != null && workday.note != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-')]),
-                                        onTap: () => _editNote(this.context, workday.id, workday.note),
+                                        Wrap(
+                                          children: <Widget>[
+                                            workday.pieceworks != null && workday.pieceworks.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
+                                          ],
+                                        ),
+                                        onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workday.pieceworks),
                                       ),
                                       DataCell(
                                         Wrap(
@@ -217,12 +220,8 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                         onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workday.workTimes),
                                       ),
                                       DataCell(
-                                        Wrap(
-                                          children: <Widget>[
-                                            workday.pieceworks != null && workday.pieceworks.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
-                                          ],
-                                        ),
-                                        onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workday.pieceworks),
+                                        Wrap(children: <Widget>[workday.note != null && workday.note != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-')]),
+                                        onTap: () => _editNote(this.context, workday.id, workday.note),
                                       ),
                                       DataCell(
                                           Wrap(

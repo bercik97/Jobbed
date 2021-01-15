@@ -143,9 +143,9 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                               DataColumn(label: textWhiteBold('No.'), onSort: (columnIndex, ascending) => _onSortNo(columnIndex, ascending)),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'hours'))),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'money'))),
-                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'note'))),
-                              _workTimeByLocation ? DataColumn(label: textWhiteBold(getTranslated(this.context, 'workTimes'))) : DataColumn(label: SizedBox(height: 0)),
                               _piecework ? DataColumn(label: textWhiteBold(getTranslated(this.context, 'pieceworks'))) : DataColumn(label: SizedBox(height: 0)),
+                              _workTimeByLocation ? DataColumn(label: textWhiteBold(getTranslated(this.context, 'workTimes'))) : DataColumn(label: SizedBox(height: 0)),
+                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'note'))),
                             ],
                             rows: this
                                 .workdays
@@ -155,20 +155,6 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                                       DataCell(textWhite(workday.number.toString())),
                                       DataCell(textWhite(workday.hours.toString())),
                                       DataCell(textWhite(workday.money.toString())),
-                                      DataCell(
-                                        Wrap(children: <Widget>[workday.note != null && workday.note != '' ? iconWhite(Icons.zoom_in) : textWhite('-')]),
-                                        onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'noteDetails'), workday.note),
-                                      ),
-                                      _workTimeByLocation
-                                          ? DataCell(
-                                              Wrap(
-                                                children: <Widget>[
-                                                  workday.workTimes != null && workday.workTimes.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhite('-'),
-                                                ],
-                                              ),
-                                              onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workday.workTimes),
-                                            )
-                                          : DataCell(SizedBox(height: 0)),
                                       _piecework
                                           ? DataCell(
                                               Wrap(
@@ -179,6 +165,20 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                                               onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workday.pieceworks),
                                             )
                                           : DataCell(SizedBox(height: 0)),
+                                      _workTimeByLocation
+                                          ? DataCell(
+                                              Wrap(
+                                                children: <Widget>[
+                                                  workday.workTimes != null && workday.workTimes.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhite('-'),
+                                                ],
+                                              ),
+                                              onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workday.workTimes),
+                                            )
+                                          : DataCell(SizedBox(height: 0)),
+                                      DataCell(
+                                        Wrap(children: <Widget>[workday.note != null && workday.note != '' ? iconWhite(Icons.zoom_in) : textWhite('-')]),
+                                        onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'noteDetails'), workday.note),
+                                      ),
                                     ],
                                   ),
                                 )
