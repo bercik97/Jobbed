@@ -56,43 +56,39 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                         ),
                         alignment: Alignment.topLeft),
                     SizedBox(height: 5),
-                    dto.piecework
-                        ? Align(
-                            child: Row(
-                              children: <Widget>[
-                                text15White(getTranslated(context, 'accord') + ': '),
-                                todayPiecework != null && todayPiecework.isNotEmpty
-                                    ? Row(
-                                        children: [
-                                          text15GreenBold(getTranslated(context, 'yes') + ' '),
-                                          iconGreen(Icons.search),
-                                          textGreen('(' + getTranslated(context, 'checkingDetails') + ')'),
-                                        ],
-                                      )
-                                    : text15RedBold(getTranslated(context, 'empty'))
-                              ],
-                            ),
-                            alignment: Alignment.topLeft)
-                        : SizedBox(height: 0),
+                    Align(
+                        child: Row(
+                          children: <Widget>[
+                            text15White(getTranslated(context, 'accord') + ': '),
+                            todayPiecework != null && todayPiecework.isNotEmpty
+                                ? Row(
+                                    children: [
+                                      text15GreenBold(getTranslated(context, 'yes') + ' '),
+                                      iconGreen(Icons.search),
+                                      textGreen('(' + getTranslated(context, 'checkingDetails') + ')'),
+                                    ],
+                                  )
+                                : text15RedBold(getTranslated(context, 'empty'))
+                          ],
+                        ),
+                        alignment: Alignment.topLeft),
                     SizedBox(height: 5),
-                    dto.workTimeByLocation
-                        ? Align(
-                            child: Row(
-                              children: <Widget>[
-                                text15White(getTranslated(context, 'time') + ': '),
-                                todayWorkTimes != null && todayWorkTimes.isNotEmpty
-                                    ? Row(
-                                        children: [
-                                          text15GreenBold(getTranslated(context, 'yes') + ' '),
-                                          iconGreen(Icons.search),
-                                          textGreen('(' + getTranslated(context, 'checkingDetails') + ')'),
-                                        ],
-                                      )
-                                    : text15RedBold(getTranslated(context, 'empty'))
-                              ],
-                            ),
-                            alignment: Alignment.topLeft)
-                        : SizedBox(height: 0),
+                    Align(
+                        child: Row(
+                          children: <Widget>[
+                            text15White(getTranslated(context, 'time') + ': '),
+                            todayWorkTimes != null && todayWorkTimes.isNotEmpty
+                                ? Row(
+                                    children: [
+                                      text15GreenBold(getTranslated(context, 'yes') + ' '),
+                                      iconGreen(Icons.search),
+                                      textGreen('(' + getTranslated(context, 'checkingDetails') + ')'),
+                                    ],
+                                  )
+                                : text15RedBold(getTranslated(context, 'empty'))
+                          ],
+                        ),
+                        alignment: Alignment.topLeft),
                     SizedBox(height: 5),
                     Row(
                       children: [

@@ -200,8 +200,8 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
     bool isVocationNotNull = workday.isVocationVerified != null;
     if (isVocationNotNull && workday.isVocationVerified) {
       return Icon(Icons.beach_access, color: Colors.yellow);
-    } else if (workday.hours != 0 || (workday.workTimes != null && workday.workTimes.isNotEmpty) || workday.money != 0 || (workday.pieceworks != null && workday.pieceworks.isNotEmpty)) {
-      return workday.hours != 0 || workday.money != 0 ? icon30Green(Icons.check) : icon30Orange(Icons.arrow_circle_up);
+    } else if (workday.money != '0.000') {
+      return workday.money != '0.000' ? icon30Green(Icons.check) : icon30Orange(Icons.arrow_circle_up);
     } else if (workday.note != null && workday.note.isNotEmpty) {
       if (isVocationNotNull && !workday.isVocationVerified) {
         return Row(
@@ -240,7 +240,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
     bool isVocationNotNull = workday.isVocationVerified != null;
     if (isVocationNotNull && workday.isVocationVerified) {
       return _buildVerifiedVocation(workday.vocationReason);
-    } else if (workday.hours != 0 || (workday.workTimes != null && workday.workTimes.isNotEmpty) || workday.money != 0 || (workday.pieceworks != null && workday.pieceworks.isNotEmpty)) {
+    } else if (workday.money != '0.000') {
       return _buildWorkday(workday);
     } else if (workday.note != null && workday.note.isNotEmpty) {
       if (isVocationNotNull && !workday.isVocationVerified) {
@@ -297,28 +297,22 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
     List workTimes = workday.workTimes;
     String note = workday.note;
     double hours = double.parse(workday.hours);
-    double money = workday.money;
+    String money = workday.money;
     return Column(
       children: [
-        hours != 0 || money != 0
+        money != '0.000'
             ? textCenter16GreenBold(getTranslated(context, 'workedDay') + ' ' + _selectedDay.toString().substring(0, 10))
             : textCenter16OrangeBold(
                 getTranslated(context, 'workInProgress') + ' ' + _selectedDay.toString().substring(0, 10),
               ),
         ListTile(
-          trailing: hours != 0 || money != 0 ? icon50Green(Icons.check) : icon50Orange(Icons.arrow_circle_up),
-          title: Row(
-            children: [
-              text15White(getTranslated(context, 'amountOfEarnedMoney') + ': '),
-              text15GreenBold(workday.money.toString()),
-            ],
-          ),
+          trailing: money != '0.000' ? icon50Green(Icons.check) : icon50Orange(Icons.arrow_circle_up),
           subtitle: Column(
             children: <Widget>[
               Align(
                   child: Row(
                     children: <Widget>[
-                      text15White(getTranslated(context, 'numberOfHoursWorked') + ': '),
+                      text15White(getTranslated(context, 'hours') + ': '),
                       text15GreenBold(hours.toString()),
                     ],
                   ),
@@ -326,12 +320,13 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
               Align(
                   child: Row(
                     children: <Widget>[
-                      text15White(getTranslated(context, 'pieceworks') + ': '),
+                      text15White(getTranslated(context, 'accord') + ': '),
                       pieceworks != null && pieceworks.isNotEmpty
                           ? Row(
                               children: [
                                 text15GreenBold(getTranslated(context, 'yes') + ' '),
                                 iconGreen(Icons.search),
+                                textGreen('(' + getTranslated(context, 'checkingDetails') + ')'),
                               ],
                             )
                           : text15RedBold(getTranslated(context, 'empty')),
@@ -341,18 +336,25 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
               Align(
                   child: Row(
                     children: <Widget>[
-                      text15White(getTranslated(context, 'workTimes') + ': '),
+                      text15White(getTranslated(context, 'time') + ': '),
                       workTimes != null && workTimes.isNotEmpty
                           ? Row(
                               children: [
                                 text15GreenBold(getTranslated(context, 'yes') + ' '),
                                 iconGreen(Icons.search),
+                                textGreen('(' + getTranslated(context, 'checkingDetails') + ')'),
                               ],
                             )
                           : text15RedBold(getTranslated(context, 'empty')),
                     ],
                   ),
                   alignment: Alignment.topLeft),
+              Row(
+                children: [
+                  text15White(getTranslated(context, 'money') + ' (' + getTranslated(context, 'sum') + '): '),
+                  text15GreenBold(workday.money),
+                ],
+              ),
               Align(
                   child: Row(
                     children: <Widget>[
