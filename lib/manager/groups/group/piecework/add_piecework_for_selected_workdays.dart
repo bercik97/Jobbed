@@ -24,8 +24,6 @@ import 'package:give_job/shared/widget/loader.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
-import '../group_page.dart';
-
 class AddPieceworkForSelectedWorkdays extends StatefulWidget {
   final GroupModel _model;
   final List<String> _selectedWorkdayIds;
@@ -118,25 +116,13 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
             actions: <Widget>[
               FlatButton(
                 child: textWhite(getTranslated(this.context, 'goToTheTimesheetPage')),
-                onPressed: () => _resetAndOpenPage(),
+                onPressed: () => navigateIntoEmployeeTsInProgressPage(),
               ),
             ],
           ),
-          onWillPop: _navigateToGroupPage,
+          onWillPop: navigateIntoEmployeeTsInProgressPage,
         );
       },
-    );
-  }
-
-  Future<bool> _navigateToGroupPage() async {
-    _resetAndOpenPage();
-    return true;
-  }
-
-  void _resetAndOpenPage() {
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (BuildContext context) => GroupPage(_model)),
-      ModalRoute.withName('/'),
     );
   }
 
@@ -169,7 +155,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
           bottomNavigationBar: _buildBottomNavigationBar(),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _currency, _timesheet, _avatarPath, _previousPage)),
     );
   }
 
@@ -240,9 +226,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
               children: <Widget>[iconWhite(Icons.close)],
             ),
             color: Colors.red,
-            onPressed: () => {
-              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => GroupPage(_model)), (e) => false),
-            },
+            onPressed: () => navigateIntoEmployeeTsInProgressPage(),
           ),
           SizedBox(width: 25),
           MaterialButton(
@@ -316,12 +300,16 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
       (res) {
         Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
           ToastService.showSuccessToast(successMsg);
-          Navigator.push(
-            this.context,
-            MaterialPageRoute(builder: (context) => EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _currency, _timesheet, _avatarPath, _previousPage)),
-          );
+          navigateIntoEmployeeTsInProgressPage();
         });
       },
+    );
+  }
+
+  void navigateIntoEmployeeTsInProgressPage() {
+    Navigator.push(
+      this.context,
+      MaterialPageRoute(builder: (context) => EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _currency, _timesheet, _avatarPath, _previousPage)),
     );
   }
 }
