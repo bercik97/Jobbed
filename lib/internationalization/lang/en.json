@@ -674,5 +674,9 @@
   "hoursNumber": "Hours number",
   "minutesNumber": "Minutes number",
   "minutesCannotBeLowerThan0": "Minutes cannot be lower than 0",
-  "minutesCannotBeHigherThan59": "Minutes cannot be higher than 59"
+  "minutesCannotBeHigherThan59": "Minutes cannot be higher than 59",
+  "accord": "Accord",
+  "sumForEmployee": "Sum for employee",
+  "sumForCompany": "Sum for company",
+  "time": "Time"
 }

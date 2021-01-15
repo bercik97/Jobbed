@@ -169,7 +169,10 @@ class WorkdayUtil {
     );
   }
 
-  static void showScrollablePieceworksDialog(BuildContext context, List pieceworks) {
+  static void showScrollablePieceworksDialog(BuildContext context, List pieceworks, bool displayCompanyPrice) {
+    if (pieceworks == null || pieceworks.isEmpty) {
+      return;
+    }
     showGeneralDialog(
       context: context,
       barrierColor: DARK.withOpacity(0.95),
@@ -189,7 +192,7 @@ class WorkdayUtil {
                       children: <Widget>[
                         text20GreenBold(getTranslated(context, 'pieceworkReports')),
                         SizedBox(height: 20),
-                        _buildPieceworksDataTable(context, pieceworks),
+                        _buildPieceworksDataTable(context, pieceworks, displayCompanyPrice),
                         SizedBox(height: 20),
                         Container(
                           width: 80,
@@ -217,7 +220,7 @@ class WorkdayUtil {
     );
   }
 
-  static Widget _buildPieceworksDataTable(BuildContext context, List pieceworks) {
+  static Widget _buildPieceworksDataTable(BuildContext context, List pieceworks, bool displayCompanyPrice) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: SingleChildScrollView(
@@ -227,25 +230,39 @@ class WorkdayUtil {
           child: DataTable(
             columnSpacing: 10,
             columns: [
-              DataColumn(label: textWhiteBold(getTranslated(context, 'services'))),
-              DataColumn(label: textWhiteBold(getTranslated(context, 'totalPrice'))),
+              DataColumn(label: textWhiteBold('No.')),
+              DataColumn(label: textWhiteBold(getTranslated(context, 'serviceName'))),
+              DataColumn(label: textWhiteBold(getTranslated(context, 'quantity'))),
+              displayCompanyPrice
+                  ? DataColumn(
+                      label: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        textWhiteBold(getTranslated(context, 'price')),
+                        text12White('(' + getTranslated(context, 'employee') + ')'),
+                      ],
+                    ))
+                  : DataColumn(label: textWhiteBold(getTranslated(context, 'price'))),
+              displayCompanyPrice
+                  ? DataColumn(
+                      label: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        textWhiteBold(getTranslated(context, 'price')),
+                        text12White('(' + getTranslated(context, 'company') + ')'),
+                      ],
+                    ))
+                  : DataColumn(label: SizedBox(height: 0)),
             ],
             rows: [
               for (int i = 0; i < pieceworks.length; i++)
                 DataRow(
                   cells: [
-                    DataCell(
-                      IconButton(
-                        icon: iconWhite(Icons.search),
-                        onPressed: () => WorkdayUtil.buildPieceworkDialog(
-                          context,
-                          pieceworks[i].services,
-                          pieceworks[i].quantities,
-                          pieceworks[i].prices,
-                        ),
-                      ),
-                    ),
-                    DataCell(textGreen(pieceworks[i].totalPrice.toString())),
+                    DataCell(textWhite((i + 1).toString())),
+                    DataCell(textWhite(utf8.decode(pieceworks[i].service.runes.toList()))),
+                    DataCell(Align(alignment: Alignment.center, child: textWhite(pieceworks[i].quantity.toString()))),
+                    DataCell(Align(alignment: Alignment.center, child: textWhite(pieceworks[i].priceForEmployee.toString()))),
+                    displayCompanyPrice ? DataCell(Align(alignment: Alignment.center, child: textWhite(pieceworks[i].priceForCompany.toString()))) : DataCell(SizedBox(height: 0)),
                   ],
                 ),
             ],

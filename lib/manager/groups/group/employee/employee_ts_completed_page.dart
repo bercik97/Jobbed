@@ -130,10 +130,26 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                             columns: [
                               DataColumn(label: textWhiteBold('No.')),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'hours'))),
-                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'money'))),
-                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'moneyForCompany'))),
-                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'pieceworks'))),
-                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'workTimes'))),
+                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'accord'))),
+                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'time'))),
+                              DataColumn(
+                                label: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    textWhiteBold(getTranslated(this.context, 'money')),
+                                    text12White('(' + getTranslated(this.context, 'sumForEmployee') + ')'),
+                                  ],
+                                ),
+                              ),
+                              DataColumn(
+                                label: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    textWhiteBold(getTranslated(this.context, 'money')),
+                                    text12White('(' + getTranslated(this.context, 'sumForCompany') + ')'),
+                                  ],
+                                ),
+                              ),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'note'))),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'vocations'))),
                             ],
@@ -143,15 +159,13 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                                   cells: [
                                     DataCell(textWhite(workday.number.toString())),
                                     DataCell(textWhite(workday.hours.toString())),
-                                    DataCell(textWhite(workday.moneyHoursForEmployee.toString())),
-                                    DataCell(textWhite(workday.moneyHoursForCompany.toString())),
                                     DataCell(
                                       Wrap(
                                         children: <Widget>[
                                           workday.pieceworks != null && workday.pieceworks.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
                                         ],
                                       ),
-                                      onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workday.pieceworks),
+                                      onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workday.pieceworks, true),
                                     ),
                                     DataCell(
                                       Wrap(
@@ -161,6 +175,8 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                                       ),
                                       onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workday.workTimes),
                                     ),
+                                    DataCell(Align(alignment: Alignment.center, child: textWhite(workday.totalMoneyForEmployee.toString()))),
+                                    DataCell(Align(alignment: Alignment.center, child: textWhite(workday.totalMoneyForCompany.toString()))),
                                     DataCell(
                                       Wrap(
                                         children: <Widget>[

@@ -674,5 +674,9 @@
   "hoursNumber": "Количество часов",
   "minutesNumber": "Число минут",
   "minutesCannotBeLowerThan0": "Минуты не могут быть меньше 0",
-  "minutesCannotBeHigherThan59": "Минуты не могут быть больше 59"
+  "minutesCannotBeHigherThan59": "Минуты не могут быть больше 59",
+  "accord": "Аккорд",
+  "sumForEmployee": "Сумма на сотрудника",
+  "sumForCompany": "Сумма для компании",
+  "time": "Время"
 }

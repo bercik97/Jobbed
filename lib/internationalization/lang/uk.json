@@ -674,5 +674,9 @@
   "hoursNumber": "Кількість годин",
   "minutesNumber": "Номер хвилини",
   "minutesCannotBeLowerThan0": "Хвилини не можуть бути нижче 0",
-  "minutesCannotBeHigherThan59": "Хвилини не можуть перевищувати 59"
+  "minutesCannotBeHigherThan59": "Хвилини не можуть перевищувати 59",
+  "accord": "Акорд",
+  "sumForEmployee": "Сума для працівника",
+  "sumForCompany": "Сума для компанії",
+  "time": "Час"
 }

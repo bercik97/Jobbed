@@ -27,10 +27,8 @@ import '../../employee_profile_page.dart';
 class EmployeeTsCompletedPage extends StatefulWidget {
   final User _user;
   final TimesheetForEmployeeDto _timesheet;
-  final bool _workTimeByLocation;
-  final bool _piecework;
 
-  EmployeeTsCompletedPage(this._user, this._timesheet, this._workTimeByLocation, this._piecework);
+  EmployeeTsCompletedPage(this._user, this._timesheet);
 
   @override
   _EmployeeTsCompletedPageState createState() => _EmployeeTsCompletedPageState();
@@ -40,8 +38,6 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
   User _user;
   WorkdayService _workdayService;
   TimesheetForEmployeeDto _timesheet;
-  bool _workTimeByLocation;
-  bool _piecework;
 
   List<WorkdayForEmployeeDto> workdays = new List();
 
@@ -56,8 +52,6 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
     this._user = widget._user;
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     this._timesheet = widget._timesheet;
-    this._workTimeByLocation = widget._workTimeByLocation;
-    this._piecework = widget._piecework;
     this._loading = true;
     super.initState();
     _workdayService.findAllForEmployeeByTimesheetId(_timesheet.id.toString()).then((res) {
@@ -138,13 +132,21 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                         child: Theme(
                           data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
                           child: DataTable(
-                            columnSpacing: _chooseColumnSpacing(),
+                            columnSpacing: 10,
                             columns: [
                               DataColumn(label: textWhiteBold('No.'), onSort: (columnIndex, ascending) => _onSortNo(columnIndex, ascending)),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'hours'))),
-                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'money'))),
-                              _piecework ? DataColumn(label: textWhiteBold(getTranslated(this.context, 'pieceworks'))) : DataColumn(label: SizedBox(height: 0)),
-                              _workTimeByLocation ? DataColumn(label: textWhiteBold(getTranslated(this.context, 'workTimes'))) : DataColumn(label: SizedBox(height: 0)),
+                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'accord'))),
+                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'time'))),
+                              DataColumn(
+                                label: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    textWhiteBold(getTranslated(this.context, 'money')),
+                                    text12White('(' + getTranslated(this.context, 'sum') + ')'),
+                                  ],
+                                ),
+                              ),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'note'))),
                             ],
                             rows: this
@@ -154,27 +156,23 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                                     cells: [
                                       DataCell(textWhite(workday.number.toString())),
                                       DataCell(textWhite(workday.hours.toString())),
+                                      DataCell(
+                                        Wrap(
+                                          children: <Widget>[
+                                            workday.pieceworks != null && workday.pieceworks.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhite('-'),
+                                          ],
+                                        ),
+                                        onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workday.pieceworks, false),
+                                      ),
+                                      DataCell(
+                                        Wrap(
+                                          children: <Widget>[
+                                            workday.workTimes != null && workday.workTimes.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhite('-'),
+                                          ],
+                                        ),
+                                        onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workday.workTimes),
+                                      ),
                                       DataCell(textWhite(workday.money.toString())),
-                                      _piecework
-                                          ? DataCell(
-                                              Wrap(
-                                                children: <Widget>[
-                                                  workday.pieceworks != null && workday.pieceworks.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhite('-'),
-                                                ],
-                                              ),
-                                              onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workday.pieceworks),
-                                            )
-                                          : DataCell(SizedBox(height: 0)),
-                                      _workTimeByLocation
-                                          ? DataCell(
-                                              Wrap(
-                                                children: <Widget>[
-                                                  workday.workTimes != null && workday.workTimes.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhite('-'),
-                                                ],
-                                              ),
-                                              onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workday.workTimes),
-                                            )
-                                          : DataCell(SizedBox(height: 0)),
                                       DataCell(
                                         Wrap(children: <Widget>[workday.note != null && workday.note != '' ? iconWhite(Icons.zoom_in) : textWhite('-')]),
                                         onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'noteDetails'), workday.note),
@@ -202,16 +200,6 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilPage(_user)),
     );
-  }
-
-  double _chooseColumnSpacing() {
-    if (_workTimeByLocation && _piecework) {
-      return 10;
-    } else if (_workTimeByLocation || _piecework) {
-      return 20;
-    } else {
-      return 30;
-    }
   }
 
   void _onSortNo(columnIndex, ascending) {

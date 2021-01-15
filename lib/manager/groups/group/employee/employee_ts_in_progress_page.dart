@@ -183,10 +183,26 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             columns: [
                               DataColumn(label: textWhiteBold('No.'), onSort: (columnIndex, ascending) => _onSortNo(columnIndex, ascending)),
                               DataColumn(label: textWhiteBold(getTranslated(context, 'hours')), onSort: (columnIndex, ascending) => _onSortHours(columnIndex, ascending)),
-                              DataColumn(label: textWhiteBold(getTranslated(context, 'money')), onSort: (columnIndex, ascending) => _onSortMoney(columnIndex, ascending)),
-                              DataColumn(label: textWhiteBold(getTranslated(context, 'moneyForCompany')), onSort: (columnIndex, ascending) => _onSortMoneyForCompany(columnIndex, ascending)),
-                              DataColumn(label: textWhiteBold(getTranslated(context, 'pieceworks'))),
-                              DataColumn(label: textWhiteBold(getTranslated(context, 'workTimes'))),
+                              DataColumn(label: textWhiteBold(getTranslated(context, 'accord'))),
+                              DataColumn(label: textWhiteBold(getTranslated(context, 'time'))),
+                              DataColumn(
+                                  label: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      textWhiteBold(getTranslated(context, 'money')),
+                                      text12White('(' + getTranslated(this.context, 'sumForEmployee') + ')'),
+                                    ],
+                                  ),
+                                  onSort: (columnIndex, ascending) => _onSortMoney(columnIndex, ascending)),
+                              DataColumn(
+                                  label: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      textWhiteBold(getTranslated(context, 'money')),
+                                      text12White('(' + getTranslated(this.context, 'sumForCompany') + ')'),
+                                    ],
+                                  ),
+                                  onSort: (columnIndex, ascending) => _onSortMoneyForCompany(columnIndex, ascending)),
                               DataColumn(label: textWhiteBold(getTranslated(context, 'note')), onSort: (columnIndex, ascending) => _onSortNote(columnIndex, ascending)),
                               DataColumn(label: textWhiteBold(getTranslated(context, 'vocations'))),
                             ],
@@ -201,15 +217,13 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                     cells: [
                                       DataCell(textWhite(workday.number.toString())),
                                       DataCell(textWhite(workday.hours.toString())),
-                                      DataCell(textWhite(workday.moneyHoursForEmployee.toString())),
-                                      DataCell(textWhite(workday.moneyHoursForCompany.toString())),
                                       DataCell(
                                         Wrap(
                                           children: <Widget>[
                                             workday.pieceworks != null && workday.pieceworks.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
                                           ],
                                         ),
-                                        onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workday.pieceworks),
+                                        onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workday.pieceworks, true),
                                       ),
                                       DataCell(
                                         Wrap(
@@ -219,6 +233,8 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                         ),
                                         onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workday.workTimes),
                                       ),
+                                      DataCell(Align(alignment: Alignment.center, child: textWhite(workday.totalMoneyForEmployee.toString()))),
+                                      DataCell(Align(alignment: Alignment.center, child: textWhite(workday.totalMoneyForCompany.toString()))),
                                       DataCell(
                                         Wrap(children: <Widget>[workday.note != null && workday.note != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-')]),
                                         onTap: () => _editNote(this.context, workday.id, workday.note),
@@ -403,7 +419,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
         _sortColumnIndex = columnIndex;
         _sort = _sortMoney;
       }
-      workdays.sort((a, b) => a.moneyHoursForEmployee.compareTo(b.moneyHoursForEmployee));
+      workdays.sort((a, b) => a.totalMoneyForEmployee.compareTo(b.totalMoneyForEmployee));
       if (!_sort) {
         workdays = workdays.reversed.toList();
       }
@@ -418,7 +434,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
         _sortColumnIndex = columnIndex;
         _sort = _sortMoneyForCompany;
       }
-      workdays.sort((a, b) => a.moneyHoursForCompany.compareTo(b.moneyHoursForCompany));
+      workdays.sort((a, b) => a.totalMoneyForCompany.compareTo(b.totalMoneyForCompany));
       if (!_sort) {
         workdays = workdays.reversed.toList();
       }

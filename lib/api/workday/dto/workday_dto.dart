@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:give_job/api/piecework/dto/piecework_dto.dart';
+import 'package:give_job/api/piecework/dto/piecework_details_dto.dart';
 import 'package:give_job/api/vocation/dto/vocation_dto.dart';
 import 'package:give_job/api/work_time/dto/work_time_dto.dart';
 
@@ -7,26 +7,22 @@ class WorkdayDto {
   final int id;
   final int number;
   final String hours;
-  final String note;
-  final String moneyHoursForEmployee;
-  final String moneyPieceworkForEmployee;
-  final String moneyHoursForCompany;
-  final String moneyPieceworkForCompany;
-  final List workTimes;
+  final String totalMoneyForEmployee;
+  final String totalMoneyForCompany;
   final List pieceworks;
+  final List workTimes;
+  final String note;
   final VocationDto vocation;
 
   WorkdayDto({
     @required this.id,
     @required this.number,
     @required this.hours,
-    @required this.note,
-    @required this.moneyHoursForEmployee,
-    @required this.moneyPieceworkForEmployee,
-    @required this.moneyHoursForCompany,
-    @required this.moneyPieceworkForCompany,
-    @required this.workTimes,
+    @required this.totalMoneyForEmployee,
+    @required this.totalMoneyForCompany,
     @required this.pieceworks,
+    @required this.workTimes,
+    @required this.note,
     @required this.vocation,
   });
 
@@ -38,13 +34,11 @@ class WorkdayDto {
       id: json['id'] as int,
       number: json['number'] as int,
       hours: json['hours'] as String,
-      note: json['note'] as String,
-      moneyHoursForEmployee: json['moneyHoursForEmployee'] as String,
-      moneyPieceworkForEmployee: json['moneyPieceworkForEmployee'] as String,
-      moneyHoursForCompany: json['moneyHoursForCompany'] as String,
-      moneyPieceworkForCompany: json['moneyPieceworkForCompany'] as String,
+      totalMoneyForEmployee: json['totalMoneyForEmployee'] as String,
+      totalMoneyForCompany: json['totalMoneyForCompany'] as String,
+      pieceworks: pieceworksAsJson != null ? pieceworksAsJson.map((data) => PieceworkDetailsDto.fromJson(data)).toList() : null,
       workTimes: workTimesAsJson != null ? workTimesAsJson.map((data) => WorkTimeDto.fromJson(data)).toList() : null,
-      pieceworks: pieceworksAsJson != null ? pieceworksAsJson.map((data) => PieceworkDto.fromJson(data)).toList() : null,
+      note: json['note'] as String,
       vocation: vocationAsJson != null ? VocationDto.fromJson(vocationAsJson) : null,
     );
   }

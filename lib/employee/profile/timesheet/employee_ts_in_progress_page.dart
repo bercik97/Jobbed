@@ -34,11 +34,8 @@ import '../../employee_profile_page.dart';
 class EmployeeTsInProgressPage extends StatefulWidget {
   final User _user;
   final TimesheetForEmployeeDto _timesheet;
-  final bool _canFillHours;
-  final bool _workTimeByLocation;
-  final bool _piecework;
 
-  EmployeeTsInProgressPage(this._user, this._timesheet, this._canFillHours, this._workTimeByLocation, this._piecework);
+  EmployeeTsInProgressPage(this._user, this._timesheet);
 
   @override
   _EmployeeTsInProgressPageState createState() => _EmployeeTsInProgressPageState();
@@ -52,10 +49,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   User _user;
   WorkdayService _workdayService;
   TimesheetForEmployeeDto _timesheet;
-
-  bool _canFillHours;
-  bool _workTimeByLocation;
-  bool _piecework;
 
   Set<int> selectedIds = new Set();
   List<WorkdayForEmployeeDto> workdays = new List();
@@ -72,9 +65,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     this._user = widget._user;
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     this._timesheet = widget._timesheet;
-    this._canFillHours = widget._canFillHours;
-    this._workTimeByLocation = widget._workTimeByLocation;
-    this._piecework = widget._piecework;
     this._loading = true;
     super.initState();
     _workdayService.findAllForEmployeeByTimesheetId(_timesheet.id.toString()).then((res) {
@@ -155,51 +145,53 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                       child: Theme(
                         data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
                         child: DataTable(
-                          columnSpacing: _chooseColumnSpacing(),
+                          columnSpacing: 10,
                           sortAscending: _sort,
                           sortColumnIndex: _sortColumnIndex,
                           columns: [
                             DataColumn(label: textWhiteBold('No.'), onSort: (columnIndex, ascending) => _onSortNo(columnIndex, ascending)),
                             DataColumn(label: textWhiteBold(getTranslated(this.context, 'hours'))),
-                            DataColumn(label: textWhiteBold(getTranslated(this.context, 'money'))),
-                            _piecework ? DataColumn(label: textWhiteBold(getTranslated(this.context, 'pieceworks'))) : DataColumn(label: SizedBox(height: 0)),
-                            _workTimeByLocation ? DataColumn(label: textWhiteBold(getTranslated(this.context, 'workTimes'))) : DataColumn(label: SizedBox(height: 0)),
+                            DataColumn(label: textWhiteBold(getTranslated(this.context, 'accord'))),
+                            DataColumn(label: textWhiteBold(getTranslated(this.context, 'time'))),
+                            DataColumn(
+                              label: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  textWhiteBold(getTranslated(this.context, 'money')),
+                                  text12White('(' + getTranslated(this.context, 'sum') + ')'),
+                                ],
+                              ),
+                            ),
                             DataColumn(label: textWhiteBold(getTranslated(this.context, 'note'))),
                           ],
                           rows: this
                               .workdays
                               .map(
                                 (workday) => DataRow(
-                                  selected: _canFillHours ? selectedIds.contains(workday.id) : false,
-                                  onSelectChanged: _canFillHours
-                                      ? (bool selected) {
-                                          _onSelectedRow(selected, workday.id);
-                                        }
-                                      : null,
+                                  selected: selectedIds.contains(workday.id),
+                                  onSelectChanged: (bool selected) {
+                                    _onSelectedRow(selected, workday.id);
+                                  },
                                   cells: [
                                     DataCell(textWhite(workday.number.toString())),
                                     DataCell(textWhite(workday.hours.toString())),
+                                    DataCell(
+                                      Wrap(
+                                        children: <Widget>[
+                                          workday.pieceworks != null && workday.pieceworks.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhite('-'),
+                                        ],
+                                      ),
+                                      onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workday.pieceworks, false),
+                                    ),
+                                    DataCell(
+                                      Wrap(
+                                        children: <Widget>[
+                                          workday.workTimes != null && workday.workTimes.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhite('-'),
+                                        ],
+                                      ),
+                                      onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workday.workTimes),
+                                    ),
                                     DataCell(textWhite(workday.money.toString())),
-                                    _piecework
-                                        ? DataCell(
-                                            Wrap(
-                                              children: <Widget>[
-                                                workday.pieceworks != null && workday.pieceworks.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhite('-'),
-                                              ],
-                                            ),
-                                            onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workday.pieceworks),
-                                          )
-                                        : DataCell(SizedBox(height: 0)),
-                                    _workTimeByLocation
-                                        ? DataCell(
-                                            Wrap(
-                                              children: <Widget>[
-                                                workday.workTimes != null && workday.workTimes.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhite('-'),
-                                              ],
-                                            ),
-                                            onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workday.workTimes),
-                                          )
-                                        : DataCell(SizedBox(height: 0)),
                                     DataCell(
                                       Wrap(children: <Widget>[workday.note != null && workday.note != '' ? iconWhite(Icons.zoom_in) : textWhite('-')]),
                                       onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'noteDetails'), workday.note),
@@ -216,80 +208,59 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
               ],
             ),
           ),
-          floatingActionButton: _canFillHours
-              ? iconsLegendDialog(
-                  this.context,
-                  getTranslated(context, 'iconsLegend'),
-                  [
-                    IconsLegendUtil.buildImageRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
-                    IconsLegendUtil.buildIconRow(iconWhite(Icons.search), getTranslated(context, 'checkDetails')),
-                    IconsLegendUtil.buildImageRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
-                    IconsLegendUtil.buildImageRow('images/green-note-icon.png', getTranslated(context, 'settingNotes')),
-                  ],
-                )
-              : iconsLegendDialog(
-                  this.context,
-                  getTranslated(context, 'iconsLegend'),
-                  [
-                    IconsLegendUtil.buildImageRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
-                    IconsLegendUtil.buildIconRow(iconWhite(Icons.search), getTranslated(context, 'checkDetails')),
-                  ],
-                ),
-          bottomNavigationBar: _canFillHours
-              ? Container(
-                  height: 40,
-                  child: Row(
-                    children: <Widget>[
-                      SizedBox(width: 1),
-                      Expanded(
-                        child: MaterialButton(
-                          color: GREEN,
-                          child: Image(image: AssetImage('images/dark-hours-icon.png')),
-                          onPressed: () {
-                            if (selectedIds.isNotEmpty) {
-                              _hoursController.clear();
-                              _minutesController.clear();
-                              _showUpdateHoursDialog(selectedIds);
-                            } else {
-                              showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                            }
-                          },
-                        ),
-                      ),
-                      SizedBox(width: 2.5),
-                      Expanded(
-                        child: MaterialButton(
-                          color: GREEN,
-                          child: Image(image: AssetImage('images/dark-note-icon.png')),
-                          onPressed: () {
-                            if (selectedIds.isNotEmpty) {
-                              _noteController.clear();
-                              _showUpdateNotesDialog(selectedIds);
-                            } else {
-                              showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                            }
-                          },
-                        ),
-                      ),
-                      SizedBox(width: 1),
-                    ],
+          floatingActionButton: iconsLegendDialog(
+            this.context,
+            getTranslated(context, 'iconsLegend'),
+            [
+              IconsLegendUtil.buildImageRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
+              IconsLegendUtil.buildIconRow(iconWhite(Icons.search), getTranslated(context, 'checkDetails')),
+              IconsLegendUtil.buildImageRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
+              IconsLegendUtil.buildImageRow('images/green-note-icon.png', getTranslated(context, 'settingNotes')),
+            ],
+          ),
+          bottomNavigationBar: Container(
+            height: 40,
+            child: Row(
+              children: <Widget>[
+                SizedBox(width: 1),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: Image(image: AssetImage('images/dark-hours-icon.png')),
+                    onPressed: () {
+                      if (selectedIds.isNotEmpty) {
+                        _hoursController.clear();
+                        _minutesController.clear();
+                        _showUpdateHoursDialog(selectedIds);
+                      } else {
+                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                      }
+                    },
                   ),
-                )
-              : SizedBox(width: 0),
+                ),
+                SizedBox(width: 2.5),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: Image(image: AssetImage('images/dark-note-icon.png')),
+                    onPressed: () {
+                      if (selectedIds.isNotEmpty) {
+                        _noteController.clear();
+                        _showUpdateNotesDialog(selectedIds);
+                      } else {
+                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                      }
+                    },
+                  ),
+                ),
+                SizedBox(width: 1),
+              ],
+            ),
+          ),
         ),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilPage(_user)),
     );
-  }
-
-  double _chooseColumnSpacing() {
-    if (_workTimeByLocation && _piecework) {
-      return 10;
-    } else if (_workTimeByLocation || _piecework) {
-      return 20;
-    } else {
-      return 30;
-    }
   }
 
   void _onSelectedRow(bool selected, int id) {

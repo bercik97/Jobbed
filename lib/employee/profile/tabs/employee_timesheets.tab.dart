@@ -12,7 +12,7 @@ import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/util/month_util.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
-Widget employeeTimesheetsTab(BuildContext context, User user, List timesheets, bool canFillHours, bool workTimeByLocation, bool piecework) {
+Widget employeeTimesheetsTab(BuildContext context, User user, List timesheets) {
   if (timesheets.isEmpty) {
     return _handleEmptyData(context);
   }
@@ -35,9 +35,9 @@ Widget employeeTimesheetsTab(BuildContext context, User user, List timesheets, b
                           MaterialPageRoute(
                             builder: (context) {
                               if (timesheet.status == STATUS_IN_PROGRESS) {
-                                return EmployeeTsInProgressPage(user, timesheet, canFillHours, workTimeByLocation, piecework);
+                                return EmployeeTsInProgressPage(user, timesheet);
                               } else {
-                                return EmployeeTsCompletedPage(user, timesheet, workTimeByLocation, piecework);
+                                return EmployeeTsCompletedPage(user, timesheet);
                               }
                             },
                           ),
