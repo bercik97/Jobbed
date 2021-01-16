@@ -179,10 +179,20 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
                             color: BRIGHTER_DARK,
                             child: ListTile(
                               title: textGreen(utf8.decode(pricelist.name.runes.toList())),
-                              subtitle: Row(
+                              subtitle: Column(
                                 children: [
-                                  textWhite(getTranslated(this.context, 'price') + ': '),
-                                  textGreen(pricelist.priceForEmployee.toString()),
+                                  Row(
+                                    children: [
+                                      textWhite(getTranslated(this.context, 'priceForEmployee') + ': '),
+                                      textGreen(pricelist.priceForEmployee.toString()),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      textWhite(getTranslated(this.context, 'priceForCompany') + ': '),
+                                      textGreen(pricelist.priceForCompany.toString()),
+                                    ],
+                                  ),
                                 ],
                               ),
                               trailing: Container(
