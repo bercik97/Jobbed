@@ -7,9 +7,10 @@ class EmployeeStatisticsDto {
   final String nationality;
   final String currency;
   final int timesheetId;
-  final String numberOfHoursWorked;
-  final double moneyPerHour;
-  final String amountOfEarnedMoney;
+  final String totalHours;
+  final String totalMoneyForHoursForEmployee;
+  final String totalMoneyForPieceworkForEmployee;
+  final String totalMoneyEarned;
 
   EmployeeStatisticsDto({
     @required this.id,
@@ -18,9 +19,10 @@ class EmployeeStatisticsDto {
     @required this.nationality,
     @required this.currency,
     @required this.timesheetId,
-    @required this.numberOfHoursWorked,
-    @required this.moneyPerHour,
-    @required this.amountOfEarnedMoney,
+    @required this.totalHours,
+    @required this.totalMoneyForHoursForEmployee,
+    @required this.totalMoneyForPieceworkForEmployee,
+    @required this.totalMoneyEarned,
   });
 
   factory EmployeeStatisticsDto.fromJson(Map<String, dynamic> json) {
@@ -31,9 +33,10 @@ class EmployeeStatisticsDto {
       nationality: json['nationality'] as String,
       currency: json['currency'] as String,
       timesheetId: json['timesheetId'] as int,
-      numberOfHoursWorked: json['numberOfHoursWorked'] as String,
-      moneyPerHour: json['moneyPerHour'] as double,
-      amountOfEarnedMoney: json['amountOfEarnedMoney'] as String,
+      totalHours: json['totalHours'] as String,
+      totalMoneyForHoursForEmployee: json['totalMoneyForHoursForEmployee'] as String,
+      totalMoneyForPieceworkForEmployee: json['totalMoneyForPieceworkForEmployee'] as String,
+      totalMoneyEarned: json['totalMoneyEarned'] as String,
     );
   }
 }

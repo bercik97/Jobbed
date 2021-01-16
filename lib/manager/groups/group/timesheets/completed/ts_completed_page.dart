@@ -139,8 +139,8 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                             groupName: _model.groupName,
                             groupCountryCurrency: currency,
                             status: _timesheet.status,
-                            numberOfHoursWorked: _filteredEmployees[index].numberOfHoursWorked,
-                            amountOfEarnedMoney: _filteredEmployees[index].amountOfEarnedMoney,
+                            numberOfHoursWorked: _filteredEmployees[index].totalHours,
+                            amountOfEarnedMoney: _filteredEmployees[index].totalMoneyForHoursForEmployee,
                           );
                           Navigator.of(this.context).push(
                             CupertinoPageRoute<Null>(
@@ -188,7 +188,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                                         child: Row(
                                           children: <Widget>[
                                             textWhite(getTranslated(this.context, 'numberOfHoursWorked') + ': '),
-                                            textGreenBold(_filteredEmployees[index].numberOfHoursWorked),
+                                            textGreenBold(_filteredEmployees[index].totalHours),
                                           ],
                                         ),
                                         alignment: Alignment.topLeft),
@@ -196,7 +196,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                                         child: Row(
                                           children: <Widget>[
                                             textWhite(getTranslated(this.context, 'amountOfEarnedMoney') + ': '),
-                                            textGreenBold(_filteredEmployees[index].amountOfEarnedMoney.toString() + ' ' + currency),
+                                            textGreenBold(_filteredEmployees[index].totalMoneyForHoursForEmployee.toString() + ' ' + currency),
                                           ],
                                         ),
                                         alignment: Alignment.topLeft),

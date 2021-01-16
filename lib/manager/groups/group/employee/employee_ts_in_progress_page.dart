@@ -362,7 +362,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
           ),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilPage(_model, _employeeNationality, _currency, _employeeId, _employeeInfo, _avatarPath, _previousPage)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, _previousPage),
     );
   }
 
