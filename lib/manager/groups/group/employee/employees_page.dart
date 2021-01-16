@@ -176,14 +176,10 @@ class _EmployeesPageState extends State<EmployeesPage> {
   Widget _handleData(EmployeeGroupDto employee) {
     if (employee.tsStatus == 'Not_Created') {
       return _handleNotCreatedTs();
-    } else if (employee.workTimeByLocation && employee.piecework) {
-      return _handleWorkTimeByLocationAndEmployeePiecework(employee);
     } else if (employee.workTimeByLocation) {
-      return _handleWorkTimeByLocation(employee);
-    } else if (employee.piecework) {
-      return _handlePiecework(employee);
+      return _handleLocationWorkTime(employee);
     } else {
-      return _handleStandardWork(employee);
+      return _handleWork(employee);
     }
   }
 
@@ -194,10 +190,19 @@ class _EmployeesPageState extends State<EmployeesPage> {
     );
   }
 
-  Widget _handleWorkTimeByLocationAndEmployeePiecework(EmployeeGroupDto employee) {
+  Widget _handleLocationWorkTime(EmployeeGroupDto employee) {
     return Column(
       children: [
         _handleWorkTimeByLocation(employee),
+        _handlePiecework(employee),
+      ],
+    );
+  }
+
+  Widget _handleWork(EmployeeGroupDto employee) {
+    return Column(
+      children: [
+        _handleHoursWork(employee),
         _handlePiecework(employee),
       ],
     );
@@ -241,14 +246,6 @@ class _EmployeesPageState extends State<EmployeesPage> {
         Align(
             child: Row(
               children: <Widget>[
-                textWhite(getTranslated(this.context, 'todayMoneyEarned') + ': '),
-                textGreenBold(employee.todayMoneyEarned + ' ' + employee.currency),
-              ],
-            ),
-            alignment: Alignment.topLeft),
-        Align(
-            child: Row(
-              children: <Widget>[
                 textWhite(getTranslated(this.context, 'todayWorkedTime') + ': '),
                 textGreenBold(employee.todayWorkedTime.toString()),
               ],
@@ -286,11 +283,19 @@ class _EmployeesPageState extends State<EmployeesPage> {
               ],
             ),
             alignment: Alignment.topLeft),
+        Align(
+            child: Row(
+              children: <Widget>[
+                textWhite(getTranslated(this.context, 'todayMoneyEarned') + ': '),
+                textGreenBold(employee.todayMoneyEarned + ' ' + employee.currency),
+              ],
+            ),
+            alignment: Alignment.topLeft),
       ],
     );
   }
 
-  Widget _handleStandardWork(EmployeeGroupDto employee) {
+  Widget _handleHoursWork(EmployeeGroupDto employee) {
     return Column(
       children: <Widget>[
         Align(
@@ -298,14 +303,6 @@ class _EmployeesPageState extends State<EmployeesPage> {
               children: <Widget>[
                 textWhite(getTranslated(this.context, 'todayHoursWorked') + ': '),
                 textGreenBold(employee.todayHoursWorked.toString()),
-              ],
-            ),
-            alignment: Alignment.topLeft),
-        Align(
-            child: Row(
-              children: <Widget>[
-                textWhite(getTranslated(this.context, 'todayMoneyEarned') + ': '),
-                textGreenBold(employee.todayMoneyEarned.toString() + ' ' + employee.currency),
               ],
             ),
             alignment: Alignment.topLeft),
