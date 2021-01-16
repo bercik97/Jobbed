@@ -326,29 +326,15 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                         children: <Widget>[
                           RadioListTile(
                             activeColor: GREEN,
-                            title: textWhite(getTranslated(context, 'moneyPerHourForEmployees')),
+                            title: textWhite(getTranslated(context, 'hoursPieceworkForEmployees')),
                             value: 0,
                             groupValue: _excelType,
                             onChanged: (newValue) => setState(() => _excelType = newValue),
                           ),
                           RadioListTile(
                             activeColor: GREEN,
-                            title: textWhite(getTranslated(context, 'moneyPerHourForCompany')),
+                            title: textWhite(getTranslated(context, 'hoursPieceworkForCompany')),
                             value: 1,
-                            groupValue: _excelType,
-                            onChanged: (newValue) => setState(() => _excelType = newValue),
-                          ),
-                          RadioListTile(
-                            activeColor: GREEN,
-                            title: textWhite(getTranslated(context, 'moneyPerHourWithPieceworkForEmployees')),
-                            value: 2,
-                            groupValue: _excelType,
-                            onChanged: (newValue) => setState(() => _excelType = newValue),
-                          ),
-                          RadioListTile(
-                            activeColor: GREEN,
-                            title: textWhite(getTranslated(context, 'moneyPerHourWithPieceworkForCompany')),
-                            value: 3,
                             groupValue: _excelType,
                             onChanged: (newValue) => setState(() => _excelType = newValue),
                           ),
@@ -405,32 +391,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
     }
     setState(() => _isGenerateExcelAndSendEmailBtnTapped = true);
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    if (_excelType == 0 || _excelType == 1) {
-      _excelService.generateMoneyPerHourTimesheetExcel(year, MonthUtil.findMonthNumberByMonthName(context, monthName), status, _model.groupId, _excelType == 0, _model.user.username).then((res) {
-        Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-          ToastService.showSuccessToast(getTranslated(context, 'successfullyGeneratedExcelAndSendEmail') + '!');
-          setState(() => _isGenerateExcelAndSendEmailBtnTapped = false);
-          _excelType = -1;
-          Navigator.pop(context);
-        });
-      }).catchError((onError) {
-        Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-          String errorMsg = onError.toString();
-          if (errorMsg.contains("EMAIL_IS_NULL")) {
-            DialogService.showCustomDialog(
-              context: context,
-              titleWidget: textRed(getTranslated(context, 'error')),
-              content: getTranslated(context, 'excelEmailIsEmpty'),
-            );
-          } else {
-            ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
-          }
-          setState(() => _isGenerateExcelAndSendEmailBtnTapped = false);
-        });
-      });
-      return;
-    }
-    _excelService.generateMoneyPerHourWithPieceworkTimesheetExcel(year, MonthUtil.findMonthNumberByMonthName(context, monthName), status, _model.groupId, int.parse(_user.companyId), _excelType == 2, _model.user.username).then((res) {
+    _excelService.generateExcel(year, MonthUtil.findMonthNumberByMonthName(context, monthName), status, _model.groupId, int.parse(_user.companyId), _excelType == 0, _model.user.username).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyGeneratedExcelAndSendEmail') + '!');
         setState(() => _isGenerateExcelAndSendEmailBtnTapped = false);
