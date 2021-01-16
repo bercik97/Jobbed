@@ -10,7 +10,6 @@ import 'package:give_job/api/workday/dto/workday_dto.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/api/workday/util/workday_util.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/employee/employee_profil_page.dart';
 import 'package:give_job/manager/groups/group/piecework/add_piecework_for_selected_workdays.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/model/user.dart';
@@ -146,20 +145,20 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                           ),
                           Row(
                             children: <Widget>[
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: textWhite(getTranslated(context, 'hours') + ': '),
-                              ),
-                              textGreenBold(_timesheet.numberOfHoursWorked + 'h'),
+                              textWhite(getTranslated(this.context, 'hours') + ': '),
+                              textGreenBold(_timesheet.totalMoneyForHoursForEmployee.toString() + ' ' + _currency + ' (' + _timesheet.totalHours + ' h)'),
                             ],
                           ),
                           Row(
                             children: <Widget>[
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: textWhite(getTranslated(context, 'earnedMoney') + ': '),
-                              ),
-                              textGreenBold(widget.timesheet.amountOfEarnedMoney.toString() + ' ' + _currency),
+                              textWhite(getTranslated(this.context, 'accord') + ': '),
+                              textGreenBold(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' ' + _currency),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              textWhite(getTranslated(this.context, 'sum') + ': '),
+                              textGreenBold(_timesheet.totalMoneyEarned.toString() + ' ' + _currency),
                             ],
                           ),
                         ],

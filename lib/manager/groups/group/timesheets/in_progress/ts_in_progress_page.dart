@@ -228,8 +228,10 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                   groupName: _model.groupName,
                                   groupCountryCurrency: currency,
                                   status: _timesheet.status,
-                                  numberOfHoursWorked: _filteredEmployees[index].totalHours,
-                                  amountOfEarnedMoney: _filteredEmployees[index].totalMoneyForHoursForEmployee,
+                                  totalHours: _filteredEmployees[index].totalHours,
+                                  totalMoneyForHoursForEmployee: _filteredEmployees[index].totalMoneyForHoursForEmployee,
+                                  totalMoneyForPieceworkForEmployee: _filteredEmployees[index].totalMoneyForPieceworkForEmployee,
+                                  totalMoneyEarned: _filteredEmployees[index].totalMoneyEarned,
                                 );
                                 Navigator.of(this.context).push(
                                   CupertinoPageRoute<Null>(

@@ -139,8 +139,10 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                             groupName: _model.groupName,
                             groupCountryCurrency: currency,
                             status: _timesheet.status,
-                            numberOfHoursWorked: _filteredEmployees[index].totalHours,
-                            amountOfEarnedMoney: _filteredEmployees[index].totalMoneyForHoursForEmployee,
+                            totalHours: _filteredEmployees[index].totalHours,
+                            totalMoneyForHoursForEmployee: _filteredEmployees[index].totalMoneyForHoursForEmployee,
+                            totalMoneyForPieceworkForEmployee: _filteredEmployees[index].totalMoneyForPieceworkForEmployee,
+                            totalMoneyEarned: _filteredEmployees[index].totalMoneyEarned,
                           );
                           Navigator.of(this.context).push(
                             CupertinoPageRoute<Null>(
@@ -181,25 +183,27 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                                     ),
                                   ),
                                 ),
-                                title: text20WhiteBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                title: text17WhiteBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                 subtitle: Column(
                                   children: <Widget>[
-                                    Align(
-                                        child: Row(
-                                          children: <Widget>[
-                                            textWhite(getTranslated(this.context, 'numberOfHoursWorked') + ': '),
-                                            textGreenBold(_filteredEmployees[index].totalHours),
-                                          ],
-                                        ),
-                                        alignment: Alignment.topLeft),
-                                    Align(
-                                        child: Row(
-                                          children: <Widget>[
-                                            textWhite(getTranslated(this.context, 'amountOfEarnedMoney') + ': '),
-                                            textGreenBold(_filteredEmployees[index].totalMoneyForHoursForEmployee.toString() + ' ' + currency),
-                                          ],
-                                        ),
-                                        alignment: Alignment.topLeft),
+                                    Row(
+                                      children: <Widget>[
+                                        textWhite(getTranslated(this.context, 'hours') + ': '),
+                                        textGreenBold(employee.totalMoneyForHoursForEmployee.toString() + ' ' + currency + ' (' + employee.totalHours + ' h)'),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        textWhite(getTranslated(this.context, 'accord') + ': '),
+                                        textGreenBold(employee.totalMoneyForPieceworkForEmployee.toString() + ' ' + currency),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        textWhite(getTranslated(this.context, 'sum') + ': '),
+                                        textGreenBold(employee.totalMoneyEarned.toString() + ' ' + currency),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ),

@@ -44,6 +44,12 @@ Widget employeeTimesheetsTab(BuildContext context, User user, List timesheets) {
                         );
                       },
                       child: ListTile(
+                        leading: Padding(
+                          padding: EdgeInsets.only(bottom: 15),
+                          child: Image(
+                            image: timesheet.status == STATUS_IN_PROGRESS ? AssetImage('images/unchecked.png') : AssetImage('images/checked.png'),
+                          ),
+                        ),
                         title: textWhiteBold(timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, timesheet.month)),
                         subtitle: Column(
                           children: <Widget>[
@@ -63,20 +69,24 @@ Widget employeeTimesheetsTab(BuildContext context, User user, List timesheets) {
                                   ],
                                 ),
                                 alignment: Alignment.topLeft),
-                            Align(
-                                child: Row(
-                                  children: <Widget>[
-                                    textWhite(getTranslated(context, 'status') + ': '),
-                                    timesheet.status == STATUS_IN_PROGRESS ? textOrangeBold(getTranslated(context, STATUS_IN_PROGRESS)) : textGreenBold(getTranslated(context, STATUS_COMPLETED)),
-                                  ],
-                                ),
-                                alignment: Alignment.topLeft),
-                          ],
-                        ),
-                        trailing: Wrap(
-                          children: <Widget>[
-                            textGreenBold(timesheet.totalMoneyForHoursForEmployee.toString()),
-                            textGreenBold(" " + timesheet.groupCountryCurrency.toString()),
+                            Row(
+                              children: <Widget>[
+                                textWhite(getTranslated(context, 'hours') + ': '),
+                                textGreenBold(timesheet.totalMoneyForHoursForEmployee.toString() + ' ' + timesheet.groupCountryCurrency + ' (' + timesheet.totalHours + ' h)'),
+                              ],
+                            ),
+                            Row(
+                              children: <Widget>[
+                                textWhite(getTranslated(context, 'accord') + ': '),
+                                textGreenBold(timesheet.totalMoneyForPieceworkForEmployee.toString() + ' ' + timesheet.groupCountryCurrency),
+                              ],
+                            ),
+                            Row(
+                              children: <Widget>[
+                                textWhite(getTranslated(context, 'sum') + ': '),
+                                textGreenBold(timesheet.totalMoneyEarned.toString() + ' ' + timesheet.groupCountryCurrency),
+                              ],
+                            ),
                           ],
                         ),
                       ),

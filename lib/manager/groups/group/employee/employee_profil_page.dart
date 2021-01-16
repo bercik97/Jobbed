@@ -220,18 +220,25 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                                               ],
                                             ),
                                             alignment: Alignment.topLeft),
-                                        Align(
-                                            child: Row(
-                                              children: <Widget>[
-                                                textWhite(getTranslated(this.context, 'hours') + ': '),
-                                                textGreenBold(timesheet.numberOfHoursWorked + 'h'),
-                                              ],
-                                            ),
-                                            alignment: Alignment.topLeft),
+                                        Row(
+                                          children: <Widget>[
+                                            textWhite(getTranslated(this.context, 'hours') + ': '),
+                                            textGreenBold(timesheet.totalMoneyForHoursForEmployee.toString() + ' ' + _currency + ' (' + timesheet.totalHours + ' h)'),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: <Widget>[
+                                            textWhite(getTranslated(this.context, 'accord') + ': '),
+                                            textGreenBold(timesheet.totalMoneyForPieceworkForEmployee.toString() + ' ' + _currency),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: <Widget>[
+                                            textWhite(getTranslated(this.context, 'sum') + ': '),
+                                            textGreenBold(timesheet.totalMoneyEarned.toString() + ' ' + _currency),
+                                          ],
+                                        ),
                                       ],
-                                    ),
-                                    trailing: Wrap(
-                                      children: <Widget>[textGreenBold(timesheet.amountOfEarnedMoney.toString()), textGreenBold(' ' + _currency)],
                                     ),
                                   ),
                                 ],

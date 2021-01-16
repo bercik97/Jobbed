@@ -87,20 +87,20 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                       ),
                       Row(
                         children: <Widget>[
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: textWhite(getTranslated(context, 'hours') + ': '),
-                          ),
-                          textGreenBold(_timesheet.numberOfHoursWorked + 'h'),
+                          textWhite(getTranslated(this.context, 'hours') + ': '),
+                          textGreenBold(_timesheet.totalMoneyForHoursForEmployee.toString() + ' ' + _currency + ' (' + _timesheet.totalHours + ' h)'),
                         ],
                       ),
                       Row(
                         children: <Widget>[
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: textWhite(getTranslated(context, 'earnedMoney') + ': '),
-                          ),
-                          textGreenBold(_timesheet.amountOfEarnedMoney.toString() + ' ' + _currency),
+                          textWhite(getTranslated(this.context, 'accord') + ': '),
+                          textGreenBold(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' ' + _currency),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          textWhite(getTranslated(this.context, 'sum') + ': '),
+                          textGreenBold(_timesheet.totalMoneyEarned.toString() + ' ' + _currency),
                         ],
                       ),
                     ],
