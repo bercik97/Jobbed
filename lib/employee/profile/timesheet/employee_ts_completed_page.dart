@@ -104,19 +104,19 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                             Row(
                               children: <Widget>[
                                 textWhite(getTranslated(this.context, 'hours') + ': '),
-                                textGreenBold(_timesheet.totalMoneyForHoursForEmployee.toString() + ' ' + _timesheet.groupCountryCurrency + ' (' + _timesheet.totalHours + ' h)'),
+                                textGreenBold(_timesheet.totalMoneyForHoursForEmployee.toString() + ' ' + (_timesheet.groupCountryCurrency != null ? _timesheet.groupCountryCurrency : getTranslated(context, 'empty')) + ' (' + _timesheet.totalHours + ' h)'),
                               ],
                             ),
                             Row(
                               children: <Widget>[
                                 textWhite(getTranslated(this.context, 'accord') + ': '),
-                                textGreenBold(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' ' + _timesheet.groupCountryCurrency),
+                                textGreenBold(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' ' + (_timesheet.groupCountryCurrency != null ? _timesheet.groupCountryCurrency : getTranslated(context, 'empty'))),
                               ],
                             ),
                             Row(
                               children: <Widget>[
                                 textWhite(getTranslated(this.context, 'sum') + ': '),
-                                textGreenBold(_timesheet.totalMoneyEarned.toString() + ' ' + _timesheet.groupCountryCurrency),
+                                textGreenBold(_timesheet.totalMoneyEarned.toString() + ' ' + (_timesheet.groupCountryCurrency != null ? _timesheet.groupCountryCurrency : getTranslated(context, 'empty'))),
                               ],
                             ),
                           ],

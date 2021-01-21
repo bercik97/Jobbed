@@ -72,19 +72,19 @@ Widget employeeTimesheetsTab(BuildContext context, User user, List timesheets) {
                             Row(
                               children: <Widget>[
                                 textWhite(getTranslated(context, 'hours') + ': '),
-                                textGreenBold(timesheet.totalMoneyForHoursForEmployee.toString() + ' ' + timesheet.groupCountryCurrency + ' (' + timesheet.totalHours + ' h)'),
+                                textGreenBold(timesheet.totalMoneyForHoursForEmployee.toString() + ' ' + (timesheet.groupCountryCurrency != null ? timesheet.groupCountryCurrency : getTranslated(context, 'empty')) + ' (' + timesheet.totalHours + ' h)'),
                               ],
                             ),
                             Row(
                               children: <Widget>[
                                 textWhite(getTranslated(context, 'accord') + ': '),
-                                textGreenBold(timesheet.totalMoneyForPieceworkForEmployee.toString() + ' ' + timesheet.groupCountryCurrency),
+                                textGreenBold(timesheet.totalMoneyForPieceworkForEmployee.toString() + ' ' + (timesheet.groupCountryCurrency != null ? timesheet.groupCountryCurrency : getTranslated(context, 'empty'))),
                               ],
                             ),
                             Row(
                               children: <Widget>[
                                 textWhite(getTranslated(context, 'sum') + ': '),
-                                textGreenBold(timesheet.totalMoneyEarned.toString() + ' ' + timesheet.groupCountryCurrency),
+                                textGreenBold(timesheet.totalMoneyEarned.toString() + ' ' + (timesheet.groupCountryCurrency != null ? timesheet.groupCountryCurrency : getTranslated(context, 'empty'))),
                               ],
                             ),
                           ],
