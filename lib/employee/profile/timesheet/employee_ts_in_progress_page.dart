@@ -32,10 +32,11 @@ import 'package:number_inc_dec/number_inc_dec.dart';
 import '../../employee_profile_page.dart';
 
 class EmployeeTsInProgressPage extends StatefulWidget {
+  final bool _canFillHours;
   final User _user;
   final TimesheetForEmployeeDto _timesheet;
 
-  EmployeeTsInProgressPage(this._user, this._timesheet);
+  EmployeeTsInProgressPage(this._canFillHours, this._user, this._timesheet);
 
   @override
   _EmployeeTsInProgressPageState createState() => _EmployeeTsInProgressPageState();
@@ -46,6 +47,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   final TextEditingController _minutesController = new TextEditingController();
   final TextEditingController _noteController = new TextEditingController();
 
+  bool _canFillHours;
   User _user;
   WorkdayService _workdayService;
   TimesheetForEmployeeDto _timesheet;
@@ -62,6 +64,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
 
   @override
   void initState() {
+    this._canFillHours = widget._canFillHours;
     this._user = widget._user;
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     this._timesheet = widget._timesheet;
@@ -223,21 +226,23 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
             child: Row(
               children: <Widget>[
                 SizedBox(width: 1),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-hours-icon.png')),
-                    onPressed: () {
-                      if (selectedIds.isNotEmpty) {
-                        _hoursController.clear();
-                        _minutesController.clear();
-                        _showUpdateHoursDialog(selectedIds);
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
-                  ),
-                ),
+                _canFillHours
+                    ? Expanded(
+                        child: MaterialButton(
+                          color: GREEN,
+                          child: Image(image: AssetImage('images/dark-hours-icon.png')),
+                          onPressed: () {
+                            if (selectedIds.isNotEmpty) {
+                              _hoursController.clear();
+                              _minutesController.clear();
+                              _showUpdateHoursDialog(selectedIds);
+                            } else {
+                              showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                            }
+                          },
+                        ),
+                      )
+                    : SizedBox(width: 0),
                 SizedBox(width: 2.5),
                 Expanded(
                   child: MaterialButton(
