@@ -184,7 +184,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                       child: BouncingWidget(
                                         duration: Duration(milliseconds: 100),
                                         scaleFactor: 2,
-                                        onPressed: () => NavigatorUtil.navigate(this.context, EmployeeProfilPage(_model, nationality, currency, employee.employeeId, info, avatarPath, EmployeesSettingsPage(_model))),
+                                        onPressed: () => NavigatorUtil.navigate(this.context, EmployeeProfilPage(_model, nationality, currency, employee.employeeId, info, avatarPath)),
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [

@@ -129,10 +129,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
   }
 
   void _resetAndOpenPage() {
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (BuildContext context) => TsInProgressPage(_model, _timeSheet)),
-      ModalRoute.withName('/'),
-    );
+    NavigatorUtil.navigateReplacement(context, TsInProgressPage(_model, _timeSheet));
   }
 
   @override
@@ -140,27 +137,24 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
     if (_loading) {
       return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
     }
-    return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, _dateFrom + ' - ' + _dateTo),
-          drawer: managerSideBar(context, _user),
-          body: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              children: [
-                _buildPricelist(),
-              ],
-            ),
+    return MaterialApp(
+      title: APP_NAME,
+      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        backgroundColor: DARK,
+        appBar: managerAppBar(context, _user, _dateFrom + ' - ' + _dateTo),
+        drawer: managerSideBar(context, _user),
+        body: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            children: [
+              _buildPricelist(),
+            ],
           ),
-          bottomNavigationBar: _buildBottomNavigationBar(),
         ),
+        bottomNavigationBar: _buildBottomNavigationBar(),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, TsInProgressPage(_model, _timeSheet)),
     );
   }
 
@@ -241,9 +235,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
               children: <Widget>[iconWhite(Icons.close)],
             ),
             color: Colors.red,
-            onPressed: () => {
-              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TsInProgressPage(_model, _timeSheet)), (e) => false),
-            },
+            onPressed: () => NavigatorUtil.navigateReplacement(context, TsInProgressPage(_model, _timeSheet)),
           ),
           SizedBox(width: 25),
           MaterialButton(
@@ -316,7 +308,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
     _workdayService.updateEmployeesPiecework(serviceWithQuantity, _dateFrom, _dateTo, _employeeIds, _tsYear, _tsMonth, _tsStatus).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(successMsg);
-        NavigatorUtil.navigate(this.context, TsInProgressPage(_model, _timeSheet));
+        NavigatorUtil.navigateReplacement(context, TsInProgressPage(_model, _timeSheet));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

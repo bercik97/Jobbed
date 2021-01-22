@@ -83,173 +83,170 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
     if (_loading) {
       return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
     }
-    return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'deleteSelectedTs')),
-          drawer: managerSideBar(context, _user),
-          body: RefreshIndicator(
-            color: DARK,
-            backgroundColor: WHITE,
-            onRefresh: _refresh,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
-                  child: Column(
-                    children: [
-                      textCenter18WhiteBold(getTranslated(context, 'removeSelectedTsForChosenEmployees')),
-                      SizedBox(height: 5),
-                      textCenter20GreenBold(
-                        _year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: TextFormField(
-                    autofocus: false,
-                    autocorrect: true,
-                    cursorColor: WHITE,
-                    style: TextStyle(color: WHITE),
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-                      counterStyle: TextStyle(color: WHITE),
-                      border: OutlineInputBorder(),
-                      labelText: getTranslated(this.context, 'search'),
-                      prefixIcon: iconWhite(Icons.search),
-                      labelStyle: TextStyle(color: WHITE),
+    return MaterialApp(
+      title: APP_NAME,
+      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        backgroundColor: DARK,
+        appBar: managerAppBar(context, _user, getTranslated(context, 'deleteSelectedTs')),
+        drawer: managerSideBar(context, _user),
+        body: RefreshIndicator(
+          color: DARK,
+          backgroundColor: WHITE,
+          onRefresh: _refresh,
+          child: Column(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
+                child: Column(
+                  children: [
+                    textCenter18WhiteBold(getTranslated(context, 'removeSelectedTsForChosenEmployees')),
+                    SizedBox(height: 5),
+                    textCenter20GreenBold(
+                      _year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month),
                     ),
-                    onChanged: (string) {
-                      setState(
-                        () {
-                          _filteredEmployees = _employees.where((e) => ((e.name + e.surname).toLowerCase().contains(string.toLowerCase()))).toList();
-                        },
-                      );
-                    },
-                  ),
+                  ],
                 ),
-                ListTileTheme(
-                  contentPadding: EdgeInsets.only(left: 3),
-                  child: CheckboxListTile(
-                    title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
-                    value: _isChecked,
-                    activeColor: GREEN,
-                    checkColor: WHITE,
-                    onChanged: (bool value) {
-                      setState(() {
-                        _isChecked = value;
-                        List<bool> l = new List();
-                        _checked.forEach((b) => l.add(value));
-                        _checked = l;
-                        if (value) {
-                          _selectedIds.addAll(_filteredEmployees.map((e) => e.id));
-                        } else
-                          _selectedIds.clear();
-                      });
-                    },
-                    controlAffinity: ListTileControlAffinity.leading,
+              ),
+              Container(
+                padding: EdgeInsets.all(10),
+                child: TextFormField(
+                  autofocus: false,
+                  autocorrect: true,
+                  cursorColor: WHITE,
+                  style: TextStyle(color: WHITE),
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+                    counterStyle: TextStyle(color: WHITE),
+                    border: OutlineInputBorder(),
+                    labelText: getTranslated(this.context, 'search'),
+                    prefixIcon: iconWhite(Icons.search),
+                    labelStyle: TextStyle(color: WHITE),
                   ),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: _filteredEmployees.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      EmployeeBasicDto employee = _filteredEmployees[index];
-                      int foundIndex = 0;
-                      for (int i = 0; i < _employees.length; i++) {
-                        if (_employees[i].id == employee.id) {
-                          foundIndex = i;
-                        }
-                      }
-                      String info = employee.name + ' ' + employee.surname;
-                      String nationality = employee.nationality;
-                      return Card(
-                        color: DARK,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              color: BRIGHTER_DARK,
-                              child: ListTileTheme(
-                                contentPadding: EdgeInsets.only(right: 10),
-                                child: CheckboxListTile(
-                                  controlAffinity: ListTileControlAffinity.leading,
-                                  title: text20WhiteBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
-                                  activeColor: GREEN,
-                                  checkColor: WHITE,
-                                  value: _checked[foundIndex],
-                                  onChanged: (bool value) {
-                                    setState(() {
-                                      _checked[foundIndex] = value;
-                                      if (value) {
-                                        _selectedIds.add(_employees[foundIndex].id);
-                                      } else {
-                                        _selectedIds.remove(_employees[foundIndex].id);
-                                      }
-                                      int selectedIdsLength = _selectedIds.length;
-                                      if (selectedIdsLength == _employees.length) {
-                                        _isChecked = true;
-                                      } else if (selectedIdsLength == 0) {
-                                        _isChecked = false;
-                                      }
-                                    });
-                                  },
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-          bottomNavigationBar: Padding(
-            padding: const EdgeInsets.only(bottom: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                MaterialButton(
-                  elevation: 0,
-                  height: 50,
-                  minWidth: 40,
-                  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[iconWhite(Icons.close)],
-                  ),
-                  color: Colors.red,
-                  onPressed: () => {
-                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ManagerTsPage(_model)), (e) => false),
+                  onChanged: (string) {
+                    setState(
+                      () {
+                        _filteredEmployees = _employees.where((e) => ((e.name + e.surname).toLowerCase().contains(string.toLowerCase()))).toList();
+                      },
+                    );
                   },
                 ),
-                SizedBox(width: 25),
-                MaterialButton(
-                  elevation: 0,
-                  height: 50,
-                  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[iconWhite(Icons.check)],
-                  ),
-                  color: GREEN,
-                  onPressed: () => _isDeleteBtnTapped ? null : _deleteTsForSelectedEmployees(),
+              ),
+              ListTileTheme(
+                contentPadding: EdgeInsets.only(left: 3),
+                child: CheckboxListTile(
+                  title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
+                  value: _isChecked,
+                  activeColor: GREEN,
+                  checkColor: WHITE,
+                  onChanged: (bool value) {
+                    setState(() {
+                      _isChecked = value;
+                      List<bool> l = new List();
+                      _checked.forEach((b) => l.add(value));
+                      _checked = l;
+                      if (value) {
+                        _selectedIds.addAll(_filteredEmployees.map((e) => e.id));
+                      } else
+                        _selectedIds.clear();
+                    });
+                  },
+                  controlAffinity: ListTileControlAffinity.leading,
                 ),
-              ],
-            ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: _filteredEmployees.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    EmployeeBasicDto employee = _filteredEmployees[index];
+                    int foundIndex = 0;
+                    for (int i = 0; i < _employees.length; i++) {
+                      if (_employees[i].id == employee.id) {
+                        foundIndex = i;
+                      }
+                    }
+                    String info = employee.name + ' ' + employee.surname;
+                    String nationality = employee.nationality;
+                    return Card(
+                      color: DARK,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            color: BRIGHTER_DARK,
+                            child: ListTileTheme(
+                              contentPadding: EdgeInsets.only(right: 10),
+                              child: CheckboxListTile(
+                                controlAffinity: ListTileControlAffinity.leading,
+                                title: text20WhiteBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                activeColor: GREEN,
+                                checkColor: WHITE,
+                                value: _checked[foundIndex],
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    _checked[foundIndex] = value;
+                                    if (value) {
+                                      _selectedIds.add(_employees[foundIndex].id);
+                                    } else {
+                                      _selectedIds.remove(_employees[foundIndex].id);
+                                    }
+                                    int selectedIdsLength = _selectedIds.length;
+                                    if (selectedIdsLength == _employees.length) {
+                                      _isChecked = true;
+                                    } else if (selectedIdsLength == 0) {
+                                      _isChecked = false;
+                                    }
+                                  });
+                                },
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.only(bottom: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              MaterialButton(
+                elevation: 0,
+                height: 50,
+                minWidth: 40,
+                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[iconWhite(Icons.close)],
+                ),
+                color: Colors.red,
+                onPressed: () => {
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ManagerTsPage(_model)), (e) => false),
+                },
+              ),
+              SizedBox(width: 25),
+              MaterialButton(
+                elevation: 0,
+                height: 50,
+                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[iconWhite(Icons.check)],
+                ),
+                color: GREEN,
+                onPressed: () => _isDeleteBtnTapped ? null : _deleteTsForSelectedEmployees(),
+              ),
+            ],
           ),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, ManagerTsPage(_model)),
     );
   }
 
@@ -264,7 +261,7 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
     _timesheetService.deleteForEmployeesByYearAndMonthAndStatus(_selectedIds.map((el) => el.toString()).toList(), _year, _month, _status).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'timesheetSuccessfullyDeleted'));
-        NavigatorUtil.navigate(context, ManagerTsPage(_model));
+        NavigatorUtil.navigateReplacement(context, ManagerTsPage(_model));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

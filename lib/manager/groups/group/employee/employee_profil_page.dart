@@ -32,9 +32,8 @@ class EmployeeProfilPage extends StatefulWidget {
   final int _employeeId;
   final String _employeeInfo;
   final String _avatarPath;
-  final StatefulWidget _previousPage;
 
-  const EmployeeProfilPage(this._model, this._employeeNationality, this._currency, this._employeeId, this._employeeInfo, this._avatarPath, this._previousPage);
+  const EmployeeProfilPage(this._model, this._employeeNationality, this._currency, this._employeeId, this._employeeInfo, this._avatarPath);
 
   @override
   _EmployeeProfilPageState createState() => _EmployeeProfilPageState();
@@ -43,7 +42,6 @@ class EmployeeProfilPage extends StatefulWidget {
 class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
   GroupModel _model;
   User _user;
-  StatefulWidget _previousPage;
 
   TimesheetService _tsService;
   EmployeeService _employeeService;
@@ -58,7 +56,6 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
   Widget build(BuildContext context) {
     this._model = widget._model;
     this._user = _model.user;
-    this._previousPage = widget._previousPage;
     this._tsService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
     this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
     this._employeeNationality = widget._employeeNationality;
@@ -66,95 +63,92 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
     this._employeeId = widget._employeeId;
     this._employeeInfo = widget._employeeInfo;
     this._avatarPath = widget._avatarPath;
-    return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          drawer: managerSideBar(context, _model.user),
-          backgroundColor: DARK,
-          body: DefaultTabController(
-            length: 3,
-            child: NestedScrollView(
-              headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                return <Widget>[
-                  SliverAppBar(
-                    elevation: 0.0,
-                    actions: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(right: 15.0),
-                        child: IconButton(
-                          icon: Container(
-                            child: Image(
-                              image: AssetImage(
-                                'images/manager-icon.png',
-                              ),
-                              fit: BoxFit.cover,
+    return MaterialApp(
+      title: APP_NAME,
+      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        drawer: managerSideBar(context, _model.user),
+        backgroundColor: DARK,
+        body: DefaultTabController(
+          length: 3,
+          child: NestedScrollView(
+            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+              return <Widget>[
+                SliverAppBar(
+                  elevation: 0.0,
+                  actions: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(right: 15.0),
+                      child: IconButton(
+                        icon: Container(
+                          child: Image(
+                            image: AssetImage(
+                              'images/manager-icon.png',
                             ),
+                            fit: BoxFit.cover,
                           ),
-                          onPressed: () => NavigatorUtil.navigate(context, ManagerProfilePage(_model.user)),
                         ),
-                      ),
-                    ],
-                    iconTheme: IconThemeData(color: WHITE),
-                    expandedHeight: 250.0,
-                    pinned: true,
-                    backgroundColor: BRIGHTER_DARK,
-                    flexibleSpace: FlexibleSpaceBar(
-                      background: Column(
-                        children: <Widget>[
-                          Container(
-                            width: 100,
-                            height: 100,
-                            margin: EdgeInsets.only(top: 70, bottom: 10),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(image: AssetImage(_avatarPath), fit: BoxFit.fill),
-                            ),
-                          ),
-                          SizedBox(height: 5),
-                          text25WhiteBold(utf8.decode(_employeeInfo != null ? _employeeInfo.runes.toList() : '-')),
-                          SizedBox(height: 2.5),
-                          text20White(LanguageUtil.convertShortNameToFullName(this.context, _employeeNationality) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality)),
-                          SizedBox(height: 2.5),
-                          text18White(getTranslated(this.context, 'employee') + ' #' + _employeeId.toString()),
-                          SizedBox(height: 10),
-                        ],
+                        onPressed: () => NavigatorUtil.navigate(context, ManagerProfilePage(_model.user)),
                       ),
                     ),
-                  ),
-                  SliverPersistentHeader(
-                    delegate: SliverAppBarDelegate(
-                      TabBar(
-                        labelColor: GREEN,
-                        unselectedLabelColor: Colors.grey,
-                        tabs: [
-                          Tab(icon: Icon(Icons.event_note), text: getTranslated(this.context, 'timesheets')),
-                          Tab(icon: Icon(Icons.import_contacts), text: getTranslated(this.context, 'contact')),
-                          Tab(icon: Icon(Icons.info), text: getTranslated(this.context, 'informations')),
-                        ],
-                      ),
-                    ),
-                    pinned: true,
-                  ),
-                ];
-              },
-              body: Padding(
-                padding: EdgeInsets.all(5),
-                child: TabBarView(
-                  children: <Widget>[
-                    _buildTimesheetsSection(),
-                    _buildContactSection(),
-                    _buildInformationSection(),
                   ],
+                  iconTheme: IconThemeData(color: WHITE),
+                  expandedHeight: 250.0,
+                  pinned: true,
+                  backgroundColor: BRIGHTER_DARK,
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Column(
+                      children: <Widget>[
+                        Container(
+                          width: 100,
+                          height: 100,
+                          margin: EdgeInsets.only(top: 70, bottom: 10),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(image: AssetImage(_avatarPath), fit: BoxFit.fill),
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        text25WhiteBold(utf8.decode(_employeeInfo != null ? _employeeInfo.runes.toList() : '-')),
+                        SizedBox(height: 2.5),
+                        text20White(LanguageUtil.convertShortNameToFullName(this.context, _employeeNationality) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality)),
+                        SizedBox(height: 2.5),
+                        text18White(getTranslated(this.context, 'employee') + ' #' + _employeeId.toString()),
+                        SizedBox(height: 10),
+                      ],
+                    ),
+                  ),
                 ),
+                SliverPersistentHeader(
+                  delegate: SliverAppBarDelegate(
+                    TabBar(
+                      labelColor: GREEN,
+                      unselectedLabelColor: Colors.grey,
+                      tabs: [
+                        Tab(icon: Icon(Icons.event_note), text: getTranslated(this.context, 'timesheets')),
+                        Tab(icon: Icon(Icons.import_contacts), text: getTranslated(this.context, 'contact')),
+                        Tab(icon: Icon(Icons.info), text: getTranslated(this.context, 'informations')),
+                      ],
+                    ),
+                  ),
+                  pinned: true,
+                ),
+              ];
+            },
+            body: Padding(
+              padding: EdgeInsets.all(5),
+              child: TabBarView(
+                children: <Widget>[
+                  _buildTimesheetsSection(),
+                  _buildContactSection(),
+                  _buildInformationSection(),
+                ],
               ),
             ),
           ),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, _previousPage),
     );
   }
 
@@ -179,7 +173,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                                 if (timesheet.status == 'Completed') {
                                   NavigatorUtil.navigate(this.context, EmployeeTsCompletedPage(_model, _employeeInfo, _employeeNationality, _currency, timesheet));
                                 } else {
-                                  NavigatorUtil.navigate(this.context, EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _currency, timesheet, _avatarPath, EmployeeProfilPage(_model, _employeeNationality, _currency, _employeeId, _employeeInfo, _avatarPath, _previousPage)));
+                                  NavigatorUtil.navigate(this.context, EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _currency, timesheet, _avatarPath));
                                 }
                               },
                               child: Column(

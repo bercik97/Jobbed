@@ -33,9 +33,8 @@ class AddPieceworkForSelectedWorkdays extends StatefulWidget {
   final String _currency;
   final TimesheetForEmployeeDto _timesheet;
   final String _avatarPath;
-  final StatefulWidget _previousPage;
 
-  AddPieceworkForSelectedWorkdays(this._model, this._selectedWorkdayIds, this._employeeInfo, this._employeeId, this._employeeNationality, this._currency, this._timesheet, this._avatarPath, this._previousPage);
+  AddPieceworkForSelectedWorkdays(this._model, this._selectedWorkdayIds, this._employeeInfo, this._employeeId, this._employeeNationality, this._currency, this._timesheet, this._avatarPath);
 
   @override
   _AddPieceworkForSelectedWorkdaysState createState() => _AddPieceworkForSelectedWorkdaysState();
@@ -50,7 +49,6 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
   String _currency;
   TimesheetForEmployeeDto _timesheet;
   String _avatarPath;
-  StatefulWidget _previousPage;
 
   User _user;
 
@@ -81,7 +79,6 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
     this._currency = widget._currency;
     this._timesheet = widget._timesheet;
     this._avatarPath = widget._avatarPath;
-    this._previousPage = widget._previousPage;
     this._pricelistService = ServiceInitializer.initialize(context, _user.authHeader, PricelistService);
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     super.initState();
@@ -155,7 +152,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
           bottomNavigationBar: _buildBottomNavigationBar(),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _currency, _timesheet, _avatarPath, _previousPage)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _currency, _timesheet, _avatarPath)),
     );
   }
 
@@ -317,6 +314,6 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
   }
 
   void navigateIntoEmployeeTsInProgressPage() {
-    NavigatorUtil.navigate(this.context, EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _currency, _timesheet, _avatarPath, _previousPage));
+    NavigatorUtil.navigateReplacement(this.context, EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _currency, _timesheet, _avatarPath));
   }
 }

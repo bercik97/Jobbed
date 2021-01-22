@@ -112,10 +112,7 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
   }
 
   void _resetAndOpenPage() {
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (BuildContext context) => GroupPage(_model)),
-      ModalRoute.withName('/'),
-    );
+    NavigatorUtil.navigateReplacement(this.context, GroupPage(_model));
   }
 
   @override
@@ -123,31 +120,28 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
     if (_loading) {
       return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
     }
-    return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, _todaysDate),
-          drawer: managerSideBar(context, _user),
-          body: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Form(
-              autovalidate: true,
-              key: formKey,
-              child: Column(
-                children: [
-                  _buildPricelist(),
-                ],
-              ),
+    return MaterialApp(
+      title: APP_NAME,
+      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        backgroundColor: DARK,
+        appBar: managerAppBar(context, _user, _todaysDate),
+        drawer: managerSideBar(context, _user),
+        body: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Form(
+            autovalidate: true,
+            key: formKey,
+            child: Column(
+              children: [
+                _buildPricelist(),
+              ],
             ),
           ),
-          bottomNavigationBar: _buildBottomNavigationBar(),
         ),
+        bottomNavigationBar: _buildBottomNavigationBar(),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model)),
     );
   }
 
@@ -229,9 +223,7 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
               children: <Widget>[iconWhite(Icons.close)],
             ),
             color: Colors.red,
-            onPressed: () => {
-              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => GroupPage(_model)), (e) => false),
-            },
+            onPressed: () => NavigatorUtil.navigateReplacement(this.context, GroupPage(_model)),
           ),
           SizedBox(width: 25),
           MaterialButton(
@@ -304,7 +296,7 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
     _timesheetService.updatePieceworkByGroupIdAndDate(_model.groupId, _todaysDate, serviceWithQuantity).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(successMsg);
-        NavigatorUtil.navigate(this.context, GroupPage(_model));
+        NavigatorUtil.navigateReplacement(this.context, GroupPage(_model));
       });
     }).catchError((onError) {
       String s = onError.toString();

@@ -288,7 +288,7 @@ class _AddTsPageState extends State<AddTsPage> {
       (res) {
         Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
           ToastService.showSuccessToast(getTranslated(context, 'timesheetsSuccessfullyCreated'));
-          NavigatorUtil.navigate(this.context, ManagerTsPage(_model));
+          NavigatorUtil.navigateReplacement(context, ManagerTsPage(_model));
         });
       },
     ).catchError((onError) {

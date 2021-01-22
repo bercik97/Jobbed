@@ -6,7 +6,6 @@ import 'package:give_job/api/employee/dto/employee_group_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/group_page.dart';
 import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -64,104 +63,101 @@ class _EmployeesPageState extends State<EmployeesPage> {
     if (_loading) {
       return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
     }
-    return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'employees') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-')),
-          drawer: managerSideBar(context, _user),
-          body: Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
-                child: TextFormField(
-                  autofocus: false,
-                  autocorrect: true,
-                  cursorColor: WHITE,
-                  style: TextStyle(color: WHITE),
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-                    counterStyle: TextStyle(color: WHITE),
-                    border: OutlineInputBorder(),
-                    labelText: getTranslated(context, 'search'),
-                    prefixIcon: iconWhite(Icons.search),
-                    labelStyle: TextStyle(color: WHITE),
-                  ),
-                  onChanged: (string) {
-                    setState(
-                      () {
-                        _filteredEmployees = _employees.where((u) => (u.info.toLowerCase().contains(string.toLowerCase()))).toList();
-                      },
-                    );
-                  },
+    return MaterialApp(
+      title: APP_NAME,
+      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        backgroundColor: DARK,
+        appBar: managerAppBar(context, _user, getTranslated(context, 'employees') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-')),
+        drawer: managerSideBar(context, _user),
+        body: Column(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
+              child: TextFormField(
+                autofocus: false,
+                autocorrect: true,
+                cursorColor: WHITE,
+                style: TextStyle(color: WHITE),
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+                  counterStyle: TextStyle(color: WHITE),
+                  border: OutlineInputBorder(),
+                  labelText: getTranslated(context, 'search'),
+                  prefixIcon: iconWhite(Icons.search),
+                  labelStyle: TextStyle(color: WHITE),
                 ),
+                onChanged: (string) {
+                  setState(
+                    () {
+                      _filteredEmployees = _employees.where((u) => (u.info.toLowerCase().contains(string.toLowerCase()))).toList();
+                    },
+                  );
+                },
               ),
-              _employees.isNotEmpty
-                  ? Expanded(
-                      flex: 2,
-                      child: RefreshIndicator(
-                        color: DARK,
-                        backgroundColor: WHITE,
-                        onRefresh: _refresh,
-                        child: Scrollbar(
-                          isAlwaysShown: true,
+            ),
+            _employees.isNotEmpty
+                ? Expanded(
+                    flex: 2,
+                    child: RefreshIndicator(
+                      color: DARK,
+                      backgroundColor: WHITE,
+                      onRefresh: _refresh,
+                      child: Scrollbar(
+                        isAlwaysShown: true,
+                        controller: _scrollController,
+                        child: ListView.builder(
                           controller: _scrollController,
-                          child: ListView.builder(
-                            controller: _scrollController,
-                            itemCount: _filteredEmployees.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              EmployeeGroupDto employee = _filteredEmployees[index];
-                              String info = employee.info;
-                              String nationality = employee.nationality;
-                              String currency = employee.currency;
-                              String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.gender, info.substring(0, 1));
-                              return Card(
-                                color: DARK,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Card(
-                                      color: BRIGHTER_DARK,
-                                      child: InkWell(
-                                        onTap: () => NavigatorUtil.navigate(this.context, EmployeeProfilPage(_model, nationality, currency, employee.id, info, avatarPath, EmployeesPage(_model))),
-                                        child: Column(
-                                          children: <Widget>[
-                                            ListTile(
-                                              leading: Tab(
-                                                icon: Container(
-                                                  child: Image(
-                                                    image: AssetImage(avatarPath),
-                                                    fit: BoxFit.cover,
-                                                  ),
+                          itemCount: _filteredEmployees.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            EmployeeGroupDto employee = _filteredEmployees[index];
+                            String info = employee.info;
+                            String nationality = employee.nationality;
+                            String currency = employee.currency;
+                            String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.gender, info.substring(0, 1));
+                            return Card(
+                              color: DARK,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Card(
+                                    color: BRIGHTER_DARK,
+                                    child: InkWell(
+                                      onTap: () => NavigatorUtil.navigate(this.context, EmployeeProfilPage(_model, nationality, currency, employee.id, info, avatarPath)),
+                                      child: Column(
+                                        children: <Widget>[
+                                          ListTile(
+                                            leading: Tab(
+                                              icon: Container(
+                                                child: Image(
+                                                  image: AssetImage(avatarPath),
+                                                  fit: BoxFit.cover,
                                                 ),
                                               ),
-                                              title: text20WhiteBold(
-                                                utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality),
-                                              ),
-                                              subtitle: _handleData(employee),
                                             ),
-                                          ],
-                                        ),
+                                            title: text20WhiteBold(
+                                              utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality),
+                                            ),
+                                            subtitle: _handleData(employee),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
                       ),
-                    )
-                  : _handleEmptyData()
-            ],
-          ),
+                    ),
+                  )
+                : _handleEmptyData()
+          ],
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model)),
     );
   }
 

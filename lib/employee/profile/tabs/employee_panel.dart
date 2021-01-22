@@ -8,6 +8,7 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
 import 'contact/contact_for_manager.dart';
@@ -36,10 +37,7 @@ Container employeePanel(BuildContext context, User user, EmployeePageDto employe
                           ToastService.showErrorToast(getTranslated(context, 'noPermissionForWorkTimeByLocation'));
                           return;
                         }
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => WorkTimePage(user, employee.todayWorkdayId)),
-                        );
+                        NavigatorUtil.navigateReplacement(context, WorkTimePage(user, employee.todayWorkdayId));
                       },
                       child: _buildScrollableContainer(context, 'images/employee-work-icon.png', 'workTimeGPS', 'startFinishWork'),
                     ),
@@ -60,10 +58,7 @@ Container employeePanel(BuildContext context, User user, EmployeePageDto employe
                           ToastService.showErrorToast(getTranslated(context, 'noPermissionForPiecework'));
                           return;
                         }
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => PieceworkPage(user, employee.todayDate, employee.todayWorkdayId)),
-                        );
+                        NavigatorUtil.navigateReplacement(context, PieceworkPage(user, employee.todayDate, employee.todayWorkdayId));
                       },
                       child: _buildScrollableContainer(context, 'images/green-piecework-icon.png', 'piecework', 'addNoteAboutPiecework'),
                     ),
@@ -78,10 +73,7 @@ Container employeePanel(BuildContext context, User user, EmployeePageDto employe
                   child: Material(
                     color: BRIGHTER_DARK,
                     child: InkWell(
-                      onTap: () async => Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => EmployeeCalendarPage(user, employee.id)),
-                      ),
+                      onTap: () async => NavigatorUtil.navigateReplacement(context, EmployeeCalendarPage(user, employee.id)),
                       child: _buildScrollableContainer(context, 'images/calendar-icon.png', 'calendar', 'checkYourCalendar'),
                     ),
                   ),

@@ -10,4 +10,8 @@ class NavigatorUtil {
   static void navigate(BuildContext context, StatefulWidget widget) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
   }
+
+  static void navigateReplacement(BuildContext context, StatefulWidget widget) {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => widget));
+  }
 }

@@ -39,9 +39,8 @@ class EmployeeTsInProgressPage extends StatefulWidget {
   final String _currency;
   final TimesheetForEmployeeDto timesheet;
   final String _avatarPath;
-  final StatefulWidget _previousPage;
 
-  const EmployeeTsInProgressPage(this._model, this._employeeInfo, this._employeeId, this._employeeNationality, this._currency, this.timesheet, this._avatarPath, this._previousPage);
+  const EmployeeTsInProgressPage(this._model, this._employeeInfo, this._employeeId, this._employeeNationality, this._currency, this.timesheet, this._avatarPath);
 
   @override
   _EmployeeTsInProgressPageState createState() => _EmployeeTsInProgressPageState();
@@ -64,7 +63,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   String _currency;
   TimesheetForEmployeeDto _timesheet;
   String _avatarPath;
-  StatefulWidget _previousPage;
 
   Set<int> selectedIds = new Set();
   List<WorkdayDto> workdays = new List();
@@ -89,7 +87,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     this._currency = widget._currency;
     this._timesheet = widget.timesheet;
     this._avatarPath = widget._avatarPath;
-    this._previousPage = widget._previousPage;
     super.initState();
     _loading = true;
     _workdayService.findAllByTimesheetId(_timesheet.id).then((res) {
@@ -105,260 +102,256 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     if (_loading) {
       return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')), managerSideBar(context, _model.user));
     }
-    return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: DARK,
-          appBar: managerAppBar(
-            context,
-            _user,
-            getTranslated(context, 'workdays') + ' - ' + getTranslated(context, STATUS_IN_PROGRESS),
-          ),
-          drawer: managerSideBar(context, _user),
-          body: RefreshIndicator(
-            color: DARK,
-            backgroundColor: WHITE,
-            onRefresh: _refresh,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  color: BRIGHTER_DARK,
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: 5),
-                    child: ListTile(
-                      leading: Padding(
-                        padding: EdgeInsets.only(bottom: 15),
-                        child: Image(
-                          image: AssetImage('images/unchecked.png'),
-                          fit: BoxFit.fitHeight,
+    return MaterialApp(
+      title: APP_NAME,
+      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        backgroundColor: DARK,
+        appBar: managerAppBar(
+          context,
+          _user,
+          getTranslated(context, 'workdays') + ' - ' + getTranslated(context, STATUS_IN_PROGRESS),
+        ),
+        drawer: managerSideBar(context, _user),
+        body: RefreshIndicator(
+          color: DARK,
+          backgroundColor: WHITE,
+          onRefresh: _refresh,
+          child: Column(
+            children: <Widget>[
+              Container(
+                color: BRIGHTER_DARK,
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: 5),
+                  child: ListTile(
+                    leading: Padding(
+                      padding: EdgeInsets.only(bottom: 15),
+                      child: Image(
+                        image: AssetImage('images/unchecked.png'),
+                        fit: BoxFit.fitHeight,
+                      ),
+                    ),
+                    title: textWhiteBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
+                    subtitle: Column(
+                      children: <Widget>[
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: textWhiteBold(_employeeInfo != null ? utf8.decode(_employeeInfo.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality) : getTranslated(context, 'empty')),
                         ),
-                      ),
-                      title: textWhiteBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
-                      subtitle: Column(
-                        children: <Widget>[
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: textWhiteBold(_employeeInfo != null ? utf8.decode(_employeeInfo.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality) : getTranslated(context, 'empty')),
-                          ),
-                          Row(
-                            children: <Widget>[
-                              textWhite(getTranslated(this.context, 'hours') + ': '),
-                              textGreenBold(_timesheet.totalMoneyForHoursForEmployee.toString() + ' ' + _currency + ' (' + _timesheet.totalHours + ' h)'),
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              textWhite(getTranslated(this.context, 'accord') + ': '),
-                              textGreenBold(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' ' + _currency),
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              textWhite(getTranslated(this.context, 'sum') + ': '),
-                              textGreenBold(_timesheet.totalMoneyEarned.toString() + ' ' + _currency),
-                            ],
-                          ),
-                        ],
-                      ),
+                        Row(
+                          children: <Widget>[
+                            textWhite(getTranslated(this.context, 'hours') + ': '),
+                            textGreenBold(_timesheet.totalMoneyForHoursForEmployee.toString() + ' ' + _currency + ' (' + _timesheet.totalHours + ' h)'),
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            textWhite(getTranslated(this.context, 'accord') + ': '),
+                            textGreenBold(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' ' + _currency),
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            textWhite(getTranslated(this.context, 'sum') + ': '),
+                            textGreenBold(_timesheet.totalMoneyEarned.toString() + ' ' + _currency),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                Expanded(
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
                   child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
+                    scrollDirection: Axis.horizontal,
+                    child: Theme(
+                      data: Theme.of(context).copyWith(),
                       child: Theme(
-                        data: Theme.of(context).copyWith(),
-                        child: Theme(
-                          data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
-                          child: DataTable(
-                            columnSpacing: 10,
-                            sortAscending: _sort,
-                            sortColumnIndex: _sortColumnIndex,
-                            columns: [
-                              DataColumn(label: textWhiteBold('No.'), onSort: (columnIndex, ascending) => _onSortNo(columnIndex, ascending)),
-                              DataColumn(label: textWhiteBold(getTranslated(context, 'hours')), onSort: (columnIndex, ascending) => _onSortHours(columnIndex, ascending)),
-                              DataColumn(label: textWhiteBold(getTranslated(context, 'accord'))),
-                              DataColumn(label: textWhiteBold(getTranslated(context, 'time'))),
-                              DataColumn(
-                                  label: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      textWhiteBold(getTranslated(context, 'money')),
-                                      text12White('(' + getTranslated(this.context, 'sumForEmployee') + ')'),
-                                    ],
-                                  ),
-                                  onSort: (columnIndex, ascending) => _onSortMoney(columnIndex, ascending)),
-                              DataColumn(
-                                  label: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      textWhiteBold(getTranslated(context, 'money')),
-                                      text12White('(' + getTranslated(this.context, 'sumForCompany') + ')'),
-                                    ],
-                                  ),
-                                  onSort: (columnIndex, ascending) => _onSortMoneyForCompany(columnIndex, ascending)),
-                              DataColumn(label: textWhiteBold(getTranslated(context, 'note')), onSort: (columnIndex, ascending) => _onSortNote(columnIndex, ascending)),
-                              DataColumn(label: textWhiteBold(getTranslated(context, 'vocations'))),
-                            ],
-                            rows: this
-                                .workdays
-                                .map(
-                                  (workday) => DataRow(
-                                    selected: selectedIds.contains(workday.id),
-                                    onSelectChanged: (bool selected) {
-                                      onSelectedRow(selected, workday.id);
-                                    },
-                                    cells: [
-                                      DataCell(textWhite(workday.number.toString())),
-                                      DataCell(textWhite(workday.hours.toString())),
-                                      DataCell(
+                        data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
+                        child: DataTable(
+                          columnSpacing: 10,
+                          sortAscending: _sort,
+                          sortColumnIndex: _sortColumnIndex,
+                          columns: [
+                            DataColumn(label: textWhiteBold('No.'), onSort: (columnIndex, ascending) => _onSortNo(columnIndex, ascending)),
+                            DataColumn(label: textWhiteBold(getTranslated(context, 'hours')), onSort: (columnIndex, ascending) => _onSortHours(columnIndex, ascending)),
+                            DataColumn(label: textWhiteBold(getTranslated(context, 'accord'))),
+                            DataColumn(label: textWhiteBold(getTranslated(context, 'time'))),
+                            DataColumn(
+                                label: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    textWhiteBold(getTranslated(context, 'money')),
+                                    text12White('(' + getTranslated(this.context, 'sumForEmployee') + ')'),
+                                  ],
+                                ),
+                                onSort: (columnIndex, ascending) => _onSortMoney(columnIndex, ascending)),
+                            DataColumn(
+                                label: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    textWhiteBold(getTranslated(context, 'money')),
+                                    text12White('(' + getTranslated(this.context, 'sumForCompany') + ')'),
+                                  ],
+                                ),
+                                onSort: (columnIndex, ascending) => _onSortMoneyForCompany(columnIndex, ascending)),
+                            DataColumn(label: textWhiteBold(getTranslated(context, 'note')), onSort: (columnIndex, ascending) => _onSortNote(columnIndex, ascending)),
+                            DataColumn(label: textWhiteBold(getTranslated(context, 'vocations'))),
+                          ],
+                          rows: this
+                              .workdays
+                              .map(
+                                (workday) => DataRow(
+                                  selected: selectedIds.contains(workday.id),
+                                  onSelectChanged: (bool selected) {
+                                    onSelectedRow(selected, workday.id);
+                                  },
+                                  cells: [
+                                    DataCell(textWhite(workday.number.toString())),
+                                    DataCell(textWhite(workday.hours.toString())),
+                                    DataCell(
+                                      Wrap(
+                                        children: <Widget>[
+                                          workday.pieceworks != null && workday.pieceworks.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
+                                        ],
+                                      ),
+                                      onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workday.pieceworks, true),
+                                    ),
+                                    DataCell(
+                                      Wrap(
+                                        children: <Widget>[
+                                          workday.workTimes != null && workday.workTimes.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
+                                        ],
+                                      ),
+                                      onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workday.workTimes),
+                                    ),
+                                    DataCell(Align(alignment: Alignment.center, child: textWhite(workday.totalMoneyForEmployee.toString()))),
+                                    DataCell(Align(alignment: Alignment.center, child: textWhite(workday.totalMoneyForCompany.toString()))),
+                                    DataCell(
+                                      Wrap(children: <Widget>[workday.note != null && workday.note != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-')]),
+                                      onTap: () => _editNote(this.context, workday.id, workday.note),
+                                    ),
+                                    DataCell(
                                         Wrap(
                                           children: <Widget>[
-                                            workday.pieceworks != null && workday.pieceworks.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
+                                            workday.vocation != null
+                                                ? Row(
+                                                    children: [Image(height: 35, image: AssetImage('images/vocation-icon.png')), workday.vocation.verified == true ? iconGreen(Icons.check) : iconRed(Icons.clear)],
+                                                  )
+                                                : textWhiteBold('-'),
                                           ],
                                         ),
-                                        onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workday.pieceworks, true),
-                                      ),
-                                      DataCell(
-                                        Wrap(
-                                          children: <Widget>[
-                                            workday.workTimes != null && workday.workTimes.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
-                                          ],
-                                        ),
-                                        onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workday.workTimes),
-                                      ),
-                                      DataCell(Align(alignment: Alignment.center, child: textWhite(workday.totalMoneyForEmployee.toString()))),
-                                      DataCell(Align(alignment: Alignment.center, child: textWhite(workday.totalMoneyForCompany.toString()))),
-                                      DataCell(
-                                        Wrap(children: <Widget>[workday.note != null && workday.note != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-')]),
-                                        onTap: () => _editNote(this.context, workday.id, workday.note),
-                                      ),
-                                      DataCell(
-                                          Wrap(
-                                            children: <Widget>[
-                                              workday.vocation != null
-                                                  ? Row(
-                                                      children: [Image(height: 35, image: AssetImage('images/vocation-icon.png')), workday.vocation.verified == true ? iconGreen(Icons.check) : iconRed(Icons.clear)],
-                                                    )
-                                                  : textWhiteBold('-'),
-                                            ],
-                                          ),
-                                          onTap: () => WorkdayUtil.showVocationReasonDetails(this.context, workday.vocation)),
-                                    ],
-                                  ),
-                                )
-                                .toList(),
-                          ),
+                                        onTap: () => WorkdayUtil.showVocationReasonDetails(this.context, workday.vocation)),
+                                  ],
+                                ),
+                              )
+                              .toList(),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
-          ),
-          bottomNavigationBar: Container(
-            height: 40,
-            child: Row(
-              children: <Widget>[
-                SizedBox(width: 1),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-hours-icon.png')),
-                    onPressed: () {
-                      if (selectedIds.isNotEmpty) {
-                        _hoursController.clear();
-                        _minutesController.clear();
-                        _showUpdateHoursDialog(selectedIds);
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
-                  ),
-                ),
-                SizedBox(width: 2.5),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-piecework-icon.png')),
-                    onPressed: () {
-                      if (selectedIds.isNotEmpty) {
-                        NavigatorUtil.navigate(
-                            context,
-                            AddPieceworkForSelectedWorkdays(
-                              _model,
-                              selectedIds.map((el) => el.toString()).toList(),
-                              _employeeInfo,
-                              _employeeId,
-                              _employeeNationality,
-                              _currency,
-                              _timesheet,
-                              _avatarPath,
-                              _previousPage,
-                            ));
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
-                  ),
-                ),
-                SizedBox(width: 2.5),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-note-icon.png')),
-                    onPressed: () {
-                      if (selectedIds.isNotEmpty) {
-                        _noteController.clear();
-                        _showUpdateNoteDialog(selectedIds);
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
-                  ),
-                ),
-                SizedBox(width: 2.5),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-vocation-icon.png')),
-                    onPressed: () {
-                      if (selectedIds.isNotEmpty) {
-                        _vocationReasonController.clear();
-                        _showUpdateVocationReasonDialog(_timesheet, selectedIds);
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
-                  ),
-                ),
-                SizedBox(width: 1),
-              ],
-            ),
-          ),
-          floatingActionButton: iconsLegendDialog(
-            this.context,
-            getTranslated(context, 'iconsLegend'),
-            [
-              IconsLegendUtil.buildImageRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
-              IconsLegendUtil.buildIconRow(iconWhite(Icons.search), getTranslated(context, 'checkDetails')),
-              IconsLegendUtil.buildImageRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
-              IconsLegendUtil.buildImageRow('images/green-piecework-icon.png', getTranslated(context, 'settingPiecework')),
-              IconsLegendUtil.buildImageRow('images/green-note-icon.png', getTranslated(context, 'settingNote')),
-              IconsLegendUtil.buildImageRow('images/green-vocation-icon.png', getTranslated(context, 'settingVocation')),
-              IconsLegendUtil.buildImageWithIconRow('images/green-vocation-icon.png', iconRed(Icons.clear), getTranslated(context, 'notVerifiedVocation')),
-              IconsLegendUtil.buildImageWithIconRow('images/green-vocation-icon.png', iconGreen(Icons.check), getTranslated(context, 'verifiedVocation')),
+              ),
             ],
           ),
         ),
+        bottomNavigationBar: Container(
+          height: 40,
+          child: Row(
+            children: <Widget>[
+              SizedBox(width: 1),
+              Expanded(
+                child: MaterialButton(
+                  color: GREEN,
+                  child: Image(image: AssetImage('images/dark-hours-icon.png')),
+                  onPressed: () {
+                    if (selectedIds.isNotEmpty) {
+                      _hoursController.clear();
+                      _minutesController.clear();
+                      _showUpdateHoursDialog(selectedIds);
+                    } else {
+                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                    }
+                  },
+                ),
+              ),
+              SizedBox(width: 2.5),
+              Expanded(
+                child: MaterialButton(
+                  color: GREEN,
+                  child: Image(image: AssetImage('images/dark-piecework-icon.png')),
+                  onPressed: () {
+                    if (selectedIds.isNotEmpty) {
+                      NavigatorUtil.navigate(
+                          context,
+                          AddPieceworkForSelectedWorkdays(
+                            _model,
+                            selectedIds.map((el) => el.toString()).toList(),
+                            _employeeInfo,
+                            _employeeId,
+                            _employeeNationality,
+                            _currency,
+                            _timesheet,
+                            _avatarPath,
+                          ));
+                    } else {
+                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                    }
+                  },
+                ),
+              ),
+              SizedBox(width: 2.5),
+              Expanded(
+                child: MaterialButton(
+                  color: GREEN,
+                  child: Image(image: AssetImage('images/dark-note-icon.png')),
+                  onPressed: () {
+                    if (selectedIds.isNotEmpty) {
+                      _noteController.clear();
+                      _showUpdateNoteDialog(selectedIds);
+                    } else {
+                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                    }
+                  },
+                ),
+              ),
+              SizedBox(width: 2.5),
+              Expanded(
+                child: MaterialButton(
+                  color: GREEN,
+                  child: Image(image: AssetImage('images/dark-vocation-icon.png')),
+                  onPressed: () {
+                    if (selectedIds.isNotEmpty) {
+                      _vocationReasonController.clear();
+                      _showUpdateVocationReasonDialog(_timesheet, selectedIds);
+                    } else {
+                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                    }
+                  },
+                ),
+              ),
+              SizedBox(width: 1),
+            ],
+          ),
+        ),
+        floatingActionButton: iconsLegendDialog(
+          this.context,
+          getTranslated(context, 'iconsLegend'),
+          [
+            IconsLegendUtil.buildImageRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
+            IconsLegendUtil.buildIconRow(iconWhite(Icons.search), getTranslated(context, 'checkDetails')),
+            IconsLegendUtil.buildImageRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
+            IconsLegendUtil.buildImageRow('images/green-piecework-icon.png', getTranslated(context, 'settingPiecework')),
+            IconsLegendUtil.buildImageRow('images/green-note-icon.png', getTranslated(context, 'settingNote')),
+            IconsLegendUtil.buildImageRow('images/green-vocation-icon.png', getTranslated(context, 'settingVocation')),
+            IconsLegendUtil.buildImageWithIconRow('images/green-vocation-icon.png', iconRed(Icons.clear), getTranslated(context, 'notVerifiedVocation')),
+            IconsLegendUtil.buildImageWithIconRow('images/green-vocation-icon.png', iconGreen(Icons.check), getTranslated(context, 'verifiedVocation')),
+          ],
+        ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, _previousPage),
     );
   }
 
