@@ -6,9 +6,9 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_without_status_dto.dart';
 import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/vocations/timesheets/calendar/vocations_calendar_page.dart';
 import 'package:give_job/manager/groups/group/vocations/timesheets/manage/vocations_manage_page.dart';
+import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/radio_element.dart';
@@ -174,16 +174,12 @@ class _VocationsTsPageState extends State<VocationsTsPage> {
                   child: MaterialButton(
                     color: GREEN,
                     child: textDarkBold(getTranslated(context, 'manage')),
-                    onPressed: () => {
-                      if (_currentRadioElement != null)
-                        {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => VocationsManagePage(_model, _inProgressTimesheets[_currentRadioElement.index])),
-                          ),
-                        }
-                      else
-                        {_handleEmptyTs()},
+                    onPressed: () {
+                      if (_currentRadioElement != null) {
+                        NavigatorUtil.navigate(context, VocationsManagePage(_model, _inProgressTimesheets[_currentRadioElement.index]));
+                      } else {
+                        _handleEmptyTs();
+                      }
                     },
                   ),
                 ),
@@ -202,18 +198,12 @@ class _VocationsTsPageState extends State<VocationsTsPage> {
                   child: MaterialButton(
                     color: GREEN,
                     child: textDarkBold(getTranslated(context, 'calendar')),
-                    onPressed: () => {
-                      if (_currentRadioElement != null)
-                        {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => VocationsCalendarPage(_model),
-                            ),
-                          ),
-                        }
-                      else
-                        {_handleEmptyTs()},
+                    onPressed: () {
+                      if (_currentRadioElement != null) {
+                        NavigatorUtil.navigate(context, VocationsCalendarPage(_model));
+                      } else {
+                        _handleEmptyTs();
+                      }
                     },
                   ),
                 ),

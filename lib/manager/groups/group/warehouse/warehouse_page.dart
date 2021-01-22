@@ -180,10 +180,7 @@ class _WarehousePageState extends State<WarehousePage> {
                                                 child: BouncingWidget(
                                                   duration: Duration(milliseconds: 100),
                                                   scaleFactor: 2,
-                                                  onPressed: () => Navigator.push(
-                                                    this.context,
-                                                    MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_model, warehouse)),
-                                                  ),
+                                                  onPressed: () => NavigatorUtil.navigate(this.context, WarehouseDetailsPage(_model, warehouse)),
                                                   child: icon30Green(Icons.search),
                                                 ),
                                               ),
@@ -255,10 +252,7 @@ class _WarehousePageState extends State<WarehousePage> {
                 heroTag: "plusBtn",
                 tooltip: getTranslated(context, 'createWarehouse'),
                 backgroundColor: GREEN,
-                onPressed: () => Navigator.push(
-                  this.context,
-                  MaterialPageRoute(builder: (context) => AddWarehousePage(_model)),
-                ),
+                onPressed: () => NavigatorUtil.navigate(context, AddWarehousePage(_model)),
                 child: text25Dark('+'),
               ),
               SizedBox(height: 15),

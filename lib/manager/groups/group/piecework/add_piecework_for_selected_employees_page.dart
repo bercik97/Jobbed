@@ -316,7 +316,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
     _workdayService.updateEmployeesPiecework(serviceWithQuantity, _dateFrom, _dateTo, _employeeIds, _tsYear, _tsMonth, _tsStatus).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(successMsg);
-        Navigator.push(this.context, MaterialPageRoute(builder: (context) => TsInProgressPage(_model, _timeSheet)));
+        NavigatorUtil.navigate(this.context, TsInProgressPage(_model, _timeSheet));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

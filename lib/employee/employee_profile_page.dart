@@ -24,6 +24,7 @@ import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/settings/settings_page.dart';
 import 'package:give_job/shared/util/avatars_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/silver_app_bar_delegate.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -91,10 +92,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                         padding: EdgeInsets.only(right: 15.0),
                         child: IconButton(
                           icon: iconWhite(Icons.settings),
-                          onPressed: () => Navigator.push(
-                            this.context,
-                            MaterialPageRoute(builder: (context) => SettingsPage(_user)),
-                          ),
+                          onPressed: () => NavigatorUtil.navigate(context, SettingsPage(_user)),
                         ),
                       ),
                     ],

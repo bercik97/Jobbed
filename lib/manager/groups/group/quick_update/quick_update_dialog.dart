@@ -12,6 +12,7 @@ import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/buttons.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -49,12 +50,7 @@ class QuickUpdateDialog {
                 textCenter16White(getTranslated(context, 'updateDataForAllEmployeesOfGroup')),
                 SizedBox(height: 5),
                 GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => VocationsCalendarPage(_model)),
-                    );
-                  },
+                  onTap: () => NavigatorUtil.navigate(context, VocationsCalendarPage(_model)),
                   child: textCenter15RedUnderline(getTranslated(context, 'quickUpdateWarn')),
                 ),
                 SizedBox(height: 30),
@@ -68,10 +64,7 @@ class QuickUpdateDialog {
                   minWidth: 200.0,
                   color: GREEN,
                   title: getTranslated(context, 'piecework'),
-                  fun: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AddPieceworkForQuickUpdate(_model, _todaysDate)),
-                  ),
+                  fun: () => NavigatorUtil.navigate(context, AddPieceworkForQuickUpdate(_model, _todaysDate)),
                 ),
                 Buttons.standardButton(
                   minWidth: 200.0,

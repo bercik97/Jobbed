@@ -7,6 +7,7 @@ import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/logout_service.dart';
 import 'package:give_job/shared/settings/settings_page.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:open_appstore/open_appstore.dart';
@@ -48,10 +49,7 @@ Drawer employeeSideBar(BuildContext context, User user) {
           ListTile(
             leading: iconWhite(Icons.person),
             title: text18White(getTranslated(context, 'profile')),
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => EmployeeProfilPage(user)),
-            ),
+            onTap: () => NavigatorUtil.navigate(context, EmployeeProfilPage(user)),
           ),
           Divider(color: WHITE),
           ListTile(
@@ -62,13 +60,7 @@ Drawer employeeSideBar(BuildContext context, User user) {
           ListTile(
             leading: iconWhite(Icons.settings),
             title: text18White(getTranslated(context, 'settings')),
-            onTap: () => Navigator.of(context).push(
-              CupertinoPageRoute<Null>(
-                builder: (BuildContext context) {
-                  return SettingsPage(user);
-                },
-              ),
-            ),
+            onTap: () => NavigatorUtil.navigate(context, SettingsPage(user)),
           ),
           ListTile(
             leading: iconWhite(Icons.exit_to_app),

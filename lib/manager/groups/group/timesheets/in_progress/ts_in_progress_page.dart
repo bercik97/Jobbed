@@ -233,13 +233,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                   totalMoneyForPieceworkForEmployee: _filteredEmployees[index].totalMoneyForPieceworkForEmployee,
                                   totalMoneyEarned: _filteredEmployees[index].totalMoneyEarned,
                                 );
-                                Navigator.of(this.context).push(
-                                  CupertinoPageRoute<Null>(
-                                    builder: (BuildContext context) {
-                                      return EmployeeTsInProgressPage(_model, info, employee.id, nationality, currency, _inProgressTs, avatarPath, TsInProgressPage(_model, _timesheet));
-                                    },
-                                  ),
-                                );
+                                NavigatorUtil.navigate(this.context, EmployeeTsInProgressPage(_model, info, employee.id, nationality, currency, _inProgressTs, avatarPath, TsInProgressPage(_model, _timesheet)));
                               },
                               child: Ink(
                                 width: MediaQuery.of(context).size.width * 0.60,
@@ -283,14 +277,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                   child: BouncingWidget(
                                     duration: Duration(milliseconds: 100),
                                     scaleFactor: 2,
-                                    onPressed: () {
-                                      Navigator.push(
-                                        this.context,
-                                        MaterialPageRoute(
-                                          builder: (context) => EmployeeProfilPage(_model, nationality, currency, employee.id, info, avatarPath, TsInProgressPage(_model, _timesheet)),
-                                        ),
-                                      );
-                                    },
+                                    onPressed: () => NavigatorUtil.navigate(this.context, EmployeeProfilPage(_model, nationality, currency, employee.id, info, avatarPath, TsInProgressPage(_model, _timesheet))),
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
@@ -573,19 +560,17 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
     if (picked != null && picked.length == 2) {
       String dateFrom = DateFormat('yyyy-MM-dd').format(picked[0]);
       String dateTo = DateFormat('yyyy-MM-dd').format(picked[1]);
-      Navigator.push(
+      NavigatorUtil.navigate(
         context,
-        MaterialPageRoute(
-          builder: (context) => AddPieceworkForSelectedEmployeesPage(
-            _model,
-            _timesheet,
-            dateFrom,
-            dateTo,
-            _selectedIds.map((el) => el.toString()).toList(),
-            year,
-            monthNum,
-            STATUS_IN_PROGRESS,
-          ),
+        AddPieceworkForSelectedEmployeesPage(
+          _model,
+          _timesheet,
+          dateFrom,
+          dateTo,
+          _selectedIds.map((el) => el.toString()).toList(),
+          year,
+          monthNum,
+          STATUS_IN_PROGRESS,
         ),
       );
     }

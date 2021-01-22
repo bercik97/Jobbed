@@ -305,10 +305,7 @@ class _DeleteGroupEmployeesPageState extends State<DeleteGroupEmployeesPage> {
     _groupService.deleteGroupEmployees(_groupId, _selectedIds.map((e) => e.toString()).toList()).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyRemovedGroupEmployees'));
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => GroupsDashboardPage(_user)),
-        );
+        NavigatorUtil.navigate(this.context, GroupsDashboardPage(_user));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

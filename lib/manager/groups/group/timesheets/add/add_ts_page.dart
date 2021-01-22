@@ -21,9 +21,9 @@ import '../../../../../shared/util/month_util.dart';
 import '../../../../../shared/widget/icons.dart';
 import '../../../../../shared/widget/loader.dart';
 import '../../../../../shared/widget/texts.dart';
+import '../../../../shared/group_model.dart';
 import '../../../../shared/manager_app_bar.dart';
 import '../../../../shared/manager_side_bar.dart';
-import '../../../../shared/group_model.dart';
 import '../ts_page.dart';
 
 class AddTsPage extends StatefulWidget {
@@ -98,10 +98,7 @@ class _AddTsPageState extends State<AddTsPage> {
               actions: <Widget>[
                 FlatButton(
                   child: textGreen(getTranslated(context, 'goBack')),
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ManagerTsPage(_model)),
-                  ),
+                  onPressed: () => NavigatorUtil.navigate(this.context, ManagerTsPage(_model)),
                 ),
               ],
             ),
@@ -291,10 +288,7 @@ class _AddTsPageState extends State<AddTsPage> {
       (res) {
         Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
           ToastService.showSuccessToast(getTranslated(context, 'timesheetsSuccessfullyCreated'));
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ManagerTsPage(_model)),
-          );
+          NavigatorUtil.navigate(this.context, ManagerTsPage(_model));
         });
       },
     ).catchError((onError) {

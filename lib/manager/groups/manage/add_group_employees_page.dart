@@ -306,10 +306,7 @@ class _AddGroupEmployeesPageState extends State<AddGroupEmployeesPage> {
     _groupService.addGroupEmployees(_groupId, _selectedIds.map((e) => e.toInt()).toList()).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedGroupEmployees'));
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => GroupsDashboardPage(_user)),
-        );
+        NavigatorUtil.navigate(context, GroupsDashboardPage(_user));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

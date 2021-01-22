@@ -501,9 +501,6 @@ class _WorkTimePageState extends State<WorkTimePage> {
   }
 
   void _refresh() {
-    Navigator.push(
-      this.context,
-      MaterialPageRoute(builder: (context) => WorkTimePage(_user, _todayWorkdayId)),
-    );
+    NavigatorUtil.navigate(this.context, WorkTimePage(_user, _todayWorkdayId));
   }
 }

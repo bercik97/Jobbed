@@ -83,10 +83,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
                 heroTag: "plusBtn",
                 tooltip: getTranslated(context, 'createNote'),
                 backgroundColor: GREEN,
-                onPressed: () => Navigator.push(
-                  this.context,
-                  MaterialPageRoute(builder: (context) => AddPieceworkPage(_user, _todayDate, _todayWorkdayId)),
-                ),
+                onPressed: () => NavigatorUtil.navigate(context, AddPieceworkPage(_user, _todayDate, _todayWorkdayId)),
                 child: text25Dark('+'),
               ),
             ],
@@ -169,10 +166,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
                                 _pieceworkService.deleteById(_pieceworks[i].id).then((value) {
                                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                     ToastService.showSuccessToast(getTranslated(context, 'successfullyDeletedPieceworkReport'));
-                                    Navigator.push(
-                                      this.context,
-                                      MaterialPageRoute(builder: (context) => PieceworkPage(_user, _todayDate, _todayWorkdayId)),
-                                    );
+                                    NavigatorUtil.navigate(this.context, PieceworkPage(_user, _todayDate, _todayWorkdayId));
                                   });
                                 }).catchError((onError) {
                                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

@@ -236,10 +236,7 @@ class _PricelistPageState extends State<PricelistPage> {
                 heroTag: "plusBtn",
                 tooltip: getTranslated(context, 'createPricelist'),
                 backgroundColor: GREEN,
-                onPressed: () => Navigator.push(
-                  this.context,
-                  MaterialPageRoute(builder: (context) => AddPricelistPage(_model)),
-                ),
+                onPressed: () => NavigatorUtil.navigate(this.context, AddPricelistPage(_model)),
                 child: text25Dark('+'),
               ),
               SizedBox(height: 15),

@@ -104,32 +104,32 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
                       child: Center(
                         child: Column(
                           children: [
-                            for (var i = 0; i<_items.length; i++)
+                            for (var i = 0; i < _items.length; i++)
                               Card(
-                              color: DARK,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Card(
-                                    color: BRIGHTER_DARK,
-                                    child: ListTile(
-                                      title: textGreen(utf8.decode(_items[i].name.runes.toList())),
-                                      subtitle: Row(
-                                        children: [
-                                          textWhite(getTranslated(this.context, 'quantity') + ': '),
-                                          textGreen(_items[i].quantity.toString()),
-                                        ],
-                                      ),
-                                      trailing: Container(
-                                        width: 100,
-                                        child: _buildNumberField(_textEditingItemControllers[i], _items[i].quantity),
+                                color: DARK,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Card(
+                                      color: BRIGHTER_DARK,
+                                      child: ListTile(
+                                        title: textGreen(utf8.decode(_items[i].name.runes.toList())),
+                                        subtitle: Row(
+                                          children: [
+                                            textWhite(getTranslated(this.context, 'quantity') + ': '),
+                                            textGreen(_items[i].quantity.toString()),
+                                          ],
+                                        ),
+                                        trailing: Container(
+                                          width: 100,
+                                          child: _buildNumberField(_textEditingItemControllers[i], _items[i].quantity),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
                           ],
                         ),
                       ),
@@ -322,10 +322,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
     _itemPlaceService.assignNewItems(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyReleaseItemsToSelectedItemplace'));
-        Navigator.push(
-          this.context,
-          MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_model, _warehouseDto)),
-        );
+        NavigatorUtil.navigate(context, WarehouseDetailsPage(_model, _warehouseDto));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

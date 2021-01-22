@@ -317,9 +317,6 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
   }
 
   void navigateIntoEmployeeTsInProgressPage() {
-    Navigator.push(
-      this.context,
-      MaterialPageRoute(builder: (context) => EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _currency, _timesheet, _avatarPath, _previousPage)),
-    );
+    NavigatorUtil.navigate(this.context, EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _currency, _timesheet, _avatarPath, _previousPage));
   }
 }

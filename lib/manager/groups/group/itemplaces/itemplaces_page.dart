@@ -186,10 +186,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
                                                 child: BouncingWidget(
                                                   duration: Duration(milliseconds: 100),
                                                   scaleFactor: 2,
-                                                  onPressed: () => Navigator.push(
-                                                    this.context,
-                                                    MaterialPageRoute(builder: (context) => ItemplacesDetailsPage(_model, itemplace)),
-                                                  ),
+                                                  onPressed: () => NavigatorUtil.navigate(this.context, ItemplacesDetailsPage(_model, itemplace)),
                                                   child: icon30Green(Icons.search),
                                                 ),
                                               ),
@@ -374,10 +371,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
     _itemplaceService.create(int.parse(_user.companyId), location).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(this.context, 'successfullyAddedNewItemplace'));
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ItemplacesPage(_model)),
-        );
+        NavigatorUtil.navigate(this.context, ItemplacesPage(_model));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

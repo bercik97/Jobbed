@@ -11,6 +11,7 @@ import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/logout_service.dart';
 import 'package:give_job/shared/settings/settings_page.dart';
 import 'package:give_job/shared/util/language_util.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/buttons.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -65,34 +66,19 @@ class _ManagerProfilePageState extends State<ManagerProfilePage> {
                       minWidth: 200.0,
                       color: GREEN,
                       title: getTranslated(context, 'seeMyGroups'),
-                      fun: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => GroupsDashboardPage(_user),
-                        ),
-                      ),
+                      fun: () => NavigatorUtil.navigate(context, GroupsDashboardPage(_user)),
                     ),
                     Buttons.standardButton(
                       minWidth: 200.0,
                       color: GREEN,
                       title: getTranslated(context, 'aboutMe'),
-                      fun: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ManagerEditPage(_user),
-                        ),
-                      ),
+                      fun: () => NavigatorUtil.navigate(context, ManagerEditPage(_user)),
                     ),
                     Buttons.standardButton(
                       minWidth: 200.0,
                       color: GREEN,
                       title: getTranslated(context, 'settings'),
-                      fun: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SettingsPage(_user),
-                        ),
-                      ),
+                      fun: () => NavigatorUtil.navigate(context, SettingsPage(_user)),
                     ),
                     Buttons.standardButton(
                       minWidth: 200.0,
@@ -122,12 +108,7 @@ class _ManagerProfilePageState extends State<ManagerProfilePage> {
           padding: EdgeInsets.only(right: 15.0),
           child: IconButton(
             icon: iconWhite(Icons.settings),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SettingsPage(user)),
-              );
-            },
+            onPressed: () => NavigatorUtil.navigate(context, SettingsPage(_user)),
           ),
         ),
       ],

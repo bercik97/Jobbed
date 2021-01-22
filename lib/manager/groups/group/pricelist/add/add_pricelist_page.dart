@@ -15,6 +15,7 @@ import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/buttons.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -292,10 +293,7 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
     _pricelistService.create(_pricelistsToAdd).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewPricelistServices'));
-        Navigator.push(
-          this.context,
-          MaterialPageRoute(builder: (context) => PricelistPage(_model)),
-        );
+        NavigatorUtil.navigate(this.context, PricelistPage(_model));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

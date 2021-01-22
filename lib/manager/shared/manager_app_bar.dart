@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:give_job/manager/profile/manager_profile_page.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
 AppBar managerAppBar(BuildContext context, User user, String title) {
@@ -24,12 +25,7 @@ AppBar managerAppBar(BuildContext context, User user, String title) {
               fit: BoxFit.cover,
             ),
           ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ManagerProfilePage(user)),
-            );
-          },
+          onPressed: () => NavigatorUtil.navigate(context, ManagerProfilePage(user)),
         ),
       ),
     ],

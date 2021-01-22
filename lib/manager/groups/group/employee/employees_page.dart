@@ -127,15 +127,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
                                     Card(
                                       color: BRIGHTER_DARK,
                                       child: InkWell(
-                                        onTap: () {
-                                          Navigator.of(this.context).push(
-                                            CupertinoPageRoute<Null>(
-                                              builder: (BuildContext context) {
-                                                return EmployeeProfilPage(_model, nationality, currency, employee.id, info, avatarPath, EmployeesPage(_model));
-                                              },
-                                            ),
-                                          );
-                                        },
+                                        onTap: () => NavigatorUtil.navigate(this.context, EmployeeProfilPage(_model, nationality, currency, employee.id, info, avatarPath, EmployeesPage(_model))),
                                         child: Column(
                                           children: <Widget>[
                                             ListTile(

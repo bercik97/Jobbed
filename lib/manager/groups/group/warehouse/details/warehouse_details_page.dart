@@ -303,10 +303,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                         showHint(context, getTranslated(context, 'needToSelectItems') + ' ', getTranslated(context, 'whichYouWantToReleaseToItemplace'));
                         return;
                       }
-                      Navigator.push(
-                        this.context,
-                        MaterialPageRoute(builder: (context) => ReleaseItemsPage(_model, _warehouseDto, _selectedItems.toList())),
-                      );
+                      NavigatorUtil.navigate(this.context, ReleaseItemsPage(_model, _warehouseDto, _selectedItems.toList()));
                     },
                   ),
                 ),
@@ -322,10 +319,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                 heroTag: "plusBtn",
                 tooltip: getTranslated(context, 'createItem'),
                 backgroundColor: GREEN,
-                onPressed: () => Navigator.push(
-                  this.context,
-                  MaterialPageRoute(builder: (context) => AddItemsPage(_model, _warehouseDto)),
-                ),
+                onPressed: () => NavigatorUtil.navigate(context, AddItemsPage(_model, _warehouseDto)),
                 child: text25Dark('+'),
               ),
               SizedBox(height: 15),
@@ -426,10 +420,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                           _itemService.updateQuantity(item.id, quantity).then((value) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               ToastService.showSuccessToast(getTranslated(context, 'itemQuantityUpdatedSuccessfully'));
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_model, _warehouseDto)),
-                              );
+                              NavigatorUtil.navigate(context, WarehouseDetailsPage(_model, _warehouseDto));
                             });
                           }).catchError((onError) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

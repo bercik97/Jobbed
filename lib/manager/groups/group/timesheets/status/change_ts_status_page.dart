@@ -21,9 +21,9 @@ import '../../../../../shared/util/month_util.dart';
 import '../../../../../shared/widget/icons.dart';
 import '../../../../../shared/widget/loader.dart';
 import '../../../../../shared/widget/texts.dart';
+import '../../../../shared/group_model.dart';
 import '../../../../shared/manager_app_bar.dart';
 import '../../../../shared/manager_side_bar.dart';
-import '../../../../shared/group_model.dart';
 import '../ts_page.dart';
 
 class ChangeTsStatusPage extends StatefulWidget {
@@ -282,10 +282,7 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
     _timesheetService.updateEmployeesTsStatus(_selectedIds.map((el) => el.toString()).toList(), newStatusId, _year, _month, status, _model.groupId).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'timesheetStatusSuccessfullyUpdated'));
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ManagerTsPage(_model)),
-        );
+        NavigatorUtil.navigate(context, ManagerTsPage(_model));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

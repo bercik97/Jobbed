@@ -93,12 +93,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                               fit: BoxFit.cover,
                             ),
                           ),
-                          onPressed: () {
-                            Navigator.push(
-                              this.context,
-                              MaterialPageRoute(builder: (context) => ManagerProfilePage(_model.user)),
-                            );
-                          },
+                          onPressed: () => NavigatorUtil.navigate(context, ManagerProfilePage(_model.user)),
                         ),
                       ),
                     ],
@@ -182,21 +177,9 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                             child: InkWell(
                               onTap: () {
                                 if (timesheet.status == 'Completed') {
-                                  Navigator.of(this.context).push(
-                                    CupertinoPageRoute<Null>(
-                                      builder: (BuildContext context) {
-                                        return EmployeeTsCompletedPage(_model, _employeeInfo, _employeeNationality, _currency, timesheet);
-                                      },
-                                    ),
-                                  );
+                                  NavigatorUtil.navigate(this.context, EmployeeTsCompletedPage(_model, _employeeInfo, _employeeNationality, _currency, timesheet));
                                 } else {
-                                  Navigator.of(this.context).push(
-                                    CupertinoPageRoute<Null>(
-                                      builder: (BuildContext context) {
-                                        return EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _currency, timesheet, _avatarPath, EmployeeProfilPage(_model, _employeeNationality, _currency, _employeeId, _employeeInfo, _avatarPath, _previousPage));
-                                      },
-                                    ),
-                                  );
+                                  NavigatorUtil.navigate(this.context, EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _currency, timesheet, _avatarPath, EmployeeProfilPage(_model, _employeeNationality, _currency, _employeeId, _employeeInfo, _avatarPath, _previousPage)));
                                 }
                               },
                               child: Column(

@@ -75,60 +75,59 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
                 Expanded(
                   flex: 2,
                   child: Scrollbar(
-                    isAlwaysShown: false,
-                    controller: _scrollController,
-                    child: SingleChildScrollView(
-                      child: Center(
-                        child: Column(
-                          children: [
-                            for (var i = 0; i < _itemplaces.length; i++)
-                              Card(
-                              color: DARK,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Card(
-                                    color: BRIGHTER_DARK,
-                                    child: ListTile(
-                                      title: textGreen(utf8.decode(_itemplaces[i].name.runes.toList())),
-                                      subtitle: Column(
-                                        children: [
-                                          Row(
+                      isAlwaysShown: false,
+                      controller: _scrollController,
+                      child: SingleChildScrollView(
+                        child: Center(
+                          child: Column(
+                            children: [
+                              for (var i = 0; i < _itemplaces.length; i++)
+                                Card(
+                                  color: DARK,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Card(
+                                        color: BRIGHTER_DARK,
+                                        child: ListTile(
+                                          title: textGreen(utf8.decode(_itemplaces[i].name.runes.toList())),
+                                          subtitle: Column(
                                             children: [
-                                              text15White(getTranslated(this.context, 'quantity') + ': '),
-                                              text15Green(_itemplaces[i].quantity.toString()),
+                                              Row(
+                                                children: [
+                                                  text15White(getTranslated(this.context, 'quantity') + ': '),
+                                                  text15Green(_itemplaces[i].quantity.toString()),
+                                                ],
+                                              ),
+                                              SizedBox(height: 7.5),
+                                              Column(
+                                                children: [
+                                                  Align(
+                                                    child: textWhite(getTranslated(this.context, 'warehouse') + ': '),
+                                                    alignment: Alignment.topLeft,
+                                                  ),
+                                                  Align(
+                                                    child: textGreen(utf8.decode(_itemplaces[i].warehouseName.toString().runes.toList())),
+                                                    alignment: Alignment.topLeft,
+                                                  ),
+                                                ],
+                                              ),
                                             ],
                                           ),
-                                          SizedBox(height: 7.5),
-                                          Column(
-                                            children: [
-                                              Align(
-                                                child: textWhite(getTranslated(this.context, 'warehouse') + ': '),
-                                                alignment: Alignment.topLeft,
-                                              ),
-                                              Align(
-                                                child: textGreen(utf8.decode(_itemplaces[i].warehouseName.toString().runes.toList())),
-                                                alignment: Alignment.topLeft,
-                                              ),
-                                            ],
+                                          trailing: Container(
+                                            width: 100,
+                                            child: _buildNumberField(_textEditingItemControllers[i], int.parse(_itemplaces[i].quantity)),
                                           ),
-                                        ],
+                                        ),
                                       ),
-                                      trailing: Container(
-                                        width: 100,
-                                        child: _buildNumberField(_textEditingItemControllers[i], int.parse(_itemplaces[i].quantity)),
-                                      ),
-                                    ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
-                          ],
+                                ),
+                            ],
+                          ),
                         ),
-                      ),
-                    )
-                  ),
+                      )),
                 ),
               ],
             ),
@@ -230,10 +229,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
     _itemPlaceService.returnItems(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyReturnItemsToWarehouses'));
-        Navigator.push(
-          this.context,
-          MaterialPageRoute(builder: (context) => ItemplacesDetailsPage(_model, _itemplaceDto)),
-        );
+        NavigatorUtil.navigate(this.context, ItemplacesDetailsPage(_model, _itemplaceDto));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

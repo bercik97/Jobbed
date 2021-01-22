@@ -21,9 +21,9 @@ import '../../../../../shared/util/month_util.dart';
 import '../../../../../shared/widget/icons.dart';
 import '../../../../../shared/widget/loader.dart';
 import '../../../../../shared/widget/texts.dart';
+import '../../../../shared/group_model.dart';
 import '../../../../shared/manager_app_bar.dart';
 import '../../../../shared/manager_side_bar.dart';
-import '../../../../shared/group_model.dart';
 import '../ts_page.dart';
 
 class DeleteTsPage extends StatefulWidget {
@@ -264,7 +264,7 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
     _timesheetService.deleteForEmployeesByYearAndMonthAndStatus(_selectedIds.map((el) => el.toString()).toList(), _year, _month, _status).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'timesheetSuccessfullyDeleted'));
-        Navigator.push(context, MaterialPageRoute(builder: (context) => ManagerTsPage(_model)));
+        NavigatorUtil.navigate(context, ManagerTsPage(_model));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

@@ -242,10 +242,7 @@ class _ItemplacesDetailsPageState extends State<ItemplacesDetailsPage> {
                         showHint(context, getTranslated(context, 'needToSelectItems') + ' ', getTranslated(context, 'whichYouWantToReturnToWarehouse'));
                         return;
                       }
-                      Navigator.push(
-                        this.context,
-                        MaterialPageRoute(builder: (context) => ReturnItemsPage(_model, _itemplaceDto, _selectedItems.toList())),
-                      );
+                      NavigatorUtil.navigate(this.context, ReturnItemsPage(_model, _itemplaceDto, _selectedItems.toList()));
                     },
                   ),
                 ),

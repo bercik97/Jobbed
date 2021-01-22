@@ -289,10 +289,9 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                     child: Image(image: AssetImage('images/dark-piecework-icon.png')),
                     onPressed: () {
                       if (selectedIds.isNotEmpty) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AddPieceworkForSelectedWorkdays(
+                        NavigatorUtil.navigate(
+                            context,
+                            AddPieceworkForSelectedWorkdays(
                               _model,
                               selectedIds.map((el) => el.toString()).toList(),
                               _employeeInfo,
@@ -302,9 +301,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                               _timesheet,
                               _avatarPath,
                               _previousPage,
-                            ),
-                          ),
-                        );
+                            ));
                       } else {
                         showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
                       }

@@ -304,10 +304,7 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
     _timesheetService.updatePieceworkByGroupIdAndDate(_model.groupId, _todaysDate, serviceWithQuantity).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(successMsg);
-        Navigator.push(
-          this.context,
-          MaterialPageRoute(builder: (context) => GroupPage(_model)),
-        );
+        NavigatorUtil.navigate(this.context, GroupPage(_model));
       });
     }).catchError((onError) {
       String s = onError.toString();

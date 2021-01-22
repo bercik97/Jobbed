@@ -16,6 +16,7 @@ import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/buttons.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -260,10 +261,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
     _itemService.create(_itemsToAdd).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewItems'));
-        Navigator.push(
-          this.context,
-          MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_model, _warehouseDto)),
-        );
+        NavigatorUtil.navigate(context, WarehouseDetailsPage(_model, _warehouseDto));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

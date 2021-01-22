@@ -123,15 +123,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                   Card(
                     color: BRIGHTER_DARK,
                     child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          CupertinoPageRoute<Null>(
-                            builder: (BuildContext context) {
-                              return TsInProgressPage(_model, inProgressTs);
-                            },
-                          ),
-                        );
-                      },
+                      onTap: () => NavigatorUtil.navigate(this.context, TsInProgressPage(_model, inProgressTs)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
@@ -156,22 +148,12 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                                 SizedBox(width: 10),
                                 IconButton(
                                   icon: iconGreen(Icons.arrow_upward),
-                                  onPressed: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ChangeTsStatusPage(_model, inProgressTs.year, inProgressTs.month, STATUS_COMPLETED),
-                                    ),
-                                  ),
+                                  onPressed: () => NavigatorUtil.navigate(context, ChangeTsStatusPage(_model, inProgressTs.year, inProgressTs.month, STATUS_COMPLETED)),
                                 ),
                                 SizedBox(width: 5),
                                 IconButton(
                                   icon: iconRed(Icons.delete),
-                                  onPressed: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => DeleteTsPage(_model, inProgressTs.year, inProgressTs.month, STATUS_IN_PROGRESS),
-                                    ),
-                                  ),
+                                  onPressed: () => NavigatorUtil.navigate(context, DeleteTsPage(_model, inProgressTs.year, inProgressTs.month, STATUS_IN_PROGRESS)),
                                 ),
                               ],
                             ),
@@ -201,15 +183,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                   Card(
                     color: BRIGHTER_DARK,
                     child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          CupertinoPageRoute<Null>(
-                            builder: (BuildContext context) {
-                              return TsCompletedPage(_model, completedTs);
-                            },
-                          ),
-                        );
-                      },
+                      onTap: () => NavigatorUtil.navigate(context, TsCompletedPage(_model, completedTs)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
@@ -234,22 +208,12 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
                                 SizedBox(width: 10),
                                 IconButton(
                                   icon: iconOrange(Icons.arrow_downward),
-                                  onPressed: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ChangeTsStatusPage(_model, completedTs.year, completedTs.month, STATUS_IN_PROGRESS),
-                                    ),
-                                  ),
+                                  onPressed: () => NavigatorUtil.navigate(this.context, ChangeTsStatusPage(_model, completedTs.year, completedTs.month, STATUS_IN_PROGRESS)),
                                 ),
                                 SizedBox(width: 5),
                                 IconButton(
                                   icon: iconRed(Icons.delete),
-                                  onPressed: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => DeleteTsPage(_model, completedTs.year, completedTs.month, STATUS_COMPLETED),
-                                    ),
-                                  ),
+                                  onPressed: () => NavigatorUtil.navigate(this.context, DeleteTsPage(_model, completedTs.year, completedTs.month, STATUS_COMPLETED)),
                                 ),
                               ],
                             ),
@@ -424,10 +388,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
       initialDate: selectedDate,
     ).then((date) {
       if (date != null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => AddTsPage(_model, date.year, date.month)),
-        );
+        NavigatorUtil.navigate(context, AddTsPage(_model, date.year, date.month));
       }
     });
   }

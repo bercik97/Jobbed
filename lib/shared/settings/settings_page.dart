@@ -18,6 +18,7 @@ import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/logout_service.dart';
 import 'package:give_job/shared/settings/bug_report_dialog.dart';
 import 'package:give_job/shared/util/language_util.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/util/url_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -188,15 +189,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 child: _subtitleInkWellContainer(getTranslated(context, 'aboutMe')),
                 onTap: () {
                   if (widget._user.role == ROLE_EMPLOYEE) {
-                    Navigator.push(
-                      this.context,
-                      MaterialPageRoute(builder: (context) => EmployeeEditPage(int.parse(_user.id), _user)), //_employeePageDto.id
-                    );
+                    NavigatorUtil.navigate(context, EmployeeEditPage(int.parse(_user.id), _user));
                   } else {
-                    Navigator.push(
-                      this.context,
-                      MaterialPageRoute(builder: (context) => ManagerEditPage(_user)),
-                    );
+                    NavigatorUtil.navigate(context, ManagerEditPage(_user));
                   }
                 },
               ),

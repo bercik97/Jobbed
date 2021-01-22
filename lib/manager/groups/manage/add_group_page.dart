@@ -419,10 +419,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
     _groupService.create(dto).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewGroup'));
-        Navigator.push(
-          this.context,
-          MaterialPageRoute(builder: (context) => GroupsDashboardPage(_user)),
-        );
+        NavigatorUtil.navigate(context, GroupsDashboardPage(_user));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

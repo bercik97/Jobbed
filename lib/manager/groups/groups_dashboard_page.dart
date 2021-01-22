@@ -19,6 +19,7 @@ import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/buttons.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -84,10 +85,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                 heroTag: "plusBtn",
                 tooltip: getTranslated(context, 'createGroup'),
                 backgroundColor: GREEN,
-                onPressed: () => Navigator.push(
-                  this.context,
-                  MaterialPageRoute(builder: (context) => AddGroupPage(_user)),
-                ),
+                onPressed: () => NavigatorUtil.navigate(this.context, AddGroupPage(_user)),
                 child: text25Dark('+'),
               ),
             ],
@@ -149,20 +147,17 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                           child: ListTile(
                             onTap: () {
                               GroupDashboardDto group = _groups[index];
-                              Navigator.of(this.context).push(
-                                CupertinoPageRoute<Null>(
-                                  builder: (BuildContext context) {
-                                    return GroupPage(
-                                      new GroupModel(
-                                        _user,
-                                        group.id,
-                                        group.name,
-                                        group.description,
-                                        group.numberOfEmployees.toString(),
-                                        group.countryOfWork,
-                                      ),
-                                    );
-                                  },
+                              NavigatorUtil.navigate(
+                                this.context,
+                                GroupPage(
+                                  new GroupModel(
+                                    _user,
+                                    group.id,
+                                    group.name,
+                                    group.description,
+                                    group.numberOfEmployees.toString(),
+                                    group.countryOfWork,
+                                  ),
                                 ),
                               );
                             },
@@ -268,13 +263,13 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                       minWidth: 200.0,
                       color: GREEN,
                       title: getTranslated(context, 'addEmployees'),
-                      fun: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddGroupEmployeesPage(_user, groupId))),
+                      fun: () => NavigatorUtil.navigate(this.context, AddGroupEmployeesPage(_user, groupId)),
                     ),
                     Buttons.standardButton(
                       minWidth: 200.0,
                       color: Colors.red,
                       title: getTranslated(context, 'deleteEmployees'),
-                      fun: () => Navigator.push(context, MaterialPageRoute(builder: (context) => DeleteGroupEmployeesPage(_user, groupId))),
+                      fun: () => NavigatorUtil.navigate(this.context, DeleteGroupEmployeesPage(_user, groupId)),
                     ),
                     SizedBox(height: 30),
                     Container(
@@ -387,10 +382,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                             _groupService.deleteByName(_nameController.text).then((value) {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 ToastService.showSuccessToast(getTranslated(context, 'successfullyDeletedGroup'));
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => GroupsDashboardPage(_user)),
-                                );
+                                NavigatorUtil.navigate(context, GroupsDashboardPage(_user));
                               });
                             }).catchError((onError) {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

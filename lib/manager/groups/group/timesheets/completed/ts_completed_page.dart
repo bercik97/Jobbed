@@ -144,13 +144,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                             totalMoneyForPieceworkForEmployee: _filteredEmployees[index].totalMoneyForPieceworkForEmployee,
                             totalMoneyEarned: _filteredEmployees[index].totalMoneyEarned,
                           );
-                          Navigator.of(this.context).push(
-                            CupertinoPageRoute<Null>(
-                              builder: (BuildContext context) {
-                                return EmployeeTsCompletedPage(_model, info, nationality, currency, _completedTimesheet);
-                              },
-                            ),
-                          );
+                          NavigatorUtil.navigate(this.context, EmployeeTsCompletedPage(_model, info, nationality, currency, _completedTimesheet));
                         },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -166,14 +160,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                                     child: BouncingWidget(
                                       duration: Duration(milliseconds: 100),
                                       scaleFactor: 1.5,
-                                      onPressed: () {
-                                        Navigator.push(
-                                          this.context,
-                                          MaterialPageRoute(
-                                            builder: (context) => EmployeeProfilPage(_model, nationality, currency, employee.id, info, avatarPath, TsCompletedPage(_model, _timesheet)),
-                                          ),
-                                        );
-                                      },
+                                      onPressed: () => NavigatorUtil.navigate(this.context, EmployeeProfilPage(_model, nationality, currency, employee.id, info, avatarPath, TsCompletedPage(_model, _timesheet))),
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
