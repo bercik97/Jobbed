@@ -19,6 +19,7 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/service/logout_service.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/settings/settings_page.dart';
@@ -199,7 +200,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
           ),
         ),
       ),
-      onWillPop: () => SystemNavigator.pop(),
+      onWillPop: _onWillPop,
     );
   }
 
@@ -478,5 +479,9 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
         );
       },
     );
+  }
+
+  Future<bool> _onWillPop() async {
+    return Logout.logout(context) ?? false;
   }
 }
