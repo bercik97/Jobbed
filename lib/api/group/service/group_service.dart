@@ -25,9 +25,9 @@ class GroupService {
     return res.statusCode == 200 ? res : Future.error(res.body);
   }
 
-  Future<List<GroupDashboardDto>> findAllByManagerId(String managerId) async {
+  Future<List<GroupDashboardDto>> findAllByCompanyId(String companyId) async {
     Response res = await get(
-      '$_url?manager_id=$managerId',
+      '$_url?company_id=$companyId',
       headers: _header,
     );
     if (res.statusCode == 200) {

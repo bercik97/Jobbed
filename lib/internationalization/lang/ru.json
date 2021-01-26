@@ -678,5 +678,6 @@
   "accord": "Аккорд",
   "sumForEmployee": "Сумма на сотрудника",
   "sumForCompany": "Сумма для компании",
-  "time": "Время"
+  "time": "Время",
+  "groupCreator": "Создатель группы"
 }

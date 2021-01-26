@@ -5,6 +5,7 @@ class GroupDashboardDto {
   final String name;
   final String countryOfWork;
   final String description;
+  final String groupCreator;
   final int numberOfEmployees;
 
   GroupDashboardDto({
@@ -12,6 +13,7 @@ class GroupDashboardDto {
     @required this.name,
     @required this.countryOfWork,
     @required this.description,
+    @required this.groupCreator,
     @required this.numberOfEmployees,
   });
 
@@ -21,6 +23,7 @@ class GroupDashboardDto {
       name: json['name'] as String,
       countryOfWork: json['countryOfWork'] as String,
       description: json['description'] as String,
+      groupCreator: json['groupCreator'] as String,
       numberOfEmployees: json['numberOfEmployees'] as int,
     );
   }

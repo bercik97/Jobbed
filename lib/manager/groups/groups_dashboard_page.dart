@@ -54,7 +54,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
     this._user = widget._user;
     this._groupService = ServiceInitializer.initialize(context, _user.authHeader, GroupService);
     this._loading = true;
-    _groupService.findAllByManagerId(_user.id).then((res) {
+    _groupService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
         _groups = res;
         _loading = false;
@@ -181,6 +181,10 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                                           _groups[index].countryOfWork.toString(),
                                         ),
                                   ),
+                                  alignment: Alignment.topLeft,
+                                ),
+                                Align(
+                                  child: textWhite(getTranslated(this.context, 'groupCreator') + ': ' + utf8.decode(_groups[index].groupCreator.runes.toList())),
                                   alignment: Alignment.topLeft,
                                 ),
                                 SizedBox(height: 5),
