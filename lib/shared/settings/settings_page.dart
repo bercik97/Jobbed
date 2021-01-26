@@ -9,7 +9,7 @@ import 'package:give_job/employee/shared/employee_app_bar.dart';
 import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/internationalization/model/language.dart';
-import 'package:give_job/manager/profile/edit/manager_edit_page.dart';
+import 'package:give_job/manager/edit/manager_edit_page.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';

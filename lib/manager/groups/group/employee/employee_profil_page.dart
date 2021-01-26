@@ -8,15 +8,16 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/profile/manager_profile_page.dart';
 import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/settings/settings_page.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/circular_progress_indicator.dart';
 import 'package:give_job/shared/widget/contact_section.dart';
+import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/silver_app_bar_delegate.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
@@ -81,15 +82,8 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                     Padding(
                       padding: EdgeInsets.only(right: 15.0),
                       child: IconButton(
-                        icon: Container(
-                          child: Image(
-                            image: AssetImage(
-                              'images/manager-icon.png',
-                            ),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        onPressed: () => NavigatorUtil.navigate(context, ManagerProfilePage(_model.user)),
+                        icon: iconWhite(Icons.settings),
+                        onPressed: () => NavigatorUtil.navigate(context, SettingsPage(_user)),
                       ),
                     ),
                   ],
