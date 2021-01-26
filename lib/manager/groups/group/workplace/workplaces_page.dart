@@ -209,7 +209,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                                   child: Row(
                                                     children: [
                                                       textWhite(getTranslated(this.context, 'radius') + ': '),
-                                                      textGreen(workplace.radiusLength.toString() + ' KM'),
+                                                      textGreen(workplace.radiusLength.toString().substring(0, 4) + ' KM'),
                                                     ],
                                                   ),
                                                 ),
@@ -577,7 +577,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
     if (_markersList.isEmpty) {
       ToastService.showErrorToast(getTranslated(context, 'workplaceAreaIsNotSetted'));
     } else {
-      String km = _radius.toString();
+      String km = _radius.toString().substring(0, 4);
       ToastService.showSuccessToast(getTranslated(context, 'workplaceAreaIsSettedTo') + ' $km KM ✓');
     }
     return true;
@@ -609,7 +609,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                 textCenter16GreenBold(workplaceName),
                 SizedBox(height: 5),
                 textCenterWhite(getTranslated(this.context, 'workplaceAreaRadius') + ': '),
-                textCenter16GreenBold(_radius != 0 ? _radius.toString() + ' KM' : getTranslated(context, 'empty')),
+                textCenter16GreenBold(_radius != 0 ? _radius.toString().substring(0, 4) + ' KM' : getTranslated(context, 'empty')),
               ],
             ),
           ),
