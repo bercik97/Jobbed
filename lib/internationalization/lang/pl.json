@@ -158,7 +158,7 @@
   "retypeYourPassword": "Wpisz ponownie hasło",
   "passwordAndRetypedPasswordDoNotMatch": "Hasło i ponownie wpisane hasło nie pasują do siebie",
   "retypedPassword": "Ponownie wpisane hasło",
-  "nationalityIsRequired": "Wybierz narodowość",
+  "chooseYourNationality": "Wybierz narodowość",
   "correctInvalidFields": "Popraw nieprawidłowe pola.",
   "usernameExists": "Nazwa użytkownika już istnieje.",
   "chooseOtherUsername": "Proszę wybrać inną nazwę użytkownika.",
@@ -681,5 +681,8 @@
   "groupCreator": "Założyciel grupy",
   "addItem": "Dodaj przedmiot",
   "addedNewItem": "Dodano nowy przedmiot!",
-  "selectedItemHasBeenRemoved": "Usunięto wybrany przedmiot!"
+  "selectedItemHasBeenRemoved": "Usunięto wybrany przedmiot!",
+  "groupCountryOfWorkIsRequired": "Kraj pracy grupy jest wymagany",
+  "chooseCountryOfWorkOfYourGroup": "Wybierz kraj pracy grupy",
+  "nationalityIsRequired": "Narodowość jest wymagana"
 }

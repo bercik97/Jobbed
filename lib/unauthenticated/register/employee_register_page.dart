@@ -64,6 +64,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
   DateTime _expirationDateOfWork;
   int _genderRadioValue = -1;
   String _nationality;
+  bool _isErrorMsgOfNationalityShouldBeShow = false;
   bool _regulationsCheckbox = false;
   bool _privacyPolicyCheckbox = false;
 
@@ -705,16 +706,18 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
             color: Colors.white,
             child: DropDownFormField(
               titleText: getTranslated(context, 'nationality'),
-              hintText: getTranslated(context, 'nationalityIsRequired'),
-              value: _nationality,
-              onSaved: (value) {
-                setState(() {
-                  _nationality = value;
-                });
+              hintText: getTranslated(context, 'chooseYourNationality'),
+              validator: (value) {
+                if (_isErrorMsgOfNationalityShouldBeShow || (_isRegisterButtonTapped && value == null)) {
+                  return getTranslated(context, 'nationalityIsRequired');
+                }
+                return null;
               },
               onChanged: (value) {
                 setState(() {
                   _nationality = value;
+                  FocusScope.of(context).unfocus();
+                  _isErrorMsgOfNationalityShouldBeShow = false;
                 });
               },
               dataSource: [
@@ -880,6 +883,11 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
         titleWidget: textRed(getTranslated(context, 'error')),
         content: getTranslated(context, 'correctInvalidFields'),
       );
+      if (_nationality == '') {
+        setState(() => _isErrorMsgOfNationalityShouldBeShow = true);
+      } else {
+        setState(() => _isErrorMsgOfNationalityShouldBeShow = false);
+      }
       setState(() => _isRegisterButtonTapped = false);
       return;
     }

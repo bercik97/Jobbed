@@ -158,7 +158,7 @@
   "retypeYourPassword": "Будь ласка, введіть свій пароль",
   "passwordAndRetypedPasswordDoNotMatch": "Пароль і введений пароль не збігаються",
   "retypedPassword": "Введений пароль",
-  "nationalityIsRequired": "Будь ласка, виберіть свою національність",
+  "chooseYourNationality": "Будь ласка, виберіть свою національність",
   "correctInvalidFields": "Будь ласка, виправте невірні поля.",
   "usernameExists": "Ім'я користувача вже існує.",
   "chooseOtherUsername": "Будь ласка, виберіть інше ім'я користувача.",
@@ -681,5 +681,8 @@
   "groupCreator": "Творець групи",
   "addItem": "Додати елемент",
   "addedNewItem": "Додано новий елемент!",
-  "selectedItemHasBeenRemoved": "Вибраний елемент видалено!"
+  "selectedItemHasBeenRemoved": "Вибраний елемент видалено!",
+  "groupCountryOfWorkIsRequired": "Потрібна групова країна роботи",
+  "chooseCountryOfWorkOfYourGroup": "Виберіть країну роботи вашої групи",
+  "nationalityIsRequired": "Потрібна національність"
 }

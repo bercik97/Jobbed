@@ -55,6 +55,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
   bool _loading = false;
   bool _isChecked = false;
   bool _isAddButtonTapped = false;
+  bool _isErrorMsgOfCountryOfWorkShouldBeShow = false;
   List<bool> _checked = new List();
   LinkedHashSet<int> _selectedIds = new LinkedHashSet();
 
@@ -202,38 +203,42 @@ class _AddGroupPageState extends State<AddGroupPage> {
 
   Widget _buildNationalityDropdown() {
     return Theme(
-      data: ThemeData(hintColor: DARK, splashColor: GREEN),
+      data: ThemeData(hintColor: Colors.white, splashColor: GREEN, colorScheme: ColorScheme.dark()),
       child: Column(
         children: <Widget>[
-          Container(
-            color: Colors.white,
-            child: DropDownFormField(
-              titleText: getTranslated(context, 'nationality'),
-              hintText: getTranslated(context, 'nationalityIsRequired'),
-              value: _nationality,
-              onSaved: (value) {
-                setState(() {
-                  _nationality = value;
-                });
-              },
-              onChanged: (value) {
-                setState(() {
-                  _nationality = value;
-                  FocusScope.of(context).unfocus();
-                });
-              },
-              dataSource: [
-                {'display': 'English ' + LanguageUtil.findFlagByNationality('EN'), 'value': 'EN'},
-                {'display': 'ქართული ' + LanguageUtil.findFlagByNationality('GE'), 'value': 'GE'},
-                {'display': 'Polska ' + LanguageUtil.findFlagByNationality('PL'), 'value': 'PL'},
-                {'display': 'русский ' + LanguageUtil.findFlagByNationality('RU'), 'value': 'RU'},
-                {'display': 'Українська ' + LanguageUtil.findFlagByNationality('UK'), 'value': 'UK'},
-              ],
-              textField: 'display',
-              valueField: 'value',
-              required: true,
-              autovalidate: true,
-            ),
+          DropDownFormField(
+            titleText: getTranslated(context, 'groupCountryOfWork'),
+            hintText: getTranslated(context, 'chooseCountryOfWorkOfYourGroup'),
+            validator: (value) {
+              if (_isErrorMsgOfCountryOfWorkShouldBeShow || (_isAddButtonTapped && value == null)) {
+                return getTranslated(context, 'groupCountryOfWorkIsRequired');
+              }
+              return null;
+            },
+            value: _nationality,
+            onSaved: (value) {
+              setState(() {
+                _nationality = value;
+              });
+            },
+            onChanged: (value) {
+              setState(() {
+                _nationality = value;
+                FocusScope.of(context).unfocus();
+                _isErrorMsgOfCountryOfWorkShouldBeShow = false;
+              });
+            },
+            dataSource: [
+              {'display': 'English ' + LanguageUtil.findFlagByNationality('EN'), 'value': 'EN'},
+              {'display': 'ქართული ' + LanguageUtil.findFlagByNationality('GE'), 'value': 'GE'},
+              {'display': 'Polska ' + LanguageUtil.findFlagByNationality('PL'), 'value': 'PL'},
+              {'display': 'русский ' + LanguageUtil.findFlagByNationality('RU'), 'value': 'RU'},
+              {'display': 'Українська ' + LanguageUtil.findFlagByNationality('UK'), 'value': 'UK'},
+            ],
+            textField: 'display',
+            valueField: 'value',
+            required: true,
+            autovalidate: true,
           ),
           SizedBox(height: 20),
         ],
@@ -402,6 +407,11 @@ class _AddGroupPageState extends State<AddGroupPage> {
         titleWidget: textRed(getTranslated(context, 'error')),
         content: getTranslated(context, 'correctInvalidFields'),
       );
+      if (_nationality == '') {
+        setState(() => _isErrorMsgOfCountryOfWorkShouldBeShow = true);
+      } else {
+        setState(() => _isErrorMsgOfCountryOfWorkShouldBeShow = false);
+      }
       setState(() => _isAddButtonTapped = false);
       return;
     }

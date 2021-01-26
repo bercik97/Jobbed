@@ -158,7 +158,7 @@
   "retypeYourPassword": "Пожалуйста, введите пароль еще раз",
   "passwordAndRetypedPasswordDoNotMatch": "Пароль и повторно введенный пароль не совпадают",
   "retypedPassword": "Пароль повторно введен",
-  "nationalityIsRequired": "Пожалуйста, выберите свою национальность",
+  "chooseYourNationality": "Пожалуйста, выберите свою национальность",
   "correctInvalidFields": "Исправьте недопустимые поля.",
   "usernameExists": "Имя пользователя уже существует.",
   "chooseOtherUsername": "Выберите другое имя пользователя.",
@@ -681,5 +681,8 @@
   "groupCreator": "Создатель группы",
   "addItem": "Добавьте предмет",
   "addedNewItem": "Добавлен новый предмет!",
-  "selectedItemHasBeenRemoved": "Выбранный элемент был удален!"
+  "selectedItemHasBeenRemoved": "Выбранный элемент был удален!",
+  "groupCountryOfWorkIsRequired": "Укажите страну работы группы",
+  "chooseCountryOfWorkOfYourGroup": "Выберите страну работы вашей группы",
+  "nationalityIsRequired": "Гражданство обязательно"
 }

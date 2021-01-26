@@ -158,7 +158,7 @@
   "retypeYourPassword": "გთხოვთ, აკრიფოთ თქვენი პაროლი",
   "passwordAndRetypedPasswordDoNotMatch": "პაროლი და ხელახლა აკრეფილი პაროლი არ ემთხვევა",
   "retypedPassword": "განმეორებითი პაროლი",
-  "nationalityIsRequired": "გთხოვთ აირჩიოთ თქვენი ეროვნება",
+  "chooseYourNationality": "გთხოვთ აირჩიოთ თქვენი ეროვნება",
   "correctInvalidFields": "გთხოვთ შეასწოროთ არასწორი ველები.",
   "usernameExists": "ნიკი უკვე არსებობს.",
   "selectOtherUsername": "გთხოვთ აირჩიოთ სხვა მომხმარებლის სახელი.",
@@ -681,5 +681,8 @@
   "groupCreator": "ჯგუფის შემქმნელი",
   "addItem": "ნივთის დამატება",
   "addedNewItem": "დაემატა ახალი ნივთი!",
-  "selectedItemHasBeenRemoved": "არჩეული ელემენტი წაიშალა!"
+  "selectedItemHasBeenRemoved": "არჩეული ელემენტი წაიშალა!",
+  "groupCountryOfWorkIsRequired": "საჭიროა ჯგუფის სამუშაო ქვეყანა",
+  "chooseCountryOfWorkOfYourGroup": "აირჩიეთ თქვენი ჯგუფის სამუშაო ქვეყანა",
+  "nationalityIsRequired": "ეროვნებაა საჭირო"
 }

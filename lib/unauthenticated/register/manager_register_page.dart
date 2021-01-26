@@ -49,6 +49,7 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
   final TextEditingController _whatsAppController = TextEditingController();
   String _nationality;
 
+  bool _isErrorMsgOfNationalityShouldBeShow = false;
   bool _regulationsCheckbox = false;
   bool _privacyPolicyCheckbox = false;
 
@@ -470,37 +471,42 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
 
   Widget _buildNationalityDropdown() {
     return Theme(
-      data: ThemeData(hintColor: DARK, splashColor: GREEN),
+      data: ThemeData(hintColor: Colors.white, splashColor: GREEN, colorScheme: ColorScheme.dark()),
       child: Column(
         children: <Widget>[
-          Container(
-            color: Colors.white,
-            child: DropDownFormField(
-              titleText: getTranslated(context, 'nationality'),
-              hintText: getTranslated(context, 'nationalityIsRequired'),
-              value: _nationality,
-              onSaved: (value) {
-                setState(() {
-                  _nationality = value;
-                });
-              },
-              onChanged: (value) {
-                setState(() {
-                  _nationality = value;
-                });
-              },
-              dataSource: [
-                {'display': 'English ' + LanguageUtil.findFlagByNationality('EN'), 'value': 'EN'},
-                {'display': 'ქართული ' + LanguageUtil.findFlagByNationality('GE'), 'value': 'GE'},
-                {'display': 'Polska ' + LanguageUtil.findFlagByNationality('PL'), 'value': 'PL'},
-                {'display': 'русский ' + LanguageUtil.findFlagByNationality('RU'), 'value': 'RU'},
-                {'display': 'Українська ' + LanguageUtil.findFlagByNationality('UK'), 'value': 'UK'},
-              ],
-              textField: 'display',
-              valueField: 'value',
-              required: true,
-              autovalidate: true,
-            ),
+          DropDownFormField(
+            titleText: getTranslated(context, 'nationality'),
+            hintText: getTranslated(context, 'chooseYourNationality'),
+            validator: (value) {
+              if (_isErrorMsgOfNationalityShouldBeShow || (_isRegisterButtonTapped && value == null)) {
+                return getTranslated(context, 'nationalityIsRequired');
+              }
+              return null;
+            },
+            value: _nationality,
+            onSaved: (value) {
+              setState(() {
+                _nationality = value;
+              });
+            },
+            onChanged: (value) {
+              setState(() {
+                _nationality = value;
+                FocusScope.of(context).unfocus();
+                _isErrorMsgOfNationalityShouldBeShow = false;
+              });
+            },
+            dataSource: [
+              {'display': 'English ' + LanguageUtil.findFlagByNationality('EN'), 'value': 'EN'},
+              {'display': 'ქართული ' + LanguageUtil.findFlagByNationality('GE'), 'value': 'GE'},
+              {'display': 'Polska ' + LanguageUtil.findFlagByNationality('PL'), 'value': 'PL'},
+              {'display': 'русский ' + LanguageUtil.findFlagByNationality('RU'), 'value': 'RU'},
+              {'display': 'Українська ' + LanguageUtil.findFlagByNationality('UK'), 'value': 'UK'},
+            ],
+            textField: 'display',
+            valueField: 'value',
+            required: true,
+            autovalidate: true,
           ),
           SizedBox(height: 20),
         ],
@@ -559,6 +565,11 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
         titleWidget: textRed(getTranslated(context, 'error')),
         content: getTranslated(context, 'correctInvalidFields'),
       );
+      if (_nationality == '') {
+        setState(() => _isErrorMsgOfNationalityShouldBeShow = true);
+      } else {
+        setState(() => _isErrorMsgOfNationalityShouldBeShow = false);
+      }
       setState(() => _isRegisterButtonTapped = false);
       return;
     }

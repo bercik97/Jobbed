@@ -158,7 +158,7 @@
   "retypeYourPassword": "Please retype your password",
   "passwordAndRetypedPasswordDoNotMatch": "Password and retyped password do not match",
   "retypedPassword": "Retyped password",
-  "nationalityIsRequired": "Please choose your nationality",
+  "chooseYourNationality": "Please choose your nationality",
   "correctInvalidFields": "Please correct invalid fields.",
   "usernameExists": "Username already exists.",
   "chooseOtherUsername": "Please choose other username.",
@@ -681,5 +681,8 @@
   "groupCreator": "Group creator",
   "addItem": "Add item",
   "addedNewItem": "Added new item!",
-  "selectedItemHasBeenRemoved": "Selected item has been removed!"
+  "selectedItemHasBeenRemoved": "Selected item has been removed!",
+  "groupCountryOfWorkIsRequired": "Group country of work is required",
+  "chooseCountryOfWorkOfYourGroup": "Choose country of work of your group",
+  "nationalityIsRequired": "Nationality is required"
 }
