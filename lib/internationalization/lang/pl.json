@@ -514,9 +514,6 @@
   "chooseOtherPricelistServiceName": "Wybierz inną nazwę usługi cennika",
   "textSomePricelistName": "Napisz nazwę usługi",
   "pricelistName": "Nazwa usługi cennika",
-  "pricelistNameIsRequired": "Nazwa usługi cennika jest wymagana",
-  "pricelistPriceForEmployeeIsRequired": "Cena usługi cennika dla pracownika jest wymagana",
-  "pricelistPriceForCompanyIsRequired": "Cena usługi cennika dla firmy jest wymagana",
   "managePricelist": "Zarządzaj cennikiem",
   "textSomePricelistPriceForEmployee": "Napisz cenę usługi dla pracownika",
   "textSomePricelistPriceForCompany": "Napisz cenę usługi dla firmy",
@@ -683,5 +680,8 @@
   "selectedItemHasBeenRemoved": "Usunięto wybrany przedmiot!",
   "groupCountryOfWorkIsRequired": "Kraj pracy grupy jest wymagany",
   "chooseCountryOfWorkOfYourGroup": "Wybierz kraj pracy grupy",
-  "nationalityIsRequired": "Narodowość jest wymagana"
+  "nationalityIsRequired": "Narodowość jest wymagana",
+  "thisFieldIsRequired": "To pole jest wymagane",
+  "addedNewPriceService": "Dodano nową usługę cennika!",
+  "selectedPriceServiceHasBeenRemoved": "Usunięto wybraną usługę cennika!"
 }

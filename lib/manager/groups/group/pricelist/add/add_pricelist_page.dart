@@ -76,58 +76,33 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
                 child: Column(
                   children: [
                     SizedBox(height: 5),
-                    _buildField(
-                      _pricelistNameController,
-                      getTranslated(context, 'textSomePricelistName'),
-                      getTranslated(context, 'pricelistName'),
-                      100,
-                      2,
-                      true,
-                      getTranslated(context, 'pricelistNameIsRequired'),
-                    ),
-                    SizedBox(height: 10),
                     TextFormField(
-                      controller: _pricelistPriceForEmployeeController,
-                      keyboardType: TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: <TextInputFormatter>[
-                        WhitelistingTextInputFormatter(RegExp(r'^\d+\.?\d{0,3}')),
-                      ],
-                      maxLength: 8,
+                      autofocus: false,
+                      controller: _pricelistNameController,
+                      autocorrect: true,
+                      keyboardType: TextInputType.multiline,
+                      inputFormatters: [LengthLimitingTextInputFormatter(100)],
+                      maxLines: 2,
                       cursorColor: WHITE,
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: WHITE),
-                      validator: RequiredValidator(errorText: getTranslated(context, 'pricelistPriceForEmployeeIsRequired')),
+                      validator: RequiredValidator(errorText: getTranslated(context, 'thisFieldIsRequired')),
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
                         counterStyle: TextStyle(color: WHITE),
                         border: OutlineInputBorder(),
-                        hintText: getTranslated(context, 'textSomePricelistPriceForEmployee'),
-                        labelText: getTranslated(context, 'priceForEmployee'),
+                        labelText: getTranslated(context, 'pricelistName'),
                         labelStyle: TextStyle(color: WHITE),
                       ),
+                    ),
+                    Row(
+                      children: [
+                        Flexible(child: _buildDecimalField(_pricelistPriceForEmployeeController, getTranslated(context, 'priceForEmployee'))),
+                        SizedBox(width: 10),
+                        Flexible(child: _buildDecimalField(_pricelistPriceForCompanyController, getTranslated(context, 'priceForCompany'))),
+                      ],
                     ),
                     SizedBox(height: 10),
-                    TextFormField(
-                      controller: _pricelistPriceForCompanyController,
-                      keyboardType: TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: <TextInputFormatter>[
-                        WhitelistingTextInputFormatter(RegExp(r'^\d+\.?\d{0,3}')),
-                      ],
-                      maxLength: 8,
-                      cursorColor: WHITE,
-                      textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: WHITE),
-                      validator: RequiredValidator(errorText: getTranslated(context, 'pricelistPriceForCompanyIsRequired')),
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-                        counterStyle: TextStyle(color: WHITE),
-                        border: OutlineInputBorder(),
-                        hintText: getTranslated(context, 'textSomePricelistPriceForCompany'),
-                        labelText: getTranslated(context, 'priceForCompany'),
-                        labelStyle: TextStyle(color: WHITE),
-                      ),
-                    ),
-                    SizedBox(height: 15),
                     Buttons.standardButton(
                       minWidth: double.infinity,
                       color: GREEN,
@@ -154,6 +129,8 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
                           _pricelistPriceForEmployeeController.clear();
                           _pricelistPriceForCompanyController.clear();
                         });
+                        FocusScope.of(context).unfocus();
+                        ToastService.showSuccessToast(getTranslated(context, 'addedNewPriceService'));
                       },
                     ),
                     _buildAddItems(),
@@ -171,25 +148,24 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
     return formKey.currentState.validate();
   }
 
-  Widget _buildField(TextEditingController controller, String hintText, String labelText, int length, int lines, bool isRequired, String errorText) {
-    return TextFormField(
-      autofocus: false,
-      controller: controller,
-      autocorrect: true,
-      keyboardType: TextInputType.multiline,
-      maxLength: length,
-      maxLines: lines,
-      cursorColor: WHITE,
-      textAlignVertical: TextAlignVertical.center,
-      style: TextStyle(color: WHITE),
-      validator: isRequired ? RequiredValidator(errorText: errorText) : null,
-      decoration: InputDecoration(
-        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-        counterStyle: TextStyle(color: WHITE),
-        border: OutlineInputBorder(),
-        hintText: hintText,
-        labelText: labelText,
-        labelStyle: TextStyle(color: WHITE),
+  Widget _buildDecimalField(TextEditingController controller, String labelText) {
+    return Padding(
+      padding: EdgeInsets.only(top: 10),
+      child: TextFormField(
+        controller: controller,
+        keyboardType: TextInputType.numberWithOptions(decimal: true),
+        inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter(RegExp(r'^\d+\.?\d{0,3}')), LengthLimitingTextInputFormatter(8)],
+        cursorColor: WHITE,
+        textAlignVertical: TextAlignVertical.center,
+        style: TextStyle(color: WHITE),
+        validator: RequiredValidator(errorText: getTranslated(context, 'thisFieldIsRequired')),
+        decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+          counterStyle: TextStyle(color: WHITE),
+          border: OutlineInputBorder(),
+          labelText: labelText,
+          labelStyle: TextStyle(color: WHITE),
+        ),
       ),
     );
   }
@@ -234,6 +210,7 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
                             _pricelistNames.remove(_pricelistsToAdd[index].name);
                             _pricelistsToAdd.remove(_pricelistsToAdd[index]);
                           });
+                          ToastService.showSuccessToast(getTranslated(this.context, 'selectedPriceServiceHasBeenRemoved'));
                         },
                       ),
                     ),

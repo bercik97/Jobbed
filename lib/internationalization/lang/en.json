@@ -514,9 +514,6 @@
   "chooseOtherPricelistServiceName": "Choose other pricelist service name",
   "textSomePricelistName": "Text some pricelists service name",
   "pricelistName": "Pricelists service name",
-  "pricelistNameIsRequired": "Pricelists service name is required",
-  "pricelistPriceForEmployeeIsRequired": "Pricelists service price for employee is required",
-  "pricelistPriceForCompanyIsRequired": "Pricelists service price for company is required",
   "managePricelist": "Manage pricelist",
   "textSomePricelistPriceForEmployee": "Text some pricelists service price for employee",
   "textSomePricelistPriceForCompany": "Text some pricelists service price for company",
@@ -683,5 +680,8 @@
   "selectedItemHasBeenRemoved": "Selected item has been removed!",
   "groupCountryOfWorkIsRequired": "Group country of work is required",
   "chooseCountryOfWorkOfYourGroup": "Choose country of work of your group",
-  "nationalityIsRequired": "Nationality is required"
+  "nationalityIsRequired": "Nationality is required",
+  "thisFieldIsRequired": "This field is required",
+  "addedNewPriceService": "Added new price service!",
+  "selectedPriceServiceHasBeenRemoved": "Selected price service has been removed!"
 }

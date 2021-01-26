@@ -514,9 +514,6 @@
   "chooseOtherPricelistServiceName": "აირჩიეთ ფასების ჩამონათვალის სხვა სერვისის სახელი",
   "textSomePricelistName": "გაგზავნეთ ფასების ჩამონათვალის ზოგიერთი სერვისის სახელი",
   "pricelistName": "ფასების ჩამონათვალის სერვისის სახელი",
-  "pricelistNameIsRequired": "აუცილებელია ფასების ჩამონათვალის სერვისის დასახელება",
-  "pricelistPriceForEmployeeIsRequired": "სავალდებულოა ფასების ჩამონათვალის თანამშრომლის მომსახურების ფასი",
-  "pricelistPriceForCompanyIsRequired": "კომპანიისთვის ფასების ჩამონათვალის მომსახურების ფასი აუცილებელია",
   "managePricelist": "ფასების ჩამონათვალის მართვა",
   "textSomePricelistPriceForEmployee": "გაგზავნეთ ფასების ჩამონათვალის რამდენიმე ფასი თანამშრომლისთვის",
   "textSomePricelistPriceForCompany": "გაგზავნეთ კომპანიისთვის ფასების ჩამონათვალის რამდენიმე მომსახურების ფასი",
@@ -683,5 +680,8 @@
   "selectedItemHasBeenRemoved": "არჩეული ელემენტი წაიშალა!",
   "groupCountryOfWorkIsRequired": "საჭიროა ჯგუფის სამუშაო ქვეყანა",
   "chooseCountryOfWorkOfYourGroup": "აირჩიეთ თქვენი ჯგუფის სამუშაო ქვეყანა",
-  "nationalityIsRequired": "ეროვნებაა საჭირო"
+  "nationalityIsRequired": "ეროვნებაა საჭირო",
+  "thisFieldIsRequired": "ეს ველი სავალდებულოა",
+  "addedNewPriceService": "დაემატა ახალი ფასების სერვისი!",
+  "selectedPriceServiceHasBeenRemoved": "არჩეული ფასების სერვისი წაიშალა!"
 }

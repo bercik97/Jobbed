@@ -514,9 +514,6 @@
   "chooseOtherPricelistServiceName": "Выбрать другое название услуги по прейскуранту",
   "textSomePricelistName": "Текстовое название услуги для некоторых прейскурантов",
   "pricelistName": "Название услуги по составлению прайс-листов",
-  "pricelistNameIsRequired": "Необходимо указать название услуги для прейскуранта",
-  "pricelistPriceForEmployeeIsRequired": "Прейскурант цена услуги для сотрудника обязательна",
-  "pricelistPriceForCompanyIsRequired": "Прайс-листы цена услуги для компании обязательна",
   "managePricelist": "Управление прейскурантом",
   "textSomePricelistPriceForEmployee": "Отправьте текст прайс-листа стоимости услуг для сотрудника",
   "textSomePricelistPriceForCompany": "Отправьте текст некоторых прейскурантов стоимости услуг для компании",
@@ -683,5 +680,8 @@
   "selectedItemHasBeenRemoved": "Выбранный элемент был удален!",
   "groupCountryOfWorkIsRequired": "Укажите страну работы группы",
   "chooseCountryOfWorkOfYourGroup": "Выберите страну работы вашей группы",
-  "nationalityIsRequired": "Гражданство обязательно"
+  "nationalityIsRequired": "Гражданство обязательно",
+  "thisFieldIsRequired": "Это поле обязательно к заполнению",
+  "addedNewPriceService": "Добавлена новая ценовая услуга!",
+  "selectedPriceServiceHasBeenRemoved": "Выбранная цена услуги была удалена!"
 }

@@ -514,9 +514,6 @@
   "chooseOtherPricelistServiceName": "Виберіть іншу назву послуги прейскуранта",
   "textSomePricelistName": "Надіслати текстове повідомлення до списку прайсів назви послуги",
   "pricelistName": "Назва послуги прейскурантів",
-  "pricelistNameIsRequired": "Потрібна назва послуги прейскурантів",
-  "pricelistPriceForEmployeeIsRequired": "Потрібна ціна на послуги прайс-листів для працівника",
-  "pricelistPriceForCompanyIsRequired": "Потрібна ціна послуги прейскурантів для компанії",
   "managePricelist": "Керувати прайс-листом",
   "textSomePricelistPriceForEmployee": "Напишіть деякі прайс-листи про ціну послуги для працівника",
   "textSomePricelistPriceForCompany": "Напишіть деякі прайс-листи про ціну послуги для компанії",
@@ -683,5 +680,8 @@
   "selectedItemHasBeenRemoved": "Вибраний елемент видалено!",
   "groupCountryOfWorkIsRequired": "Потрібна групова країна роботи",
   "chooseCountryOfWorkOfYourGroup": "Виберіть країну роботи вашої групи",
-  "nationalityIsRequired": "Потрібна національність"
+  "nationalityIsRequired": "Потрібна національність",
+  "thisFieldIsRequired": "Це поле є обов'язковим",
+  "addedNewPriceService": "Додано нову цінову послугу!",
+  "selectedPriceServiceHasBeenRemoved": "Вибрану цінову службу видалено!"
 }

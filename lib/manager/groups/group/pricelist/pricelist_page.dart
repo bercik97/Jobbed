@@ -83,7 +83,7 @@ class _PricelistPageState extends State<PricelistPage> {
           appBar: managerAppBar(context, _user, getTranslated(context, 'pricelist')),
           drawer: managerSideBar(context, _user),
           body: Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.only(left: 12, right: 12),
             child: Column(
               children: <Widget>[
                 Container(
