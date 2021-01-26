@@ -678,5 +678,8 @@
   "sumForEmployee": "Сумма на сотрудника",
   "sumForCompany": "Сумма для компании",
   "time": "Время",
-  "groupCreator": "Создатель группы"
+  "groupCreator": "Создатель группы",
+  "addItem": "Добавьте предмет",
+  "addedNewItem": "Добавлен новый предмет!",
+  "selectedItemHasBeenRemoved": "Выбранный элемент был удален!"
 }

@@ -678,5 +678,8 @@
   "sumForEmployee": "Сума для працівника",
   "sumForCompany": "Сума для компанії",
   "time": "Час",
-  "groupCreator": "Творець групи"
+  "groupCreator": "Творець групи",
+  "addItem": "Додати елемент",
+  "addedNewItem": "Додано новий елемент!",
+  "selectedItemHasBeenRemoved": "Вибраний елемент видалено!"
 }

@@ -678,5 +678,8 @@
   "sumForEmployee": "თანხა თანამშრომლისთვის",
   "sumForCompany": "კომპანიისთვის ჯამი",
   "time": "დრო",
-  "groupCreator": "ჯგუფის შემქმნელი"
+  "groupCreator": "ჯგუფის შემქმნელი",
+  "addItem": "ნივთის დამატება",
+  "addedNewItem": "დაემატა ახალი ნივთი!",
+  "selectedItemHasBeenRemoved": "არჩეული ელემენტი წაიშალა!"
 }

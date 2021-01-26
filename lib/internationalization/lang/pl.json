@@ -678,5 +678,8 @@
   "sumForEmployee": "Suma dla pracownika",
   "sumForCompany": "Suma dla firmy",
   "time": "Czas",
-  "groupCreator": "Założyciel grupy"
+  "groupCreator": "Założyciel grupy",
+  "addItem": "Dodaj przedmiot",
+  "addedNewItem": "Dodano nowy przedmiot!",
+  "selectedItemHasBeenRemoved": "Usunięto wybrany przedmiot!"
 }

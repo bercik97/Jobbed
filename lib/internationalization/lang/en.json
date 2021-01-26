@@ -678,5 +678,8 @@
   "sumForEmployee": "Sum for employee",
   "sumForCompany": "Sum for company",
   "time": "Time",
-  "groupCreator": "Group creator"
+  "groupCreator": "Group creator",
+  "addItem": "Add item",
+  "addedNewItem": "Added new item!",
+  "selectedItemHasBeenRemoved": "Selected item has been removed!"
 }
