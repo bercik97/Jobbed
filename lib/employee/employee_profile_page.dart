@@ -92,7 +92,7 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                         padding: EdgeInsets.only(right: 15.0),
                         child: IconButton(
                           icon: iconWhite(Icons.settings),
-                          onPressed: () => NavigatorUtil.navigate(context, SettingsPage(_user)),
+                          onPressed: () => NavigatorUtil.navigate(this.context, SettingsPage(_user)),
                         ),
                       ),
                     ],
@@ -351,14 +351,10 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
+                          FocusScope.of(context).unfocus();
                           hours += minutes;
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                          _workdayService
-                              .updateHoursByIds(
-                            [workdayId].map((e) => e.toString()).toList(),
-                            hours,
-                          )
-                              .then(
+                          _workdayService.updateHoursByIds([workdayId].map((e) => e.toString()).toList(), hours).then(
                             (res) {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 Navigator.of(context).pop();
@@ -456,14 +452,10 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                         ),
                         color: GREEN,
                         onPressed: () {
+                          FocusScope.of(context).unfocus();
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           String note = _noteController.text;
-                          _workdayService.updateFieldsValuesById(
-                            workdayId,
-                            {
-                              'note': note,
-                            },
-                          ).then((res) {
+                          _workdayService.updateFieldsValuesById(workdayId, {'note': note}).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.of(context).pop();
                               ToastService.showSuccessToast(getTranslated(context, 'noteSavedSuccessfully'));

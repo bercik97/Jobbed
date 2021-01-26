@@ -502,6 +502,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                               ToastService.showErrorToast(invalidMessage);
                               return;
                             }
+                            FocusScope.of(context).unfocus();
                             hours += minutes;
                             showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                             _workdayService
@@ -665,6 +666,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                               ToastService.showErrorToast(invalidMessage);
                               return;
                             }
+                            FocusScope.of(context).unfocus();
                             showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                             _workdayService
                                 .updateEmployeesNote(

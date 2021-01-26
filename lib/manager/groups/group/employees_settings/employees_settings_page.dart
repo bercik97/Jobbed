@@ -450,6 +450,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 ToastService.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
                                 return;
                               }
+                              FocusScope.of(context).unfocus();
                               double money;
                               try {
                                 money = double.parse(_moneyPerHourController.text);

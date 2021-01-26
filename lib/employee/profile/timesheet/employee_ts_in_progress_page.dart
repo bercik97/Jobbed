@@ -289,96 +289,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     });
   }
 
-  void _editNote(BuildContext context, int workdayId, String note) {
-    TextEditingController _noteController = new TextEditingController();
-    _noteController.text = note != null ? utf8.decode(note != null ? note.runes.toList() : '-') : null;
-    showGeneralDialog(
-      context: context,
-      barrierColor: DARK.withOpacity(0.95),
-      barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'noteDetails'),
-      transitionDuration: Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return SizedBox.expand(
-          child: Scaffold(
-            backgroundColor: Colors.black12,
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20Green(getTranslated(context, 'noteUpperCase'))),
-                  SizedBox(height: 2.5),
-                  textGreen(getTranslated(context, 'writeNote')),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: EdgeInsets.only(left: 25, right: 25),
-                    child: TextFormField(
-                      autofocus: false,
-                      controller: _noteController,
-                      keyboardType: TextInputType.multiline,
-                      maxLength: 100,
-                      maxLines: 3,
-                      cursorColor: WHITE,
-                      textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: WHITE),
-                      decoration: InputDecoration(
-                        hintText: getTranslated(context, 'textSomeNote'),
-                        hintStyle: TextStyle(color: MORE_BRIGHTER_DARK),
-                        counterStyle: TextStyle(color: WHITE),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: GREEN, width: 2.5),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: GREEN, width: 2.5),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        minWidth: 40,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.close)],
-                        ),
-                        color: Colors.red,
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      SizedBox(width: 25),
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.check)],
-                        ),
-                        color: GREEN,
-                        onPressed: () {
-                          String note = _noteController.text;
-                          Navigator.of(context).pop();
-                          _workdayService.updateFieldsValuesById(workdayId, {'note': note}).then((res) {
-                            _refresh();
-                            ToastService.showSuccessToast(getTranslated(context, 'noteSavedSuccessfully'));
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   void _showUpdateHoursDialog(Set<int> selectedIds) {
     showGeneralDialog(
       context: context,
@@ -500,6 +410,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
+                          FocusScope.of(context).unfocus();
                           hours += minutes;
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _workdayService.updateHoursByIds(selectedIds.map((el) => el.toString()).toList(), hours).then((res) {
@@ -597,6 +508,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                         ),
                         color: GREEN,
                         onPressed: () {
+                          FocusScope.of(context).unfocus();
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           String note = _noteController.text;
                           _workdayService.updateFieldsValuesByIds(selectedIds.map((el) => el.toString()).toList(), {'note': note}).then((res) {

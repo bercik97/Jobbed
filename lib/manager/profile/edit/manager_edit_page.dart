@@ -324,6 +324,7 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
               onChanged: (value) {
                 setState(() {
                   _nationality = value;
+                  FocusScope.of(context).unfocus();
                 });
               },
               dataSource: [
@@ -362,6 +363,7 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
               );
               return;
             } else {
+              FocusScope.of(context).unfocus();
               showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
               _managerService.updateManagerAndUserFieldsValuesById(
                 int.parse(_user.id),

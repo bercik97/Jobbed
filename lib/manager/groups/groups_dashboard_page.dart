@@ -378,10 +378,11 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                               DialogService.showCustomDialog(
                                 context: context,
                                 titleWidget: textRed(getTranslated(context, 'error')),
-                                content: getTranslated(context, 'correctInvalidFields'),
+                                content: getTranslated(context, 'groupNameForDeleteInvalid'),
                               );
                               return;
                             }
+                            FocusScope.of(context).unfocus();
                             showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                             _groupService.deleteByName(_nameController.text).then((value) {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

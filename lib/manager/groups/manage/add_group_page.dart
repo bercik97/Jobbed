@@ -219,6 +219,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
               onChanged: (value) {
                 setState(() {
                   _nationality = value;
+                  FocusScope.of(context).unfocus();
                 });
               },
               dataSource: [
@@ -393,6 +394,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
   }
 
   void _createGroup() {
+    FocusScope.of(context).unfocus();
     setState(() => _isAddButtonTapped = true);
     if (!_isValid()) {
       DialogService.showCustomDialog(
@@ -413,6 +415,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
       name: _groupNameController.text,
       description: _groupDescriptionController.text,
       countryOfWork: _nationality,
+      companyId: int.parse(_user.companyId),
       managerId: int.parse(_user.id),
       employeeIds: _selectedIds.map((el) => el.toString()).toList(),
     );

@@ -566,6 +566,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
+                          FocusScope.of(context).unfocus();
                           hours += minutes;
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _workdayService.updateHoursByIds(selectedIds.map((el) => el.toString()).toList(), hours).then(
@@ -574,6 +575,11 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                 Navigator.of(context).pop();
                                 ToastService.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
                                 _refresh();
+                              }).catchError(() {
+                                Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                  Navigator.of(context).pop();
+                                  ToastService.showSuccessToast(getTranslated(context, 'smthWentWrong'));
+                                });
                               });
                             },
                           );
@@ -665,12 +671,18 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
+                          FocusScope.of(context).unfocus();
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _workdayService.updateFieldsValuesByIds(selectedIds.map((el) => el.toString()).toList(), {'note': note}).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.of(context).pop();
                               ToastService.showSuccessToast(getTranslated(context, 'noteUpdatedSuccessfully'));
                               _refresh();
+                            }).catchError(() {
+                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                Navigator.of(context).pop();
+                                ToastService.showSuccessToast(getTranslated(context, 'smthWentWrong'));
+                              });
                             });
                           });
                         },
@@ -761,12 +773,18 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
+                          FocusScope.of(context).unfocus();
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                          Navigator.of(context).pop();
                           _workdayService.createOrUpdateVocationsByIds(selectedIds.map((el) => el.toString()).toList(), vocationReason, timesheet.year, MonthUtil.findMonthNumberByMonthName(context, timesheet.month), STATUS_IN_PROGRESS).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Navigator.of(context).pop();
                               ToastService.showSuccessToast(getTranslated(context, 'vocationUpdatedSuccessfully'));
                               _refresh();
+                            }).catchError(() {
+                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                Navigator.of(context).pop();
+                                ToastService.showSuccessToast(getTranslated(context, 'smthWentWrong'));
+                              });
                             });
                           });
                         },
@@ -859,12 +877,18 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
+                          FocusScope.of(context).unfocus();
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                          Navigator.of(context).pop();
                           _workdayService.updateFieldsValuesById(workdayId, {'note': note}).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Navigator.of(context).pop();
                               ToastService.showSuccessToast(getTranslated(context, 'noteUpdatedSuccessfully'));
                               _refresh();
+                            }).catchError(() {
+                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                Navigator.of(context).pop();
+                                ToastService.showSuccessToast(getTranslated(context, 'smthWentWrong'));
+                              });
                             });
                           });
                         },

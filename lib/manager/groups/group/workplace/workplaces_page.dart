@@ -798,6 +798,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
+                          FocusScope.of(context).unfocus();
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           Circle circle;
                           if (_circles != null && _circles.isNotEmpty) {

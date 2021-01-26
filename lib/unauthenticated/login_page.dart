@@ -174,6 +174,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _handleLogin() {
+    FocusScope.of(context).unfocus();
     setState(() => _isLoginButtonTapped = true);
     String username = _usernameController.text;
     String password = _passwordController.text;

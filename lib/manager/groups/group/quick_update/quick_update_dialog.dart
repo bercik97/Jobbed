@@ -198,6 +198,7 @@ class QuickUpdateDialog {
                             ToastService.showErrorToast(invalidMessage);
                             return;
                           }
+                          FocusScope.of(context).unfocus();
                           hours += minutes;
                           Navigator.of(context).pop();
                           _initialize(context, _model.user.authHeader);

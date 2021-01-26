@@ -551,6 +551,7 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
   }
 
   _handleRegisterButton() {
+    FocusScope.of(context).unfocus();
     setState(() => _isRegisterButtonTapped = true);
     if (!_isValid() || !_regulationsCheckbox || !_privacyPolicyCheckbox) {
       DialogService.showCustomDialog(

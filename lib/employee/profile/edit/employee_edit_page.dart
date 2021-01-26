@@ -346,28 +346,6 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
     );
   }
 
-  Widget _buildReadOnlyField(String name, String value, IconData icon) {
-    return Column(
-      children: <Widget>[
-        TextFormField(
-          readOnly: true,
-          initialValue: value == null ? getTranslated(context, 'empty') : value,
-          style: TextStyle(color: WHITE),
-          decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            counterStyle: TextStyle(color: WHITE),
-            suffixIcon: iconGreen(Icons.assignment_turned_in_outlined),
-            border: OutlineInputBorder(),
-            prefixIcon: iconWhite(icon),
-            labelText: name,
-            labelStyle: TextStyle(color: WHITE),
-          ),
-        ),
-        SizedBox(height: 10),
-      ],
-    );
-  }
-
   Widget _buildRequiredTextField(bool isReadOnly, TextEditingController controller, int maxLength, String labelText, String errorText, IconData icon) {
     return Column(
       children: <Widget>[
@@ -535,6 +513,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
               onChanged: (value) {
                 setState(() {
                   _nationality = value;
+                  FocusScope.of(context).unfocus();
                 });
               },
               dataSource: [
@@ -690,6 +669,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
               );
               return;
             } else {
+              FocusScope.of(context).unfocus();
               showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
               _employeeService.updateEmployeeAndUserFieldsValuesById(
                 widget._employeeId,
