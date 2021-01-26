@@ -126,7 +126,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
                               },
                               onSubmitted: (value) {
                                 if (value >= 999) {
-                                  setState(() => _quantityController.text = 24.toString());
+                                  setState(() => _quantityController.text = 999.toString());
                                 }
                               },
                               style: TextStyle(color: GREEN),

@@ -416,6 +416,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                             ToastService.showErrorToast(getTranslated(context, 'itemQuantityCannotBeLowerThan0'));
                             return;
                           }
+                          FocusScope.of(context).unfocus();
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _itemService.updateQuantity(item.id, quantity).then((value) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
