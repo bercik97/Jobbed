@@ -369,7 +369,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                       cursorColor: WHITE,
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: WHITE),
-                      validator: RequiredValidator(errorText: getTranslated(context, 'quantityIsRequired')),
+                      validator: RequiredValidator(errorText: getTranslated(context, 'itemQuantityIsRequired')),
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
                         counterStyle: TextStyle(color: WHITE),
@@ -409,11 +409,11 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                           try {
                             quantity = int.parse(_quantityController.text);
                           } catch (FormatException) {
-                            ToastService.showErrorToast(getTranslated(context, 'quantityIsRequired'));
+                            ToastService.showErrorToast(getTranslated(context, 'itemQuantityIsRequired'));
                             return;
                           }
                           if (quantity < 0) {
-                            ToastService.showErrorToast(getTranslated(context, 'quantityCannotBeLowerThan0'));
+                            ToastService.showErrorToast(getTranslated(context, 'itemQuantityCannotBeLowerThan0'));
                             return;
                           }
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));

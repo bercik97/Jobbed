@@ -144,7 +144,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
                         try {
                           quantity = int.parse(_quantityController.text);
                         } catch (FormatException) {
-                          ToastService.showErrorToast(getTranslated(context, 'quantityIsRequired'));
+                          ToastService.showErrorToast(getTranslated(context, 'itemQuantityIsRequired'));
                           return;
                         }
                         setState(() {

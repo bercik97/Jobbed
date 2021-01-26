@@ -99,7 +99,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
                       cursorColor: WHITE,
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: WHITE),
-                      validator: RequiredValidator(errorText: getTranslated(context, 'quantityIsRequired')),
+                      validator: RequiredValidator(errorText: getTranslated(context, 'itemQuantityIsRequired')),
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
                         counterStyle: TextStyle(color: WHITE),

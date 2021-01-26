@@ -73,9 +73,9 @@ class ValidatorService {
 
   static String validatePricelistServiceQuantity(int quantity, BuildContext context) {
     if (quantity < 1) {
-      return getTranslated(context, 'quantityCannotBeLowerThan0');
+      return getTranslated(context, 'itemQuantityCannotBeLowerThan0');
     } else if (quantity > 999) {
-      return getTranslated(context, 'quantityCannotBeHigherThan999');
+      return getTranslated(context, 'itemQuantityCannotBeHigherThan999');
     }
     return null;
   }
