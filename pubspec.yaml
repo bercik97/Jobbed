@@ -84,6 +84,8 @@ flutter:
     - images/stop-icon.png
     - images/excel-icon.png
 
+    - images/animated-logo.gif
+
     - images/company-icon.png
     - images/group-icon.png
     - images/groups-icon.png

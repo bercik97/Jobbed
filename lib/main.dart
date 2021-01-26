@@ -10,7 +10,6 @@ import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/own_http_overrides.dart';
 import 'package:give_job/shared/own_upgrader_messages.dart';
-import 'package:give_job/shared/widget/texts.dart';
 import 'package:give_job/unauthenticated/get_started_page.dart';
 import 'package:give_job/unauthenticated/login_page.dart';
 import 'package:splashscreen/splashscreen.dart';
@@ -123,11 +122,11 @@ class _MyAppState extends State<MyApp> {
         },
         debugShowCheckedModeBanner: false,
         home: SplashScreen(
-          seconds: 3,
-          image: new Image.asset('images/logo.png'),
+          seconds: 2,
+          image: new Image.asset('images/animated-logo.gif'),
           backgroundColor: DARK,
-          photoSize: 50,
-          loaderColor: GREEN,
+          photoSize: 80,
+          useLoader: false,
           navigateAfterSeconds: FutureBuilder(
             future: authOrEmpty,
             builder: (context, snapshot) {
