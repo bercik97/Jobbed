@@ -195,7 +195,6 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
   }
 
   void _handleAddBtn() {
-    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     setState(() => _isAddButtonTapped = true);
     Map<String, Map<String, int>> warehouseIdsAndItemsWithQuantities = new Map();
     for (int i = 0; i < _itemplaces.length; i++) {
@@ -216,16 +215,15 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
       }
     }
     if (warehouseIdsAndItemsWithQuantities.isEmpty) {
-      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showErrorToast(getTranslated(context, 'noQuantitySettedForReturn'));
-        setState(() => _isAddButtonTapped = false);
-      });
+      ToastService.showErrorToast(getTranslated(context, 'noQuantitySettedForReturn'));
+      setState(() => _isAddButtonTapped = false);
       return;
     }
     ReturnItemsDto dto = new ReturnItemsDto(
       itemPlaceId: _itemplaceDto.id,
       warehouseIdsAndItemsWithQuantities: warehouseIdsAndItemsWithQuantities,
     );
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _itemPlaceService.returnItems(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyReturnItemsToWarehouses'));
