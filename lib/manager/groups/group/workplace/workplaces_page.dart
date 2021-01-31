@@ -382,6 +382,20 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                     builder: (context, setState) {
                       return WillPopScope(
                         child: Scaffold(
+                          appBar: AppBar(
+                            iconTheme: IconThemeData(color: WHITE),
+                            backgroundColor: BRIGHTER_DARK,
+                            elevation: 0.0,
+                            bottomOpacity: 0.0,
+                            title: textWhite(getTranslated(context, 'setWorkplaceArea')),
+                            leading: IconButton(
+                              icon: iconWhite(Icons.arrow_back),
+                              onPressed: () {
+                                onWillPop();
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ),
                           body: GoogleMap(
                             initialCameraPosition: _cameraPosition,
                             markers: _markersList.toSet(),
@@ -488,6 +502,20 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                   builder: (context, setState) {
                     return WillPopScope(
                       child: Scaffold(
+                        appBar: AppBar(
+                          iconTheme: IconThemeData(color: WHITE),
+                          backgroundColor: BRIGHTER_DARK,
+                          elevation: 0.0,
+                          bottomOpacity: 0.0,
+                          title: textWhite(getTranslated(context, 'editWorkplaceArea')),
+                          leading: IconButton(
+                            icon: iconWhite(Icons.arrow_back),
+                            onPressed: () {
+                              onWillPop();
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ),
                         body: GoogleMap(
                           initialCameraPosition: _cameraPosition,
                           markers: _markersList.toSet(),
