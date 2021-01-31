@@ -287,26 +287,28 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
               ],
             ),
           ),
-          bottomNavigationBar: Container(
-            height: 40,
-            child: Row(
-              children: <Widget>[
-                SizedBox(width: 1),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: textDarkBold(getTranslated(context, 'release')),
-                    onPressed: () {
-                      if (_selectedItems.isEmpty) {
-                        showHint(context, getTranslated(context, 'needToSelectItems') + ' ', getTranslated(context, 'whichYouWantToReleaseToItemplace'));
-                        return;
-                      }
-                      NavigatorUtil.navigate(this.context, ReleaseItemsPage(_model, _warehouseDto, _selectedItems.toList()));
-                    },
+          bottomNavigationBar: SafeArea(
+            child: Container(
+              height: 40,
+              child: Row(
+                children: <Widget>[
+                  SizedBox(width: 1),
+                  Expanded(
+                    child: MaterialButton(
+                      color: GREEN,
+                      child: textDarkBold(getTranslated(context, 'release')),
+                      onPressed: () {
+                        if (_selectedItems.isEmpty) {
+                          showHint(context, getTranslated(context, 'needToSelectItems') + ' ', getTranslated(context, 'whichYouWantToReleaseToItemplace'));
+                          return;
+                        }
+                        NavigatorUtil.navigate(this.context, ReleaseItemsPage(_model, _warehouseDto, _selectedItems.toList()));
+                      },
+                    ),
                   ),
-                ),
-                SizedBox(width: 1),
-              ],
+                  SizedBox(width: 1),
+                ],
+              ),
             ),
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

@@ -219,47 +219,49 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
             ],
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(bottom: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              MaterialButton(
-                elevation: 0,
-                height: 50,
-                minWidth: 40,
-                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[iconWhite(Icons.close)],
+        bottomNavigationBar: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                MaterialButton(
+                  elevation: 0,
+                  height: 50,
+                  minWidth: 40,
+                  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[iconWhite(Icons.close)],
+                  ),
+                  color: Colors.red,
+                  onPressed: () => {
+                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ManagerTsPage(_model)), (e) => false),
+                  },
                 ),
-                color: Colors.red,
-                onPressed: () => {
-                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ManagerTsPage(_model)), (e) => false),
-                },
-              ),
-              SizedBox(width: 25),
-              MaterialButton(
-                elevation: 0,
-                height: 50,
-                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[iconWhite(Icons.check)],
+                SizedBox(width: 25),
+                MaterialButton(
+                  elevation: 0,
+                  height: 50,
+                  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[iconWhite(Icons.check)],
+                  ),
+                  color: GREEN,
+                  onPressed: () {
+                    if (_isChangeBtnTapped) {
+                      return;
+                    }
+                    if (_status == STATUS_IN_PROGRESS) {
+                      _updateTsStatusForSelectedEmployees(1, STATUS_COMPLETED);
+                    } else {
+                      _updateTsStatusForSelectedEmployees(2, STATUS_IN_PROGRESS);
+                    }
+                  },
                 ),
-                color: GREEN,
-                onPressed: () {
-                  if (_isChangeBtnTapped) {
-                    return;
-                  }
-                  if (_status == STATUS_IN_PROGRESS) {
-                    _updateTsStatusForSelectedEmployees(1, STATUS_COMPLETED);
-                  } else {
-                    _updateTsStatusForSelectedEmployees(2, STATUS_IN_PROGRESS);
-                  }
-                },
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

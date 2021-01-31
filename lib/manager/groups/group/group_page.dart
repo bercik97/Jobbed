@@ -55,179 +55,181 @@ class _GroupPageState extends State<GroupPage> {
             getTranslated(context, 'group') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
             () => NavigatorUtil.navigate(context, GroupsDashboardPage(_user)),
           ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                children: <Widget>[
-                  ListTile(
-                    leading: Tab(
-                      icon: Container(
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 13),
-                          child: Container(
-                            child: Image(
-                              width: 75,
-                              image: AssetImage(
-                                'images/group-icon.png',
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  children: <Widget>[
+                    ListTile(
+                      leading: Tab(
+                        icon: Container(
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 13),
+                            child: Container(
+                              child: Image(
+                                width: 75,
+                                image: AssetImage(
+                                  'images/group-icon.png',
+                                ),
+                                fit: BoxFit.cover,
                               ),
-                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    title: text18WhiteBold(
-                      utf8.decode(
-                        _model.groupName != null ? _model.groupName.runes.toList() : getTranslated(context, 'empty'),
+                      title: text18WhiteBold(
+                        utf8.decode(
+                          _model.groupName != null ? _model.groupName.runes.toList() : getTranslated(context, 'empty'),
+                        ),
+                      ),
+                      subtitle: Column(
+                        children: <Widget>[
+                          Align(
+                            child: textWhite(utf8.decode(_model.groupDescription != null ? _model.groupDescription.runes.toList() : getTranslated(context, 'empty'))),
+                            alignment: Alignment.topLeft,
+                          ),
+                          SizedBox(height: 5),
+                          Align(
+                            child: textWhite(getTranslated(context, 'numberOfEmployees') + ': ' + _model.numberOfEmployees.toString()),
+                            alignment: Alignment.topLeft,
+                          ),
+                          Align(
+                            child: textWhite(getTranslated(context, 'groupCountryOfWork') + ': ' + LanguageUtil.findFlagByNationality(_model.countryOfWork.toString())),
+                            alignment: Alignment.topLeft,
+                          ),
+                        ],
+                      ),
+                      trailing: Ink(
+                        decoration: ShapeDecoration(color: GREEN, shape: CircleBorder()),
+                        child: IconButton(
+                          icon: iconDark(Icons.border_color),
+                          onPressed: () => NavigatorUtil.navigate(this.context, GroupEditPage(_model)),
+                        ),
                       ),
                     ),
-                    subtitle: Column(
+                    SizedBox(height: 20),
+                    Row(
                       children: <Widget>[
-                        Align(
-                          child: textWhite(utf8.decode(_model.groupDescription != null ? _model.groupDescription.runes.toList() : getTranslated(context, 'empty'))),
-                          alignment: Alignment.topLeft,
+                        Expanded(
+                          child: Material(
+                            color: BRIGHTER_DARK,
+                            child: InkWell(
+                              onTap: () => NavigatorUtil.navigate(context, GroupsDashboardPage(_user)),
+                              child: _buildScrollableContainer('images/groups-icon.png', 'backToGroups', 'seeYourAllGroups'),
+                            ),
+                          ),
                         ),
-                        SizedBox(height: 5),
-                        Align(
-                          child: textWhite(getTranslated(context, 'numberOfEmployees') + ': ' + _model.numberOfEmployees.toString()),
-                          alignment: Alignment.topLeft,
-                        ),
-                        Align(
-                          child: textWhite(getTranslated(context, 'groupCountryOfWork') + ': ' + LanguageUtil.findFlagByNationality(_model.countryOfWork.toString())),
-                          alignment: Alignment.topLeft,
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Material(
+                            color: BRIGHTER_DARK,
+                            child: InkWell(
+                              onTap: () => NavigatorUtil.navigate(context, EmployeesSettingsPage(_model)),
+                              child: _buildScrollableContainer('images/employees-settings-icon.png', 'settings', 'employeesSettingsDescription'),
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                    trailing: Ink(
-                      decoration: ShapeDecoration(color: GREEN, shape: CircleBorder()),
-                      child: IconButton(
-                        icon: iconDark(Icons.border_color),
-                        onPressed: () => NavigatorUtil.navigate(this.context, GroupEditPage(_model)),
-                      ),
+                    SizedBox(height: 10),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Material(
+                            color: BRIGHTER_DARK,
+                            child: InkWell(
+                              onTap: () => NavigatorUtil.navigate(context, EmployeesPage(_model)),
+                              child: _buildScrollableContainer('images/employees-icon.png', 'employees', 'manageSelectedEmployee'),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Material(
+                            color: BRIGHTER_DARK,
+                            child: InkWell(
+                              onTap: () => NavigatorUtil.navigate(context, ManagerTsPage(_model)),
+                              child: _buildScrollableContainer('images/timesheets-icon.png', 'timesheets', 'fillHoursPieceworks'),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Material(
-                          color: BRIGHTER_DARK,
-                          child: InkWell(
-                            onTap: () => NavigatorUtil.navigate(context, GroupsDashboardPage(_user)),
-                            child: _buildScrollableContainer('images/groups-icon.png', 'backToGroups', 'seeYourAllGroups'),
+                    SizedBox(height: 10),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Material(
+                            color: BRIGHTER_DARK,
+                            child: InkWell(
+                              onTap: () => QuickUpdateDialog.showQuickUpdateDialog(context, _model),
+                              child: _buildScrollableContainer('images/quick_update-icon.png', 'quickUpdate', 'quickUpdateDescription'),
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Material(
-                          color: BRIGHTER_DARK,
-                          child: InkWell(
-                            onTap: () => NavigatorUtil.navigate(context, EmployeesSettingsPage(_model)),
-                            child: _buildScrollableContainer('images/employees-settings-icon.png', 'settings', 'employeesSettingsDescription'),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Material(
+                            color: BRIGHTER_DARK,
+                            child: InkWell(
+                              onTap: () => NavigatorUtil.navigate(context, WorkplacesPage(_model)),
+                              child: _buildScrollableContainer('images/workplace-icon.png', 'workplaces', 'manageCompanyWorkplaces'),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Material(
-                          color: BRIGHTER_DARK,
-                          child: InkWell(
-                            onTap: () => NavigatorUtil.navigate(context, EmployeesPage(_model)),
-                            child: _buildScrollableContainer('images/employees-icon.png', 'employees', 'manageSelectedEmployee'),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Material(
+                            color: BRIGHTER_DARK,
+                            child: InkWell(
+                              onTap: () => NavigatorUtil.navigate(context, VocationsTsPage(_model)),
+                              child: _buildScrollableContainer('images/vocation-icon.png', 'vocations', 'vocationsDescription'),
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Material(
-                          color: BRIGHTER_DARK,
-                          child: InkWell(
-                            onTap: () => NavigatorUtil.navigate(context, ManagerTsPage(_model)),
-                            child: _buildScrollableContainer('images/timesheets-icon.png', 'timesheets', 'fillHoursPieceworks'),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Material(
+                            color: BRIGHTER_DARK,
+                            child: InkWell(
+                              onTap: () => NavigatorUtil.navigate(context, PricelistPage(_model)),
+                              child: _buildScrollableContainer('images/pricelist-icon.png', 'pricelist', 'manageCompanyPricelist'),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Material(
-                          color: BRIGHTER_DARK,
-                          child: InkWell(
-                            onTap: () => QuickUpdateDialog.showQuickUpdateDialog(context, _model),
-                            child: _buildScrollableContainer('images/quick_update-icon.png', 'quickUpdate', 'quickUpdateDescription'),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Material(
+                            color: BRIGHTER_DARK,
+                            child: InkWell(
+                              onTap: () => NavigatorUtil.navigate(context, WarehousePage(_model)),
+                              child: _buildScrollableContainer('images/warehouse-icon.png', 'warehouses', 'manageCompanyWarehouses'),
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Material(
-                          color: BRIGHTER_DARK,
-                          child: InkWell(
-                            onTap: () => NavigatorUtil.navigate(context, WorkplacesPage(_model)),
-                            child: _buildScrollableContainer('images/workplace-icon.png', 'workplaces', 'manageCompanyWorkplaces'),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Material(
+                            color: BRIGHTER_DARK,
+                            child: InkWell(
+                              onTap: () => NavigatorUtil.navigate(context, ItemplacesPage(_model)),
+                              child: _buildScrollableContainer('images/items-icon.png', 'itemPlaces', 'manageCompanyItemPlaces'),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Material(
-                          color: BRIGHTER_DARK,
-                          child: InkWell(
-                            onTap: () => NavigatorUtil.navigate(context, VocationsTsPage(_model)),
-                            child: _buildScrollableContainer('images/vocation-icon.png', 'vocations', 'vocationsDescription'),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Material(
-                          color: BRIGHTER_DARK,
-                          child: InkWell(
-                            onTap: () => NavigatorUtil.navigate(context, PricelistPage(_model)),
-                            child: _buildScrollableContainer('images/pricelist-icon.png', 'pricelist', 'manageCompanyPricelist'),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Material(
-                          color: BRIGHTER_DARK,
-                          child: InkWell(
-                            onTap: () => NavigatorUtil.navigate(context, WarehousePage(_model)),
-                            child: _buildScrollableContainer('images/warehouse-icon.png', 'warehouses', 'manageCompanyWarehouses'),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Material(
-                          color: BRIGHTER_DARK,
-                          child: InkWell(
-                            onTap: () => NavigatorUtil.navigate(context, ItemplacesPage(_model)),
-                            child: _buildScrollableContainer('images/items-icon.png', 'itemPlaces', 'manageCompanyItemPlaces'),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

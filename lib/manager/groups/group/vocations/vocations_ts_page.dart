@@ -163,50 +163,52 @@ class _VocationsTsPageState extends State<VocationsTsPage> {
               ],
             ),
           ),
-          bottomNavigationBar: Container(
-            height: 40,
-            child: Row(
-              children: <Widget>[
-                SizedBox(width: 1),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: textDarkBold(getTranslated(context, 'manage')),
-                    onPressed: () {
-                      if (_currentRadioElement != null) {
-                        NavigatorUtil.navigate(context, VocationsManagePage(_model, _inProgressTimesheets[_currentRadioElement.index]));
-                      } else {
-                        _handleEmptyTs();
-                      }
-                    },
+          bottomNavigationBar: SafeArea(
+            child: Container(
+              height: 40,
+              child: Row(
+                children: <Widget>[
+                  SizedBox(width: 1),
+                  Expanded(
+                    child: MaterialButton(
+                      color: GREEN,
+                      child: textDarkBold(getTranslated(context, 'manage')),
+                      onPressed: () {
+                        if (_currentRadioElement != null) {
+                          NavigatorUtil.navigate(context, VocationsManagePage(_model, _inProgressTimesheets[_currentRadioElement.index]));
+                        } else {
+                          _handleEmptyTs();
+                        }
+                      },
+                    ),
                   ),
-                ),
-                SizedBox(width: 5),
-                Expanded(
-                  child: MaterialButton(
-                    color: Colors.grey,
-                    child: textDarkBold(getTranslated(context, 'verify')),
-                    onPressed: () => {
-                      if (_currentRadioElement != null) {} else {_handleEmptyTs()},
-                    },
+                  SizedBox(width: 5),
+                  Expanded(
+                    child: MaterialButton(
+                      color: Colors.grey,
+                      child: textDarkBold(getTranslated(context, 'verify')),
+                      onPressed: () => {
+                        if (_currentRadioElement != null) {} else {_handleEmptyTs()},
+                      },
+                    ),
                   ),
-                ),
-                SizedBox(width: 5),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: textDarkBold(getTranslated(context, 'calendar')),
-                    onPressed: () {
-                      if (_currentRadioElement != null) {
-                        NavigatorUtil.navigate(context, VocationsCalendarPage(_model));
-                      } else {
-                        _handleEmptyTs();
-                      }
-                    },
+                  SizedBox(width: 5),
+                  Expanded(
+                    child: MaterialButton(
+                      color: GREEN,
+                      child: textDarkBold(getTranslated(context, 'calendar')),
+                      onPressed: () {
+                        if (_currentRadioElement != null) {
+                          NavigatorUtil.navigate(context, VocationsCalendarPage(_model));
+                        } else {
+                          _handleEmptyTs();
+                        }
+                      },
+                    ),
                   ),
-                ),
-                SizedBox(width: 1),
-              ],
+                  SizedBox(width: 1),
+                ],
+              ),
             ),
           ),
         ),

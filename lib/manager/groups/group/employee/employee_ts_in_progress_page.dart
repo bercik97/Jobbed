@@ -257,83 +257,85 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
             ],
           ),
         ),
-        bottomNavigationBar: Container(
-          height: 40,
-          child: Row(
-            children: <Widget>[
-              SizedBox(width: 1),
-              Expanded(
-                child: MaterialButton(
-                  color: GREEN,
-                  child: Image(image: AssetImage('images/dark-hours-icon.png')),
-                  onPressed: () {
-                    if (selectedIds.isNotEmpty) {
-                      _hoursController.clear();
-                      _minutesController.clear();
-                      _showUpdateHoursDialog(selectedIds);
-                    } else {
-                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                    }
-                  },
+        bottomNavigationBar: SafeArea(
+          child: Container(
+            height: 40,
+            child: Row(
+              children: <Widget>[
+                SizedBox(width: 1),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: Image(image: AssetImage('images/dark-hours-icon.png')),
+                    onPressed: () {
+                      if (selectedIds.isNotEmpty) {
+                        _hoursController.clear();
+                        _minutesController.clear();
+                        _showUpdateHoursDialog(selectedIds);
+                      } else {
+                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                      }
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(width: 2.5),
-              Expanded(
-                child: MaterialButton(
-                  color: GREEN,
-                  child: Image(image: AssetImage('images/dark-piecework-icon.png')),
-                  onPressed: () {
-                    if (selectedIds.isNotEmpty) {
-                      NavigatorUtil.navigate(
-                          context,
-                          AddPieceworkForSelectedWorkdays(
-                            _model,
-                            selectedIds.map((el) => el.toString()).toList(),
-                            _employeeInfo,
-                            _employeeId,
-                            _employeeNationality,
-                            _currency,
-                            _timesheet,
-                            _avatarPath,
-                          ));
-                    } else {
-                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                    }
-                  },
+                SizedBox(width: 2.5),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: Image(image: AssetImage('images/dark-piecework-icon.png')),
+                    onPressed: () {
+                      if (selectedIds.isNotEmpty) {
+                        NavigatorUtil.navigate(
+                            context,
+                            AddPieceworkForSelectedWorkdays(
+                              _model,
+                              selectedIds.map((el) => el.toString()).toList(),
+                              _employeeInfo,
+                              _employeeId,
+                              _employeeNationality,
+                              _currency,
+                              _timesheet,
+                              _avatarPath,
+                            ));
+                      } else {
+                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                      }
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(width: 2.5),
-              Expanded(
-                child: MaterialButton(
-                  color: GREEN,
-                  child: Image(image: AssetImage('images/dark-note-icon.png')),
-                  onPressed: () {
-                    if (selectedIds.isNotEmpty) {
-                      _noteController.clear();
-                      _showUpdateNoteDialog(selectedIds);
-                    } else {
-                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                    }
-                  },
+                SizedBox(width: 2.5),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: Image(image: AssetImage('images/dark-note-icon.png')),
+                    onPressed: () {
+                      if (selectedIds.isNotEmpty) {
+                        _noteController.clear();
+                        _showUpdateNoteDialog(selectedIds);
+                      } else {
+                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                      }
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(width: 2.5),
-              Expanded(
-                child: MaterialButton(
-                  color: GREEN,
-                  child: Image(image: AssetImage('images/dark-vocation-icon.png')),
-                  onPressed: () {
-                    if (selectedIds.isNotEmpty) {
-                      _vocationReasonController.clear();
-                      _showUpdateVocationReasonDialog(_timesheet, selectedIds);
-                    } else {
-                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                    }
-                  },
+                SizedBox(width: 2.5),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: Image(image: AssetImage('images/dark-vocation-icon.png')),
+                    onPressed: () {
+                      if (selectedIds.isNotEmpty) {
+                        _vocationReasonController.clear();
+                        _showUpdateVocationReasonDialog(_timesheet, selectedIds);
+                      } else {
+                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                      }
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(width: 1),
-            ],
+                SizedBox(width: 1),
+              ],
+            ),
           ),
         ),
         floatingActionButton: iconsLegendDialog(

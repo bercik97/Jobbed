@@ -341,58 +341,60 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
   }
 
   Widget _buildUpdateButton() {
-    return Column(
-      children: <Widget>[
-        MaterialButton(
-          elevation: 0,
-          minWidth: double.maxFinite,
-          height: 50,
-          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-          onPressed: () {
-            if (!_isValid()) {
-              DialogService.showCustomDialog(
-                context: context,
-                titleWidget: textRed(getTranslated(context, 'error')),
-                content: getTranslated(context, 'correctInvalidFields'),
-              );
-              return;
-            } else {
-              FocusScope.of(context).unfocus();
-              showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-              _managerService.updateManagerAndUserFieldsValuesById(
-                int.parse(_user.id),
-                {
-                  "name": _nameController.text,
-                  "surname": _surnameController.text,
-                  "email": _emailController.text,
-                  "nationality": _nationality,
-                  "phone": _phoneController.text,
-                  "viber": _viberController.text,
-                  "whatsApp": _whatsAppController.text,
-                },
-              ).then((res) {
-                Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                  ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedInformationAboutYou'));
-                  _user.nationality = _nationality;
-                  _user.info = _nameController.text + ' ' + _surnameController.text;
-                  _user.username = _usernameController.text;
+    return SafeArea(
+      child: Column(
+        children: <Widget>[
+          MaterialButton(
+            elevation: 0,
+            minWidth: double.maxFinite,
+            height: 50,
+            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+            onPressed: () {
+              if (!_isValid()) {
+                DialogService.showCustomDialog(
+                  context: context,
+                  titleWidget: textRed(getTranslated(context, 'error')),
+                  content: getTranslated(context, 'correctInvalidFields'),
+                );
+                return;
+              } else {
+                FocusScope.of(context).unfocus();
+                showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+                _managerService.updateManagerAndUserFieldsValuesById(
+                  int.parse(_user.id),
+                  {
+                    "name": _nameController.text,
+                    "surname": _surnameController.text,
+                    "email": _emailController.text,
+                    "nationality": _nationality,
+                    "phone": _phoneController.text,
+                    "viber": _viberController.text,
+                    "whatsApp": _whatsAppController.text,
+                  },
+                ).then((res) {
+                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                    ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedInformationAboutYou'));
+                    _user.nationality = _nationality;
+                    _user.info = _nameController.text + ' ' + _surnameController.text;
+                    _user.username = _usernameController.text;
+                  });
+                }).catchError((onError) {
+                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                    DialogService.showCustomDialog(
+                      context: context,
+                      titleWidget: textRed(getTranslated(context, 'error')),
+                      content: getTranslated(context, 'smthWentWrong'),
+                    );
+                  });
                 });
-              }).catchError((onError) {
-                Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                  DialogService.showCustomDialog(
-                    context: context,
-                    titleWidget: textRed(getTranslated(context, 'error')),
-                    content: getTranslated(context, 'smthWentWrong'),
-                  );
-                });
-              });
-            }
-          },
-          color: GREEN,
-          child: text20White(getTranslated(context, 'update')),
-          textColor: Colors.white,
-        ),
-      ],
+              }
+            },
+            color: GREEN,
+            child: text20White(getTranslated(context, 'update')),
+            textColor: Colors.white,
+          ),
+        ],
+      ),
     );
   }
 }

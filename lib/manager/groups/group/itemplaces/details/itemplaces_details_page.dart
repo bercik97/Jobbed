@@ -226,26 +226,28 @@ class _ItemplacesDetailsPageState extends State<ItemplacesDetailsPage> {
               ],
             ),
           ),
-          bottomNavigationBar: Container(
-            height: 40,
-            child: Row(
-              children: <Widget>[
-                SizedBox(width: 1),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: textDarkBold(getTranslated(context, 'returnToWarehouse')),
-                    onPressed: () {
-                      if (_selectedItems.isEmpty) {
-                        showHint(context, getTranslated(context, 'needToSelectItems') + ' ', getTranslated(context, 'whichYouWantToReturnToWarehouse'));
-                        return;
-                      }
-                      NavigatorUtil.navigate(this.context, ReturnItemsPage(_model, _itemplaceDto, _selectedItems.toList()));
-                    },
+          bottomNavigationBar: SafeArea(
+            child: Container(
+              height: 40,
+              child: Row(
+                children: <Widget>[
+                  SizedBox(width: 1),
+                  Expanded(
+                    child: MaterialButton(
+                      color: GREEN,
+                      child: textDarkBold(getTranslated(context, 'returnToWarehouse')),
+                      onPressed: () {
+                        if (_selectedItems.isEmpty) {
+                          showHint(context, getTranslated(context, 'needToSelectItems') + ' ', getTranslated(context, 'whichYouWantToReturnToWarehouse'));
+                          return;
+                        }
+                        NavigatorUtil.navigate(this.context, ReturnItemsPage(_model, _itemplaceDto, _selectedItems.toList()));
+                      },
+                    ),
                   ),
-                ),
-                SizedBox(width: 1),
-              ],
+                  SizedBox(width: 1),
+                ],
+              ),
             ),
           ),
         ),

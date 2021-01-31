@@ -269,69 +269,71 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
               ],
             ),
           ),
-          bottomNavigationBar: Container(
-            height: 40,
-            child: Row(
-              children: <Widget>[
-                SizedBox(width: 1),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: textCenter12Dark(getTranslated(context, 'hourlyWage')),
-                    onPressed: () {
-                      if (_selectedIds.isNotEmpty && !_isMoneyBtnTapped) {
-                        _moneyPerHourController.clear();
-                        _changeCurrentMoneyPerHour();
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
+          bottomNavigationBar: SafeArea(
+            child: Container(
+              height: 40,
+              child: Row(
+                children: <Widget>[
+                  SizedBox(width: 1),
+                  Expanded(
+                    child: MaterialButton(
+                      color: GREEN,
+                      child: textCenter12Dark(getTranslated(context, 'hourlyWage')),
+                      onPressed: () {
+                        if (_selectedIds.isNotEmpty && !_isMoneyBtnTapped) {
+                          _moneyPerHourController.clear();
+                          _changeCurrentMoneyPerHour();
+                        } else {
+                          showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                        }
+                      },
+                    ),
                   ),
-                ),
-                SizedBox(width: 1),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: textCenter12Dark(getTranslated(context, 'fillingHours')),
-                    onPressed: () {
-                      if (_selectedIds.isNotEmpty && !_isSelfFillingHoursBtnTapped) {
-                        _changePermissionToSelfFillHours();
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
+                  SizedBox(width: 1),
+                  Expanded(
+                    child: MaterialButton(
+                      color: GREEN,
+                      child: textCenter12Dark(getTranslated(context, 'fillingHours')),
+                      onPressed: () {
+                        if (_selectedIds.isNotEmpty && !_isSelfFillingHoursBtnTapped) {
+                          _changePermissionToSelfFillHours();
+                        } else {
+                          showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                        }
+                      },
+                    ),
                   ),
-                ),
-                SizedBox(width: 1),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: textCenter12Dark(getTranslated(context, 'workTimeGPS')),
-                    onPressed: () {
-                      if (_selectedIds.isNotEmpty && !_isWorkTimeByLocationBtnTapped) {
-                        _changePermissionToWorkTimeByLocation();
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
+                  SizedBox(width: 1),
+                  Expanded(
+                    child: MaterialButton(
+                      color: GREEN,
+                      child: textCenter12Dark(getTranslated(context, 'workTimeGPS')),
+                      onPressed: () {
+                        if (_selectedIds.isNotEmpty && !_isWorkTimeByLocationBtnTapped) {
+                          _changePermissionToWorkTimeByLocation();
+                        } else {
+                          showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                        }
+                      },
+                    ),
                   ),
-                ),
-                SizedBox(width: 1),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: textCenter12Dark(getTranslated(context, 'piecework')),
-                    onPressed: () {
-                      if (_selectedIds.isNotEmpty) {
-                        _changePermissionToPiecework();
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
+                  SizedBox(width: 1),
+                  Expanded(
+                    child: MaterialButton(
+                      color: GREEN,
+                      child: textCenter12Dark(getTranslated(context, 'piecework')),
+                      onPressed: () {
+                        if (_selectedIds.isNotEmpty) {
+                          _changePermissionToPiecework();
+                        } else {
+                          showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                        }
+                      },
+                    ),
                   ),
-                ),
-                SizedBox(width: 1),
-              ],
+                  SizedBox(width: 1),
+                ],
+              ),
             ),
           ),
         ),

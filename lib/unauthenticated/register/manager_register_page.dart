@@ -539,20 +539,22 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
   }
 
   Widget _buildRegisterButton() {
-    return Column(
-      children: <Widget>[
-        SizedBox(height: 30),
-        MaterialButton(
-          elevation: 0,
-          minWidth: double.maxFinite,
-          height: 50,
-          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-          onPressed: () => _isRegisterButtonTapped ? null : _handleRegisterButton(),
-          color: GREEN,
-          child: text20White(getTranslated(context, 'register')),
-          textColor: Colors.white,
-        ),
-      ],
+    return SafeArea(
+      child: Column(
+        children: <Widget>[
+          SizedBox(height: 30),
+          MaterialButton(
+            elevation: 0,
+            minWidth: double.maxFinite,
+            height: 50,
+            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+            onPressed: () => _isRegisterButtonTapped ? null : _handleRegisterButton(),
+            color: GREEN,
+            child: text20White(getTranslated(context, 'register')),
+            textColor: Colors.white,
+          ),
+        ],
+      ),
     );
   }
 

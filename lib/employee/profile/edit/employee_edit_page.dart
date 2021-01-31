@@ -647,74 +647,76 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
   }
 
   Widget _buildUpdateButton() {
-    return Column(
-      children: <Widget>[
-        MaterialButton(
-          elevation: 0,
-          minWidth: double.maxFinite,
-          height: 50,
-          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-          onPressed: () {
-            if (!_isValid()) {
-              DialogService.showCustomDialog(
-                context: context,
-                titleWidget: textRed(getTranslated(context, 'error')),
-                content: getTranslated(context, 'correctInvalidFields'),
-              );
-              return;
-            } else {
-              FocusScope.of(context).unfocus();
-              showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-              _employeeService.updateEmployeeAndUserFieldsValuesById(
-                widget._employeeId,
-                {
-                  "username": _usernameController.text,
-                  "name": _nameController.text,
-                  "surname": _surnameController.text,
-                  "nationality": _nationality,
-                  "phone": _phoneController.text,
-                  "viber": _viberController.text,
-                  "whatsApp": _whatsAppController.text,
-                  "fatherName": _fatherNameController.text,
-                  "motherName": _motherNameController.text,
-                  "dateOfBirth": _dateOfBirth != null ? _dateOfBirth.toString().substring(0, 10) : null,
-                  "expirationDateOfWork": _expirationDateOfWork != null ? _expirationDateOfWork.toString().substring(0, 10) : null,
-                  "nip": _nipController.text,
-                  "bankAccountNumber": _bankAccountNumberController.text,
-                  "drivingLicense": _drivingLicenseController.text,
-                  "locality": _localityController.text,
-                  "zipCode": _zipCodeController.text,
-                  "street": _streetController.text,
-                  "houseNumber": _houseNumberController.text,
-                  "passportNumber": _passportNumberController.text,
-                  "passportReleaseDate": _passportReleaseDate != null ? _passportReleaseDate.toString().substring(0, 10) : null,
-                  "passportExpirationDate": _passportExpirationDate != null ? _passportExpirationDate.toString().substring(0, 10) : null,
-                },
-              ).then((res) {
-                Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                  ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedInformationAboutYou'));
-                  _user.nationality = _nationality;
-                  _user.info = _nameController.text + ' ' + _surnameController.text;
-                  _user.username = _usernameController.text;
-                });
-              }).catchError(
-                (onError) {
+    return SafeArea(
+      child: Column(
+        children: <Widget>[
+          MaterialButton(
+            elevation: 0,
+            minWidth: double.maxFinite,
+            height: 50,
+            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+            onPressed: () {
+              if (!_isValid()) {
+                DialogService.showCustomDialog(
+                  context: context,
+                  titleWidget: textRed(getTranslated(context, 'error')),
+                  content: getTranslated(context, 'correctInvalidFields'),
+                );
+                return;
+              } else {
+                FocusScope.of(context).unfocus();
+                showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+                _employeeService.updateEmployeeAndUserFieldsValuesById(
+                  widget._employeeId,
+                  {
+                    "username": _usernameController.text,
+                    "name": _nameController.text,
+                    "surname": _surnameController.text,
+                    "nationality": _nationality,
+                    "phone": _phoneController.text,
+                    "viber": _viberController.text,
+                    "whatsApp": _whatsAppController.text,
+                    "fatherName": _fatherNameController.text,
+                    "motherName": _motherNameController.text,
+                    "dateOfBirth": _dateOfBirth != null ? _dateOfBirth.toString().substring(0, 10) : null,
+                    "expirationDateOfWork": _expirationDateOfWork != null ? _expirationDateOfWork.toString().substring(0, 10) : null,
+                    "nip": _nipController.text,
+                    "bankAccountNumber": _bankAccountNumberController.text,
+                    "drivingLicense": _drivingLicenseController.text,
+                    "locality": _localityController.text,
+                    "zipCode": _zipCodeController.text,
+                    "street": _streetController.text,
+                    "houseNumber": _houseNumberController.text,
+                    "passportNumber": _passportNumberController.text,
+                    "passportReleaseDate": _passportReleaseDate != null ? _passportReleaseDate.toString().substring(0, 10) : null,
+                    "passportExpirationDate": _passportExpirationDate != null ? _passportExpirationDate.toString().substring(0, 10) : null,
+                  },
+                ).then((res) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                    DialogService.showCustomDialog(
-                      context: context,
-                      titleWidget: textRed(getTranslated(context, 'error')),
-                      content: getTranslated(context, 'smthWentWrong'),
-                    );
+                    ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedInformationAboutYou'));
+                    _user.nationality = _nationality;
+                    _user.info = _nameController.text + ' ' + _surnameController.text;
+                    _user.username = _usernameController.text;
                   });
-                },
-              );
-            }
-          },
-          color: GREEN,
-          child: text20White(getTranslated(context, 'update')),
-          textColor: Colors.white,
-        ),
-      ],
+                }).catchError(
+                  (onError) {
+                    Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                      DialogService.showCustomDialog(
+                        context: context,
+                        titleWidget: textRed(getTranslated(context, 'error')),
+                        content: getTranslated(context, 'smthWentWrong'),
+                      );
+                    });
+                  },
+                );
+              }
+            },
+            color: GREEN,
+            child: text20White(getTranslated(context, 'update')),
+            textColor: Colors.white,
+          ),
+        ],
+      ),
     );
   }
 }

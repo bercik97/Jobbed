@@ -218,36 +218,38 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
   }
 
   Widget _buildBottomNavigationBar() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          MaterialButton(
-            elevation: 0,
-            height: 50,
-            minWidth: 40,
-            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[iconWhite(Icons.close)],
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            MaterialButton(
+              elevation: 0,
+              height: 50,
+              minWidth: 40,
+              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[iconWhite(Icons.close)],
+              ),
+              color: Colors.red,
+              onPressed: () => NavigatorUtil.navigateReplacement(context, TsInProgressPage(_model, _timeSheet)),
             ),
-            color: Colors.red,
-            onPressed: () => NavigatorUtil.navigateReplacement(context, TsInProgressPage(_model, _timeSheet)),
-          ),
-          SizedBox(width: 25),
-          MaterialButton(
-            elevation: 0,
-            height: 50,
-            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[iconWhite(Icons.check)],
+            SizedBox(width: 25),
+            MaterialButton(
+              elevation: 0,
+              height: 50,
+              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[iconWhite(Icons.check)],
+              ),
+              color: GREEN,
+              onPressed: () => _isAddButtonTapped ? null : _handleAdd(),
             ),
-            color: GREEN,
-            onPressed: () => _isAddButtonTapped ? null : _handleAdd(),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

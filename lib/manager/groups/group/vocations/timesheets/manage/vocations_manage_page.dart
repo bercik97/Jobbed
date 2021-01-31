@@ -224,39 +224,41 @@ class _VocationsManagePageState extends State<VocationsManagePage> {
               ],
             ),
           ),
-          bottomNavigationBar: Container(
-            height: 40,
-            child: Row(
-              children: <Widget>[
-                SizedBox(width: 1),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: textDarkBold(getTranslated(context, 'manage')),
+          bottomNavigationBar: SafeArea(
+            child: Container(
+              height: 40,
+              child: Row(
+                children: <Widget>[
+                  SizedBox(width: 1),
+                  Expanded(
+                    child: MaterialButton(
+                      color: GREEN,
+                      child: textDarkBold(getTranslated(context, 'manage')),
+                      onPressed: () {
+                        if (_selectedIds.isNotEmpty) {
+                          _manageVocations();
+                        } else {
+                          _showHint(getTranslated(context, 'manageLowerCase'));
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 1),
+                  Expanded(
+                      child: MaterialButton(
+                    color: Colors.red,
+                    child: textWhiteBold(getTranslated(context, 'remove')),
                     onPressed: () {
                       if (_selectedIds.isNotEmpty) {
-                        _manageVocations();
+                        _removeVocations();
                       } else {
-                        _showHint(getTranslated(context, 'manageLowerCase'));
+                        _showHint(getTranslated(context, 'removeLowerCase'));
                       }
                     },
-                  ),
-                ),
-                SizedBox(width: 1),
-                Expanded(
-                    child: MaterialButton(
-                  color: Colors.red,
-                  child: textWhiteBold(getTranslated(context, 'remove')),
-                  onPressed: () {
-                    if (_selectedIds.isNotEmpty) {
-                      _removeVocations();
-                    } else {
-                      _showHint(getTranslated(context, 'removeLowerCase'));
-                    }
-                  },
-                )),
-                SizedBox(width: 1),
-              ],
+                  )),
+                  SizedBox(width: 1),
+                ],
+              ),
             ),
           ),
         ),

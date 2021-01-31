@@ -224,20 +224,22 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
             ],
           ),
         ),
-        bottomNavigationBar: Container(
-          height: 40,
-          child: Row(
-            children: <Widget>[
-              SizedBox(width: 1),
-              Expanded(
-                child: MaterialButton(
-                  color: GREEN,
-                  child: text18Dark(getTranslated(context, 'addNewTs')),
-                  onPressed: () => _addNewTs(),
+        bottomNavigationBar: SafeArea(
+          child: Container(
+            height: 40,
+            child: Row(
+              children: <Widget>[
+                SizedBox(width: 1),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: text18Dark(getTranslated(context, 'addNewTs')),
+                    onPressed: () => _addNewTs(),
+                  ),
                 ),
-              ),
-              SizedBox(width: 1),
-            ],
+                SizedBox(width: 1),
+              ],
+            ),
           ),
         ),
         floatingActionButton: iconsLegendDialog(

@@ -444,28 +444,30 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                               setState(() {});
                             },
                           ),
-                          bottomNavigationBar: Container(
-                            height: 100,
-                            child: SfSlider(
-                              min: 0.01,
-                              max: 0.25,
-                              value: _radius,
-                              interval: 0.03,
-                              showTicks: true,
-                              showLabels: true,
-                              minorTicksPerInterval: 1,
-                              onChanged: (dynamic value) {
-                                Circle circle = _circles.elementAt(0);
-                                _circles.clear();
-                                _circles.add(
-                                  new Circle(
-                                    circleId: CircleId('${circle.circleId}'),
-                                    center: circle.center,
-                                    radius: _radius * 1000,
-                                  ),
-                                );
-                                setState(() => _radius = value);
-                              },
+                          bottomNavigationBar: SafeArea(
+                            child: Container(
+                              height: 100,
+                              child: SfSlider(
+                                min: 0.01,
+                                max: 0.25,
+                                value: _radius,
+                                interval: 0.03,
+                                showTicks: true,
+                                showLabels: true,
+                                minorTicksPerInterval: 1,
+                                onChanged: (dynamic value) {
+                                  Circle circle = _circles.elementAt(0);
+                                  _circles.clear();
+                                  _circles.add(
+                                    new Circle(
+                                      circleId: CircleId('${circle.circleId}'),
+                                      center: circle.center,
+                                      radius: _radius * 1000,
+                                    ),
+                                  );
+                                  setState(() => _radius = value);
+                                },
+                              ),
                             ),
                           ),
                         ),
@@ -562,28 +564,30 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                             setState(() {});
                           },
                         ),
-                        bottomNavigationBar: Container(
-                          height: 100,
-                          child: SfSlider(
-                            min: 0.01,
-                            max: 0.25,
-                            value: _radius,
-                            interval: 0.03,
-                            showTicks: true,
-                            showLabels: true,
-                            minorTicksPerInterval: 1,
-                            onChanged: (dynamic value) {
-                              Circle circle = _circles.elementAt(0);
-                              _circles.clear();
-                              _circles.add(
-                                new Circle(
-                                  circleId: CircleId('${circle.circleId}'),
-                                  center: circle.center,
-                                  radius: _radius * 1000,
-                                ),
-                              );
-                              setState(() => _radius = value);
-                            },
+                        bottomNavigationBar: SafeArea(
+                          child: Container(
+                            height: 100,
+                            child: SfSlider(
+                              min: 0.01,
+                              max: 0.25,
+                              value: _radius,
+                              interval: 0.03,
+                              showTicks: true,
+                              showLabels: true,
+                              minorTicksPerInterval: 1,
+                              onChanged: (dynamic value) {
+                                Circle circle = _circles.elementAt(0);
+                                _circles.clear();
+                                _circles.add(
+                                  new Circle(
+                                    circleId: CircleId('${circle.circleId}'),
+                                    center: circle.center,
+                                    radius: _radius * 1000,
+                                  ),
+                                );
+                                setState(() => _radius = value);
+                              },
+                            ),
                           ),
                         ),
                       ),

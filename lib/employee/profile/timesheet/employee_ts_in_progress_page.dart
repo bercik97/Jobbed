@@ -219,45 +219,47 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
               IconsLegendUtil.buildImageRow('images/green-note-icon.png', getTranslated(context, 'settingNotes')),
             ],
           ),
-          bottomNavigationBar: Container(
-            height: 40,
-            child: Row(
-              children: <Widget>[
-                SizedBox(width: 1),
-                _canFillHours
-                    ? Expanded(
-                        child: MaterialButton(
-                          color: GREEN,
-                          child: Image(image: AssetImage('images/dark-hours-icon.png')),
-                          onPressed: () {
-                            if (selectedIds.isNotEmpty) {
-                              _hoursController.clear();
-                              _minutesController.clear();
-                              _showUpdateHoursDialog(selectedIds);
-                            } else {
-                              showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                            }
-                          },
-                        ),
-                      )
-                    : SizedBox(width: 0),
-                SizedBox(width: 2.5),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-note-icon.png')),
-                    onPressed: () {
-                      if (selectedIds.isNotEmpty) {
-                        _noteController.clear();
-                        _showUpdateNotesDialog(selectedIds);
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
+          bottomNavigationBar: SafeArea(
+            child: Container(
+              height: 40,
+              child: Row(
+                children: <Widget>[
+                  SizedBox(width: 1),
+                  _canFillHours
+                      ? Expanded(
+                          child: MaterialButton(
+                            color: GREEN,
+                            child: Image(image: AssetImage('images/dark-hours-icon.png')),
+                            onPressed: () {
+                              if (selectedIds.isNotEmpty) {
+                                _hoursController.clear();
+                                _minutesController.clear();
+                                _showUpdateHoursDialog(selectedIds);
+                              } else {
+                                showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                              }
+                            },
+                          ),
+                        )
+                      : SizedBox(width: 0),
+                  SizedBox(width: 2.5),
+                  Expanded(
+                    child: MaterialButton(
+                      color: GREEN,
+                      child: Image(image: AssetImage('images/dark-note-icon.png')),
+                      onPressed: () {
+                        if (selectedIds.isNotEmpty) {
+                          _noteController.clear();
+                          _showUpdateNotesDialog(selectedIds);
+                        } else {
+                          showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                        }
+                      },
+                    ),
                   ),
-                ),
-                SizedBox(width: 1),
-              ],
+                  SizedBox(width: 1),
+                ],
+              ),
             ),
           ),
         ),

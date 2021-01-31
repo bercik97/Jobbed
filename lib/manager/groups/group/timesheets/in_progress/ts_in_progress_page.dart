@@ -294,57 +294,59 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
             ],
           ),
         ),
-        bottomNavigationBar: Container(
-          height: 40,
-          child: Row(
-            children: <Widget>[
-              SizedBox(width: 1),
-              Expanded(
-                child: MaterialButton(
-                  color: GREEN,
-                  child: Image(image: AssetImage('images/dark-hours-icon.png')),
-                  onPressed: () {
-                    if (_selectedIds.isNotEmpty) {
-                      _hoursController.clear();
-                      _minutesController.clear();
-                      _showUpdateHoursDialog(_selectedIds);
-                    } else {
-                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                    }
-                  },
+        bottomNavigationBar: SafeArea(
+          child: Container(
+            height: 40,
+            child: Row(
+              children: <Widget>[
+                SizedBox(width: 1),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: Image(image: AssetImage('images/dark-hours-icon.png')),
+                    onPressed: () {
+                      if (_selectedIds.isNotEmpty) {
+                        _hoursController.clear();
+                        _minutesController.clear();
+                        _showUpdateHoursDialog(_selectedIds);
+                      } else {
+                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                      }
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(width: 5),
-              Expanded(
-                child: MaterialButton(
-                  color: GREEN,
-                  child: Image(image: AssetImage('images/dark-piecework-icon.png')),
-                  onPressed: () {
-                    if (_selectedIds.isNotEmpty) {
-                      _showUpdatePiecework(_selectedIds);
-                    } else {
-                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                    }
-                  },
+                SizedBox(width: 5),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: Image(image: AssetImage('images/dark-piecework-icon.png')),
+                    onPressed: () {
+                      if (_selectedIds.isNotEmpty) {
+                        _showUpdatePiecework(_selectedIds);
+                      } else {
+                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                      }
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(width: 5),
-              Expanded(
-                child: MaterialButton(
-                  color: GREEN,
-                  child: Image(image: AssetImage('images/dark-note-icon.png')),
-                  onPressed: () {
-                    if (_selectedIds.isNotEmpty) {
-                      _noteController.clear();
-                      _showUpdateNoteDialog(_selectedIds);
-                    } else {
-                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                    }
-                  },
+                SizedBox(width: 5),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
+                    child: Image(image: AssetImage('images/dark-note-icon.png')),
+                    onPressed: () {
+                      if (_selectedIds.isNotEmpty) {
+                        _noteController.clear();
+                        _showUpdateNoteDialog(_selectedIds);
+                      } else {
+                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                      }
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(width: 1),
-            ],
+                SizedBox(width: 1),
+              ],
+            ),
           ),
         ),
         floatingActionButton: iconsLegendDialog(
