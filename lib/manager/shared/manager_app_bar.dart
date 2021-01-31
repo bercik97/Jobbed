@@ -13,7 +13,8 @@ AppBar managerAppBar(BuildContext context, User user, String title) {
     backgroundColor: BRIGHTER_DARK,
     elevation: 0.0,
     bottomOpacity: 0.0,
-    title: text15White(title),
+    title: text13White(title),
+    centerTitle: false,
     automaticallyImplyLeading: true,
     leading: IconButton(icon: iconWhite(Icons.arrow_back), onPressed: () => Navigator.pop(context)),
     actions: <Widget>[
