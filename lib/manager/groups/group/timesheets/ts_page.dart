@@ -8,6 +8,7 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
 import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
+import 'package:give_job/manager/groups/group/group_page.dart';
 import 'package:give_job/manager/groups/group/timesheets/add/add_ts_page.dart';
 import 'package:give_job/manager/groups/group/timesheets/delete/delete_ts_page.dart';
 import 'package:give_job/manager/groups/group/timesheets/status/change_ts_status_page.dart';
@@ -83,7 +84,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
+      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading'), () => NavigatorUtil.navigate(context, GroupPage(_model))));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -95,7 +96,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
           context,
           _model.user,
           getTranslated(context, 'timesheets') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
-          () => Navigator.pop(context),
+          () => NavigatorUtil.navigate(context, GroupPage(_model)),
         ),
         body: SingleChildScrollView(
           child: Column(

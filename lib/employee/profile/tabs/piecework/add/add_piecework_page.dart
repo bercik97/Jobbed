@@ -120,7 +120,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading')));
+      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -129,7 +129,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: employeeAppBar(context, _user, getTranslated(context, 'createReport') + ' / ' + _todayDate),
+          appBar: employeeAppBar(context, _user, getTranslated(context, 'createReport') + ' / ' + _todayDate, () => Navigator.pop(context)),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Form(
@@ -216,9 +216,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
               children: <Widget>[iconWhite(Icons.close)],
             ),
             color: Colors.red,
-            onPressed: () => {
-              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => PieceworkPage(_user, _todayDate, _todayWorkdayId)), (e) => false),
-            },
+            onPressed: () => Navigator.pop(context),
           ),
           SizedBox(width: 25),
           MaterialButton(

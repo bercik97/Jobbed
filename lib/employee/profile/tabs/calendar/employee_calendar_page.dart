@@ -86,7 +86,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading')));
+      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -95,7 +95,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: employeeAppBar(context, _user, getTranslated(context, 'calendar')),
+          appBar: employeeAppBar(context, _user, getTranslated(context, 'calendar'), () => Navigator.pop(context)),
           body: Column(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[

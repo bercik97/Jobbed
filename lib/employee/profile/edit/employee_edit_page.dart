@@ -133,7 +133,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading')));
+      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -142,7 +142,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: employeeAppBar(context, _user, getTranslated(context, 'informationAboutYou')),
+          appBar: employeeAppBar(context, _user, getTranslated(context, 'informationAboutYou'), () => Navigator.pop(context)),
           body: Padding(
             padding: EdgeInsets.fromLTRB(25, 0, 25, 25),
             child: Center(

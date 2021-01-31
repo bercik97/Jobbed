@@ -79,7 +79,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: employeeAppBar(context, _user, getTranslated(context, 'workTimeForToday')),
+          appBar: employeeAppBar(context, _user, getTranslated(context, 'workTimeForToday'), () => NavigatorUtil.navigate(context, EmployeeProfilePage(_user))),
           body: SingleChildScrollView(
             child: FutureBuilder(
               future: _fetchData(),

@@ -80,7 +80,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading')));
+      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -89,7 +89,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: employeeAppBar(context, _user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, _timesheet.status)),
+          appBar: employeeAppBar(context, _user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, _timesheet.status), () => Navigator.pop(context)),
           body: RefreshIndicator(
             color: DARK,
             backgroundColor: WHITE,
