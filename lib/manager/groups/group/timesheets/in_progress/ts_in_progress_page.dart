@@ -185,7 +185,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                         children: <Widget>[
                           Ink(
                             width: MediaQuery.of(context).size.width * 0.15,
-                            height: 80,
+                            height: 90,
                             color: BRIGHTER_DARK,
                             child: ListTileTheme(
                               contentPadding: EdgeInsets.only(right: 10),
@@ -213,7 +213,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                               ),
                             ),
                           ),
-                          SizedBox(width: 15),
+                          SizedBox(width: 10),
                           InkWell(
                             onTap: () {
                               TimesheetForEmployeeDto _inProgressTs = new TimesheetForEmployeeDto(
