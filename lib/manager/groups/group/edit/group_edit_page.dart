@@ -50,7 +50,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
             context,
             _model.user,
             getTranslated(context, 'editGroup') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
-            () => Navigator.pop(context),
+            () => NavigatorUtil.navigate(context, GroupPage(_model)),
           ),
           body: SingleChildScrollView(
             child: Center(

@@ -85,7 +85,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.navigate(context, GroupPage(_model))));
     }
     return WillPopScope(
       child: MaterialApp(
