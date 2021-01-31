@@ -1,7 +1,7 @@
 library constant;
 
 // localhost
-const String SERVER_IP = 'http://10.0.2.2:8080/api';
+const String SERVER_IP = 'http://localhost:8080/api';
 
 // production
 //const String SERVER_IP = 'https://givejob-server.herokuapp.com/api';
