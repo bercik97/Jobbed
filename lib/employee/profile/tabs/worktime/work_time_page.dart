@@ -16,7 +16,6 @@ import 'package:give_job/api/work_time/service/worktime_service.dart';
 import 'package:give_job/api/workplace/dto/workplace_id_name_dto.dart';
 import 'package:give_job/api/workplace/service/workplace_service.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
-import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -81,7 +80,6 @@ class _WorkTimePageState extends State<WorkTimePage> {
         home: Scaffold(
           backgroundColor: DARK,
           appBar: employeeAppBar(context, _user, getTranslated(context, 'workTimeForToday')),
-          drawer: employeeSideBar(context, _user),
           body: SingleChildScrollView(
             child: FutureBuilder(
               future: _fetchData(),
@@ -105,7 +103,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
           ),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilPage(_user)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilePage(_user)),
     );
   }
 
@@ -152,7 +150,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                     onPressed: () {
                       final AndroidIntent intent = AndroidIntent(action: 'android.settings.LOCATION_SOURCE_SETTINGS');
                       intent.launch();
-                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => EmployeeProfilPage(_user)), (e) => false);
+                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => EmployeeProfilePage(_user)), (e) => false);
                     },
                   )
                 ],
@@ -160,7 +158,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
               onWillPop: () {
                 final AndroidIntent intent = AndroidIntent(action: 'android.settings.LOCATION_SOURCE_SETTINGS');
                 intent.launch();
-                return Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => EmployeeProfilPage(_user)), (e) => false);
+                return Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => EmployeeProfilePage(_user)), (e) => false);
               },
             );
           },
@@ -189,7 +187,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
           ],
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilPage(_user)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilePage(_user)),
     );
   }
 

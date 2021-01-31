@@ -11,7 +11,6 @@ import 'package:give_job/manager/groups/group/vocations/vocations_ts_page.dart';
 import 'package:give_job/manager/groups/group/warehouse/warehouse_page.dart';
 import 'package:give_job/manager/groups/group/workplace/workplaces_page.dart';
 import 'package:give_job/manager/shared/group_model.dart';
-import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
@@ -51,7 +50,6 @@ class _GroupPageState extends State<GroupPage> {
         home: Scaffold(
           backgroundColor: DARK,
           appBar: managerAppBar(context, _user, getTranslated(context, 'group') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-')),
-          drawer: managerSideBar(context, _user),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(12.0),

@@ -8,7 +8,6 @@ import 'package:give_job/api/workday/dto/workday_for_employee_dto.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/api/workday/util/workday_util.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
-import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -65,7 +64,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading')), employeeSideBar(context, _user));
+      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading')));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -75,7 +74,6 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
         home: Scaffold(
             backgroundColor: DARK,
             appBar: employeeAppBar(context, _user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, _timesheet.status)),
-            drawer: employeeSideBar(context, _user),
             body: RefreshIndicator(
               color: DARK,
               backgroundColor: WHITE,
@@ -198,7 +196,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
               ],
             )),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilPage(_user)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilePage(_user)),
     );
   }
 

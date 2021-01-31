@@ -9,7 +9,7 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/employee/employee_profil_page.dart';
+import 'package:give_job/manager/groups/group/employee/employee_profile_page.dart';
 import 'package:give_job/manager/groups/group/employee/employee_ts_completed_page.dart';
 import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -24,7 +24,6 @@ import 'package:give_job/shared/widget/texts.dart';
 
 import '../../../../../shared/widget/loader.dart';
 import '../../../../shared/manager_app_bar.dart';
-import '../../../../shared/manager_side_bar.dart';
 
 class TsCompletedPage extends StatefulWidget {
   final GroupModel _model;
@@ -76,7 +75,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
     this._model = widget._model;
     this._timesheet = widget._timesheet;
     if (_loading) {
-      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')), managerSideBar(context, _model.user));
+      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -89,7 +88,6 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
           _model.user,
           _timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' - ' + getTranslated(context, STATUS_COMPLETED),
         ),
-        drawer: managerSideBar(context, _model.user),
         body: Column(
           children: <Widget>[
             Container(
@@ -158,7 +156,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                                   child: BouncingWidget(
                                     duration: Duration(milliseconds: 100),
                                     scaleFactor: 1.5,
-                                    onPressed: () => NavigatorUtil.navigate(this.context, EmployeeProfilPage(_model, nationality, currency, employee.id, info, avatarPath)),
+                                    onPressed: () => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, currency, employee.id, info, avatarPath)),
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [

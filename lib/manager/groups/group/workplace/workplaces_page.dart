@@ -28,7 +28,6 @@ import 'package:shimmer/shimmer.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import '../../../../shared/widget/loader.dart';
-import '../../../shared/manager_side_bar.dart';
 
 class WorkplacesPage extends StatefulWidget {
   final GroupModel _model;
@@ -86,7 +85,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -96,7 +95,6 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
         home: Scaffold(
           backgroundColor: DARK,
           appBar: managerAppBar(context, _user, getTranslated(context, 'workplace')),
-          drawer: managerSideBar(context, _user),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(

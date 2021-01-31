@@ -21,7 +21,6 @@ import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
 import '../../../../shared/widget/loader.dart';
-import '../../../shared/manager_side_bar.dart';
 import 'add/add_pricelist_page.dart';
 
 class PricelistPage extends StatefulWidget {
@@ -71,7 +70,7 @@ class _PricelistPageState extends State<PricelistPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -81,7 +80,6 @@ class _PricelistPageState extends State<PricelistPage> {
         home: Scaffold(
           backgroundColor: DARK,
           appBar: managerAppBar(context, _user, getTranslated(context, 'pricelist')),
-          drawer: managerSideBar(context, _user),
           body: Padding(
             padding: const EdgeInsets.only(left: 12, right: 12),
             child: Column(

@@ -216,7 +216,7 @@ class _LoginPageState extends State<LoginPage> {
         user.authHeader = authHeader;
         Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
           if (role == ROLE_EMPLOYEE) {
-            NavigatorUtil.navigate(context, EmployeeProfilPage(user));
+            NavigatorUtil.navigate(context, EmployeeProfilePage(user));
           } else if (role == ROLE_MANAGER) {
             NavigatorUtil.navigate(context, GroupsDashboardPage(user));
           }

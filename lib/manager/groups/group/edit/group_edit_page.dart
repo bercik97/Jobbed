@@ -18,7 +18,6 @@ import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
 import '../../../shared/manager_app_bar.dart';
-import '../../../shared/manager_side_bar.dart';
 import '../group_page.dart';
 
 class GroupEditPage extends StatefulWidget {
@@ -48,7 +47,6 @@ class _GroupEditPageState extends State<GroupEditPage> {
         home: Scaffold(
           backgroundColor: DARK,
           appBar: managerAppBar(context, _model.user, getTranslated(context, 'editGroup') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-')),
-          drawer: managerSideBar(context, _model.user),
           body: SingleChildScrollView(
             child: Center(
               child: Column(

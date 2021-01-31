@@ -20,7 +20,6 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../../../shared/widget/loader.dart';
 import '../../../../../shared/manager_app_bar.dart';
-import '../../../../../shared/manager_side_bar.dart';
 
 class VocationsCalendarPage extends StatefulWidget {
   final GroupModel _model;
@@ -95,7 +94,7 @@ class _VocationsCalendarPageState extends State<VocationsCalendarPage> with Tick
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -104,7 +103,6 @@ class _VocationsCalendarPageState extends State<VocationsCalendarPage> with Tick
       home: Scaffold(
         backgroundColor: DARK,
         appBar: managerAppBar(context, _user, getTranslated(context, 'vocationsCalendar')),
-        drawer: managerSideBar(context, _user),
         body: Column(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[

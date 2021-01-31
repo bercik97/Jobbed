@@ -22,11 +22,10 @@ import 'package:give_job/shared/widget/silver_app_bar_delegate.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
 import '../../../../shared/libraries/constants.dart';
-import '../../../shared/manager_side_bar.dart';
 import 'employee_ts_completed_page.dart';
 import 'employee_ts_in_progress_page.dart';
 
-class EmployeeProfilPage extends StatefulWidget {
+class EmployeeProfilePage extends StatefulWidget {
   final GroupModel _model;
   final String _employeeNationality;
   final String _currency;
@@ -34,13 +33,13 @@ class EmployeeProfilPage extends StatefulWidget {
   final String _employeeInfo;
   final String _avatarPath;
 
-  const EmployeeProfilPage(this._model, this._employeeNationality, this._currency, this._employeeId, this._employeeInfo, this._avatarPath);
+  const EmployeeProfilePage(this._model, this._employeeNationality, this._currency, this._employeeId, this._employeeInfo, this._avatarPath);
 
   @override
-  _EmployeeProfilPageState createState() => _EmployeeProfilPageState();
+  _EmployeeProfilePageState createState() => _EmployeeProfilePageState();
 }
 
-class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
+class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
   GroupModel _model;
   User _user;
 
@@ -69,7 +68,6 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
       theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        drawer: managerSideBar(context, _model.user),
         backgroundColor: DARK,
         body: DefaultTabController(
           length: 3,
@@ -91,6 +89,11 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
                   expandedHeight: 250.0,
                   pinned: true,
                   backgroundColor: BRIGHTER_DARK,
+                  automaticallyImplyLeading: true,
+                  leading: IconButton(
+                    icon: iconWhite(Icons.arrow_back),
+                    onPressed: () => Navigator.pop(this.context),
+                  ),
                   flexibleSpace: FlexibleSpaceBar(
                     background: Column(
                       children: <Widget>[
@@ -153,13 +156,13 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
         if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
           return Center(child: circularProgressIndicator());
         } else {
-          List<TimesheetForEmployeeDto> timesheets = snapshot.data;
-          return timesheets.isNotEmpty
+          List<TimesheetForEmployeeDto> sheets = snapshot.data;
+          return sheets.isNotEmpty
               ? SingleChildScrollView(
                   child: Center(
                     child: Column(
                       children: <Widget>[
-                        for (var timesheet in timesheets)
+                        for (var timesheet in sheets)
                           Card(
                             color: BRIGHTER_DARK,
                             child: InkWell(

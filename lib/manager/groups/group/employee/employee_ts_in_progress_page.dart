@@ -29,7 +29,6 @@ import 'package:number_inc_dec/number_inc_dec.dart';
 import '../../../../shared/libraries/constants.dart';
 import '../../../shared/group_model.dart';
 import '../../../shared/manager_app_bar.dart';
-import '../../../shared/manager_side_bar.dart';
 
 class EmployeeTsInProgressPage extends StatefulWidget {
   final GroupModel _model;
@@ -100,7 +99,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')), managerSideBar(context, _model.user));
+      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -113,7 +112,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
           _user,
           getTranslated(context, 'workdays') + ' - ' + getTranslated(context, STATUS_IN_PROGRESS),
         ),
-        drawer: managerSideBar(context, _user),
         body: RefreshIndicator(
           color: DARK,
           backgroundColor: WHITE,

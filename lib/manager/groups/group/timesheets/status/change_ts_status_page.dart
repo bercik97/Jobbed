@@ -23,7 +23,6 @@ import '../../../../../shared/widget/loader.dart';
 import '../../../../../shared/widget/texts.dart';
 import '../../../../shared/group_model.dart';
 import '../../../../shared/manager_app_bar.dart';
-import '../../../../shared/manager_side_bar.dart';
 import '../ts_page.dart';
 
 class ChangeTsStatusPage extends StatefulWidget {
@@ -88,7 +87,7 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')), managerSideBar(context, _model.user));
+      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -97,7 +96,6 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
       home: Scaffold(
         backgroundColor: DARK,
         appBar: managerAppBar(context, _model.user, getTranslated(context, 'updateSelectedTsStatus')),
-        drawer: managerSideBar(context, _model.user),
         body: RefreshIndicator(
           color: DARK,
           backgroundColor: WHITE,

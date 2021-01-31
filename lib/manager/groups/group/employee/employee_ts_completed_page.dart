@@ -21,7 +21,6 @@ import 'package:give_job/shared/widget/texts.dart';
 import '../../../../shared/libraries/constants.dart';
 import '../../../shared/group_model.dart';
 import '../../../shared/manager_app_bar.dart';
-import '../../../shared/manager_side_bar.dart';
 
 class EmployeeTsCompletedPage extends StatefulWidget {
   final GroupModel _model;
@@ -63,7 +62,6 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
       home: Scaffold(
         backgroundColor: DARK,
         appBar: managerAppBar(context, _user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, STATUS_COMPLETED)),
-        drawer: managerSideBar(context, _user),
         body: Column(
           children: <Widget>[
             Container(

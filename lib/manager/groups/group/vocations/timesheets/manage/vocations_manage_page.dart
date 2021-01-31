@@ -12,8 +12,8 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_without_status_dto.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/manager/groups/group/vocations/vocations_ts_page.dart';
+import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
@@ -29,7 +29,6 @@ import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 
 import '../../../../../../shared/widget/loader.dart';
 import '../../../../../shared/manager_app_bar.dart';
-import '../../../../../shared/manager_side_bar.dart';
 
 class VocationsManagePage extends StatefulWidget {
   final GroupModel _model;
@@ -87,7 +86,7 @@ class _VocationsManagePageState extends State<VocationsManagePage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -97,7 +96,6 @@ class _VocationsManagePageState extends State<VocationsManagePage> {
         home: Scaffold(
           backgroundColor: DARK,
           appBar: managerAppBar(context, _user, getTranslated(context, 'manageEmployeesVocations')),
-          drawer: managerSideBar(context, _user),
           body: RefreshIndicator(
             color: DARK,
             backgroundColor: WHITE,

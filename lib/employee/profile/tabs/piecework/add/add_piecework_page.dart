@@ -11,7 +11,6 @@ import 'package:give_job/api/price_list/service/pricelist_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/employee/employee_profile_page.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
-import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -113,7 +112,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
 
   void _resetAndOpenPage() {
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (BuildContext context) => EmployeeProfilPage(_user)),
+      MaterialPageRoute(builder: (BuildContext context) => EmployeeProfilePage(_user)),
       ModalRoute.withName('/'),
     );
   }
@@ -121,7 +120,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading')), employeeSideBar(context, _user));
+      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading')));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -131,7 +130,6 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
         home: Scaffold(
           backgroundColor: DARK,
           appBar: employeeAppBar(context, _user, getTranslated(context, 'createReport') + ' / ' + _todayDate),
-          drawer: employeeSideBar(context, _user),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Form(

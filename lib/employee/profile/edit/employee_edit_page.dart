@@ -8,7 +8,6 @@ import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/employee/employee_profile_page.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
-import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -134,7 +133,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading')), employeeSideBar(context, _user));
+      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading')));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -144,7 +143,6 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
         home: Scaffold(
           backgroundColor: DARK,
           appBar: employeeAppBar(context, _user, getTranslated(context, 'informationAboutYou')),
-          drawer: employeeSideBar(context, _user),
           body: Padding(
             padding: EdgeInsets.fromLTRB(25, 0, 25, 25),
             child: Center(
@@ -175,7 +173,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
           ),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilPage(_user)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilePage(_user)),
     );
   }
 

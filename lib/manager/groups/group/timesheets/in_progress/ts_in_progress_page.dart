@@ -15,7 +15,7 @@ import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/employee/employee_profil_page.dart';
+import 'package:give_job/manager/groups/group/employee/employee_profile_page.dart';
 import 'package:give_job/manager/groups/group/employee/employee_ts_in_progress_page.dart';
 import 'package:give_job/manager/groups/group/piecework/add_piecework_for_selected_employees_page.dart';
 import 'package:give_job/manager/shared/group_model.dart';
@@ -38,7 +38,6 @@ import 'package:number_inc_dec/number_inc_dec.dart';
 
 import '../../../../../shared/widget/loader.dart';
 import '../../../../shared/manager_app_bar.dart';
-import '../../../../shared/manager_side_bar.dart';
 
 class TsInProgressPage extends StatefulWidget {
   final GroupModel _model;
@@ -98,7 +97,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')), managerSideBar(context, _model.user));
+      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -111,7 +110,6 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
           _model.user,
           _timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' - ' + getTranslated(context, STATUS_IN_PROGRESS),
         ),
-        drawer: managerSideBar(context, _model.user),
         body: RefreshIndicator(
           color: DARK,
           backgroundColor: WHITE,
@@ -275,7 +273,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                 child: BouncingWidget(
                                   duration: Duration(milliseconds: 100),
                                   scaleFactor: 2,
-                                  onPressed: () => NavigatorUtil.navigate(this.context, EmployeeProfilPage(_model, nationality, currency, employee.id, info, avatarPath)),
+                                  onPressed: () => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, currency, employee.id, info, avatarPath)),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [

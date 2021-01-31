@@ -23,7 +23,6 @@ import '../../../../../shared/widget/loader.dart';
 import '../../../../../shared/widget/texts.dart';
 import '../../../../shared/group_model.dart';
 import '../../../../shared/manager_app_bar.dart';
-import '../../../../shared/manager_side_bar.dart';
 import '../ts_page.dart';
 
 class DeleteTsPage extends StatefulWidget {
@@ -81,7 +80,7 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -90,7 +89,6 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
       home: Scaffold(
         backgroundColor: DARK,
         appBar: managerAppBar(context, _user, getTranslated(context, 'deleteSelectedTs')),
-        drawer: managerSideBar(context, _user),
         body: RefreshIndicator(
           color: DARK,
           backgroundColor: WHITE,

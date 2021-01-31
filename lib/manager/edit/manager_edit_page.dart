@@ -10,7 +10,6 @@ import 'package:give_job/api/manager/service/manager_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
-import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
@@ -96,7 +95,7 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -105,7 +104,6 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
       home: Scaffold(
         backgroundColor: DARK,
         appBar: managerAppBar(context, _user, getTranslated(context, 'informationAboutYou')),
-        drawer: managerSideBar(context, _user),
         body: Padding(
           padding: EdgeInsets.fromLTRB(25, 0, 25, 25),
           child: Center(

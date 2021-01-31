@@ -18,8 +18,7 @@ import 'package:give_job/shared/widget/texts.dart';
 
 import '../../../../shared/widget/loader.dart';
 import '../../../shared/manager_app_bar.dart';
-import '../../../shared/manager_side_bar.dart';
-import 'employee_profil_page.dart';
+import 'employee_profile_page.dart';
 
 class EmployeesPage extends StatefulWidget {
   final GroupModel _model;
@@ -61,7 +60,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -70,7 +69,6 @@ class _EmployeesPageState extends State<EmployeesPage> {
       home: Scaffold(
         backgroundColor: DARK,
         appBar: managerAppBar(context, _user, getTranslated(context, 'employees') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-')),
-        drawer: managerSideBar(context, _user),
         body: Column(
           children: <Widget>[
             Container(
@@ -125,7 +123,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
                                   Card(
                                     color: BRIGHTER_DARK,
                                     child: InkWell(
-                                      onTap: () => NavigatorUtil.navigate(this.context, EmployeeProfilPage(_model, nationality, currency, employee.id, info, avatarPath)),
+                                      onTap: () => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, currency, employee.id, info, avatarPath)),
                                       child: Column(
                                         children: <Widget>[
                                           ListTile(

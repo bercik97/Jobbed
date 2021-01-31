@@ -20,7 +20,6 @@ import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 
 import '../../../../shared/widget/loader.dart';
 import '../../../shared/manager_app_bar.dart';
-import '../../../shared/manager_side_bar.dart';
 import '../group_page.dart';
 
 class VocationsTsPage extends StatefulWidget {
@@ -75,7 +74,7 @@ class _VocationsTsPageState extends State<VocationsTsPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -85,7 +84,6 @@ class _VocationsTsPageState extends State<VocationsTsPage> {
         home: Scaffold(
           backgroundColor: DARK,
           appBar: managerAppBar(context, _user, getTranslated(context, 'vocations') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-')),
-          drawer: managerSideBar(context, _user),
           body: RefreshIndicator(
             color: DARK,
             backgroundColor: WHITE,

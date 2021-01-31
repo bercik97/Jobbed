@@ -9,7 +9,6 @@ import 'package:give_job/api/warehouse/dto/warehouse_dashboard_dto.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
-import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
@@ -71,7 +70,6 @@ class _AddItemsPageState extends State<AddItemsPage> {
           home: Scaffold(
             backgroundColor: DARK,
             appBar: managerAppBar(context, _user, getTranslated(context, 'createItem')),
-            drawer: managerSideBar(context, _user),
             body: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Form(

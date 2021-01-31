@@ -23,7 +23,6 @@ import 'package:give_job/shared/widget/texts.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../shared/widget/loader.dart';
-import '../../../shared/manager_side_bar.dart';
 import 'add/add_warehouse_page.dart';
 import 'details/warehouse_details_page.dart';
 
@@ -74,7 +73,7 @@ class _WarehousePageState extends State<WarehousePage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -84,7 +83,6 @@ class _WarehousePageState extends State<WarehousePage> {
         home: Scaffold(
           backgroundColor: DARK,
           appBar: managerAppBar(context, _user, getTranslated(context, 'warehouses')),
-          drawer: managerSideBar(context, _user),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(

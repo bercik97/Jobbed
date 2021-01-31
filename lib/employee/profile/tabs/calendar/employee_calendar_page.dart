@@ -6,7 +6,6 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/api/workday/util/workday_util.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
-import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -87,7 +86,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading')), employeeSideBar(context, _user));
+      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading')));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -97,7 +96,6 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
         home: Scaffold(
           backgroundColor: DARK,
           appBar: employeeAppBar(context, _user, getTranslated(context, 'calendar')),
-          drawer: employeeSideBar(context, _user),
           body: Column(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
@@ -118,7 +116,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
           ),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilPage(_user)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilePage(_user)),
     );
   }
 

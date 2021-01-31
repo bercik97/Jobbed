@@ -23,7 +23,6 @@ import '../../../../../shared/widget/loader.dart';
 import '../../../../../shared/widget/texts.dart';
 import '../../../../shared/group_model.dart';
 import '../../../../shared/manager_app_bar.dart';
-import '../../../../shared/manager_side_bar.dart';
 import '../ts_page.dart';
 
 class AddTsPage extends StatefulWidget {
@@ -78,7 +77,7 @@ class _AddTsPageState extends State<AddTsPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
     }
     if (_employees.isEmpty) {
       return MaterialApp(
@@ -88,7 +87,6 @@ class _AddTsPageState extends State<AddTsPage> {
         home: Scaffold(
           backgroundColor: DARK,
           appBar: managerAppBar(context, _user, getTranslated(context, 'addNewTs')),
-          drawer: managerSideBar(context, _user),
           body: WillPopScope(
             onWillPop: () => NavigatorUtil.onWillPopNavigate(context, ManagerTsPage(_model)),
             child: AlertDialog(
@@ -114,7 +112,6 @@ class _AddTsPageState extends State<AddTsPage> {
         home: Scaffold(
           backgroundColor: DARK,
           appBar: managerAppBar(context, _user, getTranslated(context, 'addNewTs')),
-          drawer: managerSideBar(context, _user),
           body: RefreshIndicator(
             color: DARK,
             backgroundColor: WHITE,

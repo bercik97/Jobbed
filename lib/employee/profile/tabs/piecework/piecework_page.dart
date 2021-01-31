@@ -6,7 +6,6 @@ import 'package:give_job/api/piecework/service/piecework_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/workday/util/workday_util.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
-import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -60,7 +59,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading')), employeeSideBar(context, _user));
+      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading')));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -70,7 +69,6 @@ class _PieceworkPageState extends State<PieceworkPage> {
         home: Scaffold(
           backgroundColor: DARK,
           appBar: employeeAppBar(context, _user, getTranslated(context, 'piecework') + ' / ' + _todayDate),
-          drawer: employeeSideBar(context, _user),
           body: Padding(
             padding: EdgeInsets.all(12),
             child: _pieceworks.isEmpty ? _handleEmptyData(context) : _handleData(context),
@@ -90,7 +88,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
           ),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilPage(_user)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilePage(_user)),
     );
   }
 

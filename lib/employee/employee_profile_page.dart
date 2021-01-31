@@ -14,7 +14,6 @@ import 'package:give_job/employee/profile/tabs/employee_panel.dart';
 import 'package:give_job/employee/profile/tabs/employee_timesheets.tab.dart';
 import 'package:give_job/employee/profile/tabs/employee_today.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
-import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -33,16 +32,16 @@ import 'package:number_inc_dec/number_inc_dec.dart';
 
 import '../shared/widget/loader.dart';
 
-class EmployeeProfilPage extends StatefulWidget {
+class EmployeeProfilePage extends StatefulWidget {
   final User _user;
 
-  EmployeeProfilPage(this._user);
+  EmployeeProfilePage(this._user);
 
   @override
-  _EmployeeProfilPageState createState() => _EmployeeProfilPageState();
+  _EmployeeProfilePageState createState() => _EmployeeProfilePageState();
 }
 
-class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
+class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
   EmployeeService _employeeService;
   WorkdayService _workdayService;
 
@@ -70,7 +69,24 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading')), employeeSideBar(context, _user));
+      return loader(
+        AppBar(
+          iconTheme: IconThemeData(color: WHITE),
+          backgroundColor: BRIGHTER_DARK,
+          elevation: 0.0,
+          bottomOpacity: 0.0,
+          title: text15White(getTranslated(context, 'loading')),
+          actions: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(right: 15.0),
+              child: IconButton(
+                icon: iconWhite(Icons.settings),
+                onPressed: () => NavigatorUtil.navigate(context, SettingsPage(_user)),
+              ),
+            ),
+          ],
+        ),
+      );
     }
     this._calculateExpandedHeight();
     return WillPopScope(
@@ -79,7 +95,6 @@ class _EmployeeProfilPageState extends State<EmployeeProfilPage> {
         theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          drawer: employeeSideBar(context, _user),
           backgroundColor: DARK,
           body: DefaultTabController(
             length: 3,

@@ -6,12 +6,10 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/user/service/user_service.dart';
 import 'package:give_job/employee/profile/edit/employee_edit_page.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
-import 'package:give_job/employee/shared/employee_side_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/internationalization/model/language.dart';
 import 'package:give_job/manager/edit/manager_edit_page.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
-import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
@@ -22,6 +20,7 @@ import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/util/url_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
+import 'package:open_appstore/open_appstore.dart';
 import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 
 import '../../main.dart';
@@ -82,12 +81,24 @@ class _SettingsPageState extends State<SettingsPage> {
       home: Scaffold(
         backgroundColor: DARK,
         appBar: widget._user.role == ROLE_EMPLOYEE ? employeeAppBar(context, widget._user, getTranslated(context, 'settings')) : managerAppBar(context, widget._user, getTranslated(context, 'settings')),
-        drawer: widget._user.role == ROLE_EMPLOYEE ? employeeSideBar(context, widget._user) : managerSideBar(context, widget._user),
         body: ListView(
           children: <Widget>[
             _titleContainer(getTranslated(context, 'account')),
             Container(
-                margin: EdgeInsets.only(left: 15),
+              margin: EdgeInsets.only(left: 15),
+              child: InkWell(
+                child: _subtitleInkWellContainer(getTranslated(context, 'aboutMe')),
+                onTap: () {
+                  if (widget._user.role == ROLE_EMPLOYEE) {
+                    NavigatorUtil.navigate(context, EmployeeEditPage(int.parse(_user.id), _user));
+                  } else {
+                    NavigatorUtil.navigate(context, ManagerEditPage(_user));
+                  }
+                },
+              ),
+            ),
+            Container(
+                margin: EdgeInsets.only(left: 15, top: 10),
                 child: InkWell(
                     onTap: () {
                       showGeneralDialog(
@@ -186,14 +197,8 @@ class _SettingsPageState extends State<SettingsPage> {
             Container(
               margin: EdgeInsets.only(left: 15, top: 10),
               child: InkWell(
-                child: _subtitleInkWellContainer(getTranslated(context, 'aboutMe')),
-                onTap: () {
-                  if (widget._user.role == ROLE_EMPLOYEE) {
-                    NavigatorUtil.navigate(context, EmployeeEditPage(int.parse(_user.id), _user));
-                  } else {
-                    NavigatorUtil.navigate(context, ManagerEditPage(_user));
-                  }
-                },
+                child: _subtitleInkWellContainer(getTranslated(context, 'logout')),
+                onTap: () => Logout.logout(context),
               ),
             ),
             _titleContainer(getTranslated(context, 'other')),
@@ -247,6 +252,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       );
                     },
                     child: _subtitleInkWellContainer(getTranslated(context, 'privacyPolicy')))),
+            Container(margin: EdgeInsets.only(left: 15, top: 10), child: InkWell(onTap: () => OpenAppstore.launch(androidAppId: ANDROID_APP_ID, iOSAppId: IOS_APP_ID), child: _subtitleInkWellContainer(getTranslated(context, 'rate')))),
             Container(margin: EdgeInsets.only(left: 15, top: 10), child: InkWell(onTap: () => bugReportDialog(context), child: _subtitleInkWellContainer(getTranslated(context, 'bugReport')))),
             Container(margin: EdgeInsets.only(left: 25), alignment: Alignment.centerLeft, height: 30, child: text13White(getTranslated(context, 'version') + ': 1.0.25+26')),
             _titleContainer(getTranslated(context, 'graphics')),

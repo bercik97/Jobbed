@@ -23,7 +23,6 @@ import 'package:give_job/shared/widget/texts.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../shared/widget/loader.dart';
-import '../../../shared/manager_side_bar.dart';
 import 'details/itemplaces_details_page.dart';
 
 class ItemplacesPage extends StatefulWidget {
@@ -77,7 +76,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')), managerSideBar(context, _user));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -87,7 +86,6 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
         home: Scaffold(
           backgroundColor: DARK,
           appBar: managerAppBar(context, _user, getTranslated(context, 'itemPlaces')),
-          drawer: managerSideBar(context, _user),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(

@@ -142,7 +142,7 @@ class _MyAppState extends State<MyApp> {
               User user = new User().create(data);
               String role = user.role;
               if (role == ROLE_EMPLOYEE) {
-                pageToReturn = EmployeeProfilPage(user);
+                pageToReturn = EmployeeProfilePage(user);
               } else if (role == ROLE_MANAGER) {
                 pageToReturn = GroupsDashboardPage(user);
               } else {

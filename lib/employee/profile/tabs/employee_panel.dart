@@ -37,7 +37,7 @@ Container employeePanel(BuildContext context, User user, EmployeePageDto employe
                           ToastService.showErrorToast(getTranslated(context, 'noPermissionForWorkTimeByLocation'));
                           return;
                         }
-                        NavigatorUtil.navigateReplacement(context, WorkTimePage(user, employee.todayWorkdayId));
+                        NavigatorUtil.navigate(context, WorkTimePage(user, employee.todayWorkdayId));
                       },
                       child: _buildScrollableContainer(context, 'images/employee-work-icon.png', 'workTimeGPS', 'startFinishWork'),
                     ),
@@ -58,7 +58,7 @@ Container employeePanel(BuildContext context, User user, EmployeePageDto employe
                           ToastService.showErrorToast(getTranslated(context, 'noPermissionForPiecework'));
                           return;
                         }
-                        NavigatorUtil.navigateReplacement(context, PieceworkPage(user, employee.todayDate, employee.todayWorkdayId));
+                        NavigatorUtil.navigate(context, PieceworkPage(user, employee.todayDate, employee.todayWorkdayId));
                       },
                       child: _buildScrollableContainer(context, 'images/green-piecework-icon.png', 'piecework', 'addNoteAboutPiecework'),
                     ),
@@ -73,7 +73,7 @@ Container employeePanel(BuildContext context, User user, EmployeePageDto employe
                   child: Material(
                     color: BRIGHTER_DARK,
                     child: InkWell(
-                      onTap: () async => NavigatorUtil.navigateReplacement(context, EmployeeCalendarPage(user, employee.id)),
+                      onTap: () async => NavigatorUtil.navigate(context, EmployeeCalendarPage(user, employee.id)),
                       child: _buildScrollableContainer(context, 'images/calendar-icon.png', 'calendar', 'checkYourCalendar'),
                     ),
                   ),

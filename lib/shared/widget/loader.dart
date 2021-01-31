@@ -4,7 +4,7 @@ import '../libraries/colors.dart';
 import '../libraries/constants.dart';
 import 'circular_progress_indicator.dart';
 
-MaterialApp loader(AppBar appBar, Drawer drawer) {
+MaterialApp loader(AppBar appBar) {
   return MaterialApp(
     debugShowCheckedModeBanner: false,
     title: APP_NAME,
@@ -12,7 +12,6 @@ MaterialApp loader(AppBar appBar, Drawer drawer) {
     home: Scaffold(
       backgroundColor: DARK,
       appBar: appBar,
-      drawer: drawer,
       body: Center(child: circularProgressIndicator()),
     ),
   );

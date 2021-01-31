@@ -10,10 +10,11 @@ import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/util/month_util.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
-Widget employeeTimesheetsTab(BuildContext context, bool canFillHours, User user, List timesheets) {
-  if (timesheets.isEmpty) {
+Widget employeeTimesheetsTab(BuildContext context, bool canFillHours, User user, List sheets) {
+  if (sheets.isEmpty) {
     return _handleEmptyData(context);
   }
   return Container(
@@ -22,7 +23,7 @@ Widget employeeTimesheetsTab(BuildContext context, bool canFillHours, User user,
         padding: const EdgeInsets.all(12.0),
         child: Column(
           children: <Widget>[
-            for (var timesheet in timesheets)
+            for (var timesheet in sheets)
               Card(
                 color: BRIGHTER_DARK,
                 child: Column(
@@ -30,18 +31,11 @@ Widget employeeTimesheetsTab(BuildContext context, bool canFillHours, User user,
                   children: <Widget>[
                     InkWell(
                       onTap: () async {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              if (timesheet.status == STATUS_IN_PROGRESS) {
-                                return EmployeeTsInProgressPage(canFillHours, user, timesheet);
-                              } else {
-                                return EmployeeTsCompletedPage(user, timesheet);
-                              }
-                            },
-                          ),
-                        );
+                        if (timesheet.status == STATUS_IN_PROGRESS) {
+                          NavigatorUtil.navigate(context, EmployeeTsInProgressPage(canFillHours, user, timesheet));
+                        } else {
+                          NavigatorUtil.navigate(context, EmployeeTsCompletedPage(user, timesheet));
+                        }
                       },
                       child: ListTile(
                         leading: Padding(

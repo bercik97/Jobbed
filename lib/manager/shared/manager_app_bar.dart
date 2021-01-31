@@ -14,6 +14,8 @@ AppBar managerAppBar(BuildContext context, User user, String title) {
     elevation: 0.0,
     bottomOpacity: 0.0,
     title: text15White(title),
+    automaticallyImplyLeading: true,
+    leading: IconButton(icon: iconWhite(Icons.arrow_back), onPressed: () => Navigator.pop(context)),
     actions: <Widget>[
       Padding(
         padding: EdgeInsets.only(right: 15.0),

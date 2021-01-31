@@ -10,10 +10,9 @@ import 'package:give_job/api/employee/dto/employee_settings_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/employee/employee_profil_page.dart';
+import 'package:give_job/manager/groups/group/employee/employee_profile_page.dart';
 import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
-import 'package:give_job/manager/shared/manager_side_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
@@ -83,7 +82,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')), managerSideBar(context, _model.user));
+      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -97,7 +96,6 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
             _model.user,
             getTranslated(context, 'employeesSettings') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
           ),
-          drawer: managerSideBar(context, _model.user),
           body: RefreshIndicator(
             color: DARK,
             backgroundColor: WHITE,
@@ -184,7 +182,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                       child: BouncingWidget(
                                         duration: Duration(milliseconds: 100),
                                         scaleFactor: 2,
-                                        onPressed: () => NavigatorUtil.navigate(this.context, EmployeeProfilPage(_model, nationality, currency, employee.employeeId, info, avatarPath)),
+                                        onPressed: () async => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, currency, employee.employeeId, info, avatarPath)),
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
