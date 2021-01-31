@@ -1,7 +1,7 @@
 name: give_job
 description: GiveJob
 
-version: 1.0.25+26
+version: 1.0.26+27
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
