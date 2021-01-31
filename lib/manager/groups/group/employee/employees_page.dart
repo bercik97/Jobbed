@@ -18,6 +18,7 @@ import 'package:give_job/shared/widget/texts.dart';
 
 import '../../../../shared/widget/loader.dart';
 import '../../../shared/manager_app_bar.dart';
+import '../group_page.dart';
 import 'employee_profile_page.dart';
 
 class EmployeesPage extends StatefulWidget {
@@ -60,7 +61,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.navigate(context, GroupPage(_model))));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -68,7 +69,12 @@ class _EmployeesPageState extends State<EmployeesPage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBar(context, _user, getTranslated(context, 'employees') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-')),
+        appBar: managerAppBar(
+          context,
+          _user,
+          getTranslated(context, 'employees') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
+          () => NavigatorUtil.navigate(context, GroupPage(_model)),
+        ),
         body: Column(
           children: <Widget>[
             Container(

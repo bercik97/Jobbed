@@ -99,7 +99,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')));
+      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -111,6 +111,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
           context,
           _user,
           getTranslated(context, 'workdays') + ' - ' + getTranslated(context, STATUS_IN_PROGRESS),
+          () => Navigator.pop(context),
         ),
         body: RefreshIndicator(
           color: DARK,

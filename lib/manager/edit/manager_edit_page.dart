@@ -95,7 +95,7 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -103,7 +103,7 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBar(context, _user, getTranslated(context, 'informationAboutYou')),
+        appBar: managerAppBar(context, _user, getTranslated(context, 'informationAboutYou'), () => Navigator.pop(context)),
         body: Padding(
           padding: EdgeInsets.fromLTRB(25, 0, 25, 25),
           child: Center(

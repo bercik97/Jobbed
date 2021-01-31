@@ -49,7 +49,7 @@ class _GroupPageState extends State<GroupPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'group') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-')),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'group') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'), () => Navigator.pop(context)),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(12.0),

@@ -77,7 +77,7 @@ class _AddTsPageState extends State<AddTsPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
     }
     if (_employees.isEmpty) {
       return MaterialApp(
@@ -86,7 +86,7 @@ class _AddTsPageState extends State<AddTsPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'addNewTs')),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'addNewTs'), () => NavigatorUtil.navigate(this.context, ManagerTsPage(_model))),
           body: WillPopScope(
             onWillPop: () => NavigatorUtil.onWillPopNavigate(context, ManagerTsPage(_model)),
             child: AlertDialog(
@@ -111,7 +111,7 @@ class _AddTsPageState extends State<AddTsPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'addNewTs')),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'addNewTs'), () => Navigator.pop(context)),
           body: RefreshIndicator(
             color: DARK,
             backgroundColor: WHITE,

@@ -66,7 +66,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => Logout.logout(context)));
     }
     return WillPopScope(
       child: MaterialApp(

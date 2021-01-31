@@ -94,7 +94,7 @@ class _VocationsCalendarPageState extends State<VocationsCalendarPage> with Tick
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -102,7 +102,7 @@ class _VocationsCalendarPageState extends State<VocationsCalendarPage> with Tick
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBar(context, _user, getTranslated(context, 'vocationsCalendar')),
+        appBar: managerAppBar(context, _user, getTranslated(context, 'vocationsCalendar'), () => Navigator.pop(context)),
         body: Column(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[

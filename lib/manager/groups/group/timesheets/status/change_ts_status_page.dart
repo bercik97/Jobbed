@@ -87,7 +87,7 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')));
+      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -95,7 +95,7 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBar(context, _model.user, getTranslated(context, 'updateSelectedTsStatus')),
+        appBar: managerAppBar(context, _model.user, getTranslated(context, 'updateSelectedTsStatus'), () => Navigator.pop(context)),
         body: RefreshIndicator(
           color: DARK,
           backgroundColor: WHITE,

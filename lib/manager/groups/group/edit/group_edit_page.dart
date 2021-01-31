@@ -46,7 +46,12 @@ class _GroupEditPageState extends State<GroupEditPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _model.user, getTranslated(context, 'editGroup') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-')),
+          appBar: managerAppBar(
+            context,
+            _model.user,
+            getTranslated(context, 'editGroup') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
+            () => Navigator.pop(context),
+          ),
           body: SingleChildScrollView(
             child: Center(
               child: Column(

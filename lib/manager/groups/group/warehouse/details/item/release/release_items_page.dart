@@ -43,7 +43,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
 
   List<ItemplaceDashboardDto> _itemPlaces;
   List<int> _itemPlacesRadioValues = new List();
-  int _choosenIndex = -1;
+  int _chosenIndex = -1;
 
   ItemplaceService _itemPlaceService;
 
@@ -79,7 +79,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -88,7 +88,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'releaseItems')),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'releaseItems'), () => Navigator.pop(context)),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
@@ -180,7 +180,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
               children: <Widget>[iconWhite(Icons.close)],
             ),
             color: Colors.red,
-            onPressed: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WarehouseDetailsPage(_model, _warehouseDto)), (e) => false),
+            onPressed: () => Navigator.pop(context),
           ),
           SizedBox(width: 25),
           MaterialButton(
@@ -236,11 +236,11 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
                               groupValue: _itemPlacesRadioValues[i],
                               onChanged: (newValue) => setState(
                                 () {
-                                  if (_choosenIndex != -1) {
-                                    _itemPlacesRadioValues[_choosenIndex] = -1;
+                                  if (_chosenIndex != -1) {
+                                    _itemPlacesRadioValues[_chosenIndex] = -1;
                                   }
                                   _itemPlacesRadioValues[i] = newValue;
-                                  _choosenIndex = i;
+                                  _chosenIndex = i;
                                   _isAddBtnDisabled = false;
                                 },
                               ),
@@ -262,10 +262,10 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
                             ),
                             color: Colors.red,
                             onPressed: () {
-                              if (_choosenIndex != -1) {
-                                _itemPlacesRadioValues[_choosenIndex] = -1;
+                              if (_chosenIndex != -1) {
+                                _itemPlacesRadioValues[_chosenIndex] = -1;
                               }
-                              _choosenIndex = -1;
+                              _chosenIndex = -1;
                               _isAddBtnDisabled = true;
                               Navigator.pop(context);
                             },
@@ -314,13 +314,13 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
     }
     AssignItemsDto dto = new AssignItemsDto(
       warehouseId: _warehouseDto.id,
-      itemPlaceId: _itemPlaces[_choosenIndex].id,
+      itemPlaceId: _itemPlaces[_chosenIndex].id,
       itemsWithQuantities: itemsWithQuantities,
     );
     _itemPlaceService.assignNewItems(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyReleaseItemsToSelectedItemplace'));
-        NavigatorUtil.navigate(context, WarehouseDetailsPage(_model, _warehouseDto));
+        NavigatorUtil.navigateReplacement(context, WarehouseDetailsPage(_model, _warehouseDto));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

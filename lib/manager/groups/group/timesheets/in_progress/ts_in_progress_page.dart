@@ -97,7 +97,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')));
+      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -109,6 +109,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
           context,
           _model.user,
           _timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' - ' + getTranslated(context, STATUS_IN_PROGRESS),
+          () => Navigator.pop(context),
         ),
         body: RefreshIndicator(
           color: DARK,

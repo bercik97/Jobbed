@@ -61,7 +61,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBar(context, _user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, STATUS_COMPLETED)),
+        appBar: managerAppBar(context, _user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, STATUS_COMPLETED), () => Navigator.pop(context)),
         body: Column(
           children: <Widget>[
             Container(

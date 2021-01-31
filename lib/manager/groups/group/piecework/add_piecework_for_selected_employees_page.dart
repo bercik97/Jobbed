@@ -134,7 +134,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -142,7 +142,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBar(context, _user, _dateFrom + ' - ' + _dateTo),
+        appBar: managerAppBar(context, _user, _dateFrom + ' - ' + _dateTo, () => Navigator.pop(context)),
         body: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(

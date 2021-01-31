@@ -65,7 +65,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'returnItems')),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'returnItems'), () => Navigator.pop(context)),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(

@@ -7,7 +7,7 @@ import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
-AppBar managerAppBar(BuildContext context, User user, String title) {
+AppBar managerAppBar(BuildContext context, User user, String title, Function() fun) {
   return AppBar(
     iconTheme: IconThemeData(color: WHITE),
     backgroundColor: BRIGHTER_DARK,
@@ -16,7 +16,7 @@ AppBar managerAppBar(BuildContext context, User user, String title) {
     title: text13White(title),
     centerTitle: false,
     automaticallyImplyLeading: true,
-    leading: IconButton(icon: iconWhite(Icons.arrow_back), onPressed: () => Navigator.pop(context)),
+    leading: IconButton(icon: iconWhite(Icons.arrow_back), onPressed: () => fun()),
     actions: <Widget>[
       Padding(
         padding: EdgeInsets.only(right: 15.0),

@@ -75,7 +75,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
     this._model = widget._model;
     this._timesheet = widget._timesheet;
     if (_loading) {
-      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')));
+      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -87,6 +87,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
           context,
           _model.user,
           _timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' - ' + getTranslated(context, STATUS_COMPLETED),
+          () => Navigator.pop(context),
         ),
         body: Column(
           children: <Widget>[

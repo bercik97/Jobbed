@@ -86,7 +86,7 @@ class _VocationsManagePageState extends State<VocationsManagePage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -95,7 +95,7 @@ class _VocationsManagePageState extends State<VocationsManagePage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'manageEmployeesVocations')),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'manageEmployeesVocations'), () => NavigatorUtil.navigate(context, VocationsTsPage(_model))),
           body: RefreshIndicator(
             color: DARK,
             backgroundColor: WHITE,

@@ -83,7 +83,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')));
+      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -95,6 +95,7 @@ class _ManagerTsPageState extends State<ManagerTsPage> {
           context,
           _model.user,
           getTranslated(context, 'timesheets') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
+          () => Navigator.pop(context),
         ),
         body: SingleChildScrollView(
           child: Column(

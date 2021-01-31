@@ -74,7 +74,7 @@ class _VocationsTsPageState extends State<VocationsTsPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -83,7 +83,7 @@ class _VocationsTsPageState extends State<VocationsTsPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'vocations') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-')),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'vocations') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'), () => NavigatorUtil.navigate(context, GroupPage(_model))),
           body: RefreshIndicator(
             color: DARK,
             backgroundColor: WHITE,

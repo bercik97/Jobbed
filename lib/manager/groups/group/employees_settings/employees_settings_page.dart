@@ -82,7 +82,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading')));
+      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading'), () => NavigatorUtil.navigate(context, GroupPage(_model))));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -95,6 +95,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
             context,
             _model.user,
             getTranslated(context, 'employeesSettings') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
+            () => NavigatorUtil.navigate(context, GroupPage(_model)),
           ),
           body: RefreshIndicator(
             color: DARK,

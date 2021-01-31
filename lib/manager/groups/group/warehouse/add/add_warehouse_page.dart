@@ -60,125 +60,123 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        child: MaterialApp(
-          title: APP_NAME,
-          theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
-          debugShowCheckedModeBanner: false,
-          home: Scaffold(
-            backgroundColor: DARK,
-            appBar: managerAppBar(context, _user, getTranslated(context, 'createWarehouse')),
-            body: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Form(
-                autovalidate: true,
-                key: formKey,
-                child: Column(
+    return MaterialApp(
+      title: APP_NAME,
+      theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        backgroundColor: DARK,
+        appBar: managerAppBar(context, _user, getTranslated(context, 'createWarehouse'), () => Navigator.pop(context)),
+        body: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Form(
+            autovalidate: true,
+            key: formKey,
+            child: Column(
+              children: [
+                SizedBox(height: 10),
+                _buildField(
+                  _warehouseNameController,
+                  getTranslated(context, 'textSomeWarehouseName'),
+                  getTranslated(context, 'warehouseName'),
+                  26,
+                  1,
+                  true,
+                  getTranslated(context, 'warehouseNameIsRequired'),
+                ),
+                SizedBox(height: 15),
+                _buildField(
+                  _warehouseDescriptionController,
+                  getTranslated(context, 'textSomeWarehouseDescription'),
+                  getTranslated(context, 'warehouseDescription'),
+                  100,
+                  2,
+                  true,
+                  getTranslated(context, 'warehouseDescriptionIsRequired'),
+                ),
+                SizedBox(height: 15),
+                Row(
                   children: [
-                    SizedBox(height: 10),
-                    _buildField(
-                      _warehouseNameController,
-                      getTranslated(context, 'textSomeWarehouseName'),
-                      getTranslated(context, 'warehouseName'),
-                      26,
-                      1,
-                      true,
-                      getTranslated(context, 'warehouseNameIsRequired'),
+                    Flexible(
+                      child: _buildField(
+                        _itemNameController,
+                        getTranslated(context, 'textSomeItemName'),
+                        getTranslated(context, 'itemName'),
+                        26,
+                        1,
+                        false,
+                        null,
+                      ),
                     ),
-                    SizedBox(height: 15),
-                    _buildField(
-                      _warehouseDescriptionController,
-                      getTranslated(context, 'textSomeWarehouseDescription'),
-                      getTranslated(context, 'warehouseDescription'),
-                      100,
-                      2,
-                      true,
-                      getTranslated(context, 'warehouseDescriptionIsRequired'),
-                    ),
-                    SizedBox(height: 15),
-                    Row(
-                      children: [
-                        Flexible(
-                          child: _buildField(
-                            _itemNameController,
-                            getTranslated(context, 'textSomeItemName'),
-                            getTranslated(context, 'itemName'),
-                            26,
-                            1,
-                            false,
-                            null,
-                          ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Container(
+                        width: 100,
+                        child: NumberInputWithIncrementDecrement(
+                          controller: _quantityController,
+                          min: 0,
+                          max: 999,
+                          onIncrement: (value) {
+                            if (value > 999) {
+                              setState(() => value = 999);
+                            }
+                          },
+                          onSubmitted: (value) {
+                            if (value >= 999) {
+                              setState(() => _quantityController.text = 999.toString());
+                            }
+                          },
+                          style: TextStyle(color: GREEN),
+                          widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8),
-                          child: Container(
-                            width: 100,
-                            child: NumberInputWithIncrementDecrement(
-                              controller: _quantityController,
-                              min: 0,
-                              max: 999,
-                              onIncrement: (value) {
-                                if (value > 999) {
-                                  setState(() => value = 999);
-                                }
-                              },
-                              onSubmitted: (value) {
-                                if (value >= 999) {
-                                  setState(() => _quantityController.text = 999.toString());
-                                }
-                              },
-                              style: TextStyle(color: GREEN),
-                              widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                    SizedBox(height: 10),
-                    Buttons.standardButton(
-                      minWidth: double.infinity,
-                      color: GREEN,
-                      title: getTranslated(context, 'addItem'),
-                      fun: () {
-                        String itemName = _itemNameController.text;
-                        if (itemName == null || itemName.isEmpty) {
-                          ToastService.showErrorToast(getTranslated(context, 'itemNameIsRequired'));
-                          return;
-                        }
-                        if (_itemNamesWithQuantities.containsKey(itemName)) {
-                          ToastService.showErrorToast(getTranslated(context, 'givenItemNameAlreadyExists'));
-                          return;
-                        }
-                        int quantity;
-                        try {
-                          quantity = int.parse(_quantityController.text);
-                        } catch (FormatException) {
-                          ToastService.showErrorToast(getTranslated(context, 'itemQuantityIsRequired'));
-                          return;
-                        }
-                        String invalidMessage = ValidatorService.validateItemQuantity(quantity, context);
-                        if (invalidMessage != null) {
-                          ToastService.showErrorToast(invalidMessage);
-                          return;
-                        }
-                        setState(() {
-                          _itemNamesWithQuantities[itemName] = quantity;
-                          _itemNameController.clear();
-                          _quantityController.text = "0";
-                        });
-                        FocusScope.of(context).unfocus();
-                        ToastService.showSuccessToast(getTranslated(context, 'addedNewItem'));
-                      },
-                    ),
-                    _buildAddItems(),
                   ],
                 ),
-              ),
+                SizedBox(height: 10),
+                Buttons.standardButton(
+                  minWidth: double.infinity,
+                  color: GREEN,
+                  title: getTranslated(context, 'addItem'),
+                  fun: () {
+                    String itemName = _itemNameController.text;
+                    if (itemName == null || itemName.isEmpty) {
+                      ToastService.showErrorToast(getTranslated(context, 'itemNameIsRequired'));
+                      return;
+                    }
+                    if (_itemNamesWithQuantities.containsKey(itemName)) {
+                      ToastService.showErrorToast(getTranslated(context, 'givenItemNameAlreadyExists'));
+                      return;
+                    }
+                    int quantity;
+                    try {
+                      quantity = int.parse(_quantityController.text);
+                    } catch (FormatException) {
+                      ToastService.showErrorToast(getTranslated(context, 'itemQuantityIsRequired'));
+                      return;
+                    }
+                    String invalidMessage = ValidatorService.validateItemQuantity(quantity, context);
+                    if (invalidMessage != null) {
+                      ToastService.showErrorToast(invalidMessage);
+                      return;
+                    }
+                    setState(() {
+                      _itemNamesWithQuantities[itemName] = quantity;
+                      _itemNameController.clear();
+                      _quantityController.text = "0";
+                    });
+                    FocusScope.of(context).unfocus();
+                    ToastService.showSuccessToast(getTranslated(context, 'addedNewItem'));
+                  },
+                ),
+                _buildAddItems(),
+              ],
             ),
-            bottomNavigationBar: _buildBottomNavigationBar(),
           ),
         ),
-        onWillPop: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WarehousePage(_model)), (e) => false));
+        bottomNavigationBar: _buildBottomNavigationBar(),
+      ),
+    );
   }
 
   bool _isValid() {
@@ -270,7 +268,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
               children: <Widget>[iconWhite(Icons.close)],
             ),
             color: Colors.red,
-            onPressed: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WarehousePage(_model)), (e) => false),
+            onPressed: () => Navigator.pop(context),
           ),
           SizedBox(width: 25),
           MaterialButton(
@@ -306,7 +304,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
     _warehouseService.create(dto).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewWarehouse'));
-        NavigatorUtil.navigate(this.context, WarehousePage(_model));
+        NavigatorUtil.navigateReplacement(this.context, WarehousePage(_model));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

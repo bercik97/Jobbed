@@ -70,7 +70,7 @@ class _PricelistPageState extends State<PricelistPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.navigate(context, GroupPage(_model))));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -79,7 +79,7 @@ class _PricelistPageState extends State<PricelistPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'pricelist')),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'pricelist'), () => NavigatorUtil.navigate(context, GroupPage(_model))),
           body: Padding(
             padding: const EdgeInsets.only(left: 12, right: 12),
             child: Column(
@@ -274,10 +274,8 @@ class _PricelistPageState extends State<PricelistPage> {
                 showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                 _pricelistService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (BuildContext context) => PricelistPage(_model)),
-                      ModalRoute.withName('/'),
-                    );
+                    setState(() => _pricelists.removeWhere((element) => ids.contains(element.id)));
+                    setState(() => _isDeleteButtonTapped = false);
                     ToastService.showSuccessToast(getTranslated(this.context, 'selectedPricelistsRemoved'));
                   });
                 }).catchError((onError) {

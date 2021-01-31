@@ -125,7 +125,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -134,7 +134,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'pieceworkForSelectedWorkdays')),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'pieceworkForSelectedWorkdays'), () => Navigator.pop(context)),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Form(

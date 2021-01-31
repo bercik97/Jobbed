@@ -76,7 +76,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model))));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -85,7 +85,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'itemPlaces')),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'itemPlaces'), () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model))),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
@@ -369,7 +369,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
     _itemplaceService.create(int.parse(_user.companyId), location).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(this.context, 'successfullyAddedNewItemplace'));
-        NavigatorUtil.navigate(this.context, ItemplacesPage(_model));
+        NavigatorUtil.navigateReplacement(this.context, ItemplacesPage(_model));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
@@ -407,10 +407,9 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
                 showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                 _itemplaceService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (BuildContext context) => ItemplacesPage(_model)),
-                      ModalRoute.withName('/'),
-                    );
+                    Navigator.pop(context);
+                    setState(() => _itemplaces.removeWhere((element) => selectedItemplaces.contains(element)));
+                    setState(() => _isDeleteButtonTapped = false);
                     ToastService.showSuccessToast(getTranslated(this.context, 'selectedItemplacesRemoved'));
                   });
                 }).catchError((onError) {

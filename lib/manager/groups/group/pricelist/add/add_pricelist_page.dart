@@ -65,7 +65,7 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
           debugShowCheckedModeBanner: false,
           home: Scaffold(
             backgroundColor: DARK,
-            appBar: managerAppBar(context, _user, getTranslated(context, 'createPricelist')),
+            appBar: managerAppBar(context, _user, getTranslated(context, 'createPricelist'), () => NavigatorUtil.navigate(context, PricelistPage(_model))),
             body: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Form(
@@ -139,7 +139,7 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
             bottomNavigationBar: _buildBottomNavigationBar(),
           ),
         ),
-        onWillPop: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => PricelistPage(_model)), (e) => false));
+        onWillPop: () => NavigatorUtil.onWillPopNavigate(context, PricelistPage(_model)));
   }
 
   bool _isValid() {

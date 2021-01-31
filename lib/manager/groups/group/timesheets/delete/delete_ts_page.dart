@@ -80,7 +80,7 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -88,7 +88,7 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBar(context, _user, getTranslated(context, 'deleteSelectedTs')),
+        appBar: managerAppBar(context, _user, getTranslated(context, 'deleteSelectedTs'), () => Navigator.pop(context)),
         body: RefreshIndicator(
           color: DARK,
           backgroundColor: WHITE,

@@ -73,7 +73,7 @@ class _WarehousePageState extends State<WarehousePage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model))));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -82,7 +82,7 @@ class _WarehousePageState extends State<WarehousePage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'warehouses')),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'warehouses'), () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model))),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(

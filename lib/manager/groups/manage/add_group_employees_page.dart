@@ -113,7 +113,7 @@ class _AddGroupEmployeesPageState extends State<AddGroupEmployeesPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading')));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -122,7 +122,7 @@ class _AddGroupEmployeesPageState extends State<AddGroupEmployeesPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'addingEmployeesToGroup')),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'addingEmployeesToGroup'), () => NavigatorUtil.navigate(context, GroupsDashboardPage(_user))),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
