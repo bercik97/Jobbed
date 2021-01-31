@@ -81,7 +81,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
             elevation: 0.0,
             bottomOpacity: 0.0,
             title: text15White(getTranslated(context, 'companyGroups')),
-            automaticallyImplyLeading: true,
+            leading: IconButton(icon: iconWhite(Icons.logout), onPressed: () => Logout.logout(context)),
             actions: <Widget>[
               Padding(
                 padding: EdgeInsets.only(right: 15.0),
