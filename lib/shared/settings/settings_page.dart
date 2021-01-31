@@ -5,11 +5,9 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/user/service/user_service.dart';
 import 'package:give_job/employee/profile/edit/employee_edit_page.dart';
-import 'package:give_job/employee/shared/employee_app_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/internationalization/model/language.dart';
 import 'package:give_job/manager/edit/manager_edit_page.dart';
-import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
@@ -80,7 +78,16 @@ class _SettingsPageState extends State<SettingsPage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: widget._user.role == ROLE_EMPLOYEE ? employeeAppBar(context, widget._user, getTranslated(context, 'settings')) : managerAppBar(context, widget._user, getTranslated(context, 'settings')),
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: WHITE),
+          backgroundColor: BRIGHTER_DARK,
+          elevation: 0.0,
+          bottomOpacity: 0.0,
+          title: text13White(getTranslated(context, 'settings')),
+          centerTitle: false,
+          automaticallyImplyLeading: true,
+          leading: IconButton(icon: iconWhite(Icons.arrow_back), onPressed: () => Navigator.pop(context)),
+        ),
         body: ListView(
           children: <Widget>[
             _titleContainer(getTranslated(context, 'account')),
