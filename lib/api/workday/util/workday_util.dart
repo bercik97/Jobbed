@@ -285,7 +285,7 @@ class WorkdayUtil {
               DataColumn(label: textWhiteBold(getTranslated(context, 'from'))),
               DataColumn(label: textWhiteBold(getTranslated(context, 'to'))),
               DataColumn(label: textWhiteBold(getTranslated(context, 'sum'))),
-              DataColumn(label: textWhiteBold(getTranslated(context, 'workplaceName'))),
+              DataColumn(label: textWhiteBold(getTranslated(context, 'workplace'))),
             ],
             rows: [
               for (int i = 0; i < workTimes.length; i++)

@@ -296,7 +296,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                 columnSpacing: 10,
                                 columns: [
                                   DataColumn(label: textWhiteBold('No.')),
-                                  DataColumn(label: textWhiteBold(getTranslated(context, 'workplaceName'))),
+                                  DataColumn(label: textWhiteBold(getTranslated(context, 'workplace'))),
                                   DataColumn(label: textWhiteBold(getTranslated(context, 'confirmation'))),
                                 ],
                                 rows: [
@@ -324,6 +324,10 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                                           textCenterGreenBold(getTranslated(this.context, 'workplaceName')),
                                                           SizedBox(height: 2),
                                                           textCenterWhite(utf8.decode(workplaces[i].name.runes.toList())),
+                                                          SizedBox(height: 10),
+                                                          textCenterGreenBold(getTranslated(this.context, 'location')),
+                                                          SizedBox(height: 2),
+                                                          textCenterWhite(utf8.decode(workplaces[i].location.runes.toList())),
                                                         ],
                                                       ),
                                                     ),

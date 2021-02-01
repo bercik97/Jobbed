@@ -77,6 +77,7 @@ Text textDarkBold(String text) { return Text(text, style: GoogleFonts.lato(color
 /*    TEXT GREEN   */
 /////////////////////
 Text textGreen(String text) { return Text(text, style: GoogleFonts.lato(color: GREEN)); }
+Text text13Green(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 13, color: GREEN)); }
 Text text15Green(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 15, color: GREEN)); }
 Text text20Green(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 20, color: GREEN)); }
 Text text25Green(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 25, color: GREEN)); }

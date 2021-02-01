@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 class WorkplaceDto {
   final int id;
   final String name;
+  final String location;
   final double radiusLength;
   final double latitude;
   final double longitude;
@@ -10,6 +11,7 @@ class WorkplaceDto {
   WorkplaceDto({
     @required this.id,
     @required this.name,
+    @required this.location,
     @required this.radiusLength,
     @required this.latitude,
     @required this.longitude,
@@ -19,6 +21,7 @@ class WorkplaceDto {
     Map<String, dynamic> map = new Map();
     map['id'] = dto.id;
     map['name'] = dto.name;
+    map['location'] = dto.location;
     map['radiusLength'] = dto.radiusLength;
     map['latitude'] = dto.latitude;
     map['longitude'] = dto.longitude;
@@ -29,6 +32,7 @@ class WorkplaceDto {
     return WorkplaceDto(
       id: json['id'] as int,
       name: json['name'] as String,
+      location: json['location'] as String,
       radiusLength: json['radiusLength'] as double,
       latitude: json['latitude'] as double,
       longitude: json['longitude'] as double,

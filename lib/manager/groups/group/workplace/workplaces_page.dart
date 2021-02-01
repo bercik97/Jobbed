@@ -62,6 +62,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
   Set<Circle> _circles = new Set();
 
   double _radius = 0.01;
+  String _workplaceLocation;
 
   ScrollController _scrollController = new ScrollController();
 
@@ -171,6 +172,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                 if (name != null && name.length >= 30) {
                                   name = name.substring(0, 30) + ' ...';
                                 }
+                                String location = workplace.location;
                                 return Card(
                                   color: DARK,
                                   child: Column(
@@ -204,10 +206,14 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                                 ),
                                                 Align(
                                                   alignment: Alignment.topLeft,
+                                                  child: text13White(location != null ? utf8.decode(location.runes.toList()) : getTranslated(this.context, 'empty')),
+                                                ),
+                                                Align(
+                                                  alignment: Alignment.topLeft,
                                                   child: Row(
                                                     children: [
-                                                      textWhite(getTranslated(this.context, 'radius') + ': '),
-                                                      textGreen(workplace.radiusLength.toString().substring(0, 4) + ' KM'),
+                                                      text13White(getTranslated(this.context, 'radius') + ': '),
+                                                      text13Green(workplace.radiusLength.toString().substring(0, 4) + ' KM'),
                                                     ],
                                                   ),
                                                 ),
@@ -404,6 +410,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                               LatLng currentLatLng = result.latLng;
                               double latitude = result.latLng.latitude;
                               double longitude = result.latLng.longitude;
+                              this._workplaceLocation = result.name + ', ' + result.locality;
                               this._cameraPosition = new CameraPosition(target: currentLatLng, zoom: 10);
                               _controller.animateCamera(CameraUpdate.newLatLng(currentLatLng));
                               _markersList.clear();
@@ -623,6 +630,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
     } else if (_markersList.isEmpty) {
       setState(() => _isAddButtonTapped = false);
       ToastService.showErrorToast(getTranslated(context, 'workplaceAreNotSetted'));
+      this._workplaceLocation = null;
       return;
     }
     WorkplaceDto dto;
@@ -637,6 +645,9 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
               children: [
                 textCenterWhite(getTranslated(this.context, 'workplaceName') + ': '),
                 textCenter16GreenBold(workplaceName),
+                SizedBox(height: 5),
+                textCenterWhite(getTranslated(this.context, 'location') + ': '),
+                textCenter16GreenBold(_workplaceLocation),
                 SizedBox(height: 5),
                 textCenterWhite(getTranslated(this.context, 'workplaceAreaRadius') + ': '),
                 textCenter16GreenBold(_radius != 0 ? _radius.toString().substring(0, 4) + ' KM' : getTranslated(context, 'empty')),
@@ -655,6 +666,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                 dto = new WorkplaceDto(
                   id: int.parse(_user.companyId),
                   name: workplaceName,
+                  location: this._workplaceLocation,
                   radiusLength: _radius != 0 ? double.parse(_radius.toString()) : 0,
                   latitude: circle != null ? circle.center.latitude : 0,
                   longitude: circle != null ? circle.center.longitude : 0,
