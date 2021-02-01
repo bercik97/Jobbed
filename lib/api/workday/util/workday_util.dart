@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:give_job/api/vocation/dto/vocation_dto.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -353,60 +352,6 @@ class WorkdayUtil {
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
-                        Container(
-                          width: 80,
-                          child: MaterialButton(
-                            elevation: 0,
-                            height: 50,
-                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[iconWhite(Icons.close)],
-                            ),
-                            color: Colors.red,
-                            onPressed: () => Navigator.pop(context),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  static void showVocationReasonDetails(BuildContext context, VocationDto vocation) {
-    if (vocation == null) {
-      return;
-    }
-    showGeneralDialog(
-      context: context,
-      barrierColor: DARK.withOpacity(0.95),
-      barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'vocationReason'),
-      transitionDuration: Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return SizedBox.expand(
-          child: Scaffold(
-            backgroundColor: Colors.black12,
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      children: <Widget>[
-                        text20GreenBold(getTranslated(context, 'vocationReason')),
-                        SizedBox(height: 20),
-                        vocation.verified ? text16GreenBold(getTranslated(context, 'verifiedUpperCase')) : text16RedBold(getTranslated(context, 'notVerifiedUpperCase')),
-                        SizedBox(height: 20),
-                        textCenter20White(vocation.reason != null ? utf8.decode(vocation.reason.runes.toList()) : getTranslated(context, 'empty')),
                         SizedBox(height: 20),
                         Container(
                           width: 80,

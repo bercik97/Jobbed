@@ -104,21 +104,6 @@ class WorkdayService {
     }
   }
 
-  Future<dynamic> createOrUpdateVocationsByIds(List<String> ids, String reason, int tsYear, int tsMonth, String tsStatus) async {
-    Response res = await put(
-      '$_url/vocations?ids=$ids',
-      body: jsonEncode({'reason': reason, 'isVerified': true, 'tsYear': tsYear, 'tsMonth': tsMonth, 'tsStatus': tsStatus}),
-      headers: _headers,
-    );
-    if (res.statusCode == 200) {
-      return res;
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
   Future<dynamic> updateEmployeesHours(double hours, String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
     Response res = await put(
       '$_url/employees/$employeeIds/hours',
@@ -161,36 +146,6 @@ class WorkdayService {
     Response res = await put(
       '$_url/employees/$employeeIds/note',
       body: jsonEncode(map),
-      headers: _headers,
-    );
-    if (res.statusCode == 200) {
-      return res;
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<dynamic> createOrUpdateEmployeesVocation(String reason, String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
-    Response res = await put(
-      '$_url/employees/$employeeIds/vocation',
-      body: jsonEncode({'reason': reason, 'isVerified': true, 'dateFrom': dateFrom, 'dateTo': dateTo, 'tsYear': tsYear, 'tsMonth': tsMonth, 'tsStatus': tsStatus}),
-      headers: _headers,
-    );
-    if (res.statusCode == 200) {
-      return res;
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<dynamic> removeEmployeesVocation(String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
-    Response res = await put(
-      '$_url/employees/$employeeIds/remove-vocation',
-      body: jsonEncode({'dateFrom': dateFrom, 'dateTo': dateTo, 'tsYear': tsYear, 'tsMonth': tsMonth, 'tsStatus': tsStatus}),
       headers: _headers,
     );
     if (res.statusCode == 200) {

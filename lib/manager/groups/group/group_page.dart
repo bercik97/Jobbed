@@ -7,7 +7,6 @@ import 'package:give_job/manager/groups/group/employees_settings/employees_setti
 import 'package:give_job/manager/groups/group/pricelist/pricelist_page.dart';
 import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.dart';
 import 'package:give_job/manager/groups/group/timesheets/ts_page.dart';
-import 'package:give_job/manager/groups/group/vocations/vocations_ts_page.dart';
 import 'package:give_job/manager/groups/group/warehouse/warehouse_page.dart';
 import 'package:give_job/manager/groups/group/workplace/workplaces_page.dart';
 import 'package:give_job/manager/shared/group_model.dart';
@@ -115,26 +114,12 @@ class _GroupPageState extends State<GroupPage> {
                           child: Material(
                             color: BRIGHTER_DARK,
                             child: InkWell(
-                              onTap: () => NavigatorUtil.navigate(context, GroupsDashboardPage(_user)),
-                              child: _buildScrollableContainer('images/groups-icon.png', 'backToGroups', 'seeYourAllGroups'),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: Material(
-                            color: BRIGHTER_DARK,
-                            child: InkWell(
                               onTap: () => NavigatorUtil.navigate(context, EmployeesSettingsPage(_model)),
                               child: _buildScrollableContainer('images/employees-settings-icon.png', 'settings', 'employeesSettingsDescription'),
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
+                        SizedBox(width: 10),
                         Expanded(
                           child: Material(
                             color: BRIGHTER_DARK,
@@ -144,7 +129,11 @@ class _GroupPageState extends State<GroupPage> {
                             ),
                           ),
                         ),
-                        SizedBox(width: 10),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      children: <Widget>[
                         Expanded(
                           child: Material(
                             color: BRIGHTER_DARK,
@@ -154,11 +143,7 @@ class _GroupPageState extends State<GroupPage> {
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
+                        SizedBox(width: 10),
                         Expanded(
                           child: Material(
                             color: BRIGHTER_DARK,
@@ -168,16 +153,6 @@ class _GroupPageState extends State<GroupPage> {
                             ),
                           ),
                         ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: Material(
-                            color: BRIGHTER_DARK,
-                            child: InkWell(
-                              onTap: () => NavigatorUtil.navigate(context, WorkplacesPage(_model)),
-                              child: _buildScrollableContainer('images/workplace-icon.png', 'workplaces', 'manageCompanyWorkplaces'),
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                     SizedBox(height: 10),
@@ -187,8 +162,8 @@ class _GroupPageState extends State<GroupPage> {
                           child: Material(
                             color: BRIGHTER_DARK,
                             child: InkWell(
-                              onTap: () => NavigatorUtil.navigate(context, VocationsTsPage(_model)),
-                              child: _buildScrollableContainer('images/vocation-icon.png', 'vocations', 'vocationsDescription'),
+                              onTap: () => NavigatorUtil.navigate(context, WorkplacesPage(_model)),
+                              child: _buildScrollableContainer('images/workplace-icon.png', 'workplaces', 'manageCompanyWorkplaces'),
                             ),
                           ),
                         ),

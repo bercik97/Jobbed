@@ -49,7 +49,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   final TextEditingController _hoursController = new TextEditingController();
   final TextEditingController _minutesController = new TextEditingController();
   final TextEditingController _noteController = new TextEditingController();
-  final TextEditingController _vocationReasonController = new TextEditingController();
 
   GroupModel _model;
   User _user;
@@ -198,7 +197,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                 ),
                                 onSort: (columnIndex, ascending) => _onSortMoneyForCompany(columnIndex, ascending)),
                             DataColumn(label: textWhiteBold(getTranslated(context, 'note')), onSort: (columnIndex, ascending) => _onSortNote(columnIndex, ascending)),
-                            DataColumn(label: textWhiteBold(getTranslated(context, 'vocations'))),
                           ],
                           rows: this
                               .workdays
@@ -233,17 +231,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                       Wrap(children: <Widget>[workday.note != null && workday.note != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-')]),
                                       onTap: () => _editNote(this.context, workday.id, workday.note),
                                     ),
-                                    DataCell(
-                                        Wrap(
-                                          children: <Widget>[
-                                            workday.vocation != null
-                                                ? Row(
-                                                    children: [Image(height: 35, image: AssetImage('images/vocation-icon.png')), workday.vocation.verified == true ? iconGreen(Icons.check) : iconRed(Icons.clear)],
-                                                  )
-                                                : textWhiteBold('-'),
-                                          ],
-                                        ),
-                                        onTap: () => WorkdayUtil.showVocationReasonDetails(this.context, workday.vocation)),
                                   ],
                                 ),
                               )
@@ -318,21 +305,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                     },
                   ),
                 ),
-                SizedBox(width: 2.5),
-                Expanded(
-                  child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-vocation-icon.png')),
-                    onPressed: () {
-                      if (selectedIds.isNotEmpty) {
-                        _vocationReasonController.clear();
-                        _showUpdateVocationReasonDialog(_timesheet, selectedIds);
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
-                  ),
-                ),
                 SizedBox(width: 1),
               ],
             ),
@@ -347,9 +319,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
             IconsLegendUtil.buildImageRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
             IconsLegendUtil.buildImageRow('images/green-piecework-icon.png', getTranslated(context, 'settingPiecework')),
             IconsLegendUtil.buildImageRow('images/green-note-icon.png', getTranslated(context, 'settingNote')),
-            IconsLegendUtil.buildImageRow('images/green-vocation-icon.png', getTranslated(context, 'settingVocation')),
-            IconsLegendUtil.buildImageWithIconRow('images/green-vocation-icon.png', iconRed(Icons.clear), getTranslated(context, 'notVerifiedVocation')),
-            IconsLegendUtil.buildImageWithIconRow('images/green-vocation-icon.png', iconGreen(Icons.check), getTranslated(context, 'verifiedVocation')),
           ],
         ),
       ),
@@ -678,108 +647,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.of(context).pop();
                               ToastService.showSuccessToast(getTranslated(context, 'noteUpdatedSuccessfully'));
-                              _refresh();
-                            }).catchError(() {
-                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                Navigator.of(context).pop();
-                                ToastService.showSuccessToast(getTranslated(context, 'smthWentWrong'));
-                              });
-                            });
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void _showUpdateVocationReasonDialog(TimesheetForEmployeeDto timesheet, Set<int> selectedIds) {
-    showGeneralDialog(
-      context: context,
-      barrierColor: DARK.withOpacity(0.95),
-      barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'vocation'),
-      transitionDuration: Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return SizedBox.expand(
-          child: Scaffold(
-            backgroundColor: Colors.black12,
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'vocationUpperCase'))),
-                  SizedBox(height: 2.5),
-                  textGreen(getTranslated(context, 'setVocationReasonForSelectedDays')),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: EdgeInsets.only(left: 25, right: 25),
-                    child: TextFormField(
-                      autofocus: false,
-                      controller: _vocationReasonController,
-                      keyboardType: TextInputType.multiline,
-                      maxLength: 510,
-                      maxLines: 5,
-                      cursorColor: WHITE,
-                      textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: WHITE),
-                      decoration: InputDecoration(
-                        hintText: getTranslated(context, 'textSomeReason'),
-                        hintStyle: TextStyle(color: MORE_BRIGHTER_DARK),
-                        counterStyle: TextStyle(color: WHITE),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: GREEN, width: 2.5),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: GREEN, width: 2.5),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        minWidth: 40,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.close)],
-                        ),
-                        color: Colors.red,
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      SizedBox(width: 25),
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.check)],
-                        ),
-                        color: GREEN,
-                        onPressed: () {
-                          String vocationReason = _vocationReasonController.text;
-                          String invalidMessage = ValidatorService.validateVocationReason(vocationReason, context);
-                          if (invalidMessage != null) {
-                            ToastService.showErrorToast(invalidMessage);
-                            return;
-                          }
-                          FocusScope.of(context).unfocus();
-                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                          _workdayService.createOrUpdateVocationsByIds(selectedIds.map((el) => el.toString()).toList(), vocationReason, timesheet.year, MonthUtil.findMonthNumberByMonthName(context, timesheet.month), STATUS_IN_PROGRESS).then((res) {
-                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              Navigator.of(context).pop();
-                              ToastService.showSuccessToast(getTranslated(context, 'vocationUpdatedSuccessfully'));
                               _refresh();
                             }).catchError(() {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

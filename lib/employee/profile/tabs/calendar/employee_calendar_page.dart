@@ -110,8 +110,6 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
               IconsLegendUtil.buildIconRow(iconOrange(Icons.error_outline), getTranslated(context, 'dayWithNote')),
               IconsLegendUtil.buildIconRow(iconGreen(Icons.check), getTranslated(context, 'workedDay')),
               IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_circle_up), getTranslated(context, 'workInProgress')),
-              IconsLegendUtil.buildIconRow(iconYellow(Icons.beach_access), getTranslated(context, 'confirmedVocation')),
-              IconsLegendUtil.buildIconRow(iconRed(Icons.beach_access), getTranslated(context, 'notConfirmedVocation')),
             ],
           ),
         ),
@@ -195,23 +193,10 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
 
   Widget _buildEventsMarker(DateTime date, List events) {
     EmployeeCalendarDto workday = events[0];
-    bool isVocationNotNull = workday.isVocationVerified != null;
-    if (isVocationNotNull && workday.isVocationVerified) {
-      return Icon(Icons.beach_access, color: Colors.yellow);
-    } else if (workday.money != '0.000') {
+    if (workday.money != '0.000') {
       return workday.money != '0.000' ? icon30Green(Icons.check) : icon30Orange(Icons.arrow_circle_up);
     } else if (workday.note != null && workday.note.isNotEmpty) {
-      if (isVocationNotNull && !workday.isVocationVerified) {
-        return Row(
-          children: [
-            iconRed(Icons.beach_access),
-            iconOrange(Icons.error_outline),
-          ],
-        );
-      }
       return iconOrange(Icons.error_outline);
-    } else if (isVocationNotNull && !workday.isVocationVerified) {
-      return iconRed(Icons.beach_access);
     } else {
       return Container();
     }
@@ -235,59 +220,13 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
   }
 
   Widget _buildDay(EmployeeCalendarDto workday) {
-    bool isVocationNotNull = workday.isVocationVerified != null;
-    if (isVocationNotNull && workday.isVocationVerified) {
-      return _buildVerifiedVocation(workday.vocationReason);
-    } else if (workday.money != '0.000') {
+    if (workday.money != '0.000') {
       return _buildWorkday(workday);
     } else if (workday.note != null && workday.note.isNotEmpty) {
-      if (isVocationNotNull && !workday.isVocationVerified) {
-        return _buildDayWIthNoteWithNotVerifiedVocation(workday.note, workday.vocationReason);
-      }
       return _buildDayWithNote(workday.note);
-    } else if (isVocationNotNull && !workday.isVocationVerified) {
-      return _buildNotVerifiedVocation(workday.vocationReason);
     } else {
       return _handleEmptyDay();
     }
-  }
-
-  Widget _buildVerifiedVocation(String reason) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            iconYellow(Icons.beach_access),
-            SizedBox(width: 2.5),
-            text15GreenBold(getTranslated(context, 'verifiedVocationForDay') + ' ' + _selectedDay.toString().substring(0, 10)),
-          ],
-        ),
-        SizedBox(height: 5),
-        textWhite(
-          getTranslated(context, 'reason') + ': ' + (reason != null ? utf8.decode(reason.runes.toList()) : getTranslated(context, 'empty')),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildNotVerifiedVocation(String reason) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            iconRed(Icons.beach_access),
-            SizedBox(width: 2.5),
-            text15RedBold(getTranslated(context, 'notVerifiedVocationForDay') + ' ' + _selectedDay.toString().substring(0, 10)),
-          ],
-        ),
-        SizedBox(height: 5),
-        textWhite(
-          getTranslated(context, 'reason') + ': ' + (reason != null ? utf8.decode(reason.runes.toList()) : getTranslated(context, 'empty')),
-        ),
-      ],
-    );
   }
 
   Widget _buildWorkday(EmployeeCalendarDto workday) {
@@ -386,30 +325,6 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
             SizedBox(width: 5),
             text15GreenBold(getTranslated(context, 'noteFor') + ' ' + _selectedDay.toString().substring(0, 10)),
           ],
-        ),
-        SizedBox(height: 5),
-        textWhite(utf8.decode(note.runes.toList())),
-      ],
-    );
-  }
-
-  Widget _buildDayWIthNoteWithNotVerifiedVocation(String note, String vocationReason) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            iconOrange(Icons.error_outline),
-            SizedBox(width: 5),
-            text15GreenBold(getTranslated(context, 'noteFor') + ' ' + _selectedDay.toString().substring(0, 10)),
-          ],
-        ),
-        SizedBox(height: 5),
-        GestureDetector(
-          onTap: () {
-            WorkdayUtil.showScrollableDialog(context, getTranslated(context, 'vocationReasonFor') + ' ' + _selectedDay.toString().substring(0, 10), vocationReason);
-          },
-          child: textCenter15RedUnderline(getTranslated(context, 'dayHaveNotVerifiedVocation')),
         ),
         SizedBox(height: 5),
         textWhite(utf8.decode(note.runes.toList())),

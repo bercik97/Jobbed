@@ -149,7 +149,6 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                                 ),
                               ),
                               DataColumn(label: textWhiteBold(getTranslated(this.context, 'note'))),
-                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'vocations'))),
                             ],
                             rows: [
                               for (var workday in workdays)
@@ -183,17 +182,6 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                                       ),
                                       onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'noteDetails'), workday.note),
                                     ),
-                                    DataCell(
-                                        Wrap(
-                                          children: <Widget>[
-                                            workday.vocation != null
-                                                ? Row(
-                                                    children: [Image(height: 35, image: AssetImage('images/vocation-icon.png')), workday.vocation.verified == true ? iconGreen(Icons.check) : iconRed(Icons.clear)],
-                                                  )
-                                                : textWhiteBold('-'),
-                                          ],
-                                        ),
-                                        onTap: () => WorkdayUtil.showVocationReasonDetails(this.context, workday.vocation)),
                                   ],
                                 ),
                             ],
@@ -213,8 +201,6 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
           [
             IconsLegendUtil.buildImageRow('images/checked.png', getTranslated(context, 'tsCompleted')),
             IconsLegendUtil.buildIconRow(iconWhite(Icons.search), getTranslated(context, 'checkDetails')),
-            IconsLegendUtil.buildImageWithIconRow('images/green-vocation-icon.png', iconRed(Icons.clear), getTranslated(context, 'notVerifiedVocation')),
-            IconsLegendUtil.buildImageWithIconRow('images/green-vocation-icon.png', iconGreen(Icons.check), getTranslated(context, 'verifiedVocation')),
           ],
         ),
       ),

@@ -94,7 +94,6 @@ flutter:
     - images/employees-icon.png
     - images/quick_update-icon.png
     - images/timesheets-icon.png
-    - images/vocation-icon.png
     - images/workplace-icon.png
     - images/manager-icon.png
     - images/employee-icon.png
@@ -110,12 +109,10 @@ flutter:
     - images/green-hours-icon.png
     - images/green-note-icon.png
     - images/green-workplace-icon.png
-    - images/green-vocation-icon.png
 
     - images/dark-hours-icon.png
     - images/dark-piecework-icon.png
     - images/dark-note-icon.png
-    - images/dark-vocation-icon.png
     - images/dark-help-icon.png
 
     - images/letters/male/A.png

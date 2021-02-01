@@ -272,7 +272,7 @@ packages:
       name: geolocator_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.8"
+    version: "1.0.9"
   google_fonts:
     dependency: "direct main"
     description:

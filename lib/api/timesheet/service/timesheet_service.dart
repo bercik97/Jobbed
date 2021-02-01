@@ -5,7 +5,6 @@ import 'package:give_job/api/employee/dto/employee_calendar_dto.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_without_status_dto.dart';
-import 'package:give_job/api/vocation/dto/vocation_employee_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/service/logout_service.dart';
 import 'package:http/http.dart';
@@ -44,25 +43,6 @@ class TimesheetService {
         (key, value) => MapEntry(
           DateTime.parse(key),
           List.from([EmployeeCalendarDto.fromJson(value)]),
-        ),
-      );
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<Map<DateTime, List<VocationEmployeeDto>>> findVocationCalendarInfoForGroup(int groupId) async {
-    Response res = await get(
-      '$_url/vocation-calendar?group_id=$groupId',
-      headers: _header,
-    );
-    if (res.statusCode == 200) {
-      return (json.decode(res.body) as Map).map(
-        (key, value) => MapEntry(
-          DateTime.parse(key),
-          (value as List).map((data) => VocationEmployeeDto.fromJson(data)).toList(),
         ),
       );
     } else if (res.statusCode == 401) {

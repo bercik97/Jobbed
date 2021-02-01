@@ -6,7 +6,6 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/piecework/add_piecework_for_quick_update.dart';
-import 'package:give_job/manager/groups/group/vocations/timesheets/calendar/vocations_calendar_page.dart';
 import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/service/dialog_service.dart';
@@ -48,11 +47,6 @@ class QuickUpdateDialog {
                 textCenter16GreenBold(getTranslated(context, 'quickUpdateOfTodaysDate') + ' $formattedDate'),
                 SizedBox(height: 5),
                 textCenter16White(getTranslated(context, 'updateDataForAllEmployeesOfGroup')),
-                SizedBox(height: 5),
-                GestureDetector(
-                  onTap: () => NavigatorUtil.navigate(context, VocationsCalendarPage(_model)),
-                  child: textCenter15RedUnderline(getTranslated(context, 'quickUpdateWarn')),
-                ),
                 SizedBox(height: 30),
                 Buttons.standardButton(
                   minWidth: 200.0,

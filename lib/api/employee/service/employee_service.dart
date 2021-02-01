@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/employee/dto/create_employee_dto.dart';
 import 'package:give_job/api/employee/dto/employee_basic_dto.dart';
-import 'package:give_job/api/employee/dto/employee_for_vocations_ts_dto.dart';
 import 'package:give_job/api/employee/dto/employee_group_dto.dart';
 import 'package:give_job/api/employee/dto/employee_page_dto.dart';
 import 'package:give_job/api/employee/dto/employee_settings_dto.dart';
@@ -95,20 +94,6 @@ class EmployeeService {
     );
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeBasicDto.fromJson(data)).toList();
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<List<EmployeeForVocationsTsDto>> findAllByGroupIdAndTsYearMonthStatusForManageVocations(int groupId, int year, int month, String status) async {
-    Response res = await get(
-      '$_url/manage-vocations?group_id=$groupId&timesheet_year=$year&timesheet_month=$month&timesheet_status=$status',
-      headers: _header,
-    );
-    if (res.statusCode == 200) {
-      return (json.decode(res.body) as List).map((data) => EmployeeForVocationsTsDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
       return Logout.handle401WithLogout(_context);
     } else {
