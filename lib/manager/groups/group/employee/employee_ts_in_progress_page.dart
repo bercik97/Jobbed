@@ -15,6 +15,7 @@ import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
+import 'package:give_job/shared/util/data_table_util.dart';
 import 'package:give_job/shared/util/icons_legend_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
@@ -24,6 +25,7 @@ import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/icons_legend_dialog.dart';
 import 'package:give_job/shared/widget/loader.dart';
 import 'package:give_job/shared/widget/texts.dart';
+import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
 import '../../../../shared/libraries/constants.dart';
@@ -63,14 +65,8 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   String _avatarPath;
 
   Set<int> selectedIds = new Set();
+  List<bool> _checked = new List();
   List<WorkdayDto> workdays = new List();
-  bool _sortNo = true;
-  bool _sortHours = true;
-  bool _sortMoney = true;
-  bool _sortMoneyForCompany = true;
-  bool _sortNotes = true;
-  bool _sort = true;
-  int _sortColumnIndex;
 
   bool _loading = false;
 
@@ -90,6 +86,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     _workdayService.findAllByTimesheetId(_timesheet.id).then((res) {
       setState(() {
         workdays = res;
+        workdays.forEach((e) => _checked.add(false));
         _loading = false;
       });
     });
@@ -161,84 +158,20 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                 ),
               ),
               Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Theme(
-                      data: Theme.of(context).copyWith(),
-                      child: Theme(
-                        data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
-                        child: DataTable(
-                          columnSpacing: 10,
-                          sortAscending: _sort,
-                          sortColumnIndex: _sortColumnIndex,
-                          columns: [
-                            DataColumn(label: textWhiteBold('No.'), onSort: (columnIndex, ascending) => _onSortNo(columnIndex, ascending)),
-                            DataColumn(label: textWhiteBold(getTranslated(context, 'hours')), onSort: (columnIndex, ascending) => _onSortHours(columnIndex, ascending)),
-                            DataColumn(label: textWhiteBold(getTranslated(context, 'accord'))),
-                            DataColumn(label: textWhiteBold(getTranslated(context, 'time'))),
-                            DataColumn(
-                                label: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    textWhiteBold(getTranslated(context, 'money')),
-                                    text12White('(' + getTranslated(this.context, 'sumForEmployee') + ')'),
-                                  ],
-                                ),
-                                onSort: (columnIndex, ascending) => _onSortMoney(columnIndex, ascending)),
-                            DataColumn(
-                                label: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    textWhiteBold(getTranslated(context, 'money')),
-                                    text12White('(' + getTranslated(this.context, 'sumForCompany') + ')'),
-                                  ],
-                                ),
-                                onSort: (columnIndex, ascending) => _onSortMoneyForCompany(columnIndex, ascending)),
-                            DataColumn(label: textWhiteBold(getTranslated(context, 'note')), onSort: (columnIndex, ascending) => _onSortNote(columnIndex, ascending)),
-                          ],
-                          rows: this
-                              .workdays
-                              .map(
-                                (workday) => DataRow(
-                                  selected: selectedIds.contains(workday.id),
-                                  onSelectChanged: (bool selected) {
-                                    onSelectedRow(selected, workday.id);
-                                  },
-                                  cells: [
-                                    DataCell(textWhite(workday.number.toString())),
-                                    DataCell(textWhite(workday.hours.toString())),
-                                    DataCell(
-                                      Wrap(
-                                        children: <Widget>[
-                                          workday.pieceworks != null && workday.pieceworks.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
-                                        ],
-                                      ),
-                                      onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workday.pieceworks, true),
-                                    ),
-                                    DataCell(
-                                      Wrap(
-                                        children: <Widget>[
-                                          workday.workTimes != null && workday.workTimes.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhiteBold('-'),
-                                        ],
-                                      ),
-                                      onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workday.workTimes),
-                                    ),
-                                    DataCell(Align(alignment: Alignment.center, child: textWhite(workday.totalMoneyForEmployee.toString()))),
-                                    DataCell(Align(alignment: Alignment.center, child: textWhite(workday.totalMoneyForCompany.toString()))),
-                                    DataCell(
-                                      Wrap(children: <Widget>[workday.note != null && workday.note != '' ? iconWhite(Icons.zoom_in) : textWhiteBold('-')]),
-                                      onTap: () => _editNote(this.context, workday.id, workday.note),
-                                    ),
-                                  ],
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      ),
-                    ),
+                child: Container(
+                  child: HorizontalDataTable(
+                    leftHandSideColumnWidth: 85,
+                    rightHandSideColumnWidth: 460,
+                    isFixedHeader: true,
+                    headerWidgets: _buildTitleWidget(),
+                    leftSideItemBuilder: _buildFirstColumnRow,
+                    rightSideItemBuilder: _buildRightHandSideColumnRow,
+                    itemCount: workdays.length,
+                    rowSeparatorWidget: Divider(color: MORE_BRIGHTER_DARK, height: 1.0, thickness: 0.0),
+                    leftHandSideColBackgroundColor: Color(0xff494949),
+                    rightHandSideColBackgroundColor: DARK,
                   ),
+                  height: MediaQuery.of(context).size.height,
                 ),
               ),
             ],
@@ -340,79 +273,88 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     });
   }
 
-  void _onSortNo(columnIndex, ascending) {
-    setState(() {
-      if (columnIndex == _sortColumnIndex) {
-        _sort = _sortNo = ascending;
-      } else {
-        _sortColumnIndex = columnIndex;
-        _sort = _sortNo;
-      }
-      workdays.sort((a, b) => a.id.compareTo(b.id));
-      if (!_sort) {
-        workdays = workdays.reversed.toList();
-      }
-    });
+  List<Widget> _buildTitleWidget() {
+    return [
+      DataTableUtil.buildTitleItemWidget('No.', 85),
+      DataTableUtil.buildTitleItemWidget(getTranslated(context, 'hours'), 75),
+      DataTableUtil.buildTitleItemWidget(getTranslated(context, 'accord'), 50),
+      DataTableUtil.buildTitleItemWidget(getTranslated(context, 'time'), 50),
+      DataTableUtil.buildTitleItemWidgetWithRow(getTranslated(context, 'money'), getTranslated(context, 'employee'), 80),
+      DataTableUtil.buildTitleItemWidgetWithRow(getTranslated(context, 'money'), getTranslated(context, 'company'), 80),
+      DataTableUtil.buildTitleItemWidget(getTranslated(context, 'note'), 75),
+    ];
   }
 
-  void _onSortHours(columnIndex, ascending) {
-    setState(() {
-      if (columnIndex == _sortColumnIndex) {
-        _sort = _sortHours = ascending;
-      } else {
-        _sortColumnIndex = columnIndex;
-        _sort = _sortHours;
-      }
-      workdays.sort((a, b) => a.hours.compareTo(b.hours));
-      if (!_sort) {
-        workdays = workdays.reversed.toList();
-      }
-    });
+  Widget _buildFirstColumnRow(BuildContext context, int index) {
+    return Container(
+      width: 85,
+      height: 50,
+      color: BRIGHTER_DARK,
+      child: CheckboxListTile(
+        contentPadding: EdgeInsets.only(left: 1),
+        controlAffinity: ListTileControlAffinity.leading,
+        title: textWhite(workdays[index].number.toString()),
+        activeColor: GREEN,
+        checkColor: WHITE,
+        value: _checked[index],
+        onChanged: (bool value) {
+          setState(() {
+            _checked[index] = value;
+            if (value) {
+              selectedIds.add(workdays[index].id);
+            } else {
+              selectedIds.remove(workdays[index].id);
+            }
+          });
+        },
+      ),
+    );
   }
 
-  void _onSortMoney(columnIndex, ascending) {
-    setState(() {
-      if (columnIndex == _sortColumnIndex) {
-        _sort = _sortMoney = ascending;
-      } else {
-        _sortColumnIndex = columnIndex;
-        _sort = _sortMoney;
-      }
-      workdays.sort((a, b) => a.totalMoneyForEmployee.compareTo(b.totalMoneyForEmployee));
-      if (!_sort) {
-        workdays = workdays.reversed.toList();
-      }
-    });
-  }
-
-  void _onSortMoneyForCompany(columnIndex, ascending) {
-    setState(() {
-      if (columnIndex == _sortColumnIndex) {
-        _sort = _sortMoneyForCompany = ascending;
-      } else {
-        _sortColumnIndex = columnIndex;
-        _sort = _sortMoneyForCompany;
-      }
-      workdays.sort((a, b) => a.totalMoneyForCompany.compareTo(b.totalMoneyForCompany));
-      if (!_sort) {
-        workdays = workdays.reversed.toList();
-      }
-    });
-  }
-
-  void _onSortNote(columnIndex, ascending) {
-    setState(() {
-      if (columnIndex == _sortColumnIndex) {
-        _sort = _sortNotes = ascending;
-      } else {
-        _sortColumnIndex = columnIndex;
-        _sort = _sortNotes;
-      }
-      workdays.sort((a, b) => a.note.compareTo(b.note));
-      if (!_sort) {
-        workdays = workdays.reversed.toList();
-      }
-    });
+  Widget _buildRightHandSideColumnRow(BuildContext context, int index) {
+    return Row(
+      children: <Widget>[
+        Container(
+          child: Align(alignment: Alignment.center, child: textWhite(workdays[index].hours)),
+          width: 75,
+          height: 50,
+        ),
+        InkWell(
+          onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workdays[index].pieceworks, false),
+          child: Ink(
+            child: workdays[index].pieceworks != null && workdays[index].pieceworks.isNotEmpty ? iconWhite(Icons.zoom_in) : Align(alignment: Alignment.center, child: textWhite('-')),
+            width: 50,
+            height: 50,
+          ),
+        ),
+        InkWell(
+          onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workdays[index].workTimes),
+          child: Ink(
+            child: workdays[index].workTimes != null && workdays[index].workTimes.isNotEmpty ? iconWhite(Icons.zoom_in) : Align(alignment: Alignment.center, child: textWhite('-')),
+            width: 50,
+            height: 50,
+          ),
+        ),
+        Container(
+          child: Align(alignment: Alignment.center, child: textWhite(workdays[index].totalMoneyForEmployee)),
+          width: 80,
+          height: 50,
+        ),
+        Container(
+          child: Align(alignment: Alignment.center, child: textWhite(workdays[index].totalMoneyForCompany)),
+          width: 80,
+          height: 50,
+        ),
+        InkWell(
+          onTap: () => _editNote(this.context, workdays[index].id, workdays[index].note),
+          child: Ink(
+            child: workdays[index].note != null && workdays[index].note != '' ? iconWhite(Icons.zoom_in) : Align(alignment: Alignment.center, child: textWhite('-')),
+            width: 75,
+            height: 50,
+          ),
+        ),
+      ],
+    );
   }
 
   void _showUpdateHoursDialog(Set<int> selectedIds) {
