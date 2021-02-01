@@ -78,113 +78,115 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
               color: DARK,
               backgroundColor: WHITE,
               onRefresh: _refresh,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    color: BRIGHTER_DARK,
-                    child: Padding(
-                      padding: EdgeInsets.only(bottom: 5),
-                      child: ListTile(
-                        leading: Padding(
-                          padding: EdgeInsets.only(bottom: 15),
-                          child: Image(
-                            image: _timesheet.status == STATUS_COMPLETED ? AssetImage('images/checked.png') : AssetImage('images/unchecked.png'),
-                            fit: BoxFit.fitHeight,
+              child: SafeArea(
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      color: BRIGHTER_DARK,
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 5),
+                        child: ListTile(
+                          leading: Padding(
+                            padding: EdgeInsets.only(bottom: 15),
+                            child: Image(
+                              image: _timesheet.status == STATUS_COMPLETED ? AssetImage('images/checked.png') : AssetImage('images/unchecked.png'),
+                              fit: BoxFit.fitHeight,
+                            ),
                           ),
-                        ),
-                        title: textWhiteBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
-                        subtitle: Column(
-                          children: <Widget>[
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: textWhiteBold(_user.info != null ? utf8.decode(_user.info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(_user.nationality) : getTranslated(context, 'empty')),
-                            ),
-                            Row(
-                              children: <Widget>[
-                                textWhite(getTranslated(this.context, 'hours') + ': '),
-                                textGreenBold(_timesheet.totalMoneyForHoursForEmployee.toString() + ' ' + (_timesheet.groupCountryCurrency != null ? _timesheet.groupCountryCurrency : getTranslated(context, 'empty')) + ' (' + _timesheet.totalHours + ' h)'),
-                              ],
-                            ),
-                            Row(
-                              children: <Widget>[
-                                textWhite(getTranslated(this.context, 'accord') + ': '),
-                                textGreenBold(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' ' + (_timesheet.groupCountryCurrency != null ? _timesheet.groupCountryCurrency : getTranslated(context, 'empty'))),
-                              ],
-                            ),
-                            Row(
-                              children: <Widget>[
-                                textWhite(getTranslated(this.context, 'sum') + ': '),
-                                textGreenBold(_timesheet.totalMoneyEarned.toString() + ' ' + (_timesheet.groupCountryCurrency != null ? _timesheet.groupCountryCurrency : getTranslated(context, 'empty'))),
-                              ],
-                            ),
-                          ],
+                          title: textWhiteBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
+                          subtitle: Column(
+                            children: <Widget>[
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: textWhiteBold(_user.info != null ? utf8.decode(_user.info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(_user.nationality) : getTranslated(context, 'empty')),
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  textWhite(getTranslated(this.context, 'hours') + ': '),
+                                  textGreenBold(_timesheet.totalMoneyForHoursForEmployee.toString() + ' ' + (_timesheet.groupCountryCurrency != null ? _timesheet.groupCountryCurrency : getTranslated(context, 'empty')) + ' (' + _timesheet.totalHours + ' h)'),
+                                ],
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  textWhite(getTranslated(this.context, 'accord') + ': '),
+                                  textGreenBold(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' ' + (_timesheet.groupCountryCurrency != null ? _timesheet.groupCountryCurrency : getTranslated(context, 'empty'))),
+                                ],
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  textWhite(getTranslated(this.context, 'sum') + ': '),
+                                  textGreenBold(_timesheet.totalMoneyEarned.toString() + ' ' + (_timesheet.groupCountryCurrency != null ? _timesheet.groupCountryCurrency : getTranslated(context, 'empty'))),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
+                    Expanded(
                       child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Theme(
-                          data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
-                          child: DataTable(
-                            columnSpacing: 10,
-                            columns: [
-                              DataColumn(label: textWhiteBold('No.'), onSort: (columnIndex, ascending) => _onSortNo(columnIndex, ascending)),
-                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'hours'))),
-                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'accord'))),
-                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'time'))),
-                              DataColumn(
-                                label: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    textWhiteBold(getTranslated(this.context, 'money')),
-                                    text12White('(' + getTranslated(this.context, 'sum') + ')'),
-                                  ],
-                                ),
-                              ),
-                              DataColumn(label: textWhiteBold(getTranslated(this.context, 'note'))),
-                            ],
-                            rows: this
-                                .workdays
-                                .map(
-                                  (workday) => DataRow(
-                                    cells: [
-                                      DataCell(textWhite(workday.number.toString())),
-                                      DataCell(textWhite(workday.hours.toString())),
-                                      DataCell(
-                                        Wrap(
-                                          children: <Widget>[
-                                            workday.pieceworks != null && workday.pieceworks.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhite('-'),
-                                          ],
-                                        ),
-                                        onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workday.pieceworks, false),
-                                      ),
-                                      DataCell(
-                                        Wrap(
-                                          children: <Widget>[
-                                            workday.workTimes != null && workday.workTimes.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhite('-'),
-                                          ],
-                                        ),
-                                        onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workday.workTimes),
-                                      ),
-                                      DataCell(textWhite(workday.money.toString())),
-                                      DataCell(
-                                        Wrap(children: <Widget>[workday.note != null && workday.note != '' ? iconWhite(Icons.zoom_in) : textWhite('-')]),
-                                        onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'noteDetails'), workday.note),
-                                      ),
+                        scrollDirection: Axis.vertical,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Theme(
+                            data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
+                            child: DataTable(
+                              columnSpacing: 10,
+                              columns: [
+                                DataColumn(label: textWhiteBold('No.'), onSort: (columnIndex, ascending) => _onSortNo(columnIndex, ascending)),
+                                DataColumn(label: textWhiteBold(getTranslated(this.context, 'hours'))),
+                                DataColumn(label: textWhiteBold(getTranslated(this.context, 'accord'))),
+                                DataColumn(label: textWhiteBold(getTranslated(this.context, 'time'))),
+                                DataColumn(
+                                  label: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      textWhiteBold(getTranslated(this.context, 'money')),
+                                      text12White('(' + getTranslated(this.context, 'sum') + ')'),
                                     ],
                                   ),
-                                )
-                                .toList(),
+                                ),
+                                DataColumn(label: textWhiteBold(getTranslated(this.context, 'note'))),
+                              ],
+                              rows: this
+                                  .workdays
+                                  .map(
+                                    (workday) => DataRow(
+                                      cells: [
+                                        DataCell(textWhite(workday.number.toString())),
+                                        DataCell(textWhite(workday.hours.toString())),
+                                        DataCell(
+                                          Wrap(
+                                            children: <Widget>[
+                                              workday.pieceworks != null && workday.pieceworks.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhite('-'),
+                                            ],
+                                          ),
+                                          onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workday.pieceworks, false),
+                                        ),
+                                        DataCell(
+                                          Wrap(
+                                            children: <Widget>[
+                                              workday.workTimes != null && workday.workTimes.isNotEmpty ? iconWhite(Icons.zoom_in) : textWhite('-'),
+                                            ],
+                                          ),
+                                          onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workday.workTimes),
+                                        ),
+                                        DataCell(textWhite(workday.money.toString())),
+                                        DataCell(
+                                          Wrap(children: <Widget>[workday.note != null && workday.note != '' ? iconWhite(Icons.zoom_in) : textWhite('-')]),
+                                          onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'noteDetails'), workday.note),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             floatingActionButton: iconsLegendDialog(
