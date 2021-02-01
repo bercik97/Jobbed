@@ -44,9 +44,9 @@ class QuickUpdateDialog {
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                textCenter16GreenBold(getTranslated(context, 'quickUpdateOfTodaysDate') + ' $formattedDate'),
+                Center(child: text16GreenBold(getTranslated(context, 'quickUpdateOfTodaysDate') + ' $formattedDate')),
                 SizedBox(height: 5),
-                textCenter16White(getTranslated(context, 'updateDataForAllEmployeesOfGroup')),
+                Center(child: text16White(getTranslated(context, 'updateDataForAllEmployeesOfGroup'))),
                 SizedBox(height: 30),
                 Buttons.standardButton(
                   minWidth: 200.0,
