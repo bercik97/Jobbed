@@ -185,7 +185,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
                                                   duration: Duration(milliseconds: 100),
                                                   scaleFactor: 2,
                                                   onPressed: () => NavigatorUtil.navigate(this.context, ItemplacesDetailsPage(_model, itemplace)),
-                                                  child: icon30Green(Icons.search),
+                                                  child: icon40Green(Icons.search),
                                                 ),
                                               ),
                                             ),
@@ -199,7 +199,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
                                                   alignment: Alignment.topLeft,
                                                   child: Row(
                                                     children: [
-                                                      text13White(getTranslated(this.context, 'numberOfTypeOfItems') + ': '),
+                                                      textWhite(getTranslated(this.context, 'numberOfTypeOfItems') + ': '),
                                                       textGreen(numberOfTypeOfItems.toString()),
                                                     ],
                                                   ),
@@ -208,7 +208,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
                                                   alignment: Alignment.topLeft,
                                                   child: Row(
                                                     children: [
-                                                      text13White(getTranslated(this.context, 'totalNumberOfItems') + ': '),
+                                                      textWhite(getTranslated(this.context, 'totalNumberOfItems') + ': '),
                                                       textGreen(totalNumberOfItems.toString()),
                                                     ],
                                                   ),

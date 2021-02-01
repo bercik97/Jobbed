@@ -179,7 +179,7 @@ class _WarehousePageState extends State<WarehousePage> {
                                                   duration: Duration(milliseconds: 100),
                                                   scaleFactor: 2,
                                                   onPressed: () => NavigatorUtil.navigate(this.context, WarehouseDetailsPage(_model, warehouse)),
-                                                  child: icon30Green(Icons.search),
+                                                  child: icon40Green(Icons.search),
                                                 ),
                                               ),
                                             ),
@@ -193,7 +193,7 @@ class _WarehousePageState extends State<WarehousePage> {
                                                   alignment: Alignment.topLeft,
                                                   child: Row(
                                                     children: [
-                                                      text13White(getTranslated(this.context, 'numberOfTypeOfItems') + ': '),
+                                                      textWhite(getTranslated(this.context, 'numberOfTypeOfItems') + ': '),
                                                       textGreen(numberOfTypeOfItems),
                                                     ],
                                                   ),
@@ -202,7 +202,7 @@ class _WarehousePageState extends State<WarehousePage> {
                                                   alignment: Alignment.topLeft,
                                                   child: Row(
                                                     children: [
-                                                      text13White(getTranslated(this.context, 'totalNumberOfItems') + ': '),
+                                                      textWhite(getTranslated(this.context, 'totalNumberOfItems') + ': '),
                                                       textGreen(totalNumberOfItems),
                                                     ],
                                                   ),
