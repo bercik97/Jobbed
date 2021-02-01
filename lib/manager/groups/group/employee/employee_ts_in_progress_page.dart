@@ -267,12 +267,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     });
   }
 
-  void onSelectedRow(bool selected, int id) {
-    setState(() {
-      selected ? selectedIds.add(id) : selectedIds.remove(id);
-    });
-  }
-
   List<Widget> _buildTitleWidget() {
     return [
       DataTableUtil.buildTitleItemWidget('No.', 85),
