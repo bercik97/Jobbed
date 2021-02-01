@@ -276,6 +276,8 @@ class _PricelistPageState extends State<PricelistPage> {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     setState(() => _pricelists.removeWhere((element) => ids.contains(element.id)));
                     setState(() => _isDeleteButtonTapped = false);
+                    _uncheckAll();
+                    Navigator.of(this.context).pop();
                     ToastService.showSuccessToast(getTranslated(this.context, 'selectedPricelistsRemoved'));
                   });
                 }).catchError((onError) {
@@ -312,6 +314,14 @@ class _PricelistPageState extends State<PricelistPage> {
         ),
       ],
     );
+  }
+
+  void _uncheckAll() {
+    _selectedIds.clear();
+    _isChecked = false;
+    List<bool> l = new List();
+    _checked.forEach((b) => l.add(false));
+    _checked = l;
   }
 
   Future<Null> _refresh() {
