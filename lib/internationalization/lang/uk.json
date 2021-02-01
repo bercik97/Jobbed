@@ -304,7 +304,7 @@
   "timesheetSuccessfullyDeleted": "Вибраний графік роботи успішно видалений для обраних співробітників",
   "removeSelectedTsForChosenEmployees": "Видалити вибраний графік роботи для вибраних працівників",
   "deleteSelectedTs": "Видалити вибраний графік роботи",
-  "updateSelectedTsStatus": "Оновити вибраний стан робочого часу",
+  "updateSelectedTsStatus": "Оновити статус табеля обліку робочого часу",
   "updateSelectedTsStatusForChosenEmployees": "Оновити вибраний статус табеля обліку робочого часу для вибраних співробітників",
   "forNewStatus": "для нового статусу",
   "timesheetStatusSuccessfullyUpdated": "Статус вибраного табеля успішно оновлений для вибраних працівників",

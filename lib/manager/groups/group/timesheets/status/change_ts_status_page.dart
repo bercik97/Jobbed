@@ -103,15 +103,23 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
           child: Column(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
+                padding: EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    textCenter18WhiteBold(getTranslated(context, 'updateSelectedTsStatusForChosenEmployees')),
+                    text16White(getTranslated(context, 'updateSelectedTsStatusForChosenEmployees')),
                     SizedBox(height: 5),
                     _status == STATUS_COMPLETED
-                        ? textCenter20GreenBold(_year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month) + ' ' + getTranslated(context, 'forNewStatus') + '→ ' + getTranslated(context, _status).toUpperCase())
-                        : textCenter20OrangeBold(
-                            _year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month) + ' ' + getTranslated(context, 'forNewStatus') + '→ ' + getTranslated(context, _status).toUpperCase(),
+                        ? Align(
+                            alignment: Alignment.centerLeft,
+                            child: text16GreenBold(
+                              _year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month) + ' ' + '→ ' + getTranslated(context, _status).toUpperCase(),
+                            ),
+                          )
+                        : Align(
+                            alignment: Alignment.centerLeft,
+                            child: text16OrangeBold(
+                              _year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month) + ' ' + '→ ' + getTranslated(context, _status).toUpperCase(),
+                            ),
                           ),
                   ],
                 ),

@@ -304,7 +304,7 @@
   "timesheetSuccessfullyDeleted": "Выбранное расписание было успешно удалено для выбранных сотрудников",
   "removeSelectedTsForChosenEmployees": "Удалить выбранное расписание для выбранных сотрудников",
   "deleteSelectedTs": "Удалить выбранное расписание",
-  "updateSelectedTsStatus": "Обновить статус выбранного расписания",
+  "updateSelectedTsStatus": "Обновить статус расписания",
   "updateSelectedTsStatusForChosenEmployees": "Обновить статус выбранного расписания для выбранных сотрудников",
   "forNewStatus": "за новый статус",
   "timesheetStatusSuccessfullyUpdated": "Статус выбранного расписания успешно обновлен для выбранных сотрудников",

@@ -96,14 +96,24 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
           child: Column(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
+                padding: EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    textCenter18WhiteBold(getTranslated(context, 'removeSelectedTsForChosenEmployees')),
+                    text16White(getTranslated(context, 'removeSelectedTsForChosenEmployees')),
                     SizedBox(height: 5),
-                    textCenter20GreenBold(
-                      _year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month),
-                    ),
+                    _status == STATUS_COMPLETED
+                        ? Align(
+                            alignment: Alignment.centerLeft,
+                            child: text16GreenBold(
+                              _year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month),
+                            ),
+                          )
+                        : Align(
+                            alignment: Alignment.centerLeft,
+                            child: text16OrangeBold(
+                              _year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month),
+                            ),
+                          ),
                   ],
                 ),
               ),

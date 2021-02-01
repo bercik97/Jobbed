@@ -154,6 +154,7 @@ Text textOrange(String text) { return Text(text, style: GoogleFonts.lato(color: 
 /* TEXT ORANGE BOLD*/
 /////////////////////
 Text textOrangeBold(String text) { return Text(text, style: GoogleFonts.lato(color: Colors.orange, fontWeight: FontWeight.bold)); }
+Text text16OrangeBold(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 16, color: Colors.orange, fontWeight: FontWeight.bold)); }
 Text text20OrangeBold(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 20, color: Colors.orange, fontWeight: FontWeight.bold)); }
 
 
