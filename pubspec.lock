@@ -634,14 +634,14 @@ packages:
       name: syncfusion_flutter_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "18.4.39"
+    version: "18.4.41"
   syncfusion_flutter_sliders:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_sliders
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "18.4.39-beta"
+    version: "18.4.41-beta"
   synchronized:
     dependency: transitive
     description:
