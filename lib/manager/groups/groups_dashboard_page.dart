@@ -110,7 +110,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
               ),
             ],
           ),
-          body: _groups.isNotEmpty ? _handleGroups() : _handleNoGroups(),
+          body: _groups != null && _groups.isNotEmpty ? _handleGroups() : _handleNoGroups(),
           floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
           floatingActionButton: Column(
             mainAxisAlignment: MainAxisAlignment.end,
