@@ -93,10 +93,6 @@ class _GroupPageState extends State<GroupPage> {
                             child: textWhite(getTranslated(context, 'numberOfEmployees') + ': ' + _model.numberOfEmployees.toString()),
                             alignment: Alignment.topLeft,
                           ),
-                          Align(
-                            child: textWhite(getTranslated(context, 'groupCountryOfWork') + ': ' + LanguageUtil.findFlagByNationality(_model.countryOfWork.toString())),
-                            alignment: Alignment.topLeft,
-                          ),
                         ],
                       ),
                       trailing: Ink(
@@ -138,7 +134,7 @@ class _GroupPageState extends State<GroupPage> {
                           child: Material(
                             color: BRIGHTER_DARK,
                             child: InkWell(
-                              onTap: () => NavigatorUtil.navigate(context, ManagerTsPage(_model)),
+                              onTap: () => NavigatorUtil.navigate(context, TsPage(_model)),
                               child: _buildScrollableContainer('images/timesheets-icon.png', 'timesheets', 'fillHoursPieceworks'),
                             ),
                           ),

@@ -33,16 +33,16 @@ import '../../../shared/manager_app_bar.dart';
 import 'completed/ts_completed_page.dart';
 import 'in_progress/ts_in_progress_page.dart';
 
-class ManagerTsPage extends StatefulWidget {
+class TsPage extends StatefulWidget {
   final GroupModel _model;
 
-  ManagerTsPage(this._model);
+  TsPage(this._model);
 
   @override
-  _ManagerTsPageState createState() => _ManagerTsPageState();
+  _TsPageState createState() => _TsPageState();
 }
 
-class _ManagerTsPageState extends State<ManagerTsPage> {
+class _TsPageState extends State<TsPage> {
   GroupModel _model;
   User _user;
 

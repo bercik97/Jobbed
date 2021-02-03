@@ -13,7 +13,6 @@ import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/employee/profile/tabs/employee_panel.dart';
 import 'package:give_job/employee/profile/tabs/employee_timesheets.tab.dart';
 import 'package:give_job/employee/profile/tabs/employee_today.dart';
-import 'package:give_job/employee/shared/employee_app_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -162,9 +161,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                                 child: Column(
                                   children: <Widget>[
                                     textCenterWhite(getTranslated(this.context, 'money')),
-                                    textCenter15White(
-                                      _employeePageDto.tsCurrency != null ? '(' + _employeePageDto.tsCurrency + ')' : getTranslated(this.context, 'noCurrency'),
-                                    ),
+                                    textCenter15White('(PLN)'),
                                     Countup(
                                       begin: 0,
                                       end: _employeePageDto.tsEarnedMoney,

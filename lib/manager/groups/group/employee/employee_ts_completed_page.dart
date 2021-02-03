@@ -28,10 +28,9 @@ class EmployeeTsCompletedPage extends StatefulWidget {
   final GroupModel _model;
   final String _employeeInfo;
   final String _employeeNationality;
-  final String _currency;
   final TimesheetForEmployeeDto _timesheet;
 
-  const EmployeeTsCompletedPage(this._model, this._employeeInfo, this._employeeNationality, this._currency, this._timesheet);
+  const EmployeeTsCompletedPage(this._model, this._employeeInfo, this._employeeNationality, this._timesheet);
 
   @override
   _EmployeeTsCompletedPageState createState() => _EmployeeTsCompletedPageState();
@@ -45,7 +44,6 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
 
   String _employeeInfo;
   String _employeeNationality;
-  String _currency;
   TimesheetForEmployeeDto _timesheet;
 
   List<WorkdayDto> workdays;
@@ -57,7 +55,6 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     this._employeeInfo = widget._employeeInfo;
     this._employeeNationality = widget._employeeNationality;
-    this._currency = widget._currency;
     this._timesheet = widget._timesheet;
     return MaterialApp(
       title: APP_NAME,
@@ -91,19 +88,19 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                         Row(
                           children: <Widget>[
                             textWhite(getTranslated(this.context, 'hours') + ': '),
-                            textGreenBold(_timesheet.totalMoneyForHoursForEmployee.toString() + ' ' + _currency + ' (' + _timesheet.totalHours + ' h)'),
+                            textGreenBold(_timesheet.totalMoneyForHoursForEmployee.toString() + ' PLN' + ' (' + _timesheet.totalHours + ' h)'),
                           ],
                         ),
                         Row(
                           children: <Widget>[
                             textWhite(getTranslated(this.context, 'accord') + ': '),
-                            textGreenBold(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' ' + _currency),
+                            textGreenBold(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
                           ],
                         ),
                         Row(
                           children: <Widget>[
                             textWhite(getTranslated(this.context, 'sum') + ': '),
-                            textGreenBold(_timesheet.totalMoneyEarned.toString() + ' ' + _currency),
+                            textGreenBold(_timesheet.totalMoneyEarned.toString() + ' PLN'),
                           ],
                         ),
                       ],

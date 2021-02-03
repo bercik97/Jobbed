@@ -93,7 +93,7 @@ Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fi
                     Row(
                       children: [
                         text15White(getTranslated(context, 'money') + ' (' + getTranslated(context, 'sum') + '): '),
-                        text15GreenBold(todayMoney + ' ' + (dto.tsCurrency != null ? dto.tsCurrency : getTranslated(context, 'empty'))),
+                        text15GreenBold(todayMoney + ' PLN'),
                       ],
                     ),
                     SizedBox(height: 5),

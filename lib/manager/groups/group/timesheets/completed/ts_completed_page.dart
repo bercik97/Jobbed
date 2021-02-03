@@ -122,7 +122,6 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                   EmployeeStatisticsDto employee = _filteredEmployees[index];
                   String info = employee.info;
                   String nationality = employee.nationality;
-                  String currency = employee.currency;
                   String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.gender, info.substring(0, 1));
                   return Card(
                     color: DARK,
@@ -132,16 +131,13 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                           id: employee.timesheetId,
                           year: _timesheet.year,
                           month: _timesheet.month,
-                          companyName: null,
-                          groupName: _model.groupName,
-                          groupCountryCurrency: currency,
                           status: _timesheet.status,
                           totalHours: _filteredEmployees[index].totalHours,
                           totalMoneyForHoursForEmployee: _filteredEmployees[index].totalMoneyForHoursForEmployee,
                           totalMoneyForPieceworkForEmployee: _filteredEmployees[index].totalMoneyForPieceworkForEmployee,
                           totalMoneyEarned: _filteredEmployees[index].totalMoneyEarned,
                         );
-                        NavigatorUtil.navigate(this.context, EmployeeTsCompletedPage(_model, info, nationality, currency, _completedTimesheet));
+                        NavigatorUtil.navigate(this.context, EmployeeTsCompletedPage(_model, info, nationality, _completedTimesheet));
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -157,7 +153,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                                   child: BouncingWidget(
                                     duration: Duration(milliseconds: 100),
                                     scaleFactor: 1.5,
-                                    onPressed: () => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, currency, employee.id, info, avatarPath)),
+                                    onPressed: () => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, employee.id, info, avatarPath)),
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
@@ -173,19 +169,19 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                                   Row(
                                     children: <Widget>[
                                       textWhite(getTranslated(this.context, 'hours') + ': '),
-                                      textGreenBold(employee.totalMoneyForHoursForEmployee.toString() + ' ' + currency + ' (' + employee.totalHours + ' h)'),
+                                      textGreenBold(employee.totalMoneyForHoursForEmployee.toString() + ' PLN' + ' (' + employee.totalHours + ' h)'),
                                     ],
                                   ),
                                   Row(
                                     children: <Widget>[
                                       textWhite(getTranslated(this.context, 'accord') + ': '),
-                                      textGreenBold(employee.totalMoneyForPieceworkForEmployee.toString() + ' ' + currency),
+                                      textGreenBold(employee.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
                                     ],
                                   ),
                                   Row(
                                     children: <Widget>[
                                       textWhite(getTranslated(this.context, 'sum') + ': '),
-                                      textGreenBold(employee.totalMoneyEarned.toString() + ' ' + currency),
+                                      textGreenBold(employee.totalMoneyEarned.toString() + ' PLN'),
                                     ],
                                   ),
                                 ],

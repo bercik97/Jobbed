@@ -6,14 +6,6 @@ class GroupModel {
   String groupName;
   String groupDescription;
   String numberOfEmployees;
-  String countryOfWork;
 
-  GroupModel(
-    this.user,
-    this.groupId,
-    this.groupName,
-    this.groupDescription,
-    this.numberOfEmployees,
-    this.countryOfWork,
-  );
+  GroupModel(this.user, this.groupId, this.groupName, this.groupDescription, this.numberOfEmployees);
 }

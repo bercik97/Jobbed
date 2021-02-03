@@ -52,11 +52,8 @@ class TimesheetService {
     }
   }
 
-  Future<List<TimesheetForEmployeeDto>> findAllForEmployeeProfileByGroupIdAndEmployeeId(int employeeId, int groupId) async {
-    Response res = await get(
-      '$_url/employee-profile?employee_id=$employeeId&group_id=$groupId',
-      headers: _header,
-    );
+  Future<List<TimesheetForEmployeeDto>> findAllByEmployeeIdOrderByYearDescMonthDesc(int employeeId) async {
+    Response res = await get('$_url/employees/$employeeId', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => TimesheetForEmployeeDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -67,10 +64,7 @@ class TimesheetService {
   }
 
   Future<List<TimesheetWithStatusDto>> findAllWithStatusByGroupId(int groupId) async {
-    Response res = await get(
-      '$_url/groups/$groupId/with-status',
-      headers: _header,
-    );
+    Response res = await get('$_url/groups/$groupId/with-status', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => TimesheetWithStatusDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {

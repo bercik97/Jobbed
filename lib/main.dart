@@ -68,7 +68,6 @@ class _MyAppState extends State<MyApp> {
     var groupName = await storage.read(key: 'groupName');
     var groupDescription = await storage.read(key: 'groupDescription');
     var numberOfEmployees = await storage.read(key: 'numberOfEmployees');
-    var countryOfWork = await storage.read(key: 'countryOfWork');
     Map<String, String> map = new Map();
     map['getStartedClick'] = getStartedClick;
     map['authorization'] = auth;
@@ -83,7 +82,6 @@ class _MyAppState extends State<MyApp> {
     map['groupName'] = groupName;
     map['groupDescription'] = groupDescription;
     map['numberOfEmployees'] = numberOfEmployees;
-    map['countryOfWork'] = countryOfWork;
     return map.isNotEmpty ? map : null;
   }
 

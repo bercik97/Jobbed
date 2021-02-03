@@ -16,6 +16,7 @@ import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -29,11 +30,10 @@ class AddPieceworkForSelectedWorkdays extends StatefulWidget {
   final String _employeeInfo;
   final int _employeeId;
   final String _employeeNationality;
-  final String _currency;
   final TimesheetForEmployeeDto _timesheet;
   final String _avatarPath;
 
-  AddPieceworkForSelectedWorkdays(this._model, this._selectedWorkdayIds, this._employeeInfo, this._employeeId, this._employeeNationality, this._currency, this._timesheet, this._avatarPath);
+  AddPieceworkForSelectedWorkdays(this._model, this._selectedWorkdayIds, this._employeeInfo, this._employeeId, this._employeeNationality, this._timesheet, this._avatarPath);
 
   @override
   _AddPieceworkForSelectedWorkdaysState createState() => _AddPieceworkForSelectedWorkdaysState();
@@ -45,7 +45,6 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
   String _employeeInfo;
   int _employeeId;
   String _employeeNationality;
-  String _currency;
   TimesheetForEmployeeDto _timesheet;
   String _avatarPath;
 
@@ -75,7 +74,6 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
     this._employeeInfo = widget._employeeInfo;
     this._employeeId = widget._employeeId;
     this._employeeNationality = widget._employeeNationality;
-    this._currency = widget._currency;
     this._timesheet = widget._timesheet;
     this._avatarPath = widget._avatarPath;
     this._pricelistService = ServiceInitializer.initialize(context, _user.authHeader, PricelistService);
@@ -88,38 +86,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
         _pricelists.forEach((i) => _textEditingItemControllers[utf8.decode(i.name.runes.toList())] = new TextEditingController());
         _loading = false;
       });
-    }).catchError((onError) {
-      _showFailureDialog();
-    });
-  }
-
-  _showFailureDialog() {
-    return showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return WillPopScope(
-          child: AlertDialog(
-            backgroundColor: DARK,
-            title: textGreen(getTranslated(this.context, 'failure')),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  textWhite(getTranslated(this.context, 'noPricelist')),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: textWhite(getTranslated(this.context, 'goToTheTimesheetPage')),
-                onPressed: () => navigateIntoEmployeeTsInProgressPage(),
-              ),
-            ],
-          ),
-          onWillPop: navigateIntoEmployeeTsInProgressPage,
-        );
-      },
-    );
+    }).catchError((onError) => DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'noPricelist'), EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _timesheet, _avatarPath)));
   }
 
   @override
@@ -150,7 +117,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
           bottomNavigationBar: _buildBottomNavigationBar(),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _currency, _timesheet, _avatarPath)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _timesheet, _avatarPath)),
     );
   }
 
@@ -314,6 +281,6 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
   }
 
   void navigateIntoEmployeeTsInProgressPage() {
-    NavigatorUtil.navigateReplacement(this.context, EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _currency, _timesheet, _avatarPath));
+    NavigatorUtil.navigateReplacement(this.context, EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _timesheet, _avatarPath));
   }
 }

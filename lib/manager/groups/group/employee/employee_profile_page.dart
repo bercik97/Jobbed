@@ -28,12 +28,11 @@ import 'employee_ts_in_progress_page.dart';
 class EmployeeProfilePage extends StatefulWidget {
   final GroupModel _model;
   final String _employeeNationality;
-  final String _currency;
   final int _employeeId;
   final String _employeeInfo;
   final String _avatarPath;
 
-  const EmployeeProfilePage(this._model, this._employeeNationality, this._currency, this._employeeId, this._employeeInfo, this._avatarPath);
+  const EmployeeProfilePage(this._model, this._employeeNationality, this._employeeId, this._employeeInfo, this._avatarPath);
 
   @override
   _EmployeeProfilePageState createState() => _EmployeeProfilePageState();
@@ -47,7 +46,6 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
   EmployeeService _employeeService;
 
   String _employeeNationality;
-  String _currency;
   int _employeeId;
   String _employeeInfo;
   String _avatarPath;
@@ -59,7 +57,6 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
     this._tsService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
     this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
     this._employeeNationality = widget._employeeNationality;
-    this._currency = widget._currency;
     this._employeeId = widget._employeeId;
     this._employeeInfo = widget._employeeInfo;
     this._avatarPath = widget._avatarPath;
@@ -137,7 +134,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
               padding: EdgeInsets.all(5),
               child: TabBarView(
                 children: <Widget>[
-                  _buildTimesheetsSection(),
+                  _buildSheetsSection(),
                   _buildContactSection(),
                   _buildInformationSection(),
                 ],
@@ -149,9 +146,9 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
     );
   }
 
-  Widget _buildTimesheetsSection() {
+  Widget _buildSheetsSection() {
     return FutureBuilder(
-      future: _tsService.findAllForEmployeeProfileByGroupIdAndEmployeeId(_model.groupId, _employeeId),
+      future: _tsService.findAllByEmployeeIdOrderByYearDescMonthDesc(_employeeId),
       builder: (BuildContext context, AsyncSnapshot<List<TimesheetForEmployeeDto>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
           return Center(child: circularProgressIndicator());
@@ -168,9 +165,9 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                             child: InkWell(
                               onTap: () {
                                 if (timesheet.status == 'Completed') {
-                                  NavigatorUtil.navigate(this.context, EmployeeTsCompletedPage(_model, _employeeInfo, _employeeNationality, _currency, timesheet));
+                                  NavigatorUtil.navigate(this.context, EmployeeTsCompletedPage(_model, _employeeInfo, _employeeNationality, timesheet));
                                 } else {
-                                  NavigatorUtil.navigate(this.context, EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _currency, timesheet, _avatarPath));
+                                  NavigatorUtil.navigate(this.context, EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, timesheet, _avatarPath));
                                 }
                               },
                               child: Column(
@@ -186,30 +183,22 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                                     title: textWhiteBold(timesheet.year.toString() + ' ' + MonthUtil.translateMonth(this.context, timesheet.month)),
                                     subtitle: Column(
                                       children: <Widget>[
-                                        Align(
-                                            child: Row(
-                                              children: <Widget>[
-                                                textWhite(getTranslated(this.context, 'company') + ': '),
-                                                textGreenBold(timesheet.companyName != null ? utf8.decode(timesheet.companyName.runes.toList()) : getTranslated(this.context, 'empty')),
-                                              ],
-                                            ),
-                                            alignment: Alignment.topLeft),
                                         Row(
                                           children: <Widget>[
                                             textWhite(getTranslated(this.context, 'hours') + ': '),
-                                            textGreenBold(timesheet.totalMoneyForHoursForEmployee.toString() + ' ' + _currency + ' (' + timesheet.totalHours + ' h)'),
+                                            textGreenBold(timesheet.totalMoneyForHoursForEmployee.toString() + ' PLN' + ' (' + timesheet.totalHours + ' h)'),
                                           ],
                                         ),
                                         Row(
                                           children: <Widget>[
                                             textWhite(getTranslated(this.context, 'accord') + ': '),
-                                            textGreenBold(timesheet.totalMoneyForPieceworkForEmployee.toString() + ' ' + _currency),
+                                            textGreenBold(timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
                                           ],
                                         ),
                                         Row(
                                           children: <Widget>[
                                             textWhite(getTranslated(this.context, 'sum') + ': '),
-                                            textGreenBold(timesheet.totalMoneyEarned.toString() + ' ' + _currency),
+                                            textGreenBold(timesheet.totalMoneyEarned.toString() + ' PLN'),
                                           ],
                                         ),
                                       ],

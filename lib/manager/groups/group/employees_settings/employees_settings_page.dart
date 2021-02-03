@@ -16,6 +16,7 @@ import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/util/avatars_util.dart';
@@ -76,7 +77,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
         _filteredEmployees = _employees;
         _loading = false;
       });
-    });
+    }).catchError((onError) => DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'groupNoEmployees'), GroupPage(_model)));
   }
 
   @override
@@ -162,7 +163,6 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                       }
                       String info = employee.employeeInfo;
                       String nationality = employee.employeeNationality;
-                      String currency = employee.currency;
                       String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.employeeGender, info.substring(0, 1));
                       return Card(
                         color: DARK,
@@ -183,7 +183,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                       child: BouncingWidget(
                                         duration: Duration(milliseconds: 100),
                                         scaleFactor: 2,
-                                        onPressed: () async => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, currency, employee.employeeId, info, avatarPath)),
+                                        onPressed: () async => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, employee.employeeId, info, avatarPath)),
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
@@ -200,7 +200,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                           child: Row(
                                             children: <Widget>[
                                               text13White(getTranslated(this.context, 'moneyPerHour') + ': '),
-                                              textGreenBold(employee.moneyPerHour.toString() + ' ' + currency),
+                                              textGreenBold(employee.moneyPerHour.toString() + ' PLN'),
                                             ],
                                           ),
                                           alignment: Alignment.topLeft),
@@ -208,7 +208,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                           child: Row(
                                             children: <Widget>[
                                               text13White(getTranslated(this.context, 'moneyPerHourForCompany') + ': '),
-                                              textGreenBold(employee.moneyPerHourForCompany.toString() + ' ' + currency),
+                                              textGreenBold(employee.moneyPerHourForCompany.toString() + ' PLN'),
                                             ],
                                           ),
                                           alignment: Alignment.topLeft),

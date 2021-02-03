@@ -237,7 +237,7 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
                   ),
                   color: Colors.red,
                   onPressed: () => {
-                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ManagerTsPage(_model)), (e) => false),
+                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TsPage(_model)), (e) => false),
                   },
                 ),
                 SizedBox(width: 25),
@@ -271,7 +271,7 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
     _timesheetService.deleteForEmployeesByYearAndMonthAndStatus(_selectedIds.map((el) => el.toString()).toList(), _year, _month, _status).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'timesheetSuccessfullyDeleted'));
-        NavigatorUtil.navigateReplacement(context, ManagerTsPage(_model));
+        NavigatorUtil.navigateReplacement(context, TsPage(_model));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

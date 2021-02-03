@@ -8,7 +8,6 @@ class EmployeePageDto {
   final String gender;
   final String tsCurrentYear;
   final String tsCurrentMonth;
-  final String tsCurrency;
   final num tsDaysWorked;
   final num tsEarnedMoney;
   final List timeSheets;
@@ -22,17 +21,12 @@ class EmployeePageDto {
   final bool canFillHours;
   final bool workTimeByLocation;
   final bool piecework;
-  final String groupManager;
-  final String groupManagerPhone;
-  final String groupManagerViber;
-  final String groupManagerWhatsApp;
 
   EmployeePageDto({
     @required this.id,
     @required this.gender,
     @required this.tsCurrentYear,
     @required this.tsCurrentMonth,
-    @required this.tsCurrency,
     @required this.tsDaysWorked,
     @required this.tsEarnedMoney,
     @required this.timeSheets,
@@ -46,10 +40,6 @@ class EmployeePageDto {
     @required this.canFillHours,
     @required this.workTimeByLocation,
     @required this.piecework,
-    @required this.groupManager,
-    @required this.groupManagerPhone,
-    @required this.groupManagerViber,
-    @required this.groupManagerWhatsApp,
   });
 
   factory EmployeePageDto.fromJson(Map<String, dynamic> json) {
@@ -58,7 +48,6 @@ class EmployeePageDto {
       gender: json['gender'] as String,
       tsCurrentYear: json['tsCurrentYear'] as String,
       tsCurrentMonth: json['tsCurrentMonth'] as String,
-      tsCurrency: json['tsCurrency'] as String,
       tsDaysWorked: json['tsDaysWorked'] as num,
       tsEarnedMoney: json['tsEarnedMoney'] as num,
       timeSheets: json['timeSheets'].map((data) => TimesheetForEmployeeDto.fromJson(data)).toList(),
@@ -72,10 +61,6 @@ class EmployeePageDto {
       canFillHours: json['canFillHours'] as bool,
       workTimeByLocation: json['workTimeByLocation'] as bool,
       piecework: json['piecework'] as bool,
-      groupManager: json['groupManager'] as String,
-      groupManagerPhone: json['groupManagerPhone'] as String,
-      groupManagerViber: json['groupManagerViber'] as String,
-      groupManagerWhatsApp: json['groupManagerWhatsApp'] as String,
     );
   }
 }

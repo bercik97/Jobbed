@@ -5,7 +5,6 @@ class EmployeeGroupDto {
   final String info;
   final String gender;
   final String nationality;
-  final String currency;
   final String tsStatus;
   final String todayWorkedTime;
   final String workStatus;
@@ -22,7 +21,6 @@ class EmployeeGroupDto {
     @required this.info,
     @required this.gender,
     @required this.nationality,
-    @required this.currency,
     @required this.tsStatus,
     @required this.todayWorkedTime,
     @required this.workStatus,
@@ -41,7 +39,6 @@ class EmployeeGroupDto {
       info: json['info'] as String,
       gender: json['gender'] as String,
       nationality: json['nationality'] as String,
-      currency: json['currency'] as String,
       tsStatus: json['tsStatus'] as String,
       todayWorkedTime: json['todayWorkedTime'] as String,
       workStatus: json['workStatus'] as String,

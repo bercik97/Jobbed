@@ -45,10 +45,7 @@ class EmployeeService {
   }
 
   Future<EmployeePageDto> findByIdForEmployeePage(String id) async {
-    Response res = await get(
-      '$_url/employee-page?id=$id',
-      headers: _header,
-    );
+    Response res = await get('$_url/employee-page?id=$id', headers: _header);
     var body = res.body;
     if (res.statusCode == 200) {
       return EmployeePageDto.fromJson(jsonDecode(body));
@@ -87,11 +84,19 @@ class EmployeeService {
     }
   }
 
-  Future<List<EmployeeBasicDto>> findAllByGroupIsNullAndCompanyId(int companyId) async {
-    Response res = await get(
-      '$_url/nullable-group/companies?company_id=$companyId',
-      headers: _header,
-    );
+  Future<List<EmployeeBasicDto>> findAllByCompanyId(int companyId) async {
+    Response res = await get('$_url/companies?company_id=$companyId', headers: _header);
+    if (res.statusCode == 200) {
+      return (json.decode(res.body) as List).map((data) => EmployeeBasicDto.fromJson(data)).toList();
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<List<EmployeeBasicDto>> findAllByGroupIsNullAndCompanyId(int companyId, int groupId) async {
+    Response res = await get('$_url/companies/$companyId/groups-not-in/$groupId', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeBasicDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {

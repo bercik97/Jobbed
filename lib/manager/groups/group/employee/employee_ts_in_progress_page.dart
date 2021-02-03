@@ -37,11 +37,10 @@ class EmployeeTsInProgressPage extends StatefulWidget {
   final String _employeeInfo;
   final int _employeeId;
   final String _employeeNationality;
-  final String _currency;
   final TimesheetForEmployeeDto timesheet;
   final String _avatarPath;
 
-  const EmployeeTsInProgressPage(this._model, this._employeeInfo, this._employeeId, this._employeeNationality, this._currency, this.timesheet, this._avatarPath);
+  const EmployeeTsInProgressPage(this._model, this._employeeInfo, this._employeeId, this._employeeNationality, this.timesheet, this._avatarPath);
 
   @override
   _EmployeeTsInProgressPageState createState() => _EmployeeTsInProgressPageState();
@@ -60,7 +59,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   String _employeeInfo;
   int _employeeId;
   String _employeeNationality;
-  String _currency;
   TimesheetForEmployeeDto _timesheet;
   String _avatarPath;
 
@@ -78,7 +76,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     this._employeeInfo = widget._employeeInfo;
     this._employeeId = widget._employeeId;
     this._employeeNationality = widget._employeeNationality;
-    this._currency = widget._currency;
     this._timesheet = widget.timesheet;
     this._avatarPath = widget._avatarPath;
     super.initState();
@@ -137,19 +134,19 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                         Row(
                           children: <Widget>[
                             textWhite(getTranslated(this.context, 'hours') + ': '),
-                            textGreenBold(_timesheet.totalMoneyForHoursForEmployee.toString() + ' ' + _currency + ' (' + _timesheet.totalHours + ' h)'),
+                            textGreenBold(_timesheet.totalMoneyForHoursForEmployee.toString() + ' PLN' + ' (' + _timesheet.totalHours + ' h)'),
                           ],
                         ),
                         Row(
                           children: <Widget>[
                             textWhite(getTranslated(this.context, 'accord') + ': '),
-                            textGreenBold(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' ' + _currency),
+                            textGreenBold(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
                           ],
                         ),
                         Row(
                           children: <Widget>[
                             textWhite(getTranslated(this.context, 'sum') + ': '),
-                            textGreenBold(_timesheet.totalMoneyEarned.toString() + ' ' + _currency),
+                            textGreenBold(_timesheet.totalMoneyEarned.toString() + ' PLN'),
                           ],
                         ),
                       ],
@@ -213,7 +210,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                               _employeeInfo,
                               _employeeId,
                               _employeeNationality,
-                              _currency,
                               _timesheet,
                               _avatarPath,
                             ));

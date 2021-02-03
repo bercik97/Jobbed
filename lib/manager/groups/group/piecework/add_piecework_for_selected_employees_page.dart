@@ -16,6 +16,7 @@ import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -88,47 +89,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
         _pricelists.forEach((i) => _textEditingItemControllers[utf8.decode(i.name.runes.toList())] = new TextEditingController());
         _loading = false;
       });
-    }).catchError((onError) {
-      _showFailureDialog();
-    });
-  }
-
-  _showFailureDialog() {
-    return showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return WillPopScope(
-          child: AlertDialog(
-            backgroundColor: DARK,
-            title: textGreen(getTranslated(this.context, 'failure')),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  textWhite(getTranslated(this.context, 'noPricelist')),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: textWhite(getTranslated(this.context, 'goToTheTsInProgressPage')),
-                onPressed: () => _resetAndOpenPage(),
-              ),
-            ],
-          ),
-          onWillPop: _navigateToTimesheetInProgressPage,
-        );
-      },
-    );
-  }
-
-  Future<bool> _navigateToTimesheetInProgressPage() async {
-    _resetAndOpenPage();
-    return true;
-  }
-
-  void _resetAndOpenPage() {
-    NavigatorUtil.navigateReplacement(context, TsInProgressPage(_model, _timeSheet));
+    }).catchError((onError) => DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'noPricelist'), TsInProgressPage(_model, _timeSheet)));
   }
 
   @override

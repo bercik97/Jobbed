@@ -29,4 +29,45 @@ class DialogService {
       },
     );
   }
+
+  static showFailureDialogWithWillPopScope(BuildContext context, String msg, StatefulWidget widget) {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return WillPopScope(
+          child: AlertDialog(
+            backgroundColor: DARK,
+            title: textGreen(getTranslated(context, 'failure')),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  textWhite(msg),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: textWhite(getTranslated(context, 'ok')),
+                onPressed: () => _resetAndOpenPage(context, widget),
+              ),
+            ],
+          ),
+          onWillPop: () => _navigateToPage(context, widget),
+        );
+      },
+    );
+  }
+
+  static Future<bool> _navigateToPage(BuildContext context, StatefulWidget widget) async {
+    _resetAndOpenPage(context, widget);
+    return true;
+  }
+
+  static void _resetAndOpenPage(BuildContext context, StatefulWidget widget) {
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (BuildContext context) => widget),
+      ModalRoute.withName('/'),
+    );
+  }
 }

@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 class CreateGroupDto {
   final String name;
   final String description;
-  final String countryOfWork;
   final int companyId;
   final int managerId;
   final List<String> employeeIds;
@@ -11,7 +10,6 @@ class CreateGroupDto {
   CreateGroupDto({
     @required this.name,
     @required this.description,
-    @required this.countryOfWork,
     @required this.companyId,
     @required this.managerId,
     @required this.employeeIds,
@@ -21,7 +19,6 @@ class CreateGroupDto {
     Map<String, dynamic> map = new Map();
     map['name'] = dto.name;
     map['description'] = dto.description;
-    map['countryOfWork'] = dto.countryOfWork;
     map['companyId'] = dto.companyId;
     map['managerId'] = dto.managerId;
     map['employeeIds'] = dto.employeeIds;

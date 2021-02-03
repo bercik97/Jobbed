@@ -1,7 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
 
-import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
@@ -47,13 +46,10 @@ class _AddGroupPageState extends State<AddGroupPage> {
   final TextEditingController _groupNameController = new TextEditingController();
   final TextEditingController _groupDescriptionController = new TextEditingController();
 
-  String _nationality = '';
-
   List<EmployeeBasicDto> _employees = new List();
   bool _loading = false;
   bool _isChecked = false;
   bool _isAddButtonTapped = false;
-  bool _isErrorMsgOfCountryOfWorkShouldBeShow = false;
   List<bool> _checked = new List();
   LinkedHashSet<int> _selectedIds = new LinkedHashSet();
 
@@ -64,56 +60,13 @@ class _AddGroupPageState extends State<AddGroupPage> {
     this._groupService = ServiceInitializer.initialize(context, _user.authHeader, GroupService);
     super.initState();
     _loading = true;
-    _employeeService.findAllByGroupIsNullAndCompanyId(int.parse(_user.companyId)).then((res) {
+    _employeeService.findAllByCompanyId(int.parse(_user.companyId)).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
         _loading = false;
       });
-    }).catchError((onError) {
-      _showFailureDialog();
-    });
-  }
-
-  _showFailureDialog() {
-    return showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return WillPopScope(
-          child: AlertDialog(
-            backgroundColor: DARK,
-            title: textGreen(getTranslated(this.context, 'failure')),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  textWhite(getTranslated(this.context, 'noEmployeesToFormGroup')),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: textWhite(getTranslated(this.context, 'goToGroupsDashboard')),
-                onPressed: () => _resetAndOpenPage(),
-              ),
-            ],
-          ),
-          onWillPop: _navigateToGroupDashboard,
-        );
-      },
-    );
-  }
-
-  Future<bool> _navigateToGroupDashboard() async {
-    _resetAndOpenPage();
-    return true;
-  }
-
-  void _resetAndOpenPage() {
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (BuildContext context) => GroupsDashboardPage(_user)),
-      ModalRoute.withName('/'),
-    );
+    }).catchError((onError) => DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'noEmployeesToFormGroup'), GroupsDashboardPage(_user)));
   }
 
   @override
@@ -154,8 +107,6 @@ class _AddGroupPageState extends State<AddGroupPage> {
                     2,
                     getTranslated(context, 'groupDescriptionIsRequired'),
                   ),
-                  SizedBox(height: 5),
-                  _buildNationalityDropdown(),
                   _buildSelectUnselectAllCheckbox(),
                   _buildEmployees(),
                 ],
@@ -192,51 +143,6 @@ class _AddGroupPageState extends State<AddGroupPage> {
         hintText: hintText,
         labelText: labelText,
         labelStyle: TextStyle(color: WHITE),
-      ),
-    );
-  }
-
-  Widget _buildNationalityDropdown() {
-    return Theme(
-      data: ThemeData(hintColor: Colors.white, splashColor: GREEN, colorScheme: ColorScheme.dark()),
-      child: Column(
-        children: <Widget>[
-          DropDownFormField(
-            titleText: getTranslated(context, 'groupCountryOfWork'),
-            hintText: getTranslated(context, 'chooseCountryOfWorkOfYourGroup'),
-            validator: (value) {
-              if (_isErrorMsgOfCountryOfWorkShouldBeShow || (_isAddButtonTapped && value == null)) {
-                return getTranslated(context, 'groupCountryOfWorkIsRequired');
-              }
-              return null;
-            },
-            value: _nationality,
-            onSaved: (value) {
-              setState(() {
-                _nationality = value;
-              });
-            },
-            onChanged: (value) {
-              setState(() {
-                _nationality = value;
-                FocusScope.of(context).unfocus();
-                _isErrorMsgOfCountryOfWorkShouldBeShow = false;
-              });
-            },
-            dataSource: [
-              {'display': 'English ' + LanguageUtil.findFlagByNationality('EN'), 'value': 'EN'},
-              {'display': 'ქართული ' + LanguageUtil.findFlagByNationality('GE'), 'value': 'GE'},
-              {'display': 'Polska ' + LanguageUtil.findFlagByNationality('PL'), 'value': 'PL'},
-              {'display': 'русский ' + LanguageUtil.findFlagByNationality('RU'), 'value': 'RU'},
-              {'display': 'Українська ' + LanguageUtil.findFlagByNationality('UK'), 'value': 'UK'},
-            ],
-            textField: 'display',
-            valueField: 'value',
-            required: true,
-            autovalidate: true,
-          ),
-          SizedBox(height: 20),
-        ],
       ),
     );
   }
@@ -377,11 +283,6 @@ class _AddGroupPageState extends State<AddGroupPage> {
         titleWidget: textRed(getTranslated(context, 'error')),
         content: getTranslated(context, 'correctInvalidFields'),
       );
-      if (_nationality == '') {
-        setState(() => _isErrorMsgOfCountryOfWorkShouldBeShow = true);
-      } else {
-        setState(() => _isErrorMsgOfCountryOfWorkShouldBeShow = false);
-      }
       setState(() => _isAddButtonTapped = false);
       return;
     }
@@ -394,7 +295,6 @@ class _AddGroupPageState extends State<AddGroupPage> {
     CreateGroupDto dto = new CreateGroupDto(
       name: _groupNameController.text,
       description: _groupDescriptionController.text,
-      countryOfWork: _nationality,
       companyId: int.parse(_user.companyId),
       managerId: int.parse(_user.id),
       employeeIds: _selectedIds.map((el) => el.toString()).toList(),

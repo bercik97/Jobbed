@@ -11,8 +11,6 @@ import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
-import 'contact/contact_for_manager.dart';
-
 Container employeePanel(BuildContext context, User user, EmployeePageDto employee) {
   return Container(
     child: Padding(
@@ -79,23 +77,7 @@ Container employeePanel(BuildContext context, User user, EmployeePageDto employe
                   ),
                 ),
                 SizedBox(width: 10),
-                Expanded(
-                  child: Material(
-                    color: BRIGHTER_DARK,
-                    child: InkWell(
-                      onTap: () => employee.groupManager != null
-                          ? showContactForManager(
-                              context,
-                              employee.groupManager,
-                              employee.groupManagerPhone,
-                              employee.groupManagerViber,
-                              employee.groupManagerWhatsApp,
-                            )
-                          : ToastService.showErrorToast(getTranslated(context, 'noManagerAssigned')),
-                      child: _buildScrollableContainer(context, 'images/contact-with-manager-icon.png', 'contact', 'contactWithYourManager'),
-                    ),
-                  ),
-                ),
+                Expanded(child: Material(color: BRIGHTER_DARK)),
               ],
             )
           ],

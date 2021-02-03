@@ -244,7 +244,7 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
                   ),
                   color: Colors.red,
                   onPressed: () => {
-                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ManagerTsPage(_model)), (e) => false),
+                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TsPage(_model)), (e) => false),
                   },
                 ),
                 SizedBox(width: 25),
@@ -287,7 +287,7 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
     _timesheetService.updateEmployeesTsStatus(_selectedIds.map((el) => el.toString()).toList(), newStatusId, _year, _month, status, _model.groupId).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'timesheetStatusSuccessfullyUpdated'));
-        NavigatorUtil.navigateReplacement(context, ManagerTsPage(_model));
+        NavigatorUtil.navigateReplacement(context, TsPage(_model));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

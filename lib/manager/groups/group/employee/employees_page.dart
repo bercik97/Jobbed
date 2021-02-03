@@ -55,7 +55,50 @@ class _EmployeesPageState extends State<EmployeesPage> {
         _filteredEmployees = _employees;
         _loading = false;
       });
+    }).catchError((onError) {
+      _showFailureDialog();
     });
+  }
+
+  _showFailureDialog() {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return WillPopScope(
+          child: AlertDialog(
+            backgroundColor: DARK,
+            title: textGreen(getTranslated(this.context, 'failure')),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  textWhite(getTranslated(this.context, 'groupNoEmployees')),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: textWhite(getTranslated(this.context, 'ok')),
+                onPressed: () => _resetAndOpenPage(),
+              ),
+            ],
+          ),
+          onWillPop: _navigateToGroupPage,
+        );
+      },
+    );
+  }
+
+  Future<bool> _navigateToGroupPage() async {
+    _resetAndOpenPage();
+    return true;
+  }
+
+  void _resetAndOpenPage() {
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (BuildContext context) => GroupPage(_model)),
+      ModalRoute.withName('/'),
+    );
   }
 
   @override
@@ -101,64 +144,61 @@ class _EmployeesPageState extends State<EmployeesPage> {
                 },
               ),
             ),
-            _employees.isNotEmpty
-                ? Expanded(
-                    flex: 2,
-                    child: RefreshIndicator(
-                      color: DARK,
-                      backgroundColor: WHITE,
-                      onRefresh: _refresh,
-                      child: Scrollbar(
-                        isAlwaysShown: true,
-                        controller: _scrollController,
-                        child: ListView.builder(
-                          controller: _scrollController,
-                          itemCount: _filteredEmployees.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            EmployeeGroupDto employee = _filteredEmployees[index];
-                            String info = employee.info;
-                            String nationality = employee.nationality;
-                            String currency = employee.currency;
-                            String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.gender, info.substring(0, 1));
-                            return Card(
-                              color: DARK,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Card(
-                                    color: BRIGHTER_DARK,
-                                    child: InkWell(
-                                      onTap: () => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, currency, employee.id, info, avatarPath)),
-                                      child: Column(
-                                        children: <Widget>[
-                                          ListTile(
-                                            leading: Tab(
-                                              icon: Container(
-                                                child: Image(
-                                                  image: AssetImage(avatarPath),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            ),
-                                            title: text20WhiteBold(
-                                              utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality),
-                                            ),
-                                            subtitle: _handleData(employee),
+            Expanded(
+              flex: 2,
+              child: RefreshIndicator(
+                color: DARK,
+                backgroundColor: WHITE,
+                onRefresh: _refresh,
+                child: Scrollbar(
+                  isAlwaysShown: true,
+                  controller: _scrollController,
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: _filteredEmployees.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      EmployeeGroupDto employee = _filteredEmployees[index];
+                      String info = employee.info;
+                      String nationality = employee.nationality;
+                      String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.gender, info.substring(0, 1));
+                      return Card(
+                        color: DARK,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Card(
+                              color: BRIGHTER_DARK,
+                              child: InkWell(
+                                onTap: () => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, employee.id, info, avatarPath)),
+                                child: Column(
+                                  children: <Widget>[
+                                    ListTile(
+                                      leading: Tab(
+                                        icon: Container(
+                                          child: Image(
+                                            image: AssetImage(avatarPath),
+                                            fit: BoxFit.cover,
                                           ),
-                                        ],
+                                        ),
                                       ),
+                                      title: text20WhiteBold(
+                                        utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality),
+                                      ),
+                                      subtitle: _handleData(employee),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            );
-                          },
+                            ),
+                          ],
                         ),
-                      ),
-                    ),
-                  )
-                : _handleEmptyData()
+                      );
+                    },
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),
@@ -271,7 +311,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
             child: Row(
               children: <Widget>[
                 textWhite(getTranslated(this.context, 'priceForServices') + ': '),
-                textGreenBold(employee.totalPriceForServices.toString() + ' ' + employee.currency),
+                textGreenBold(employee.totalPriceForServices.toString() + ' PLN'),
               ],
             ),
             alignment: Alignment.topLeft),
@@ -279,7 +319,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
             child: Row(
               children: <Widget>[
                 textWhite(getTranslated(this.context, 'todayMoneyEarned') + ': '),
-                textGreenBold(employee.todayMoneyEarned + ' ' + employee.currency),
+                textGreenBold(employee.todayMoneyEarned + ' PLN'),
               ],
             ),
             alignment: Alignment.topLeft),
@@ -298,27 +338,6 @@ class _EmployeesPageState extends State<EmployeesPage> {
               ],
             ),
             alignment: Alignment.topLeft),
-      ],
-    );
-  }
-
-  Widget _handleEmptyData() {
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(top: 10),
-          child: Align(
-            alignment: Alignment.center,
-            child: text20GreenBold(getTranslated(context, 'noEmployees')),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 10),
-          child: Align(
-            alignment: Alignment.center,
-            child: textCenter19White(getTranslated(context, 'groupNoEmployees')),
-          ),
-        ),
       ],
     );
   }

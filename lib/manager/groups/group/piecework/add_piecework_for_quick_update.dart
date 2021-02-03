@@ -71,47 +71,7 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
         _pricelists.forEach((i) => _textEditingItemControllers[utf8.decode(i.name.runes.toList())] = new TextEditingController());
         _loading = false;
       });
-    }).catchError((onError) {
-      _showFailureDialog();
-    });
-  }
-
-  _showFailureDialog() {
-    return showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return WillPopScope(
-          child: AlertDialog(
-            backgroundColor: DARK,
-            title: textGreen(getTranslated(this.context, 'failure')),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  textWhite(getTranslated(this.context, 'noPricelist')),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: textWhite(getTranslated(this.context, 'goToTheGroupPage')),
-                onPressed: () => _resetAndOpenPage(),
-              ),
-            ],
-          ),
-          onWillPop: _navigateToGroupPage,
-        );
-      },
-    );
-  }
-
-  Future<bool> _navigateToGroupPage() async {
-    _resetAndOpenPage();
-    return true;
-  }
-
-  void _resetAndOpenPage() {
-    NavigatorUtil.navigateReplacement(this.context, GroupPage(_model));
+    }).catchError((onError) => DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'noPricelist'), GroupPage(_model)));
   }
 
   @override
@@ -303,6 +263,7 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         setState(() => _isAddButtonTapped = false);
         if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
+          Navigator.pop(context);
           DialogService.showCustomDialog(
             context: context,
             titleWidget: textRed(getTranslated(context, 'error')),

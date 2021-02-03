@@ -9,6 +9,7 @@ import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 
@@ -71,7 +72,7 @@ class _AddTsPageState extends State<AddTsPage> {
         _filteredEmployees = _employees;
         _loading = false;
       });
-    });
+    }).catchError((onError) => DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'groupNoEmployees'), TsPage(_model)));
   }
 
   @override
@@ -86,9 +87,9 @@ class _AddTsPageState extends State<AddTsPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'addNewTs'), () => NavigatorUtil.navigate(this.context, ManagerTsPage(_model))),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'addNewTs'), () => NavigatorUtil.navigate(this.context, TsPage(_model))),
           body: WillPopScope(
-            onWillPop: () => NavigatorUtil.onWillPopNavigate(context, ManagerTsPage(_model)),
+            onWillPop: () => NavigatorUtil.onWillPopNavigate(context, TsPage(_model)),
             child: AlertDialog(
               backgroundColor: BRIGHTER_DARK,
               title: textWhite(getTranslated(context, 'failure')),
@@ -96,7 +97,7 @@ class _AddTsPageState extends State<AddTsPage> {
               actions: <Widget>[
                 FlatButton(
                   child: textGreen(getTranslated(context, 'goBack')),
-                  onPressed: () => NavigatorUtil.navigate(this.context, ManagerTsPage(_model)),
+                  onPressed: () => NavigatorUtil.navigate(this.context, TsPage(_model)),
                 ),
               ],
             ),
@@ -269,7 +270,7 @@ class _AddTsPageState extends State<AddTsPage> {
           ),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, ManagerTsPage(_model)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, TsPage(_model)),
     );
   }
 
@@ -285,7 +286,7 @@ class _AddTsPageState extends State<AddTsPage> {
       (res) {
         Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
           ToastService.showSuccessToast(getTranslated(context, 'timesheetsSuccessfullyCreated'));
-          NavigatorUtil.navigateReplacement(context, ManagerTsPage(_model));
+          NavigatorUtil.navigateReplacement(context, TsPage(_model));
         });
       },
     ).catchError((onError) {
@@ -304,6 +305,6 @@ class _AddTsPageState extends State<AddTsPage> {
         _filteredEmployees = _employees;
         _loading = false;
       });
-    });
+    }).catchError((onError) => DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'groupNoEmployees'), TsPage(_model)));
   }
 }

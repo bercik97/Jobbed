@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -47,38 +45,22 @@ Widget employeeTimesheetsTab(BuildContext context, bool canFillHours, User user,
                         title: textWhiteBold(timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, timesheet.month)),
                         subtitle: Column(
                           children: <Widget>[
-                            Align(
-                                child: Row(
-                                  children: <Widget>[
-                                    textWhite(getTranslated(context, 'company') + ': '),
-                                    textGreenBold(timesheet.companyName != null ? utf8.decode(timesheet.companyName.runes.toList()) : getTranslated(context, 'empty')),
-                                  ],
-                                ),
-                                alignment: Alignment.topLeft),
-                            Align(
-                                child: Row(
-                                  children: <Widget>[
-                                    textWhite(getTranslated(context, 'group') + ': '),
-                                    textGreenBold(timesheet.groupName != null ? utf8.decode(timesheet.groupName.runes.toList()) : getTranslated(context, 'empty')),
-                                  ],
-                                ),
-                                alignment: Alignment.topLeft),
                             Row(
                               children: <Widget>[
                                 textWhite(getTranslated(context, 'hours') + ': '),
-                                textGreenBold(timesheet.totalMoneyForHoursForEmployee.toString() + ' ' + (timesheet.groupCountryCurrency != null ? timesheet.groupCountryCurrency : getTranslated(context, 'empty')) + ' (' + timesheet.totalHours + ' h)'),
+                                textGreenBold(timesheet.totalMoneyForHoursForEmployee.toString() + ' PLN' + ' (' + timesheet.totalHours + ' h)'),
                               ],
                             ),
                             Row(
                               children: <Widget>[
                                 textWhite(getTranslated(context, 'accord') + ': '),
-                                textGreenBold(timesheet.totalMoneyForPieceworkForEmployee.toString() + ' ' + (timesheet.groupCountryCurrency != null ? timesheet.groupCountryCurrency : getTranslated(context, 'empty'))),
+                                textGreenBold(timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
                               ],
                             ),
                             Row(
                               children: <Widget>[
                                 textWhite(getTranslated(context, 'sum') + ': '),
-                                textGreenBold(timesheet.totalMoneyEarned.toString() + ' ' + (timesheet.groupCountryCurrency != null ? timesheet.groupCountryCurrency : getTranslated(context, 'empty'))),
+                                textGreenBold(timesheet.totalMoneyEarned.toString() + ' PLN'),
                               ],
                             ),
                           ],

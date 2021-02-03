@@ -19,7 +19,6 @@ import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/service/logout_service.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/settings/settings_page.dart';
-import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/buttons.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -166,14 +165,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                               NavigatorUtil.navigate(
                                 this.context,
                                 GroupPage(
-                                  new GroupModel(
-                                    _user,
-                                    group.id,
-                                    group.name,
-                                    group.description,
-                                    group.numberOfEmployees.toString(),
-                                    group.countryOfWork,
-                                  ),
+                                  new GroupModel(_user, group.id, group.name, group.description, group.numberOfEmployees.toString()),
                                 ),
                               );
                             },
@@ -187,16 +179,6 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                                 SizedBox(height: 5),
                                 Align(
                                   child: textWhite(getTranslated(this.context, 'numberOfEmployees') + ': ' + _groups[index].numberOfEmployees.toString()),
-                                  alignment: Alignment.topLeft,
-                                ),
-                                Align(
-                                  child: textWhite(
-                                    getTranslated(this.context, 'groupCountryOfWork') +
-                                        ': ' +
-                                        LanguageUtil.findFlagByNationality(
-                                          _groups[index].countryOfWork.toString(),
-                                        ),
-                                  ),
                                   alignment: Alignment.topLeft,
                                 ),
                                 Align(

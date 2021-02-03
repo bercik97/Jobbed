@@ -14,6 +14,7 @@ import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
@@ -57,57 +58,14 @@ class _AddGroupEmployeesPageState extends State<AddGroupEmployeesPage> {
     this._groupService = ServiceInitializer.initialize(context, _user.authHeader, GroupService);
     super.initState();
     _loading = true;
-    _employeeService.findAllByGroupIsNullAndCompanyId(int.parse(_user.companyId)).then((res) {
+    _employeeService.findAllByGroupIsNullAndCompanyId(int.parse(_user.companyId), _groupId).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
         _filteredEmployees = _employees;
         _loading = false;
       });
-    }).catchError((onError) {
-      _showFailureDialog();
-    });
-  }
-
-  _showFailureDialog() {
-    return showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return WillPopScope(
-          child: AlertDialog(
-            backgroundColor: DARK,
-            title: textGreen(getTranslated(this.context, 'failure')),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  textWhite(getTranslated(this.context, 'noEmployeesToAddGroup')),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: textWhite(getTranslated(this.context, 'goToGroupsDashboard')),
-                onPressed: () => _resetAndOpenPage(),
-              ),
-            ],
-          ),
-          onWillPop: _navigateToGroupDashboard,
-        );
-      },
-    );
-  }
-
-  Future<bool> _navigateToGroupDashboard() async {
-    _resetAndOpenPage();
-    return true;
-  }
-
-  void _resetAndOpenPage() {
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (BuildContext context) => GroupsDashboardPage(_user)),
-      ModalRoute.withName('/'),
-    );
+    }).catchError((onError) => DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'groupNoEmployees'), GroupsDashboardPage(_user)));
   }
 
   @override
