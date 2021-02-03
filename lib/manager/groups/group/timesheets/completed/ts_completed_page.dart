@@ -136,6 +136,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                           totalMoneyForHoursForEmployee: _filteredEmployees[index].totalMoneyForHoursForEmployee,
                           totalMoneyForPieceworkForEmployee: _filteredEmployees[index].totalMoneyForPieceworkForEmployee,
                           totalMoneyEarned: _filteredEmployees[index].totalMoneyEarned,
+                          employeeBasicDto: null,
                         );
                         NavigatorUtil.navigate(this.context, EmployeeTsCompletedPage(_model, info, nationality, _completedTimesheet));
                       },
