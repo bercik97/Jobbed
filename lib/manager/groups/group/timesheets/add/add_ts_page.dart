@@ -120,13 +120,16 @@ class _AddTsPageState extends State<AddTsPage> {
             child: Column(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
+                  padding: EdgeInsets.all(10),
                   child: Column(
                     children: [
-                      textCenter18WhiteBold(getTranslated(context, 'addNewTsForSelectedEmployeesForChosenDate')),
+                      text16White(getTranslated(context, 'addNewTsForSelectedEmployeesForChosenDate')),
                       SizedBox(height: 5),
-                      textCenter20GreenBold(
-                        _year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: text16OrangeBold(
+                          _year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month),
+                        ),
                       ),
                     ],
                   ),

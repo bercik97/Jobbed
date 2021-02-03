@@ -111,14 +111,20 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
                     _status == STATUS_COMPLETED
                         ? Align(
                             alignment: Alignment.centerLeft,
-                            child: text16GreenBold(
-                              _year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month) + ' ' + '→ ' + getTranslated(context, _status).toUpperCase(),
+                            child: Row(
+                              children: [
+                                text16OrangeBold(_year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month) + ' ' + '→ '),
+                                text16GreenBold(getTranslated(context, _status).toUpperCase()),
+                              ],
                             ),
                           )
                         : Align(
                             alignment: Alignment.centerLeft,
-                            child: text16OrangeBold(
-                              _year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month) + ' ' + '→ ' + getTranslated(context, _status).toUpperCase(),
+                            child: Row(
+                              children: [
+                                text16GreenBold(_year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month) + ' ' + '→ '),
+                                text16OrangeBold(getTranslated(context, _status).toUpperCase()),
+                              ],
                             ),
                           ),
                   ],
