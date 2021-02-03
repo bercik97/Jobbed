@@ -60,7 +60,7 @@ class _WarehousePageState extends State<WarehousePage> {
     this._warehouseService = ServiceInitializer.initialize(context, _user.authHeader, WarehouseService);
     super.initState();
     _loading = true;
-    _warehouseService.findAllByCompanyId(int.parse(_user.companyId)).then((res) {
+    _warehouseService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
         _warehouses = res;
         _warehouses.forEach((e) => _checked.add(false));
@@ -334,7 +334,7 @@ class _WarehousePageState extends State<WarehousePage> {
 
   Future<Null> _refresh() {
     _loading = true;
-    return _warehouseService.findAllByCompanyId(int.parse(_user.companyId)).then((res) {
+    return _warehouseService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
         _isDeleteButtonTapped = false;
         _warehouses = res;

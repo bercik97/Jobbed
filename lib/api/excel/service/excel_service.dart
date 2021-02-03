@@ -12,7 +12,7 @@ class ExcelService {
 
   static const String _url = '$SERVER_IP/excels';
 
-  Future<dynamic> generateExcel(int year, int month, String status, int groupId, int companyId, bool calculateForEmployee, String username) async {
+  Future<dynamic> generateExcel(int year, int month, String status, int groupId, String companyId, bool calculateForEmployee, String username) async {
     Response res = await post(
       '$_url/timesheet?year=$year&month=$month&status=$status&group_id=$groupId&company_id=$companyId&calculate_for_employee=$calculateForEmployee&username=$username',
       headers: _header,

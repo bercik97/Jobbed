@@ -245,7 +245,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     if (_locationData != null) {
       double latitude = _locationData.latitude;
       double longitude = _locationData.longitude;
-      _workplaceService.findAllWorkplacesByCompanyIdAndLocationParams(int.parse(_user.companyId), latitude, longitude).then((res) {
+      _workplaceService.findAllWorkplacesByCompanyIdAndLocationParams(_user.companyId, latitude, longitude).then((res) {
         Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
           _showStartConfirmDialog(res);
           setState(() => _isStartDialogButtonTapped = false);

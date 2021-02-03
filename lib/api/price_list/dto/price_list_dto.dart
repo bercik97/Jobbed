@@ -13,15 +13,6 @@ class PricelistDto {
     @required this.priceForCompany,
   });
 
-  static Map<String, dynamic> jsonEncode(PricelistDto dto) {
-    Map<String, dynamic> map = new Map();
-    map['id'] = dto.id;
-    map['name'] = dto.name;
-    map['priceForEmployee'] = dto.priceForEmployee;
-    map['priceForCompany'] = dto.priceForCompany;
-    return map;
-  }
-
   factory PricelistDto.fromJson(Map<String, dynamic> json) {
     return PricelistDto(
       id: json['id'] as int,

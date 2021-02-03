@@ -64,7 +64,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
     this._itemPlaceService = ServiceInitializer.initialize(context, _user.authHeader, ItemplaceService);
     super.initState();
     _loading = true;
-    _itemPlaceService.findAllByCompanyId(int.parse(_user.companyId)).then((res) {
+    _itemPlaceService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
         _itemPlaces = res;
         _itemPlaces.forEach((element) => _itemPlacesRadioValues.add(-1));

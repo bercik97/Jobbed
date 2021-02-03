@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
+import 'package:give_job/api/workplace/dto/create_workplace_dto.dart';
 import 'package:give_job/api/workplace/dto/workplace_dto.dart';
 import 'package:give_job/api/workplace/service/workplace_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
@@ -73,7 +74,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
     this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
     super.initState();
     _loading = true;
-    _workplaceService.findAllByCompanyId(int.parse(_user.companyId)).then((res) {
+    _workplaceService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
         _workplaces = res;
         _workplaces.forEach((e) => _checked.add(false));
@@ -633,7 +634,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
       this._workplaceLocation = null;
       return;
     }
-    WorkplaceDto dto;
+    CreateWorkplaceDto dto;
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -663,8 +664,8 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                 if (_circles != null && _circles.isNotEmpty) {
                   circle = _circles.elementAt(0);
                 }
-                dto = new WorkplaceDto(
-                  id: int.parse(_user.companyId),
+                dto = new CreateWorkplaceDto(
+                  companyId: _user.companyId,
                   name: workplaceName,
                   location: this._workplaceLocation,
                   radiusLength: _radius != 0 ? double.parse(_radius.toString()) : 0,
@@ -925,7 +926,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
 
   Future<Null> _refresh() {
     _loading = true;
-    return _workplaceService.findAllByCompanyId(int.parse(_user.companyId)).then((res) {
+    return _workplaceService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
         _isAddButtonTapped = false;
         _isDeleteButtonTapped = false;

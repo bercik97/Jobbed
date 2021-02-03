@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 class CreateGroupDto {
   final String name;
   final String description;
-  final int companyId;
+  final String companyId;
   final int managerId;
   final List<String> employeeIds;
 

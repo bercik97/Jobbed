@@ -356,7 +356,7 @@ class _TsPageState extends State<TsPage> {
     }
     setState(() => _isGenerateExcelAndSendEmailBtnTapped = true);
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _excelService.generateExcel(year, MonthUtil.findMonthNumberByMonthName(context, monthName), status, _model.groupId, int.parse(_user.companyId), _excelType == 0, _model.user.username).then((res) {
+    _excelService.generateExcel(year, MonthUtil.findMonthNumberByMonthName(context, monthName), status, _model.groupId, _user.companyId, _excelType == 0, _model.user.username).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyGeneratedExcelAndSendEmail') + '!');
         setState(() => _isGenerateExcelAndSendEmailBtnTapped = false);

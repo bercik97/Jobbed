@@ -58,7 +58,7 @@ class _AddGroupEmployeesPageState extends State<AddGroupEmployeesPage> {
     this._groupService = ServiceInitializer.initialize(context, _user.authHeader, GroupService);
     super.initState();
     _loading = true;
-    _employeeService.findAllByGroupIsNullAndCompanyId(int.parse(_user.companyId), _groupId).then((res) {
+    _employeeService.findAllByGroupIsNullAndCompanyId(_user.companyId, _groupId).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));

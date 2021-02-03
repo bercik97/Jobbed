@@ -83,7 +83,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     super.initState();
     _loading = true;
-    _pricelistService.findAllByCompanyId(int.parse(_user.companyId)).then((res) {
+    _pricelistService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
         _pricelists = res;
         _pricelists.forEach((i) => _textEditingItemControllers[utf8.decode(i.name.runes.toList())] = new TextEditingController());

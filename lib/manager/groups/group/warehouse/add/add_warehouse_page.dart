@@ -298,7 +298,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     CreateWarehouseDto dto = new CreateWarehouseDto(
-      companyId: int.parse(_user.companyId),
+      companyId: _user.companyId,
       name: _warehouseNameController.text,
       description: _warehouseDescriptionController.text,
       itemNamesWithQuantities: _itemNamesWithQuantities,

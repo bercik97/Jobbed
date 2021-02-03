@@ -57,7 +57,7 @@ class _PricelistPageState extends State<PricelistPage> {
     this._pricelistService = ServiceInitializer.initialize(context, _user.authHeader, PricelistService);
     super.initState();
     _loading = true;
-    _pricelistService.findAllByCompanyId(int.parse(_user.companyId)).then((res) {
+    _pricelistService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
         _pricelists = res;
         _pricelists.forEach((e) => _checked.add(false));
@@ -326,7 +326,7 @@ class _PricelistPageState extends State<PricelistPage> {
 
   Future<Null> _refresh() {
     _loading = true;
-    return _pricelistService.findAllByCompanyId(int.parse(_user.companyId)).then((res) {
+    return _pricelistService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
         _isDeleteButtonTapped = false;
         _pricelists = res;

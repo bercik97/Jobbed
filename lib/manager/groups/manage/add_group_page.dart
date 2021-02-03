@@ -60,7 +60,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
     this._groupService = ServiceInitializer.initialize(context, _user.authHeader, GroupService);
     super.initState();
     _loading = true;
-    _employeeService.findAllByCompanyId(int.parse(_user.companyId)).then((res) {
+    _employeeService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
@@ -295,7 +295,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
     CreateGroupDto dto = new CreateGroupDto(
       name: _groupNameController.text,
       description: _groupDescriptionController.text,
-      companyId: int.parse(_user.companyId),
+      companyId: _user.companyId,
       managerId: int.parse(_user.id),
       employeeIds: _selectedIds.map((el) => el.toString()).toList(),
     );

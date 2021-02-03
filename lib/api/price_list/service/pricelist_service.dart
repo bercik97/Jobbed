@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:give_job/api/price_list/dto/create_price_list_dto.dart';
 import 'package:give_job/api/price_list/dto/price_list_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/service/logout_service.dart';
@@ -15,10 +16,10 @@ class PricelistService {
 
   static const String _url = '$SERVER_IP/pricelists';
 
-  Future<dynamic> create(List<PricelistDto> pricelistsDto) async {
+  Future<dynamic> create(List<CreatePricelistDto> pricelistsDto) async {
     Response res = await post(
       _url,
-      body: jsonEncode(pricelistsDto.map((e) => PricelistDto.jsonEncode(e)).toList()),
+      body: jsonEncode(pricelistsDto.map((e) => CreatePricelistDto.jsonEncode(e)).toList()),
       headers: _headers,
     );
     if (res.statusCode == 200) {
@@ -30,7 +31,7 @@ class PricelistService {
     }
   }
 
-  Future<List<PricelistDto>> findAllByCompanyId(int companyId) async {
+  Future<List<PricelistDto>> findAllByCompanyId(String companyId) async {
     Response res = await get(
       _url + '/companies/$companyId',
       headers: _header,

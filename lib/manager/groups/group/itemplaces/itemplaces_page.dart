@@ -63,7 +63,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
     this._itemplaceService = ServiceInitializer.initialize(context, _user.authHeader, ItemplaceService);
     super.initState();
     _loading = true;
-    _itemplaceService.findAllByCompanyId(int.parse(_user.companyId)).then((res) {
+    _itemplaceService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
         _itemplaces = res;
         _itemplaces.forEach((e) => _checked.add(false));
@@ -366,7 +366,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _itemplaceService.create(int.parse(_user.companyId), location).then((res) {
+    _itemplaceService.create(_user.companyId, location).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(this.context, 'successfullyAddedNewItemplace'));
         NavigatorUtil.navigateReplacement(this.context, ItemplacesPage(_model));
@@ -447,7 +447,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
 
   Future<Null> _refresh() {
     _loading = true;
-    return _itemplaceService.findAllByCompanyId(int.parse(_user.companyId)).then((res) {
+    return _itemplaceService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
         _isAddButtonTapped = false;
         _isDeleteButtonTapped = false;

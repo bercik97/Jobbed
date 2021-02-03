@@ -156,9 +156,8 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                 ),
               ),
             ),
-            title: text18WhiteBold(
-              _user.companyName != null ? utf8.decode(_user.companyName.runes.toList()) : getTranslated(context, 'empty'),
-            ),
+            title: text18WhiteBold(_user.companyName != null ? utf8.decode(_user.companyName.runes.toList()) : getTranslated(context, 'empty')),
+            subtitle: text13White(_user.companyId != null ? _user.companyId : getTranslated(context, 'empty')),
           ),
           SizedBox(height: 10),
           Expanded(

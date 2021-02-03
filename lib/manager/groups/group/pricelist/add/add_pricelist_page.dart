@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:give_job/api/price_list/dto/price_list_dto.dart';
+import 'package:give_job/api/price_list/dto/create_price_list_dto.dart';
 import 'package:give_job/api/price_list/service/pricelist_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
@@ -44,7 +44,7 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
 
   bool _isAddButtonTapped = false;
 
-  List<PricelistDto> _pricelistsToAdd = new List();
+  List<CreatePricelistDto> _pricelistsToAdd = new List();
   List<String> _pricelistNames = new List();
   ScrollController _scrollController = new ScrollController();
 
@@ -114,8 +114,8 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
                           ToastService.showErrorToast(getTranslated(context, 'pricelistServiceNameExists'));
                           return;
                         }
-                        PricelistDto dto = new PricelistDto(
-                          id: int.parse(_user.companyId),
+                        CreatePricelistDto dto = new CreatePricelistDto(
+                          companyId: _user.companyId,
                           name: _pricelistNameController.text,
                           priceForEmployee: double.parse(_pricelistPriceForEmployeeController.text),
                           priceForCompany: double.parse(_pricelistPriceForCompanyController.text),

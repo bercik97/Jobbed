@@ -84,7 +84,7 @@ class EmployeeService {
     }
   }
 
-  Future<List<EmployeeBasicDto>> findAllByCompanyId(int companyId) async {
+  Future<List<EmployeeBasicDto>> findAllByCompanyId(String companyId) async {
     Response res = await get('$_url/companies?company_id=$companyId', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeBasicDto.fromJson(data)).toList();
@@ -95,7 +95,7 @@ class EmployeeService {
     }
   }
 
-  Future<List<EmployeeBasicDto>> findAllByGroupIsNullAndCompanyId(int companyId, int groupId) async {
+  Future<List<EmployeeBasicDto>> findAllByGroupIsNullAndCompanyId(String companyId, int groupId) async {
     Response res = await get('$_url/companies/$companyId/groups-not-in/$groupId', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeBasicDto.fromJson(data)).toList();

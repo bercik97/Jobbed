@@ -18,7 +18,7 @@ class ItemplaceService {
 
   static const String _url = '$SERVER_IP/itemplaces';
 
-  Future<dynamic> create(int companyId, String location) async {
+  Future<dynamic> create(String companyId, String location) async {
     Response res = await post(
       _url + '/companies/$companyId',
       body: location,
@@ -77,7 +77,7 @@ class ItemplaceService {
     }
   }
 
-  Future<List<ItemplaceDashboardDto>> findAllByCompanyId(int companyId) async {
+  Future<List<ItemplaceDashboardDto>> findAllByCompanyId(String companyId) async {
     Response res = await get(
       _url + '/companies/$companyId',
       headers: _header,

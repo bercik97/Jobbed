@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:give_job/api/workplace/dto/create_workplace_dto.dart';
 import 'package:give_job/api/workplace/dto/workplace_dto.dart';
 import 'package:give_job/api/workplace/dto/workplace_id_name_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
@@ -16,10 +17,10 @@ class WorkplaceService {
 
   static const String _url = '$SERVER_IP/workplaces';
 
-  Future<String> create(WorkplaceDto dto) async {
+  Future<String> create(CreateWorkplaceDto dto) async {
     Response res = await post(
       _url,
-      body: jsonEncode(WorkplaceDto.jsonEncode(dto)),
+      body: jsonEncode(CreateWorkplaceDto.jsonEncode(dto)),
       headers: _headers,
     );
     if (res.statusCode == 200) {
@@ -31,7 +32,7 @@ class WorkplaceService {
     }
   }
 
-  Future<List<WorkplaceDto>> findAllByCompanyId(int companyId) async {
+  Future<List<WorkplaceDto>> findAllByCompanyId(String companyId) async {
     Response res = await get(
       _url + '/companies/$companyId',
       headers: _header,
@@ -45,7 +46,7 @@ class WorkplaceService {
     }
   }
 
-  Future<List<WorkplaceIdNameDto>> findAllWorkplacesByCompanyIdAndLocationParams(int companyId, double latitude, double longitude) async {
+  Future<List<WorkplaceIdNameDto>> findAllWorkplacesByCompanyIdAndLocationParams(String companyId, double latitude, double longitude) async {
     Response res = await get(
       _url + '/companies/$companyId/location?latitude=$latitude&longitude=$longitude',
       headers: _header,

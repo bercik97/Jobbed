@@ -31,7 +31,7 @@ class WarehouseService {
     }
   }
 
-  Future<List<WarehouseDashboardDto>> findAllByCompanyId(int companyId) async {
+  Future<List<WarehouseDashboardDto>> findAllByCompanyId(String companyId) async {
     Response res = await get(
       _url + '/companies/$companyId',
       headers: _header,

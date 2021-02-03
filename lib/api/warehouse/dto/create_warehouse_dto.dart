@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class CreateWarehouseDto {
-  final int companyId;
+  final String companyId;
   final String name;
   final String description;
   final Map<String, int> itemNamesWithQuantities;

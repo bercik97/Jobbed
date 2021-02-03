@@ -17,17 +17,6 @@ class WorkplaceDto {
     @required this.longitude,
   });
 
-  static Map<String, dynamic> jsonEncode(WorkplaceDto dto) {
-    Map<String, dynamic> map = new Map();
-    map['id'] = dto.id;
-    map['name'] = dto.name;
-    map['location'] = dto.location;
-    map['radiusLength'] = dto.radiusLength;
-    map['latitude'] = dto.latitude;
-    map['longitude'] = dto.longitude;
-    return map;
-  }
-
   factory WorkplaceDto.fromJson(Map<String, dynamic> json) {
     return WorkplaceDto(
       id: json['id'] as int,
