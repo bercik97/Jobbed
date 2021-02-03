@@ -711,6 +711,12 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
               }
               return null;
             },
+            value: _nationality,
+            onSaved: (value) {
+              setState(() {
+                _nationality = value;
+              });
+            },
             onChanged: (value) {
               setState(() {
                 _nationality = value;
