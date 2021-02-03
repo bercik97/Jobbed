@@ -75,7 +75,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
           elevation: 0.0,
           bottomOpacity: 0.0,
           title: text15White(getTranslated(context, 'loading')),
-          leading: IconButton(icon: iconWhite(Icons.logout), onPressed: () => Logout.logout(context)),
+          leading: IconButton(icon: iconWhite(Icons.power_settings_new), onPressed: () => Logout.logout(context)),
           actions: <Widget>[
             Padding(
               padding: EdgeInsets.only(right: 15.0),
@@ -115,7 +115,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                     iconTheme: IconThemeData(color: WHITE),
                     expandedHeight: expandedHeight,
                     pinned: true,
-                    leading: IconButton(icon: iconWhite(Icons.logout), onPressed: () => Logout.logout(this.context)),
+                    leading: IconButton(icon: iconWhite(Icons.power_settings_new), onPressed: () => Logout.logout(this.context)),
                     backgroundColor: BRIGHTER_DARK,
                     flexibleSpace: FlexibleSpaceBar(
                       background: Column(

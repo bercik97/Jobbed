@@ -25,7 +25,6 @@ import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
 import '../../shared/widget/loader.dart';
-import '../shared/manager_app_bar.dart';
 import 'group/group_page.dart';
 import 'manage/add_group_employees_page.dart';
 import 'manage/delete_group_employees_page.dart';
@@ -65,7 +64,27 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => Logout.logout(context)));
+      return loader(
+        AppBar(
+          iconTheme: IconThemeData(color: WHITE),
+          backgroundColor: BRIGHTER_DARK,
+          elevation: 0.0,
+          bottomOpacity: 0.0,
+          title: text13White(getTranslated(context, 'loading')),
+          centerTitle: false,
+          automaticallyImplyLeading: true,
+          leading: IconButton(icon: iconWhite(Icons.power_settings_new), onPressed: () => Logout.logout(context)),
+          actions: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(right: 15.0),
+              child: IconButton(
+                icon: iconWhite(Icons.settings),
+                onPressed: () => NavigatorUtil.navigate(context, SettingsPage(_user)),
+              ),
+            ),
+          ],
+        ),
+      );
     }
     return WillPopScope(
       child: MaterialApp(
@@ -80,7 +99,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
             elevation: 0.0,
             bottomOpacity: 0.0,
             title: text15White(getTranslated(context, 'companyGroups')),
-            leading: IconButton(icon: iconWhite(Icons.logout), onPressed: () => Logout.logout(context)),
+            leading: IconButton(icon: iconWhite(Icons.power_settings_new), onPressed: () => Logout.logout(context)),
             actions: <Widget>[
               Padding(
                 padding: EdgeInsets.only(right: 15.0),
