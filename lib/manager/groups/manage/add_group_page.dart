@@ -313,12 +313,6 @@ class _AddGroupPageState extends State<AddGroupPage> {
             titleWidget: textRed(getTranslated(context, 'error')),
             content: getTranslated(context, 'groupNameExists') + '\n' + getTranslated(context, 'chooseOtherGroupName'),
           );
-        } else if (errorMsg.contains("SOME_EMPLOYEES_ARE_IN_OTHER_GROUP")) {
-          DialogService.showCustomDialog(
-            context: context,
-            titleWidget: textRed(getTranslated(context, 'error')),
-            content: getTranslated(context, 'someEmployeesAreInOtherGroup'),
-          );
         }
         setState(() => _isAddButtonTapped = false);
       });

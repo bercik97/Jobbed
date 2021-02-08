@@ -325,7 +325,6 @@
   "groupNameExists": "ჯგუფის სახელს იყენებს სხვა ჯგუფი",
   "chooseOtherGroupName": "გთხოვთ, დაწეროთ სხვა ჯგუფის სახელი",
   "successfullyAddedNewGroup": "წარმატებით დაემატა ახალი ჯგუფი",
-  "someEmployeesAreInOtherGroup": "ზოგიერთი თანამშრომელი სხვა ჯგუფშია",
   "deleteGroup": "ჯგუფის წაშლა",
   "textGroupNameForDelete": "ჯგუფის სახელის გადაწერა",
   "groupNameForDeleteInvalid": "მოცემული ჯგუფის სახელი არ უდრის ჯგუფის ნამდვილ სახელს",

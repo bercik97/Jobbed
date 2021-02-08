@@ -325,7 +325,6 @@
   "groupNameExists": "Nazwa grupy jest używana przez inną grupę",
   "chooseOtherGroupName": "Proszę wpisz inną nazwę grupy",
   "successfullyAddedNewGroup": "Pomyślnie dodano nową grupę",
-  "someEmployeesAreInOtherGroup": "Niektórzy pracownicy są w innej grupie",
   "deleteGroup": "Usuń grupę",
   "textGroupNameForDelete": "Przepisz wybraną nazwę grupy",
   "groupNameForDeleteInvalid": "Wpisana nazwa grupy nie jest taka sama jak realna nazwa grupy",
