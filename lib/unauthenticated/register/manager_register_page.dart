@@ -312,27 +312,6 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
     );
   }
 
-  Widget _buildReadOnlyField(String name, String value, IconData icon) {
-    return Column(
-      children: <Widget>[
-        TextFormField(
-          readOnly: true,
-          initialValue: value == null ? getTranslated(context, 'empty') : value,
-          style: TextStyle(color: WHITE),
-          decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            counterStyle: TextStyle(color: WHITE),
-            border: OutlineInputBorder(),
-            prefixIcon: iconWhite(icon),
-            labelText: name,
-            labelStyle: TextStyle(color: WHITE),
-          ),
-        ),
-        SizedBox(height: 10),
-      ],
-    );
-  }
-
   Widget _buildPasswordTextField() {
     return Column(
       children: <Widget>[
