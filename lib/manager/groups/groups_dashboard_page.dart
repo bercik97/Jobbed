@@ -210,9 +210,10 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 IconButton(
-                                  icon: text25Green('+ -'),
+                                  icon: icon30Green(Icons.group_add),
                                   onPressed: () => _manageGroupEmployees(_groups[index].name, _groups[index].id),
                                 ),
+                                SizedBox(width: 10),
                                 IconButton(
                                   icon: icon30Red(Icons.delete),
                                   onPressed: () => _showDeleteGroupDialog(_groups[index].name),
