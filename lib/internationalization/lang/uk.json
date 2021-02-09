@@ -618,5 +618,8 @@
   "addedNewPriceService": "Додано нову цінову послугу!",
   "selectedPriceServiceHasBeenRemoved": "Вибрану цінову службу видалено!",
   "net": "Мережа",
-  "gross": "Валовий"
+  "gross": "Валовий",
+  "deletingPiecework": "Видалення штучної роботи",
+  "deletingPieceworkConfirmation": "Ви впевнені, що хочете видалити всі роботи за вибрані дні вибраних працівників?",
+  "pieceworkForSelectedDaysAndEmployeesDeleted": "Виробничі роботи за вибрані дні вибраних працівників видалено"
 }

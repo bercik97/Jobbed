@@ -618,5 +618,8 @@
   "addedNewPriceService": "დაემატა ახალი ფასების სერვისი!",
   "selectedPriceServiceHasBeenRemoved": "არჩეული ფასების სერვისი წაიშალა!",
   "net": "ქსელი",
-  "gross": "მთლიანი"
+  "gross": "მთლიანი",
+  "deletingPiecework": "ნაჭერი სამუშაოების წაშლა",
+  "deletingPieceworkConfirmation": "დარწმუნებული ხართ, რომ გსურთ წაშალოთ ყველა ნაჭერი სამუშაო ნამუშევრის არჩეული დღისთვის?",
+  "pieceworkForSelectedDaysAndEmployeesDeleted": "არჩეული თანამშრომლების არჩეული დღეების ნაწყვეტები ამოღებულია"
 }

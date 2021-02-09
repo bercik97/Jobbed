@@ -618,5 +618,8 @@
   "addedNewPriceService": "Dodano nową usługę cennika!",
   "selectedPriceServiceHasBeenRemoved": "Usunięto wybraną usługę cennika!",
   "net": "Netto",
-  "gross": "Brutto"
+  "gross": "Brutto",
+  "deletingPiecework": "Usuwanie pracy akordowej",
+  "deletingPieceworkConfirmation": "Czy na pewno chcesz usunąć wszystkie prace akordowe z wybranych dni dla wybranych pracowników?",
+  "pieceworkForSelectedDaysAndEmployeesDeleted": "Praca akordowa z wybranych dni została usunięta dla wybranych pracowników"
 }

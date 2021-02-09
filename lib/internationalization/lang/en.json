@@ -618,5 +618,8 @@
   "addedNewPriceService": "Added new price service!",
   "selectedPriceServiceHasBeenRemoved": "Selected price service has been removed!",
   "net": "Net",
-  "gross": "Gross"
+  "gross": "Gross",
+  "deletingPiecework": "Deleting piecework",
+  "deletingPieceworkConfirmation": "Are you sure you want to delete all piecework for selected days of selected employees?",
+  "pieceworkForSelectedDaysAndEmployeesDeleted": "Piecework for selected days of selected employees has been removed"
 }

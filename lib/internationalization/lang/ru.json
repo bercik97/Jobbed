@@ -618,5 +618,8 @@
   "addedNewPriceService": "Добавлена новая ценовая услуга!",
   "selectedPriceServiceHasBeenRemoved": "Выбранная цена услуги была удалена!",
   "net": "Сеть",
-  "gross": "Валовой"
+  "gross": "Валовой",
+  "deletingPiecework": "Удаление сдельной работы",
+  "deletingPieceworkConfirmation": "Вы действительно хотите удалить всю сдельную работу за выбранные дни выбранных сотрудников?",
+  "pieceworkForSelectedDaysAndEmployeesDeleted": "Убрана сдельная работа по выбранным дням у выбранных сотрудников"
 }

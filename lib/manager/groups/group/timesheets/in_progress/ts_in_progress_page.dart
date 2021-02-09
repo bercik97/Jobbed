@@ -69,6 +69,8 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
   List<bool> _checked = new List();
   LinkedHashSet<int> _selectedIds = new LinkedHashSet();
 
+  bool _isDeletePieceworkButtonTapped = false;
+
   @override
   void initState() {
     this._model = widget._model;
@@ -314,7 +316,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                       },
                     ),
                   ),
-                  SizedBox(width: 5),
+                  SizedBox(width: 1),
                   Expanded(
                     child: MaterialButton(
                       color: GREEN,
@@ -328,7 +330,26 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                       },
                     ),
                   ),
-                  SizedBox(width: 5),
+                  SizedBox(width: 1),
+                  Expanded(
+                    child: MaterialButton(
+                      color: GREEN,
+                      child: Row(
+                        children: [
+                          Image(image: AssetImage('images/dark-piecework-icon.png')),
+                          iconRed(Icons.close),
+                        ],
+                      ),
+                      onPressed: () {
+                        if (_selectedIds.isNotEmpty) {
+                          _showDeletePiecework(_selectedIds);
+                        } else {
+                          showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 1),
                   Expanded(
                     child: MaterialButton(
                       color: GREEN,
@@ -355,6 +376,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
               IconsLegendUtil.buildImageRow('images/letters/male/unknown_letter.png', getTranslated(context, 'employeeProfile')),
               IconsLegendUtil.buildImageRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
               IconsLegendUtil.buildImageRow('images/green-piecework-icon.png', getTranslated(context, 'settingPiecework')),
+              IconsLegendUtil.buildImageWithIconRow('images/green-piecework-icon.png', iconRed(Icons.close), getTranslated(context, 'deletingPiecework')),
               IconsLegendUtil.buildImageRow('images/green-note-icon.png', getTranslated(context, 'settingNote')),
             ],
           ),
@@ -575,6 +597,51 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
     }
   }
 
+  void _showDeletePiecework(LinkedHashSet<int> selectedIds) async {
+    int year = _timesheet.year;
+    int monthNum = MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
+    int days = DateUtil().daysInMonth(monthNum, year);
+    final List<DateTime> picked = await DateRagePicker.showDatePicker(
+      context: context,
+      initialFirstDate: new DateTime(year, monthNum, 1),
+      initialLastDate: new DateTime(year, monthNum, days),
+      firstDate: new DateTime(year, monthNum, 1),
+      lastDate: new DateTime(year, monthNum, days),
+    );
+    if (picked != null && picked.length == 1) {
+      picked.add(picked[0]);
+    }
+    String dateFrom;
+    String dateTo;
+    if (picked != null && picked.length == 2) {
+      dateFrom = DateFormat('yyyy-MM-dd').format(picked[0]);
+      dateTo = DateFormat('yyyy-MM-dd').format(picked[1]);
+    }
+    _showConfirmationDialog(
+      title: getTranslated(context, 'confirmation'),
+      content: getTranslated(context, 'deletingPieceworkConfirmation'),
+      fun: () => _isDeletePieceworkButtonTapped ? null : _handleDeletePiecework(dateFrom, dateTo, selectedIds.map((el) => el.toString()).toList(), year, monthNum, STATUS_IN_PROGRESS),
+    );
+  }
+
+  void _handleDeletePiecework(String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) {
+    setState(() => _isDeletePieceworkButtonTapped = true);
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _workdayService.deleteEmployeesPiecework(dateFrom, dateTo, employeeIds, tsYear, tsMonth, tsStatus).then((res) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        _refresh();
+        Navigator.of(context).pop();
+        ToastService.showSuccessToast(getTranslated(context, 'pieceworkForSelectedDaysAndEmployeesDeleted'));
+        setState(() => _isDeletePieceworkButtonTapped = false);
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+        setState(() => _isDeletePieceworkButtonTapped = false);
+      });
+    });
+  }
+
   void _showUpdateNoteDialog(LinkedHashSet<int> selectedIds) async {
     int year = _timesheet.year;
     int monthNum = MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
@@ -703,6 +770,35 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
         },
       );
     }
+  }
+
+  void _showConfirmationDialog({String title, String content, Function() fun}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: DARK,
+          title: textGreenBold(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                textWhite(content),
+              ],
+            ),
+          ),
+          actions: [
+            FlatButton(
+              child: textWhite(getTranslated(context, 'yes')),
+              onPressed: () => _isDeletePieceworkButtonTapped ? null : fun(),
+            ),
+            FlatButton(
+              child: textWhite(getTranslated(context, 'no')),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<Null> _refresh() {

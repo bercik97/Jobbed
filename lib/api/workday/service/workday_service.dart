@@ -141,6 +141,20 @@ class WorkdayService {
     }
   }
 
+  Future<dynamic> deleteEmployeesPiecework(String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
+    Response res = await delete(
+      '$_url/employees/$employeeIds/piecework?date_from=$dateFrom&date_to=$dateTo&ts_year=$tsYear&ts_month=$tsMonth&ts_status=$tsStatus',
+      headers: _headers,
+    );
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
   Future<dynamic> updateEmployeesNote(String note, String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
     Map<String, dynamic> map = {'note': note, 'dateFrom': dateFrom, 'dateTo': dateTo, 'tsYear': tsYear, 'tsMonth': tsMonth, 'tsStatus': tsStatus};
     Response res = await put(
