@@ -261,7 +261,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     child: _subtitleInkWellContainer(getTranslated(context, 'privacyPolicy')))),
             Container(margin: EdgeInsets.only(left: 15, top: 10), child: InkWell(onTap: () => OpenAppstore.launch(androidAppId: ANDROID_APP_ID, iOSAppId: IOS_APP_ID), child: _subtitleInkWellContainer(getTranslated(context, 'rate')))),
             Container(margin: EdgeInsets.only(left: 15, top: 10), child: InkWell(onTap: () => bugReportDialog(context), child: _subtitleInkWellContainer(getTranslated(context, 'bugReport')))),
-            Container(margin: EdgeInsets.only(left: 25), alignment: Alignment.centerLeft, height: 30, child: text13White(getTranslated(context, 'version') + ': 1.0.26+27')),
+            Container(margin: EdgeInsets.only(left: 25), alignment: Alignment.centerLeft, height: 30, child: text13White(getTranslated(context, 'version') + ': 1.0.27+28')),
             _titleContainer(getTranslated(context, 'graphics')),
             _socialMediaInkWell('https://plumko.business.site/ ', 'Plumko', 'images/plumko-logo.png'),
             _titleContainer(getTranslated(context, 'followUs')),

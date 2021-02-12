@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>GiveJob</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -32,6 +34,16 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>NSContactsUsageDescription</key>
+    <string>Needed to access location</string>
+    <key>NSCalendarsUsageDescription</key>
+    <string>Needed to access location</string>
+    <key>NSAppleMusicUsageDescription</key>
+    <string>Needed to access location</string>
+    <key>NSMotionUsageDescription</key>
+    <string>Needed to access location</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>Needed to access location</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
