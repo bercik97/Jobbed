@@ -591,8 +591,6 @@
   "priceForEmployee": "ფასი (თანამშრომელი)",
   "priceForCompany": "ფასი (კომპანია)",
   "hoursAreRequired": "საათები აუცილებელია",
-  "addEmptyPieceworkConfirmation": "ნამუშევრის რაოდენობა არ არის შერჩეული. დარწმუნებული ხართ, რომ გსურთ ცარიელი ნაჭრის დაყენება?",
-  "successfullyDeletedReportsAboutPiecework": "წარმატებით წაიშალა ნაწყვეტები დავალების შესახებ",
   "noteForSelectedEmployees": "დაწერეთ შენიშვნა შერჩეული თანამშრომლებისთვის",
   "wrongNoteLength": "სიგრძე არ შეიძლება აღემატებოდეს 510 სიმბოლოს",
   "noteUpdatedSuccessfully": "შენიშვნა წარმატებით განახლდა",
@@ -621,5 +619,6 @@
   "gross": "მთლიანი",
   "deletingPiecework": "ნაჭერი სამუშაოების წაშლა",
   "deletingPieceworkConfirmation": "დარწმუნებული ხართ, რომ გსურთ წაშალოთ ყველა ნაჭერი სამუშაო ნამუშევრის არჩეული დღისთვის?",
-  "pieceworkForSelectedDaysAndEmployeesDeleted": "არჩეული თანამშრომლების არჩეული დღეების ნაწყვეტები ამოღებულია"
+  "pieceworkForSelectedDaysAndEmployeesDeleted": "არჩეული თანამშრომლების არჩეული დღეების ნაწყვეტები ამოღებულია",
+  "pieceworkCannotBeEmpty": "ნაჭერი არ შეიძლება იყოს ცარიელი"
 }

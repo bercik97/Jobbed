@@ -229,55 +229,16 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
     });
     if (serviceWithQuantity.isEmpty) {
       setState(() => _isAddButtonTapped = false);
-      _showConfirmationDialog(
-        title: getTranslated(context, 'confirmation'),
-        content: getTranslated(context, 'addEmptyPieceworkConfirmation'),
-        fun: () => _add(getTranslated(context, 'successfullyDeletedReportsAboutPiecework')),
-      );
+      ToastService.showErrorToast(getTranslated(context, 'pieceworkCannotBeEmpty'));
       return;
     }
-    _add(getTranslated(context, 'successfullyAddedNewReportsAboutPiecework'));
-  }
-
-  void _showConfirmationDialog({String title, String content, Function() fun}) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: DARK,
-          title: textGreenBold(title),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                textWhite(content),
-              ],
-            ),
-          ),
-          actions: [
-            FlatButton(
-              child: textWhite(getTranslated(context, 'yes')),
-              onPressed: () => _isAddButtonTapped ? null : fun(),
-            ),
-            FlatButton(
-              child: textWhite(getTranslated(context, 'no')),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _add(String successMsg) {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workdayService.updatePieceworkByIds(_selectedWorkdayIds, serviceWithQuantity).then(
-      (res) {
-        Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-          ToastService.showSuccessToast(successMsg);
-          navigateIntoEmployeeTsInProgressPage();
-        });
-      },
-    );
+    _workdayService.updatePieceworkByIds(_selectedWorkdayIds, serviceWithQuantity).then((res) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewReportsAboutPiecework'));
+        navigateIntoEmployeeTsInProgressPage();
+      });
+    });
   }
 
   void navigateIntoEmployeeTsInProgressPage() {

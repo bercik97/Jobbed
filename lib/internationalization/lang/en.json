@@ -591,8 +591,6 @@
   "priceForEmployee": "Price (employee)",
   "priceForCompany": "Price (company)",
   "hoursAreRequired": "Hours are required",
-  "addEmptyPieceworkConfirmation": "The amount of piecework has not been selected. Are you sure you want to set blank piecework?",
-  "successfullyDeletedReportsAboutPiecework": "Successfully deleted reports about piecework",
   "noteForSelectedEmployees": "Write note for selected employees",
   "wrongNoteLength": "Length cannot be higher than 510 characters",
   "noteUpdatedSuccessfully": "Note has been updated successfully",
@@ -621,5 +619,6 @@
   "gross": "Gross",
   "deletingPiecework": "Deleting piecework",
   "deletingPieceworkConfirmation": "Are you sure you want to delete all piecework for selected days of selected employees?",
-  "pieceworkForSelectedDaysAndEmployeesDeleted": "Piecework for selected days of selected employees has been removed"
+  "pieceworkForSelectedDaysAndEmployeesDeleted": "Piecework for selected days of selected employees has been removed",
+  "pieceworkCannotBeEmpty": "Piecework cannot be empty"
 }

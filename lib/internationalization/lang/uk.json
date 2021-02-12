@@ -591,8 +591,6 @@
   "priceForEmployee": "Ціна (працівник)",
   "priceForCompany": "Ціна (компанія)",
   "hoursAreRequired": "Потрібні години",
-  "addEmptyPieceworkConfirmation": "Об’єм роботи не вибрано. Ви впевнені, що хочете встановити порожні роботи?",
-  "successfullyDeletedReportsAboutPiecework": "Звіти про відрядні роботи успішно видалено",
   "noteForSelectedEmployees": "Напишіть замітку для вибраних працівників",
   "wrongNoteLength": "Довжина не може перевищувати 510 символів",
   "noteUpdatedSuccessfully": "Примітка успішно оновлена",
@@ -621,5 +619,6 @@
   "gross": "Валовий",
   "deletingPiecework": "Видалення штучної роботи",
   "deletingPieceworkConfirmation": "Ви впевнені, що хочете видалити всі роботи за вибрані дні вибраних працівників?",
-  "pieceworkForSelectedDaysAndEmployeesDeleted": "Виробничі роботи за вибрані дні вибраних працівників видалено"
+  "pieceworkForSelectedDaysAndEmployeesDeleted": "Виробничі роботи за вибрані дні вибраних працівників видалено",
+  "pieceworkCannotBeEmpty": "Посуд не може бути порожнім"
 }

@@ -591,8 +591,6 @@
   "priceForEmployee": "Цена (сотрудник)",
   "priceForCompany": "Цена (компания)",
   "hoursAreRequired": "Требуются часы",
-  "addEmptyPieceworkConfirmation": "Объем сдельной работы не выбран. Вы уверены, что хотите поставить пустую сдельную работу?",
-  "successfullyDeletedReportsAboutPiecework": "Успешно удалены отчеты о сдельной работе",
   "noteForSelectedEmployees": "Написать заметку для выбранных сотрудников",
   "wrongNoteLength": "Длина не может превышать 510 символов.",
   "noteUpdatedSuccessfully": "Заметка успешно обновлена",
@@ -621,5 +619,6 @@
   "gross": "Валовой",
   "deletingPiecework": "Удаление сдельной работы",
   "deletingPieceworkConfirmation": "Вы действительно хотите удалить всю сдельную работу за выбранные дни выбранных сотрудников?",
-  "pieceworkForSelectedDaysAndEmployeesDeleted": "Убрана сдельная работа по выбранным дням у выбранных сотрудников"
+  "pieceworkForSelectedDaysAndEmployeesDeleted": "Убрана сдельная работа по выбранным дням у выбранных сотрудников",
+  "pieceworkCannotBeEmpty": "Сдельная работа не может быть пустой"
 }

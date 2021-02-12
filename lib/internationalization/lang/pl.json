@@ -591,8 +591,6 @@
   "priceForEmployee": "Cena (pracownik)",
   "priceForCompany": "Cena (firma)",
   "hoursAreRequired": "Godziny są wymagane",
-  "addEmptyPieceworkConfirmation": "Nie wybrano ilości pracy akordowaj. Czy na pewno chcesz ustawić pustą pracę akordową?",
-  "successfullyDeletedReportsAboutPiecework": "Pomyślnie usunięto raporty dotyczące pracy akordowej",
   "noteForSelectedEmployees": "Napisz notatkę dla wybranych pracowników",
   "wrongNoteLength": "Długość notatki nie może przekraczać 510 znaków",
   "noteUpdatedSuccessfully": "Notatka zaktualizowana pomyślnie",
@@ -621,5 +619,6 @@
   "gross": "Brutto",
   "deletingPiecework": "Usuwanie pracy akordowej",
   "deletingPieceworkConfirmation": "Czy na pewno chcesz usunąć wszystkie prace akordowe z wybranych dni dla wybranych pracowników?",
-  "pieceworkForSelectedDaysAndEmployeesDeleted": "Praca akordowa z wybranych dni została usunięta dla wybranych pracowników"
+  "pieceworkForSelectedDaysAndEmployeesDeleted": "Praca akordowa z wybranych dni została usunięta dla wybranych pracowników",
+  "pieceworkCannotBeEmpty": "Praca akordowa nie może być pusta"
 }
