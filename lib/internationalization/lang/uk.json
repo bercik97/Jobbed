@@ -620,5 +620,6 @@
   "deletingPiecework": "Видалення штучної роботи",
   "deletingPieceworkConfirmation": "Ви впевнені, що хочете видалити всі роботи за вибрані дні вибраних працівників?",
   "pieceworkForSelectedDaysAndEmployeesDeleted": "Виробничі роботи за вибрані дні вибраних працівників видалено",
-  "pieceworkCannotBeEmpty": "Посуд не може бути порожнім"
+  "pieceworkCannotBeEmpty": "Посуд не може бути порожнім",
+  "pieceworkForSelectedDaysDeleted": "Вироби за вибрані дні видалено"
 }

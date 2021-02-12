@@ -68,6 +68,8 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
 
   bool _loading = false;
 
+  bool _isDeletePieceworkButtonTapped = false;
+
   @override
   void initState() {
     this._model = widget._model;
@@ -223,6 +225,25 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
+                    child: Row(
+                      children: [
+                        Image(image: AssetImage('images/dark-piecework-icon.png')),
+                        iconRed(Icons.close),
+                      ],
+                    ),
+                    onPressed: () {
+                      if (selectedIds.isNotEmpty) {
+                        _showDeletePiecework();
+                      } else {
+                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                      }
+                    },
+                  ),
+                ),
+                SizedBox(width: 2.5),
+                Expanded(
+                  child: MaterialButton(
+                    color: GREEN,
                     child: Image(image: AssetImage('images/dark-note-icon.png')),
                     onPressed: () {
                       if (selectedIds.isNotEmpty) {
@@ -247,6 +268,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
             IconsLegendUtil.buildIconRow(iconWhite(Icons.search), getTranslated(context, 'checkDetails')),
             IconsLegendUtil.buildImageRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
             IconsLegendUtil.buildImageRow('images/green-piecework-icon.png', getTranslated(context, 'settingPiecework')),
+            IconsLegendUtil.buildImageWithIconRow('images/green-piecework-icon.png', iconRed(Icons.close), getTranslated(context, 'deletingPiecework')),
             IconsLegendUtil.buildImageRow('images/green-note-icon.png', getTranslated(context, 'settingNote')),
           ],
         ),
@@ -497,6 +519,32 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     );
   }
 
+  void _showDeletePiecework() async {
+    _showConfirmationDialog(
+      title: getTranslated(context, 'confirmation'),
+      content: getTranslated(context, 'deletingPieceworkConfirmation'),
+      fun: () => _isDeletePieceworkButtonTapped ? null : _handleDeletePiecework(selectedIds.map((el) => el.toString()).toList()),
+    );
+  }
+
+  void _handleDeletePiecework(List<String> ids) {
+    setState(() => _isDeletePieceworkButtonTapped = true);
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _workdayService.deletePieceworkByIds(ids).then((res) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        _refresh();
+        Navigator.of(context).pop();
+        ToastService.showSuccessToast(getTranslated(context, 'pieceworkForSelectedDaysDeleted'));
+        setState(() => _isDeletePieceworkButtonTapped = false);
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+        setState(() => _isDeletePieceworkButtonTapped = false);
+      });
+    });
+  }
+
   void _showUpdateNoteDialog(Set<int> selectedIds) {
     showGeneralDialog(
       context: context,
@@ -698,6 +746,35 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
               ),
             ),
           ),
+        );
+      },
+    );
+  }
+
+  void _showConfirmationDialog({String title, String content, Function() fun}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: DARK,
+          title: textGreenBold(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                textWhite(content),
+              ],
+            ),
+          ),
+          actions: [
+            FlatButton(
+              child: textWhite(getTranslated(context, 'yes')),
+              onPressed: () => _isDeletePieceworkButtonTapped ? null : fun(),
+            ),
+            FlatButton(
+              child: textWhite(getTranslated(context, 'no')),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
         );
       },
     );

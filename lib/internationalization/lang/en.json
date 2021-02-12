@@ -620,5 +620,6 @@
   "deletingPiecework": "Deleting piecework",
   "deletingPieceworkConfirmation": "Are you sure you want to delete all piecework for selected days of selected employees?",
   "pieceworkForSelectedDaysAndEmployeesDeleted": "Piecework for selected days of selected employees has been removed",
-  "pieceworkCannotBeEmpty": "Piecework cannot be empty"
+  "pieceworkCannotBeEmpty": "Piecework cannot be empty",
+  "pieceworkForSelectedDaysDeleted": "Piecework for selected days deleted"
 }

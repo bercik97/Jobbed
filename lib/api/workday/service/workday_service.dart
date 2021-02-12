@@ -104,6 +104,17 @@ class WorkdayService {
     }
   }
 
+  Future<dynamic> deletePieceworkByIds(List<String> ids) async {
+    Response res = await delete('$_url/piecework?ids=$ids', headers: _headers);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
   Future<dynamic> updateEmployeesHours(double hours, String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
     Response res = await put(
       '$_url/employees/$employeeIds/hours',
