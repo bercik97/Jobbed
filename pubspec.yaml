@@ -116,6 +116,8 @@ flutter:
     - images/dark-note-icon.png
     - images/dark-help-icon.png
 
+    - images/white-groups-icon.png
+
     - images/letters/male/A.png
     - images/letters/male/B.png
     - images/letters/male/C.png

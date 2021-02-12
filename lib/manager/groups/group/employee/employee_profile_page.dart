@@ -8,6 +8,7 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
+import 'package:give_job/manager/groups/groups_dashboard_page.dart';
 import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/model/user.dart';
@@ -74,6 +75,13 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                 SliverAppBar(
                   elevation: 0.0,
                   actions: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(right: 10),
+                      child: IconButton(
+                        icon: Image(image: AssetImage('images/white-groups-icon.png')),
+                        onPressed: () => NavigatorUtil.navigate(context, GroupsDashboardPage(_user)),
+                      ),
+                    ),
                     Padding(
                       padding: EdgeInsets.only(right: 15.0),
                       child: IconButton(
