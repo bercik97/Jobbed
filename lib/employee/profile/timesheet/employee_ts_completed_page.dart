@@ -136,7 +136,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                           rightSideItemBuilder: _buildRightHandSideColumnRow,
                           itemCount: workdays.length,
                           rowSeparatorWidget: Divider(color: MORE_BRIGHTER_DARK, height: 1.0, thickness: 0.0),
-                          leftHandSideColBackgroundColor: Color(0xff494949),
+                          leftHandSideColBackgroundColor: BRIGHTER_DARK,
                           rightHandSideColBackgroundColor: DARK,
                         ),
                         height: MediaQuery.of(context).size.height,
@@ -172,10 +172,9 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
 
   Widget _buildFirstColumnRow(BuildContext context, int index) {
     return Container(
-      color: Color(0xff494949),
-      child: Align(alignment: Alignment.center, child: textWhite(workdays[index].number.toString())),
-      width: 50,
       height: 50,
+      color: BRIGHTER_DARK,
+      child: Align(alignment: Alignment.center, child: textWhite(workdays[index].number.toString())),
     );
   }
 

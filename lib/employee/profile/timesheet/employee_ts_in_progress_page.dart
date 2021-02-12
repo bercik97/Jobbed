@@ -141,7 +141,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                 Expanded(
                   child: Container(
                     child: HorizontalDataTable(
-                      leftHandSideColumnWidth: 85,
+                      leftHandSideColumnWidth: 80,
                       rightHandSideColumnWidth: 380,
                       isFixedHeader: true,
                       headerWidgets: _buildTitleWidget(),
@@ -149,7 +149,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                       rightSideItemBuilder: _buildRightHandSideColumnRow,
                       itemCount: workdays.length,
                       rowSeparatorWidget: Divider(color: MORE_BRIGHTER_DARK, height: 1.0, thickness: 0.0),
-                      leftHandSideColBackgroundColor: Color(0xff494949),
+                      leftHandSideColBackgroundColor: BRIGHTER_DARK,
                       rightHandSideColBackgroundColor: DARK,
                     ),
                     height: MediaQuery.of(context).size.height,
@@ -230,7 +230,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
 
   Widget _buildFirstColumnRow(BuildContext context, int index) {
     return Container(
-      width: 85,
       height: 50,
       color: BRIGHTER_DARK,
       child: CheckboxListTile(

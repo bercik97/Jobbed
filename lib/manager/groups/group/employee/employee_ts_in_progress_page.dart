@@ -157,7 +157,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
               Expanded(
                 child: Container(
                   child: HorizontalDataTable(
-                    leftHandSideColumnWidth: 85,
+                    leftHandSideColumnWidth: 80,
                     rightHandSideColumnWidth: 460,
                     isFixedHeader: true,
                     headerWidgets: _buildTitleWidget(),
@@ -277,7 +277,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
 
   Widget _buildFirstColumnRow(BuildContext context, int index) {
     return Container(
-      width: 85,
       height: 50,
       color: BRIGHTER_DARK,
       child: CheckboxListTile(
