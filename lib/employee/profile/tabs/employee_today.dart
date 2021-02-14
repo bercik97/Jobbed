@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:give_job/api/employee/dto/employee_page_dto.dart';
+import 'package:give_job/api/employee/dto/employee_profile_dto.dart';
 import 'package:give_job/api/workday/util/workday_util.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -8,7 +8,7 @@ import 'package:give_job/shared/widget/buttons.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
-Container employeeToday(BuildContext context, EmployeePageDto dto, Function() fillHoursFun, Function() editNoteFun) {
+Container employeeToday(BuildContext context, EmployeeProfileDto dto, Function() fillHoursFun, Function() editNoteFun) {
   bool isTsNotCreated = dto.todayWorkdayId == 0;
   if (isTsNotCreated) {
     return Container(

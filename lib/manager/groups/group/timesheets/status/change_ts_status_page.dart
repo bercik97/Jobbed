@@ -68,7 +68,7 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
     super.initState();
     _loading = true;
     _employeeService
-        .findEmployeesByGroupIdAndTsInYearAndMonthAndStatus(
+        .findAllByGroupIdAndTsInYearAndMonthAndStatus(
       _model.groupId,
       _year,
       _month,
@@ -305,7 +305,7 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
 
   Future<Null> _refresh() {
     return _employeeService
-        .findEmployeesByGroupIdAndTsInYearAndMonthAndStatus(
+        .findAllByGroupIdAndTsInYearAndMonthAndStatus(
       _model.groupId,
       _year,
       _month,

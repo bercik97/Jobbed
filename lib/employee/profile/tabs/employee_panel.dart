@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:give_job/api/employee/dto/employee_page_dto.dart';
+import 'package:give_job/api/employee/dto/employee_profile_dto.dart';
 import 'package:give_job/employee/profile/tabs/calendar/employee_calendar_page.dart';
 import 'package:give_job/employee/profile/tabs/piecework/piecework_page.dart';
 import 'package:give_job/employee/profile/tabs/worktime/work_time_page.dart';
@@ -11,7 +11,7 @@ import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
-Container employeePanel(BuildContext context, User user, EmployeePageDto employee) {
+Container employeePanel(BuildContext context, User user, EmployeeProfileDto employee) {
   return Container(
     child: Padding(
       padding: const EdgeInsets.all(12.0),

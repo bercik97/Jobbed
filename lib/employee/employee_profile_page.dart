@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:give_job/api/employee/dto/employee_page_dto.dart';
+import 'package:give_job/api/employee/dto/employee_profile_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
@@ -45,7 +45,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
   WorkdayService _workdayService;
 
   User _user;
-  EmployeePageDto _employeePageDto;
+  EmployeeProfileDto _employeePageDto;
   bool _loading = false;
 
   double expandedHeight;
@@ -57,7 +57,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
     this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     this._loading = true;
-    _employeeService.findByIdForEmployeePage(_user.id).then((res) {
+    _employeeService.findByIdForProfileView(_user.id).then((res) {
       setState(() {
         _employeePageDto = res;
         _loading = false;
@@ -235,7 +235,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
   }
 
   Future<Null> _refresh() {
-    return _employeeService.findByIdForEmployeePage(_user.id.toString()).then((employee) {
+    return _employeeService.findByIdForProfileView(_user.id.toString()).then((employee) {
       setState(() {
         _employeePageDto = employee;
         _loading = false;

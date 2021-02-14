@@ -70,7 +70,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
     this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
     super.initState();
     _loading = true;
-    _employeeService.findAllByGroupIdForEmployeesSettings(_model.groupId).then((res) {
+    _employeeService.findAllByGroupIdForSettingsView(_model.groupId).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
@@ -847,7 +847,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
   }
 
   Future<Null> _refresh() {
-    return _employeeService.findAllByGroupIdForEmployeesSettings(_model.groupId).then((res) {
+    return _employeeService.findAllByGroupIdForSettingsView(_model.groupId).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));

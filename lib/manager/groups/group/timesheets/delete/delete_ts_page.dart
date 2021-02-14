@@ -67,7 +67,7 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
     this._timesheetService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
     super.initState();
     _loading = true;
-    _employeeService.findEmployeesByGroupIdAndTsInYearAndMonthAndStatus(_model.groupId, _year, _month, _status).then((res) {
+    _employeeService.findAllByGroupIdAndTsInYearAndMonthAndStatus(_model.groupId, _year, _month, _status).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
@@ -282,7 +282,7 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
   }
 
   Future<Null> _refresh() {
-    return _employeeService.findEmployeesByGroupIdAndTsInYearAndMonthAndStatus(_model.groupId, _year, _month, _status).then((res) {
+    return _employeeService.findAllByGroupIdAndTsInYearAndMonthAndStatus(_model.groupId, _year, _month, _status).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));

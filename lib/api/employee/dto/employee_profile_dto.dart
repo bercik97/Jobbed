@@ -3,7 +3,7 @@ import 'package:give_job/api/piecework/dto/piecework_details_dto.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:give_job/api/work_time/dto/work_time_dto.dart';
 
-class EmployeePageDto {
+class EmployeeProfileDto {
   final int id;
   final String gender;
   final String tsCurrentYear;
@@ -22,7 +22,7 @@ class EmployeePageDto {
   final bool workTimeByLocation;
   final bool piecework;
 
-  EmployeePageDto({
+  EmployeeProfileDto({
     @required this.id,
     @required this.gender,
     @required this.tsCurrentYear,
@@ -42,8 +42,8 @@ class EmployeePageDto {
     @required this.piecework,
   });
 
-  factory EmployeePageDto.fromJson(Map<String, dynamic> json) {
-    return EmployeePageDto(
+  factory EmployeeProfileDto.fromJson(Map<String, dynamic> json) {
+    return EmployeeProfileDto(
       id: json['id'] as int,
       gender: json['gender'] as String,
       tsCurrentYear: json['tsCurrentYear'] as String,
