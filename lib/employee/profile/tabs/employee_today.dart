@@ -43,7 +43,7 @@ Container employeeToday(BuildContext context, EmployeeProfileDto dto, Function()
             Ink(
               color: BRIGHTER_DARK,
               child: ListTile(
-                trailing: todayMoney != '0.0' ? icon50Green(Icons.check) : icon50Red(Icons.close),
+                trailing: todayMoney != '0.000' ? icon50Green(Icons.check) : icon50Red(Icons.close),
                 title: Column(
                   children: <Widget>[
                     SizedBox(height: 5),
