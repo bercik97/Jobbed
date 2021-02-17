@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:give_job/api/employee/dto/creaet_basic_employee_dto.dart';
 import 'package:give_job/api/employee/dto/create_employee_dto.dart';
 import 'package:give_job/api/employee/dto/employee_basic_dto.dart';
 import 'package:give_job/api/employee/dto/employee_group_dto.dart';
@@ -23,6 +24,17 @@ class EmployeeService {
   Future<dynamic> create(CreateEmployeeDto dto) async {
     Response res = await post(_url, body: jsonEncode(CreateEmployeeDto.jsonEncode(dto)), headers: {"content-type": "application/json"});
     return res.statusCode == 200 ? res : Future.error(res.body);
+  }
+
+  Future<dynamic> createBasicEmployee(CreateBasicEmployeeDto dto) async {
+    Response res = await post('$_url/basic-employee', body: jsonEncode(CreateBasicEmployeeDto.jsonEncode(dto)), headers: _headers);
+    if (res.statusCode == 200) {
+      return res.body.toString();
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
   }
 
   Future<Map<String, Object>> findEmployeeAndUserAndCompanyFieldsValuesById(int id, List<String> fields) async {

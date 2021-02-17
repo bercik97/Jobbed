@@ -605,5 +605,8 @@
   "pieceworkForSelectedDaysAndEmployeesDeleted": "Praca akordowa z wybranych dni została usunięta dla wybranych pracowników",
   "pieceworkCannotBeEmpty": "Praca akordowa nie może być pusta",
   "pieceworkForSelectedDaysDeleted": "Praca akordowa dla wybranych dni została usunięta",
-  "deletingPieceworkForSelectedDaysConfirmation": "Czy na pewno chcesz usunąć wszystkie prace akordowe z wybranych dni?"
+  "deletingPieceworkForSelectedDaysConfirmation": "Czy na pewno chcesz usunąć wszystkie prace akordowe z wybranych dni?",
+  "createNewEmployeeAccount": "Dodawanie nowego pracownika",
+  "employeeAccountHasBeenSuccessfullyCreated": "Konto pracownika zostało pomyślnie utworzone",
+  "chooseEmployeeGender": "Proszę, wybierz płeć pracownika"
 }

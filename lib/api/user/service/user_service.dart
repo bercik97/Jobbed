@@ -12,11 +12,7 @@ class UserService {
   static const String _url = '$SERVER_IP/users';
 
   Future<dynamic> updatePasswordByUsername(String username, String password) async {
-    Response res = await put(
-      '$_url/password?username=$username',
-      body: password,
-      headers: _headers,
-    );
+    Response res = await put('$_url/password?username=$username', body: password, headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {

@@ -605,5 +605,8 @@
   "pieceworkForSelectedDaysAndEmployeesDeleted": "Виробничі роботи за вибрані дні вибраних працівників видалено",
   "pieceworkCannotBeEmpty": "Посуд не може бути порожнім",
   "pieceworkForSelectedDaysDeleted": "Вироби за вибрані дні видалено",
-  "deletingPieceworkForSelectedDaysConfirmation": "Ви впевнені, що хочете видалити всі роботи за вибрані дні?"
+  "deletingPieceworkForSelectedDaysConfirmation": "Ви впевнені, що хочете видалити всі роботи за вибрані дні?",
+  "createNewEmployeeAccount": "Створiть новий рахунок спiвробiтника",
+  "employeeAccountHasBeenSuccessfullyCreated": "Облiковий запис спiвробiтника успiшно створено",
+  "chooseEmployeeGender": "Виберіть стать працівника"
 }

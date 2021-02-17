@@ -326,7 +326,7 @@
   "manageWorkplaces": "Manage workplaces",
   "manageEmployeesInGroup": "Manage employees in group",
   "removingGroup": "Removing group",
-  "manageCompanyWorkplaces" : "Manage company workplaces",
+  "manageCompanyWorkplaces": "Manage company workplaces",
   "addingGroup": "Adding group",
   "company": "Company",
   "note": "Note",
@@ -376,7 +376,7 @@
   "enableGpsAndTryAgain": "Please make sure you enable GPS and try again",
   "noteFinishWorkInPlaceWhereYouStarted": "Note: You can only finish your work when you are in the place where you started to work!",
   "cannotFindWorkplaceByLocation": "Cannot find workplace by your location!",
-  "followingWorkplacesHaveBeenFoundInYourLocation" : "Following workplaces have been found in your location.",
+  "followingWorkplacesHaveBeenFoundInYourLocation": "Following workplaces have been found in your location.",
   "selecBtnNextToWhereYouWantToStartWork": "Hint: Select the button next to where you want to start working.",
   "areYouSureYouWantToStartYourWork": "Are you sure you want to START your work in the workplace below?",
   "yesIWantToStart": "Yes, I want to start work",
@@ -605,5 +605,8 @@
   "pieceworkForSelectedDaysAndEmployeesDeleted": "Piecework for selected days of selected employees has been removed",
   "pieceworkCannotBeEmpty": "Piecework cannot be empty",
   "pieceworkForSelectedDaysDeleted": "Piecework for selected days deleted",
-  "deletingPieceworkForSelectedDaysConfirmation": "Are you sure you want to delete all piecework for selected days?"
+  "deletingPieceworkForSelectedDaysConfirmation": "Are you sure you want to delete all piecework for selected days?",
+  "createNewEmployeeAccount": "Create new employee account",
+  "employeeAccountHasBeenSuccessfullyCreated": "Employee account has been successfully created",
+  "chooseEmployeeGender": "Please select employee's gender"
 }
