@@ -16,11 +16,8 @@ class WorkdayService {
 
   static const String _url = '$SERVER_IP/workdays';
 
-  Future<List<WorkdayDto>> findAllByTimesheetId(int tsId) async {
-    Response res = await get(
-      '$_url/timesheet?timesheet_id=$tsId',
-      headers: _header,
-    );
+  Future<List<WorkdayDto>> findAllByTsId(int tsId) async {
+    Response res = await get('$_url/timesheet?ts_id=$tsId', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => WorkdayDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -30,11 +27,8 @@ class WorkdayService {
     }
   }
 
-  Future<List<WorkdayForEmployeeDto>> findAllForEmployeeByTimesheetId(String timesheetId) async {
-    Response res = await get(
-      '$_url/employee?timesheet_id=$timesheetId',
-      headers: _header,
-    );
+  Future<List<WorkdayForEmployeeDto>> findAllForEmployeeByTsId(String tsId) async {
+    Response res = await get('$_url/employee?ts_id=$tsId', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => WorkdayForEmployeeDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -45,11 +39,7 @@ class WorkdayService {
   }
 
   Future<dynamic> updateFieldsValuesById(int id, Map<String, Object> fieldsValues) async {
-    Response res = await put(
-      '$_url/id?id=$id',
-      body: jsonEncode(fieldsValues),
-      headers: _headers,
-    );
+    Response res = await put('$_url/id?id=$id', body: jsonEncode(fieldsValues), headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
@@ -60,11 +50,7 @@ class WorkdayService {
   }
 
   Future<dynamic> updateFieldsValuesByIds(List<String> ids, Map<String, Object> fieldsValues) async {
-    Response res = await put(
-      '$_url/ids?ids=$ids',
-      body: jsonEncode(fieldsValues),
-      headers: _headers,
-    );
+    Response res = await put('$_url/ids?ids=$ids', body: jsonEncode(fieldsValues), headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
@@ -75,11 +61,7 @@ class WorkdayService {
   }
 
   Future<dynamic> updateHoursByIds(List<String> ids, double hours) async {
-    Response res = await put(
-      '$_url/hours?ids=$ids',
-      body: jsonEncode(hours),
-      headers: _headers,
-    );
+    Response res = await put('$_url/hours?ids=$ids', body: jsonEncode(hours), headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
@@ -90,11 +72,7 @@ class WorkdayService {
   }
 
   Future<dynamic> updatePieceworkByIds(List<String> ids, Map<String, int> serviceWithQuantity) async {
-    Response res = await put(
-      '$_url/piecework?ids=$ids',
-      body: jsonEncode({'serviceWithQuantity': serviceWithQuantity}),
-      headers: _headers,
-    );
+    Response res = await put('$_url/piecework?ids=$ids', body: jsonEncode({'serviceWithQuantity': serviceWithQuantity}), headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {

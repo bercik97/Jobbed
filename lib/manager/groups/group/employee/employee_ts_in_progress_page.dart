@@ -82,7 +82,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     this._avatarPath = widget._avatarPath;
     super.initState();
     _loading = true;
-    _workdayService.findAllByTimesheetId(_timesheet.id).then((res) {
+    _workdayService.findAllByTsId(_timesheet.id).then((res) {
       setState(() {
         workdays = res;
         workdays.forEach((e) => _checked.add(false));
@@ -277,7 +277,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   }
 
   Future<Null> _refresh() {
-    return _workdayService.findAllByTimesheetId(_timesheet.id).then((_workdays) {
+    return _workdayService.findAllByTsId(_timesheet.id).then((_workdays) {
       setState(() {
         workdays = _workdays;
         _loading = false;

@@ -19,11 +19,7 @@ class TimesheetService {
   static const String _url = '$SERVER_IP/timesheets';
 
   Future<dynamic> createForEmployees(List<String> employeeIds, int year, int month) async {
-    Response res = await post(
-      '$_url/employees/$employeeIds',
-      body: jsonEncode({'year': year, 'month': month}),
-      headers: _headers,
-    );
+    Response res = await post('$_url/employees/$employeeIds', body: jsonEncode({'year': year, 'month': month}), headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
@@ -34,10 +30,7 @@ class TimesheetService {
   }
 
   Future<Map<DateTime, List<EmployeeCalendarDto>>> findDataForEmployeeCalendarByEmployeeId(int employeeId) async {
-    Response res = await get(
-      '$_url/employee-calendar?employee_id=$employeeId',
-      headers: _header,
-    );
+    Response res = await get('$_url/employee-calendar?employee_id=$employeeId', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as Map).map(
         (key, value) => MapEntry(
@@ -75,10 +68,7 @@ class TimesheetService {
   }
 
   Future<List<TimesheetWithoutStatusDto>> findAllWithoutStatusByGroupIdAndStatus(int groupId, String tsStatus) async {
-    Response res = await get(
-      _url + '/groups/$groupId/without-status?timesheet_status=$tsStatus',
-      headers: _header,
-    );
+    Response res = await get(_url + '/groups/$groupId/without-status?ts_status=$tsStatus', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => TimesheetWithoutStatusDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -89,11 +79,7 @@ class TimesheetService {
   }
 
   Future<dynamic> updateHoursByGroupIdAndDate(int groupId, String date, double hours) async {
-    Response res = await put(
-      '$_url/hours/groups/$groupId?date=$date',
-      body: hours.toString(),
-      headers: _headers,
-    );
+    Response res = await put('$_url/hours/groups/$groupId?date=$date', body: hours.toString(), headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
@@ -104,11 +90,7 @@ class TimesheetService {
   }
 
   Future<dynamic> updatePieceworkByGroupIdAndDate(int groupId, String date, Map<String, int> serviceWithQuantity) async {
-    Response res = await put(
-      '$_url/piecework/groups/$groupId?date=$date',
-      body: jsonEncode({'serviceWithQuantity': serviceWithQuantity}),
-      headers: _headers,
-    );
+    Response res = await put('$_url/piecework/groups/$groupId?date=$date', body: jsonEncode({'serviceWithQuantity': serviceWithQuantity}), headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
@@ -119,11 +101,7 @@ class TimesheetService {
   }
 
   Future<dynamic> updateNoteByGroupIdAndDate(int groupId, String date, String note) async {
-    Response res = await put(
-      '$_url/note/groups/$groupId?date=$date',
-      body: note,
-      headers: _headers,
-    );
+    Response res = await put('$_url/note/groups/$groupId?date=$date', body: note, headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
@@ -134,11 +112,7 @@ class TimesheetService {
   }
 
   Future<dynamic> updateEmployeesTsStatus(List<String> employeeIds, int newStatusId, int tsYear, int tsMonth, String tsStatus, int groupId) async {
-    Response res = await put(
-      '$_url/groups/$groupId/employees/$employeeIds',
-      body: jsonEncode({'newStatusId': newStatusId, 'tsYear': tsYear, 'tsMonth': tsMonth, 'tsStatus': tsStatus}),
-      headers: _headers,
-    );
+    Response res = await put('$_url/groups/$groupId/employees/$employeeIds', body: jsonEncode({'newStatusId': newStatusId, 'tsYear': tsYear, 'tsMonth': tsMonth, 'tsStatus': tsStatus}), headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
@@ -149,10 +123,7 @@ class TimesheetService {
   }
 
   Future<dynamic> deleteForEmployeesByYearAndMonthAndStatus(List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
-    Response res = await delete(
-      '$_url/employees/$employeeIds?timesheet_year=$tsYear&timesheet_month=$tsMonth&timesheet_status=$tsStatus',
-      headers: _headers,
-    );
+    Response res = await delete('$_url/employees/$employeeIds?ts_year=$tsYear&ts_month=$tsMonth&ts_status=$tsStatus', headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {

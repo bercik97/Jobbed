@@ -55,7 +55,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
     this._timesheet = widget._timesheet;
     this._loading = true;
     super.initState();
-    _workdayService.findAllForEmployeeByTimesheetId(_timesheet.id.toString()).then((res) {
+    _workdayService.findAllForEmployeeByTsId(_timesheet.id.toString()).then((res) {
       setState(() {
         workdays = res;
         _loading = false;
@@ -221,7 +221,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
 
   Future<Null> _refresh() {
     _loading = true;
-    return _workdayService.findAllForEmployeeByTimesheetId(_timesheet.id.toString()).then((_workdays) {
+    return _workdayService.findAllForEmployeeByTsId(_timesheet.id.toString()).then((_workdays) {
       setState(() {
         workdays = _workdays;
         _loading = false;

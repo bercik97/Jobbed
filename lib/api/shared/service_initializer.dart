@@ -26,7 +26,7 @@ class ServiceInitializer {
     };
     switch (obj.toString()) {
       case 'EmployeeService': return new EmployeeService(context, header, headers);
-      case 'ExcelService': return new ExcelService(context, header, headers);
+      case 'ExcelService': return new ExcelService(context, header);
       case 'GroupService': return new GroupService(context, header, headers);
       case 'ItemService': return new ItemService(context, header, headers);
       case 'ItemplaceService': return new ItemplaceService(context, header, headers);

@@ -6,15 +6,14 @@ import 'package:http/http.dart';
 class ExcelService {
   final BuildContext _context;
   final Map<String, String> _header;
-  final Map<String, String> _headers;
 
-  ExcelService(this._context, this._header, this._headers);
+  ExcelService(this._context, this._header);
 
   static const String _url = '$SERVER_IP/excels';
 
-  Future<dynamic> generateExcel(int year, int month, String status, int groupId, String companyId, bool calculateForEmployee, String username) async {
+  Future<dynamic> generateExcel(int tsYear, int tsMonth, String tsStatus, int groupId, String companyId, bool calculateForEmployee, String username) async {
     Response res = await post(
-      '$_url/timesheet?year=$year&month=$month&status=$status&group_id=$groupId&company_id=$companyId&calculate_for_employee=$calculateForEmployee&username=$username',
+      '$_url?ts_year=$tsYear&ts_month=$tsMonth&ts_status=$tsStatus&group_id=$groupId&company_id=$companyId&calculate_for_employee=$calculateForEmployee&username=$username',
       headers: _header,
     );
     if (res.statusCode == 200) {
