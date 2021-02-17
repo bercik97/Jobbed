@@ -544,7 +544,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   void _showDeletePiecework() async {
     _showConfirmationDialog(
       title: getTranslated(context, 'confirmation'),
-      content: getTranslated(context, 'deletingPieceworkConfirmation'),
+      content: getTranslated(context, 'deletingPieceworkForSelectedDaysConfirmation'),
       fun: () => _isDeletePieceworkButtonTapped ? null : _handleDeletePiecework(selectedIds.map((el) => el.toString()).toList()),
     );
   }

@@ -604,5 +604,6 @@
   "deletingPieceworkConfirmation": "დარწმუნებული ხართ, რომ გსურთ წაშალოთ ყველა ნაჭერი სამუშაო ნამუშევრის არჩეული დღისთვის?",
   "pieceworkForSelectedDaysAndEmployeesDeleted": "არჩეული თანამშრომლების არჩეული დღეების ნაწყვეტები ამოღებულია",
   "pieceworkCannotBeEmpty": "ნაჭერი არ შეიძლება იყოს ცარიელი",
-  "pieceworkForSelectedDaysDeleted": "ნაწყვეტი არჩეული დღეებისთვის წაიშალა"
+  "pieceworkForSelectedDaysDeleted": "ნაწყვეტი არჩეული დღეებისთვის წაიშალა",
+  "deletingPieceworkForSelectedDaysConfirmation": "დარწმუნებული ხართ, რომ გსურთ წაშალოთ ყველა ნაჭერი სამუშაო პერიოდი?"
 }

@@ -604,5 +604,6 @@
   "deletingPieceworkConfirmation": "Вы действительно хотите удалить всю сдельную работу за выбранные дни выбранных сотрудников?",
   "pieceworkForSelectedDaysAndEmployeesDeleted": "Убрана сдельная работа по выбранным дням у выбранных сотрудников",
   "pieceworkCannotBeEmpty": "Сдельная работа не может быть пустой",
-  "pieceworkForSelectedDaysDeleted": "Сдельная работа за выбранные дни удалена"
+  "pieceworkForSelectedDaysDeleted": "Сдельная работа за выбранные дни удалена",
+  "deletingPieceworkForSelectedDaysConfirmation": "Вы уверены, что хотите удалить всю сдельную работу за выбранные дни?"
 }
