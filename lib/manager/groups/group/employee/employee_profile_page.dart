@@ -254,72 +254,32 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
   Widget _buildInformationSection() {
     return FutureBuilder(
       future: _employeeService.findEmployeeAndUserAndCompanyFieldsValuesById(_employeeId, [
-        'fatherName',
-        'motherName',
-        'dateOfBirth',
         'moneyPerHour',
         'moneyPerHourForCompany',
         'canFillHours',
         'workTimeByLocation',
         'piecework',
-        'expirationDateOfWork',
-        'nip',
-        'bankAccountNumber',
-        'drivingLicense',
-        'locality',
-        'zipCode',
-        'street',
-        'houseNumber',
-        'passportNumber',
-        'passportReleaseDate',
-        'passportExpirationDate',
       ]),
       builder: (BuildContext context, AsyncSnapshot<Map<String, Object>> snapshot) {
         Map<String, Object> res = snapshot.data;
         if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
           return Center(child: circularProgressIndicator());
         } else {
-          String fatherName = res['fatherName'];
-          String motherName = res['motherName'];
-          String dateOfBirth = res['dateOfBirth'];
           double moneyPerHour = res['moneyPerHour'];
           double moneyPerHourForCompany = res['moneyPerHourForCompany'];
           bool canFillHours = res['canFillHours'];
           bool workTimeByLocation = res['workTimeByLocation'];
           bool piecework = res['piecework'];
           String expirationDateOfWork = res['expirationDateOfWork'];
-          String nip = res['nip'];
-          String bankAccountNumber = res['bankAccountNumber'];
-          String drivingLicense = res['drivingLicense'];
-          String locality = res['locality'];
-          String zipCode = res['zipCode'];
-          String street = res['street'];
-          String houseNumber = res['houseNumber'];
-          String passportNumber = res['passportNumber'];
-          String passportReleaseDate = res['passportReleaseDate'];
-          String passportExpirationDate = res['passportExpirationDate'];
           return SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                _buildListTile(this.context, 'fatherName', fatherName),
-                _buildListTile(this.context, 'motherName', motherName),
-                _buildListTile(this.context, 'dateOfBirth', dateOfBirth),
                 _buildListTile(this.context, 'moneyPerHour', moneyPerHour.toString()),
                 _buildListTile(this.context, 'moneyPerHourForCompany', moneyPerHourForCompany.toString()),
                 _buildListTile(this.context, 'selfUpdatingHours', canFillHours ? getTranslated(this.context, 'yes') : getTranslated(this.context, 'no')),
                 _buildListTile(this.context, 'workTimeByLocation', workTimeByLocation ? getTranslated(this.context, 'yes') : getTranslated(this.context, 'no')),
                 _buildListTile(this.context, 'piecework', piecework ? getTranslated(this.context, 'yes') : getTranslated(this.context, 'no')),
                 _buildListTile(this.context, 'expirationDateOfWork', expirationDateOfWork),
-                _buildListTile(this.context, 'nip', nip),
-                _buildListTile(this.context, 'bankAccountNumber', bankAccountNumber),
-                _buildListTile(this.context, 'drivingLicense', drivingLicense),
-                _buildListTile(this.context, 'locality', locality),
-                _buildListTile(this.context, 'zipCode', zipCode),
-                _buildListTile(this.context, 'street', street),
-                _buildListTile(this.context, 'houseNumber', houseNumber),
-                _buildListTile(this.context, 'passportNumber', passportNumber),
-                _buildListTile(this.context, 'passportReleaseDate', passportReleaseDate),
-                _buildListTile(this.context, 'passportExpirationDate', passportExpirationDate),
               ],
             ),
           );

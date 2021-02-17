@@ -44,21 +44,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
   final TextEditingController _whatsAppController = new TextEditingController();
   final TextEditingController _nameController = new TextEditingController();
   final TextEditingController _surnameController = new TextEditingController();
-  final TextEditingController _fatherNameController = new TextEditingController();
-  final TextEditingController _motherNameController = new TextEditingController();
-  final TextEditingController _localityController = new TextEditingController();
-  final TextEditingController _zipCodeController = new TextEditingController();
-  final TextEditingController _streetController = new TextEditingController();
-  final TextEditingController _houseNumberController = new TextEditingController();
-  final TextEditingController _passportNumberController = new TextEditingController();
-  final TextEditingController _nipController = new TextEditingController();
-  final TextEditingController _bankAccountNumberController = new TextEditingController();
-  final TextEditingController _drivingLicenseController = new TextEditingController();
 
-  DateTime _dateOfBirth;
-  DateTime _passportReleaseDate;
-  DateTime _passportExpirationDate;
-  DateTime _expirationDateOfWork;
   String _nationality;
 
   bool _loading;
@@ -80,20 +66,6 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
         'phone',
         'viber',
         'whatsApp',
-        'fatherName',
-        'motherName',
-        'dateOfBirth',
-        'expirationDateOfWork',
-        'nip',
-        'bankAccountNumber',
-        'drivingLicense',
-        'locality',
-        'zipCode',
-        'street',
-        'houseNumber',
-        'passportNumber',
-        'passportReleaseDate',
-        'passportExpirationDate',
         'accountExpirationDate',
         'companyName',
       ],
@@ -110,20 +82,6 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
           _viberController.text = this._fieldsValues['viber'];
           _whatsAppController.text = this._fieldsValues['whatsApp'];
           _accountExpirationDate = this._fieldsValues['accountExpirationDate'];
-          _fatherNameController.text = this._fieldsValues['fatherName'];
-          _motherNameController.text = this._fieldsValues['motherName'];
-          _dateOfBirth = this._fieldsValues['dateOfBirth'] != null ? DateTime.parse(this._fieldsValues['dateOfBirth']) : null;
-          _expirationDateOfWork = this._fieldsValues['expirationDateOfWork'] != null ? DateTime.parse(this._fieldsValues['expirationDateOfWork']) : null;
-          _nipController.text = this._fieldsValues['nip'];
-          _bankAccountNumberController.text = this._fieldsValues['bankAccountNumber'];
-          _drivingLicenseController.text = this._fieldsValues['drivingLicense'];
-          _localityController.text = this._fieldsValues['locality'];
-          _zipCodeController.text = this._fieldsValues['zipCode'];
-          _streetController.text = this._fieldsValues['street'];
-          _houseNumberController.text = this._fieldsValues['houseNumber'];
-          _passportNumberController.text = this._fieldsValues['passportNumber'];
-          _passportReleaseDate = this._fieldsValues['passportReleaseDate'] != null ? DateTime.parse(this._fieldsValues['passportReleaseDate']) : null;
-          _passportExpirationDate = this._fieldsValues['passportExpirationDate'] != null ? DateTime.parse(this._fieldsValues['passportExpirationDate']) : null;
           _companyName = this._fieldsValues['companyName'];
         }),
       },
@@ -156,11 +114,11 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
                         child: Column(
                           children: <Widget>[
                             _buildReadOnlySection(),
-                            _buildContactSection(),
+                            SizedBox(height: 20),
+                            Align(alignment: Alignment.topLeft, child: text25GreenUnderline(getTranslated(context, 'editableSection'))),
+                            SizedBox(height: 20),
                             _buildBasicSection(),
-                            _buildAddressSection(),
-                            _buildPassportSection(),
-                            _buildOtherSection(),
+                            _buildContactSection(),
                           ],
                         ),
                       ),
@@ -232,50 +190,6 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
           Icons.person_outline,
         ),
         _buildNationalityDropdown(),
-        _buildNotRequiredTextField(
-          _fatherNameController,
-          26,
-          getTranslated(context, 'fatherName'),
-          Icons.directions_walk,
-        ),
-        _buildNotRequiredTextField(
-          _motherNameController,
-          26,
-          getTranslated(context, 'motherName'),
-          Icons.pregnant_woman,
-        ),
-        _buildDateOfBirthField(),
-      ],
-    );
-  }
-
-  Widget _buildAddressSection() {
-    return Column(
-      children: <Widget>[
-        _buildNotRequiredTextField(
-          _localityController,
-          100,
-          getTranslated(context, 'locality'),
-          Icons.location_city,
-        ),
-        _buildNotRequiredTextField(
-          _zipCodeController,
-          12,
-          getTranslated(context, 'zipCode'),
-          Icons.local_post_office,
-        ),
-        _buildNotRequiredTextField(
-          _streetController,
-          100,
-          getTranslated(context, 'street'),
-          Icons.directions,
-        ),
-        _buildNotRequiredTextField(
-          _houseNumberController,
-          8,
-          getTranslated(context, 'houseNumber'),
-          Icons.home,
-        ),
       ],
     );
   }
@@ -283,9 +197,6 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
   Widget _buildContactSection() {
     return Column(
       children: <Widget>[
-        SizedBox(height: 20),
-        Align(alignment: Alignment.topLeft, child: text25GreenUnderline(getTranslated(context, 'editableSection'))),
-        SizedBox(height: 20),
         _buildContactNumField(
           _phoneController,
           getTranslated(context, 'phone'),
@@ -300,45 +211,6 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
           _whatsAppController,
           getTranslated(context, 'whatsApp'),
           Icons.perm_phone_msg,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildPassportSection() {
-    return Column(
-      children: <Widget>[
-        _buildNotRequiredNumField(
-          _passportNumberController,
-          getTranslated(context, 'passportNumber'),
-          Icons.card_travel,
-        ),
-        _buildPassportReleaseDateField(),
-        _buildPassportExpirationDateField(),
-      ],
-    );
-  }
-
-  Widget _buildOtherSection() {
-    return Column(
-      children: <Widget>[
-        _buildExpirationDateOfWorkField(),
-        _buildNotRequiredNumField(
-          _nipController,
-          getTranslated(context, 'nip'),
-          Icons.language,
-        ),
-        _buildNotRequiredTextField(
-          _bankAccountNumberController,
-          28,
-          getTranslated(context, 'bankAccountNumber'),
-          Icons.monetization_on,
-        ),
-        _buildNotRequiredTextField(
-          _drivingLicenseController,
-          30,
-          getTranslated(context, 'drivingLicense'),
-          Icons.drive_eta,
         ),
       ],
     );
@@ -363,29 +235,6 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
             labelStyle: TextStyle(color: WHITE),
           ),
           validator: RequiredValidator(errorText: errorText),
-        ),
-        SizedBox(height: 10),
-      ],
-    );
-  }
-
-  Widget _buildNotRequiredTextField(TextEditingController controller, int maxLength, String labelText, IconData icon) {
-    return Column(
-      children: <Widget>[
-        TextFormField(
-          autocorrect: true,
-          cursorColor: WHITE,
-          maxLength: maxLength,
-          controller: controller,
-          style: TextStyle(color: WHITE),
-          decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            counterStyle: TextStyle(color: WHITE),
-            border: OutlineInputBorder(),
-            labelText: labelText,
-            prefixIcon: iconWhite(icon),
-            labelStyle: TextStyle(color: WHITE),
-          ),
         ),
         SizedBox(height: 10),
       ],
@@ -428,70 +277,6 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
     );
   }
 
-  Widget _buildNotRequiredNumField(TextEditingController controller, String labelText, IconData icon) {
-    return Column(
-      children: <Widget>[
-        TextFormField(
-          autocorrect: true,
-          cursorColor: WHITE,
-          maxLength: 12,
-          controller: controller,
-          style: TextStyle(color: WHITE),
-          inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
-          keyboardType: TextInputType.number,
-          decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            counterStyle: TextStyle(color: WHITE),
-            border: OutlineInputBorder(),
-            labelText: labelText,
-            prefixIcon: iconWhite(icon),
-            labelStyle: TextStyle(color: WHITE),
-          ),
-        ),
-        SizedBox(height: 10),
-      ],
-    );
-  }
-
-  Widget _buildDateOfBirthField() {
-    return Column(
-      children: <Widget>[
-        TextFormField(
-          readOnly: true,
-          onTap: () {
-            setState(() {
-              selectDateOfBirth(context);
-            });
-          },
-          decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            border: OutlineInputBorder(),
-            hintText: _dateOfBirth == null || _dateOfBirth.toString().substring(0, 10) == DateTime.now().toString().substring(0, 10) ? getTranslated(context, 'dateOfBirth') : _dateOfBirth.toString().substring(0, 10) + ' (' + getTranslated(context, 'dateOfBirth') + ')',
-            hintStyle: TextStyle(color: WHITE),
-            prefixIcon: iconWhite(Icons.date_range),
-            labelStyle: TextStyle(color: WHITE),
-          ),
-        ),
-        SizedBox(height: 20),
-      ],
-    );
-  }
-
-  Future<Null> selectDateOfBirth(BuildContext context) async {
-    DateTime _datePicker = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1950),
-      lastDate: DateTime(2050),
-      initialDatePickerMode: DatePickerMode.year,
-    );
-    if (_datePicker != null && _datePicker != _dateOfBirth) {
-      setState(() {
-        _dateOfBirth = _datePicker;
-      });
-    }
-  }
-
   Widget _buildNationalityDropdown() {
     return Theme(
       data: ThemeData(splashColor: GREEN, colorScheme: ColorScheme.dark()),
@@ -529,123 +314,6 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
     );
   }
 
-  Widget _buildPassportReleaseDateField() {
-    return Column(
-      children: <Widget>[
-        TextFormField(
-          readOnly: true,
-          onTap: () {
-            setState(() {
-              selectPassportReleaseDate(context);
-            });
-          },
-          decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            border: OutlineInputBorder(),
-            hintText: _passportReleaseDate == null || _passportReleaseDate.toString().substring(0, 10) == DateTime.now().toString().substring(0, 10) ? getTranslated(context, 'passportReleaseDate') : _passportReleaseDate.toString().substring(0, 10) + ' (' + getTranslated(context, 'passportReleaseDate') + ')',
-            hintStyle: TextStyle(color: WHITE),
-            prefixIcon: iconWhite(Icons.date_range),
-            labelStyle: TextStyle(color: WHITE),
-          ),
-        ),
-        SizedBox(height: 20),
-      ],
-    );
-  }
-
-  Future<Null> selectPassportReleaseDate(BuildContext context) async {
-    DateTime _datePicker = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1950),
-      lastDate: DateTime(2050),
-      initialDatePickerMode: DatePickerMode.year,
-    );
-    if (_datePicker != null && _datePicker != _passportReleaseDate) {
-      setState(() {
-        _passportReleaseDate = _datePicker;
-      });
-    }
-  }
-
-  Widget _buildPassportExpirationDateField() {
-    return Column(
-      children: <Widget>[
-        TextFormField(
-          readOnly: true,
-          onTap: () {
-            setState(() {
-              selectPassportExpirationDate(context);
-            });
-          },
-          decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            border: OutlineInputBorder(),
-            hintText: _passportExpirationDate == null || _passportExpirationDate.toString().substring(0, 10) == DateTime.now().toString().substring(0, 10) ? getTranslated(context, 'passportExpirationDate') : _passportExpirationDate.toString().substring(0, 10) + ' (' + getTranslated(context, 'passportExpirationDate') + ')',
-            hintStyle: TextStyle(color: WHITE),
-            prefixIcon: iconWhite(Icons.date_range),
-            labelStyle: TextStyle(color: WHITE),
-          ),
-        ),
-        SizedBox(height: 20),
-      ],
-    );
-  }
-
-  Future<Null> selectPassportExpirationDate(BuildContext context) async {
-    DateTime _datePicker = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1950),
-      lastDate: DateTime(2050),
-      initialDatePickerMode: DatePickerMode.year,
-    );
-    if (_datePicker != null && _datePicker != _passportExpirationDate) {
-      setState(() {
-        _passportExpirationDate = _datePicker;
-      });
-    }
-  }
-
-  Widget _buildExpirationDateOfWorkField() {
-    return Column(
-      children: <Widget>[
-        TextFormField(
-          readOnly: true,
-          onTap: () {
-            setState(() {
-              selectExpirationDateOfWork(context);
-            });
-          },
-          decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            border: OutlineInputBorder(),
-            hintText: _expirationDateOfWork == null || _expirationDateOfWork.toString().substring(0, 10) == DateTime.now().toString().substring(0, 10) ? getTranslated(context, 'expirationDateOfWork') : _expirationDateOfWork.toString().substring(0, 10) + ' (' + getTranslated(context, 'expirationDateOfWork') + ')',
-            hintStyle: TextStyle(color: WHITE),
-            prefixIcon: iconWhite(Icons.date_range),
-            labelStyle: TextStyle(color: WHITE),
-          ),
-        ),
-        SizedBox(height: 20),
-      ],
-    );
-  }
-
-  Future<Null> selectExpirationDateOfWork(BuildContext context) async {
-    DateTime _datePicker = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1950),
-      lastDate: DateTime(2050),
-      initialDatePickerMode: DatePickerMode.year,
-    );
-    if (_datePicker != null && _datePicker != _expirationDateOfWork) {
-      setState(() {
-        _expirationDateOfWork = _datePicker;
-      });
-    }
-  }
-
   Widget _buildUpdateButton() {
     return SafeArea(
       child: Column(
@@ -676,20 +344,6 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
                     "phone": _phoneController.text,
                     "viber": _viberController.text,
                     "whatsApp": _whatsAppController.text,
-                    "fatherName": _fatherNameController.text,
-                    "motherName": _motherNameController.text,
-                    "dateOfBirth": _dateOfBirth != null ? _dateOfBirth.toString().substring(0, 10) : null,
-                    "expirationDateOfWork": _expirationDateOfWork != null ? _expirationDateOfWork.toString().substring(0, 10) : null,
-                    "nip": _nipController.text,
-                    "bankAccountNumber": _bankAccountNumberController.text,
-                    "drivingLicense": _drivingLicenseController.text,
-                    "locality": _localityController.text,
-                    "zipCode": _zipCodeController.text,
-                    "street": _streetController.text,
-                    "houseNumber": _houseNumberController.text,
-                    "passportNumber": _passportNumberController.text,
-                    "passportReleaseDate": _passportReleaseDate != null ? _passportReleaseDate.toString().substring(0, 10) : null,
-                    "passportExpirationDate": _passportExpirationDate != null ? _passportExpirationDate.toString().substring(0, 10) : null,
                   },
                 ).then((res) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

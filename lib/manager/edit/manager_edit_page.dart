@@ -117,8 +117,11 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
                       child: Column(
                         children: <Widget>[
                           _buildReadOnlySection(),
-                          _buildContactSection(),
+                          SizedBox(height: 20),
+                          Align(alignment: Alignment.topLeft, child: text25GreenUnderline(getTranslated(context, 'editableSection'))),
+                          SizedBox(height: 20),
                           _buildBasicSection(),
+                          _buildContactSection(),
                         ],
                       ),
                     ),
@@ -196,9 +199,6 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
   Widget _buildContactSection() {
     return Column(
       children: <Widget>[
-        SizedBox(height: 20),
-        Align(alignment: Alignment.topLeft, child: text25GreenUnderline(getTranslated(context, 'editableSection'))),
-        SizedBox(height: 20),
         _buildContactNumField(
           _phoneController,
           getTranslated(context, 'phone'),
