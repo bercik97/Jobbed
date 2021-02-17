@@ -81,7 +81,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
     super.initState();
     _loading = true;
     _employeeService
-        .findAllByGroupIdAndTsYearAndMonthAndStatus(
+        .findAllByGroupIdAndTsYearAndMonthAndStatusForStatisticsView(
       _model.groupId,
       _timesheet.year,
       MonthUtil.findMonthNumberByMonthName(context, _timesheet.month),
@@ -803,7 +803,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
 
   Future<Null> _refresh() {
     return _employeeService
-        .findAllByGroupIdAndTsYearAndMonthAndStatus(
+        .findAllByGroupIdAndTsYearAndMonthAndStatusForStatisticsView(
       _model.groupId,
       _timesheet.year,
       MonthUtil.findMonthNumberByMonthName(context, _timesheet.month),

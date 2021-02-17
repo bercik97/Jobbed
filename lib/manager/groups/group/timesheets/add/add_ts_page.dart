@@ -65,7 +65,7 @@ class _AddTsPageState extends State<AddTsPage> {
     this._timesheetService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
     super.initState();
     _loading = true;
-    _employeeService.findAllByGroupIdAndTsNotInYearAndMonthAndGroup(_model.groupId, _year, _month).then((res) {
+    _employeeService.findAllByGroupIdAndTsNotInYearAndMonth(_model.groupId, _year, _month).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
@@ -301,7 +301,7 @@ class _AddTsPageState extends State<AddTsPage> {
   }
 
   Future<Null> _refresh() {
-    return _employeeService.findAllByGroupIdAndTsNotInYearAndMonthAndGroup(_model.groupId, _year, _month).then((res) {
+    return _employeeService.findAllByGroupIdAndTsNotInYearAndMonth(_model.groupId, _year, _month).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));

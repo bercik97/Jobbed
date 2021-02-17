@@ -61,6 +61,18 @@ class EmployeeService {
     }
   }
 
+  Future<List<EmployeeStatisticsDto>> findAllByGroupIdAndTsYearAndMonthAndStatusForStatisticsView(int groupId, int tsYear, int tsMonth, String tsStatus) async {
+    String url = '$_url/view/statistics/groups/$groupId/timesheets?ts_year=$tsYear&ts_month=$tsMonth&ts_status=$tsStatus';
+    Response res = await get(url, headers: _header);
+    if (res.statusCode == 200) {
+      return (json.decode(res.body) as List).map((data) => EmployeeStatisticsDto.fromJson(data)).toList();
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
   Future<List<EmployeeBasicDto>> findAllByCompanyId(String companyId) async {
     Response res = await get('$_url/companies?company_id=$companyId', headers: _header);
     if (res.statusCode == 200) {
@@ -95,23 +107,11 @@ class EmployeeService {
     }
   }
 
-  Future<List<EmployeeBasicDto>> findAllByGroupIdAndTsNotInYearAndMonthAndGroup(int groupId, int tsYear, int tsMonth) async {
+  Future<List<EmployeeBasicDto>> findAllByGroupIdAndTsNotInYearAndMonth(int groupId, int tsYear, int tsMonth) async {
     String url = '$_url/groups/$groupId/timesheets/not-in?ts_year=$tsYear&ts_month=$tsMonth';
     Response res = await get(url, headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeBasicDto.fromJson(data)).toList();
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<List<EmployeeStatisticsDto>> findAllByGroupIdAndTsYearAndMonthAndStatus(int groupId, int tsYear, int tsMonth, String tsStatus) async {
-    String url = '$_url/groups/$groupId/timesheets?ts_year=$tsYear&ts_month=$tsMonth&ts_status=$tsStatus';
-    Response res = await get(url, headers: _header);
-    if (res.statusCode == 200) {
-      return (json.decode(res.body) as List).map((data) => EmployeeStatisticsDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
       return Logout.handle401WithLogout(_context);
     } else {

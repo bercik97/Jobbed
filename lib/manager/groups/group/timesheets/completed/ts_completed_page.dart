@@ -55,7 +55,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
     super.initState();
     _loading = true;
     _employeeService
-        .findAllByGroupIdAndTsYearAndMonthAndStatus(
+        .findAllByGroupIdAndTsYearAndMonthAndStatusForStatisticsView(
       _model.groupId,
       _timesheet.year,
       MonthUtil.findMonthNumberByMonthName(context, _timesheet.month),
