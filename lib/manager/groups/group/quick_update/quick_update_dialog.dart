@@ -9,7 +9,7 @@ import 'package:give_job/manager/groups/group/piecework/add_piecework_for_quick_
 import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toastr_service.dart';
+import 'package:give_job/shared/service/toast_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/buttons.dart';

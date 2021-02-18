@@ -17,7 +17,7 @@ import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toastr_service.dart';
+import 'package:give_job/shared/service/toast_service.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/loader.dart';
@@ -50,7 +50,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
 
   User _user;
 
-  PriceListService _pricelistService;
+  PriceListService _priceListService;
   WorkdayService _workdayService;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -59,7 +59,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
 
   final Map<String, TextEditingController> _textEditingItemControllers = new Map();
 
-  List<PriceListDto> _pricelists = new List();
+  List<PriceListDto> _priceLists = new List();
 
   Map<String, int> serviceWithQuantity = new LinkedHashMap();
 
@@ -76,14 +76,14 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
     this._employeeNationality = widget._employeeNationality;
     this._timesheet = widget._timesheet;
     this._avatarPath = widget._avatarPath;
-    this._pricelistService = ServiceInitializer.initialize(context, _user.authHeader, PriceListService);
+    this._priceListService = ServiceInitializer.initialize(context, _user.authHeader, PriceListService);
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     super.initState();
     _loading = true;
-    _pricelistService.findAllByCompanyId(_user.companyId).then((res) {
+    _priceListService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
-        _pricelists = res;
-        _pricelists.forEach((i) => _textEditingItemControllers[utf8.decode(i.name.runes.toList())] = new TextEditingController());
+        _priceLists = res;
+        _priceLists.forEach((i) => _textEditingItemControllers[utf8.decode(i.name.runes.toList())] = new TextEditingController());
         _loading = false;
       });
     }).catchError((onError) => DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'noPriceList'), EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _timesheet, _avatarPath)));
@@ -109,7 +109,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
               key: formKey,
               child: Column(
                 children: [
-                  _buildPricelist(),
+                  _buildPriceList(),
                 ],
               ),
             ),
@@ -121,7 +121,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
     );
   }
 
-  Widget _buildPricelist() {
+  Widget _buildPriceList() {
     return Expanded(
       flex: 2,
       child: Scrollbar(
@@ -130,7 +130,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
             child: Center(
               child: Column(
                 children: [
-                  for (var pricelist in _pricelists)
+                  for (var pricelist in _priceLists)
                     Card(
                       color: DARK,
                       child: Column(

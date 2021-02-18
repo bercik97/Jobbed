@@ -16,7 +16,7 @@ import 'package:give_job/shared/widget/hint.dart';
 import '../../../../../internationalization/localization/localization_constants.dart';
 import '../../../../../shared/libraries/colors.dart';
 import '../../../../../shared/libraries/constants.dart';
-import '../../../../../shared/service/toastr_service.dart';
+import '../../../../../shared/service/toast_service.dart';
 import '../../../../../shared/util/language_util.dart';
 import '../../../../../shared/util/month_util.dart';
 import '../../../../../shared/widget/icons.dart';

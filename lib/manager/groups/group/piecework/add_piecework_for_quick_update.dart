@@ -15,7 +15,7 @@ import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toastr_service.dart';
+import 'package:give_job/shared/service/toast_service.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/loader.dart';
@@ -26,9 +26,9 @@ import '../group_page.dart';
 
 class AddPieceworkForQuickUpdate extends StatefulWidget {
   final GroupModel _model;
-  final String _todaysDate;
+  final String _todayDate;
 
-  AddPieceworkForQuickUpdate(this._model, this._todaysDate);
+  AddPieceworkForQuickUpdate(this._model, this._todayDate);
 
   @override
   _AddPieceworkForQuickUpdateState createState() => _AddPieceworkForQuickUpdateState();
@@ -36,11 +36,11 @@ class AddPieceworkForQuickUpdate extends StatefulWidget {
 
 class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate> {
   GroupModel _model;
-  String _todaysDate;
+  String _todayDate;
 
   User _user;
 
-  PriceListService _pricelistService;
+  PriceListService _priceListService;
   TimesheetService _timesheetService;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -49,7 +49,7 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
 
   final Map<String, TextEditingController> _textEditingItemControllers = new Map();
 
-  List<PriceListDto> _pricelists = new List();
+  List<PriceListDto> _priceLists = new List();
 
   Map<String, int> serviceWithQuantity = new LinkedHashMap();
 
@@ -60,15 +60,15 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
   void initState() {
     this._model = widget._model;
     this._user = _model.user;
-    this._todaysDate = widget._todaysDate;
-    this._pricelistService = ServiceInitializer.initialize(context, _user.authHeader, PriceListService);
+    this._todayDate = widget._todayDate;
+    this._priceListService = ServiceInitializer.initialize(context, _user.authHeader, PriceListService);
     this._timesheetService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
     super.initState();
     _loading = true;
-    _pricelistService.findAllByCompanyId(_user.companyId).then((res) {
+    _priceListService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
-        _pricelists = res;
-        _pricelists.forEach((i) => _textEditingItemControllers[utf8.decode(i.name.runes.toList())] = new TextEditingController());
+        _priceLists = res;
+        _priceLists.forEach((i) => _textEditingItemControllers[utf8.decode(i.name.runes.toList())] = new TextEditingController());
         _loading = false;
       });
     }).catchError((onError) => DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'noPriceList'), GroupPage(_model)));
@@ -85,7 +85,7 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBar(context, _user, _todaysDate, () => Navigator.pop(context)),
+        appBar: managerAppBar(context, _user, _todayDate, () => Navigator.pop(context)),
         body: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Form(
@@ -112,7 +112,7 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
           child: Center(
             child: Column(
               children: [
-                for (var pricelist in _pricelists)
+                for (var pricelist in _priceLists)
                   Card(
                     color: DARK,
                     child: Column(
@@ -216,7 +216,7 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _timesheetService.updatePieceworkByGroupIdAndDate(_model.groupId, _todaysDate, serviceWithQuantity).then((res) {
+    _timesheetService.updatePieceworkByGroupIdAndDate(_model.groupId, _todayDate, serviceWithQuantity).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewReportsAboutPiecework'));
         NavigatorUtil.navigateReplacement(this.context, GroupPage(_model));

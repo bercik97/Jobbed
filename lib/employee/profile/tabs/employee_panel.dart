@@ -7,7 +7,7 @@ import 'package:give_job/employee/profile/tabs/worktime/work_time_page.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/toastr_service.dart';
+import 'package:give_job/shared/service/toast_service.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/texts.dart';
 

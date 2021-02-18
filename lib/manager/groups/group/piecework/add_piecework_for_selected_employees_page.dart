@@ -17,7 +17,7 @@ import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toastr_service.dart';
+import 'package:give_job/shared/service/toast_service.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/loader.dart';
@@ -52,7 +52,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
 
   User _user;
 
-  PriceListService _pricelistService;
+  PriceListService _priceListService;
   WorkdayService _workdayService;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -79,11 +79,11 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
     this._tsYear = widget.tsYear;
     this._tsMonth = widget.tsMonth;
     this._tsStatus = widget.tsStatus;
-    this._pricelistService = ServiceInitializer.initialize(context, _user.authHeader, PriceListService);
+    this._priceListService = ServiceInitializer.initialize(context, _user.authHeader, PriceListService);
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     super.initState();
     _loading = true;
-    _pricelistService.findAllByCompanyId(_user.companyId).then((res) {
+    _priceListService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
         _pricelists = res;
         _pricelists.forEach((i) => _textEditingItemControllers[utf8.decode(i.name.runes.toList())] = new TextEditingController());
@@ -108,7 +108,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
-              _buildPricelist(),
+              _buildPriceList(),
             ],
           ),
         ),
@@ -117,7 +117,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
     );
   }
 
-  Widget _buildPricelist() {
+  Widget _buildPriceList() {
     return Expanded(
       flex: 2,
       child: Scrollbar(
@@ -126,7 +126,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
           child: Center(
               child: Column(
             children: [
-              for (var pricelist in _pricelists)
+              for (var priceList in _pricelists)
                 Card(
                   color: DARK,
                   child: Column(
@@ -136,26 +136,26 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
                       Card(
                         color: BRIGHTER_DARK,
                         child: ListTile(
-                          title: textGreen(utf8.decode(pricelist.name.runes.toList())),
+                          title: textGreen(utf8.decode(priceList.name.runes.toList())),
                           subtitle: Column(
                             children: [
                               Row(
                                 children: [
                                   textWhite(getTranslated(this.context, 'priceForEmployee') + ': '),
-                                  textGreen(pricelist.priceForEmployee.toString()),
+                                  textGreen(priceList.priceForEmployee.toString()),
                                 ],
                               ),
                               Row(
                                 children: [
                                   textWhite(getTranslated(this.context, 'priceForCompany') + ': '),
-                                  textGreen(pricelist.priceForCompany.toString()),
+                                  textGreen(priceList.priceForCompany.toString()),
                                 ],
                               ),
                             ],
                           ),
                           trailing: Container(
                             width: 100,
-                            child: _buildNumberField(_textEditingItemControllers[utf8.decode(pricelist.name.runes.toList())]),
+                            child: _buildNumberField(_textEditingItemControllers[utf8.decode(priceList.name.runes.toList())]),
                           ),
                         ),
                       ),
