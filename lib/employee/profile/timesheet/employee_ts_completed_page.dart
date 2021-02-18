@@ -42,10 +42,6 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
 
   List<WorkdayForEmployeeDto> workdays = new List();
 
-  bool _sortNo = true;
-  bool _sort = true;
-  int _sortColumnIndex;
-
   bool _loading = false;
 
   @override

@@ -86,7 +86,7 @@ class _PriceListsPageState extends State<PriceListsPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'pricelist'), () => NavigatorUtil.navigate(context, GroupPage(_model))),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'priceList'), () => NavigatorUtil.navigate(context, GroupPage(_model))),
           body: Padding(
             padding: const EdgeInsets.only(left: 12, right: 12),
             child: Column(
@@ -166,16 +166,16 @@ class _PriceListsPageState extends State<PriceListsPage> {
                               controller: _scrollController,
                               itemCount: _filteredPriceLists.length,
                               itemBuilder: (BuildContext context, int index) {
-                                PriceListDto pricelist = _filteredPriceLists[index];
+                                PriceListDto priceList = _filteredPriceLists[index];
                                 int foundIndex = 0;
                                 for (int i = 0; i < _priceLists.length; i++) {
-                                  if (_priceLists[i].id == pricelist.id) {
+                                  if (_priceLists[i].id == priceList.id) {
                                     foundIndex = i;
                                   }
                                 }
-                                String name = pricelist.name;
-                                String priceForEmployee = pricelist.priceForEmployee.toString();
-                                String priceForCompany = pricelist.priceForCompany.toString();
+                                String name = priceList.name;
+                                String priceForEmployee = priceList.priceForEmployee.toString();
+                                String priceForCompany = priceList.priceForCompany.toString();
                                 return Card(
                                   color: DARK,
                                   child: Column(

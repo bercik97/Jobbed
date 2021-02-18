@@ -168,7 +168,7 @@ class _GroupPageState extends State<GroupPage> {
                             color: BRIGHTER_DARK,
                             child: InkWell(
                               onTap: () => NavigatorUtil.navigate(context, PriceListsPage(_model)),
-                              child: _buildScrollableContainer('images/pricelist-icon.png', 'priceList', 'manageCompanyPriceList'),
+                              child: _buildScrollableContainer('images/price-list-icon.png', 'priceList', 'manageCompanyPriceList'),
                             ),
                           ),
                         ),

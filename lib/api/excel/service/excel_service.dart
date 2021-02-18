@@ -27,7 +27,7 @@ class ExcelService {
 
   Future<dynamic> generatePriceListExcel(String companyId, bool priceForEmployee, bool priceForCompany, String username) async {
     Response res = await post(
-      '$_url/pricelists?company_id=$companyId&price_for_employee=$priceForEmployee&price_for_company=$priceForCompany&username=$username',
+      '$_url/price-lists?company_id=$companyId&price_for_employee=$priceForEmployee&price_for_company=$priceForCompany&username=$username',
       headers: _header,
     );
     if (res.statusCode == 200) {
