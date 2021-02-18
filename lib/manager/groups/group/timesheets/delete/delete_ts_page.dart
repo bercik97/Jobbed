@@ -275,7 +275,7 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showErrorToast('smthWentWrong');
+        ToastService.showErrorToast('somethingWentWrong');
         setState(() => _isDeleteBtnTapped = false);
       });
     });

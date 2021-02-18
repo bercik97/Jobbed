@@ -1,20 +1,20 @@
 import 'package:flutter/cupertino.dart';
 
-class ItemplaceDetailsDto {
+class ItemPlaceDetailsDto {
   final int warehouseId;
   final String warehouseName;
   final String name;
   final String quantity;
 
-  ItemplaceDetailsDto({
+  ItemPlaceDetailsDto({
     @required this.warehouseId,
     @required this.warehouseName,
     @required this.name,
     @required this.quantity,
   });
 
-  factory ItemplaceDetailsDto.fromJson(Map<String, dynamic> json) {
-    return ItemplaceDetailsDto(
+  factory ItemPlaceDetailsDto.fromJson(Map<String, dynamic> json) {
+    return ItemPlaceDetailsDto(
       warehouseId: json['warehouseId'] as int,
       warehouseName: json['warehouseName'] as String,
       name: json['name'] as String,

@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/item/dto/item_dto.dart';
-import 'package:give_job/api/itemplace/dto/assign_items_dto.dart';
-import 'package:give_job/api/itemplace/dto/itemplace_dashboard_dto.dart';
-import 'package:give_job/api/itemplace/service/itemplace_service.dart';
+import 'package:give_job/api/item_place/dto/assign_items_dto.dart';
+import 'package:give_job/api/item_place/dto/item_place_dashboard_dto.dart';
+import 'package:give_job/api/item_place/service/item_place_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/warehouse/dto/warehouse_dashboard_dto.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
@@ -41,11 +41,11 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
   List<ItemDto> _items;
   List<TextEditingController> _textEditingItemControllers = new List();
 
-  List<ItemplaceDashboardDto> _itemPlaces;
+  List<ItemPlaceDashboardDto> _itemPlaces;
   List<int> _itemPlacesRadioValues = new List();
   int _chosenIndex = -1;
 
-  ItemplaceService _itemPlaceService;
+  ItemPlaceService _itemPlaceService;
 
   bool _loading = false;
 
@@ -61,7 +61,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
     this._warehouseDto = widget._warehouseDto;
     this._items = widget._items;
     this._items.forEach((i) => _textEditingItemControllers.add(new TextEditingController()));
-    this._itemPlaceService = ServiceInitializer.initialize(context, _user.authHeader, ItemplaceService);
+    this._itemPlaceService = ServiceInitializer.initialize(context, _user.authHeader, ItemPlaceService);
     super.initState();
     _loading = true;
     _itemPlaceService.findAllByCompanyId(_user.companyId).then((res) {
@@ -70,7 +70,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
         _itemPlaces.forEach((element) => _itemPlacesRadioValues.add(-1));
         _loading = false;
         if (_itemPlaces.isEmpty) {
-          _showFailureDialogWithNavigate(getTranslated(this.context, 'noItemplacesToReleaseItems'));
+          _showFailureDialogWithNavigate(getTranslated(this.context, 'noItemPlacesToReleaseItems'));
         }
       });
     });
@@ -193,7 +193,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
                 children: <Widget>[iconWhite(Icons.check)],
               ),
               color: GREEN,
-              onPressed: () => _releaseItemsToItemplace(),
+              onPressed: () => _releaseItemsToItemPlace(),
             ),
           ],
         ),
@@ -201,7 +201,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
     );
   }
 
-  void _releaseItemsToItemplace() {
+  void _releaseItemsToItemPlace() {
     showGeneralDialog(
       context: context,
       barrierColor: DARK.withOpacity(0.95),
@@ -309,7 +309,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
     }
     if (itemsWithQuantities.isEmpty) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showErrorToast(getTranslated(context, 'noQuantitySettedForRelease'));
+        ToastService.showErrorToast(getTranslated(context, 'noQuantitySetForRelease'));
         setState(() => _isAddButtonTapped = false);
       });
       return;
@@ -321,7 +321,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
     );
     _itemPlaceService.assignNewItems(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(context, 'successfullyReleaseItemsToSelectedItemplace'));
+        ToastService.showSuccessToast(getTranslated(context, 'successfullyReleaseItemsToSelectedItemPlace'));
         NavigatorUtil.navigateReplacement(context, WarehouseDetailsPage(_model, _warehouseDto));
       });
     }).catchError((onError) {
@@ -330,7 +330,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
         if (errorMsg.contains("NOT_ENOUGH_QUANTITY")) {
           _showFailureDialogWithNavigate(getTranslated(context, 'someOfItemsDoNotHaveEnoughQuantity'));
         } else {
-          ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+          ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
         }
         setState(() => _isAddButtonTapped = false);
       });

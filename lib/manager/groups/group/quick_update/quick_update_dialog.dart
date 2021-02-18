@@ -35,7 +35,7 @@ class QuickUpdateDialog {
       context: context,
       barrierColor: DARK.withOpacity(0.95),
       barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'quickUpdateOfTodaysDate'),
+      barrierLabel: getTranslated(context, 'quickUpdateOfTodayDate'),
       transitionDuration: Duration(milliseconds: 400),
       pageBuilder: (_, __, ___) {
         return SizedBox.expand(
@@ -44,7 +44,7 @@ class QuickUpdateDialog {
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Center(child: text16GreenBold(getTranslated(context, 'quickUpdateOfTodaysDate') + ' $formattedDate')),
+                Center(child: text16GreenBold(getTranslated(context, 'quickUpdateOfTodayDate') + ' $formattedDate')),
                 SizedBox(height: 5),
                 Center(child: text16White(getTranslated(context, 'updateDataForAllEmployeesOfGroup'))),
                 SizedBox(height: 30),
@@ -108,7 +108,7 @@ class QuickUpdateDialog {
                 children: <Widget>[
                   Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'hoursUpperCase'))),
                   SizedBox(height: 2.5),
-                  textGreen(getTranslated(context, 'fillTodaysGroupHours')),
+                  textGreen(getTranslated(context, 'fillTodayGroupHours')),
                   Row(
                     children: [
                       Expanded(
@@ -199,7 +199,7 @@ class QuickUpdateDialog {
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _timesheetService.updateHoursByGroupIdAndDate(_model.groupId, _todaysDate, hours).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              ToastService.showSuccessToast(getTranslated(context, 'todaysGroupHoursUpdatedSuccessfully'));
+                              ToastService.showSuccessToast(getTranslated(context, 'todayGroupHoursUpdatedSuccessfully'));
                             });
                           }).catchError(
                             (onError) {
@@ -209,7 +209,7 @@ class QuickUpdateDialog {
                                   DialogService.showCustomDialog(
                                     context: context,
                                     titleWidget: textRed(getTranslated(context, 'error')),
-                                    content: getTranslated(context, 'cannotUpdateTodaysHours'),
+                                    content: getTranslated(context, 'cannotUpdateTodayHours'),
                                   );
                                 }
                               });
@@ -309,7 +309,7 @@ class QuickUpdateDialog {
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _timesheetService.updateNoteByGroupIdAndDate(_model.groupId, _todaysDate, note).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              ToastService.showSuccessToast(getTranslated(context, 'todaysGroupNoteUpdatedSuccessfully'));
+                              ToastService.showSuccessToast(getTranslated(context, 'todayGroupNoteUpdatedSuccessfully'));
                             });
                           }).catchError(
                             (onError) {
@@ -319,7 +319,7 @@ class QuickUpdateDialog {
                                   DialogService.showCustomDialog(
                                     context: context,
                                     titleWidget: textRed(getTranslated(context, 'error')),
-                                    content: getTranslated(context, 'cannotUpdateTodaysNote'),
+                                    content: getTranslated(context, 'cannotUpdateTodayNote'),
                                   );
                                 }
                               });

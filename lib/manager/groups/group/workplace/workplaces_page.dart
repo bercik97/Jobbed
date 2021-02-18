@@ -613,10 +613,10 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
 
   Future<bool> onWillPop() async {
     if (_markersList.isEmpty) {
-      ToastService.showErrorToast(getTranslated(context, 'workplaceAreaIsNotSetted'));
+      ToastService.showErrorToast(getTranslated(context, 'workplaceAreaIsNotSet'));
     } else {
       String km = _radius.toString().substring(0, 4);
-      ToastService.showSuccessToast(getTranslated(context, 'workplaceAreaIsSettedTo') + ' $km KM ✓');
+      ToastService.showSuccessToast(getTranslated(context, 'workplaceAreaIsSetTo') + ' $km KM ✓');
     }
     return true;
   }
@@ -630,7 +630,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
       return;
     } else if (_markersList.isEmpty) {
       setState(() => _isAddButtonTapped = false);
-      ToastService.showErrorToast(getTranslated(context, 'workplaceAreNotSetted'));
+      ToastService.showErrorToast(getTranslated(context, 'workplaceAreNotSet'));
       this._workplaceLocation = null;
       return;
     }
@@ -686,7 +686,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                     if (errorMsg.contains("WORKPLACE_NAME_EXISTS")) {
                       ToastService.showErrorToast(getTranslated(this.context, 'workplaceNameExists'));
                     } else {
-                      ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+                      ToastService.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
                     }
                   });
                 });
@@ -744,7 +744,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                       return;
                     }
                     setState(() => _isDeleteButtonTapped = false);
-                    ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+                    ToastService.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
                   });
                 });
               },
@@ -867,7 +867,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                               if (errorMsg.contains("WORKPLACE_NAME_EXISTS")) {
                                 ToastService.showErrorToast(getTranslated(context, 'workplaceNameExists'));
                               } else {
-                                ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+                                ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
                               }
                             });
                           });

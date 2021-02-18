@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/price_list/dto/price_list_dto.dart';
-import 'package:give_job/api/price_list/service/pricelist_service.dart';
+import 'package:give_job/api/price_list/service/price_list_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
@@ -40,7 +40,7 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
 
   User _user;
 
-  PricelistService _pricelistService;
+  PriceListService _pricelistService;
   TimesheetService _timesheetService;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -49,7 +49,7 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
 
   final Map<String, TextEditingController> _textEditingItemControllers = new Map();
 
-  List<PricelistDto> _pricelists = new List();
+  List<PriceListDto> _pricelists = new List();
 
   Map<String, int> serviceWithQuantity = new LinkedHashMap();
 
@@ -61,7 +61,7 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
     this._model = widget._model;
     this._user = _model.user;
     this._todaysDate = widget._todaysDate;
-    this._pricelistService = ServiceInitializer.initialize(context, _user.authHeader, PricelistService);
+    this._pricelistService = ServiceInitializer.initialize(context, _user.authHeader, PriceListService);
     this._timesheetService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
     super.initState();
     _loading = true;
@@ -71,7 +71,7 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
         _pricelists.forEach((i) => _textEditingItemControllers[utf8.decode(i.name.runes.toList())] = new TextEditingController());
         _loading = false;
       });
-    }).catchError((onError) => DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'noPricelist'), GroupPage(_model)));
+    }).catchError((onError) => DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'noPriceList'), GroupPage(_model)));
   }
 
   @override
@@ -230,10 +230,10 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
           DialogService.showCustomDialog(
             context: context,
             titleWidget: textRed(getTranslated(context, 'error')),
-            content: getTranslated(context, 'cannotUpdateTodaysPiecework'),
+            content: getTranslated(context, 'cannotUpdateTodayPiecework'),
           );
         } else {
-          ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+          ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
         }
       });
     });

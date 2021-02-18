@@ -7,7 +7,7 @@ import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/piecework/dto/create_piecework_dto.dart';
 import 'package:give_job/api/piecework/service/piecework_service.dart';
 import 'package:give_job/api/price_list/dto/price_list_dto.dart';
-import 'package:give_job/api/price_list/service/pricelist_service.dart';
+import 'package:give_job/api/price_list/service/price_list_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/employee/employee_profile_page.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
@@ -40,7 +40,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
   String _todayDate;
   int _todayWorkdayId;
 
-  PricelistService _pricelistService;
+  PriceListService _priceListService;
   PieceworkService _pieceworkService;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -49,7 +49,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
 
   final Map<String, TextEditingController> _textEditingItemControllers = new Map();
 
-  List<PricelistDto> _pricelists = new List();
+  List<PriceListDto> _priceLists = new List();
 
   Map<String, int> serviceWithQuantity = new LinkedHashMap();
 
@@ -61,14 +61,14 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
     this._user = widget._user;
     this._todayDate = widget._todayDate;
     this._todayWorkdayId = widget._todayWorkdayId;
-    this._pricelistService = ServiceInitializer.initialize(context, _user.authHeader, PricelistService);
+    this._priceListService = ServiceInitializer.initialize(context, _user.authHeader, PriceListService);
     this._pieceworkService = ServiceInitializer.initialize(context, _user.authHeader, PieceworkService);
     super.initState();
     _loading = true;
-    _pricelistService.findAllByCompanyId(_user.companyId).then((res) {
+    _priceListService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
-        _pricelists = res;
-        _pricelists.forEach((i) => _textEditingItemControllers[utf8.decode(i.name.runes.toList())] = new TextEditingController());
+        _priceLists = res;
+        _priceLists.forEach((i) => _textEditingItemControllers[utf8.decode(i.name.runes.toList())] = new TextEditingController());
         _loading = false;
       });
     }).catchError((onError) {
@@ -88,13 +88,13 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  textWhite(getTranslated(this.context, 'noPricelist')),
+                  textWhite(getTranslated(this.context, 'noPriceList')),
                 ],
               ),
             ),
             actions: <Widget>[
               FlatButton(
-                child: textWhite(getTranslated(this.context, 'goToTheEmployeeProfilPage')),
+                child: textWhite(getTranslated(this.context, 'goToTheEmployeeProfilePage')),
                 onPressed: () => _resetAndOpenPage(),
               ),
             ],
@@ -158,7 +158,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
             child: Center(
               child: Column(
                 children: [
-                  for (var pricelist in _pricelists)
+                  for (var priceList in _priceLists)
                     Card(
                       color: DARK,
                       child: Column(
@@ -168,16 +168,16 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
                           Card(
                             color: BRIGHTER_DARK,
                             child: ListTile(
-                              title: textGreen(utf8.decode(pricelist.name.runes.toList())),
+                              title: textGreen(utf8.decode(priceList.name.runes.toList())),
                               subtitle: Row(
                                 children: [
                                   textWhite(getTranslated(this.context, 'price') + ': '),
-                                  textGreen(pricelist.priceForEmployee.toString()),
+                                  textGreen(priceList.priceForEmployee.toString()),
                                 ],
                               ),
                               trailing: Container(
                                 width: 100,
-                                child: _buildNumberField(_textEditingItemControllers[utf8.decode(pricelist.name.runes.toList())]),
+                                child: _buildNumberField(_textEditingItemControllers[utf8.decode(priceList.name.runes.toList())]),
                               ),
                             ),
                           ),
@@ -257,7 +257,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+        ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
         setState(() => _isAddButtonTapped = false);
       });
     });

@@ -547,7 +547,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                               });
                             }).catchError((onError) {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                ToastService.showErrorToast('smthWentWrong');
+                                ToastService.showErrorToast('somethingWentWrong');
                               });
                             });
                           },
@@ -636,7 +636,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+        ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
         setState(() => _isDeletePieceworkButtonTapped = false);
       });
     });
@@ -755,7 +755,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                               });
                             }).catchError((onError) {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                ToastService.showErrorToast('smthWentWrong');
+                                ToastService.showErrorToast('somethingWentWrong');
                               });
                             });
                           },

@@ -3,13 +3,12 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:give_job/api/itemplace/dto/itemplace_dashboard_dto.dart';
-import 'package:give_job/api/itemplace/dto/itemplace_details_dto.dart';
-import 'package:give_job/api/itemplace/dto/return_items_dto.dart';
-import 'package:give_job/api/itemplace/service/itemplace_service.dart';
+import 'package:give_job/api/item_place/dto/item_place_dashboard_dto.dart';
+import 'package:give_job/api/item_place/dto/item_place_details_dto.dart';
+import 'package:give_job/api/item_place/dto/return_items_dto.dart';
+import 'package:give_job/api/item_place/service/item_place_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/itemplaces/details/itemplaces_details_page.dart';
 import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -21,12 +20,14 @@ import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
+import '../../item_place_details_page.dart';
+
 class ReturnItemsPage extends StatefulWidget {
   final GroupModel _model;
-  final ItemplaceDashboardDto _itemplaceDto;
-  final List<ItemplaceDetailsDto> _itemplaces;
+  final ItemPlaceDashboardDto _itemPlaceDto;
+  final List<ItemPlaceDetailsDto> _itemPlaces;
 
-  ReturnItemsPage(this._model, this._itemplaceDto, this._itemplaces);
+  ReturnItemsPage(this._model, this._itemPlaceDto, this._itemPlaces);
 
   @override
   _ReturnItemsPageState createState() => _ReturnItemsPageState();
@@ -35,11 +36,11 @@ class ReturnItemsPage extends StatefulWidget {
 class _ReturnItemsPageState extends State<ReturnItemsPage> {
   GroupModel _model;
   User _user;
-  ItemplaceDashboardDto _itemplaceDto;
-  List<ItemplaceDetailsDto> _itemplaces;
+  ItemPlaceDashboardDto _itemPlaceDto;
+  List<ItemPlaceDetailsDto> _itemPlaces;
   List<TextEditingController> _textEditingItemControllers = new List();
 
-  ItemplaceService _itemPlaceService;
+  ItemPlaceService _itemPlaceService;
 
   bool _isAddButtonTapped = false;
 
@@ -49,10 +50,10 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
   void initState() {
     this._model = widget._model;
     this._user = _model.user;
-    this._itemplaceDto = widget._itemplaceDto;
-    this._itemplaces = widget._itemplaces;
-    this._itemplaces.forEach((i) => _textEditingItemControllers.add(new TextEditingController()));
-    this._itemPlaceService = ServiceInitializer.initialize(context, _user.authHeader, ItemplaceService);
+    this._itemPlaceDto = widget._itemPlaceDto;
+    this._itemPlaces = widget._itemPlaces;
+    this._itemPlaces.forEach((i) => _textEditingItemControllers.add(new TextEditingController()));
+    this._itemPlaceService = ServiceInitializer.initialize(context, _user.authHeader, ItemPlaceService);
     super.initState();
   }
 
@@ -79,7 +80,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
                         child: Center(
                           child: Column(
                             children: [
-                              for (var i = 0; i < _itemplaces.length; i++)
+                              for (var i = 0; i < _itemPlaces.length; i++)
                                 Card(
                                   color: DARK,
                                   child: Column(
@@ -89,13 +90,13 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
                                       Card(
                                         color: BRIGHTER_DARK,
                                         child: ListTile(
-                                          title: textGreen(utf8.decode(_itemplaces[i].name.runes.toList())),
+                                          title: textGreen(utf8.decode(_itemPlaces[i].name.runes.toList())),
                                           subtitle: Column(
                                             children: [
                                               Row(
                                                 children: [
                                                   text15White(getTranslated(this.context, 'quantity') + ': '),
-                                                  text15Green(_itemplaces[i].quantity.toString()),
+                                                  text15Green(_itemPlaces[i].quantity.toString()),
                                                 ],
                                               ),
                                               SizedBox(height: 7.5),
@@ -106,7 +107,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
                                                     alignment: Alignment.topLeft,
                                                   ),
                                                   Align(
-                                                    child: textGreen(utf8.decode(_itemplaces[i].warehouseName.toString().runes.toList())),
+                                                    child: textGreen(utf8.decode(_itemPlaces[i].warehouseName.toString().runes.toList())),
                                                     alignment: Alignment.topLeft,
                                                   ),
                                                 ],
@@ -115,7 +116,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
                                           ),
                                           trailing: Container(
                                             width: 100,
-                                            child: _buildNumberField(_textEditingItemControllers[i], int.parse(_itemplaces[i].quantity)),
+                                            child: _buildNumberField(_textEditingItemControllers[i], int.parse(_itemPlaces[i].quantity)),
                                           ),
                                         ),
                                       ),
@@ -133,7 +134,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
           bottomNavigationBar: _buildBottomNavigationBar(),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, ItemPlacesDetailsPage(_model, _itemplaceDto)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, ItemPlaceDetailsPage(_model, _itemPlaceDto)),
     );
   }
 
@@ -174,7 +175,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
                 children: <Widget>[iconWhite(Icons.close)],
               ),
               color: Colors.red,
-              onPressed: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ItemPlacesDetailsPage(_model, _itemplaceDto)), (e) => false),
+              onPressed: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ItemPlaceDetailsPage(_model, _itemPlaceDto)), (e) => false),
             ),
             SizedBox(width: 25),
             MaterialButton(
@@ -197,37 +198,37 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
   void _handleAddBtn() {
     setState(() => _isAddButtonTapped = true);
     Map<String, Map<String, int>> warehouseIdsAndItemsWithQuantities = new Map();
-    for (int i = 0; i < _itemplaces.length; i++) {
-      String warehouseId = _itemplaces[i].warehouseId.toString();
+    for (int i = 0; i < _itemPlaces.length; i++) {
+      String warehouseId = _itemPlaces[i].warehouseId.toString();
       if (warehouseIdsAndItemsWithQuantities.containsKey(warehouseId)) {
         Map<String, int> itemsWithQuantities = warehouseIdsAndItemsWithQuantities[warehouseId];
         int quantity = int.parse(_textEditingItemControllers[i].text);
         if (quantity != 0) {
-          itemsWithQuantities[utf8.decode(_itemplaces[i].name.runes.toList())] = quantity;
+          itemsWithQuantities[utf8.decode(_itemPlaces[i].name.runes.toList())] = quantity;
         }
       } else {
         Map<String, int> itemsWithQuantities = new Map();
         int quantity = int.parse(_textEditingItemControllers[i].text);
         if (quantity != 0) {
-          itemsWithQuantities[utf8.decode(_itemplaces[i].name.runes.toList())] = quantity;
+          itemsWithQuantities[utf8.decode(_itemPlaces[i].name.runes.toList())] = quantity;
           warehouseIdsAndItemsWithQuantities[warehouseId.toString()] = itemsWithQuantities;
         }
       }
     }
     if (warehouseIdsAndItemsWithQuantities.isEmpty) {
-      ToastService.showErrorToast(getTranslated(context, 'noQuantitySettedForReturn'));
+      ToastService.showErrorToast(getTranslated(context, 'noQuantitySetForReturn'));
       setState(() => _isAddButtonTapped = false);
       return;
     }
     ReturnItemsDto dto = new ReturnItemsDto(
-      itemPlaceId: _itemplaceDto.id,
+      itemPlaceId: _itemPlaceDto.id,
       warehouseIdsAndItemsWithQuantities: warehouseIdsAndItemsWithQuantities,
     );
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _itemPlaceService.returnItems(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyReturnItemsToWarehouses'));
-        NavigatorUtil.navigate(this.context, ItemPlacesDetailsPage(_model, _itemplaceDto));
+        NavigatorUtil.navigate(this.context, ItemPlaceDetailsPage(_model, _itemPlaceDto));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
@@ -235,7 +236,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
         if (errorMsg.contains("NOT_ENOUGH_QUANTITY")) {
           _showFailureDialogWithNavigate(getTranslated(context, 'someOfItemsDoNotHaveEnoughQuantity'));
         } else {
-          ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+          ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
         }
         setState(() => _isAddButtonTapped = false);
       });
@@ -260,25 +261,25 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
             ),
             actions: <Widget>[
               FlatButton(
-                child: textWhite(getTranslated(this.context, 'goToItemplacesDetailsPage')),
+                child: textWhite(getTranslated(this.context, 'goToItemPlacesDetailsPage')),
                 onPressed: () => _resetAndOpenPage(),
               ),
             ],
           ),
-          onWillPop: _navigateToItemplacesDetailsPage,
+          onWillPop: _navigateToItemPlacesDetailsPage,
         );
       },
     );
   }
 
-  Future<bool> _navigateToItemplacesDetailsPage() async {
+  Future<bool> _navigateToItemPlacesDetailsPage() async {
     _resetAndOpenPage();
     return true;
   }
 
   void _resetAndOpenPage() {
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (BuildContext context) => ItemPlacesDetailsPage(_model, _itemplaceDto)),
+      MaterialPageRoute(builder: (BuildContext context) => ItemPlaceDetailsPage(_model, _itemPlaceDto)),
       ModalRoute.withName('/'),
     );
   }

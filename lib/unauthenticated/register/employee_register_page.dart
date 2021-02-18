@@ -604,7 +604,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
         } else if (s.contains('TOKEN_EXPIRED')) {
           _errorDialogWithNavigate(getTranslated(context, 'tokenIsIncorrect') + '\n' + getTranslated(context, 'askAdministratorWhatWentWrong'));
         } else {
-          _errorDialog(getTranslated(context, 'smthWentWrong'));
+          _errorDialog(getTranslated(context, 'somethingWentWrong'));
         }
         setState(() => _isRegisterButtonTapped = false);
       });

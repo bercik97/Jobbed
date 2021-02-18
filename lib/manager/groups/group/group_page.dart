@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/employees_settings/employees_settings_page.dart';
-import 'package:give_job/manager/groups/group/pricelist/pricelist_page.dart';
+import 'package:give_job/manager/groups/group/price_list/price_lists_page.dart';
 import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.dart';
 import 'package:give_job/manager/groups/group/timesheets/ts_page.dart';
 import 'package:give_job/manager/groups/group/warehouse/warehouse_page.dart';
@@ -21,7 +21,7 @@ import '../../shared/manager_app_bar.dart';
 import '../groups_dashboard_page.dart';
 import 'edit/group_edit_page.dart';
 import 'employee/employees_page.dart';
-import 'itemplaces/itemplaces_page.dart';
+import 'item_place/item_places_page.dart';
 
 class GroupPage extends StatefulWidget {
   final GroupModel _model;
@@ -167,8 +167,8 @@ class _GroupPageState extends State<GroupPage> {
                           child: Material(
                             color: BRIGHTER_DARK,
                             child: InkWell(
-                              onTap: () => NavigatorUtil.navigate(context, PricelistPage(_model)),
-                              child: _buildScrollableContainer('images/pricelist-icon.png', 'pricelist', 'manageCompanyPricelist'),
+                              onTap: () => NavigatorUtil.navigate(context, PriceListsPage(_model)),
+                              child: _buildScrollableContainer('images/pricelist-icon.png', 'priceList', 'manageCompanyPriceList'),
                             ),
                           ),
                         ),
@@ -191,7 +191,7 @@ class _GroupPageState extends State<GroupPage> {
                           child: Material(
                             color: BRIGHTER_DARK,
                             child: InkWell(
-                              onTap: () => NavigatorUtil.navigate(context, ItemplacesPage(_model)),
+                              onTap: () => NavigatorUtil.navigate(context, ItemPlacesPage(_model)),
                               child: _buildScrollableContainer('images/items-icon.png', 'itemPlaces', 'manageCompanyItemPlaces'),
                             ),
                           ),

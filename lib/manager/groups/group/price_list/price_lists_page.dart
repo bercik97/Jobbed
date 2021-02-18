@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/excel/service/excel_service.dart';
 import 'package:give_job/api/price_list/dto/price_list_dto.dart';
-import 'package:give_job/api/price_list/service/pricelist_service.dart';
+import 'package:give_job/api/price_list/service/price_list_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/group_page.dart';
@@ -23,26 +23,26 @@ import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
 import '../../../../shared/widget/loader.dart';
-import 'add/add_pricelist_page.dart';
+import 'add/add_price_list_page.dart';
 
-class PricelistPage extends StatefulWidget {
+class PriceListsPage extends StatefulWidget {
   final GroupModel _model;
 
-  PricelistPage(this._model);
+  PriceListsPage(this._model);
 
   @override
-  _PricelistPageState createState() => _PricelistPageState();
+  _PriceListsPageState createState() => _PriceListsPageState();
 }
 
-class _PricelistPageState extends State<PricelistPage> {
+class _PriceListsPageState extends State<PriceListsPage> {
   GroupModel _model;
   User _user;
 
-  PricelistService _pricelistService;
+  PriceListService _priceListService;
   ExcelService _excelService;
 
-  List<PricelistDto> _pricelists = new List();
-  List<PricelistDto> _filteredPriceLists = new List();
+  List<PriceListDto> _priceLists = new List();
+  List<PriceListDto> _filteredPriceLists = new List();
 
   bool _loading = false;
   bool _isChecked = false;
@@ -60,15 +60,15 @@ class _PricelistPageState extends State<PricelistPage> {
   void initState() {
     this._model = widget._model;
     this._user = _model.user;
-    this._pricelistService = ServiceInitializer.initialize(context, _user.authHeader, PricelistService);
+    this._priceListService = ServiceInitializer.initialize(context, _user.authHeader, PriceListService);
     this._excelService = ServiceInitializer.initialize(context, _user.authHeader, ExcelService);
     super.initState();
     _loading = true;
-    _pricelistService.findAllByCompanyId(_user.companyId).then((res) {
+    _priceListService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
-        _pricelists = res;
-        _pricelists.forEach((e) => _checked.add(false));
-        _filteredPriceLists = _pricelists;
+        _priceLists = res;
+        _priceLists.forEach((e) => _checked.add(false));
+        _filteredPriceLists = _priceLists;
         _loading = false;
       });
     });
@@ -109,7 +109,7 @@ class _PricelistPageState extends State<PricelistPage> {
                     onChanged: (string) {
                       setState(
                         () {
-                          _filteredPriceLists = _pricelists.where((p) => ((p.name + p.priceForEmployee.toString() + p.priceForCompany.toString()).toLowerCase().contains(string.toLowerCase()))).toList();
+                          _filteredPriceLists = _priceLists.where((p) => ((p.name + p.priceForEmployee.toString() + p.priceForCompany.toString()).toLowerCase().contains(string.toLowerCase()))).toList();
                         },
                       );
                     },
@@ -151,7 +151,7 @@ class _PricelistPageState extends State<PricelistPage> {
                   ],
                 ),
                 SizedBox(height: 10),
-                _pricelists.isEmpty
+                _priceLists.isEmpty
                     ? _handleNoPriceLists()
                     : Expanded(
                         flex: 2,
@@ -166,10 +166,10 @@ class _PricelistPageState extends State<PricelistPage> {
                               controller: _scrollController,
                               itemCount: _filteredPriceLists.length,
                               itemBuilder: (BuildContext context, int index) {
-                                PricelistDto pricelist = _filteredPriceLists[index];
+                                PriceListDto pricelist = _filteredPriceLists[index];
                                 int foundIndex = 0;
-                                for (int i = 0; i < _pricelists.length; i++) {
-                                  if (_pricelists[i].id == pricelist.id) {
+                                for (int i = 0; i < _priceLists.length; i++) {
+                                  if (_priceLists[i].id == pricelist.id) {
                                     foundIndex = i;
                                   }
                                 }
@@ -221,12 +221,12 @@ class _PricelistPageState extends State<PricelistPage> {
                                               setState(() {
                                                 _checked[foundIndex] = value;
                                                 if (value) {
-                                                  _selectedIds.add(_pricelists[foundIndex].id);
+                                                  _selectedIds.add(_priceLists[foundIndex].id);
                                                 } else {
-                                                  _selectedIds.remove(_pricelists[foundIndex].id);
+                                                  _selectedIds.remove(_priceLists[foundIndex].id);
                                                 }
                                                 int selectedIdsLength = _selectedIds.length;
-                                                if (selectedIdsLength == _pricelists.length) {
+                                                if (selectedIdsLength == _priceLists.length) {
                                                   _isChecked = true;
                                                 } else if (selectedIdsLength == 0) {
                                                   _isChecked = false;
@@ -253,15 +253,15 @@ class _PricelistPageState extends State<PricelistPage> {
             children: [
               FloatingActionButton(
                 heroTag: "plusBtn",
-                tooltip: getTranslated(context, 'createPricelist'),
+                tooltip: getTranslated(context, 'createPriceList'),
                 backgroundColor: GREEN,
-                onPressed: () => NavigatorUtil.navigate(this.context, AddPricelistPage(_model)),
+                onPressed: () => NavigatorUtil.navigate(this.context, AddPriceListPage(_model)),
                 child: text25Dark('+'),
               ),
               SizedBox(height: 15),
               FloatingActionButton(
                 heroTag: "deleteBtn",
-                tooltip: getTranslated(context, 'deleteSelectedPricelists'),
+                tooltip: getTranslated(context, 'deleteSelectedPriceLists'),
                 backgroundColor: Colors.red,
                 onPressed: () => _isDeleteButtonTapped ? null : _handleDeleteByIdIn(_selectedIds),
                 child: Icon(Icons.delete),
@@ -371,8 +371,8 @@ class _PricelistPageState extends State<PricelistPage> {
   }
 
   _handleGenerateExcel() {
-    if (_pricelists.isEmpty) {
-      ToastService.showErrorToast(getTranslated(context, 'pricelistIsEmpty'));
+    if (_priceLists.isEmpty) {
+      ToastService.showErrorToast(getTranslated(context, 'priceListIsEmpty'));
       return;
     }
     if (_excelType == -1) {
@@ -398,7 +398,7 @@ class _PricelistPageState extends State<PricelistPage> {
             content: getTranslated(context, 'excelEmailIsEmpty'),
           );
         } else {
-          ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+          ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
         }
         setState(() => _isGenerateExcelBtnTapped = false);
       });
@@ -408,7 +408,7 @@ class _PricelistPageState extends State<PricelistPage> {
   _handleDeleteByIdIn(LinkedHashSet<int> ids) {
     setState(() => _isDeleteButtonTapped = true);
     if (ids.isEmpty) {
-      showHint(context, getTranslated(context, 'needToSelectPricelists') + ' ', getTranslated(context, 'whichYouWantToRemove'));
+      showHint(context, getTranslated(context, 'needToSelectPriceLists') + ' ', getTranslated(context, 'whichYouWantToRemove'));
       setState(() => _isDeleteButtonTapped = false);
       return;
     }
@@ -418,24 +418,24 @@ class _PricelistPageState extends State<PricelistPage> {
         return AlertDialog(
           backgroundColor: DARK,
           title: textWhite(getTranslated(this.context, 'confirmation')),
-          content: textWhite(getTranslated(this.context, 'areYouSureYouWantToDeleteSelectedPricelists')),
+          content: textWhite(getTranslated(this.context, 'areYouSureYouWantToDeleteSelectedPriceLists')),
           actions: <Widget>[
             FlatButton(
               child: textWhite(getTranslated(this.context, 'yesDeleteThem')),
               onPressed: () {
                 showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                _pricelistService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
+                _priceListService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                    setState(() => _pricelists.removeWhere((element) => ids.contains(element.id)));
+                    setState(() => _priceLists.removeWhere((element) => ids.contains(element.id)));
                     setState(() => _isDeleteButtonTapped = false);
                     _uncheckAll();
                     Navigator.of(this.context).pop();
-                    ToastService.showSuccessToast(getTranslated(this.context, 'selectedPricelistsRemoved'));
+                    ToastService.showSuccessToast(getTranslated(this.context, 'selectedPriceListsRemoved'));
                   });
                 }).catchError((onError) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     setState(() => _isDeleteButtonTapped = false);
-                    ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+                    ToastService.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
                   });
                 });
               },
@@ -458,11 +458,11 @@ class _PricelistPageState extends State<PricelistPage> {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(top: 20),
-          child: Align(alignment: Alignment.center, child: text20GreenBold(getTranslated(this.context, 'noPricelists'))),
+          child: Align(alignment: Alignment.center, child: text20GreenBold(getTranslated(this.context, 'noPriceLists'))),
         ),
         Padding(
           padding: EdgeInsets.only(right: 30, left: 30, top: 10),
-          child: Align(alignment: Alignment.center, child: textCenter19White(getTranslated(this.context, 'noPricelistsHint'))),
+          child: Align(alignment: Alignment.center, child: textCenter19White(getTranslated(this.context, 'noPriceListsHint'))),
         ),
       ],
     );
@@ -478,12 +478,12 @@ class _PricelistPageState extends State<PricelistPage> {
 
   Future<Null> _refresh() {
     _loading = true;
-    return _pricelistService.findAllByCompanyId(_user.companyId).then((res) {
+    return _priceListService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
         _isDeleteButtonTapped = false;
-        _pricelists = res;
-        _pricelists.forEach((e) => _checked.add(false));
-        _filteredPriceLists = _pricelists;
+        _priceLists = res;
+        _priceLists.forEach((e) => _checked.add(false));
+        _filteredPriceLists = _priceLists;
         _loading = false;
       });
     });

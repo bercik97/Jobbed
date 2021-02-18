@@ -373,7 +373,7 @@ class _TsPageState extends State<TsPage> {
             content: getTranslated(context, 'excelEmailIsEmpty'),
           );
         } else {
-          ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+          ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
         }
         setState(() => _isGenerateExcelAndSendEmailBtnTapped = false);
       });

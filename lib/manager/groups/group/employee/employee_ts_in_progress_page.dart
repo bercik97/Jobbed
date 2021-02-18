@@ -523,7 +523,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                               }).catchError(() {
                                 Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                   Navigator.of(context).pop();
-                                  ToastService.showSuccessToast(getTranslated(context, 'smthWentWrong'));
+                                  ToastService.showSuccessToast(getTranslated(context, 'somethingWentWrong'));
                                 });
                               });
                             },
@@ -561,7 +561,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+        ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
         setState(() => _isDeletePieceworkButtonTapped = false);
       });
     });
@@ -652,7 +652,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             }).catchError(() {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 Navigator.of(context).pop();
-                                ToastService.showSuccessToast(getTranslated(context, 'smthWentWrong'));
+                                ToastService.showSuccessToast(getTranslated(context, 'somethingWentWrong'));
                               });
                             });
                           });
@@ -756,7 +756,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             }).catchError(() {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 Navigator.of(context).pop();
-                                ToastService.showSuccessToast(getTranslated(context, 'smthWentWrong'));
+                                ToastService.showSuccessToast(getTranslated(context, 'somethingWentWrong'));
                               });
                             });
                           });

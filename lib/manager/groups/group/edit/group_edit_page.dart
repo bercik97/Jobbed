@@ -291,7 +291,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
                             });
                           }).catchError((onError) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+                              ToastService.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
                             });
                           });
                         },

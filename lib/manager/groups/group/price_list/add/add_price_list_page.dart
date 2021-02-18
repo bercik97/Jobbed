@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_job/api/price_list/dto/create_price_list_dto.dart';
-import 'package:give_job/api/price_list/service/pricelist_service.dart';
+import 'package:give_job/api/price_list/service/price_list_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/shared/group_model.dart';
@@ -19,40 +19,40 @@ import 'package:give_job/shared/widget/buttons.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
-import '../pricelist_page.dart';
+import '../price_lists_page.dart';
 
-class AddPricelistPage extends StatefulWidget {
+class AddPriceListPage extends StatefulWidget {
   final GroupModel _model;
 
-  AddPricelistPage(this._model);
+  AddPriceListPage(this._model);
 
   @override
-  _AddPricelistPageState createState() => _AddPricelistPageState();
+  _AddPriceListPageState createState() => _AddPriceListPageState();
 }
 
-class _AddPricelistPageState extends State<AddPricelistPage> {
+class _AddPriceListPageState extends State<AddPriceListPage> {
   GroupModel _model;
   User _user;
 
-  PricelistService _pricelistService;
+  PriceListService _priceListService;
 
-  final TextEditingController _pricelistNameController = new TextEditingController();
-  final TextEditingController _pricelistPriceForEmployeeController = new TextEditingController();
-  final TextEditingController _pricelistPriceForCompanyController = new TextEditingController();
+  final TextEditingController _priceListNameController = new TextEditingController();
+  final TextEditingController _priceListPriceForEmployeeController = new TextEditingController();
+  final TextEditingController _priceListPriceForCompanyController = new TextEditingController();
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   bool _isAddButtonTapped = false;
 
-  List<CreatePricelistDto> _pricelistsToAdd = new List();
-  List<String> _pricelistNames = new List();
+  List<CreatePriceListDto> _priceListsToAdd = new List();
+  List<String> _priceListNames = new List();
   ScrollController _scrollController = new ScrollController();
 
   @override
   void initState() {
     this._model = widget._model;
     this._user = _model.user;
-    this._pricelistService = ServiceInitializer.initialize(context, _user.authHeader, PricelistService);
+    this._priceListService = ServiceInitializer.initialize(context, _user.authHeader, PriceListService);
     super.initState();
   }
 
@@ -65,7 +65,7 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
           debugShowCheckedModeBanner: false,
           home: Scaffold(
             backgroundColor: DARK,
-            appBar: managerAppBar(context, _user, getTranslated(context, 'createPricelist'), () => NavigatorUtil.navigate(context, PricelistPage(_model))),
+            appBar: managerAppBar(context, _user, getTranslated(context, 'createPriceList'), () => NavigatorUtil.navigate(context, PriceListsPage(_model))),
             body: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Form(
@@ -75,7 +75,7 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
                     SizedBox(height: 5),
                     TextFormField(
                       autofocus: false,
-                      controller: _pricelistNameController,
+                      controller: _priceListNameController,
                       autocorrect: true,
                       keyboardType: TextInputType.multiline,
                       inputFormatters: [LengthLimitingTextInputFormatter(100)],
@@ -88,15 +88,15 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
                         counterStyle: TextStyle(color: WHITE),
                         border: OutlineInputBorder(),
-                        labelText: getTranslated(context, 'pricelistName'),
+                        labelText: getTranslated(context, 'priceListName'),
                         labelStyle: TextStyle(color: WHITE),
                       ),
                     ),
                     Row(
                       children: [
-                        Flexible(child: _buildDecimalField(_pricelistPriceForEmployeeController, getTranslated(context, 'priceForEmployee'))),
+                        Flexible(child: _buildDecimalField(_priceListPriceForEmployeeController, getTranslated(context, 'priceForEmployee'))),
                         SizedBox(width: 10),
-                        Flexible(child: _buildDecimalField(_pricelistPriceForCompanyController, getTranslated(context, 'priceForCompany'))),
+                        Flexible(child: _buildDecimalField(_priceListPriceForCompanyController, getTranslated(context, 'priceForCompany'))),
                       ],
                     ),
                     SizedBox(height: 10),
@@ -109,22 +109,22 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
                           ToastService.showErrorToast(getTranslated(context, 'correctInvalidFields'));
                           return;
                         }
-                        if (_pricelistNames.contains(_pricelistNameController.text)) {
-                          ToastService.showErrorToast(getTranslated(context, 'pricelistServiceNameExists'));
+                        if (_priceListNames.contains(_priceListNameController.text)) {
+                          ToastService.showErrorToast(getTranslated(context, 'priceListServiceNameExists'));
                           return;
                         }
-                        CreatePricelistDto dto = new CreatePricelistDto(
+                        CreatePriceListDto dto = new CreatePriceListDto(
                           companyId: _user.companyId,
-                          name: _pricelistNameController.text,
-                          priceForEmployee: double.parse(_pricelistPriceForEmployeeController.text),
-                          priceForCompany: double.parse(_pricelistPriceForCompanyController.text),
+                          name: _priceListNameController.text,
+                          priceForEmployee: double.parse(_priceListPriceForEmployeeController.text),
+                          priceForCompany: double.parse(_priceListPriceForCompanyController.text),
                         );
                         setState(() {
-                          _pricelistsToAdd.add(dto);
-                          _pricelistNames.add(dto.name);
-                          _pricelistNameController.clear();
-                          _pricelistPriceForEmployeeController.clear();
-                          _pricelistPriceForCompanyController.clear();
+                          _priceListsToAdd.add(dto);
+                          _priceListNames.add(dto.name);
+                          _priceListNameController.clear();
+                          _priceListPriceForEmployeeController.clear();
+                          _priceListPriceForCompanyController.clear();
                         });
                         FocusScope.of(context).unfocus();
                         ToastService.showSuccessToast(getTranslated(context, 'addedNewPriceService'));
@@ -138,7 +138,7 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
             bottomNavigationBar: _buildBottomNavigationBar(),
           ),
         ),
-        onWillPop: () => NavigatorUtil.onWillPopNavigate(context, PricelistPage(_model)));
+        onWillPop: () => NavigatorUtil.onWillPopNavigate(context, PriceListsPage(_model)));
   }
 
   bool _isValid() {
@@ -175,7 +175,7 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
         controller: _scrollController,
         child: ListView.builder(
           controller: _scrollController,
-          itemCount: _pricelistsToAdd.length,
+          itemCount: _priceListsToAdd.length,
           itemBuilder: (BuildContext context, int index) {
             return Card(
               color: DARK,
@@ -186,16 +186,16 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
                   Card(
                     color: BRIGHTER_DARK,
                     child: ListTile(
-                      title: textGreen(_pricelistsToAdd[index].name),
+                      title: textGreen(_priceListsToAdd[index].name),
                       subtitle: Column(
                         children: <Widget>[
                           Align(
-                            child: textGreen(getTranslated(this.context, 'priceForEmployee') + ': ' + _pricelistsToAdd[index].priceForEmployee.toString()),
+                            child: textGreen(getTranslated(this.context, 'priceForEmployee') + ': ' + _priceListsToAdd[index].priceForEmployee.toString()),
                             alignment: Alignment.topLeft,
                           ),
                           SizedBox(height: 5),
                           Align(
-                            child: textGreen(getTranslated(this.context, 'priceForCompany') + ': ' + _pricelistsToAdd[index].priceForCompany.toString()),
+                            child: textGreen(getTranslated(this.context, 'priceForCompany') + ': ' + _priceListsToAdd[index].priceForCompany.toString()),
                             alignment: Alignment.topLeft,
                           ),
                         ],
@@ -204,8 +204,8 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
                         icon: iconRed(Icons.remove),
                         onPressed: () {
                           setState(() {
-                            _pricelistNames.remove(_pricelistsToAdd[index].name);
-                            _pricelistsToAdd.remove(_pricelistsToAdd[index]);
+                            _priceListNames.remove(_priceListsToAdd[index].name);
+                            _priceListsToAdd.remove(_priceListsToAdd[index]);
                           });
                           ToastService.showSuccessToast(getTranslated(this.context, 'selectedPriceServiceHasBeenRemoved'));
                         },
@@ -250,7 +250,7 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
                 children: <Widget>[iconWhite(Icons.check)],
               ),
               color: GREEN,
-              onPressed: () => _isAddButtonTapped ? null : _createPricelistServices(),
+              onPressed: () => _isAddButtonTapped ? null : _createPriceListServices(),
             ),
           ],
         ),
@@ -258,18 +258,18 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
     );
   }
 
-  _createPricelistServices() {
+  _createPriceListServices() {
     setState(() => _isAddButtonTapped = true);
-    if (_pricelistsToAdd.isEmpty) {
-      ToastService.showErrorToast(getTranslated(context, 'pricelistsToAddEmpty'));
+    if (_priceListsToAdd.isEmpty) {
+      ToastService.showErrorToast(getTranslated(context, 'priceListsToAddEmpty'));
       setState(() => _isAddButtonTapped = false);
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _pricelistService.create(_pricelistsToAdd).then((res) {
+    _priceListService.create(_priceListsToAdd).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewPricelistServices'));
-        NavigatorUtil.navigate(this.context, PricelistPage(_model));
+        ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewPriceListServices'));
+        NavigatorUtil.navigate(this.context, PriceListsPage(_model));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
@@ -278,10 +278,10 @@ class _AddPricelistPageState extends State<AddPricelistPage> {
           DialogService.showCustomDialog(
             context: context,
             titleWidget: textRed(getTranslated(context, 'error')),
-            content: getTranslated(context, 'pricelistServiceNameExists') + '\n' + getTranslated(context, 'chooseOtherPricelistServiceName'),
+            content: getTranslated(context, 'priceListServiceNameExists') + '\n' + getTranslated(context, 'chooseOtherPriceListServiceName'),
           );
         } else {
-          ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+          ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
         }
         setState(() => _isAddButtonTapped = false);
       });

@@ -358,7 +358,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
                       DialogService.showCustomDialog(
                         context: context,
                         titleWidget: textRed(getTranslated(context, 'error')),
-                        content: getTranslated(context, 'smthWentWrong'),
+                        content: getTranslated(context, 'somethingWentWrong'),
                       );
                     });
                   },

@@ -383,7 +383,7 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
                     DialogService.showCustomDialog(
                       context: context,
                       titleWidget: textRed(getTranslated(context, 'error')),
-                      content: getTranslated(context, 'smthWentWrong'),
+                      content: getTranslated(context, 'somethingWentWrong'),
                     );
                   });
                 });

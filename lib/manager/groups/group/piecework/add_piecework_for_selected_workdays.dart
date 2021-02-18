@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/price_list/dto/price_list_dto.dart';
-import 'package:give_job/api/price_list/service/pricelist_service.dart';
+import 'package:give_job/api/price_list/service/price_list_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
@@ -50,7 +50,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
 
   User _user;
 
-  PricelistService _pricelistService;
+  PriceListService _pricelistService;
   WorkdayService _workdayService;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -59,7 +59,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
 
   final Map<String, TextEditingController> _textEditingItemControllers = new Map();
 
-  List<PricelistDto> _pricelists = new List();
+  List<PriceListDto> _pricelists = new List();
 
   Map<String, int> serviceWithQuantity = new LinkedHashMap();
 
@@ -76,7 +76,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
     this._employeeNationality = widget._employeeNationality;
     this._timesheet = widget._timesheet;
     this._avatarPath = widget._avatarPath;
-    this._pricelistService = ServiceInitializer.initialize(context, _user.authHeader, PricelistService);
+    this._pricelistService = ServiceInitializer.initialize(context, _user.authHeader, PriceListService);
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     super.initState();
     _loading = true;
@@ -86,7 +86,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
         _pricelists.forEach((i) => _textEditingItemControllers[utf8.decode(i.name.runes.toList())] = new TextEditingController());
         _loading = false;
       });
-    }).catchError((onError) => DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'noPricelist'), EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _timesheet, _avatarPath)));
+    }).catchError((onError) => DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'noPriceList'), EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _timesheet, _avatarPath)));
   }
 
   @override

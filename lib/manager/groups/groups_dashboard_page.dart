@@ -801,7 +801,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
         if (s.contains('USERNAME_EXISTS')) {
           _errorDialog(getTranslated(context, 'usernameExists') + '\n' + getTranslated(context, 'chooseOtherUsername'));
         } else {
-          _errorDialog(getTranslated(context, 'smthWentWrong'));
+          _errorDialog(getTranslated(context, 'somethingWentWrong'));
         }
         setState(() => _isCreateEmployeeAccountButtonTapped = false);
       });

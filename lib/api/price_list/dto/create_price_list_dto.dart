@@ -1,19 +1,19 @@
 import 'package:flutter/cupertino.dart';
 
-class CreatePricelistDto {
+class CreatePriceListDto {
   final String companyId;
   final String name;
   final double priceForEmployee;
   final double priceForCompany;
 
-  CreatePricelistDto({
+  CreatePriceListDto({
     @required this.companyId,
     @required this.name,
     @required this.priceForEmployee,
     @required this.priceForCompany,
   });
 
-  static Map<String, dynamic> jsonEncode(CreatePricelistDto dto) {
+  static Map<String, dynamic> jsonEncode(CreatePriceListDto dto) {
     Map<String, dynamic> map = new Map();
     map['companyId'] = dto.companyId;
     map['name'] = dto.name;

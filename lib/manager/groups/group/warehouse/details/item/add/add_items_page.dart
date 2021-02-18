@@ -282,7 +282,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
             content: getTranslated(context, 'itemNameExists') + '\n' + getTranslated(context, 'chooseOtherItemName'),
           );
         } else {
-          ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+          ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
         }
         setState(() => _isAddButtonTapped = false);
       });

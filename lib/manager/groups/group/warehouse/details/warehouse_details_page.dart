@@ -299,7 +299,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                       child: textDarkBold(getTranslated(context, 'release')),
                       onPressed: () {
                         if (_selectedItems.isEmpty) {
-                          showHint(context, getTranslated(context, 'needToSelectItems') + ' ', getTranslated(context, 'whichYouWantToReleaseToItemplace'));
+                          showHint(context, getTranslated(context, 'needToSelectItems') + ' ', getTranslated(context, 'whichYouWantToReleaseToItemPlace'));
                           return;
                         }
                         NavigatorUtil.navigate(this.context, ReleaseItemsPage(_model, _warehouseDto, _selectedItems.toList()));
@@ -425,7 +425,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                             });
                           }).catchError((onError) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+                              ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
                             });
                           });
                         },
@@ -471,7 +471,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                 }).catchError((onError) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     setState(() => _isDeleteButtonTapped = false);
-                    ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+                    ToastService.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
                   });
                 });
               },

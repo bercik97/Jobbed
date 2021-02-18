@@ -297,7 +297,7 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showErrorToast('smthWentWrong');
+        ToastService.showErrorToast('somethingWentWrong');
         setState(() => _isChangeBtnTapped = false);
       });
     });

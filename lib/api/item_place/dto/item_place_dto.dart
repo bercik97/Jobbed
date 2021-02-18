@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 
-class ItemplaceDto {
+class ItemPlaceDto {
   final int id;
   final String location;
 
-  ItemplaceDto({
+  ItemPlaceDto({
     @required this.id,
     @required this.location,
   });
 
-  static Map<String, dynamic> jsonEncode(ItemplaceDto dto) {
+  static Map<String, dynamic> jsonEncode(ItemPlaceDto dto) {
     Map<String, dynamic> map = new Map();
     map['id'] = dto.id;
     map['location'] = dto.location;

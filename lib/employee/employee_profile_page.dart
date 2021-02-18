@@ -378,7 +378,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                               }).catchError(() {
                                 Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                   Navigator.of(context).pop();
-                                  ToastService.showSuccessToast(getTranslated(context, 'smthWentWrong'));
+                                  ToastService.showSuccessToast(getTranslated(context, 'somethingWentWrong'));
                                 });
                               });
                             },
@@ -479,7 +479,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                           }).catchError(() {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.of(context).pop();
-                              ToastService.showSuccessToast(getTranslated(context, 'smthWentWrong'));
+                              ToastService.showSuccessToast(getTranslated(context, 'somethingWentWrong'));
                             });
                           });
                         },

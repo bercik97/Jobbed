@@ -5,8 +5,8 @@ import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:give_job/api/itemplace/dto/itemplace_dashboard_dto.dart';
-import 'package:give_job/api/itemplace/service/itemplace_service.dart';
+import 'package:give_job/api/item_place/dto/item_place_dashboard_dto.dart';
+import 'package:give_job/api/item_place/service/item_place_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/group_page.dart';
@@ -23,32 +23,32 @@ import 'package:give_job/shared/widget/texts.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../shared/widget/loader.dart';
-import 'details/itemplaces_details_page.dart';
+import 'details/item_place_details_page.dart';
 
-class ItemplacesPage extends StatefulWidget {
+class ItemPlacesPage extends StatefulWidget {
   final GroupModel _model;
 
-  ItemplacesPage(this._model);
+  ItemPlacesPage(this._model);
 
   @override
-  _ItemplacesPageState createState() => _ItemplacesPageState();
+  _ItemPlacesPageState createState() => _ItemPlacesPageState();
 }
 
-class _ItemplacesPageState extends State<ItemplacesPage> {
+class _ItemPlacesPageState extends State<ItemPlacesPage> {
   GroupModel _model;
   User _user;
 
-  ItemplaceService _itemplaceService;
+  ItemPlaceService _itemPlaceService;
 
-  List<ItemplaceDashboardDto> _itemplaces = new List();
-  List<ItemplaceDashboardDto> _filteredItemplaces = new List();
+  List<ItemPlaceDashboardDto> _itemPlaces = new List();
+  List<ItemPlaceDashboardDto> _filteredItemPlaces = new List();
 
   bool _loading = false;
   bool _isChecked = false;
   List<bool> _checked = new List();
 
   LinkedHashSet<int> _selectedIds = new LinkedHashSet();
-  LinkedHashSet<ItemplaceDashboardDto> _selectedItemplaces = new LinkedHashSet();
+  LinkedHashSet<ItemPlaceDashboardDto> _selectedItemPlaces = new LinkedHashSet();
 
   bool _isAddButtonTapped = false;
   bool _isDeleteButtonTapped = false;
@@ -60,14 +60,14 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
   void initState() {
     this._model = widget._model;
     this._user = _model.user;
-    this._itemplaceService = ServiceInitializer.initialize(context, _user.authHeader, ItemplaceService);
+    this._itemPlaceService = ServiceInitializer.initialize(context, _user.authHeader, ItemPlaceService);
     super.initState();
     _loading = true;
-    _itemplaceService.findAllByCompanyId(_user.companyId).then((res) {
+    _itemPlaceService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
-        _itemplaces = res;
-        _itemplaces.forEach((e) => _checked.add(false));
-        _filteredItemplaces = _itemplaces;
+        _itemPlaces = res;
+        _itemPlaces.forEach((e) => _checked.add(false));
+        _filteredItemPlaces = _itemPlaces;
         _loading = false;
       });
     });
@@ -108,7 +108,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
                     onChanged: (string) {
                       setState(
                         () {
-                          _filteredItemplaces = _itemplaces.where((i) => ((i.location + i.numberOfTypeOfItems.toString() + i.totalNumberOfItems.toString()).toLowerCase().contains(string.toLowerCase()))).toList();
+                          _filteredItemPlaces = _itemPlaces.where((i) => ((i.location + i.numberOfTypeOfItems.toString() + i.totalNumberOfItems.toString()).toLowerCase().contains(string.toLowerCase()))).toList();
                         },
                       );
                     },
@@ -128,19 +128,19 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
                         _checked.forEach((b) => l.add(value));
                         _checked = l;
                         if (value) {
-                          _selectedIds.addAll(_filteredItemplaces.map((e) => e.id));
-                          _selectedItemplaces.addAll(_filteredItemplaces.map((e) => e));
+                          _selectedIds.addAll(_filteredItemPlaces.map((e) => e.id));
+                          _selectedItemPlaces.addAll(_filteredItemPlaces.map((e) => e));
                         } else {
                           _selectedIds.clear();
-                          _selectedItemplaces.clear();
+                          _selectedItemPlaces.clear();
                         }
                       });
                     },
                     controlAffinity: ListTileControlAffinity.leading,
                   ),
                 ),
-                _itemplaces.isEmpty
-                    ? _handleNoItemplaces()
+                _itemPlaces.isEmpty
+                    ? _handleNoItemPlaces()
                     : Expanded(
                         flex: 2,
                         child: RefreshIndicator(
@@ -152,18 +152,18 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
                             controller: _scrollController,
                             child: ListView.builder(
                               controller: _scrollController,
-                              itemCount: _filteredItemplaces.length,
+                              itemCount: _filteredItemPlaces.length,
                               itemBuilder: (BuildContext context, int index) {
-                                ItemplaceDashboardDto itemplace = _filteredItemplaces[index];
+                                ItemPlaceDashboardDto itemPlace = _filteredItemPlaces[index];
                                 int foundIndex = 0;
-                                for (int i = 0; i < _itemplaces.length; i++) {
-                                  if (_itemplaces[i].id == itemplace.id) {
+                                for (int i = 0; i < _itemPlaces.length; i++) {
+                                  if (_itemPlaces[i].id == itemPlace.id) {
                                     foundIndex = i;
                                   }
                                 }
-                                String location = utf8.decode(itemplace.location.runes.toList());
-                                String numberOfTypeOfItems = itemplace.numberOfTypeOfItems.toString();
-                                String totalNumberOfItems = itemplace.totalNumberOfItems.toString();
+                                String location = utf8.decode(itemPlace.location.runes.toList());
+                                String numberOfTypeOfItems = itemPlace.numberOfTypeOfItems.toString();
+                                String totalNumberOfItems = itemPlace.totalNumberOfItems.toString();
                                 return Card(
                                   color: DARK,
                                   child: Column(
@@ -184,7 +184,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
                                                 child: BouncingWidget(
                                                   duration: Duration(milliseconds: 100),
                                                   scaleFactor: 2,
-                                                  onPressed: () => NavigatorUtil.navigate(this.context, ItemPlacesDetailsPage(_model, itemplace)),
+                                                  onPressed: () => NavigatorUtil.navigate(this.context, ItemPlaceDetailsPage(_model, itemPlace)),
                                                   child: icon40Green(Icons.search),
                                                 ),
                                               ),
@@ -222,14 +222,14 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
                                               setState(() {
                                                 _checked[foundIndex] = value;
                                                 if (value) {
-                                                  _selectedIds.add(_itemplaces[foundIndex].id);
-                                                  _selectedItemplaces.add(_itemplaces[foundIndex]);
+                                                  _selectedIds.add(_itemPlaces[foundIndex].id);
+                                                  _selectedItemPlaces.add(_itemPlaces[foundIndex]);
                                                 } else {
-                                                  _selectedIds.remove(_itemplaces[foundIndex].id);
-                                                  _selectedItemplaces.remove(_itemplaces[foundIndex]);
+                                                  _selectedIds.remove(_itemPlaces[foundIndex].id);
+                                                  _selectedItemPlaces.remove(_itemPlaces[foundIndex]);
                                                 }
                                                 int selectedIdsLength = _selectedIds.length;
-                                                if (selectedIdsLength == _itemplaces.length) {
+                                                if (selectedIdsLength == _itemPlaces.length) {
                                                   _isChecked = true;
                                                 } else if (selectedIdsLength == 0) {
                                                   _isChecked = false;
@@ -256,17 +256,17 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
             children: [
               FloatingActionButton(
                 heroTag: "plusBtn",
-                tooltip: getTranslated(context, 'createItemplace'),
+                tooltip: getTranslated(context, 'createItemPlace'),
                 backgroundColor: GREEN,
-                onPressed: () => _addItemplace(context),
+                onPressed: () => _addItemPlace(context),
                 child: text25Dark('+'),
               ),
               SizedBox(height: 15),
               FloatingActionButton(
                 heroTag: "deleteBtn",
-                tooltip: getTranslated(context, 'deleteSelectedItemplaces'),
+                tooltip: getTranslated(context, 'deleteSelectedItemPlaces'),
                 backgroundColor: Colors.red,
-                onPressed: () => _isDeleteButtonTapped ? null : _handleDeleteByIdIn(_selectedIds, _selectedItemplaces),
+                onPressed: () => _isDeleteButtonTapped ? null : _handleDeleteByIdIn(_selectedIds, _selectedItemPlaces),
                 child: Icon(Icons.delete),
               ),
             ],
@@ -277,12 +277,12 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
     );
   }
 
-  void _addItemplace(BuildContext context) {
+  void _addItemPlace(BuildContext context) {
     showGeneralDialog(
       context: context,
       barrierColor: DARK.withOpacity(0.95),
       barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'itemplace'),
+      barrierLabel: getTranslated(context, 'itemPlace'),
       transitionDuration: Duration(milliseconds: 400),
       pageBuilder: (_, __, ___) {
         return SizedBox.expand(
@@ -292,7 +292,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'createItemplace'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'createItemPlace'))),
                   SizedBox(height: 20),
                   Padding(
                     padding: EdgeInsets.only(left: 25, right: 25),
@@ -345,7 +345,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
                           children: <Widget>[iconWhite(Icons.check)],
                         ),
                         color: GREEN,
-                        onPressed: () => _isAddButtonTapped ? null : _handleAddItemplace(_locationController.text),
+                        onPressed: () => _isAddButtonTapped ? null : _handleAddItemPlace(_locationController.text),
                       ),
                     ],
                   ),
@@ -358,38 +358,38 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
     );
   }
 
-  _handleAddItemplace(String location) {
+  _handleAddItemPlace(String location) {
     setState(() => _isAddButtonTapped = true);
     if (location == null || location.isEmpty) {
       setState(() => _isAddButtonTapped = false);
-      ToastService.showErrorToast(getTranslated(this.context, 'itemplaceLocationIsRequired'));
+      ToastService.showErrorToast(getTranslated(this.context, 'itemPlaceLocationIsRequired'));
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _itemplaceService.create(_user.companyId, location).then((res) {
+    _itemPlaceService.create(_user.companyId, location).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(this.context, 'successfullyAddedNewItemplace'));
-        NavigatorUtil.navigateReplacement(this.context, ItemplacesPage(_model));
+        ToastService.showSuccessToast(getTranslated(this.context, 'successfullyAddedNewItemPlace'));
+        NavigatorUtil.navigateReplacement(this.context, ItemPlacesPage(_model));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         setState(() => _isAddButtonTapped = false);
         String errorMsg = onError.toString();
         if (errorMsg.contains("ITEM_PLACE_LOCATION_EXISTS")) {
-          ToastService.showErrorToast(getTranslated(this.context, 'itemplaceLocationExists'));
+          ToastService.showErrorToast(getTranslated(this.context, 'itemPlaceLocationExists'));
         } else {
-          ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+          ToastService.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
         }
       });
     });
   }
 
-  _handleDeleteByIdIn(LinkedHashSet<int> ids, LinkedHashSet<ItemplaceDashboardDto> selectedItemplaces) {
+  _handleDeleteByIdIn(LinkedHashSet<int> ids, LinkedHashSet<ItemPlaceDashboardDto> selectedItemPlaces) {
     if (ids.isEmpty) {
-      showHint(context, getTranslated(context, 'needToSelectItemplaces') + ' ', getTranslated(context, 'whichYouWantToRemove'));
+      showHint(context, getTranslated(context, 'needToSelectItemPlaces') + ' ', getTranslated(context, 'whichYouWantToRemove'));
       return;
     }
-    if (selectedItemplaces.any((element) => element.numberOfTypeOfItems != 0)) {
+    if (selectedItemPlaces.any((element) => element.numberOfTypeOfItems != 0)) {
       showHint(context, getTranslated(context, 'cannotRemovePlacesWithItems') + ' ', getTranslated(context, 'hintReturnItems'));
       return;
     }
@@ -399,23 +399,23 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
         return AlertDialog(
           backgroundColor: DARK,
           title: textWhite(getTranslated(this.context, 'confirmation')),
-          content: textWhite(getTranslated(this.context, 'areYouSureYouWantToDeleteSelectedItemplaces')),
+          content: textWhite(getTranslated(this.context, 'areYouSureYouWantToDeleteSelectedItemPlaces')),
           actions: <Widget>[
             FlatButton(
               child: textWhite(getTranslated(this.context, 'yesDeleteThem')),
               onPressed: () {
                 showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                _itemplaceService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
+                _itemPlaceService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     Navigator.pop(context);
-                    setState(() => _itemplaces.removeWhere((element) => selectedItemplaces.contains(element)));
+                    setState(() => _itemPlaces.removeWhere((element) => selectedItemPlaces.contains(element)));
                     setState(() => _isDeleteButtonTapped = false);
-                    ToastService.showSuccessToast(getTranslated(this.context, 'selectedItemplacesRemoved'));
+                    ToastService.showSuccessToast(getTranslated(this.context, 'selectedItemPlacesRemoved'));
                   });
                 }).catchError((onError) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     setState(() => _isDeleteButtonTapped = false);
-                    ToastService.showErrorToast(getTranslated(this.context, 'smthWentWrong'));
+                    ToastService.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
                   });
                 });
               },
@@ -430,16 +430,16 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
     );
   }
 
-  Widget _handleNoItemplaces() {
+  Widget _handleNoItemPlaces() {
     return Column(
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(top: 20),
-          child: Align(alignment: Alignment.center, child: text20GreenBold(getTranslated(this.context, 'noItemplaces'))),
+          child: Align(alignment: Alignment.center, child: text20GreenBold(getTranslated(this.context, 'noItemPlaces'))),
         ),
         Padding(
           padding: EdgeInsets.only(right: 30, left: 30, top: 10),
-          child: Align(alignment: Alignment.center, child: textCenter19White(getTranslated(this.context, 'noItemplacesHint'))),
+          child: Align(alignment: Alignment.center, child: textCenter19White(getTranslated(this.context, 'noItemPlacesHint'))),
         ),
       ],
     );
@@ -447,13 +447,13 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
 
   Future<Null> _refresh() {
     _loading = true;
-    return _itemplaceService.findAllByCompanyId(_user.companyId).then((res) {
+    return _itemPlaceService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
         _isAddButtonTapped = false;
         _isDeleteButtonTapped = false;
-        _itemplaces = res;
-        _itemplaces.forEach((e) => _checked.add(false));
-        _filteredItemplaces = _itemplaces;
+        _itemPlaces = res;
+        _itemPlaces.forEach((e) => _checked.add(false));
+        _filteredItemPlaces = _itemPlaces;
         _loading = false;
       });
     });

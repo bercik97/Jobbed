@@ -284,7 +284,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                       children: <Widget>[
                         textCenter19White(getTranslated(context, 'followingWorkplacesHaveBeenFoundInYourLocation')),
                         SizedBox(height: 5),
-                        textCenter18Green(getTranslated(context, 'selecBtnNextToWhereYouWantToStartWork')),
+                        textCenter18Green(getTranslated(context, 'selectBtnNextToWhereYouWantToStartWork')),
                         SizedBox(height: 20),
                         SingleChildScrollView(
                           scrollDirection: Axis.vertical,
@@ -389,7 +389,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => _refresh());
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+        ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
         setState(() => _isStartWorkButtonTapped = false);
       });
     });
@@ -462,7 +462,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => _refresh());
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+        ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
         setState(() => _isPauseWorkButtonTapped = false);
       });
     });

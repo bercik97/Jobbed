@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/price_list/dto/price_list_dto.dart';
-import 'package:give_job/api/price_list/service/pricelist_service.dart';
+import 'package:give_job/api/price_list/service/price_list_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
@@ -52,7 +52,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
 
   User _user;
 
-  PricelistService _pricelistService;
+  PriceListService _pricelistService;
   WorkdayService _workdayService;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -61,7 +61,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
 
   final Map<String, TextEditingController> _textEditingItemControllers = new Map();
 
-  List<PricelistDto> _pricelists = new List();
+  List<PriceListDto> _pricelists = new List();
 
   Map<String, int> serviceWithQuantity = new LinkedHashMap();
 
@@ -79,7 +79,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
     this._tsYear = widget.tsYear;
     this._tsMonth = widget.tsMonth;
     this._tsStatus = widget.tsStatus;
-    this._pricelistService = ServiceInitializer.initialize(context, _user.authHeader, PricelistService);
+    this._pricelistService = ServiceInitializer.initialize(context, _user.authHeader, PriceListService);
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     super.initState();
     _loading = true;
@@ -89,7 +89,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
         _pricelists.forEach((i) => _textEditingItemControllers[utf8.decode(i.name.runes.toList())] = new TextEditingController());
         _loading = false;
       });
-    }).catchError((onError) => DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'noPricelist'), TsInProgressPage(_model, _timeSheet)));
+    }).catchError((onError) => DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'noPriceList'), TsInProgressPage(_model, _timeSheet)));
   }
 
   @override
@@ -236,7 +236,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+        ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
         setState(() => _isAddButtonTapped = false);
       });
     });

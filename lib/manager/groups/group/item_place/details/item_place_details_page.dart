@@ -3,12 +3,11 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:give_job/api/itemplace/dto/itemplace_dashboard_dto.dart';
-import 'package:give_job/api/itemplace/dto/itemplace_details_dto.dart';
-import 'package:give_job/api/itemplace/service/itemplace_service.dart';
+import 'package:give_job/api/item_place/dto/item_place_dashboard_dto.dart';
+import 'package:give_job/api/item_place/dto/item_place_details_dto.dart';
+import 'package:give_job/api/item_place/service/item_place_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/itemplaces/itemplaces_page.dart';
 import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -19,33 +18,34 @@ import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/loader.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
+import '../item_places_page.dart';
 import 'item/return/return_items_page.dart';
 
-class ItemPlacesDetailsPage extends StatefulWidget {
+class ItemPlaceDetailsPage extends StatefulWidget {
   final GroupModel _model;
-  final ItemplaceDashboardDto _itemPlaceDto;
+  final ItemPlaceDashboardDto _itemPlaceDto;
 
-  ItemPlacesDetailsPage(this._model, this._itemPlaceDto);
+  ItemPlaceDetailsPage(this._model, this._itemPlaceDto);
 
   @override
-  _ItemPlacesDetailsPageState createState() => _ItemPlacesDetailsPageState();
+  _ItemPlaceDetailsPageState createState() => _ItemPlaceDetailsPageState();
 }
 
-class _ItemPlacesDetailsPageState extends State<ItemPlacesDetailsPage> {
+class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
   GroupModel _model;
   User _user;
-  ItemplaceDashboardDto _itemPlaceDto;
+  ItemPlaceDashboardDto _itemPlaceDto;
 
-  ItemplaceService _itemPlaceService;
+  ItemPlaceService _itemPlaceService;
 
-  List<ItemplaceDetailsDto> _items = new List();
-  List<ItemplaceDetailsDto> _filteredItems = new List();
+  List<ItemPlaceDetailsDto> _items = new List();
+  List<ItemPlaceDetailsDto> _filteredItems = new List();
 
   bool _loading = false;
   bool _isChecked = false;
   List<bool> _checked = new List();
   LinkedHashSet<String> _selectedNames = new LinkedHashSet();
-  LinkedHashSet<ItemplaceDetailsDto> _selectedItems = new LinkedHashSet();
+  LinkedHashSet<ItemPlaceDetailsDto> _selectedItems = new LinkedHashSet();
 
   ScrollController _scrollController = new ScrollController();
 
@@ -54,7 +54,7 @@ class _ItemPlacesDetailsPageState extends State<ItemPlacesDetailsPage> {
     this._model = widget._model;
     this._user = _model.user;
     this._itemPlaceDto = widget._itemPlaceDto;
-    this._itemPlaceService = ServiceInitializer.initialize(context, _user.authHeader, ItemplaceService);
+    this._itemPlaceService = ServiceInitializer.initialize(context, _user.authHeader, ItemPlaceService);
     super.initState();
     _loading = true;
     _itemPlaceService.findAllItemsById(_itemPlaceDto.id).then((res) {
@@ -70,7 +70,7 @@ class _ItemPlacesDetailsPageState extends State<ItemPlacesDetailsPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.navigate(context, ItemplacesPage(_model))));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.navigate(context, ItemPlacesPage(_model))));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -79,7 +79,7 @@ class _ItemPlacesDetailsPageState extends State<ItemPlacesDetailsPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'itemplaceDetails'), () => NavigatorUtil.navigate(context, ItemplacesPage(_model))),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'itemPlaceDetails'), () => NavigatorUtil.navigate(context, ItemPlacesPage(_model))),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
@@ -136,7 +136,7 @@ class _ItemPlacesDetailsPageState extends State<ItemPlacesDetailsPage> {
                             controller: _scrollController,
                             itemCount: _filteredItems.length,
                             itemBuilder: (BuildContext context, int index) {
-                              ItemplaceDetailsDto item = _filteredItems[index];
+                              ItemPlaceDetailsDto item = _filteredItems[index];
                               int foundIndex = 0;
                               for (int i = 0; i < _items.length; i++) {
                                 if (utf8.decode(_items[i].name.runes.toList()) == utf8.decode(item.name.runes.toList())) {
@@ -252,7 +252,7 @@ class _ItemPlacesDetailsPageState extends State<ItemPlacesDetailsPage> {
           ),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, ItemplacesPage(_model)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, ItemPlacesPage(_model)),
     );
   }
 
@@ -265,7 +265,7 @@ class _ItemPlacesDetailsPageState extends State<ItemPlacesDetailsPage> {
         ),
         Padding(
           padding: EdgeInsets.only(right: 30, left: 30, top: 10),
-          child: Align(alignment: Alignment.center, child: textCenter19White(getTranslated(this.context, 'noItemsInItemplaceHint'))),
+          child: Align(alignment: Alignment.center, child: textCenter19White(getTranslated(this.context, 'noItemsInItemPlaceHint'))),
         ),
       ],
     );
