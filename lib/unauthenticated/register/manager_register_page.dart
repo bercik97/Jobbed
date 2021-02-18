@@ -569,106 +569,20 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
       accountExpirationDate: _accountExpirationDate,
     );
     _managerService.create(_dto).then((res) {
-      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => _showSuccessDialog());
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => DialogService.showSuccessDialogWithWillPopScope(context, getTranslated(context, 'registerSuccess'), LoginPage()));
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String s = onError.toString();
         if (s.contains('USERNAME_EXISTS')) {
-          _errorDialog(getTranslated(context, 'usernameExists') + '\n' + getTranslated(context, 'chooseOtherUsername'));
+          DialogService.showErrorDialog(context, getTranslated(context, 'usernameExists') + '\n' + getTranslated(context, 'chooseOtherUsername'));
         } else if (s.contains('TOKEN_EXPIRED')) {
-          _errorDialogWithNavigate(getTranslated(context, 'tokenIsIncorrect') + '\n' + getTranslated(context, 'askAdministratorWhatWentWrong'));
+          DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'tokenIsIncorrect') + '\n' + getTranslated(context, 'askAdministratorWhatWentWrong'), LoginPage());
         } else {
-          _errorDialog(getTranslated(context, 'somethingWentWrong'));
+          DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         }
         setState(() => _isRegisterButtonTapped = false);
       });
     });
-  }
-
-  _errorDialog(String content) {
-    return showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: DARK,
-          title: textGreen(getTranslated(context, 'error')),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                textWhite(content),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: textWhite(getTranslated(context, 'close')),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  _showSuccessDialog() {
-    return showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return WillPopScope(
-          child: AlertDialog(
-            backgroundColor: DARK,
-            title: textGreen(getTranslated(this.context, 'success')),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  textWhite(getTranslated(this.context, 'registerSuccess')),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: textWhite(getTranslated(this.context, 'goToLoginPage')),
-                onPressed: () => _resetAndOpenPage(),
-              ),
-            ],
-          ),
-          onWillPop: _navigateToLoginPage,
-        );
-      },
-    );
-  }
-
-  Future<bool> _navigateToLoginPage() async {
-    _resetAndOpenPage();
-    return true;
-  }
-
-  _errorDialogWithNavigate(String errorMsg) {
-    return showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: DARK,
-          title: textGreen(getTranslated(this.context, 'close')),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                textWhite(errorMsg),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: textWhite(getTranslated(this.context, 'close')),
-              onPressed: () => _resetAndOpenPage(),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   void _resetAndOpenPage() {

@@ -799,38 +799,12 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String s = onError.toString();
         if (s.contains('USERNAME_EXISTS')) {
-          _errorDialog(getTranslated(context, 'usernameExists') + '\n' + getTranslated(context, 'chooseOtherUsername'));
+          DialogService.showErrorDialog(context, getTranslated(context, 'usernameExists') + '\n' + getTranslated(context, 'chooseOtherUsername'));
         } else {
-          _errorDialog(getTranslated(context, 'somethingWentWrong'));
+          DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         }
         setState(() => _isCreateEmployeeAccountButtonTapped = false);
       });
     });
-  }
-
-  _errorDialog(String content) {
-    return showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: DARK,
-          title: textGreen(getTranslated(context, 'error')),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                textWhite(content),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: textWhite(getTranslated(context, 'close')),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
-        );
-      },
-    );
   }
 }
