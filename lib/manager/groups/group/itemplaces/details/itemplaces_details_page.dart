@@ -21,20 +21,20 @@ import 'package:give_job/shared/widget/texts.dart';
 
 import 'item/return/return_items_page.dart';
 
-class ItemplacesDetailsPage extends StatefulWidget {
+class ItemPlacesDetailsPage extends StatefulWidget {
   final GroupModel _model;
-  final ItemplaceDashboardDto _itemplaceDto;
+  final ItemplaceDashboardDto _itemPlaceDto;
 
-  ItemplacesDetailsPage(this._model, this._itemplaceDto);
+  ItemPlacesDetailsPage(this._model, this._itemPlaceDto);
 
   @override
-  _ItemplacesDetailsPageState createState() => _ItemplacesDetailsPageState();
+  _ItemPlacesDetailsPageState createState() => _ItemPlacesDetailsPageState();
 }
 
-class _ItemplacesDetailsPageState extends State<ItemplacesDetailsPage> {
+class _ItemPlacesDetailsPageState extends State<ItemPlacesDetailsPage> {
   GroupModel _model;
   User _user;
-  ItemplaceDashboardDto _itemplaceDto;
+  ItemplaceDashboardDto _itemPlaceDto;
 
   ItemplaceService _itemPlaceService;
 
@@ -53,11 +53,11 @@ class _ItemplacesDetailsPageState extends State<ItemplacesDetailsPage> {
   void initState() {
     this._model = widget._model;
     this._user = _model.user;
-    this._itemplaceDto = widget._itemplaceDto;
+    this._itemPlaceDto = widget._itemPlaceDto;
     this._itemPlaceService = ServiceInitializer.initialize(context, _user.authHeader, ItemplaceService);
     super.initState();
     _loading = true;
-    _itemPlaceService.findAllItemsById(_itemplaceDto.id).then((res) {
+    _itemPlaceService.findAllItemsById(_itemPlaceDto.id).then((res) {
       setState(() {
         _items = res;
         _items.forEach((e) => _checked.add(false));
@@ -70,7 +70,7 @@ class _ItemplacesDetailsPageState extends State<ItemplacesDetailsPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.navigate(context, ItemplacesPage(_model))));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -79,7 +79,7 @@ class _ItemplacesDetailsPageState extends State<ItemplacesDetailsPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'itemplaceDetails'), () => Navigator.pop(context)),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'itemplaceDetails'), () => NavigatorUtil.navigate(context, ItemplacesPage(_model))),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
@@ -98,7 +98,7 @@ class _ItemplacesDetailsPageState extends State<ItemplacesDetailsPage> {
                       ),
                     ),
                   ),
-                  title: text18WhiteBold(utf8.decode(_itemplaceDto.location.runes.toList())),
+                  title: text18WhiteBold(utf8.decode(_itemPlaceDto.location.runes.toList())),
                 ),
                 ListTileTheme(
                   contentPadding: EdgeInsets.only(left: 3),
@@ -241,7 +241,7 @@ class _ItemplacesDetailsPageState extends State<ItemplacesDetailsPage> {
                           showHint(context, getTranslated(context, 'needToSelectItems') + ' ', getTranslated(context, 'whichYouWantToReturnToWarehouse'));
                           return;
                         }
-                        NavigatorUtil.navigate(this.context, ReturnItemsPage(_model, _itemplaceDto, _selectedItems.toList()));
+                        NavigatorUtil.navigate(this.context, ReturnItemsPage(_model, _itemPlaceDto, _selectedItems.toList()));
                       },
                     ),
                   ),

@@ -184,7 +184,7 @@ class _ItemplacesPageState extends State<ItemplacesPage> {
                                                 child: BouncingWidget(
                                                   duration: Duration(milliseconds: 100),
                                                   scaleFactor: 2,
-                                                  onPressed: () => NavigatorUtil.navigate(this.context, ItemplacesDetailsPage(_model, itemplace)),
+                                                  onPressed: () => NavigatorUtil.navigate(this.context, ItemPlacesDetailsPage(_model, itemplace)),
                                                   child: icon40Green(Icons.search),
                                                 ),
                                               ),

@@ -133,7 +133,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
           bottomNavigationBar: _buildBottomNavigationBar(),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, ItemplacesDetailsPage(_model, _itemplaceDto)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, ItemPlacesDetailsPage(_model, _itemplaceDto)),
     );
   }
 
@@ -174,7 +174,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
                 children: <Widget>[iconWhite(Icons.close)],
               ),
               color: Colors.red,
-              onPressed: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ItemplacesDetailsPage(_model, _itemplaceDto)), (e) => false),
+              onPressed: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ItemPlacesDetailsPage(_model, _itemplaceDto)), (e) => false),
             ),
             SizedBox(width: 25),
             MaterialButton(
@@ -227,7 +227,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
     _itemPlaceService.returnItems(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyReturnItemsToWarehouses'));
-        NavigatorUtil.navigate(this.context, ItemplacesDetailsPage(_model, _itemplaceDto));
+        NavigatorUtil.navigate(this.context, ItemPlacesDetailsPage(_model, _itemplaceDto));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
@@ -278,7 +278,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
 
   void _resetAndOpenPage() {
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (BuildContext context) => ItemplacesDetailsPage(_model, _itemplaceDto)),
+      MaterialPageRoute(builder: (BuildContext context) => ItemPlacesDetailsPage(_model, _itemplaceDto)),
       ModalRoute.withName('/'),
     );
   }
