@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
+import 'package:give_job/api/excel/service/excel_service.dart';
 import 'package:give_job/api/price_list/dto/price_list_dto.dart';
 import 'package:give_job/api/price_list/service/pricelist_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
@@ -14,6 +15,7 @@ import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/service/toastr_service.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
@@ -37,6 +39,7 @@ class _PricelistPageState extends State<PricelistPage> {
   User _user;
 
   PricelistService _pricelistService;
+  ExcelService _excelService;
 
   List<PricelistDto> _pricelists = new List();
   List<PricelistDto> _filteredPriceLists = new List();
@@ -46,7 +49,10 @@ class _PricelistPageState extends State<PricelistPage> {
   List<bool> _checked = new List();
   LinkedHashSet<int> _selectedIds = new LinkedHashSet();
 
+  bool _isGenerateExcelBtnTapped = false;
   bool _isDeleteButtonTapped = false;
+
+  int _excelType = -1;
 
   ScrollController _scrollController = new ScrollController();
 
@@ -55,6 +61,7 @@ class _PricelistPageState extends State<PricelistPage> {
     this._model = widget._model;
     this._user = _model.user;
     this._pricelistService = ServiceInitializer.initialize(context, _user.authHeader, PricelistService);
+    this._excelService = ServiceInitializer.initialize(context, _user.authHeader, ExcelService);
     super.initState();
     _loading = true;
     _pricelistService.findAllByCompanyId(_user.companyId).then((res) {
@@ -108,28 +115,42 @@ class _PricelistPageState extends State<PricelistPage> {
                     },
                   ),
                 ),
-                ListTileTheme(
-                  contentPadding: EdgeInsets.only(left: 3),
-                  child: CheckboxListTile(
-                    title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
-                    value: _isChecked,
-                    activeColor: GREEN,
-                    checkColor: WHITE,
-                    onChanged: (bool value) {
-                      setState(() {
-                        _isChecked = value;
-                        List<bool> l = new List();
-                        _checked.forEach((b) => l.add(value));
-                        _checked = l;
-                        if (value) {
-                          _selectedIds.addAll(_filteredPriceLists.map((e) => e.id));
-                        } else
-                          _selectedIds.clear();
-                      });
-                    },
-                    controlAffinity: ListTileControlAffinity.leading,
-                  ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: ListTileTheme(
+                        contentPadding: EdgeInsets.only(left: 3),
+                        child: CheckboxListTile(
+                          title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
+                          value: _isChecked,
+                          activeColor: GREEN,
+                          checkColor: WHITE,
+                          onChanged: (bool value) {
+                            setState(() {
+                              _isChecked = value;
+                              List<bool> l = new List();
+                              _checked.forEach((b) => l.add(value));
+                              _checked = l;
+                              if (value) {
+                                _selectedIds.addAll(_filteredPriceLists.map((e) => e.id));
+                              } else
+                                _selectedIds.clear();
+                            });
+                          },
+                          controlAffinity: ListTileControlAffinity.leading,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(right: 12),
+                      child: InkWell(
+                        onTap: () => _isGenerateExcelBtnTapped ? null : _handleGenerateExcelAndSendEmail(),
+                        child: Image(image: AssetImage('images/excel-icon.png'), height: 40),
+                      ),
+                    )
+                  ],
                 ),
+                SizedBox(height: 10),
                 _pricelists.isEmpty
                     ? _handleNoPriceLists()
                     : Expanded(
@@ -251,6 +272,137 @@ class _PricelistPageState extends State<PricelistPage> {
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model)),
     );
+  }
+
+  _handleGenerateExcelAndSendEmail() {
+    showGeneralDialog(
+      context: context,
+      barrierColor: DARK.withOpacity(0.95),
+      barrierDismissible: false,
+      barrierLabel: getTranslated(context, 'generateExcelFile'),
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: StatefulBuilder(builder: (context, setState) {
+            return Scaffold(
+              backgroundColor: Colors.black12,
+              body: Center(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: 50),
+                        child: Column(
+                          children: [
+                            textCenter20GreenBold(getTranslated(context, 'generateExcelFile')),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 7.5),
+                      Column(
+                        children: <Widget>[
+                          RadioListTile(
+                            activeColor: GREEN,
+                            title: textWhite(getTranslated(context, 'priceForEmployee')),
+                            value: 0,
+                            groupValue: _excelType,
+                            onChanged: (newValue) => setState(() => _excelType = newValue),
+                          ),
+                          RadioListTile(
+                            activeColor: GREEN,
+                            title: textWhite(getTranslated(context, 'priceForCompany')),
+                            value: 1,
+                            groupValue: _excelType,
+                            onChanged: (newValue) => setState(() => _excelType = newValue),
+                          ),
+                          RadioListTile(
+                            activeColor: GREEN,
+                            title: textWhite(getTranslated(context, 'priceForEmployeeAndCompany')),
+                            value: 2,
+                            groupValue: _excelType,
+                            onChanged: (newValue) => setState(() => _excelType = newValue),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          MaterialButton(
+                            elevation: 0,
+                            height: 50,
+                            minWidth: 40,
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[iconWhite(Icons.close)],
+                            ),
+                            color: Colors.red,
+                            onPressed: () {
+                              _excelType = -1;
+                              Navigator.pop(context);
+                            },
+                          ),
+                          SizedBox(width: 25),
+                          MaterialButton(
+                            elevation: 0,
+                            height: 50,
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[iconWhite(Icons.check)],
+                            ),
+                            color: GREEN,
+                            onPressed: () => _isGenerateExcelBtnTapped ? null : _handleGenerateExcel(),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }),
+        );
+      },
+    );
+  }
+
+  _handleGenerateExcel() {
+    if (_pricelists.isEmpty) {
+      ToastService.showErrorToast(getTranslated(context, 'pricelistIsEmpty'));
+      return;
+    }
+    if (_excelType == -1) {
+      ToastService.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
+      return;
+    }
+    setState(() => _isGenerateExcelBtnTapped = true);
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _excelService.generatePriceListExcel(_model.user.companyId, _excelType == 0 || _excelType == 2, _excelType == 1 || _excelType == 2, _model.user.username).then((res) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showSuccessToast(getTranslated(context, 'successfullyGeneratedExcelAndSendEmail') + '!');
+        setState(() => _isGenerateExcelBtnTapped = false);
+        _excelType = -1;
+        Navigator.pop(context);
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        String errorMsg = onError.toString();
+        if (errorMsg.contains("EMAIL_IS_NULL")) {
+          DialogService.showCustomDialog(
+            context: context,
+            titleWidget: textRed(getTranslated(context, 'error')),
+            content: getTranslated(context, 'excelEmailIsEmpty'),
+          );
+        } else {
+          ToastService.showErrorToast(getTranslated(context, 'smthWentWrong'));
+        }
+        setState(() => _isGenerateExcelBtnTapped = false);
+      });
+    });
   }
 
   _handleDeleteByIdIn(LinkedHashSet<int> ids) {

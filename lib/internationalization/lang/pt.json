@@ -608,5 +608,8 @@
   "deletingPieceworkForSelectedDaysConfirmation": "დარწმუნებული ხართ, რომ გსურთ წაშალოთ ყველა ნაჭერი სამუშაო პერიოდი?",
   "createNewEmployeeAccount": "შექმენით ახალი თანამშრომლის ანგარიში",
   "employeeAccountHasBeenSuccessfullyCreated": "თანამშრომლის ანგარიში წარმატებით შეიქმნა",
-  "chooseEmployeeGender": "გთხოვთ, აირჩიოთ თანამშრომლის სქესი"
+  "chooseEmployeeGender": "გთხოვთ, აირჩიოთ თანამშრომლის სქესი",
+  "generateExcelForPriceList": "დარწმუნებული ხართ, რომ გსურთ Excel ფაილის შექმნა ფასების სიისთვის?",
+  "pricelistIsEmpty": "ფასების სია ცარიელია",
+  "priceForEmployeeAndCompany": "ფასი (თანამშრომელი + კომპანია)"
 }

@@ -608,5 +608,8 @@
   "deletingPieceworkForSelectedDaysConfirmation": "Czy na pewno chcesz usunąć wszystkie prace akordowe z wybranych dni?",
   "createNewEmployeeAccount": "Dodawanie nowego pracownika",
   "employeeAccountHasBeenSuccessfullyCreated": "Konto pracownika zostało pomyślnie utworzone",
-  "chooseEmployeeGender": "Proszę, wybierz płeć pracownika"
+  "chooseEmployeeGender": "Proszę, wybierz płeć pracownika",
+  "generateExcelForPriceList": "Czy na pewno chcesz wygenerować plik excel cennika?",
+  "pricelistIsEmpty": "Cennik jest pusty",
+  "priceForEmployeeAndCompany": "Cena (pracownik + firma)"
 }

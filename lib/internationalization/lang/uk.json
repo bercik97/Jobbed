@@ -608,5 +608,8 @@
   "deletingPieceworkForSelectedDaysConfirmation": "Ви впевнені, що хочете видалити всі роботи за вибрані дні?",
   "createNewEmployeeAccount": "Створiть новий рахунок спiвробiтника",
   "employeeAccountHasBeenSuccessfullyCreated": "Облiковий запис спiвробiтника успiшно створено",
-  "chooseEmployeeGender": "Виберіть стать працівника"
+  "chooseEmployeeGender": "Виберіть стать працівника",
+  "generateExcelForPriceList": "Ви впевнені, що хочете створити файл Excel для прайс-листа?",
+  "pricelistIsEmpty": "Прайс-лист порожній",
+  "priceForEmployeeAndCompany": "Ціна (працівник + компанія)"
 }

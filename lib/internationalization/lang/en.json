@@ -608,5 +608,8 @@
   "deletingPieceworkForSelectedDaysConfirmation": "Are you sure you want to delete all piecework for selected days?",
   "createNewEmployeeAccount": "Create new employee account",
   "employeeAccountHasBeenSuccessfullyCreated": "Employee account has been successfully created",
-  "chooseEmployeeGender": "Please select employee's gender"
+  "chooseEmployeeGender": "Please select employee's gender",
+  "generateExcelForPriceList": "Are you sure you want to generate excel file for pricelist?",
+  "pricelistIsEmpty": "Pricelist is empty",
+  "priceForEmployeeAndCompany": "Price (employee + company)"
 }
