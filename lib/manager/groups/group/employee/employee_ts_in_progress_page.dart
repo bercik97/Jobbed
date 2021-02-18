@@ -13,6 +13,7 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/manager/groups/group/piecework/add_piecework_for_selected_workdays.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/service/toast_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/util/data_table_util.dart';
@@ -542,9 +543,11 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   }
 
   void _showDeletePiecework() async {
-    _showConfirmationDialog(
+    DialogService.showConfirmationDialog(
+      context: context,
       title: getTranslated(context, 'confirmation'),
       content: getTranslated(context, 'deletingPieceworkForSelectedDaysConfirmation'),
+      isBtnTapped: _isDeletePieceworkButtonTapped,
       fun: () => _isDeletePieceworkButtonTapped ? null : _handleDeletePiecework(selectedIds.map((el) => el.toString()).toList()),
     );
   }
@@ -768,35 +771,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
               ),
             ),
           ),
-        );
-      },
-    );
-  }
-
-  void _showConfirmationDialog({String title, String content, Function() fun}) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: DARK,
-          title: textGreenBold(title),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                textWhite(content),
-              ],
-            ),
-          ),
-          actions: [
-            FlatButton(
-              child: textWhite(getTranslated(context, 'yes')),
-              onPressed: () => _isDeletePieceworkButtonTapped ? null : fun(),
-            ),
-            FlatButton(
-              child: textWhite(getTranslated(context, 'no')),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
         );
       },
     );

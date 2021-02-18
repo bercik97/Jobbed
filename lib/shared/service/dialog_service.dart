@@ -125,4 +125,33 @@ class DialogService {
       },
     );
   }
+
+  static showConfirmationDialog({BuildContext context, String title, String content, bool isBtnTapped, Function() fun}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: DARK,
+          title: textGreenBold(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                textWhite(content),
+              ],
+            ),
+          ),
+          actions: [
+            FlatButton(
+              child: textWhite(getTranslated(context, 'yes')),
+              onPressed: () => isBtnTapped ? null : fun(),
+            ),
+            FlatButton(
+              child: textWhite(getTranslated(context, 'no')),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

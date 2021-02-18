@@ -23,6 +23,7 @@ import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/service/toast_service.dart';
 import 'package:give_job/shared/service/validator_service.dart';
 import 'package:give_job/shared/util/avatars_util.dart';
@@ -617,9 +618,11 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
       dateFrom = DateFormat('yyyy-MM-dd').format(picked[0]);
       dateTo = DateFormat('yyyy-MM-dd').format(picked[1]);
     }
-    _showConfirmationDialog(
+    DialogService.showConfirmationDialog(
+      context: context,
       title: getTranslated(context, 'confirmation'),
       content: getTranslated(context, 'deletingPieceworkConfirmation'),
+      isBtnTapped: _isDeletePieceworkButtonTapped,
       fun: () => _isDeletePieceworkButtonTapped ? null : _handleDeletePiecework(dateFrom, dateTo, selectedIds.map((el) => el.toString()).toList(), year, monthNum, STATUS_IN_PROGRESS),
     );
   }
@@ -770,35 +773,6 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
         },
       );
     }
-  }
-
-  void _showConfirmationDialog({String title, String content, Function() fun}) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: DARK,
-          title: textGreenBold(title),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                textWhite(content),
-              ],
-            ),
-          ),
-          actions: [
-            FlatButton(
-              child: textWhite(getTranslated(context, 'yes')),
-              onPressed: () => _isDeletePieceworkButtonTapped ? null : fun(),
-            ),
-            FlatButton(
-              child: textWhite(getTranslated(context, 'no')),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   Future<Null> _refresh() {
