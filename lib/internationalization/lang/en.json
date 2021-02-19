@@ -599,5 +599,7 @@
   "chooseEmployeeGender": "Please select employee's gender",
   "generateExcelForPriceList": "Are you sure you want to generate excel file for price list?",
   "priceListIsEmpty": "Price list is empty",
-  "priceForEmployeeAndCompany": "Price (employee + company)"
+  "priceForEmployeeAndCompany": "Price (employee + company)",
+  "deletePiecework": "Delete piecework",
+  "todayPieceworkIsEmpty": "Piecework for today is empty"
 }

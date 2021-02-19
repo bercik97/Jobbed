@@ -599,5 +599,7 @@
   "chooseEmployeeGender": "Proszę, wybierz płeć pracownika",
   "generateExcelForPriceList": "Czy na pewno chcesz wygenerować plik excel cennika?",
   "priceListIsEmpty": "Cennik jest pusty",
-  "priceForEmployeeAndCompany": "Cena (pracownik + firma)"
+  "priceForEmployeeAndCompany": "Cena (pracownik + firma)",
+  "deletePiecework": "Usuwanie pracy akordowej",
+  "todayPieceworkIsEmpty": "Dzisiejsza praca akordowa jest pusta"
 }

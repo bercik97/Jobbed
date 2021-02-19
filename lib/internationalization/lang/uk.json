@@ -599,5 +599,7 @@
   "chooseEmployeeGender": "Виберіть стать працівника",
   "generateExcelForPriceList": "Ви впевнені, що хочете створити файл Excel для прайс-листа?",
   "priceListIsEmpty": "Прайс-лист порожній",
-  "priceForEmployeeAndCompany": "Ціна (працівник + компанія)"
+  "priceForEmployeeAndCompany": "Ціна (працівник + компанія)",
+  "deletePiecework": "Видалити шматок",
+  "todayPieceworkIsEmpty": "На сьогоднішній день штуки порожні"
 }

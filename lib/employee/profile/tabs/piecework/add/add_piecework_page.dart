@@ -99,13 +99,13 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
               ),
             ],
           ),
-          onWillPop: _navigateToEmployeeProfilPage,
+          onWillPop: _navigateToEmployeeProfilePage,
         );
       },
     );
   }
 
-  Future<bool> _navigateToEmployeeProfilPage() async {
+  Future<bool> _navigateToEmployeeProfilePage() async {
     _resetAndOpenPage();
     return true;
   }
@@ -137,7 +137,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
               key: formKey,
               child: Column(
                 children: [
-                  _buildPricelist(),
+                  _buildPriceList(),
                 ],
               ),
             ),
@@ -149,7 +149,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
     );
   }
 
-  Widget _buildPricelist() {
+  Widget _buildPriceList() {
     return Expanded(
       flex: 2,
       child: Scrollbar(
@@ -245,6 +245,11 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
         serviceWithQuantity[name] = int.parse(quantity);
       }
     });
+    if (serviceWithQuantity.isEmpty) {
+      setState(() => _isAddButtonTapped = false);
+      ToastService.showErrorToast(getTranslated(context, 'pieceworkCannotBeEmpty'));
+      return;
+    }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     CreatePieceworkDto dto = new CreatePieceworkDto(
       workdayId: _todayWorkdayId,

@@ -599,5 +599,7 @@
   "chooseEmployeeGender": "გთხოვთ, აირჩიოთ თანამშრომლის სქესი",
   "generateExcelForPriceList": "დარწმუნებული ხართ, რომ გსურთ Excel ფაილის შექმნა ფასების სიისთვის?",
   "priceListIsEmpty": "ფასების სია ცარიელია",
-  "priceForEmployeeAndCompany": "ფასი (თანამშრომელი + კომპანია)"
+  "priceForEmployeeAndCompany": "ფასი (თანამშრომელი + კომპანია)",
+  "deletePiecework": "წაშალეთ ნაჭერი",
+  "todayPieceworkIsEmpty": "დღეისთვის ნაჭერი ცარიელია"
 }
