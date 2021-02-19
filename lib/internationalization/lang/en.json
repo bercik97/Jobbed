@@ -509,7 +509,7 @@
   "release": "Release",
   "return": "Return",
   "whichYouWantToReleaseToItemPlace": "which you want to release to item place",
-  "releaseItems": "Release items to item place",
+  "releaseItems": "Release items",
   "noItemPlacesToReleaseItems": "No item places to release items, please add them.",
   "goToWarehousesPage": "Back to the warehouses page",
   "someOfItemsDoNotHaveEnoughQuantity": "Some of items do not have enough quantity. Please try again!",

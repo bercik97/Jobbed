@@ -87,7 +87,7 @@ class _AddTsPageState extends State<AddTsPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'addNewTs'), () => NavigatorUtil.navigate(this.context, TsPage(_model))),
+          appBar: managerAppBar(context, _user, utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'), () => NavigatorUtil.navigate(this.context, TsPage(_model))),
           body: WillPopScope(
             onWillPop: () => NavigatorUtil.onWillPopNavigate(context, TsPage(_model)),
             child: AlertDialog(
@@ -112,7 +112,7 @@ class _AddTsPageState extends State<AddTsPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'addNewTs'), () => Navigator.pop(context)),
+          appBar: managerAppBar(context, _user, utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'), () => Navigator.pop(context)),
           body: RefreshIndicator(
             color: DARK,
             backgroundColor: WHITE,
@@ -120,14 +120,14 @@ class _AddTsPageState extends State<AddTsPage> {
             child: Column(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
                   child: Column(
                     children: [
-                      text16White(getTranslated(context, 'addNewTsForSelectedEmployeesForChosenDate')),
+                      text20White(getTranslated(context, 'addNewTsForSelectedEmployeesForChosenDate')),
                       SizedBox(height: 5),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: text16OrangeBold(
+                        child: text20OrangeBold(
                           _year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month),
                         ),
                       ),

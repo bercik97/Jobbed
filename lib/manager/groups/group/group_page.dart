@@ -50,7 +50,7 @@ class _GroupPageState extends State<GroupPage> {
           appBar: managerAppBar(
             context,
             _user,
-            getTranslated(context, 'group') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
+            getTranslated(context, 'group'),
             () => NavigatorUtil.navigate(context, GroupsDashboardPage(_user)),
           ),
           body: SafeArea(

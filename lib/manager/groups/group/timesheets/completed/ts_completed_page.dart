@@ -86,11 +86,15 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
         appBar: managerAppBar(
           context,
           _model.user,
-          _timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' - ' + getTranslated(context, STATUS_COMPLETED),
+          utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
           () => Navigator.pop(context),
         ),
         body: Column(
           children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
+              child: text20GreenBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' → ' + getTranslated(context, STATUS_COMPLETED)),
+            ),
             Container(
               padding: EdgeInsets.all(10),
               child: TextFormField(

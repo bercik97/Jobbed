@@ -270,7 +270,6 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
           bool canFillHours = res['canFillHours'];
           bool workTimeByLocation = res['workTimeByLocation'];
           bool piecework = res['piecework'];
-          String expirationDateOfWork = res['expirationDateOfWork'];
           return SingleChildScrollView(
             child: Column(
               children: <Widget>[
@@ -279,7 +278,6 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                 _buildListTile(this.context, 'selfUpdatingHours', canFillHours ? getTranslated(this.context, 'yes') : getTranslated(this.context, 'no')),
                 _buildListTile(this.context, 'workTimeByLocation', workTimeByLocation ? getTranslated(this.context, 'yes') : getTranslated(this.context, 'no')),
                 _buildListTile(this.context, 'piecework', piecework ? getTranslated(this.context, 'yes') : getTranslated(this.context, 'no')),
-                _buildListTile(this.context, 'expirationDateOfWork', expirationDateOfWork),
               ],
             ),
           );

@@ -115,7 +115,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
         appBar: managerAppBar(
           context,
           _user,
-          getTranslated(context, 'employees') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
+          utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
           () => NavigatorUtil.navigate(context, GroupPage(_model)),
         ),
         body: Column(

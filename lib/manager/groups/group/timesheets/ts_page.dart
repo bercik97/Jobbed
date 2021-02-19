@@ -96,7 +96,7 @@ class _TsPageState extends State<TsPage> {
           appBar: managerAppBar(
             context,
             _model.user,
-            getTranslated(context, 'timesheets') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
+            utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
             () => NavigatorUtil.navigate(context, GroupPage(_model)),
           ),
           body: SingleChildScrollView(

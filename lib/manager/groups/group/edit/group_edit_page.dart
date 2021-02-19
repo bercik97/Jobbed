@@ -49,7 +49,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
           appBar: managerAppBar(
             context,
             _model.user,
-            getTranslated(context, 'editGroup') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
+            getTranslated(context, 'editGroup'),
             () => NavigatorUtil.navigate(context, GroupPage(_model)),
           ),
           body: SingleChildScrollView(

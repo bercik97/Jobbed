@@ -113,7 +113,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
           appBar: managerAppBar(
             context,
             _model.user,
-            _timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' - ' + getTranslated(context, STATUS_IN_PROGRESS),
+            utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
             () => NavigatorUtil.navigate(context, TsPage(_model)),
           ),
           body: RefreshIndicator(
@@ -122,6 +122,10 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
             onRefresh: _refresh,
             child: Column(
               children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
+                  child: text20OrangeBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' → ' + getTranslated(context, STATUS_IN_PROGRESS)),
+                ),
                 Container(
                   padding: EdgeInsets.all(10),
                   child: TextFormField(

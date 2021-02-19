@@ -95,7 +95,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
           appBar: managerAppBar(
             context,
             _model.user,
-            getTranslated(context, 'employeesSettings') + ' - ' + utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
+            utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
             () => NavigatorUtil.navigate(context, GroupPage(_model)),
           ),
           body: RefreshIndicator(

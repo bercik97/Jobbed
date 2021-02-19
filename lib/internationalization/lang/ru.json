@@ -509,7 +509,7 @@
   "release": "Выпуск",
   "return": "Вернуться",
   "whichYouWantToReleaseToItemPlace": "который вы хотите освободить в itemplace",
-  "releaseItems": "Перенести элементы на место",
+  "releaseItems": "Выпустить предметы",
   "noItemPlacesToReleaseItems": "Нет мест для выпуска элементов, добавьте их.",
   "goToWarehousesPage": "Вернуться на страницу складов",
   "someOfItemsDoNotHaveEnoughQuantity": "Некоторых элементов недостаточно. Повторите попытку!",

@@ -509,7 +509,7 @@
   "release": "გამოშვება",
   "return": "დაბრუნება",
   "whichYouWantToReleaseToItemPlace": "რომელიც გსურთ გამოუშვათ ნივთზე",
-  "releaseItems": "ნივთების გამოშვება ნივთების ადგილზე",
+  "releaseItems": "გაათავისუფლეთ ნივთები",
   "noItemPlacesToReleaseItems": "ნივთების გასათავისუფლებლად არ არის რაიმე ადგილი, გთხოვთ დაამატოთ ისინი.",
   "goToWarehousesPage": "საწყობების გვერდზე დაბრუნება",
   "someOfItemsDoNotHaveEnoughQuantity": "ზოგიერთ ნივთს არ აქვს საკმარისი რაოდენობა. გთხოვთ სცადოთ ისევ!",

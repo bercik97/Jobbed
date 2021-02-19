@@ -96,7 +96,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: DARK,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'workplace'), () => NavigatorUtil.navigate(context, GroupPage(_model))),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'workplaces'), () => NavigatorUtil.navigate(context, GroupPage(_model))),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(

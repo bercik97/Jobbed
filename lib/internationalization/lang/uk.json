@@ -509,7 +509,7 @@
   "release": "Випуск",
   "return": "Повернення",
   "whichYouWantToReleaseToItemPlace": "який ви хочете звільнити до itemplace",
-  "releaseItems": "Відпустити елементи до itemplace",
+  "releaseItems": "Випустіть предмети",
   "noItemPlacesToReleaseItems": "Немає місць для випуску елементів, будь ласка, додайте їх.",
   "goToWarehousesPage": "Повернутися на сторінку складів",
   "someOfItemsDoNotHaveEnoughQuantity": "Деякі елементи не мають достатньої кількості. Повторіть спробу!",

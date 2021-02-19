@@ -95,7 +95,7 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: DARK,
-        appBar: managerAppBar(context, _model.user, getTranslated(context, 'updateSelectedTsStatus'), () => Navigator.pop(context)),
+        appBar: managerAppBar(context, _model.user, utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'), () => Navigator.pop(context)),
         body: RefreshIndicator(
           color: DARK,
           backgroundColor: WHITE,
@@ -103,18 +103,18 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
           child: Column(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
                 child: Column(
                   children: [
-                    text16White(getTranslated(context, 'updateSelectedTsStatusForChosenEmployees')),
+                    text20White(getTranslated(context, 'updateSelectedTsStatusForChosenEmployees')),
                     SizedBox(height: 5),
                     _status == STATUS_COMPLETED
                         ? Align(
                             alignment: Alignment.centerLeft,
                             child: Row(
                               children: [
-                                text16OrangeBold(_year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month) + ' ' + '→ '),
-                                text16GreenBold(getTranslated(context, _status).toUpperCase()),
+                                text20OrangeBold(_year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month) + ' ' + '→ '),
+                                text20GreenBold(getTranslated(context, _status).toUpperCase()),
                               ],
                             ),
                           )
@@ -122,8 +122,8 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
                             alignment: Alignment.centerLeft,
                             child: Row(
                               children: [
-                                text16GreenBold(_year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month) + ' ' + '→ '),
-                                text16OrangeBold(getTranslated(context, _status).toUpperCase()),
+                                text20GreenBold(_year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month) + ' ' + '→ '),
+                                text20OrangeBold(getTranslated(context, _status).toUpperCase()),
                               ],
                             ),
                           ),
