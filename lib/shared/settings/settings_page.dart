@@ -120,7 +120,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               backgroundColor: Colors.black12,
                               body: Center(
                                 child: Form(
-                                  autovalidate: true,
+                                  autovalidateMode: AutovalidateMode.always,
                                   key: formKey,
                                   child: Padding(
                                     padding: EdgeInsets.only(left: 30, right: 30),

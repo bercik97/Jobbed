@@ -401,7 +401,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                           controller: _moneyPerHourController,
                           keyboardType: TextInputType.numberWithOptions(decimal: true),
                           inputFormatters: <TextInputFormatter>[
-                            WhitelistingTextInputFormatter(RegExp(r'^\d+\.?\d{0,3}')),
+                            FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,3}')),
                           ],
                           maxLength: 8,
                           cursorColor: WHITE,

@@ -304,7 +304,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
             backgroundColor: Colors.black12,
             body: Center(
               child: Form(
-                autovalidate: true,
+                autovalidateMode: AutovalidateMode.always,
                 key: formKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -367,7 +367,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
             backgroundColor: Colors.black12,
             body: Center(
               child: Form(
-                autovalidate: true,
+                autovalidateMode: AutovalidateMode.always,
                 key: formKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -490,7 +490,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
               backgroundColor: Colors.black12,
               body: Center(
                 child: Form(
-                  autovalidate: true,
+                  autovalidateMode: AutovalidateMode.always,
                   key: formKey,
                   child: Padding(
                     padding: EdgeInsets.only(left: 30, right: 30),

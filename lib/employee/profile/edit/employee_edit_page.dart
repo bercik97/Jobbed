@@ -105,7 +105,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
             padding: EdgeInsets.fromLTRB(25, 0, 25, 25),
             child: Center(
               child: Form(
-                autovalidate: true,
+                autovalidateMode: AutovalidateMode.always,
                 key: formKey,
                 child: Column(
                   children: <Widget>[
@@ -261,7 +261,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
           controller: controller,
           style: TextStyle(color: WHITE),
           keyboardType: TextInputType.number,
-          inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
+          inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
             counterStyle: TextStyle(color: WHITE),

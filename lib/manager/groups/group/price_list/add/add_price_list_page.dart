@@ -151,7 +151,7 @@ class _AddPriceListPageState extends State<AddPriceListPage> {
       child: TextFormField(
         controller: controller,
         keyboardType: TextInputType.numberWithOptions(decimal: true),
-        inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter(RegExp(r'^\d+\.?\d{0,3}')), LengthLimitingTextInputFormatter(8)],
+        inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,3}')), LengthLimitingTextInputFormatter(8)],
         cursorColor: WHITE,
         textAlignVertical: TextAlignVertical.center,
         style: TextStyle(color: WHITE),

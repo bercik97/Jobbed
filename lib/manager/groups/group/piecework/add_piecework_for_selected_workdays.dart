@@ -105,7 +105,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
           body: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Form(
-              autovalidate: true,
+              autovalidateMode: AutovalidateMode.always,
               key: formKey,
               child: Column(
                 children: [
