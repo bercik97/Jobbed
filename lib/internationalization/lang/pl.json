@@ -601,5 +601,8 @@
   "priceListIsEmpty": "Cennik jest pusty",
   "priceForEmployeeAndCompany": "Cena (pracownik + firma)",
   "deletePiecework": "Usuwanie pracy akordowej",
-  "todayPieceworkIsEmpty": "Dzisiejsza praca akordowa jest pusta"
+  "todayPieceworkIsEmpty": "Dzisiejsza praca akordowa jest pusta",
+  "deletingPieceworkForTodayConfirmation": "Czy na pewno chcesz usunąć wszystkie prace akordowe z dzisiejszego dnia?",
+  "deletingSelectedPieceworkServiceConfirmation": "Czy na pewno chcesz usunąć wybraną usługę pracy akordowej?",
+  "successfullyDeletedPieceworkService": "Pomyślnie usunięto wybraną usługę pracy na akord"
 }

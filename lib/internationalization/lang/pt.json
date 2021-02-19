@@ -601,5 +601,8 @@
   "priceListIsEmpty": "ფასების სია ცარიელია",
   "priceForEmployeeAndCompany": "ფასი (თანამშრომელი + კომპანია)",
   "deletePiecework": "წაშალეთ ნაჭერი",
-  "todayPieceworkIsEmpty": "დღეისთვის ნაჭერი ცარიელია"
+  "todayPieceworkIsEmpty": "დღეისთვის ნაჭერი ცარიელია",
+  "deletingPieceworkForTodayConfirmation": "დარწმუნებული ხართ, რომ გსურთ დღეს წაშალოთ ყველა ნაჭერი სამუშაო?",
+  "deletingSelectedPieceworkServiceConfirmation": "დარწმუნებული ხართ, რომ გსურთ წაშალოთ ნაჭერი სამუშაოს შერჩეული სერვისი?",
+  "successfullyDeletedPieceworkService": "წარმატებით წაიშალა საცდელი მომსახურება"
 }

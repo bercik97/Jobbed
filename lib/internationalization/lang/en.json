@@ -601,5 +601,8 @@
   "priceListIsEmpty": "Price list is empty",
   "priceForEmployeeAndCompany": "Price (employee + company)",
   "deletePiecework": "Delete piecework",
-  "todayPieceworkIsEmpty": "Piecework for today is empty"
+  "todayPieceworkIsEmpty": "Piecework for today is empty",
+  "deletingPieceworkForTodayConfirmation": "Are you sure you want to delete all piecework for today?",
+  "deletingSelectedPieceworkServiceConfirmation": "Are you sure you want to delete selected service of piecework?",
+  "successfullyDeletedPieceworkService": "Successfully deleted piecework service"
 }

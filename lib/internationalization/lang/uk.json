@@ -601,5 +601,8 @@
   "priceListIsEmpty": "Прайс-лист порожній",
   "priceForEmployeeAndCompany": "Ціна (працівник + компанія)",
   "deletePiecework": "Видалити шматок",
-  "todayPieceworkIsEmpty": "На сьогоднішній день штуки порожні"
+  "todayPieceworkIsEmpty": "На сьогоднішній день штуки порожні",
+  "deletingPieceworkForTodayConfirmation": "Ви впевнені, що хочете видалити всі роботи сьогодні?",
+  "deletingSelectedPieceworkServiceConfirmation": "Ви впевнені, що хочете видалити вибрану послугу від виробів?",
+  "successfullyDeletedPieceworkService": "Службу відправлень успішно видалено"
 }

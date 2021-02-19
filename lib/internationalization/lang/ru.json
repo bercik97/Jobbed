@@ -601,5 +601,8 @@
   "priceListIsEmpty": "Прейскурант пуст",
   "priceForEmployeeAndCompany": "Цена (сотрудник + компания)",
   "deletePiecework": "Удалить сдельную работу",
-  "todayPieceworkIsEmpty": "Сдельная работа на сегодня пуста"
+  "todayPieceworkIsEmpty": "Сдельная работа на сегодня пуста",
+  "deletingPieceworkForTodayConfirmation": "Вы уверены, что хотите удалить всю сдельную работу на сегодня?",
+  "deletingSelectedPieceworkServiceConfirmation": "Вы уверены, что хотите удалить выбранную услугу сдельной работы?",
+  "successfullyDeletedPieceworkService": "Успешно удалена сдельная услуга"
 }

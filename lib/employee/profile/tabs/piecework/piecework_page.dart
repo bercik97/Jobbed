@@ -38,6 +38,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
   List<PieceworkForEmployeeDto> _pieceworks = new List();
   bool _loading = false;
 
+  bool _isDeletePieceworkServiceButtonTapped = false;
   bool _isDeletePieceworkButtonTapped = false;
 
   PieceworkService _pieceworkService;
@@ -99,7 +100,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
                   DialogService.showConfirmationDialog(
                     context: context,
                     title: getTranslated(context, 'confirmation'),
-                    content: getTranslated(context, 'deletingPieceworkForSelectedDaysConfirmation'),
+                    content: getTranslated(context, 'deletingPieceworkForTodayConfirmation'),
                     isBtnTapped: _isDeletePieceworkButtonTapped,
                     fun: () => _isDeletePieceworkButtonTapped ? null : _handleDeletePiecework(),
                   );
@@ -175,7 +176,13 @@ class _PieceworkPageState extends State<PieceworkPage> {
                             IconButton(
                               icon: iconRed(Icons.delete),
                               onPressed: () {
-                                // to be implemented
+                                DialogService.showConfirmationDialog(
+                                  context: context,
+                                  title: getTranslated(context, 'confirmation'),
+                                  content: getTranslated(context, 'deletingSelectedPieceworkServiceConfirmation'),
+                                  isBtnTapped: _isDeletePieceworkServiceButtonTapped,
+                                  fun: () => _isDeletePieceworkServiceButtonTapped ? null : _handleDeletePieceworkService(_pieceworks[i].service),
+                                );
                               },
                             ),
                           ),
@@ -189,6 +196,23 @@ class _PieceworkPageState extends State<PieceworkPage> {
         ],
       ),
     );
+  }
+
+  void _handleDeletePieceworkService(String serviceName) {
+    setState(() => _isDeletePieceworkServiceButtonTapped = true);
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _pieceworkService.deleteByWorkdayIdAndServiceName(_todayWorkdayId, serviceName).then((value) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showSuccessToast(getTranslated(context, 'successfullyDeletedPieceworkService'));
+        NavigatorUtil.navigate(this.context, PieceworkPage(_user, _todayDate, _todayWorkdayId));
+        setState(() => _isDeletePieceworkServiceButtonTapped = false);
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
+        setState(() => _isDeletePieceworkServiceButtonTapped = false);
+      });
+    });
   }
 
   void _handleDeletePiecework() {
