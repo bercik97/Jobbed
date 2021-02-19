@@ -561,7 +561,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                             children: <Widget>[
                               DropDownFormField(
                                 titleText: getTranslated(context, 'nationality'),
-                                hintText: getTranslated(context, 'nationalityIsRequired'),
+                                hintText: getTranslated(context, 'chooseYourNationality'),
                                 validator: (value) {
                                   if (_isErrorMsgOfNationalityShouldBeShow || (_isCreateEmployeeAccountButtonTapped && value == null)) {
                                     return getTranslated(context, 'nationalityIsRequired');
