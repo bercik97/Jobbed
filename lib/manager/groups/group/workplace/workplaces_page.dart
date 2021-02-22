@@ -203,18 +203,18 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                               children: [
                                                 Align(
                                                   alignment: Alignment.topLeft,
-                                                  child: textWhite(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
+                                                  child: textWhiteBold(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
                                                 ),
                                                 Align(
                                                   alignment: Alignment.topLeft,
-                                                  child: text13White(location != null ? utf8.decode(location.runes.toList()) : getTranslated(this.context, 'empty')),
+                                                  child: textWhite(location != null ? utf8.decode(location.runes.toList()) : getTranslated(this.context, 'empty')),
                                                 ),
                                                 Align(
                                                   alignment: Alignment.topLeft,
                                                   child: Row(
                                                     children: [
-                                                      text13White(getTranslated(this.context, 'radius') + ': '),
-                                                      text13Green(workplace.radiusLength.toString().substring(0, 4) + ' KM'),
+                                                      textWhite(getTranslated(this.context, 'radius') + ': '),
+                                                      textGreen(workplace.radiusLength.toString().substring(0, 4) + ' KM'),
                                                     ],
                                                   ),
                                                 ),

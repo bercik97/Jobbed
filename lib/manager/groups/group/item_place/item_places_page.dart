@@ -193,7 +193,7 @@ class _ItemPlacesPageState extends State<ItemPlacesPage> {
                                               children: [
                                                 Align(
                                                   alignment: Alignment.topLeft,
-                                                  child: textGreen(location),
+                                                  child: textWhiteBold(location),
                                                 ),
                                                 Align(
                                                   alignment: Alignment.topLeft,

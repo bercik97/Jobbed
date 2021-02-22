@@ -19,7 +19,6 @@ Text text20White(String text) { return Text(text, style: GoogleFonts.lato(fontSi
 /* TEXT WHITE BOLD */
 /////////////////////
 Text textWhiteBold(String text) { return Text(text, style: GoogleFonts.lato(color: WHITE, fontWeight: FontWeight.bold)); }
-Text text16WhiteBold(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 16, color: WHITE, fontWeight: FontWeight.bold)); }
 Text text17WhiteBold(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 17, color: WHITE, fontWeight: FontWeight.bold)); }
 Text text18WhiteBold(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 18, color: WHITE, fontWeight: FontWeight.bold)); }
 Text text20WhiteBold(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 20, color: WHITE, fontWeight: FontWeight.bold)); }
@@ -40,7 +39,6 @@ Text textCenterWhite(String text) { return Text(text, textAlign: TextAlign.cente
 Text textCenter13White(String text) { return Text(text, textAlign: TextAlign.center, style: GoogleFonts.lato(fontSize: 13, color: WHITE)); }
 Text textCenter14White(String text) { return Text(text, textAlign: TextAlign.center, style: GoogleFonts.lato(fontSize: 14, color: WHITE)); }
 Text textCenter15White(String text) { return Text(text, textAlign: TextAlign.center, style: GoogleFonts.lato(fontSize: 15, color: WHITE)); }
-Text textCenter16White(String text) { return Text(text, textAlign: TextAlign.center, style: GoogleFonts.lato(fontSize: 16, color: WHITE)); }
 Text textCenter19White(String text) { return Text(text, textAlign: TextAlign.center, style: GoogleFonts.lato(fontSize: 19, color: WHITE)); }
 Text textCenter20White(String text) { return Text(text, textAlign: TextAlign.center, style: GoogleFonts.lato(fontSize: 20, color: WHITE)); }
 Text textCenter28White(String text) { return Text(text, textAlign: TextAlign.center, style: GoogleFonts.lato(fontSize: 28, color: WHITE)); }
@@ -51,7 +49,6 @@ Text textCenter30White(String text) { return Text(text, textAlign: TextAlign.cen
 /*TEXT CENTER WHITE BOLD*/
 /////////////////////////
 Text textCenter16WhiteBold(String text) { return Text(text, textAlign: TextAlign.center, style: GoogleFonts.lato(fontSize: 16, color: WHITE, fontWeight: FontWeight.bold)); }
-Text textCenter18WhiteBold(String text) { return Text(text, textAlign: TextAlign.center, style: GoogleFonts.lato(fontSize: 18, color: WHITE, fontWeight: FontWeight.bold)); }
 
 
 /////////////////////
@@ -77,10 +74,7 @@ Text textDarkBold(String text) { return Text(text, style: GoogleFonts.lato(color
 /*    TEXT GREEN   */
 /////////////////////
 Text textGreen(String text) { return Text(text, style: GoogleFonts.lato(color: GREEN)); }
-Text text13Green(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 13, color: GREEN)); }
 Text text15Green(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 15, color: GREEN)); }
-Text text20Green(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 20, color: GREEN)); }
-Text text25Green(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 25, color: GREEN)); }
 
 
 /////////////////////////////////
@@ -92,7 +86,6 @@ Text text25GreenUnderline(String text) { return Text(text, style: GoogleFonts.la
 ////////////////////////////
 /*    TEXT CENTER GREEN   */
 ////////////////////////////
-Text textCenter14Green(String text) { return Text(text, textAlign: TextAlign.center, style: GoogleFonts.lato(fontSize: 14, color: GREEN)); }
 Text textCenter18Green(String text) { return Text(text, textAlign: TextAlign.center, style: GoogleFonts.lato(fontSize: 18, color: GREEN)); }
 Text textCenter20Green(String text) { return Text(text, textAlign: TextAlign.center, style: GoogleFonts.lato(fontSize: 20, color: GREEN)); }
 
@@ -120,7 +113,6 @@ Text text20GreenBold(String text) { return Text(text, style: GoogleFonts.lato(fo
 /////////////////////
 Text textRed(String text) { return Text(text, style: GoogleFonts.lato(color: Colors.red)); }
 Text text13Red(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 13, color: Colors.red)); }
-Text text20Red(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 20, color: Colors.red)); }
 
 
 /////////////////////
@@ -128,7 +120,6 @@ Text text20Red(String text) { return Text(text, style: GoogleFonts.lato(fontSize
 /////////////////////
 Text textRedBold(String text) { return Text(text, style: GoogleFonts.lato(color: Colors.red, fontWeight: FontWeight.bold)); }
 Text text15RedBold(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 15, color: Colors.red, fontWeight: FontWeight.bold)); }
-Text text16RedBold(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 16, color: Colors.red, fontWeight: FontWeight.bold)); }
 Text text20RedBold(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 20, color: Colors.red, fontWeight: FontWeight.bold)); }
 
 
@@ -136,12 +127,6 @@ Text text20RedBold(String text) { return Text(text, style: GoogleFonts.lato(font
 /* TEXT CENTER RED */
 /////////////////////
 Text textCenter15Red(String text) { return Text(text, textAlign: TextAlign.center, style: GoogleFonts.lato(fontSize: 15, color: Colors.red)); }
-
-
-/////////////////////////////////
-/* TEXT CENTER GREEN UNDERLINE */
-/////////////////////////////////
-Text textCenter15RedUnderline(String text) { return Text(text, textAlign: TextAlign.center, style: GoogleFonts.lato(fontSize: 15, color: Colors.red, decoration: TextDecoration.underline)); }
 
 
 /////////////////////
@@ -153,7 +138,6 @@ Text textOrange(String text) { return Text(text, style: GoogleFonts.lato(color: 
 /////////////////////
 /* TEXT ORANGE BOLD*/
 /////////////////////
-Text textOrangeBold(String text) { return Text(text, style: GoogleFonts.lato(color: Colors.orange, fontWeight: FontWeight.bold)); }
 Text text16OrangeBold(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 16, color: Colors.orange, fontWeight: FontWeight.bold)); }
 Text text20OrangeBold(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 20, color: Colors.orange, fontWeight: FontWeight.bold)); }
 
@@ -162,4 +146,3 @@ Text text20OrangeBold(String text) { return Text(text, style: GoogleFonts.lato(f
 /* TEXT CENTER ORANGE BOLD*/
 ////////////////////////////
 Text textCenter16OrangeBold(String text) { return Text(text, textAlign: TextAlign.center, style: GoogleFonts.lato(fontSize: 16, color: Colors.orange, fontWeight: FontWeight.bold)); }
-Text textCenter20OrangeBold(String text) { return Text(text, textAlign: TextAlign.center, style: GoogleFonts.lato(fontSize: 20, color: Colors.orange, fontWeight: FontWeight.bold)); }
