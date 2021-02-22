@@ -89,8 +89,8 @@ class TimesheetService {
     }
   }
 
-  Future<dynamic> updatePieceworkByGroupIdAndDate(int groupId, String date, Map<String, int> serviceWithQuantity) async {
-    Response res = await put('$_url/piecework/groups/$groupId?date=$date', body: jsonEncode({'serviceWithQuantity': serviceWithQuantity}), headers: _headers);
+  Future<dynamic> updatePieceworkByGroupIdAndDate(int groupId, String date, Map<String, int> servicesWithQuantities) async {
+    Response res = await put('$_url/piecework/groups/$groupId?date=$date', body: jsonEncode(servicesWithQuantities), headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
@@ -111,8 +111,8 @@ class TimesheetService {
     }
   }
 
-  Future<dynamic> updateTsStatus(List<String> employeeIds, int newStatusId, int tsYear, int tsMonth, String tsStatus, int groupId) async {
-    Response res = await put('$_url/groups/$groupId/employees/$employeeIds', body: jsonEncode({'newStatusId': newStatusId, 'tsYear': tsYear, 'tsMonth': tsMonth, 'tsStatus': tsStatus}), headers: _headers);
+  Future<dynamic> updateTsStatusByGroupIdAndYearAndMonthAndStatusAndEmployeesIdIn(List<String> employeeIds, int newStatusId, int tsYear, int tsMonth, String currentTsStatus, int groupId) async {
+    Response res = await put('$_url/groups/$groupId/employees/$employeeIds', body: jsonEncode({'newStatusId': newStatusId, 'tsYear': tsYear, 'tsMonth': tsMonth, 'currentTsStatus': currentTsStatus}), headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {

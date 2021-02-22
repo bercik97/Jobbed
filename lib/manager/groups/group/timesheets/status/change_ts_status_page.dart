@@ -290,7 +290,7 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _timesheetService.updateTsStatus(_selectedIds.map((el) => el.toString()).toList(), newStatusId, _year, _month, status, _model.groupId).then((res) {
+    _timesheetService.updateTsStatusByGroupIdAndYearAndMonthAndStatusAndEmployeesIdIn(_selectedIds.map((el) => el.toString()).toList(), newStatusId, _year, _month, status, _model.groupId).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'timesheetStatusSuccessfullyUpdated'));
         NavigatorUtil.navigateReplacement(context, TsPage(_model));
