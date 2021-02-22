@@ -179,7 +179,7 @@ class _WarehousePageState extends State<WarehousePage> {
                                                   duration: Duration(milliseconds: 100),
                                                   scaleFactor: 2,
                                                   onPressed: () => NavigatorUtil.navigate(this.context, WarehouseDetailsPage(_model, warehouse)),
-                                                  child: icon40Green(Icons.search),
+                                                  child: Image(image: AssetImage('images/warehouse-icon.png'), fit: BoxFit.fitHeight),
                                                 ),
                                               ),
                                             ),

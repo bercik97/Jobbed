@@ -212,7 +212,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                                                   duration: Duration(milliseconds: 100),
                                                   scaleFactor: 2,
                                                   onPressed: () => _editItem(item),
-                                                  child: icon30Green(Icons.search),
+                                                  child: icon30Green(Icons.border_color),
                                                 ),
                                               ),
                                             ),

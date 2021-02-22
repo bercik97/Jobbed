@@ -195,7 +195,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                                   duration: Duration(milliseconds: 100),
                                                   scaleFactor: 2,
                                                   onPressed: () => _editWorkplace(workplace),
-                                                  child: icon40Green(Icons.search),
+                                                  child: Image(image: AssetImage('images/workplace-icon.png'), fit: BoxFit.fitHeight),
                                                 ),
                                               ),
                                             ),

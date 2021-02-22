@@ -185,7 +185,7 @@ class _ItemPlacesPageState extends State<ItemPlacesPage> {
                                                   duration: Duration(milliseconds: 100),
                                                   scaleFactor: 2,
                                                   onPressed: () => NavigatorUtil.navigate(this.context, ItemPlaceDetailsPage(_model, itemPlace)),
-                                                  child: icon40Green(Icons.search),
+                                                  child: Image(image: AssetImage('images/items-icon.png'), fit: BoxFit.fitHeight),
                                                 ),
                                               ),
                                             ),
