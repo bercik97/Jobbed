@@ -535,7 +535,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                             hours += minutes;
                             showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                             _workdayService
-                                .updateEmployeesHours(
+                                .updateHoursByEmployeeIds(
                               hours,
                               dateFrom,
                               dateTo,
@@ -634,7 +634,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
   void _handleDeletePiecework(String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) {
     setState(() => _isDeletePieceworkButtonTapped = true);
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workdayService.deleteEmployeesPiecework(dateFrom, dateTo, employeeIds, tsYear, tsMonth, tsStatus).then((res) {
+    _workdayService.deletePieceworkByEmployeeIds(dateFrom, dateTo, employeeIds, tsYear, tsMonth, tsStatus).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _refresh();
         Navigator.of(context).pop();
@@ -745,7 +745,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                             FocusScope.of(context).unfocus();
                             showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                             _workdayService
-                                .updateEmployeesNote(
+                                .updateNoteByEmployeeIds(
                               note,
                               dateFrom,
                               dateTo,

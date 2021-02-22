@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
-import 'package:give_job/api/workday/dto/workday_for_employee_dto.dart';
+import 'package:give_job/api/workday/dto/workday_for_timesheet_dto.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/api/workday/util/workday_util.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
@@ -40,7 +40,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
   WorkdayService _workdayService;
   TimesheetForEmployeeDto _timesheet;
 
-  List<WorkdayForEmployeeDto> workdays = new List();
+  List<WorkdayForTimesheetDto> workdays = new List();
 
   bool _loading = false;
 
@@ -51,7 +51,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
     this._timesheet = widget._timesheet;
     this._loading = true;
     super.initState();
-    _workdayService.findAllForEmployeeByTsId(_timesheet.id.toString()).then((res) {
+    _workdayService.findAllByTimesheetIdForTimesheetView(_timesheet.id.toString()).then((res) {
       setState(() {
         workdays = res;
         _loading = false;
@@ -217,7 +217,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
 
   Future<Null> _refresh() {
     _loading = true;
-    return _workdayService.findAllForEmployeeByTsId(_timesheet.id.toString()).then((_workdays) {
+    return _workdayService.findAllByTimesheetIdForTimesheetView(_timesheet.id.toString()).then((_workdays) {
       setState(() {
         workdays = _workdays;
         _loading = false;

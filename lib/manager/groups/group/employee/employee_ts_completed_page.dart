@@ -109,7 +109,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                 ),
               ),
               FutureBuilder(
-                future: _workdayService.findAllByTsId(_timesheet.id),
+                future: _workdayService.findAllByTimesheetId(_timesheet.id),
                 builder: (BuildContext context, AsyncSnapshot<List<WorkdayDto>> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
                     return Padding(

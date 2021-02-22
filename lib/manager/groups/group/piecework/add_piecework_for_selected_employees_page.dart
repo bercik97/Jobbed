@@ -229,7 +229,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workdayService.updateEmployeesPiecework(serviceWithQuantity, _dateFrom, _dateTo, _employeeIds, _tsYear, _tsMonth, _tsStatus).then((res) {
+    _workdayService.updatePieceworkByEmployeeIds(serviceWithQuantity, _dateFrom, _dateTo, _employeeIds, _tsYear, _tsMonth, _tsStatus).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewReportsAboutPiecework'));
         NavigatorUtil.navigateReplacement(context, TsInProgressPage(_model, _timeSheet));

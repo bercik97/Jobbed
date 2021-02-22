@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/workday/dto/workday_dto.dart';
-import 'package:give_job/api/workday/dto/workday_for_employee_dto.dart';
+import 'package:give_job/api/workday/dto/workday_for_timesheet_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/service/logout_service.dart';
 import 'package:http/http.dart';
@@ -16,7 +16,7 @@ class WorkdayService {
 
   static const String _url = '$SERVER_IP/workdays';
 
-  Future<List<WorkdayDto>> findAllByTsId(int tsId) async {
+  Future<List<WorkdayDto>> findAllByTimesheetId(int tsId) async {
     Response res = await get('$_url/timesheet?ts_id=$tsId', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => WorkdayDto.fromJson(data)).toList();
@@ -27,10 +27,10 @@ class WorkdayService {
     }
   }
 
-  Future<List<WorkdayForEmployeeDto>> findAllForEmployeeByTsId(String tsId) async {
-    Response res = await get('$_url/employee?ts_id=$tsId', headers: _header);
+  Future<List<WorkdayForTimesheetDto>> findAllByTimesheetIdForTimesheetView(String tsId) async {
+    Response res = await get('$_url/view/timesheet?ts_id=$tsId', headers: _header);
     if (res.statusCode == 200) {
-      return (json.decode(res.body) as List).map((data) => WorkdayForEmployeeDto.fromJson(data)).toList();
+      return (json.decode(res.body) as List).map((data) => WorkdayForTimesheetDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
       return Logout.handle401WithLogout(_context);
     } else {
@@ -71,8 +71,44 @@ class WorkdayService {
     }
   }
 
-  Future<dynamic> updatePieceworkByIds(List<String> ids, Map<String, int> serviceWithQuantity) async {
-    Response res = await put('$_url/piecework?ids=$ids', body: jsonEncode({'serviceWithQuantity': serviceWithQuantity}), headers: _headers);
+  Future<dynamic> updatePieceworkByIds(List<String> ids, Map<String, int> servicesWithQuantities) async {
+    Response res = await put('$_url/piecework?ids=$ids', body: jsonEncode(servicesWithQuantities), headers: _headers);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> updateHoursByEmployeeIds(double hours, String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
+    Map<String, dynamic> map = {'hours': hours, 'dateFrom': dateFrom, 'dateTo': dateTo, 'tsYear': tsYear, 'tsMonth': tsMonth, 'tsStatus': tsStatus};
+    Response res = await put('$_url/employees/$employeeIds/hours', body: jsonEncode(map), headers: _headers);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> updatePieceworkByEmployeeIds(Map<String, int> servicesWithQuantities, String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
+    Map<String, dynamic> map = {'servicesWithQuantities': servicesWithQuantities, 'dateFrom': dateFrom, 'dateTo': dateTo, 'tsYear': tsYear, 'tsMonth': tsMonth, 'tsStatus': tsStatus};
+    Response res = await put('$_url/employees/$employeeIds/piecework', body: jsonEncode(map), headers: _headers);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return Logout.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> updateNoteByEmployeeIds(String note, String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
+    Map<String, dynamic> map = {'note': note, 'dateFrom': dateFrom, 'dateTo': dateTo, 'tsYear': tsYear, 'tsMonth': tsMonth, 'tsStatus': tsStatus};
+    Response res = await put('$_url/employees/$employeeIds/note', body: jsonEncode(map), headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
@@ -93,64 +129,8 @@ class WorkdayService {
     }
   }
 
-  Future<dynamic> updateEmployeesHours(double hours, String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
-    Response res = await put(
-      '$_url/employees/$employeeIds/hours',
-      body: jsonEncode({'hours': hours, 'dateFrom': dateFrom, 'dateTo': dateTo, 'tsYear': tsYear, 'tsMonth': tsMonth, 'tsStatus': tsStatus}),
-      headers: _headers,
-    );
-    if (res.statusCode == 200) {
-      return res;
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<dynamic> updateEmployeesPiecework(Map<String, int> serviceWithQuantity, String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
-    Response res = await put(
-      '$_url/employees/$employeeIds/piecework',
-      body: jsonEncode({
-        'serviceWithQuantity': serviceWithQuantity,
-        'dateFrom': dateFrom,
-        'dateTo': dateTo,
-        'tsYear': tsYear,
-        'tsMonth': tsMonth,
-        'tsStatus': tsStatus,
-      }),
-      headers: _headers,
-    );
-    if (res.statusCode == 200) {
-      return res;
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<dynamic> deleteEmployeesPiecework(String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
-    Response res = await delete(
-      '$_url/employees/$employeeIds/piecework?date_from=$dateFrom&date_to=$dateTo&ts_year=$tsYear&ts_month=$tsMonth&ts_status=$tsStatus',
-      headers: _headers,
-    );
-    if (res.statusCode == 200) {
-      return res;
-    } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<dynamic> updateEmployeesNote(String note, String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
-    Map<String, dynamic> map = {'note': note, 'dateFrom': dateFrom, 'dateTo': dateTo, 'tsYear': tsYear, 'tsMonth': tsMonth, 'tsStatus': tsStatus};
-    Response res = await put(
-      '$_url/employees/$employeeIds/note',
-      body: jsonEncode(map),
-      headers: _headers,
-    );
+  Future<dynamic> deletePieceworkByEmployeeIds(String dateFrom, String dateTo, List<String> employeeIds, int tsYear, int tsMonth, String tsStatus) async {
+    Response res = await delete('$_url/employees/$employeeIds/piecework?date_from=$dateFrom&date_to=$dateTo&ts_year=$tsYear&ts_month=$tsMonth&ts_status=$tsStatus', headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
