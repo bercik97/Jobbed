@@ -52,18 +52,13 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
     this._tsService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
     super.initState();
     _loading = true;
-    _tsService.findDataForEmployeeCalendarByEmployeeId(_employeeId).then((res) {
+    _tsService.findByIdForEmployeeCalendarView(_employeeId).then((res) {
       setState(() {
         _loading = false;
-        res.forEach((key, value) {
-          _events[key] = value;
-        });
+        res.forEach((key, value) => _events[key] = value);
         DateTime currentDate = DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()));
         _selectedEvents = _events[currentDate] ?? [];
-        _animationController = AnimationController(
-          vsync: this,
-          duration: const Duration(milliseconds: 400),
-        );
+        _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
         _animationController.forward();
       });
     });

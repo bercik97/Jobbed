@@ -67,7 +67,7 @@ class _TsPageState extends State<TsPage> {
     this._excelService = ServiceInitializer.initialize(context, _user.authHeader, ExcelService);
     super.initState();
     _loading = true;
-    _timesheetService.findAllWithStatusByGroupId(_model.groupId).then((res) {
+    _timesheetService.findAllByGroupId(_model.groupId).then((res) {
       setState(() {
         res.forEach((ts) {
           if (ts.status == STATUS_IN_PROGRESS) {

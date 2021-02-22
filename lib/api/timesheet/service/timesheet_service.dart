@@ -18,7 +18,7 @@ class TimesheetService {
 
   static const String _url = '$SERVER_IP/timesheets';
 
-  Future<dynamic> createForEmployees(List<String> employeeIds, int year, int month) async {
+  Future<dynamic> create(List<String> employeeIds, int year, int month) async {
     Response res = await post('$_url/employees/$employeeIds', body: jsonEncode({'year': year, 'month': month}), headers: _headers);
     if (res.statusCode == 200) {
       return res;
@@ -29,8 +29,8 @@ class TimesheetService {
     }
   }
 
-  Future<Map<DateTime, List<EmployeeCalendarDto>>> findDataForEmployeeCalendarByEmployeeId(int employeeId) async {
-    Response res = await get('$_url/employee-calendar?employee_id=$employeeId', headers: _header);
+  Future<Map<DateTime, List<EmployeeCalendarDto>>> findByIdForEmployeeCalendarView(int employeeId) async {
+    Response res = await get('$_url/view/employee-calendar?employee_id=$employeeId', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as Map).map(
         (key, value) => MapEntry(
@@ -46,7 +46,7 @@ class TimesheetService {
   }
 
   Future<List<TimesheetForEmployeeDto>> findAllByEmployeeIdOrderByYearDescMonthDesc(int employeeId) async {
-    Response res = await get('$_url/employees/$employeeId', headers: _header);
+    Response res = await get('$_url/employees?employee_id=$employeeId', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => TimesheetForEmployeeDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -56,8 +56,8 @@ class TimesheetService {
     }
   }
 
-  Future<List<TimesheetWithStatusDto>> findAllWithStatusByGroupId(int groupId) async {
-    Response res = await get('$_url/groups/$groupId/with-status', headers: _header);
+  Future<List<TimesheetWithStatusDto>> findAllByGroupId(int groupId) async {
+    Response res = await get('$_url/groups?group_id=$groupId', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => TimesheetWithStatusDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -67,8 +67,8 @@ class TimesheetService {
     }
   }
 
-  Future<List<TimesheetWithoutStatusDto>> findAllWithoutStatusByGroupIdAndStatus(int groupId, String tsStatus) async {
-    Response res = await get(_url + '/groups/$groupId/without-status?ts_status=$tsStatus', headers: _header);
+  Future<List<TimesheetWithoutStatusDto>> findAllByGroupIdAndStatus(int groupId, String tsStatus) async {
+    Response res = await get(_url + '/groups/$groupId/status?ts_status=$tsStatus', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => TimesheetWithoutStatusDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -111,7 +111,7 @@ class TimesheetService {
     }
   }
 
-  Future<dynamic> updateEmployeesTsStatus(List<String> employeeIds, int newStatusId, int tsYear, int tsMonth, String tsStatus, int groupId) async {
+  Future<dynamic> updateTsStatus(List<String> employeeIds, int newStatusId, int tsYear, int tsMonth, String tsStatus, int groupId) async {
     Response res = await put('$_url/groups/$groupId/employees/$employeeIds', body: jsonEncode({'newStatusId': newStatusId, 'tsYear': tsYear, 'tsMonth': tsMonth, 'tsStatus': tsStatus}), headers: _headers);
     if (res.statusCode == 200) {
       return res;

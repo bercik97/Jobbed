@@ -285,7 +285,7 @@ class _AddTsPageState extends State<AddTsPage> {
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _timesheetService.createForEmployees(_selectedIds.map((el) => el.toString()).toList(), _year, _month).then(
+    _timesheetService.create(_selectedIds.map((el) => el.toString()).toList(), _year, _month).then(
       (res) {
         Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
           ToastService.showSuccessToast(getTranslated(context, 'timesheetsSuccessfullyCreated'));
