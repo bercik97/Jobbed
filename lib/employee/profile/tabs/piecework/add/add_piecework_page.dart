@@ -15,6 +15,7 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/service/toast_service.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -262,7 +263,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
+        DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         setState(() => _isAddButtonTapped = false);
       });
     });

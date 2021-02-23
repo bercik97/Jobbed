@@ -227,13 +227,9 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
         setState(() => _isAddButtonTapped = false);
         if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
           Navigator.pop(context);
-          DialogService.showCustomDialog(
-            context: context,
-            titleWidget: textRed(getTranslated(context, 'error')),
-            content: getTranslated(context, 'cannotUpdateTodayPiecework'),
-          );
+          DialogService.showErrorDialog(context, getTranslated(context, 'cannotUpdateTodayPiecework'));
         } else {
-          ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
+          DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         }
       });
     });

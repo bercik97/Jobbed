@@ -392,13 +392,9 @@ class _PriceListsPageState extends State<PriceListsPage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String errorMsg = onError.toString();
         if (errorMsg.contains("EMAIL_IS_NULL")) {
-          DialogService.showCustomDialog(
-            context: context,
-            titleWidget: textRed(getTranslated(context, 'error')),
-            content: getTranslated(context, 'excelEmailIsEmpty'),
-          );
+          DialogService.showErrorDialog(context, getTranslated(context, 'excelEmailIsEmpty'));
         } else {
-          ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
+          DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         }
         setState(() => _isGenerateExcelBtnTapped = false);
       });

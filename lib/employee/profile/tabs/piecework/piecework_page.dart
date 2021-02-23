@@ -209,7 +209,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
+        DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         setState(() => _isDeletePieceworkServiceButtonTapped = false);
       });
     });
@@ -226,7 +226,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
+        DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         setState(() => _isDeletePieceworkButtonTapped = false);
       });
     });

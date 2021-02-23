@@ -595,7 +595,7 @@
   "pieceworkForSelectedDaysDeleted": "Praca akordowa dla wybranych dni została usunięta",
   "deletingPieceworkForSelectedDaysConfirmation": "Czy na pewno chcesz usunąć wszystkie prace akordowe z wybranych dni?",
   "createNewEmployeeAccount": "Dodawanie nowego pracownika",
-  "employeeAccountHasBeenSuccessfullyCreated": "Konto pracownika zostało pomyślnie utworzone",
+  "employeeAccountAdded": "Dodano konto pracownika!",
   "chooseEmployeeGender": "Proszę, wybierz płeć pracownika",
   "generateExcelForPriceList": "Czy na pewno chcesz wygenerować plik excel cennika?",
   "priceListIsEmpty": "Cennik jest pusty",

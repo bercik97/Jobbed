@@ -324,13 +324,13 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                     ),
                     Buttons.standardButton(
                       minWidth: 200.0,
-                      color: Colors.red,
+                      color: GREEN,
                       title: getTranslated(context, 'deleteEmployees'),
                       fun: () => NavigatorUtil.navigate(this.context, DeleteGroupEmployeesPage(_user, groupId)),
                     ),
                     SizedBox(height: 30),
                     Container(
-                      width: 80,
+                      width: 60,
                       child: MaterialButton(
                         elevation: 0,
                         height: 50,
@@ -428,11 +428,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                           color: GREEN,
                           onPressed: () {
                             if (!_isValid()) {
-                              DialogService.showCustomDialog(
-                                context: context,
-                                titleWidget: textRed(getTranslated(context, 'error')),
-                                content: getTranslated(context, 'groupNameForDeleteInvalid'),
-                              );
+                              DialogService.showErrorDialog(context, getTranslated(context, 'groupNameForDeleteInvalid'));
                               return;
                             }
                             FocusScope.of(context).unfocus();
@@ -446,11 +442,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 String errorMsg = onError.toString();
                                 if (errorMsg.contains("GROUP_DOES_NOT_EXISTS")) {
-                                  DialogService.showCustomDialog(
-                                    context: context,
-                                    titleWidget: textRed(getTranslated(context, 'error')),
-                                    content: getTranslated(context, 'groupDoesNotExists'),
-                                  );
+                                  DialogService.showErrorDialog(context, getTranslated(context, 'groupDoesNotExists'));
                                 }
                               });
                             });
@@ -757,11 +749,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
   _handleCreateEmployeeAccountButton() {
     setState(() => _isCreateEmployeeAccountButtonTapped = true);
     if (!_isValid() || _genderRadioValue == -1) {
-      DialogService.showCustomDialog(
-        context: context,
-        titleWidget: textRed(getTranslated(context, 'error')),
-        content: getTranslated(context, 'correctInvalidFields'),
-      );
+      DialogService.showErrorDialog(context, getTranslated(context, 'correctInvalidFields'));
       if (_nationality == '') {
         setState(() => _isErrorMsgOfNationalityShouldBeShow = true);
       } else {
@@ -782,7 +770,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
     );
     _employeeService.createBasicEmployee(dto).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(context, 'employeeAccountHasBeenSuccessfullyCreated'));
+        ToastService.showSuccessToast(getTranslated(context, 'employeeAccountAdded'));
         Navigator.pop(context);
         _usernameController.clear();
         _passwordController.clear();

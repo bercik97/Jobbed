@@ -325,11 +325,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
             shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
             onPressed: () {
               if (!_isValid()) {
-                DialogService.showCustomDialog(
-                  context: context,
-                  titleWidget: textRed(getTranslated(context, 'error')),
-                  content: getTranslated(context, 'correctInvalidFields'),
-                );
+                DialogService.showErrorDialog(context, getTranslated(context, 'correctInvalidFields'));
                 return;
               } else {
                 FocusScope.of(context).unfocus();
@@ -355,11 +351,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
                 }).catchError(
                   (onError) {
                     Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                      DialogService.showCustomDialog(
-                        context: context,
-                        titleWidget: textRed(getTranslated(context, 'error')),
-                        content: getTranslated(context, 'somethingWentWrong'),
-                      );
+                      DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
                     });
                   },
                 );

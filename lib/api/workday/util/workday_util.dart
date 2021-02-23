@@ -35,7 +35,7 @@ class WorkdayUtil {
                         textCenter20White(value != null ? utf8.decode(value.runes.toList()) : getTranslated(context, 'empty')),
                         SizedBox(height: 20),
                         Container(
-                          width: 80,
+                          width: 60,
                           child: MaterialButton(
                             elevation: 0,
                             height: 50,
@@ -91,7 +91,7 @@ class WorkdayUtil {
                         ),
                         SizedBox(height: 20),
                         Container(
-                          width: 80,
+                          width: 60,
                           child: MaterialButton(
                             elevation: 0,
                             height: 50,
@@ -143,7 +143,7 @@ class WorkdayUtil {
                         _buildWorkTimesDataTable(context, workTimes),
                         SizedBox(height: 20),
                         Container(
-                          width: 80,
+                          width: 60,
                           child: MaterialButton(
                             elevation: 0,
                             height: 50,
@@ -194,7 +194,7 @@ class WorkdayUtil {
                         _buildPieceworksDataTable(context, pieceworks, displayCompanyPrice),
                         SizedBox(height: 20),
                         Container(
-                          width: 80,
+                          width: 60,
                           child: MaterialButton(
                             elevation: 0,
                             height: 50,
@@ -354,7 +354,7 @@ class WorkdayUtil {
                         ),
                         SizedBox(height: 20),
                         Container(
-                          width: 80,
+                          width: 60,
                           child: MaterialButton(
                             elevation: 0,
                             height: 50,
@@ -415,7 +415,7 @@ class WorkdayUtil {
                         textCenter20White(note != null ? utf8.decode(note.runes.toList()) : getTranslated(context, 'empty')),
                         SizedBox(height: 20),
                         Container(
-                          width: 80,
+                          width: 60,
                           child: MaterialButton(
                             elevation: 0,
                             height: 50,

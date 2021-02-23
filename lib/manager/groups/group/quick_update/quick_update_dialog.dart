@@ -206,11 +206,7 @@ class QuickUpdateDialog {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 String s = onError.toString();
                                 if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
-                                  DialogService.showCustomDialog(
-                                    context: context,
-                                    titleWidget: textRed(getTranslated(context, 'error')),
-                                    content: getTranslated(context, 'cannotUpdateTodayHours'),
-                                  );
+                                  DialogService.showErrorDialog(context, getTranslated(context, 'cannotUpdateTodayHours'));
                                 }
                               });
                             },
@@ -316,11 +312,7 @@ class QuickUpdateDialog {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 String s = onError.toString();
                                 if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
-                                  DialogService.showCustomDialog(
-                                    context: context,
-                                    titleWidget: textRed(getTranslated(context, 'error')),
-                                    content: getTranslated(context, 'cannotUpdateTodayNote'),
-                                  );
+                                  DialogService.showErrorDialog(context, getTranslated(context, 'cannotUpdateTodayNote'));
                                 }
                               });
                             },

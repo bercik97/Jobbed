@@ -184,11 +184,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               String s = onError.toString();
                               if (s.contains('GROUP_NAME_TAKEN')) {
-                                DialogService.showCustomDialog(
-                                  context: context,
-                                  titleWidget: textRed(getTranslated(context, 'error')),
-                                  content: getTranslated(context, 'groupNameNeedToBeUnique'),
-                                );
+                                DialogService.showErrorDialog(context, getTranslated(context, 'groupNameNeedToBeUnique'));
                               }
                             });
                           });

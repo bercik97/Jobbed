@@ -15,7 +15,7 @@ class Logout {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: DARK,
-          title: textWhite(getTranslated(context, 'logout')),
+          title: textGreen(getTranslated(context, 'logout')),
           content: textWhite(getTranslated(context, 'logoutConfirm')),
           actions: <Widget>[
             FlatButton(

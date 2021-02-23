@@ -268,7 +268,7 @@ class _AddGroupEmployeesPageState extends State<AddGroupEmployeesPage> {
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
+        DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         setState(() => _isAddButtonTapped = false);
       });
     });

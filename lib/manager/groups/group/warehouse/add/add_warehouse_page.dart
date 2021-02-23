@@ -312,13 +312,9 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String errorMsg = onError.toString();
         if (errorMsg.contains("WAREHOUSE_NAME_EXISTS")) {
-          DialogService.showCustomDialog(
-            context: context,
-            titleWidget: textRed(getTranslated(context, 'error')),
-            content: getTranslated(context, 'warehouseNameExists') + '\n' + getTranslated(context, 'chooseOtherWarehouseName'),
-          );
+          DialogService.showErrorDialog(context, getTranslated(context, 'warehouseNameExists') + '\n' + getTranslated(context, 'chooseOtherWarehouseName'));
         } else {
-          ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
+          DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         }
         setState(() => _isAddButtonTapped = false);
       });

@@ -595,7 +595,7 @@
   "pieceworkForSelectedDaysDeleted": "ნაწყვეტი არჩეული დღეებისთვის წაიშალა",
   "deletingPieceworkForSelectedDaysConfirmation": "დარწმუნებული ხართ, რომ გსურთ წაშალოთ ყველა ნაჭერი სამუშაო პერიოდი?",
   "createNewEmployeeAccount": "შექმენით ახალი თანამშრომლის ანგარიში",
-  "employeeAccountHasBeenSuccessfullyCreated": "თანამშრომლის ანგარიში წარმატებით შეიქმნა",
+  "employeeAccountAdded": "დაემატა თანამშრომლის ანგარიში!",
   "chooseEmployeeGender": "გთხოვთ, აირჩიოთ თანამშრომლის სქესი",
   "generateExcelForPriceList": "დარწმუნებული ხართ, რომ გსურთ Excel ფაილის შექმნა ფასების სიისთვის?",
   "priceListIsEmpty": "ფასების სია ცარიელია",

@@ -567,11 +567,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
     FocusScope.of(context).unfocus();
     setState(() => _isRegisterButtonTapped = true);
     if (!_isValid() || !_regulationsCheckbox || !_privacyPolicyCheckbox || _genderRadioValue == -1) {
-      DialogService.showCustomDialog(
-        context: context,
-        titleWidget: textRed(getTranslated(context, 'error')),
-        content: getTranslated(context, 'correctInvalidFields'),
-      );
+      DialogService.showErrorDialog(context, getTranslated(context, 'correctInvalidFields'));
       if (_nationality == '') {
         setState(() => _isErrorMsgOfNationalityShouldBeShow = true);
       } else {

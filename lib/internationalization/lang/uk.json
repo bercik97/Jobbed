@@ -595,7 +595,7 @@
   "pieceworkForSelectedDaysDeleted": "Вироби за вибрані дні видалено",
   "deletingPieceworkForSelectedDaysConfirmation": "Ви впевнені, що хочете видалити всі роботи за вибрані дні?",
   "createNewEmployeeAccount": "Створiть новий рахунок спiвробiтника",
-  "employeeAccountHasBeenSuccessfullyCreated": "Облiковий запис спiвробiтника успiшно створено",
+  "employeeAccountAdded": "Обліковий запис працівника додано!",
   "chooseEmployeeGender": "Виберіть стать працівника",
   "generateExcelForPriceList": "Ви впевнені, що хочете створити файл Excel для прайс-листа?",
   "priceListIsEmpty": "Прайс-лист порожній",

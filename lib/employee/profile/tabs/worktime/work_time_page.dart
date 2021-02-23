@@ -20,6 +20,7 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/service/toast_service.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/circular_progress_indicator.dart';
@@ -356,7 +357,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                         ),
                         SizedBox(height: 20),
                         Container(
-                          width: 80,
+                          width: 60,
                           child: MaterialButton(
                             elevation: 0,
                             height: 50,
@@ -389,7 +390,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => _refresh());
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
+        DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         setState(() => _isStartWorkButtonTapped = false);
       });
     });
@@ -462,7 +463,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => _refresh());
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
+        DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         setState(() => _isPauseWorkButtonTapped = false);
       });
     });

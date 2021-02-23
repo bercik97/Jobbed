@@ -595,7 +595,7 @@
   "pieceworkForSelectedDaysDeleted": "Сдельная работа за выбранные дни удалена",
   "deletingPieceworkForSelectedDaysConfirmation": "Вы уверены, что хотите удалить всю сдельную работу за выбранные дни?",
   "createNewEmployeeAccount": "Создать новую учетную запись сотрудника",
-  "employeeAccountHasBeenSuccessfullyCreated": "Учетная запись сотрудника успешно создана",
+  "employeeAccountAdded": "Аккаунт сотрудника добавлен!",
   "chooseEmployeeGender": "Пожалуйста, выберите пол сотрудника",
   "generateExcelForPriceList": "Вы уверены, что хотите создать файл Excel для прайс-листа?",
   "priceListIsEmpty": "Прейскурант пуст",

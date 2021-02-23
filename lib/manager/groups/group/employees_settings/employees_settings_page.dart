@@ -478,7 +478,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 });
                               }).catchError((onError) {
                                 Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                  ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
+                                  DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
                                   setState(() => _isMoneyBtnTapped = false);
                                 });
                               });
@@ -591,7 +591,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 });
                               }).catchError((onError) {
                                 Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                  ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
+                                  DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
                                   setState(() => _isSelfFillingHoursBtnTapped = false);
                                 });
                               });
@@ -704,7 +704,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 });
                               }).catchError((onError) {
                                 Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                  ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
+                                  DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
                                   setState(() => _isWorkTimeByLocationBtnTapped = false);
                                 });
                               });
@@ -817,7 +817,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 });
                               }).catchError((onError) {
                                 Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                  ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
+                                  DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
                                   setState(() => _isPieceworkBtnTapped = false);
                                 });
                               });

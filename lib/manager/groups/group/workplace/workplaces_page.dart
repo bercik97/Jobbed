@@ -736,11 +736,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                     if (errorMsg.contains("SOMEONE_IS_WORKING_IN_WORKPLACE_FOR_DELETE")) {
                       setState(() => _isDeleteButtonTapped = false);
                       Navigator.pop(this.context);
-                      DialogService.showCustomDialog(
-                        context: context,
-                        titleWidget: textRed(getTranslated(context, 'error')),
-                        content: getTranslated(context, 'cannotDeleteWorkplaceWhenSomeoneWorkingThere'),
-                      );
+                      DialogService.showErrorDialog(context, getTranslated(context, 'cannotDeleteWorkplaceWhenSomeoneWorkingThere'));
                       return;
                     }
                     setState(() => _isDeleteButtonTapped = false);
@@ -867,7 +863,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                               if (errorMsg.contains("WORKPLACE_NAME_EXISTS")) {
                                 ToastService.showErrorToast(getTranslated(context, 'workplaceNameExists'));
                               } else {
-                                ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
+                                DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
                               }
                             });
                           });

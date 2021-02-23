@@ -276,13 +276,9 @@ class _AddItemsPageState extends State<AddItemsPage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String errorMsg = onError.toString();
         if (errorMsg.contains("ITEM_NAME_EXISTS")) {
-          DialogService.showCustomDialog(
-            context: context,
-            titleWidget: textRed(getTranslated(context, 'error')),
-            content: getTranslated(context, 'itemNameExists') + '\n' + getTranslated(context, 'chooseOtherItemName'),
-          );
+          DialogService.showErrorDialog(context, getTranslated(context, 'itemNameExists') + '\n' + getTranslated(context, 'chooseOtherItemName'));
         } else {
-          ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
+          DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         }
         setState(() => _isAddButtonTapped = false);
       });

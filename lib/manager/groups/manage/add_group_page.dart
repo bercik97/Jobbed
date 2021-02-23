@@ -278,11 +278,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
     FocusScope.of(context).unfocus();
     setState(() => _isAddButtonTapped = true);
     if (!_isValid()) {
-      DialogService.showCustomDialog(
-        context: context,
-        titleWidget: textRed(getTranslated(context, 'error')),
-        content: getTranslated(context, 'correctInvalidFields'),
-      );
+      DialogService.showErrorDialog(context, getTranslated(context, 'correctInvalidFields'));
       setState(() => _isAddButtonTapped = false);
       return;
     }
@@ -308,11 +304,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String errorMsg = onError.toString();
         if (errorMsg.contains("GROUP_NAME_EXISTS")) {
-          DialogService.showCustomDialog(
-            context: context,
-            titleWidget: textRed(getTranslated(context, 'error')),
-            content: getTranslated(context, 'groupNameExists') + '\n' + getTranslated(context, 'chooseOtherGroupName'),
-          );
+          DialogService.showErrorDialog(context, getTranslated(context, 'groupNameExists') + '\n' + getTranslated(context, 'chooseOtherGroupName'));
         }
         setState(() => _isAddButtonTapped = false);
       });

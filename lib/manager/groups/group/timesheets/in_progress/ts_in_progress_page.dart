@@ -643,7 +643,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
+        DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         setState(() => _isDeletePieceworkButtonTapped = false);
       });
     });

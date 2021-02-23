@@ -294,7 +294,7 @@ class _AddTsPageState extends State<AddTsPage> {
       },
     ).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
+        DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         setState(() => _isAddBtnTapped = false);
       });
     });

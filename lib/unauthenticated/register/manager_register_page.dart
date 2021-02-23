@@ -541,11 +541,7 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
     FocusScope.of(context).unfocus();
     setState(() => _isRegisterButtonTapped = true);
     if (!_isValid() || !_regulationsCheckbox || !_privacyPolicyCheckbox) {
-      DialogService.showCustomDialog(
-        context: context,
-        titleWidget: textRed(getTranslated(context, 'error')),
-        content: getTranslated(context, 'correctInvalidFields'),
-      );
+      DialogService.showErrorDialog(context, getTranslated(context, 'correctInvalidFields'));
       if (_nationality == '') {
         setState(() => _isErrorMsgOfNationalityShouldBeShow = true);
       } else {

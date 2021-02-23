@@ -275,13 +275,9 @@ class _AddPriceListPageState extends State<AddPriceListPage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String errorMsg = onError.toString();
         if (errorMsg.contains("PRICE_LIST_NAME_EXISTS")) {
-          DialogService.showCustomDialog(
-            context: context,
-            titleWidget: textRed(getTranslated(context, 'error')),
-            content: getTranslated(context, 'priceListServiceNameExists') + '\n' + getTranslated(context, 'chooseOtherPriceListServiceName'),
-          );
+          DialogService.showErrorDialog(context, getTranslated(context, 'priceListServiceNameExists') + '\n' + getTranslated(context, 'chooseOtherPriceListServiceName'));
         } else {
-          ToastService.showErrorToast(getTranslated(context, 'somethingWentWrong'));
+          DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         }
         setState(() => _isAddButtonTapped = false);
       });
