@@ -7,115 +7,7 @@ import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
-class WorkdayUtil {
-  static void showScrollableDialog(BuildContext context, String title, String value) {
-    if (value == null || value.isEmpty) {
-      return;
-    }
-    showGeneralDialog(
-      context: context,
-      barrierColor: DARK.withOpacity(0.95),
-      barrierDismissible: false,
-      barrierLabel: title,
-      transitionDuration: Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return SizedBox.expand(
-          child: Scaffold(
-            backgroundColor: Colors.black12,
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      children: <Widget>[
-                        text20GreenBold(title),
-                        SizedBox(height: 20),
-                        textCenter20White(value != null ? utf8.decode(value.runes.toList()) : getTranslated(context, 'empty')),
-                        SizedBox(height: 20),
-                        Container(
-                          width: 60,
-                          child: MaterialButton(
-                            elevation: 0,
-                            height: 50,
-                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[iconWhite(Icons.close)],
-                            ),
-                            color: Colors.red,
-                            onPressed: () => Navigator.pop(context),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  static void showScrollableWorkplacesDialog(BuildContext context, String title, List workplaces) {
-    if (workplaces == null || workplaces.isEmpty) {
-      return;
-    }
-    showGeneralDialog(
-      context: context,
-      barrierColor: DARK.withOpacity(0.95),
-      barrierDismissible: false,
-      barrierLabel: title,
-      transitionDuration: Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return SizedBox.expand(
-          child: Scaffold(
-            backgroundColor: Colors.black12,
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      children: <Widget>[
-                        text20GreenBold(title),
-                        SizedBox(height: 20),
-                        Column(
-                          children: [
-                            for (int i = 0; i < workplaces.length; i++) textCenter20White('#' + (i + 1).toString() + ' ' + workplaces[i].workplaceName + '\n'),
-                          ],
-                        ),
-                        SizedBox(height: 20),
-                        Container(
-                          width: 60,
-                          child: MaterialButton(
-                            elevation: 0,
-                            height: 50,
-                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[iconWhite(Icons.close)],
-                            ),
-                            color: Colors.red,
-                            onPressed: () => Navigator.pop(context),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
+class WorkdayEmployeeUtil {
   static void showScrollableWorkTimesDialog(BuildContext context, String title, List workTimes) {
     if (workTimes == null || workTimes.isEmpty) {
       return;
@@ -168,7 +60,7 @@ class WorkdayUtil {
     );
   }
 
-  static void showScrollablePieceworksDialog(BuildContext context, List pieceworks, bool displayCompanyPrice) {
+  static void showScrollablePieceworksDialog(BuildContext context, List pieceworks) {
     if (pieceworks == null || pieceworks.isEmpty) {
       return;
     }
@@ -191,7 +83,7 @@ class WorkdayUtil {
                       children: <Widget>[
                         text20GreenBold(getTranslated(context, 'pieceworkReports')),
                         SizedBox(height: 20),
-                        _buildPieceworksDataTable(context, pieceworks, displayCompanyPrice),
+                        _buildPieceworksDataTable(context, pieceworks),
                         SizedBox(height: 20),
                         Container(
                           width: 60,
@@ -219,7 +111,7 @@ class WorkdayUtil {
     );
   }
 
-  static Widget _buildPieceworksDataTable(BuildContext context, List pieceworks, bool displayCompanyPrice) {
+  static Widget _buildPieceworksDataTable(BuildContext context, List pieceworks) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: SingleChildScrollView(
@@ -232,26 +124,7 @@ class WorkdayUtil {
               DataColumn(label: textWhiteBold('No.')),
               DataColumn(label: textWhiteBold(getTranslated(context, 'serviceName'))),
               DataColumn(label: textWhiteBold(getTranslated(context, 'quantity'))),
-              displayCompanyPrice
-                  ? DataColumn(
-                      label: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        textWhiteBold(getTranslated(context, 'price')),
-                        text12White('(' + getTranslated(context, 'employee') + ')'),
-                      ],
-                    ))
-                  : DataColumn(label: textWhiteBold(getTranslated(context, 'price'))),
-              displayCompanyPrice
-                  ? DataColumn(
-                      label: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        textWhiteBold(getTranslated(context, 'price')),
-                        text12White('(' + getTranslated(context, 'company') + ')'),
-                      ],
-                    ))
-                  : DataColumn(label: SizedBox(height: 0)),
+              DataColumn(label: textWhiteBold(getTranslated(context, 'price'))),
             ],
             rows: [
               for (int i = 0; i < pieceworks.length; i++)
@@ -261,7 +134,6 @@ class WorkdayUtil {
                     DataCell(textWhite(utf8.decode(pieceworks[i].service.runes.toList()))),
                     DataCell(Align(alignment: Alignment.center, child: textWhite(pieceworks[i].quantity.toString()))),
                     DataCell(Align(alignment: Alignment.center, child: textWhite(pieceworks[i].priceForEmployee.toString()))),
-                    displayCompanyPrice ? DataCell(Align(alignment: Alignment.center, child: textWhite(pieceworks[i].priceForCompany.toString()))) : DataCell(SizedBox(height: 0)),
                   ],
                 ),
             ],
@@ -305,80 +177,6 @@ class WorkdayUtil {
     );
   }
 
-  static void buildPieceworkDialog(BuildContext context, List services, List quantities, List prices) {
-    showGeneralDialog(
-      context: context,
-      barrierColor: DARK.withOpacity(0.95),
-      barrierDismissible: false,
-      transitionDuration: Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return SizedBox.expand(
-          child: Scaffold(
-            backgroundColor: Colors.black12,
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      children: <Widget>[
-                        SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Theme(
-                              data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
-                              child: DataTable(
-                                columnSpacing: 10,
-                                columns: [
-                                  DataColumn(label: textWhiteBold('No.')),
-                                  DataColumn(label: textWhiteBold(getTranslated(context, 'serviceName'))),
-                                  DataColumn(label: textWhiteBold(getTranslated(context, 'quantity'))),
-                                  DataColumn(label: textWhiteBold(getTranslated(context, 'price'))),
-                                ],
-                                rows: [
-                                  for (int i = 0; i < services.length; i++)
-                                    DataRow(
-                                      cells: [
-                                        DataCell(textWhite((i + 1).toString())),
-                                        DataCell(textWhite(utf8.decode(services[i].runes.toList()))),
-                                        DataCell(textWhite(quantities[i].toString())),
-                                        DataCell(textWhite(prices[i].toString())),
-                                      ],
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Container(
-                          width: 60,
-                          child: MaterialButton(
-                            elevation: 0,
-                            height: 50,
-                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[iconWhite(Icons.close)],
-                            ),
-                            color: Colors.red,
-                            onPressed: () => Navigator.pop(context),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   static void showScrollableWorkTimesAndNote(BuildContext context, String date, List pieceworks, List workTimes, String note) {
     if ((pieceworks == null || pieceworks.isEmpty) && (workTimes == null || workTimes.isEmpty) && (note == null || note.isEmpty)) {
       return;
@@ -408,7 +206,7 @@ class WorkdayUtil {
                         SizedBox(height: 5),
                         text20GreenBold(getTranslated(context, 'pieceworks')),
                         SizedBox(height: 5),
-                        _buildPieceworksDataTable(context, pieceworks, false),
+                        _buildPieceworksDataTable(context, pieceworks),
                         SizedBox(height: 5),
                         text20GreenBold(getTranslated(context, 'note')),
                         SizedBox(height: 5),

@@ -44,7 +44,7 @@ class Logout {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: DARK,
-          title: textWhite(getTranslated(context, 'accountExpired')),
+          title: textRed(getTranslated(context, 'accountExpired')),
           content: textWhite(getTranslated(context, 'yourAccountProbablyExpired')),
           actions: <Widget>[
             FlatButton(

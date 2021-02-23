@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:give_job/api/employee/dto/employee_profile_dto.dart';
-import 'package:give_job/api/workday/util/workday_util.dart';
+import 'package:give_job/shared/util/workday_employee_util.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/widget/buttons.dart';
@@ -116,7 +116,7 @@ Container employeeToday(BuildContext context, EmployeeProfileDto dto, Function()
                     SizedBox(height: 5),
                   ],
                 ),
-                onTap: () => WorkdayUtil.showScrollableWorkTimesAndNote(context, todayDate, todayPiecework, todayWorkTimes, todayNote),
+                onTap: () => WorkdayEmployeeUtil.showScrollableWorkTimesAndNote(context, todayDate, todayPiecework, todayWorkTimes, todayNote),
               ),
             ),
             canFillHours

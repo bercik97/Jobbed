@@ -6,14 +6,15 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:give_job/api/workday/dto/workday_dto.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
-import 'package:give_job/api/workday/util/workday_util.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/service/dialog_service.dart';
 import 'package:give_job/shared/util/data_table_util.dart';
 import 'package:give_job/shared/util/icons_legend_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
+import 'package:give_job/shared/util/workday_manager_util.dart';
 import 'package:give_job/shared/widget/circular_progress_indicator.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/icons_legend_dialog.dart';
@@ -184,7 +185,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
           height: 50,
         ),
         InkWell(
-          onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workdays[index].pieceworks, false),
+          onTap: () => WorkdayManagerUtil.showScrollablePieceworksDialog(this.context, workdays[index].pieceworks),
           child: Ink(
             child: workdays[index].pieceworks != null && workdays[index].pieceworks.isNotEmpty ? iconWhite(Icons.zoom_in) : Align(alignment: Alignment.center, child: textWhite('-')),
             width: 50,
@@ -192,7 +193,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
           ),
         ),
         InkWell(
-          onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workdays[index].workTimes),
+          onTap: () => WorkdayManagerUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workdays[index].workTimes),
           child: Ink(
             child: workdays[index].workTimes != null && workdays[index].workTimes.isNotEmpty ? iconWhite(Icons.zoom_in) : Align(alignment: Alignment.center, child: textWhite('-')),
             width: 50,
@@ -210,7 +211,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
           height: 50,
         ),
         InkWell(
-          onTap: () => WorkdayUtil.showScrollableDialog(this.context, getTranslated(this.context, 'noteDetails'), workdays[index].note),
+          onTap: () => DialogService.showScrollableDialog(this.context, getTranslated(this.context, 'noteDetails'), workdays[index].note),
           child: Ink(
             child: workdays[index].note != null && workdays[index].note != '' ? iconWhite(Icons.zoom_in) : Align(alignment: Alignment.center, child: textWhite('-')),
             width: 75,
