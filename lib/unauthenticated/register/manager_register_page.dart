@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_job/api/manager/dto/create_manager_dto.dart';
-import 'package:give_job/api/manager/service/manager_service.dart';
+import 'package:give_job/api/manager/service/manager_unauthenticated_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -30,7 +30,7 @@ class ManagerRegisterPage extends StatefulWidget {
 
 class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
   CreateManagerDto _dto;
-  ManagerService _managerService;
+  ManagerUnauthenticatedService _managerUnauthenticatedService;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool _passwordVisible;
   bool _rePasswordVisible;
@@ -56,7 +56,7 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
   @override
   void initState() {
     super.initState();
-    _managerService = ServiceInitializer.initialize(null, null, ManagerService);
+    _managerUnauthenticatedService = ServiceInitializer.initialize(null, null, ManagerUnauthenticatedService);
     _companyName = widget._companyName;
     _accountExpirationDate = widget._accountExpirationDate;
     _passwordVisible = false;
@@ -568,7 +568,7 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
       tokenId: widget._tokenId,
       accountExpirationDate: _accountExpirationDate,
     );
-    _managerService.create(_dto).then((res) {
+    _managerUnauthenticatedService.create(_dto).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => DialogService.showSuccessDialogWithWillPopScope(context, getTranslated(context, 'registerSuccess'), LoginPage()));
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

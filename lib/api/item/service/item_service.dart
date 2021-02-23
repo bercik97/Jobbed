@@ -17,11 +17,7 @@ class ItemService {
   static const String _url = '$SERVER_IP/items';
 
   Future<dynamic> create(List<CreateItemDto> dto) async {
-    Response res = await post(
-      _url,
-      body: jsonEncode(dto.map((e) => CreateItemDto.jsonEncode(e)).toList()),
-      headers: _headers,
-    );
+    Response res = await post(_url, body: jsonEncode(dto.map((e) => CreateItemDto.jsonEncode(e)).toList()), headers: _headers);
     if (res.statusCode == 200) {
       return res.body.toString();
     } else if (res.statusCode == 401) {
@@ -32,10 +28,7 @@ class ItemService {
   }
 
   Future<List<ItemDto>> findAllByWarehouseId(int warehouseId) async {
-    Response res = await get(
-      _url + '/warehouses/$warehouseId',
-      headers: _header,
-    );
+    Response res = await get(_url + '/warehouses/$warehouseId', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => ItemDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -47,11 +40,7 @@ class ItemService {
 
   Future<dynamic> updateQuantity(int id, int quantity) async {
     String url = '$_url/$id/quantity';
-    Response res = await put(
-      url,
-      body: jsonEncode(quantity),
-      headers: _headers,
-    );
+    Response res = await put(url, body: jsonEncode(quantity), headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
@@ -62,10 +51,7 @@ class ItemService {
   }
 
   Future<dynamic> deleteByNamesIn(List<String> names) async {
-    Response res = await delete(
-      _url + '/$names',
-      headers: _headers,
-    );
+    Response res = await delete(_url + '/$names', headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {

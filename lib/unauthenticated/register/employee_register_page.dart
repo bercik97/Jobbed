@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_job/api/employee/dto/create_employee_dto.dart';
-import 'package:give_job/api/employee/service/employee_service.dart';
+import 'package:give_job/api/employee/service/employee_unauthenticated_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -31,7 +31,7 @@ class EmployeeRegisterPage extends StatefulWidget {
 
 class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
   CreateEmployeeDto dto;
-  EmployeeService _employeeService;
+  EmployeeUnauthenticatedService _employeeUnauthenticatedService;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool _passwordVisible;
   bool _rePasswordVisible;
@@ -57,7 +57,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
   @override
   void initState() {
     super.initState();
-    _employeeService = ServiceInitializer.initialize(null, null, EmployeeService);
+    _employeeUnauthenticatedService = ServiceInitializer.initialize(null, null, EmployeeUnauthenticatedService);
     _companyName = widget._companyName;
     _accountExpirationDate = widget._accountExpirationDate;
     _passwordVisible = false;
@@ -594,7 +594,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
       tokenId: widget._tokenId,
       accountExpirationDate: widget._accountExpirationDate,
     );
-    _employeeService.create(dto).then((res) {
+    _employeeUnauthenticatedService.create(dto).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => DialogService.showSuccessDialogWithWillPopScope(context, getTranslated(context, 'registerSuccess'), LoginPage()));
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

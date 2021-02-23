@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/employee/dto/creaet_basic_employee_dto.dart';
-import 'package:give_job/api/employee/dto/create_employee_dto.dart';
 import 'package:give_job/api/employee/dto/employee_basic_dto.dart';
 import 'package:give_job/api/employee/dto/employee_group_dto.dart';
 import 'package:give_job/api/employee/dto/employee_profile_dto.dart';
@@ -20,11 +19,6 @@ class EmployeeService {
   EmployeeService(this._context, this._header, this._headers);
 
   static const String _url = '$SERVER_IP/employees';
-
-  Future<dynamic> create(CreateEmployeeDto dto) async {
-    Response res = await post(_url, body: jsonEncode(CreateEmployeeDto.jsonEncode(dto)), headers: {"content-type": "application/json"});
-    return res.statusCode == 200 ? res : Future.error(res.body);
-  }
 
   Future<dynamic> createBasicEmployee(CreateBasicEmployeeDto dto) async {
     Response res = await post('$_url/basic-employee', body: jsonEncode(CreateBasicEmployeeDto.jsonEncode(dto)), headers: _headers);

@@ -17,19 +17,12 @@ class GroupService {
   static const String _url = '$SERVER_IP/groups';
 
   Future<dynamic> create(CreateGroupDto dto) async {
-    Response res = await post(
-      _url,
-      body: jsonEncode(CreateGroupDto.jsonEncode(dto)),
-      headers: {"content-type": "application/json"},
-    );
+    Response res = await post(_url, body: jsonEncode(CreateGroupDto.jsonEncode(dto)), headers: _headers);
     return res.statusCode == 200 ? res : Future.error(res.body);
   }
 
   Future<List<GroupDashboardDto>> findAllByCompanyId(String companyId) async {
-    Response res = await get(
-      '$_url?company_id=$companyId',
-      headers: _header,
-    );
+    Response res = await get('$_url?company_id=$companyId', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => GroupDashboardDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -41,11 +34,7 @@ class GroupService {
 
   Future<dynamic> update(int id, Map<String, Object> fieldsValues) async {
     String url = '$_url/id?id=$id';
-    Response res = await put(
-      url,
-      body: jsonEncode(fieldsValues),
-      headers: _headers,
-    );
+    Response res = await put(url, body: jsonEncode(fieldsValues), headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
@@ -56,10 +45,7 @@ class GroupService {
   }
 
   Future<dynamic> deleteByName(String name) async {
-    Response res = await delete(
-      _url + '/$name',
-      headers: _headers,
-    );
+    Response res = await delete(_url + '/$name', headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
@@ -71,11 +57,7 @@ class GroupService {
 
   Future<dynamic> addGroupEmployees(int id, List<int> employeeIds) async {
     String url = '$_url?id=$id';
-    Response res = await put(
-      url,
-      body: jsonEncode(employeeIds),
-      headers: _headers,
-    );
+    Response res = await put(url, body: jsonEncode(employeeIds), headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
@@ -87,10 +69,7 @@ class GroupService {
 
   Future<dynamic> deleteGroupEmployees(int id, List<String> employeeIds) async {
     String url = '$_url?id=$id&employee_ids=$employeeIds';
-    Response res = await delete(
-      url,
-      headers: _headers,
-    );
+    Response res = await delete(url, headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {

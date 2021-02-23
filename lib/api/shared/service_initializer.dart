@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
+import 'package:give_job/api/employee/service/employee_unauthenticated_service.dart';
 import 'package:give_job/api/excel/service/excel_service.dart';
 import 'package:give_job/api/group/service/group_service.dart';
 import 'package:give_job/api/item/service/item_service.dart';
 import 'package:give_job/api/item_place/service/item_place_service.dart';
 import 'package:give_job/api/manager/service/manager_service.dart';
+import 'package:give_job/api/manager/service/manager_unauthenticated_service.dart';
 import 'package:give_job/api/piecework/service/piecework_service.dart';
 import 'package:give_job/api/price_list/service/price_list_service.dart';
 import 'package:give_job/api/timesheet/service/timesheet_service.dart';
@@ -26,11 +28,13 @@ class ServiceInitializer {
     };
     switch (obj.toString()) {
       case 'EmployeeService': return new EmployeeService(context, header, headers);
+      case 'EmployeeUnauthenticatedService': return new EmployeeUnauthenticatedService();
       case 'ExcelService': return new ExcelService(context, header);
       case 'GroupService': return new GroupService(context, header, headers);
       case 'ItemService': return new ItemService(context, header, headers);
       case 'ItemPlaceService': return new ItemPlaceService(context, header, headers);
       case 'ManagerService': return new ManagerService(context, header, headers);
+      case 'ManagerUnauthenticatedService': return new ManagerUnauthenticatedService();
       case 'PieceworkService': return new PieceworkService(context, header, headers);
       case 'PriceListService': return new PriceListService(context, header, headers);
       case 'TimesheetService': return new TimesheetService(context, header, headers);

@@ -17,11 +17,7 @@ class WarehouseService {
   static const String _url = '$SERVER_IP/warehouses';
 
   Future<String> create(CreateWarehouseDto dto) async {
-    Response res = await post(
-      _url,
-      body: jsonEncode(CreateWarehouseDto.jsonEncode(dto)),
-      headers: _headers,
-    );
+    Response res = await post(_url, body: jsonEncode(CreateWarehouseDto.jsonEncode(dto)), headers: _headers);
     if (res.statusCode == 200) {
       return res.body.toString();
     } else if (res.statusCode == 401) {
@@ -32,10 +28,7 @@ class WarehouseService {
   }
 
   Future<List<WarehouseDashboardDto>> findAllByCompanyId(String companyId) async {
-    Response res = await get(
-      _url + '/companies/$companyId',
-      headers: _header,
-    );
+    Response res = await get(_url + '/companies/$companyId', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => WarehouseDashboardDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -46,10 +39,7 @@ class WarehouseService {
   }
 
   Future<dynamic> deleteByIdIn(List<String> ids) async {
-    Response res = await delete(
-      _url + '/$ids',
-      headers: _headers,
-    );
+    Response res = await delete(_url + '/$ids', headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
