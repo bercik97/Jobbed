@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/work_time/dto/create_work_time_dto.dart';
-import 'package:give_job/api/work_time/dto/is_currently_at_work_with_worktimes_dto.dart';
+import 'package:give_job/api/work_time/dto/is_currently_at_work_with_work_times_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/service/logout_service.dart';
 import 'package:http/http.dart';
@@ -14,14 +14,10 @@ class WorkTimeService {
 
   WorkTimeService(this._context, this._header, this._headers);
 
-  static const String _url = '$SERVER_IP/worktimes';
+  static const String _url = '$SERVER_IP/work-times';
 
   Future<dynamic> create(CreateWorkTimeDto dto) async {
-    Response res = await post(
-      _url,
-      body: jsonEncode(CreateWorkTimeDto.jsonEncode(dto)),
-      headers: _headers,
-    );
+    Response res = await post(_url, body: jsonEncode(CreateWorkTimeDto.jsonEncode(dto)), headers: _headers);
     return res.statusCode == 200 ? res : Future.error(res.body);
   }
 

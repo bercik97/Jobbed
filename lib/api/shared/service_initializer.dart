@@ -13,7 +13,7 @@ import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/api/token/service/token_service.dart';
 import 'package:give_job/api/user/service/user_service.dart';
 import 'package:give_job/api/warehouse/service/warehouse_service.dart';
-import 'package:give_job/api/work_time/service/worktime_service.dart';
+import 'package:give_job/api/work_time/service/work_time_service.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/api/workplace/service/workplace_service.dart';
 
