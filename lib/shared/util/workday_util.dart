@@ -7,7 +7,68 @@ import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
-class WorkdayEmployeeUtil {
+class WorkdayUtil {
+  static void showScrollableWorkTimesAndNote(BuildContext context, String date, List pieceworks, List workTimes, String note) {
+    if ((pieceworks == null || pieceworks.isEmpty) && (workTimes == null || workTimes.isEmpty) && (note == null || note.isEmpty)) {
+      return;
+    }
+    showGeneralDialog(
+      context: context,
+      barrierColor: DARK.withOpacity(0.95),
+      barrierDismissible: false,
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: Scaffold(
+            backgroundColor: Colors.black12,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: <Widget>[
+                        text20GreenBold(date.substring(0, 10)),
+                        SizedBox(height: 20),
+                        text20GreenBold(getTranslated(context, 'workTimes')),
+                        SizedBox(height: 5),
+                        _buildWorkTimesDataTable(context, workTimes),
+                        SizedBox(height: 5),
+                        text20GreenBold(getTranslated(context, 'pieceworks')),
+                        SizedBox(height: 5),
+                        _buildPieceworksDataTable(context, pieceworks, false),
+                        SizedBox(height: 5),
+                        text20GreenBold(getTranslated(context, 'note')),
+                        SizedBox(height: 5),
+                        textCenter20White(note != null ? utf8.decode(note.runes.toList()) : getTranslated(context, 'empty')),
+                        SizedBox(height: 20),
+                        Container(
+                          width: 60,
+                          child: MaterialButton(
+                            elevation: 0,
+                            height: 50,
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[iconWhite(Icons.close)],
+                            ),
+                            color: Colors.red,
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   static void showScrollableWorkTimesDialog(BuildContext context, String title, List workTimes) {
     if (workTimes == null || workTimes.isEmpty) {
       return;
@@ -60,7 +121,7 @@ class WorkdayEmployeeUtil {
     );
   }
 
-  static void showScrollablePieceworksDialog(BuildContext context, List pieceworks) {
+  static void showScrollablePieceworksDialog(BuildContext context, List pieceworks, bool displayCompanyPrice) {
     if (pieceworks == null || pieceworks.isEmpty) {
       return;
     }
@@ -83,7 +144,7 @@ class WorkdayEmployeeUtil {
                       children: <Widget>[
                         text20GreenBold(getTranslated(context, 'pieceworkReports')),
                         SizedBox(height: 20),
-                        _buildPieceworksDataTable(context, pieceworks),
+                        _buildPieceworksDataTable(context, pieceworks, displayCompanyPrice),
                         SizedBox(height: 20),
                         Container(
                           width: 60,
@@ -111,7 +172,7 @@ class WorkdayEmployeeUtil {
     );
   }
 
-  static Widget _buildPieceworksDataTable(BuildContext context, List pieceworks) {
+  static Widget _buildPieceworksDataTable(BuildContext context, List pieceworks, bool displayCompanyPrice) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: SingleChildScrollView(
@@ -124,7 +185,28 @@ class WorkdayEmployeeUtil {
               DataColumn(label: textWhiteBold('No.')),
               DataColumn(label: textWhiteBold(getTranslated(context, 'serviceName'))),
               DataColumn(label: textWhiteBold(getTranslated(context, 'quantity'))),
-              DataColumn(label: textWhiteBold(getTranslated(context, 'price'))),
+              displayCompanyPrice
+                  ? DataColumn(
+                      label: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          textWhiteBold(getTranslated(context, 'price')),
+                          text12White('(' + getTranslated(context, 'employee') + ')'),
+                        ],
+                      ),
+                    )
+                  : DataColumn(label: textWhiteBold(getTranslated(context, 'price'))),
+              displayCompanyPrice
+                  ? DataColumn(
+                      label: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          textWhiteBold(getTranslated(context, 'price')),
+                          text12White('(' + getTranslated(context, 'company') + ')'),
+                        ],
+                      ),
+                    )
+                  : DataColumn(label: SizedBox(height: 0)),
             ],
             rows: [
               for (int i = 0; i < pieceworks.length; i++)
@@ -134,6 +216,7 @@ class WorkdayEmployeeUtil {
                     DataCell(textWhite(utf8.decode(pieceworks[i].service.runes.toList()))),
                     DataCell(Align(alignment: Alignment.center, child: textWhite(pieceworks[i].quantity.toString()))),
                     DataCell(Align(alignment: Alignment.center, child: textWhite(pieceworks[i].priceForEmployee.toString()))),
+                    displayCompanyPrice ? DataCell(Align(alignment: Alignment.center, child: textWhite(pieceworks[i].priceForCompany.toString()))) : DataCell(SizedBox(height: 0)),
                   ],
                 ),
             ],
@@ -174,67 +257,6 @@ class WorkdayEmployeeUtil {
           ),
         ),
       ),
-    );
-  }
-
-  static void showScrollableWorkTimesAndNote(BuildContext context, String date, List pieceworks, List workTimes, String note) {
-    if ((pieceworks == null || pieceworks.isEmpty) && (workTimes == null || workTimes.isEmpty) && (note == null || note.isEmpty)) {
-      return;
-    }
-    showGeneralDialog(
-      context: context,
-      barrierColor: DARK.withOpacity(0.95),
-      barrierDismissible: false,
-      transitionDuration: Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return SizedBox.expand(
-          child: Scaffold(
-            backgroundColor: Colors.black12,
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      children: <Widget>[
-                        text20GreenBold(date.substring(0, 10)),
-                        SizedBox(height: 20),
-                        text20GreenBold(getTranslated(context, 'workTimes')),
-                        SizedBox(height: 5),
-                        _buildWorkTimesDataTable(context, workTimes),
-                        SizedBox(height: 5),
-                        text20GreenBold(getTranslated(context, 'pieceworks')),
-                        SizedBox(height: 5),
-                        _buildPieceworksDataTable(context, pieceworks),
-                        SizedBox(height: 5),
-                        text20GreenBold(getTranslated(context, 'note')),
-                        SizedBox(height: 5),
-                        textCenter20White(note != null ? utf8.decode(note.runes.toList()) : getTranslated(context, 'empty')),
-                        SizedBox(height: 20),
-                        Container(
-                          width: 60,
-                          child: MaterialButton(
-                            elevation: 0,
-                            height: 50,
-                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[iconWhite(Icons.close)],
-                            ),
-                            color: Colors.red,
-                            onPressed: () => Navigator.pop(context),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 }

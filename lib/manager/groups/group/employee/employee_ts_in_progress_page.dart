@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
+import 'package:give_job/api/piecework/service/piecework_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:give_job/api/workday/dto/workday_dto.dart';
@@ -12,15 +13,15 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/manager/groups/group/piecework/add_piecework_for_selected_workdays.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/util/validator_util.dart';
 import 'package:give_job/shared/util/data_table_util.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
 import 'package:give_job/shared/util/icons_legend_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/util/workday_manager_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
+import 'package:give_job/shared/util/validator_util.dart';
+import 'package:give_job/shared/util/workday_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/icons_legend_dialog.dart';
@@ -69,13 +70,17 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
 
   bool _loading = false;
 
+  bool _isDeletePieceworkServiceButtonTapped = false;
   bool _isDeletePieceworkButtonTapped = false;
+
+  PieceworkService _pieceworkService;
 
   @override
   void initState() {
     this._model = widget._model;
     this._user = _model.user;
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
+    this._pieceworkService = ServiceInitializer.initialize(context, _user.authHeader, PieceworkService);
     this._employeeInfo = widget._employeeInfo;
     this._employeeId = widget._employeeId;
     this._employeeNationality = widget._employeeNationality;
@@ -354,7 +359,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
           height: 50,
         ),
         InkWell(
-          onTap: () => WorkdayManagerUtil.showScrollablePieceworksDialog(this.context, workdays[index].pieceworks),
+          onTap: () => _showScrollablePieceworksDialog(this.context, workdays[index].id, workdays[index].pieceworks),
           child: Ink(
             child: workdays[index].pieceworks != null && workdays[index].pieceworks.isNotEmpty ? iconWhite(Icons.zoom_in) : Align(alignment: Alignment.center, child: textWhite('-')),
             width: 50,
@@ -362,7 +367,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
           ),
         ),
         InkWell(
-          onTap: () => WorkdayManagerUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workdays[index].workTimes),
+          onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workdays[index].workTimes),
           child: Ink(
             child: workdays[index].workTimes != null && workdays[index].workTimes.isNotEmpty ? iconWhite(Icons.zoom_in) : Align(alignment: Alignment.center, child: textWhite('-')),
             width: 50,
@@ -774,5 +779,136 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
         );
       },
     );
+  }
+
+  void _showScrollablePieceworksDialog(BuildContext context, num workdayId, List pieceworks) {
+    if (pieceworks == null || pieceworks.isEmpty) {
+      return;
+    }
+    showGeneralDialog(
+      context: context,
+      barrierColor: DARK.withOpacity(0.95),
+      barrierDismissible: false,
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: Scaffold(
+            backgroundColor: Colors.black12,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: <Widget>[
+                        text20GreenBold(getTranslated(context, 'pieceworkReports')),
+                        SizedBox(height: 20),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Theme(
+                              data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
+                              child: DataTable(
+                                columnSpacing: 10,
+                                columns: [
+                                  DataColumn(label: textWhiteBold('No.')),
+                                  DataColumn(label: textWhiteBold(getTranslated(context, 'serviceName'))),
+                                  DataColumn(label: textWhiteBold(getTranslated(context, 'quantity'))),
+                                  DataColumn(
+                                    label: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        textWhiteBold(getTranslated(context, 'price')),
+                                        text12White('(' + getTranslated(context, 'employee') + ')'),
+                                      ],
+                                    ),
+                                  ),
+                                  DataColumn(
+                                    label: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        textWhiteBold(getTranslated(context, 'price')),
+                                        text12White('(' + getTranslated(context, 'company') + ')'),
+                                      ],
+                                    ),
+                                  ),
+                                  DataColumn(label: textWhiteBold('')),
+                                ],
+                                rows: [
+                                  for (int i = 0; i < pieceworks.length; i++)
+                                    DataRow(
+                                      cells: [
+                                        DataCell(textWhite((i + 1).toString())),
+                                        DataCell(textWhite(utf8.decode(pieceworks[i].service.runes.toList()))),
+                                        DataCell(Align(alignment: Alignment.center, child: textWhite(pieceworks[i].quantity.toString()))),
+                                        DataCell(Align(alignment: Alignment.center, child: textWhite(pieceworks[i].priceForEmployee.toString()))),
+                                        DataCell(Align(alignment: Alignment.center, child: textWhite(pieceworks[i].priceForCompany.toString()))),
+                                        DataCell(
+                                          IconButton(
+                                            icon: iconRed(Icons.delete),
+                                            onPressed: () {
+                                              DialogUtil.showConfirmationDialog(
+                                                context: context,
+                                                title: getTranslated(context, 'confirmation'),
+                                                content: getTranslated(context, 'deletingSelectedPieceworkServiceConfirmation'),
+                                                isBtnTapped: _isDeletePieceworkServiceButtonTapped,
+                                                fun: () => _isDeletePieceworkServiceButtonTapped ? null : _handleDeletePieceworkService(workdayId, pieceworks[i].service),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Container(
+                          width: 60,
+                          child: MaterialButton(
+                            elevation: 0,
+                            height: 50,
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[iconWhite(Icons.close)],
+                            ),
+                            color: Colors.red,
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _handleDeletePieceworkService(num workdayId, String serviceName) {
+    setState(() => _isDeletePieceworkServiceButtonTapped = true);
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _pieceworkService.deleteByWorkdayIdAndServiceName(workdayId, serviceName).then((value) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyDeletedPieceworkService'));
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        _refresh();
+        setState(() => _isDeletePieceworkServiceButtonTapped = false);
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+        setState(() => _isDeletePieceworkServiceButtonTapped = false);
+      });
+    });
   }
 }

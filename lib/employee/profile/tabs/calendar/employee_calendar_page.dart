@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:give_job/api/employee/dto/employee_calendar_dto.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/service/timesheet_service.dart';
-import 'package:give_job/shared/util/workday_employee_util.dart';
 import 'package:give_job/employee/shared/employee_app_bar.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -12,6 +11,7 @@ import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/util/icons_legend_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
+import 'package:give_job/shared/util/workday_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/icons_legend_dialog.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -304,7 +304,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
                   alignment: Alignment.topLeft),
             ],
           ),
-          onTap: () => WorkdayEmployeeUtil.showScrollableWorkTimesAndNote(context, _selectedDay.toString(), pieceworks, workTimes, note),
+          onTap: () => WorkdayUtil.showScrollableWorkTimesAndNote(context, _selectedDay.toString(), pieceworks, workTimes, note),
         ),
       ],
     );

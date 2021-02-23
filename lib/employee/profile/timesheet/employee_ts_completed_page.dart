@@ -11,13 +11,13 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
+import 'package:give_job/shared/util/workday_util.dart';
 import 'package:give_job/shared/util/data_table_util.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
 import 'package:give_job/shared/util/icons_legend_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/util/workday_employee_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/icons_legend_dialog.dart';
 import 'package:give_job/shared/widget/loader.dart';
@@ -184,7 +184,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
           height: 50,
         ),
         InkWell(
-          onTap: () => WorkdayEmployeeUtil.showScrollablePieceworksDialog(this.context, workdays[index].pieceworks),
+          onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workdays[index].pieceworks, false),
           child: Ink(
             child: workdays[index].pieceworks != null && workdays[index].pieceworks.isNotEmpty ? iconWhite(Icons.zoom_in) : Align(alignment: Alignment.center, child: textWhite('-')),
             width: 50,
@@ -192,7 +192,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
           ),
         ),
         InkWell(
-          onTap: () => WorkdayEmployeeUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workdays[index].workTimes),
+          onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workdays[index].workTimes),
           child: Ink(
             child: workdays[index].workTimes != null && workdays[index].workTimes.isNotEmpty ? iconWhite(Icons.zoom_in) : Align(alignment: Alignment.center, child: textWhite('-')),
             width: 50,
