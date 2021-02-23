@@ -18,11 +18,7 @@ class WorkplaceService {
   static const String _url = '$SERVER_IP/workplaces';
 
   Future<String> create(CreateWorkplaceDto dto) async {
-    Response res = await post(
-      _url,
-      body: jsonEncode(CreateWorkplaceDto.jsonEncode(dto)),
-      headers: _headers,
-    );
+    Response res = await post(_url, body: jsonEncode(CreateWorkplaceDto.jsonEncode(dto)), headers: _headers);
     if (res.statusCode == 200) {
       return res.body.toString();
     } else if (res.statusCode == 401) {
@@ -33,10 +29,7 @@ class WorkplaceService {
   }
 
   Future<List<WorkplaceDto>> findAllByCompanyId(String companyId) async {
-    Response res = await get(
-      _url + '/companies/$companyId',
-      headers: _header,
-    );
+    Response res = await get(_url + '/companies/$companyId', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => WorkplaceDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -47,10 +40,7 @@ class WorkplaceService {
   }
 
   Future<List<WorkplaceIdNameDto>> findAllWorkplacesByCompanyIdAndLocationParams(String companyId, double latitude, double longitude) async {
-    Response res = await get(
-      _url + '/companies/$companyId/location?latitude=$latitude&longitude=$longitude',
-      headers: _header,
-    );
+    Response res = await get(_url + '/companies/$companyId/location?latitude=$latitude&longitude=$longitude', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => WorkplaceIdNameDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -61,10 +51,7 @@ class WorkplaceService {
   }
 
   Future<dynamic> deleteByIdIn(List<String> ids) async {
-    Response res = await delete(
-      _url + '/$ids',
-      headers: _headers,
-    );
+    Response res = await delete(_url + '/$ids', headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
@@ -75,11 +62,7 @@ class WorkplaceService {
   }
 
   Future<dynamic> updateFieldsValuesById(int id, Map<String, Object> fieldsValues) async {
-    Response res = await put(
-      '$_url/id?id=$id',
-      body: jsonEncode(fieldsValues),
-      headers: _headers,
-    );
+    Response res = await put('$_url/id?id=$id', body: jsonEncode(fieldsValues), headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
