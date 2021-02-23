@@ -20,9 +20,9 @@ import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/logout_service.dart';
-import 'package:give_job/shared/service/toast_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
+import 'package:give_job/shared/util/logout_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/settings/settings_page.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
@@ -96,7 +96,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
           title: text13White(getTranslated(context, 'loading')),
           centerTitle: false,
           automaticallyImplyLeading: true,
-          leading: IconButton(icon: iconWhite(Icons.power_settings_new), onPressed: () => Logout.logout(context)),
+          leading: IconButton(icon: iconWhite(Icons.power_settings_new), onPressed: () => LogoutUtil.logout(context)),
           actions: <Widget>[
             Padding(
               padding: EdgeInsets.only(right: 15.0),
@@ -122,7 +122,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
             elevation: 0.0,
             bottomOpacity: 0.0,
             title: text15White(getTranslated(context, 'companyGroups')),
-            leading: IconButton(icon: iconWhite(Icons.power_settings_new), onPressed: () => Logout.logout(context)),
+            leading: IconButton(icon: iconWhite(Icons.power_settings_new), onPressed: () => LogoutUtil.logout(context)),
             actions: <Widget>[
               Padding(
                 padding: EdgeInsets.only(right: 15.0),
@@ -428,21 +428,21 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                           color: GREEN,
                           onPressed: () {
                             if (!_isValid()) {
-                              DialogService.showErrorDialog(context, getTranslated(context, 'groupNameForDeleteInvalid'));
+                              DialogUtil.showErrorDialog(context, getTranslated(context, 'groupNameForDeleteInvalid'));
                               return;
                             }
                             FocusScope.of(context).unfocus();
                             showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                             _groupService.deleteByName(_nameController.text).then((value) {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                ToastService.showSuccessToast(getTranslated(context, 'successfullyDeletedGroup'));
+                                ToastUtil.showSuccessToast(getTranslated(context, 'successfullyDeletedGroup'));
                                 NavigatorUtil.navigate(context, GroupsDashboardPage(_user));
                               });
                             }).catchError((onError) {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 String errorMsg = onError.toString();
                                 if (errorMsg.contains("GROUP_DOES_NOT_EXISTS")) {
-                                  DialogService.showErrorDialog(context, getTranslated(context, 'groupDoesNotExists'));
+                                  DialogUtil.showErrorDialog(context, getTranslated(context, 'groupDoesNotExists'));
                                 }
                               });
                             });
@@ -465,7 +465,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
   }
 
   Future<bool> _onWillPop() async {
-    return Logout.logout(context) ?? false;
+    return LogoutUtil.logout(context) ?? false;
   }
 
   void _createNewEmployeeAccount() {
@@ -749,7 +749,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
   _handleCreateEmployeeAccountButton() {
     setState(() => _isCreateEmployeeAccountButtonTapped = true);
     if (!_isValid() || _genderRadioValue == -1) {
-      DialogService.showErrorDialog(context, getTranslated(context, 'correctInvalidFields'));
+      DialogUtil.showErrorDialog(context, getTranslated(context, 'correctInvalidFields'));
       if (_nationality == '') {
         setState(() => _isErrorMsgOfNationalityShouldBeShow = true);
       } else {
@@ -770,7 +770,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
     );
     _employeeService.createBasicEmployee(dto).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(context, 'employeeAccountAdded'));
+        ToastUtil.showSuccessToast(getTranslated(context, 'employeeAccountAdded'));
         Navigator.pop(context);
         _usernameController.clear();
         _passwordController.clear();
@@ -787,9 +787,9 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String s = onError.toString();
         if (s.contains('USERNAME_EXISTS')) {
-          DialogService.showErrorDialog(context, getTranslated(context, 'usernameExists') + '\n' + getTranslated(context, 'chooseOtherUsername'));
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'usernameExists') + '\n' + getTranslated(context, 'chooseOtherUsername'));
         } else {
-          DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         }
         setState(() => _isCreateEmployeeAccountButtonTapped = false);
       });

@@ -16,8 +16,8 @@ import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toast_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/loader.dart';
@@ -89,7 +89,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
         _pricelists.forEach((i) => _textEditingItemControllers[utf8.decode(i.name.runes.toList())] = new TextEditingController());
         _loading = false;
       });
-    }).catchError((onError) => DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'noPriceList'), TsInProgressPage(_model, _timeSheet)));
+    }).catchError((onError) => DialogUtil.showFailureDialogWithWillPopScope(context, getTranslated(context, 'noPriceList'), TsInProgressPage(_model, _timeSheet)));
   }
 
   @override
@@ -225,18 +225,18 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
     });
     if (serviceWithQuantity.isEmpty) {
       setState(() => _isAddButtonTapped = false);
-      ToastService.showErrorToast(getTranslated(context, 'pieceworkCannotBeEmpty'));
+      ToastUtil.showErrorToast(getTranslated(context, 'pieceworkCannotBeEmpty'));
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _workdayService.updatePieceworkByEmployeeIds(serviceWithQuantity, _dateFrom, _dateTo, _employeeIds, _tsYear, _tsMonth, _tsStatus).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewReportsAboutPiecework'));
+        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyAddedNewReportsAboutPiecework'));
         NavigatorUtil.navigateReplacement(context, TsInProgressPage(_model, _timeSheet));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+        DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         setState(() => _isAddButtonTapped = false);
       });
     });

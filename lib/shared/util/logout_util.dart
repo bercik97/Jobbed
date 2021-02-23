@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/service/toast_service.dart';
+import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
 import '../../internationalization/localization/localization_constants.dart';
 import '../../main.dart';
 import '../../unauthenticated/login_page.dart';
 
-class Logout {
+class LogoutUtil {
   static logout(BuildContext context) {
     showDialog(
       context: context,
@@ -34,7 +34,7 @@ class Logout {
     storage.delete(key: 'role');
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LoginPage()), (e) => false);
     if (msg != null) {
-      ToastService.showSuccessToast(msg);
+      ToastUtil.showSuccessToast(msg);
     }
   }
 

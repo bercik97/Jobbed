@@ -12,8 +12,8 @@ import 'package:give_job/manager/groups/groups_dashboard_page.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/toast_service.dart';
-import 'package:give_job/shared/service/validator_service.dart';
+import 'package:give_job/shared/util/toast_util.dart';
+import 'package:give_job/shared/util/validator_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -178,9 +178,9 @@ class _LoginPageState extends State<LoginPage> {
     setState(() => _isLoginButtonTapped = true);
     String username = _usernameController.text;
     String password = _passwordController.text;
-    String invalidMessage = ValidatorService.validateLoginCredentials(username, password, context);
+    String invalidMessage = ValidatorUtil.validateLoginCredentials(username, password, context);
     if (invalidMessage != null) {
-      ToastService.showErrorToast(invalidMessage);
+      ToastUtil.showErrorToast(invalidMessage);
       setState(() => _isLoginButtonTapped = false);
       return;
     }
@@ -220,13 +220,13 @@ class _LoginPageState extends State<LoginPage> {
           } else if (role == ROLE_MANAGER) {
             NavigatorUtil.navigate(context, GroupsDashboardPage(user));
           }
-          ToastService.showSuccessToast(getTranslated(context, 'loginSuccessfully'));
+          ToastUtil.showSuccessToast(getTranslated(context, 'loginSuccessfully'));
         });
       } else {
-        Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => ToastService.showErrorToast(getTranslated(context, 'wrongUsernameOrPassword')));
+        Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => ToastUtil.showErrorToast(getTranslated(context, 'wrongUsernameOrPassword')));
       }
     }, onError: (e) {
-      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => ToastService.showErrorToast(getTranslated(context, 'cannotConnectToServer')));
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => ToastUtil.showErrorToast(getTranslated(context, 'cannotConnectToServer')));
     });
     setState(() => _isLoginButtonTapped = false);
   }

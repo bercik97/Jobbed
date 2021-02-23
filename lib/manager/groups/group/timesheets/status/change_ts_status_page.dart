@@ -15,7 +15,7 @@ import 'package:give_job/shared/widget/hint.dart';
 import '../../../../../internationalization/localization/localization_constants.dart';
 import '../../../../../shared/libraries/colors.dart';
 import '../../../../../shared/libraries/constants.dart';
-import '../../../../../shared/service/toast_service.dart';
+import '../../../../../shared/util/toast_util.dart';
 import '../../../../../shared/util/language_util.dart';
 import '../../../../../shared/util/month_util.dart';
 import '../../../../../shared/widget/icons.dart';
@@ -292,12 +292,12 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _timesheetService.updateTsStatusByGroupIdAndYearAndMonthAndStatusAndEmployeesIdIn(_selectedIds.map((el) => el.toString()).toList(), newStatusId, _year, _month, status, _model.groupId).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(context, 'timesheetStatusSuccessfullyUpdated'));
+        ToastUtil.showSuccessToast(getTranslated(context, 'timesheetStatusSuccessfullyUpdated'));
         NavigatorUtil.navigateReplacement(context, TsPage(_model));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showErrorToast('somethingWentWrong');
+        ToastUtil.showErrorToast('somethingWentWrong');
         setState(() => _isChangeBtnTapped = false);
       });
     });

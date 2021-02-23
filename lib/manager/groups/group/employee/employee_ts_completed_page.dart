@@ -9,7 +9,7 @@ import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
 import 'package:give_job/shared/util/data_table_util.dart';
 import 'package:give_job/shared/util/icons_legend_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
@@ -211,7 +211,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
           height: 50,
         ),
         InkWell(
-          onTap: () => DialogService.showScrollableDialog(this.context, getTranslated(this.context, 'noteDetails'), workdays[index].note),
+          onTap: () => DialogUtil.showScrollableDialog(this.context, getTranslated(this.context, 'noteDetails'), workdays[index].note),
           child: Ink(
             child: workdays[index].note != null && workdays[index].note != '' ? iconWhite(Icons.zoom_in) : Align(alignment: Alignment.center, child: textWhite('-')),
             width: 75,

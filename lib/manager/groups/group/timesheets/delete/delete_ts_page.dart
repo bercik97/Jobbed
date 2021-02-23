@@ -15,7 +15,7 @@ import 'package:give_job/shared/widget/hint.dart';
 import '../../../../../internationalization/localization/localization_constants.dart';
 import '../../../../../shared/libraries/colors.dart';
 import '../../../../../shared/libraries/constants.dart';
-import '../../../../../shared/service/toast_service.dart';
+import '../../../../../shared/util/toast_util.dart';
 import '../../../../../shared/util/language_util.dart';
 import '../../../../../shared/util/month_util.dart';
 import '../../../../../shared/widget/icons.dart';
@@ -270,12 +270,12 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _timesheetService.deleteForEmployeesByYearAndMonthAndStatus(_selectedIds.map((el) => el.toString()).toList(), _year, _month, _status).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(context, 'timesheetSuccessfullyDeleted'));
+        ToastUtil.showSuccessToast(getTranslated(context, 'timesheetSuccessfullyDeleted'));
         NavigatorUtil.navigateReplacement(context, TsPage(_model));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showErrorToast('somethingWentWrong');
+        ToastUtil.showErrorToast('somethingWentWrong');
         setState(() => _isDeleteBtnTapped = false);
       });
     });

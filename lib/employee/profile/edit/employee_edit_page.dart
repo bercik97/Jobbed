@@ -12,8 +12,8 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toast_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -325,7 +325,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
             shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
             onPressed: () {
               if (!_isValid()) {
-                DialogService.showErrorDialog(context, getTranslated(context, 'correctInvalidFields'));
+                DialogUtil.showErrorDialog(context, getTranslated(context, 'correctInvalidFields'));
                 return;
               } else {
                 FocusScope.of(context).unfocus();
@@ -343,7 +343,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
                   },
                 ).then((res) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                    ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedInformationAboutYou'));
+                    ToastUtil.showSuccessToast(getTranslated(context, 'successfullyUpdatedInformationAboutYou'));
                     _user.nationality = _nationality;
                     _user.info = _nameController.text + ' ' + _surnameController.text;
                     _user.username = _usernameController.text;
@@ -351,7 +351,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
                 }).catchError(
                   (onError) {
                     Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                      DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+                      DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
                     });
                   },
                 );

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 
-class ValidatorService {
+class ValidatorUtil {
   static String validateLoginCredentials(String username, String password, BuildContext context) {
     if (username.isEmpty && password.isEmpty) {
       return getTranslated(context, 'usernameAndPasswordRequired');

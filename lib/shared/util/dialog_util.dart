@@ -6,7 +6,7 @@ import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
-class DialogService {
+class DialogUtil {
   static showFailureDialogWithWillPopScope(BuildContext context, String msg, StatefulWidget widget) {
     return showDialog(
       barrierDismissible: false,

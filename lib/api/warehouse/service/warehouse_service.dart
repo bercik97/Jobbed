@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/warehouse/dto/create_warehouse_dto.dart';
 import 'package:give_job/api/warehouse/dto/warehouse_dashboard_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/service/logout_service.dart';
+import 'package:give_job/shared/util/logout_util.dart';
 import 'package:http/http.dart';
 
 class WarehouseService {
@@ -21,7 +21,7 @@ class WarehouseService {
     if (res.statusCode == 200) {
       return res.body.toString();
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -32,7 +32,7 @@ class WarehouseService {
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => WarehouseDashboardDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -43,7 +43,7 @@ class WarehouseService {
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }

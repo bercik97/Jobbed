@@ -16,8 +16,8 @@ import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toast_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
@@ -66,7 +66,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
         _employees.forEach((e) => _checked.add(false));
         _loading = false;
       });
-    }).catchError((onError) => DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'noEmployeesToFormGroup'), GroupsDashboardPage(_user)));
+    }).catchError((onError) => DialogUtil.showFailureDialogWithWillPopScope(context, getTranslated(context, 'noEmployeesToFormGroup'), GroupsDashboardPage(_user)));
   }
 
   @override
@@ -278,7 +278,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
     FocusScope.of(context).unfocus();
     setState(() => _isAddButtonTapped = true);
     if (!_isValid()) {
-      DialogService.showErrorDialog(context, getTranslated(context, 'correctInvalidFields'));
+      DialogUtil.showErrorDialog(context, getTranslated(context, 'correctInvalidFields'));
       setState(() => _isAddButtonTapped = false);
       return;
     }
@@ -297,14 +297,14 @@ class _AddGroupPageState extends State<AddGroupPage> {
     );
     _groupService.create(dto).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewGroup'));
+        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyAddedNewGroup'));
         NavigatorUtil.navigate(context, GroupsDashboardPage(_user));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String errorMsg = onError.toString();
         if (errorMsg.contains("GROUP_NAME_EXISTS")) {
-          DialogService.showErrorDialog(context, getTranslated(context, 'groupNameExists') + '\n' + getTranslated(context, 'chooseOtherGroupName'));
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'groupNameExists') + '\n' + getTranslated(context, 'chooseOtherGroupName'));
         }
         setState(() => _isAddButtonTapped = false);
       });

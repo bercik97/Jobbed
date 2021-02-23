@@ -10,7 +10,7 @@ import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/pdf_viewer_from_asset.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -541,7 +541,7 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
     FocusScope.of(context).unfocus();
     setState(() => _isRegisterButtonTapped = true);
     if (!_isValid() || !_regulationsCheckbox || !_privacyPolicyCheckbox) {
-      DialogService.showErrorDialog(context, getTranslated(context, 'correctInvalidFields'));
+      DialogUtil.showErrorDialog(context, getTranslated(context, 'correctInvalidFields'));
       if (_nationality == '') {
         setState(() => _isErrorMsgOfNationalityShouldBeShow = true);
       } else {
@@ -565,16 +565,16 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
       accountExpirationDate: _accountExpirationDate,
     );
     _managerUnauthenticatedService.create(_dto).then((res) {
-      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => DialogService.showSuccessDialogWithWillPopScope(context, getTranslated(context, 'registerSuccess'), LoginPage()));
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => DialogUtil.showSuccessDialogWithWillPopScope(context, getTranslated(context, 'registerSuccess'), LoginPage()));
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String s = onError.toString();
         if (s.contains('USERNAME_EXISTS')) {
-          DialogService.showErrorDialog(context, getTranslated(context, 'usernameExists') + '\n' + getTranslated(context, 'chooseOtherUsername'));
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'usernameExists') + '\n' + getTranslated(context, 'chooseOtherUsername'));
         } else if (s.contains('TOKEN_EXPIRED')) {
-          DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'tokenIsIncorrect') + '\n' + getTranslated(context, 'askAdministratorWhatWentWrong'), LoginPage());
+          DialogUtil.showFailureDialogWithWillPopScope(context, getTranslated(context, 'tokenIsIncorrect') + '\n' + getTranslated(context, 'askAdministratorWhatWentWrong'), LoginPage());
         } else {
-          DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         }
         setState(() => _isRegisterButtonTapped = false);
       });

@@ -10,9 +10,9 @@ import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toast_service.dart';
-import 'package:give_job/shared/service/validator_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
+import 'package:give_job/shared/util/validator_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -168,15 +168,15 @@ class _GroupEditPageState extends State<GroupEditPage> {
                         color: GREEN,
                         onPressed: () {
                           String name = _groupNameController.text;
-                          String invalidMessage = ValidatorService.validateUpdatingGroupName(name, context);
+                          String invalidMessage = ValidatorUtil.validateUpdatingGroupName(name, context);
                           if (invalidMessage != null) {
-                            ToastService.showErrorToast(invalidMessage);
+                            ToastUtil.showErrorToast(invalidMessage);
                             return;
                           }
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _groupService.update(_model.groupId, {'name': name}).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              ToastService.showSuccessToast(getTranslated(context, 'groupNameUpdatedSuccessfully'));
+                              ToastUtil.showSuccessToast(getTranslated(context, 'groupNameUpdatedSuccessfully'));
                               _model.groupName = name;
                               NavigatorUtil.navigate(context, GroupPage(_model));
                             });
@@ -184,7 +184,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               String s = onError.toString();
                               if (s.contains('GROUP_NAME_TAKEN')) {
-                                DialogService.showErrorDialog(context, getTranslated(context, 'groupNameNeedToBeUnique'));
+                                DialogUtil.showErrorDialog(context, getTranslated(context, 'groupNameNeedToBeUnique'));
                               }
                             });
                           });
@@ -273,21 +273,21 @@ class _GroupEditPageState extends State<GroupEditPage> {
                         color: GREEN,
                         onPressed: () {
                           String description = _groupDescriptionController.text;
-                          String invalidMessage = ValidatorService.validateUpdatingGroupDescription(description, context);
+                          String invalidMessage = ValidatorUtil.validateUpdatingGroupDescription(description, context);
                           if (invalidMessage != null) {
-                            ToastService.showErrorToast(invalidMessage);
+                            ToastUtil.showErrorToast(invalidMessage);
                             return;
                           }
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _groupService.update(_model.groupId, {'description': description}).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              ToastService.showSuccessToast(getTranslated(context, 'groupDescriptionUpdatedSuccessfully'));
+                              ToastUtil.showSuccessToast(getTranslated(context, 'groupDescriptionUpdatedSuccessfully'));
                               _model.groupDescription = description;
                               NavigatorUtil.navigate(context, GroupPage(_model));
                             });
                           }).catchError((onError) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              ToastService.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
+                              ToastUtil.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
                             });
                           });
                         },

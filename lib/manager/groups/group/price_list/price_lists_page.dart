@@ -15,8 +15,8 @@ import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toast_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -372,18 +372,18 @@ class _PriceListsPageState extends State<PriceListsPage> {
 
   _handleGenerateExcel() {
     if (_priceLists.isEmpty) {
-      ToastService.showErrorToast(getTranslated(context, 'priceListIsEmpty'));
+      ToastUtil.showErrorToast(getTranslated(context, 'priceListIsEmpty'));
       return;
     }
     if (_excelType == -1) {
-      ToastService.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
+      ToastUtil.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
       return;
     }
     setState(() => _isGenerateExcelBtnTapped = true);
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _excelService.generatePriceListExcel(_model.user.companyId, _excelType == 0 || _excelType == 2, _excelType == 1 || _excelType == 2, _model.user.username).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(context, 'successfullyGeneratedExcelAndSendEmail') + '!');
+        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyGeneratedExcelAndSendEmail') + '!');
         setState(() => _isGenerateExcelBtnTapped = false);
         _excelType = -1;
         Navigator.pop(context);
@@ -392,9 +392,9 @@ class _PriceListsPageState extends State<PriceListsPage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String errorMsg = onError.toString();
         if (errorMsg.contains("EMAIL_IS_NULL")) {
-          DialogService.showErrorDialog(context, getTranslated(context, 'excelEmailIsEmpty'));
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'excelEmailIsEmpty'));
         } else {
-          DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         }
         setState(() => _isGenerateExcelBtnTapped = false);
       });
@@ -426,12 +426,12 @@ class _PriceListsPageState extends State<PriceListsPage> {
                     setState(() => _isDeleteButtonTapped = false);
                     _uncheckAll();
                     Navigator.of(this.context).pop();
-                    ToastService.showSuccessToast(getTranslated(this.context, 'selectedPriceListsRemoved'));
+                    ToastUtil.showSuccessToast(getTranslated(this.context, 'selectedPriceListsRemoved'));
                   });
                 }).catchError((onError) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     setState(() => _isDeleteButtonTapped = false);
-                    ToastService.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
+                    ToastUtil.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
                   });
                 });
               },

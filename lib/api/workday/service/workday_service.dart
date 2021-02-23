@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/workday/dto/workday_dto.dart';
 import 'package:give_job/api/workday/dto/workday_for_timesheet_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/service/logout_service.dart';
+import 'package:give_job/shared/util/logout_util.dart';
 import 'package:http/http.dart';
 
 class WorkdayService {
@@ -21,7 +21,7 @@ class WorkdayService {
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => WorkdayDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -32,7 +32,7 @@ class WorkdayService {
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => WorkdayForTimesheetDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -43,7 +43,7 @@ class WorkdayService {
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -54,7 +54,7 @@ class WorkdayService {
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -65,7 +65,7 @@ class WorkdayService {
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -76,7 +76,7 @@ class WorkdayService {
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -88,7 +88,7 @@ class WorkdayService {
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -100,7 +100,7 @@ class WorkdayService {
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -112,7 +112,7 @@ class WorkdayService {
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -123,7 +123,7 @@ class WorkdayService {
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -134,7 +134,7 @@ class WorkdayService {
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }

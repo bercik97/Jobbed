@@ -16,9 +16,9 @@ import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toast_service.dart';
-import 'package:give_job/shared/service/validator_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
+import 'package:give_job/shared/util/validator_util.dart';
 import 'package:give_job/shared/util/avatars_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
@@ -77,7 +77,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
         _filteredEmployees = _employees;
         _loading = false;
       });
-    }).catchError((onError) => DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'groupNoEmployees'), GroupPage(_model)));
+    }).catchError((onError) => DialogUtil.showFailureDialogWithWillPopScope(context, getTranslated(context, 'groupNoEmployees'), GroupPage(_model)));
   }
 
   @override
@@ -448,7 +448,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 return;
                               }
                               if (_moneyRadioValue == -1) {
-                                ToastService.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
+                                ToastUtil.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
                                 return;
                               }
                               FocusScope.of(context).unfocus();
@@ -456,12 +456,12 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                               try {
                                 money = double.parse(_moneyPerHourController.text);
                               } catch (FormatException) {
-                                ToastService.showErrorToast(getTranslated(context, 'newHourlyRateIsRequired'));
+                                ToastUtil.showErrorToast(getTranslated(context, 'newHourlyRateIsRequired'));
                                 return;
                               }
-                              String invalidMessage = ValidatorService.validateMoneyPerHour(money, context);
+                              String invalidMessage = ValidatorUtil.validateMoneyPerHour(money, context);
                               if (invalidMessage != null) {
-                                ToastService.showErrorToast(invalidMessage);
+                                ToastUtil.showErrorToast(invalidMessage);
                                 return;
                               }
                               setState(() => _isMoneyBtnTapped = true);
@@ -472,13 +472,13 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                   _refresh();
                                   Navigator.pop(context);
                                   String msgKey = _moneyRadioValue == 0 ? 'successfullyUpdatedMoneyPerHourForSelectedEmployees' : 'successfullyUpdatedMoneyPerHourForCompanyForSelectedEmployees';
-                                  ToastService.showSuccessToast(getTranslated(context, msgKey));
+                                  ToastUtil.showSuccessToast(getTranslated(context, msgKey));
                                   _moneyRadioValue = -1;
                                   setState(() => _isMoneyBtnTapped = false);
                                 });
                               }).catchError((onError) {
                                 Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                  DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+                                  DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
                                   setState(() => _isMoneyBtnTapped = false);
                                 });
                               });
@@ -576,7 +576,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 return;
                               }
                               if (_selfFillingHoursRadioValue == -1) {
-                                ToastService.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
+                                ToastUtil.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
                                 return;
                               }
                               setState(() => _isSelfFillingHoursBtnTapped = true);
@@ -585,13 +585,13 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                   _refresh();
                                   Navigator.pop(context);
-                                  ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees'));
+                                  ToastUtil.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees'));
                                   _selfFillingHoursRadioValue = -1;
                                   setState(() => _isSelfFillingHoursBtnTapped = false);
                                 });
                               }).catchError((onError) {
                                 Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                  DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+                                  DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
                                   setState(() => _isSelfFillingHoursBtnTapped = false);
                                 });
                               });
@@ -689,7 +689,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 return;
                               }
                               if (_workTimeByLocationRadioValue == -1) {
-                                ToastService.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
+                                ToastUtil.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
                                 return;
                               }
                               setState(() => _isWorkTimeByLocationBtnTapped = true);
@@ -698,13 +698,13 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                   _refresh();
                                   Navigator.pop(context);
-                                  ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToWorkTimeByLocationForSelectedEmployees'));
+                                  ToastUtil.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToWorkTimeByLocationForSelectedEmployees'));
                                   _workTimeByLocationRadioValue = -1;
                                   setState(() => _isWorkTimeByLocationBtnTapped = false);
                                 });
                               }).catchError((onError) {
                                 Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                  DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+                                  DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
                                   setState(() => _isWorkTimeByLocationBtnTapped = false);
                                 });
                               });
@@ -802,7 +802,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 return;
                               }
                               if (_pieceworkRadioValue == -1) {
-                                ToastService.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
+                                ToastUtil.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
                                 return;
                               }
                               setState(() => _isPieceworkBtnTapped = true);
@@ -811,13 +811,13 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                   _refresh();
                                   Navigator.pop(context);
-                                  ToastService.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToPieceworkForSelectedEmployees'));
+                                  ToastUtil.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToPieceworkForSelectedEmployees'));
                                   _pieceworkRadioValue = -1;
                                   setState(() => _isPieceworkBtnTapped = false);
                                 });
                               }).catchError((onError) {
                                 Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                  DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+                                  DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
                                   setState(() => _isPieceworkBtnTapped = false);
                                 });
                               });

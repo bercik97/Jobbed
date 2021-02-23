@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/work_time/dto/create_work_time_dto.dart';
 import 'package:give_job/api/work_time/dto/is_currently_at_work_with_work_times_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/service/logout_service.dart';
+import 'package:give_job/shared/util/logout_util.dart';
 import 'package:http/http.dart';
 
 class WorkTimeService {
@@ -27,7 +27,7 @@ class WorkTimeService {
     if (res.statusCode == 200) {
       return IsCurrentlyAtWorkWithWorkTimesDto.fromJson(jsonDecode(res.body));
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -39,7 +39,7 @@ class WorkTimeService {
     if (res.statusCode == 200) {
       return res.body == 'true' ? true : false;
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }

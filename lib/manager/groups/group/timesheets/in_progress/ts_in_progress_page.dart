@@ -23,9 +23,9 @@ import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toast_service.dart';
-import 'package:give_job/shared/service/validator_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
+import 'package:give_job/shared/util/validator_util.dart';
 import 'package:give_job/shared/util/avatars_util.dart';
 import 'package:give_job/shared/util/icons_legend_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
@@ -523,12 +523,12 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                               hours = double.parse(_hoursController.text);
                               minutes = double.parse(_minutesController.text) * 0.01;
                             } catch (FormatException) {
-                              ToastService.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
+                              ToastUtil.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
                               return;
                             }
-                            String invalidMessage = ValidatorService.validateUpdatingHoursWithMinutes(hours, minutes, context);
+                            String invalidMessage = ValidatorUtil.validateUpdatingHoursWithMinutes(hours, minutes, context);
                             if (invalidMessage != null) {
-                              ToastService.showErrorToast(invalidMessage);
+                              ToastUtil.showErrorToast(invalidMessage);
                               return;
                             }
                             FocusScope.of(context).unfocus();
@@ -547,12 +547,12 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                 .then((res) {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 Navigator.of(context).pop();
-                                ToastService.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
+                                ToastUtil.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
                                 _refresh();
                               });
                             }).catchError((onError) {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                ToastService.showErrorToast('somethingWentWrong');
+                                ToastUtil.showErrorToast('somethingWentWrong');
                               });
                             });
                           },
@@ -622,7 +622,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
       dateFrom = DateFormat('yyyy-MM-dd').format(picked[0]);
       dateTo = DateFormat('yyyy-MM-dd').format(picked[1]);
     }
-    DialogService.showConfirmationDialog(
+    DialogUtil.showConfirmationDialog(
       context: context,
       title: getTranslated(context, 'confirmation'),
       content: getTranslated(context, 'deletingPieceworkConfirmation'),
@@ -638,12 +638,12 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _refresh();
         Navigator.of(context).pop();
-        ToastService.showSuccessToast(getTranslated(context, 'pieceworkForSelectedDaysAndEmployeesDeleted'));
+        ToastUtil.showSuccessToast(getTranslated(context, 'pieceworkForSelectedDaysAndEmployeesDeleted'));
         setState(() => _isDeletePieceworkButtonTapped = false);
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+        DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         setState(() => _isDeletePieceworkButtonTapped = false);
       });
     });
@@ -737,9 +737,9 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                           color: GREEN,
                           onPressed: () {
                             String note = _noteController.text;
-                            String invalidMessage = ValidatorService.validateNote(note, context);
+                            String invalidMessage = ValidatorUtil.validateNote(note, context);
                             if (invalidMessage != null) {
-                              ToastService.showErrorToast(invalidMessage);
+                              ToastUtil.showErrorToast(invalidMessage);
                               return;
                             }
                             FocusScope.of(context).unfocus();
@@ -758,11 +758,11 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 _refresh();
                                 Navigator.of(context).pop();
-                                ToastService.showSuccessToast(getTranslated(context, 'noteUpdatedSuccessfully'));
+                                ToastUtil.showSuccessToast(getTranslated(context, 'noteUpdatedSuccessfully'));
                               });
                             }).catchError((onError) {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                ToastService.showErrorToast('somethingWentWrong');
+                                ToastUtil.showErrorToast('somethingWentWrong');
                               });
                             });
                           },

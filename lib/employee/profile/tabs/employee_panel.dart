@@ -7,7 +7,7 @@ import 'package:give_job/employee/profile/tabs/worktime/work_time_page.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
@@ -28,11 +28,11 @@ Container employeePanel(BuildContext context, User user, EmployeeProfileDto empl
                       onTap: () async {
                         int todayWorkdayId = employee.todayWorkdayId;
                         if (todayWorkdayId == 0) {
-                          DialogService.showErrorDialog(context, getTranslated(context, 'cannotStartWorkWithoutTS'));
+                          DialogUtil.showErrorDialog(context, getTranslated(context, 'cannotStartWorkWithoutTS'));
                           return;
                         }
                         if (!employee.workTimeByLocation) {
-                          DialogService.showErrorDialog(context, getTranslated(context, 'noPermissionForWorkTimeByLocation'));
+                          DialogUtil.showErrorDialog(context, getTranslated(context, 'noPermissionForWorkTimeByLocation'));
                           return;
                         }
                         NavigatorUtil.navigate(context, WorkTimePage(user, employee.todayWorkdayId));
@@ -49,11 +49,11 @@ Container employeePanel(BuildContext context, User user, EmployeeProfileDto empl
                       onTap: () async {
                         int todayWorkdayId = employee.todayWorkdayId;
                         if (todayWorkdayId == 0) {
-                          DialogService.showErrorDialog(context, getTranslated(context, 'cannotStartWorkWithoutTS'));
+                          DialogUtil.showErrorDialog(context, getTranslated(context, 'cannotStartWorkWithoutTS'));
                           return;
                         }
                         if (!employee.piecework) {
-                          DialogService.showErrorDialog(context, getTranslated(context, 'noPermissionForPiecework'));
+                          DialogUtil.showErrorDialog(context, getTranslated(context, 'noPermissionForPiecework'));
                           return;
                         }
                         NavigatorUtil.navigate(context, PieceworkPage(user, employee.todayDate, employee.todayWorkdayId));

@@ -14,8 +14,8 @@ import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toast_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -217,7 +217,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
       }
     }
     if (warehouseIdsAndItemsWithQuantities.isEmpty) {
-      ToastService.showErrorToast(getTranslated(context, 'noQuantitySetForReturn'));
+      ToastUtil.showErrorToast(getTranslated(context, 'noQuantitySetForReturn'));
       setState(() => _isAddButtonTapped = false);
       return;
     }
@@ -228,7 +228,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _itemPlaceService.returnItems(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(context, 'successfullyReturnItemsToWarehouses'));
+        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyReturnItemsToWarehouses'));
         NavigatorUtil.navigate(this.context, ItemPlaceDetailsPage(_model, _itemPlaceDto));
       });
     }).catchError((onError) {
@@ -237,7 +237,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
         if (errorMsg.contains("NOT_ENOUGH_QUANTITY")) {
           _showFailureDialogWithNavigate(getTranslated(context, 'someOfItemsDoNotHaveEnoughQuantity'));
         } else {
-          DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         }
         setState(() => _isAddButtonTapped = false);
       });

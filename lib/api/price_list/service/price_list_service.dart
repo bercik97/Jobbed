@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/price_list/dto/create_price_list_dto.dart';
 import 'package:give_job/api/price_list/dto/price_list_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/service/logout_service.dart';
+import 'package:give_job/shared/util/logout_util.dart';
 import 'package:http/http.dart';
 
 class PriceListService {
@@ -21,7 +21,7 @@ class PriceListService {
     if (res.statusCode == 200) {
       return res.body;
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -32,7 +32,7 @@ class PriceListService {
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => PriceListDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -43,7 +43,7 @@ class PriceListService {
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }

@@ -12,9 +12,9 @@ import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toast_service.dart';
-import 'package:give_job/shared/service/validator_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
+import 'package:give_job/shared/util/validator_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/buttons.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -132,23 +132,23 @@ class _AddItemsPageState extends State<AddItemsPage> {
                   title: getTranslated(context, 'add'),
                   fun: () {
                     if (!_isValid()) {
-                      ToastService.showErrorToast(getTranslated(context, 'correctInvalidFields'));
+                      ToastUtil.showErrorToast(getTranslated(context, 'correctInvalidFields'));
                       return;
                     }
                     if (_itemNames.contains(_itemNameController.text)) {
-                      ToastService.showErrorToast(getTranslated(context, 'itemNameExists'));
+                      ToastUtil.showErrorToast(getTranslated(context, 'itemNameExists'));
                       return;
                     }
                     int quantity;
                     try {
                       quantity = int.parse(_quantityController.text);
                     } catch (FormatException) {
-                      ToastService.showErrorToast(getTranslated(context, 'itemQuantityIsRequired'));
+                      ToastUtil.showErrorToast(getTranslated(context, 'itemQuantityIsRequired'));
                       return;
                     }
-                    String invalidMessage = ValidatorService.validateItemQuantity(quantity, context);
+                    String invalidMessage = ValidatorUtil.validateItemQuantity(quantity, context);
                     if (invalidMessage != null) {
-                      ToastService.showErrorToast(invalidMessage);
+                      ToastUtil.showErrorToast(invalidMessage);
                       return;
                     }
                     CreateItemDto dto = new CreateItemDto(
@@ -163,7 +163,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
                       _quantityController.text = "0";
                     });
                     FocusScope.of(context).unfocus();
-                    ToastService.showSuccessToast(getTranslated(context, 'addedNewItem'));
+                    ToastUtil.showSuccessToast(getTranslated(context, 'addedNewItem'));
                   },
                 ),
                 _buildAddItems(),
@@ -208,7 +208,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
                             _itemNames.remove(_itemsToAdd[index].name);
                             _itemsToAdd.remove(_itemsToAdd[index]);
                           });
-                          ToastService.showSuccessToast(getTranslated(this.context, 'selectedItemHasBeenRemoved'));
+                          ToastUtil.showSuccessToast(getTranslated(this.context, 'selectedItemHasBeenRemoved'));
                         },
                       ),
                     ),
@@ -262,23 +262,23 @@ class _AddItemsPageState extends State<AddItemsPage> {
   _createItems() {
     setState(() => _isAddButtonTapped = true);
     if (_itemsToAdd.isEmpty) {
-      ToastService.showErrorToast(getTranslated(context, 'itemsToAddEmpty'));
+      ToastUtil.showErrorToast(getTranslated(context, 'itemsToAddEmpty'));
       setState(() => _isAddButtonTapped = false);
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _itemService.create(_itemsToAdd).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewItems'));
+        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyAddedNewItems'));
         NavigatorUtil.navigateReplacement(context, WarehouseDetailsPage(_model, _warehouseDto));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String errorMsg = onError.toString();
         if (errorMsg.contains("ITEM_NAME_EXISTS")) {
-          DialogService.showErrorDialog(context, getTranslated(context, 'itemNameExists') + '\n' + getTranslated(context, 'chooseOtherItemName'));
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'itemNameExists') + '\n' + getTranslated(context, 'chooseOtherItemName'));
         } else {
-          DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         }
         setState(() => _isAddButtonTapped = false);
       });

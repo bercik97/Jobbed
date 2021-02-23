@@ -12,9 +12,9 @@ import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toast_service.dart';
-import 'package:give_job/shared/service/validator_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
+import 'package:give_job/shared/util/validator_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/buttons.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -141,23 +141,23 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
                   fun: () {
                     String itemName = _itemNameController.text;
                     if (itemName == null || itemName.isEmpty) {
-                      ToastService.showErrorToast(getTranslated(context, 'itemNameIsRequired'));
+                      ToastUtil.showErrorToast(getTranslated(context, 'itemNameIsRequired'));
                       return;
                     }
                     if (_itemNamesWithQuantities.containsKey(itemName)) {
-                      ToastService.showErrorToast(getTranslated(context, 'givenItemNameAlreadyExists'));
+                      ToastUtil.showErrorToast(getTranslated(context, 'givenItemNameAlreadyExists'));
                       return;
                     }
                     int quantity;
                     try {
                       quantity = int.parse(_quantityController.text);
                     } catch (FormatException) {
-                      ToastService.showErrorToast(getTranslated(context, 'itemQuantityIsRequired'));
+                      ToastUtil.showErrorToast(getTranslated(context, 'itemQuantityIsRequired'));
                       return;
                     }
-                    String invalidMessage = ValidatorService.validateItemQuantity(quantity, context);
+                    String invalidMessage = ValidatorUtil.validateItemQuantity(quantity, context);
                     if (invalidMessage != null) {
-                      ToastService.showErrorToast(invalidMessage);
+                      ToastUtil.showErrorToast(invalidMessage);
                       return;
                     }
                     setState(() {
@@ -166,7 +166,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
                       _quantityController.text = "0";
                     });
                     FocusScope.of(context).unfocus();
-                    ToastService.showSuccessToast(getTranslated(context, 'addedNewItem'));
+                    ToastUtil.showSuccessToast(getTranslated(context, 'addedNewItem'));
                   },
                 ),
                 _buildAddItems(),
@@ -238,7 +238,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
                         icon: iconRed(Icons.remove),
                         onPressed: () {
                           setState(() => _itemNamesWithQuantities.remove(itemName));
-                          ToastService.showSuccessToast(getTranslated(this.context, 'selectedItemHasBeenRemoved'));
+                          ToastUtil.showSuccessToast(getTranslated(this.context, 'selectedItemHasBeenRemoved'));
                         },
                       ),
                     ),
@@ -292,7 +292,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
   _createWarehouse() {
     setState(() => _isAddButtonTapped = true);
     if (!_isValid()) {
-      ToastService.showErrorToast(getTranslated(context, 'correctInvalidFields'));
+      ToastUtil.showErrorToast(getTranslated(context, 'correctInvalidFields'));
       setState(() => _isAddButtonTapped = false);
       return;
     }
@@ -305,16 +305,16 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
     );
     _warehouseService.create(dto).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewWarehouse'));
+        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyAddedNewWarehouse'));
         NavigatorUtil.navigateReplacement(this.context, WarehousePage(_model));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String errorMsg = onError.toString();
         if (errorMsg.contains("WAREHOUSE_NAME_EXISTS")) {
-          DialogService.showErrorDialog(context, getTranslated(context, 'warehouseNameExists') + '\n' + getTranslated(context, 'chooseOtherWarehouseName'));
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'warehouseNameExists') + '\n' + getTranslated(context, 'chooseOtherWarehouseName'));
         } else {
-          DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         }
         setState(() => _isAddButtonTapped = false);
       });

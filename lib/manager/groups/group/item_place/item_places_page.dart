@@ -15,7 +15,7 @@ import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/toast_service.dart';
+import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -362,13 +362,13 @@ class _ItemPlacesPageState extends State<ItemPlacesPage> {
     setState(() => _isAddButtonTapped = true);
     if (location == null || location.isEmpty) {
       setState(() => _isAddButtonTapped = false);
-      ToastService.showErrorToast(getTranslated(this.context, 'itemPlaceLocationIsRequired'));
+      ToastUtil.showErrorToast(getTranslated(this.context, 'itemPlaceLocationIsRequired'));
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _itemPlaceService.create(_user.companyId, location).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(this.context, 'successfullyAddedNewItemPlace'));
+        ToastUtil.showSuccessToast(getTranslated(this.context, 'successfullyAddedNewItemPlace'));
         NavigatorUtil.navigateReplacement(this.context, ItemPlacesPage(_model));
       });
     }).catchError((onError) {
@@ -376,9 +376,9 @@ class _ItemPlacesPageState extends State<ItemPlacesPage> {
         setState(() => _isAddButtonTapped = false);
         String errorMsg = onError.toString();
         if (errorMsg.contains("ITEM_PLACE_LOCATION_EXISTS")) {
-          ToastService.showErrorToast(getTranslated(this.context, 'itemPlaceLocationExists'));
+          ToastUtil.showErrorToast(getTranslated(this.context, 'itemPlaceLocationExists'));
         } else {
-          ToastService.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
+          ToastUtil.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
         }
       });
     });
@@ -410,12 +410,12 @@ class _ItemPlacesPageState extends State<ItemPlacesPage> {
                     Navigator.pop(context);
                     setState(() => _itemPlaces.removeWhere((element) => selectedItemPlaces.contains(element)));
                     setState(() => _isDeleteButtonTapped = false);
-                    ToastService.showSuccessToast(getTranslated(this.context, 'selectedItemPlacesRemoved'));
+                    ToastUtil.showSuccessToast(getTranslated(this.context, 'selectedItemPlacesRemoved'));
                   });
                 }).catchError((onError) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     setState(() => _isDeleteButtonTapped = false);
-                    ToastService.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
+                    ToastUtil.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
                   });
                 });
               },

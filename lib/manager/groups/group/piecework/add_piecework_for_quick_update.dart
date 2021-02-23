@@ -14,8 +14,8 @@ import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toast_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/loader.dart';
@@ -71,7 +71,7 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
         _priceLists.forEach((i) => _textEditingItemControllers[utf8.decode(i.name.runes.toList())] = new TextEditingController());
         _loading = false;
       });
-    }).catchError((onError) => DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'noPriceList'), GroupPage(_model)));
+    }).catchError((onError) => DialogUtil.showFailureDialogWithWillPopScope(context, getTranslated(context, 'noPriceList'), GroupPage(_model)));
   }
 
   @override
@@ -212,13 +212,13 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
     });
     if (serviceWithQuantity.isEmpty) {
       setState(() => _isAddButtonTapped = false);
-      ToastService.showErrorToast(getTranslated(context, 'pieceworkCannotBeEmpty'));
+      ToastUtil.showErrorToast(getTranslated(context, 'pieceworkCannotBeEmpty'));
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _timesheetService.updatePieceworkByGroupIdAndDate(_model.groupId, _todayDate, serviceWithQuantity).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewReportsAboutPiecework'));
+        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyAddedNewReportsAboutPiecework'));
         NavigatorUtil.navigateReplacement(this.context, GroupPage(_model));
       });
     }).catchError((onError) {
@@ -227,9 +227,9 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
         setState(() => _isAddButtonTapped = false);
         if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
           Navigator.pop(context);
-          DialogService.showErrorDialog(context, getTranslated(context, 'cannotUpdateTodayPiecework'));
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'cannotUpdateTodayPiecework'));
         } else {
-          DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         }
       });
     });

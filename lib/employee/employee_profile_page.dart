@@ -17,9 +17,9 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/logout_service.dart';
-import 'package:give_job/shared/service/toast_service.dart';
-import 'package:give_job/shared/service/validator_service.dart';
+import 'package:give_job/shared/util/logout_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
+import 'package:give_job/shared/util/validator_util.dart';
 import 'package:give_job/shared/settings/settings_page.dart';
 import 'package:give_job/shared/util/avatars_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
@@ -75,7 +75,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
           elevation: 0.0,
           bottomOpacity: 0.0,
           title: text15White(getTranslated(context, 'loading')),
-          leading: IconButton(icon: iconWhite(Icons.power_settings_new), onPressed: () => Logout.logout(context)),
+          leading: IconButton(icon: iconWhite(Icons.power_settings_new), onPressed: () => LogoutUtil.logout(context)),
           actions: <Widget>[
             Padding(
               padding: EdgeInsets.only(right: 15.0),
@@ -115,7 +115,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                     iconTheme: IconThemeData(color: WHITE),
                     expandedHeight: expandedHeight,
                     pinned: true,
-                    leading: IconButton(icon: iconWhite(Icons.power_settings_new), onPressed: () => Logout.logout(this.context)),
+                    leading: IconButton(icon: iconWhite(Icons.power_settings_new), onPressed: () => LogoutUtil.logout(this.context)),
                     backgroundColor: BRIGHTER_DARK,
                     flexibleSpace: FlexibleSpaceBar(
                       background: Column(
@@ -358,12 +358,12 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                             hours = double.parse(_hoursController.text);
                             minutes = double.parse(_minutesController.text) * 0.01;
                           } catch (FormatException) {
-                            ToastService.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
+                            ToastUtil.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
                             return;
                           }
-                          String invalidMessage = ValidatorService.validateUpdatingHoursWithMinutes(hours, minutes, context);
+                          String invalidMessage = ValidatorUtil.validateUpdatingHoursWithMinutes(hours, minutes, context);
                           if (invalidMessage != null) {
-                            ToastService.showErrorToast(invalidMessage);
+                            ToastUtil.showErrorToast(invalidMessage);
                             return;
                           }
                           FocusScope.of(context).unfocus();
@@ -373,12 +373,12 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                             (res) {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 Navigator.of(context).pop();
-                                ToastService.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
+                                ToastUtil.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
                                 _refresh();
                               }).catchError(() {
                                 Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                   Navigator.of(context).pop();
-                                  ToastService.showSuccessToast(getTranslated(context, 'somethingWentWrong'));
+                                  ToastUtil.showSuccessToast(getTranslated(context, 'somethingWentWrong'));
                                 });
                               });
                             },
@@ -473,13 +473,13 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                           _workdayService.updateFieldsValuesById(workdayId, {'note': note}).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.of(context).pop();
-                              ToastService.showSuccessToast(getTranslated(context, 'noteSavedSuccessfully'));
+                              ToastUtil.showSuccessToast(getTranslated(context, 'noteSavedSuccessfully'));
                               _refresh();
                             });
                           }).catchError(() {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.of(context).pop();
-                              ToastService.showSuccessToast(getTranslated(context, 'somethingWentWrong'));
+                              ToastUtil.showSuccessToast(getTranslated(context, 'somethingWentWrong'));
                             });
                           });
                         },
@@ -496,6 +496,6 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
   }
 
   Future<bool> _onWillPop() async {
-    return Logout.logout(context) ?? false;
+    return LogoutUtil.logout(context) ?? false;
   }
 }

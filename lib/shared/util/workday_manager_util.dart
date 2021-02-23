@@ -177,21 +177,23 @@ class WorkdayManagerUtil {
               DataColumn(label: textWhiteBold(getTranslated(context, 'serviceName'))),
               DataColumn(label: textWhiteBold(getTranslated(context, 'quantity'))),
               DataColumn(
-                  label: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  textWhiteBold(getTranslated(context, 'price')),
-                  text12White('(' + getTranslated(context, 'employee') + ')'),
-                ],
-              )),
+                label: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    textWhiteBold(getTranslated(context, 'price')),
+                    text12White('(' + getTranslated(context, 'employee') + ')'),
+                  ],
+                ),
+              ),
               DataColumn(
-                  label: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  textWhiteBold(getTranslated(context, 'price')),
-                  text12White('(' + getTranslated(context, 'company') + ')'),
-                ],
-              )),
+                label: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    textWhiteBold(getTranslated(context, 'price')),
+                    text12White('(' + getTranslated(context, 'company') + ')'),
+                  ],
+                ),
+              ),
             ],
             rows: [
               for (int i = 0; i < pieceworks.length; i++)

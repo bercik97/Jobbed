@@ -6,7 +6,7 @@ import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_without_status_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/service/logout_service.dart';
+import 'package:give_job/shared/util/logout_util.dart';
 import 'package:http/http.dart';
 
 class TimesheetService {
@@ -23,7 +23,7 @@ class TimesheetService {
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -39,7 +39,7 @@ class TimesheetService {
         ),
       );
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -50,7 +50,7 @@ class TimesheetService {
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => TimesheetForEmployeeDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -61,7 +61,7 @@ class TimesheetService {
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => TimesheetWithStatusDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -72,7 +72,7 @@ class TimesheetService {
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => TimesheetWithoutStatusDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -83,7 +83,7 @@ class TimesheetService {
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -94,7 +94,7 @@ class TimesheetService {
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -105,7 +105,7 @@ class TimesheetService {
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -116,7 +116,7 @@ class TimesheetService {
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -127,7 +127,7 @@ class TimesheetService {
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }

@@ -15,8 +15,8 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toast_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/loader.dart';
@@ -248,7 +248,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
     });
     if (serviceWithQuantity.isEmpty) {
       setState(() => _isAddButtonTapped = false);
-      ToastService.showErrorToast(getTranslated(context, 'pieceworkCannotBeEmpty'));
+      ToastUtil.showErrorToast(getTranslated(context, 'pieceworkCannotBeEmpty'));
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
@@ -258,12 +258,12 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
     );
     _pieceworkService.create(dto).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewReportAboutPiecework'));
+        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyAddedNewReportAboutPiecework'));
         NavigatorUtil.navigate(context, PieceworkPage(_user, _todayDate, _todayWorkdayId));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+        DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         setState(() => _isAddButtonTapped = false);
       });
     });

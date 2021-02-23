@@ -17,8 +17,8 @@ import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toast_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -410,23 +410,23 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                           try {
                             quantity = int.parse(_quantityController.text);
                           } catch (FormatException) {
-                            ToastService.showErrorToast(getTranslated(context, 'itemQuantityIsRequired'));
+                            ToastUtil.showErrorToast(getTranslated(context, 'itemQuantityIsRequired'));
                             return;
                           }
                           if (quantity < 0) {
-                            ToastService.showErrorToast(getTranslated(context, 'itemQuantityCannotBeLowerThan0'));
+                            ToastUtil.showErrorToast(getTranslated(context, 'itemQuantityCannotBeLowerThan0'));
                             return;
                           }
                           FocusScope.of(context).unfocus();
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _itemService.updateQuantity(item.id, quantity).then((value) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              ToastService.showSuccessToast(getTranslated(context, 'itemQuantityUpdatedSuccessfully'));
+                              ToastUtil.showSuccessToast(getTranslated(context, 'itemQuantityUpdatedSuccessfully'));
                               NavigatorUtil.navigate(context, WarehouseDetailsPage(_model, _warehouseDto));
                             });
                           }).catchError((onError) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+                              DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
                             });
                           });
                         },
@@ -467,12 +467,12 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                       MaterialPageRoute(builder: (BuildContext context) => WarehouseDetailsPage(_model, _warehouseDto)),
                       ModalRoute.withName('/'),
                     );
-                    ToastService.showSuccessToast(getTranslated(this.context, 'selectedItemsRemoved'));
+                    ToastUtil.showSuccessToast(getTranslated(this.context, 'selectedItemsRemoved'));
                   });
                 }).catchError((onError) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     setState(() => _isDeleteButtonTapped = false);
-                    ToastService.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
+                    ToastUtil.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
                   });
                 });
               },

@@ -16,9 +16,9 @@ import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toast_service.dart';
-import 'package:give_job/shared/service/validator_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
+import 'package:give_job/shared/util/validator_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -613,24 +613,24 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
 
   Future<bool> onWillPop() async {
     if (_markersList.isEmpty) {
-      ToastService.showErrorToast(getTranslated(context, 'workplaceAreaIsNotSet'));
+      ToastUtil.showErrorToast(getTranslated(context, 'workplaceAreaIsNotSet'));
     } else {
       String km = _radius.toString().substring(0, 4);
-      ToastService.showSuccessToast(getTranslated(context, 'workplaceAreaIsSetTo') + ' $km KM ✓');
+      ToastUtil.showSuccessToast(getTranslated(context, 'workplaceAreaIsSetTo') + ' $km KM ✓');
     }
     return true;
   }
 
   _handleAddWorkplace(String workplaceName) {
     setState(() => _isAddButtonTapped = true);
-    String invalidMessage = ValidatorService.validateWorkplace(workplaceName, context);
+    String invalidMessage = ValidatorUtil.validateWorkplace(workplaceName, context);
     if (invalidMessage != null) {
       setState(() => _isAddButtonTapped = false);
-      ToastService.showErrorToast(invalidMessage);
+      ToastUtil.showErrorToast(invalidMessage);
       return;
     } else if (_markersList.isEmpty) {
       setState(() => _isAddButtonTapped = false);
-      ToastService.showErrorToast(getTranslated(context, 'workplaceAreNotSet'));
+      ToastUtil.showErrorToast(getTranslated(context, 'workplaceAreNotSet'));
       this._workplaceLocation = null;
       return;
     }
@@ -684,9 +684,9 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                     setState(() => _isAddButtonTapped = false);
                     String errorMsg = onError.toString();
                     if (errorMsg.contains("WORKPLACE_NAME_EXISTS")) {
-                      ToastService.showErrorToast(getTranslated(this.context, 'workplaceNameExists'));
+                      ToastUtil.showErrorToast(getTranslated(this.context, 'workplaceNameExists'));
                     } else {
-                      ToastService.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
+                      ToastUtil.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
                     }
                   });
                 });
@@ -728,7 +728,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                       MaterialPageRoute(builder: (BuildContext context) => WorkplacesPage(_model)),
                       ModalRoute.withName('/'),
                     );
-                    ToastService.showSuccessToast(getTranslated(this.context, 'selectedWorkplacesRemoved'));
+                    ToastUtil.showSuccessToast(getTranslated(this.context, 'selectedWorkplacesRemoved'));
                   });
                 }).catchError((onError) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
@@ -736,11 +736,11 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                     if (errorMsg.contains("SOMEONE_IS_WORKING_IN_WORKPLACE_FOR_DELETE")) {
                       setState(() => _isDeleteButtonTapped = false);
                       Navigator.pop(this.context);
-                      DialogService.showErrorDialog(context, getTranslated(context, 'cannotDeleteWorkplaceWhenSomeoneWorkingThere'));
+                      DialogUtil.showErrorDialog(context, getTranslated(context, 'cannotDeleteWorkplaceWhenSomeoneWorkingThere'));
                       return;
                     }
                     setState(() => _isDeleteButtonTapped = false);
-                    ToastService.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
+                    ToastUtil.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
                   });
                 });
               },
@@ -832,9 +832,9 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                         color: GREEN,
                         onPressed: () {
                           String name = _workplaceController.text;
-                          String invalidMessage = ValidatorService.validateWorkplace(name, context);
+                          String invalidMessage = ValidatorUtil.validateWorkplace(name, context);
                           if (invalidMessage != null) {
-                            ToastService.showErrorToast(invalidMessage);
+                            ToastUtil.showErrorToast(invalidMessage);
                             return;
                           }
                           FocusScope.of(context).unfocus();
@@ -855,15 +855,15 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.pop(context);
                               _refresh();
-                              ToastService.showSuccessToast(getTranslated(context, 'workplaceUpdatedSuccessfully'));
+                              ToastUtil.showSuccessToast(getTranslated(context, 'workplaceUpdatedSuccessfully'));
                             });
                           }).catchError((onError) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               String errorMsg = onError.toString();
                               if (errorMsg.contains("WORKPLACE_NAME_EXISTS")) {
-                                ToastService.showErrorToast(getTranslated(context, 'workplaceNameExists'));
+                                ToastUtil.showErrorToast(getTranslated(context, 'workplaceNameExists'));
                               } else {
-                                DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+                                DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
                               }
                             });
                           });

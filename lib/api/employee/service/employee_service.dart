@@ -8,7 +8,7 @@ import 'package:give_job/api/employee/dto/employee_profile_dto.dart';
 import 'package:give_job/api/employee/dto/employee_settings_dto.dart';
 import 'package:give_job/api/employee/dto/employee_statistics_dto.dart';
 import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/service/logout_service.dart';
+import 'package:give_job/shared/util/logout_util.dart';
 import 'package:http/http.dart';
 
 class EmployeeService {
@@ -25,7 +25,7 @@ class EmployeeService {
     if (res.statusCode == 200) {
       return res.body.toString();
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -37,7 +37,7 @@ class EmployeeService {
     if (res.statusCode == 200) {
       return json.decode(res.body);
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -49,7 +49,7 @@ class EmployeeService {
     if (res.statusCode == 200) {
       return EmployeeProfileDto.fromJson(jsonDecode(res.body));
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -61,7 +61,7 @@ class EmployeeService {
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeSettingsDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -73,7 +73,7 @@ class EmployeeService {
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeStatisticsDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -84,7 +84,7 @@ class EmployeeService {
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeBasicDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -95,7 +95,7 @@ class EmployeeService {
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeGroupDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -107,7 +107,7 @@ class EmployeeService {
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeBasicDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -119,7 +119,7 @@ class EmployeeService {
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeBasicDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -131,7 +131,7 @@ class EmployeeService {
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeBasicDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -143,7 +143,7 @@ class EmployeeService {
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -155,7 +155,7 @@ class EmployeeService {
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }
@@ -167,7 +167,7 @@ class EmployeeService {
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
-      return Logout.handle401WithLogout(_context);
+      return LogoutUtil.handle401WithLogout(_context);
     } else {
       return Future.error(res.body);
     }

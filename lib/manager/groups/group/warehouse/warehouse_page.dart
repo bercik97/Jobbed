@@ -15,7 +15,7 @@ import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/toast_service.dart';
+import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -294,12 +294,12 @@ class _WarehousePageState extends State<WarehousePage> {
                       MaterialPageRoute(builder: (BuildContext context) => WarehousePage(_model)),
                       ModalRoute.withName('/'),
                     );
-                    ToastService.showSuccessToast(getTranslated(this.context, 'selectedWarehousesRemoved'));
+                    ToastUtil.showSuccessToast(getTranslated(this.context, 'selectedWarehousesRemoved'));
                   });
                 }).catchError((onError) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     setState(() => _isDeleteButtonTapped = false);
-                    ToastService.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
+                    ToastUtil.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
                   });
                 });
               },

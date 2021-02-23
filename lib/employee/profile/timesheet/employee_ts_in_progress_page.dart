@@ -14,9 +14,9 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toast_service.dart';
-import 'package:give_job/shared/service/validator_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
+import 'package:give_job/shared/util/validator_util.dart';
 import 'package:give_job/shared/util/data_table_util.dart';
 import 'package:give_job/shared/util/icons_legend_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
@@ -306,7 +306,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
           height: 50,
         ),
         InkWell(
-          onTap: () => DialogService.showScrollableDialog(this.context, getTranslated(this.context, 'noteDetails'), workdays[index].note),
+          onTap: () => DialogUtil.showScrollableDialog(this.context, getTranslated(this.context, 'noteDetails'), workdays[index].note),
           child: Ink(
             child: workdays[index].note != null && workdays[index].note != '' ? iconWhite(Icons.zoom_in) : Align(alignment: Alignment.center, child: textWhite('-')),
             width: 75,
@@ -430,12 +430,12 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             hours = double.parse(_hoursController.text);
                             minutes = double.parse(_minutesController.text) * 0.01;
                           } catch (FormatException) {
-                            ToastService.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
+                            ToastUtil.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
                             return;
                           }
-                          String invalidMessage = ValidatorService.validateUpdatingHoursWithMinutes(hours, minutes, context);
+                          String invalidMessage = ValidatorUtil.validateUpdatingHoursWithMinutes(hours, minutes, context);
                           if (invalidMessage != null) {
-                            ToastService.showErrorToast(invalidMessage);
+                            ToastUtil.showErrorToast(invalidMessage);
                             return;
                           }
                           FocusScope.of(context).unfocus();
@@ -445,13 +445,13 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.of(context).pop();
                               selectedIds.clear();
-                              ToastService.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
+                              ToastUtil.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
                               _refresh();
                             });
                           }).catchError(() {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.of(context).pop();
-                              ToastService.showSuccessToast(getTranslated(context, 'somethingWentWrong'));
+                              ToastUtil.showSuccessToast(getTranslated(context, 'somethingWentWrong'));
                             });
                           });
                         },
@@ -542,13 +542,13 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                           _workdayService.updateFieldsValuesByIds(selectedIds.map((el) => el.toString()).toList(), {'note': note}).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.of(context).pop();
-                              ToastService.showSuccessToast(getTranslated(context, 'notesSavedSuccessfully'));
+                              ToastUtil.showSuccessToast(getTranslated(context, 'notesSavedSuccessfully'));
                               _refresh();
                             });
                           }).catchError(() {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.of(context).pop();
-                              ToastService.showSuccessToast(getTranslated(context, 'somethingWentWrong'));
+                              ToastUtil.showSuccessToast(getTranslated(context, 'somethingWentWrong'));
                             });
                           });
                         },

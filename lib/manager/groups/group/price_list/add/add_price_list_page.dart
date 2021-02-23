@@ -12,8 +12,8 @@ import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toast_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/buttons.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -106,11 +106,11 @@ class _AddPriceListPageState extends State<AddPriceListPage> {
                       title: getTranslated(context, 'add'),
                       fun: () {
                         if (!_isValid()) {
-                          ToastService.showErrorToast(getTranslated(context, 'correctInvalidFields'));
+                          ToastUtil.showErrorToast(getTranslated(context, 'correctInvalidFields'));
                           return;
                         }
                         if (_priceListNames.contains(_priceListNameController.text)) {
-                          ToastService.showErrorToast(getTranslated(context, 'priceListServiceNameExists'));
+                          ToastUtil.showErrorToast(getTranslated(context, 'priceListServiceNameExists'));
                           return;
                         }
                         CreatePriceListDto dto = new CreatePriceListDto(
@@ -127,7 +127,7 @@ class _AddPriceListPageState extends State<AddPriceListPage> {
                           _priceListPriceForCompanyController.clear();
                         });
                         FocusScope.of(context).unfocus();
-                        ToastService.showSuccessToast(getTranslated(context, 'addedNewPriceService'));
+                        ToastUtil.showSuccessToast(getTranslated(context, 'addedNewPriceService'));
                       },
                     ),
                     _buildAddItems(),
@@ -207,7 +207,7 @@ class _AddPriceListPageState extends State<AddPriceListPage> {
                             _priceListNames.remove(_priceListsToAdd[index].name);
                             _priceListsToAdd.remove(_priceListsToAdd[index]);
                           });
-                          ToastService.showSuccessToast(getTranslated(this.context, 'selectedPriceServiceHasBeenRemoved'));
+                          ToastUtil.showSuccessToast(getTranslated(this.context, 'selectedPriceServiceHasBeenRemoved'));
                         },
                       ),
                     ),
@@ -261,23 +261,23 @@ class _AddPriceListPageState extends State<AddPriceListPage> {
   _createPriceListServices() {
     setState(() => _isAddButtonTapped = true);
     if (_priceListsToAdd.isEmpty) {
-      ToastService.showErrorToast(getTranslated(context, 'priceListsToAddEmpty'));
+      ToastUtil.showErrorToast(getTranslated(context, 'priceListsToAddEmpty'));
       setState(() => _isAddButtonTapped = false);
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _priceListService.create(_priceListsToAdd).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedNewPriceListServices'));
+        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyAddedNewPriceListServices'));
         NavigatorUtil.navigate(this.context, PriceListsPage(_model));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String errorMsg = onError.toString();
         if (errorMsg.contains("PRICE_LIST_NAME_EXISTS")) {
-          DialogService.showErrorDialog(context, getTranslated(context, 'priceListServiceNameExists') + '\n' + getTranslated(context, 'chooseOtherPriceListServiceName'));
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'priceListServiceNameExists') + '\n' + getTranslated(context, 'chooseOtherPriceListServiceName'));
         } else {
-          DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         }
         setState(() => _isAddButtonTapped = false);
       });

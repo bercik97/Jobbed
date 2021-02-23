@@ -8,9 +8,9 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/manager/groups/group/piecework/add_piecework_for_quick_update.dart';
 import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toast_service.dart';
-import 'package:give_job/shared/service/validator_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
+import 'package:give_job/shared/util/validator_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/buttons.dart';
 import 'package:give_job/shared/widget/icons.dart';
@@ -184,12 +184,12 @@ class QuickUpdateDialog {
                             hours = double.parse(_hoursController.text);
                             minutes = double.parse(_minutesController.text) * 0.01;
                           } catch (FormatException) {
-                            ToastService.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
+                            ToastUtil.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
                             return;
                           }
-                          String invalidMessage = ValidatorService.validateUpdatingHoursWithMinutes(hours, minutes, context);
+                          String invalidMessage = ValidatorUtil.validateUpdatingHoursWithMinutes(hours, minutes, context);
                           if (invalidMessage != null) {
-                            ToastService.showErrorToast(invalidMessage);
+                            ToastUtil.showErrorToast(invalidMessage);
                             return;
                           }
                           FocusScope.of(context).unfocus();
@@ -199,14 +199,14 @@ class QuickUpdateDialog {
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _timesheetService.updateHoursByGroupIdAndDate(_model.groupId, _todaysDate, hours).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              ToastService.showSuccessToast(getTranslated(context, 'todayGroupHoursUpdatedSuccessfully'));
+                              ToastUtil.showSuccessToast(getTranslated(context, 'todayGroupHoursUpdatedSuccessfully'));
                             });
                           }).catchError(
                             (onError) {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 String s = onError.toString();
                                 if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
-                                  DialogService.showErrorDialog(context, getTranslated(context, 'cannotUpdateTodayHours'));
+                                  DialogUtil.showErrorDialog(context, getTranslated(context, 'cannotUpdateTodayHours'));
                                 }
                               });
                             },
@@ -295,9 +295,9 @@ class QuickUpdateDialog {
                         color: GREEN,
                         onPressed: () {
                           String note = _noteController.text;
-                          String invalidMessage = ValidatorService.validateNote(note, context);
+                          String invalidMessage = ValidatorUtil.validateNote(note, context);
                           if (invalidMessage != null) {
-                            ToastService.showErrorToast(invalidMessage);
+                            ToastUtil.showErrorToast(invalidMessage);
                             return;
                           }
                           Navigator.of(context).pop();
@@ -305,14 +305,14 @@ class QuickUpdateDialog {
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _timesheetService.updateNoteByGroupIdAndDate(_model.groupId, _todaysDate, note).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              ToastService.showSuccessToast(getTranslated(context, 'todayGroupNoteUpdatedSuccessfully'));
+                              ToastUtil.showSuccessToast(getTranslated(context, 'todayGroupNoteUpdatedSuccessfully'));
                             });
                           }).catchError(
                             (onError) {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 String s = onError.toString();
                                 if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
-                                  DialogService.showErrorDialog(context, getTranslated(context, 'cannotUpdateTodayNote'));
+                                  DialogUtil.showErrorDialog(context, getTranslated(context, 'cannotUpdateTodayNote'));
                                 }
                               });
                             },

@@ -9,8 +9,8 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toast_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/loader.dart';
@@ -94,10 +94,10 @@ class _PieceworkPageState extends State<PieceworkPage> {
                 backgroundColor: Colors.red,
                 onPressed: () {
                   if (_pieceworks.isEmpty) {
-                    ToastService.showErrorToast(getTranslated(context, 'todayPieceworkIsEmpty'));
+                    ToastUtil.showErrorToast(getTranslated(context, 'todayPieceworkIsEmpty'));
                     return;
                   }
-                  DialogService.showConfirmationDialog(
+                  DialogUtil.showConfirmationDialog(
                     context: context,
                     title: getTranslated(context, 'confirmation'),
                     content: getTranslated(context, 'deletingPieceworkForTodayConfirmation'),
@@ -176,7 +176,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
                             IconButton(
                               icon: iconRed(Icons.delete),
                               onPressed: () {
-                                DialogService.showConfirmationDialog(
+                                DialogUtil.showConfirmationDialog(
                                   context: context,
                                   title: getTranslated(context, 'confirmation'),
                                   content: getTranslated(context, 'deletingSelectedPieceworkServiceConfirmation'),
@@ -203,13 +203,13 @@ class _PieceworkPageState extends State<PieceworkPage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _pieceworkService.deleteByWorkdayIdAndServiceName(_todayWorkdayId, serviceName).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(context, 'successfullyDeletedPieceworkService'));
+        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyDeletedPieceworkService'));
         NavigatorUtil.navigate(this.context, PieceworkPage(_user, _todayDate, _todayWorkdayId));
         setState(() => _isDeletePieceworkServiceButtonTapped = false);
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+        DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         setState(() => _isDeletePieceworkServiceButtonTapped = false);
       });
     });
@@ -220,13 +220,13 @@ class _PieceworkPageState extends State<PieceworkPage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _pieceworkService.deleteByWorkdayId(_todayWorkdayId).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(context, 'successfullyDeletedPieceworkReport'));
+        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyDeletedPieceworkReport'));
         NavigatorUtil.navigate(this.context, PieceworkPage(_user, _todayDate, _todayWorkdayId));
         setState(() => _isDeletePieceworkButtonTapped = false);
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+        DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         setState(() => _isDeletePieceworkButtonTapped = false);
       });
     });

@@ -14,8 +14,8 @@ import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toast_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
@@ -65,7 +65,7 @@ class _AddGroupEmployeesPageState extends State<AddGroupEmployeesPage> {
         _filteredEmployees = _employees;
         _loading = false;
       });
-    }).catchError((onError) => DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'groupNoEmployees'), GroupsDashboardPage(_user)));
+    }).catchError((onError) => DialogUtil.showFailureDialogWithWillPopScope(context, getTranslated(context, 'groupNoEmployees'), GroupsDashboardPage(_user)));
   }
 
   @override
@@ -263,12 +263,12 @@ class _AddGroupEmployeesPageState extends State<AddGroupEmployeesPage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _groupService.addGroupEmployees(_groupId, _selectedIds.map((e) => e.toInt()).toList()).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastService.showSuccessToast(getTranslated(context, 'successfullyAddedGroupEmployees'));
+        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyAddedGroupEmployees'));
         NavigatorUtil.navigate(context, GroupsDashboardPage(_user));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+        DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         setState(() => _isAddButtonTapped = false);
       });
     });

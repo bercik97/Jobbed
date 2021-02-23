@@ -9,14 +9,14 @@ import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/service/timesheet_service.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 
 import '../../../../../internationalization/localization/localization_constants.dart';
 import '../../../../../shared/libraries/colors.dart';
 import '../../../../../shared/libraries/constants.dart';
-import '../../../../../shared/service/toast_service.dart';
+import '../../../../../shared/util/toast_util.dart';
 import '../../../../../shared/util/language_util.dart';
 import '../../../../../shared/util/month_util.dart';
 import '../../../../../shared/widget/icons.dart';
@@ -72,7 +72,7 @@ class _AddTsPageState extends State<AddTsPage> {
         _filteredEmployees = _employees;
         _loading = false;
       });
-    }).catchError((onError) => DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'groupNoEmployees'), TsPage(_model)));
+    }).catchError((onError) => DialogUtil.showFailureDialogWithWillPopScope(context, getTranslated(context, 'groupNoEmployees'), TsPage(_model)));
   }
 
   @override
@@ -288,13 +288,13 @@ class _AddTsPageState extends State<AddTsPage> {
     _timesheetService.create(_selectedIds.map((el) => el.toString()).toList(), _year, _month).then(
       (res) {
         Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-          ToastService.showSuccessToast(getTranslated(context, 'timesheetsSuccessfullyCreated'));
+          ToastUtil.showSuccessToast(getTranslated(context, 'timesheetsSuccessfullyCreated'));
           NavigatorUtil.navigateReplacement(context, TsPage(_model));
         });
       },
     ).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+        DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         setState(() => _isAddBtnTapped = false);
       });
     });
@@ -308,6 +308,6 @@ class _AddTsPageState extends State<AddTsPage> {
         _filteredEmployees = _employees;
         _loading = false;
       });
-    }).catchError((onError) => DialogService.showFailureDialogWithWillPopScope(context, getTranslated(context, 'groupNoEmployees'), TsPage(_model)));
+    }).catchError((onError) => DialogUtil.showFailureDialogWithWillPopScope(context, getTranslated(context, 'groupNoEmployees'), TsPage(_model)));
   }
 }

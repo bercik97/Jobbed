@@ -11,7 +11,7 @@ import 'package:give_job/manager/edit/manager_edit_page.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/logout_service.dart';
+import 'package:give_job/shared/util/logout_util.dart';
 import 'package:give_job/shared/settings/bug_report_dialog.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
@@ -176,7 +176,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                                             _userService.updatePasswordByUsername(_user.username, _passwordController.text).then((res) {
                                                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                                                 Navigator.of(context).pop();
-                                                                Logout.logoutWithoutConfirm(context, getTranslated(context, 'passwordUpdatedSuccessfully'));
+                                                                LogoutUtil.logoutWithoutConfirm(context, getTranslated(context, 'passwordUpdatedSuccessfully'));
                                                               });
                                                             });
                                                           },
@@ -205,7 +205,7 @@ class _SettingsPageState extends State<SettingsPage> {
               margin: EdgeInsets.only(left: 15, top: 10),
               child: InkWell(
                 child: _subtitleInkWellContainer(getTranslated(context, 'logout')),
-                onTap: () => Logout.logout(context),
+                onTap: () => LogoutUtil.logout(context),
               ),
             ),
             _titleContainer(getTranslated(context, 'other')),

@@ -12,9 +12,9 @@ import 'package:give_job/internationalization/localization/localization_constant
 import 'package:give_job/manager/groups/group/piecework/add_piecework_for_selected_workdays.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/service/dialog_service.dart';
-import 'package:give_job/shared/service/toast_service.dart';
-import 'package:give_job/shared/service/validator_service.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
+import 'package:give_job/shared/util/validator_util.dart';
 import 'package:give_job/shared/util/data_table_util.dart';
 import 'package:give_job/shared/util/icons_legend_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
@@ -504,12 +504,12 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             hours = double.parse(_hoursController.text);
                             minutes = double.parse(_minutesController.text) * 0.01;
                           } catch (FormatException) {
-                            ToastService.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
+                            ToastUtil.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
                             return;
                           }
-                          String invalidMessage = ValidatorService.validateUpdatingHoursWithMinutes(hours, minutes, context);
+                          String invalidMessage = ValidatorUtil.validateUpdatingHoursWithMinutes(hours, minutes, context);
                           if (invalidMessage != null) {
-                            ToastService.showErrorToast(invalidMessage);
+                            ToastUtil.showErrorToast(invalidMessage);
                             return;
                           }
                           FocusScope.of(context).unfocus();
@@ -519,12 +519,12 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             (res) {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 Navigator.of(context).pop();
-                                ToastService.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
+                                ToastUtil.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
                                 _refresh();
                               }).catchError(() {
                                 Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                   Navigator.of(context).pop();
-                                  ToastService.showSuccessToast(getTranslated(context, 'somethingWentWrong'));
+                                  ToastUtil.showSuccessToast(getTranslated(context, 'somethingWentWrong'));
                                 });
                               });
                             },
@@ -543,7 +543,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   }
 
   void _showDeletePiecework() async {
-    DialogService.showConfirmationDialog(
+    DialogUtil.showConfirmationDialog(
       context: context,
       title: getTranslated(context, 'confirmation'),
       content: getTranslated(context, 'deletingPieceworkForSelectedDaysConfirmation'),
@@ -559,12 +559,12 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _refresh();
         Navigator.of(context).pop();
-        ToastService.showSuccessToast(getTranslated(context, 'pieceworkForSelectedDaysDeleted'));
+        ToastUtil.showSuccessToast(getTranslated(context, 'pieceworkForSelectedDaysDeleted'));
         setState(() => _isDeletePieceworkButtonTapped = false);
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+        DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         setState(() => _isDeletePieceworkButtonTapped = false);
       });
     });
@@ -640,9 +640,9 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                         color: GREEN,
                         onPressed: () {
                           String note = _noteController.text;
-                          String invalidMessage = ValidatorService.validateNote(note, context);
+                          String invalidMessage = ValidatorUtil.validateNote(note, context);
                           if (invalidMessage != null) {
-                            ToastService.showErrorToast(invalidMessage);
+                            ToastUtil.showErrorToast(invalidMessage);
                             return;
                           }
                           FocusScope.of(context).unfocus();
@@ -650,12 +650,12 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                           _workdayService.updateFieldsValuesByIds(selectedIds.map((el) => el.toString()).toList(), {'note': note}).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.of(context).pop();
-                              ToastService.showSuccessToast(getTranslated(context, 'noteUpdatedSuccessfully'));
+                              ToastUtil.showSuccessToast(getTranslated(context, 'noteUpdatedSuccessfully'));
                               _refresh();
                             }).catchError(() {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 Navigator.of(context).pop();
-                                ToastService.showSuccessToast(getTranslated(context, 'somethingWentWrong'));
+                                ToastUtil.showSuccessToast(getTranslated(context, 'somethingWentWrong'));
                               });
                             });
                           });
@@ -744,9 +744,9 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                         color: GREEN,
                         onPressed: () {
                           String note = _noteController.text;
-                          String invalidMessage = ValidatorService.validateNote(note, context);
+                          String invalidMessage = ValidatorUtil.validateNote(note, context);
                           if (invalidMessage != null) {
-                            ToastService.showErrorToast(invalidMessage);
+                            ToastUtil.showErrorToast(invalidMessage);
                             return;
                           }
                           FocusScope.of(context).unfocus();
@@ -754,12 +754,12 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                           _workdayService.updateFieldsValuesById(workdayId, {'note': note}).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.of(context).pop();
-                              ToastService.showSuccessToast(getTranslated(context, 'noteUpdatedSuccessfully'));
+                              ToastUtil.showSuccessToast(getTranslated(context, 'noteUpdatedSuccessfully'));
                               _refresh();
                             }).catchError(() {
                               Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                 Navigator.of(context).pop();
-                                DialogService.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+                                DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
                               });
                             });
                           });
