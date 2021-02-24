@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:give_job/api/employee/dto/employee_group_dto.dart';
+import 'package:give_job/api/employee/dto/employee_basic_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/group/service/group_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
@@ -15,9 +15,9 @@ import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/loader.dart';
@@ -42,8 +42,8 @@ class _DeleteGroupEmployeesPageState extends State<DeleteGroupEmployeesPage> {
 
   final ScrollController _scrollController = new ScrollController();
 
-  List<EmployeeGroupDto> _employees = new List();
-  List<EmployeeGroupDto> _filteredEmployees = new List();
+  List<EmployeeBasicDto> _employees = new List();
+  List<EmployeeBasicDto> _filteredEmployees = new List();
   bool _loading = false;
   bool _isChecked = false;
   bool _isDeleteButtonTapped = false;
@@ -118,7 +118,7 @@ class _DeleteGroupEmployeesPageState extends State<DeleteGroupEmployeesPage> {
         onChanged: (string) {
           setState(
             () {
-              _filteredEmployees = _employees.where((e) => (e.info.toLowerCase().contains(string.toLowerCase()))).toList();
+              _filteredEmployees = _employees.where((e) => ((e.name + e.surname).toLowerCase().contains(string.toLowerCase()))).toList();
             },
           );
         },
@@ -161,7 +161,7 @@ class _DeleteGroupEmployeesPageState extends State<DeleteGroupEmployeesPage> {
           controller: _scrollController,
           itemCount: _filteredEmployees.length,
           itemBuilder: (BuildContext context, int index) {
-            EmployeeGroupDto employee = _filteredEmployees[index];
+            EmployeeBasicDto employee = _filteredEmployees[index];
             int foundIndex = 0;
             for (int i = 0; i < _employees.length; i++) {
               if (_employees[i].id == employee.id) {
@@ -181,7 +181,7 @@ class _DeleteGroupEmployeesPageState extends State<DeleteGroupEmployeesPage> {
                       contentPadding: EdgeInsets.only(right: 10),
                       child: CheckboxListTile(
                         controlAffinity: ListTileControlAffinity.leading,
-                        title: text20WhiteBold(utf8.decode(employee.info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                        title: text20WhiteBold(utf8.decode(employee.name.runes.toList()) + ' ' + utf8.decode(employee.surname.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                         activeColor: GREEN,
                         checkColor: WHITE,
                         value: _checked[foundIndex],

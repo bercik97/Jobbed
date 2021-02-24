@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:give_job/api/employee/dto/creaet_basic_employee_dto.dart';
 import 'package:give_job/api/employee/dto/employee_basic_dto.dart';
-import 'package:give_job/api/employee/dto/employee_group_dto.dart';
 import 'package:give_job/api/employee/dto/employee_profile_dto.dart';
 import 'package:give_job/api/employee/dto/employee_settings_dto.dart';
 import 'package:give_job/api/employee/dto/employee_statistics_dto.dart';
@@ -90,10 +89,10 @@ class EmployeeService {
     }
   }
 
-  Future<List<EmployeeGroupDto>> findAllByGroupId(int groupId) async {
+  Future<List<EmployeeBasicDto>> findAllByGroupId(int groupId) async {
     Response res = await get('$_url/groups?group_id=$groupId', headers: _header);
     if (res.statusCode == 200) {
-      return (json.decode(res.body) as List).map((data) => EmployeeGroupDto.fromJson(data)).toList();
+      return (json.decode(res.body) as List).map((data) => EmployeeBasicDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
       return LogoutUtil.handle401WithLogout(_context);
     } else {
