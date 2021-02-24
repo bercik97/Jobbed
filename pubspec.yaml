@@ -108,6 +108,8 @@ flutter:
     - images/green-note-icon.png
     - images/green-workplace-icon.png
 
+    - images/dark-play-icon.png
+    - images/dark-stop-icon.png
     - images/dark-hours-icon.png
     - images/dark-piecework-icon.png
     - images/dark-note-icon.png

@@ -21,8 +21,8 @@ import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/widget/circular_progress_indicator.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -382,7 +382,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     );
   }
 
-  void _startWork(int workplaceId) {
+  void _startWork(String workplaceId) {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     setState(() => _isStartWorkButtonTapped = true);
     CreateWorkTimeDto dto = new CreateWorkTimeDto(workplaceId: workplaceId, workdayId: _todayWorkdayId);

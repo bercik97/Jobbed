@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class WorkplaceIdNameDto {
-  final int id;
+  final String id;
   final String name;
   final String location;
 
@@ -13,7 +13,7 @@ class WorkplaceIdNameDto {
 
   factory WorkplaceIdNameDto.fromJson(Map<String, dynamic> json) {
     return WorkplaceIdNameDto(
-      id: json['id'] as int,
+      id: json['id'] as String,
       name: json['name'] as String,
       location: json['location'] as String,
     );

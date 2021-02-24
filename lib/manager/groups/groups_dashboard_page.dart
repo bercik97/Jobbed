@@ -9,7 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:give_job/api/employee/dto/creaet_basic_employee_dto.dart';
+import 'package:give_job/api/employee/dto/create_basic_employee_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/group/dto/group_dashboard_dto.dart';
 import 'package:give_job/api/group/service/group_service.dart';

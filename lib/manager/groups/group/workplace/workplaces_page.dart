@@ -17,9 +17,9 @@ import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/util/dialog_util.dart';
+import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/util/validator_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
@@ -51,7 +51,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
   bool _loading = false;
   bool _isChecked = false;
   List<bool> _checked = new List();
-  LinkedHashSet<int> _selectedIds = new LinkedHashSet();
+  LinkedHashSet<String> _selectedIds = new LinkedHashSet();
 
   bool _isAddButtonTapped = false;
   bool _isDeleteButtonTapped = false;
@@ -215,6 +215,15 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                                     children: [
                                                       textWhite(getTranslated(this.context, 'radius') + ': '),
                                                       textGreen(workplace.radiusLength.toString().substring(0, 4) + ' KM'),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: Row(
+                                                    children: [
+                                                      textWhite(getTranslated(this.context, 'workplaceId') + ': '),
+                                                      textGreen(workplace.id),
                                                     ],
                                                   ),
                                                 ),
@@ -705,7 +714,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
     );
   }
 
-  _handleDeleteByIdIn(LinkedHashSet<int> ids) {
+  _handleDeleteByIdIn(LinkedHashSet<String> ids) {
     if (ids.isEmpty) {
       showHint(context, getTranslated(context, 'needToSelectWorkplaces') + ' ', getTranslated(context, 'whichYouWantToRemove'));
       return;

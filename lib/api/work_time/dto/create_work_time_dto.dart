@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class CreateWorkTimeDto {
-  final int workplaceId;
+  final String workplaceId;
   final int workdayId;
 
   CreateWorkTimeDto({@required this.workplaceId, @required this.workdayId});
