@@ -8,6 +8,7 @@ import 'package:give_job/manager/groups/group/price_list/price_lists_page.dart';
 import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.dart';
 import 'package:give_job/manager/groups/group/timesheets/ts_page.dart';
 import 'package:give_job/manager/groups/group/warehouse/warehouse_page.dart';
+import 'package:give_job/manager/groups/group/work_time/work_time_page.dart';
 import 'package:give_job/manager/groups/group/workplace/workplaces_page.dart';
 import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -20,7 +21,6 @@ import 'package:give_job/shared/widget/texts.dart';
 import '../../shared/manager_app_bar.dart';
 import '../groups_dashboard_page.dart';
 import 'edit/group_edit_page.dart';
-import 'employee/employees_page.dart';
 import 'item_place/item_places_page.dart';
 
 class GroupPage extends StatefulWidget {
@@ -119,8 +119,8 @@ class _GroupPageState extends State<GroupPage> {
                           child: Material(
                             color: BRIGHTER_DARK,
                             child: InkWell(
-                              onTap: () => NavigatorUtil.navigate(context, EmployeesPage(_model)),
-                              child: _buildScrollableContainer('images/employees-icon.png', 'employees', 'manageSelectedEmployee'),
+                              onTap: () => NavigatorUtil.navigate(context, WorkTimePage(_model)),
+                              child: _buildScrollableContainer('images/employees-icon.png', 'workTimes', 'manageEmployeesWorkTimeAndWorkplace'),
                             ),
                           ),
                         ),

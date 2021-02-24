@@ -157,7 +157,7 @@
   "profile": "Profile",
   "welcome": "Welcome",
   "loggedSuccessButNoGroups": "You have successfully logged in but it looks like you don't have created groups. To create a group, please select the button at the bottom of the screen.",
-  "manageSelectedEmployee": "Manage selected employee",
+  "manageEmployeesWorkTimeAndWorkplace": "Manage employees work time and workplace",
   "quickUpdate": "Quick update",
   "quickUpdateDescription": "Make a quick today update",
   "fillHoursPieceworks": "Fill hours, piecework etc.",
