@@ -213,15 +213,6 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                                   alignment: Alignment.topLeft,
                                                   child: Row(
                                                     children: [
-                                                      textWhite(getTranslated(this.context, 'radius') + ': '),
-                                                      textGreen(workplace.radiusLength.toString().substring(0, 4) + ' KM'),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: Row(
-                                                    children: [
                                                       textWhite(getTranslated(this.context, 'workplaceId') + ': '),
                                                       textGreen(workplace.id),
                                                     ],
