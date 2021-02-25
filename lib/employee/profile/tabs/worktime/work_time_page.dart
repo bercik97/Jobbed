@@ -260,7 +260,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     } else {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         Navigator.of(context).pop();
-        ToastUtil.showSuccessToast(getTranslated(context, 'cannotGetCurrentLocation'));
+        ToastUtil.showErrorToast(getTranslated(context, 'cannotGetCurrentLocation'));
       });
     }
   }
