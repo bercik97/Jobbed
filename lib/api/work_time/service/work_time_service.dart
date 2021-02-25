@@ -21,6 +21,18 @@ class WorkTimeService {
     return res.statusCode == 200 ? res : Future.error(res.body);
   }
 
+  Future<dynamic> saveForEmployees(List<String> employeeIds, String workplaceId, int year, int month, String dateFrom, String dateTo, String startTime, String endTime) async {
+    Map<String, dynamic> map = {'workplaceId': workplaceId, 'year': year, 'month': month, 'dateFrom': dateFrom, 'dateTo': dateTo, 'startTime': startTime, 'endTime': endTime};
+    Response res = await post('$_url/employees/$employeeIds', body: jsonEncode(map), headers: _headers);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return LogoutUtil.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
   Future<IsCurrentlyAtWorkWithWorkTimesDto> checkIfCurrentDateWorkTimeIsStartedAndNotFinished(int workdayId) async {
     String url = _url + '/workdays/$workdayId/currently-at-work';
     Response res = await get(url, headers: _header);

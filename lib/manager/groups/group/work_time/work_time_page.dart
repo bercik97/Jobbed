@@ -5,6 +5,7 @@ import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:date_util/date_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/employee/dto/employee_work_time_dto.dart';
 import 'package:give_job/api/employee/service/employee_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
@@ -284,7 +285,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                     },
                   ),
                 ),
-                SizedBox(width: 5),
+                SizedBox(width: 1),
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
@@ -306,7 +307,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                     },
                   ),
                 ),
-                SizedBox(width: 5),
+                SizedBox(width: 1),
                 Expanded(
                   child: MaterialButton(
                     color: GREEN,
@@ -704,31 +705,20 @@ class _WorkTimePageState extends State<WorkTimePage> {
   }
 
   void _handleSaveWorkTimesManually(int year, int month, String dateFrom, String dateTo, String startTime, String endTime) {
-    // showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    // _workTimeService
-    //     .saveManuallyForEmployees(
-    //   _selectedIds.map((el) => el.toString()).toList(),
-    //   _workplaces[_chosenIndex].id,
-    //   year,
-    //   month,
-    //   dateFrom,
-    //   dateTo,
-    //   startTime,
-    //   endTime,
-    // )
-    //     .then((value) {
-    //   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-    //     _uncheckAll();
-    //     _refresh();
-    //     Navigator.pop(context);
-    //     Navigator.pop(context);
-    //     ToastUtil.showSuccessToast(getTranslated(context, 'workingTimeHasBeenSuccessfullySetForSelectedDaysAndEmployees'));
-    //   });
-    // }).catchError((onError) {
-    //   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-    //     DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
-    //   });
-    // });
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _workTimeService.saveForEmployees(_selectedIds.map((el) => el.toString()).toList(), _workplaces[_chosenIndex].id, year, month, dateFrom, dateTo, startTime, endTime).then((value) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        _uncheckAll();
+        _refresh();
+        Navigator.pop(context);
+        Navigator.pop(context);
+        ToastUtil.showSuccessToast(getTranslated(context, 'workingTimeHasBeenSuccessfullySetForSelectedDaysAndEmployees'));
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+      });
+    });
   }
 
   void _handleCreateWorkTimeForEmployees() {
