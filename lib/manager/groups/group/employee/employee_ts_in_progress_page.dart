@@ -7,6 +7,7 @@ import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/piecework/service/piecework_service.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
+import 'package:give_job/api/work_time/service/work_time_service.dart';
 import 'package:give_job/api/workday/dto/workday_dto.dart';
 import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
@@ -21,7 +22,6 @@ import 'package:give_job/shared/util/month_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/util/validator_util.dart';
-import 'package:give_job/shared/util/workday_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/icons_legend_dialog.dart';
@@ -71,16 +71,18 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   bool _loading = false;
 
   bool _isDeletePieceworkServiceButtonTapped = false;
+  bool _isDeleteWorkTimeButtonTapped = false;
   bool _isDeletePieceworkButtonTapped = false;
 
   PieceworkService _pieceworkService;
+  WorkTimeService _workTimeService;
 
   @override
   void initState() {
     this._model = widget._model;
     this._user = _model.user;
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
-    this._pieceworkService = ServiceInitializer.initialize(context, _user.authHeader, PieceworkService);
+    this._workTimeService = ServiceInitializer.initialize(context, _user.authHeader, WorkTimeService);
     this._employeeInfo = widget._employeeInfo;
     this._employeeId = widget._employeeId;
     this._employeeNationality = widget._employeeNationality;
@@ -373,7 +375,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
           ),
         ),
         InkWell(
-          onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workdays[index].workTimes),
+          onTap: () => _showScrollableWorkTimesDialog(this.context, workdays[index].workTimes),
           child: Ink(
             child: workdays[index].workTimes != null && workdays[index].workTimes.isNotEmpty ? iconWhite(Icons.zoom_in) : Align(alignment: Alignment.center, child: textWhite('-')),
             width: 50,
@@ -914,6 +916,121 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         setState(() => _isDeletePieceworkServiceButtonTapped = false);
+      });
+    });
+  }
+
+  void _showScrollableWorkTimesDialog(BuildContext context, List workTimes) {
+    if (workTimes == null || workTimes.isEmpty) {
+      return;
+    }
+    showGeneralDialog(
+      context: context,
+      barrierColor: DARK.withOpacity(0.95),
+      barrierDismissible: false,
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: Scaffold(
+            backgroundColor: Colors.black12,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: <Widget>[
+                        text20GreenBold(getTranslated(context, 'workTimes')),
+                        SizedBox(height: 20),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Theme(
+                              data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
+                              child: DataTable(
+                                columnSpacing: 10,
+                                columns: [
+                                  DataColumn(label: textWhiteBold('')),
+                                  DataColumn(label: textWhiteBold('No.')),
+                                  DataColumn(label: textWhiteBold(getTranslated(context, 'from'))),
+                                  DataColumn(label: textWhiteBold(getTranslated(context, 'to'))),
+                                  DataColumn(label: textWhiteBold(getTranslated(context, 'sum'))),
+                                  DataColumn(label: textWhiteBold(getTranslated(context, 'workplace'))),
+                                ],
+                                rows: [
+                                  for (int i = 0; i < workTimes.length; i++)
+                                    DataRow(
+                                      cells: [
+                                        DataCell(
+                                          IconButton(
+                                            icon: iconRed(Icons.delete),
+                                            onPressed: () {
+                                              DialogUtil.showConfirmationDialog(
+                                                context: context,
+                                                title: getTranslated(context, 'confirmation'),
+                                                content: getTranslated(context, 'deletingSelectedWorkTimeConfirmation'),
+                                                isBtnTapped: _isDeleteWorkTimeButtonTapped,
+                                                fun: () => _isDeleteWorkTimeButtonTapped ? null : _handleDeleteWorkTime(workTimes[i].id),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        DataCell(textWhite((i + 1).toString())),
+                                        DataCell(textWhite(workTimes[i].startTime.toString())),
+                                        DataCell(textWhite(workTimes[i].endTime != null ? workTimes[i].endTime.toString() : '-')),
+                                        DataCell(textWhite(workTimes[i].totalTime != null ? workTimes[i].totalTime.toString() : '-')),
+                                        DataCell(textWhite(utf8.decode(workTimes[i].workplaceName.toString().runes.toList()))),
+                                      ],
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Container(
+                          width: 60,
+                          child: MaterialButton(
+                            elevation: 0,
+                            height: 50,
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[iconWhite(Icons.close)],
+                            ),
+                            color: Colors.red,
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _handleDeleteWorkTime(num workTimeId) {
+    setState(() => _isDeleteWorkTimeButtonTapped = true);
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _workTimeService.deleteById(workTimeId).then((value) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyDeletedWorkTime'));
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        _refresh();
+        setState(() => _isDeleteWorkTimeButtonTapped = false);
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+        setState(() => _isDeleteWorkTimeButtonTapped = false);
       });
     });
   }

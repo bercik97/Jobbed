@@ -632,5 +632,7 @@
   "workIsDoneStatus": "Работа сделана",
   "workIsInProgress": "Работа ведется",
   "workDoNotStarted": "Не начал работать",
-  "noEmployeesInGroupOrTheyDoNotHaveTimesheetForCurrentMonth": "В группе нет сотрудников или у них нет расписания на текущий месяц."
+  "noEmployeesInGroupOrTheyDoNotHaveTimesheetForCurrentMonth": "В группе нет сотрудников или у них нет расписания на текущий месяц.",
+  "deletingSelectedWorkTimeConfirmation": "Вы уверены, что хотите удалить выбранное рабочее время??",
+  "successfullyDeletedWorkTime": "Успешно удалена запись рабочего времени"
 }

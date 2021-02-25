@@ -632,5 +632,7 @@
   "workIsDoneStatus": "სამუშაო შესრულებულია",
   "workIsInProgress": "სამუშაოები მიმდინარეობს",
   "workDoNotStarted": "არ დაიწყო მუშაობა",
-  "noEmployeesInGroupOrTheyDoNotHaveTimesheetForCurrentMonth": "ჯგუფში არცერთი თანამშრომელი არ არის ან მათ არ აქვთ სამუშაო ფურცელი მიმდინარე თვისთვის."
+  "noEmployeesInGroupOrTheyDoNotHaveTimesheetForCurrentMonth": "ჯგუფში არცერთი თანამშრომელი არ არის ან მათ არ აქვთ სამუშაო ფურცელი მიმდინარე თვისთვის.",
+  "deletingSelectedWorkTimeConfirmation": "ნამდვილად გსურთ წაშალოთ არჩეული სამუშაო დრო?",
+  "successfullyDeletedWorkTime": "წარმატებით წაიშალა სამუშაო დროის ჩანაწერი"
 }

@@ -632,5 +632,7 @@
   "workIsDoneStatus": "Робота виконана",
   "workIsInProgress": "Робота триває",
   "workDoNotStarted": "Не розпочав роботу",
-  "noEmployeesInGroupOrTheyDoNotHaveTimesheetForCurrentMonth": "У групі немає працівників або у них немає табеля обліку робочого часу за поточний місяць."
+  "noEmployeesInGroupOrTheyDoNotHaveTimesheetForCurrentMonth": "У групі немає працівників або у них немає табеля обліку робочого часу за поточний місяць.",
+  "deletingSelectedWorkTimeConfirmation": "Ви впевнені, що хочете видалити вибраний час роботи?",
+  "successfullyDeletedWorkTime": "Запис робочого часу успішно видалено"
 }

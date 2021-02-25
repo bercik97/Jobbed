@@ -632,5 +632,7 @@
   "workIsDoneStatus": "Praca jest skończona",
   "workIsInProgress": "Praca jest w toku",
   "workDoNotStarted": "Nie zaczął pracy",
-  "noEmployeesInGroupOrTheyDoNotHaveTimesheetForCurrentMonth": "Brak pracowników w grupie lub pracownicy nie posiadają arkusza czasu pracy na bieżący miesiąc."
+  "noEmployeesInGroupOrTheyDoNotHaveTimesheetForCurrentMonth": "Brak pracowników w grupie lub pracownicy nie posiadają arkusza czasu pracy na bieżący miesiąc.",
+  "deletingSelectedWorkTimeConfirmation": "Czy na pewno chcesz usunąć wybrany rekord czasu pracy?",
+  "successfullyDeletedWorkTime": "Pomyślnie usunięto wybrany rekord czasu pracy"
 }

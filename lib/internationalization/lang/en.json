@@ -632,5 +632,7 @@
   "workIsDoneStatus": "Work is done",
   "workIsInProgress": "Work is in progress",
   "workDoNotStarted": "Didnt start work",
-  "noEmployeesInGroupOrTheyDoNotHaveTimesheetForCurrentMonth": "No employees in group or they do not have timesheet for current month."
+  "noEmployeesInGroupOrTheyDoNotHaveTimesheetForCurrentMonth": "No employees in group or they do not have timesheet for current month.",
+  "deletingSelectedWorkTimeConfirmation": "Are you sure you want to delete selected work time?",
+  "successfullyDeletedWorkTime": "Successfully deleted work time record"
 }
