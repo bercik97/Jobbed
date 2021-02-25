@@ -28,6 +28,7 @@ import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:location/location.dart' as locc;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pin_code_text_field/pin_code_text_field.dart';
 
 import '../../../employee_profile_page.dart';
 
@@ -53,11 +54,17 @@ class _WorkTimePageState extends State<WorkTimePage> {
 
   IsCurrentlyAtWorkWithWorkTimesDto _dto;
 
+  final _workplaceCodeController = TextEditingController();
+
+  bool _isChoseWorkTimeTypeBtnDisabled = false;
   bool _isStartDialogButtonTapped = false;
   bool _isStartWorkButtonTapped = false;
   bool _isPauseWorkButtonTapped = false;
 
   AsyncMemoizer _memoizer;
+
+  int _gpsTypeRadioValue = -1;
+  int _workplaceCodeTypeRadioValue = -1;
 
   @override
   void initState() {
@@ -182,7 +189,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
       child: Center(
         child: Column(
           children: [
-            _buildBtn('images/stop-icon.png', _isPauseWorkButtonTapped, () => _showPauseWorkDialog(workTimes.last)),
+            _buildBtn('images/stop-icon.png', _isPauseWorkButtonTapped, () => _showChooseWorkTimeType(() => _showPauseWorkByGPSDialog(workTimes.last), () => print('object'))),
             _buildPauseHint(),
             _displayWorkTimes(workTimes),
           ],
@@ -196,7 +203,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     return Center(
       child: Column(
         children: [
-          _buildBtn('images/play-icon.png', _isStartDialogButtonTapped, _findWorkplacesByCurrentLocation),
+          _buildBtn('images/play-icon.png', _isStartDialogButtonTapped, () => _showChooseWorkTimeType(() => _findWorkByGPS(), () => _showEnterWorkplaceCode())),
           _buildStartHint(),
           _displayWorkTimes(workTimes),
         ],
@@ -238,7 +245,127 @@ class _WorkTimePageState extends State<WorkTimePage> {
     );
   }
 
-  _findWorkplacesByCurrentLocation() async {
+  void _showChooseWorkTimeType(Function() gpsFun, Function() workplaceCodeFun) {
+    showGeneralDialog(
+      context: context,
+      barrierColor: DARK.withOpacity(0.95),
+      barrierDismissible: false,
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SafeArea(
+          child: SizedBox.expand(
+            child: StatefulBuilder(builder: (context, setState) {
+              return Scaffold(
+                backgroundColor: Colors.black12,
+                body: Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10, right: 10),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: 50, bottom: 10),
+                          child: Column(
+                            children: [
+                              textCenter20GreenBold(getTranslated(context, 'selectTypeOfWorkingTime')),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 7.5),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    _buildRadioBtn(
+                                      color: GREEN,
+                                      title: getTranslated(context, 'gps'),
+                                      value: 0,
+                                      groupValue: _gpsTypeRadioValue,
+                                      onChanged: (newValue) => setState(() {
+                                        _gpsTypeRadioValue = newValue;
+                                        _workplaceCodeTypeRadioValue = -1;
+                                        _isChoseWorkTimeTypeBtnDisabled = false;
+                                      }),
+                                    ),
+                                    _buildRadioBtn(
+                                      color: GREEN,
+                                      title: getTranslated(context, 'workplaceCode'),
+                                      value: 0,
+                                      groupValue: _workplaceCodeTypeRadioValue,
+                                      onChanged: (newValue) => setState(() {
+                                        _workplaceCodeTypeRadioValue = newValue;
+                                        _gpsTypeRadioValue = -1;
+                                        _isChoseWorkTimeTypeBtnDisabled = false;
+                                      }),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              MaterialButton(
+                                elevation: 0,
+                                height: 50,
+                                minWidth: 40,
+                                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[iconWhite(Icons.close)],
+                                ),
+                                color: Colors.red,
+                                onPressed: () {
+                                  _gpsTypeRadioValue = -1;
+                                  _workplaceCodeTypeRadioValue = -1;
+                                  _isChoseWorkTimeTypeBtnDisabled = true;
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              SizedBox(width: 25),
+                              MaterialButton(
+                                elevation: 0,
+                                height: 50,
+                                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[iconWhite(Icons.check)],
+                                ),
+                                color: !_isChoseWorkTimeTypeBtnDisabled ? GREEN : Colors.grey,
+                                onPressed: () {
+                                  if (_isChoseWorkTimeTypeBtnDisabled) {
+                                    return;
+                                  }
+                                  if (_gpsTypeRadioValue == 0) {
+                                    gpsFun();
+                                  } else {
+                                    workplaceCodeFun();
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }),
+          ),
+        );
+      },
+    );
+  }
+
+  _findWorkByGPS() async {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'lookingForWorkplacesInYourLocation'));
     setState(() => _isStartDialogButtonTapped = true);
     locc.Location location = new locc.Location();
@@ -248,7 +375,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
       double longitude = _locationData.longitude;
       _workplaceService.findAllWorkplacesByCompanyIdAndLocationParams(_user.companyId, latitude, longitude).then((res) {
         Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-          _showStartConfirmDialog(res);
+          _showStartWorkByGPSConfirmDialog(res);
           setState(() => _isStartDialogButtonTapped = false);
         });
       }).catchError((onError) {
@@ -265,7 +392,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     }
   }
 
-  _showStartConfirmDialog(List<WorkplaceIdNameDto> workplaces) {
+  _showStartWorkByGPSConfirmDialog(List<WorkplaceIdNameDto> workplaces) {
     showGeneralDialog(
       context: context,
       barrierColor: DARK.withOpacity(0.95),
@@ -335,7 +462,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                                     actions: <Widget>[
                                                       FlatButton(
                                                         child: textGreen(getTranslated(this.context, 'yesIWantToStart')),
-                                                        onPressed: () => _isStartWorkButtonTapped ? null : _startWork(workplaces[i].id),
+                                                        onPressed: () => _isStartWorkButtonTapped ? null : _startWorkByGPS(workplaces[i].id),
                                                       ),
                                                       FlatButton(
                                                         child: textWhite(getTranslated(this.context, 'no')),
@@ -382,7 +509,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     );
   }
 
-  void _startWork(String workplaceId) {
+  void _startWorkByGPS(String workplaceId) {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     setState(() => _isStartWorkButtonTapped = true);
     CreateWorkTimeDto dto = new CreateWorkTimeDto(workplaceId: workplaceId, workdayId: _todayWorkdayId);
@@ -396,7 +523,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     });
   }
 
-  _showPauseWorkDialog(WorkTimeDto workTime) async {
+  _showPauseWorkByGPSDialog(WorkTimeDto workTime) async {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'lookingForWorkplacesInYourLocation'));
     setState(() => _isPauseWorkButtonTapped = true);
     locc.Location location = new locc.Location();
@@ -406,7 +533,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
       double longitude = _locationData.longitude;
       _workTimeService.canFinishByIdAndLocationParams(workTime.id, latitude, longitude).then((res) {
         Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-          _showPauseConfirmDialog(res);
+          _showPauseWorkByGPSConfirmDialog(res);
           setState(() => _isPauseWorkButtonTapped = false);
         });
       }).catchError((onError) {
@@ -423,7 +550,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     }
   }
 
-  _showPauseConfirmDialog(res) {
+  _showPauseWorkByGPSConfirmDialog(res) {
     return showDialog(
       barrierDismissible: false,
       context: context,
@@ -445,7 +572,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
               children: [
                 FlatButton(
                   child: textWhite(getTranslated(this.context, 'workIsDone')),
-                  onPressed: () => _isPauseWorkButtonTapped ? null : _finishWork(),
+                  onPressed: () => _isPauseWorkButtonTapped ? null : _finishWorkByGPS(),
                 ),
                 FlatButton(child: textWhite(getTranslated(this.context, 'no')), onPressed: () => Navigator.of(context).pop()),
               ],
@@ -456,11 +583,168 @@ class _WorkTimePageState extends State<WorkTimePage> {
     );
   }
 
-  _finishWork() {
+  _finishWorkByGPS() {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     setState(() => _isPauseWorkButtonTapped = true);
     _workTimeService.finish(_dto.notFinishedWorkTimeId).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => _refresh());
+    }).catchError((onError) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+        setState(() => _isPauseWorkButtonTapped = false);
+      });
+    });
+  }
+
+  _showEnterWorkplaceCode() {
+    return showGeneralDialog(
+      context: context,
+      barrierColor: DARK.withOpacity(0.95),
+      barrierDismissible: false,
+      barrierLabel: getTranslated(context, 'enterWorkplaceCode'),
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: Scaffold(
+            backgroundColor: Colors.black12,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  textCenter20GreenBold(getTranslated(context, 'enterWorkplaceCodePopupTitle')),
+                  SizedBox(height: 30),
+                  PinCodeTextField(
+                    autofocus: true,
+                    highlight: true,
+                    controller: _workplaceCodeController,
+                    highlightColor: WHITE,
+                    defaultBorderColor: MORE_BRIGHTER_DARK,
+                    hasTextBorderColor: GREEN,
+                    maxLength: 4,
+                    pinBoxWidth: 50,
+                    pinBoxHeight: 64,
+                    pinBoxDecoration: ProvidedPinBoxDecoration.defaultPinBoxDecoration,
+                    pinTextStyle: TextStyle(fontSize: 22, color: WHITE),
+                    pinTextAnimatedSwitcherTransition: ProvidedPinBoxTextAnimation.scalingTransition,
+                    pinTextAnimatedSwitcherDuration: Duration(milliseconds: 300),
+                    keyboardType: TextInputType.number,
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      MaterialButton(
+                        elevation: 0,
+                        height: 50,
+                        minWidth: 40,
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[iconWhite(Icons.close)],
+                        ),
+                        color: Colors.red,
+                        onPressed: () => {
+                          Navigator.pop(context),
+                          _workplaceCodeController.clear(),
+                        },
+                      ),
+                      SizedBox(width: 25),
+                      MaterialButton(
+                        elevation: 0,
+                        height: 50,
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[iconWhite(Icons.check)],
+                        ),
+                        color: GREEN,
+                        onPressed: () {
+                          // showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+                          // _workplaceService.isCorrectByIdAndCompanyId(_workplaceCodeController.text, _user.companyId).then((res) {
+                          //   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                          //     Navigator.pop(context);
+                          //     _resultWorkplaceCodeAlertDialog(res);
+                          //   });
+                          // }).catchError((onError) {
+                          //   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                          //     DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+                          //     Navigator.pop(context);
+                          //     _resultWorkplaceCodeAlertDialog(false);
+                          //   });
+                          // });
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  _resultWorkplaceCodeAlertDialog(bool isCorrect) {
+    String workplaceId = _workplaceCodeController.text;
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: DARK,
+          title: isCorrect ? textGreen(getTranslated(context, 'correctWorkplaceCode')) : textWhite(getTranslated(context, 'failure')),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                isCorrect
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          textCenter20White(getTranslated(context, 'startTimeConfirmation')),
+                          textCenter20GreenBold(workplaceId + '?'),
+                        ],
+                      )
+                    : textWhite(getTranslated(context, 'workplaceCodeIsIncorrect'))
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            isCorrect
+                ? Row(
+                    children: [
+                      FlatButton(
+                        child: textWhite(getTranslated(context, 'yesImSure')),
+                        onPressed: () => _isStartWorkButtonTapped ? null : _startWorkByWorkplaceCode(workplaceId, _todayWorkdayId),
+                      ),
+                      FlatButton(child: textWhite(getTranslated(context, 'no')), onPressed: () => Navigator.of(context).pop()),
+                    ],
+                  )
+                : MaterialButton(
+                    elevation: 0,
+                    height: 50,
+                    minWidth: double.maxFinite,
+                    shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                    color: GREEN,
+                    child: text20WhiteBold(getTranslated(context, 'close')),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+          ],
+        );
+      },
+    );
+  }
+
+  _startWorkByWorkplaceCode(String workplaceId, num workdayId) {
+    setState(() => _isStartWorkButtonTapped = !_isStartWorkButtonTapped);
+    CreateWorkTimeDto dto = new CreateWorkTimeDto(workplaceId: workplaceId, workdayId: workdayId);
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _workTimeService.create(dto).then((value) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        _refresh();
+        Navigator.pop(context);
+        setState(() => _isPauseWorkButtonTapped = false);
+      });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
@@ -500,6 +784,16 @@ class _WorkTimePageState extends State<WorkTimePage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildRadioBtn({Color color, String title, int value, int groupValue, Function onChanged}) {
+    return RadioListTile(
+      activeColor: color,
+      value: value,
+      groupValue: groupValue,
+      onChanged: onChanged,
+      title: textWhite(title),
     );
   }
 

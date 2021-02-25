@@ -634,5 +634,13 @@
   "workDoNotStarted": "არ დაიწყო მუშაობა",
   "noEmployeesInGroupOrTheyDoNotHaveTimesheetForCurrentMonth": "ჯგუფში არცერთი თანამშრომელი არ არის ან მათ არ აქვთ სამუშაო ფურცელი მიმდინარე თვისთვის.",
   "deletingSelectedWorkTimeConfirmation": "ნამდვილად გსურთ წაშალოთ არჩეული სამუშაო დრო?",
-  "successfullyDeletedWorkTime": "წარმატებით წაიშალა სამუშაო დროის ჩანაწერი"
+  "successfullyDeletedWorkTime": "წარმატებით წაიშალა სამუშაო დროის ჩანაწერი",
+  "gps": "GPS ადგილმდებარეობა",
+  "workplaceCode": "სამუშაო ადგილის კოდი",
+  "selectTypeOfWorkingTime": "შეარჩიეთ სამუშაო დროის ტიპი",
+  "enterWorkplaceCode": "შეიყვანეთ სამუშაო ადგილი კოდი",
+  "enterWorkplaceCodePopupTitle": "სამუშაოს დასაწყებად შეიყვანეთ სამუშაო ადგილი",
+  "correctWorkplaceCode": "სამუშაო ადგილის კოდი სწორია",
+  "startTimeConfirmation": "დარწმუნებული ხართ, რომ გსურთ დაიწყოთ მუშაობა სამუშაო ადგილის ნომერზე",
+  "workplaceCodeIsIncorrect": "გავიდა სამუშაო ადგილის კოდი"
 }

@@ -634,5 +634,13 @@
   "workDoNotStarted": "Не розпочав роботу",
   "noEmployeesInGroupOrTheyDoNotHaveTimesheetForCurrentMonth": "У групі немає працівників або у них немає табеля обліку робочого часу за поточний місяць.",
   "deletingSelectedWorkTimeConfirmation": "Ви впевнені, що хочете видалити вибраний час роботи?",
-  "successfullyDeletedWorkTime": "Запис робочого часу успішно видалено"
+  "successfullyDeletedWorkTime": "Запис робочого часу успішно видалено",
+  "gps": "Місцезнаходження GPS",
+  "workplaceCode": "Код робочого місця",
+  "selectTypeOfWorkingTime": "Виберіть тип робочого часу",
+  "enterWorkplaceCode": "Введіть код робочого місця",
+  "enterWorkplaceCodePopupTitle": "Введіть код робочого місця, щоб розпочати роботу",
+  "correctWorkplaceCode": "Код робочого місця ПРАВИЛЬНИЙ",
+  "startTimeConfirmation": "Ви впевнені, що хочете розпочати роботу на робочому місці за номером",
+  "workplaceCodeIsIncorrect": "Введений код робочого місця неправильний"
 }

@@ -634,5 +634,13 @@
   "workDoNotStarted": "Nie zaczął pracy",
   "noEmployeesInGroupOrTheyDoNotHaveTimesheetForCurrentMonth": "Brak pracowników w grupie lub pracownicy nie posiadają arkusza czasu pracy na bieżący miesiąc.",
   "deletingSelectedWorkTimeConfirmation": "Czy na pewno chcesz usunąć wybrany rekord czasu pracy?",
-  "successfullyDeletedWorkTime": "Pomyślnie usunięto wybrany rekord czasu pracy"
+  "successfullyDeletedWorkTime": "Pomyślnie usunięto wybrany rekord czasu pracy",
+  "gps": "Lokalizacja GPS",
+  "workplaceCode": "Kod miejsca pracy",
+  "selectTypeOfWorkingTime": "Wybierz typ czasu pracy",
+  "enterWorkplaceCode": "Wpisz kod miejsca pracy",
+  "enterWorkplaceCodePopupTitle": "Wpisz kod miejsca pracy aby rozpocząc pracę",
+  "correctWorkplaceCode": "Kod miejsca pracy jest POPRAWNY",
+  "startTimeConfirmation": "Czy na pewno chcesz rozpocząć pracę w miejscu pracy o kodzie",
+  "workplaceCodeIsIncorrect": "Wpisany kod miejsca pracy jest NIEPOPRAWNY"
 }
