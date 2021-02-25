@@ -722,19 +722,19 @@ class _WorkTimePageState extends State<WorkTimePage> {
   }
 
   void _handleCreateWorkTimeForEmployees() {
-    // showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    // _workTimeService.createForEmployees(_selectedIds.map((el) => el.toString()).toList(), _workplaces[_chosenIndex].id).then((value) {
-    //   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-    //     _uncheckAll();
-    //     _refresh();
-    //     Navigator.pop(context);
-    //     ToastUtil.showSuccessToast(getTranslated(context, 'workHasBeenStartedSuccessfullyForSelectedEmployees'));
-    //   });
-    // }).catchError((onError) {
-    //   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-    //     DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
-    //   });
-    // });
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _workTimeService.createForEmployees(_selectedIds.map((el) => el.toString()).toList(), _workplaces[_chosenIndex].id).then((value) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        _uncheckAll();
+        _refresh();
+        Navigator.pop(context);
+        ToastUtil.showSuccessToast(getTranslated(context, 'workHasBeenStartedSuccessfullyForSelectedEmployees'));
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+      });
+    });
   }
 
   _showPauseWorkDialog() {
@@ -767,22 +767,22 @@ class _WorkTimePageState extends State<WorkTimePage> {
   }
 
   _pauseSelectedEmployeesWork() {
-    // setState(() => _isPauseButtonTapped = true);
-    // showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    // _workTimeService.finishForEmployees(_selectedIds.map((el) => el.toString()).toList()).then((res) {
-    //   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-    //     _uncheckAll();
-    //     _refresh();
-    //     Navigator.pop(context);
-    //     ToastUtil.showSuccessToast(getTranslated(context, 'workHasBeenStoppedSuccessfullyForSelectedEmployees'));
-    //     setState(() => _isPauseButtonTapped = false);
-    //   });
-    // }).catchError((onError) {
-    //   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-    //     DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
-    //     setState(() => _isPauseButtonTapped = false);
-    //   });
-    // });
+    setState(() => _isPauseButtonTapped = true);
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _workTimeService.finishForEmployees(_selectedIds.map((el) => el.toString()).toList()).then((res) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        _uncheckAll();
+        _refresh();
+        Navigator.pop(context);
+        ToastUtil.showSuccessToast(getTranslated(context, 'workHasBeenStoppedSuccessfullyForSelectedEmployees'));
+        setState(() => _isPauseButtonTapped = false);
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+        setState(() => _isPauseButtonTapped = false);
+      });
+    });
   }
 
   Widget _buildRadioBtn({Color color, String title, int value, int groupValue, Function onChanged}) {

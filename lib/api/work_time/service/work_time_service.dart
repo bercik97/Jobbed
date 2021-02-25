@@ -33,6 +33,17 @@ class WorkTimeService {
     }
   }
 
+  Future<dynamic> createForEmployees(List<String> employeeIds, String workplaceId) async {
+    Response res = await post('$_url/employees/$employeeIds/workplaces/$workplaceId', headers: _headers);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return LogoutUtil.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
   Future<IsCurrentlyAtWorkWithWorkTimesDto> checkIfCurrentDateWorkTimeIsStartedAndNotFinished(int workdayId) async {
     String url = _url + '/workdays/$workdayId/currently-at-work';
     Response res = await get(url, headers: _header);
@@ -61,5 +72,17 @@ class WorkTimeService {
     String url = _url + '/$id/finish';
     Response res = await put(url, headers: _headers);
     return res.statusCode == 200 ? res : Future.error(res.body);
+  }
+
+  Future<dynamic> finishForEmployees(List<String> employeeIds) async {
+    String url = _url + '/finish/employees/$employeeIds';
+    Response res = await put(url, headers: _headers);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return LogoutUtil.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
   }
 }
