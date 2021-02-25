@@ -113,6 +113,12 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                               ),
                               Row(
                                 children: <Widget>[
+                                  textWhite(getTranslated(this.context, 'time') + ': '),
+                                  textGreenBold(_timesheet.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + _timesheet.totalTime + ')'),
+                                ],
+                              ),
+                              Row(
+                                children: <Widget>[
                                   textWhite(getTranslated(this.context, 'sum') + ': '),
                                   textGreenBold(_timesheet.totalMoneyEarned.toString() + ' PLN'),
                                 ],

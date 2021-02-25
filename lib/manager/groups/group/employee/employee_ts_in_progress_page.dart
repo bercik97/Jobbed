@@ -56,8 +56,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   GroupModel _model;
   User _user;
 
-  WorkdayService _workdayService;
-
   String _employeeInfo;
   int _employeeId;
   String _employeeNationality;
@@ -74,6 +72,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   bool _isDeleteWorkTimeButtonTapped = false;
   bool _isDeletePieceworkButtonTapped = false;
 
+  WorkdayService _workdayService;
   PieceworkService _pieceworkService;
   WorkTimeService _workTimeService;
 
@@ -82,6 +81,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     this._model = widget._model;
     this._user = _model.user;
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
+    this._pieceworkService = ServiceInitializer.initialize(context, _user.authHeader, PieceworkService);
     this._workTimeService = ServiceInitializer.initialize(context, _user.authHeader, WorkTimeService);
     this._employeeInfo = widget._employeeInfo;
     this._employeeId = widget._employeeId;
