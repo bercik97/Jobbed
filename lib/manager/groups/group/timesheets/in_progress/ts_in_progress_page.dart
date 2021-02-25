@@ -23,14 +23,14 @@ import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/util/validator_util.dart';
 import 'package:give_job/shared/util/avatars_util.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
 import 'package:give_job/shared/util/icons_legend_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
+import 'package:give_job/shared/util/validator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/icons_legend_dialog.dart';
@@ -194,7 +194,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                           children: <Widget>[
                             Ink(
                               width: MediaQuery.of(context).size.width * 0.15,
-                              height: 90,
+                              height: 106,
                               color: BRIGHTER_DARK,
                               child: ListTileTheme(
                                 contentPadding: EdgeInsets.only(right: 10),
@@ -231,8 +231,10 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                   month: _timesheet.month,
                                   status: _timesheet.status,
                                   totalHours: _filteredEmployees[index].totalHours,
+                                  totalTime: _filteredEmployees[index].totalTime,
                                   totalMoneyForHoursForEmployee: _filteredEmployees[index].totalMoneyForHoursForEmployee,
                                   totalMoneyForPieceworkForEmployee: _filteredEmployees[index].totalMoneyForPieceworkForEmployee,
+                                  totalMoneyForTimeForEmployee: _filteredEmployees[index].totalMoneyForTimeForEmployee,
                                   totalMoneyEarned: _filteredEmployees[index].totalMoneyEarned,
                                   employeeBasicDto: null,
                                 );
@@ -257,6 +259,12 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                         children: <Widget>[
                                           textWhite(getTranslated(this.context, 'accord') + ': '),
                                           textGreenBold(employee.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          textWhite(getTranslated(this.context, 'time') + ': '),
+                                          textGreenBold(employee.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + employee.totalTime + ')'),
                                         ],
                                       ),
                                       Row(

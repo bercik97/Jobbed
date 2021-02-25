@@ -137,8 +137,10 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                           month: _timesheet.month,
                           status: _timesheet.status,
                           totalHours: _filteredEmployees[index].totalHours,
+                          totalTime: _filteredEmployees[index].totalTime,
                           totalMoneyForHoursForEmployee: _filteredEmployees[index].totalMoneyForHoursForEmployee,
                           totalMoneyForPieceworkForEmployee: _filteredEmployees[index].totalMoneyForPieceworkForEmployee,
+                          totalMoneyForTimeForEmployee: _filteredEmployees[index].totalMoneyForTimeForEmployee,
                           totalMoneyEarned: _filteredEmployees[index].totalMoneyEarned,
                           employeeBasicDto: null,
                         );
@@ -181,6 +183,12 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                                     children: <Widget>[
                                       textWhite(getTranslated(this.context, 'accord') + ': '),
                                       textGreenBold(employee.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      textWhite(getTranslated(this.context, 'time') + ': '),
+                                      textGreenBold(employee.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + employee.totalTime + ')'),
                                     ],
                                   ),
                                   Row(

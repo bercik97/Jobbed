@@ -9,12 +9,12 @@ import 'package:give_job/api/workday/service/workday_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/workday_util.dart';
 import 'package:give_job/shared/util/data_table_util.dart';
 import 'package:give_job/shared/util/dialog_util.dart';
 import 'package:give_job/shared/util/icons_legend_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/month_util.dart';
+import 'package:give_job/shared/util/workday_util.dart';
 import 'package:give_job/shared/widget/circular_progress_indicator.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/icons_legend_dialog.dart';
@@ -96,6 +96,12 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                           children: <Widget>[
                             textWhite(getTranslated(this.context, 'accord') + ': '),
                             textGreenBold(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            textWhite(getTranslated(this.context, 'time') + ': '),
+                            textGreenBold(_timesheet.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + _timesheet.totalTime + ')'),
                           ],
                         ),
                         Row(

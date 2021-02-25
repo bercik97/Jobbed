@@ -205,6 +205,12 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                                         ),
                                         Row(
                                           children: <Widget>[
+                                            textWhite(getTranslated(this.context, 'time') + ': '),
+                                            textGreenBold(timesheet.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + timesheet.totalTime + ')'),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: <Widget>[
                                             textWhite(getTranslated(this.context, 'sum') + ': '),
                                             textGreenBold(timesheet.totalMoneyEarned.toString() + ' PLN'),
                                           ],

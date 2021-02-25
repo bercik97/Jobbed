@@ -7,8 +7,10 @@ class TimesheetForEmployeeDto {
   final String month;
   final String status;
   final String totalHours;
+  final String totalTime;
   final String totalMoneyForHoursForEmployee;
   final String totalMoneyForPieceworkForEmployee;
+  final String totalMoneyForTimeForEmployee;
   final String totalMoneyEarned;
   final EmployeeBasicDto employeeBasicDto;
 
@@ -18,8 +20,10 @@ class TimesheetForEmployeeDto {
     @required this.month,
     @required this.status,
     @required this.totalHours,
+    @required this.totalTime,
     @required this.totalMoneyForHoursForEmployee,
     @required this.totalMoneyForPieceworkForEmployee,
+    @required this.totalMoneyForTimeForEmployee,
     @required this.totalMoneyEarned,
     @required this.employeeBasicDto,
   });
@@ -32,8 +36,10 @@ class TimesheetForEmployeeDto {
       month: json['month'] as String,
       status: json['status'] as String,
       totalHours: json['totalHours'] as String,
+      totalTime: json['totalTime'] as String,
       totalMoneyForHoursForEmployee: json['totalMoneyForHoursForEmployee'] as String,
       totalMoneyForPieceworkForEmployee: json['totalMoneyForPieceworkForEmployee'] as String,
+      totalMoneyForTimeForEmployee: json['totalMoneyForTimeForEmployee'] as String,
       totalMoneyEarned: json['totalMoneyEarned'] as String,
       employeeBasicDto: employeeBasicDtoJson != null ? EmployeeBasicDto.fromJson(employeeBasicDtoJson) : null,
     );
