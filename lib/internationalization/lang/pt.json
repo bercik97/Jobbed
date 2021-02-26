@@ -641,5 +641,12 @@
   "enterWorkplaceCode": "შეიყვანეთ სამუშაო ადგილი კოდი",
   "enterWorkplaceCodePopupTitle": "სამუშაოს დასაწყებად შეიყვანეთ სამუშაო ადგილი",
   "startTimeConfirmation": "დარწმუნებული ხართ, რომ გსურთ დაიწყოთ მუშაობა სამუშაო ადგილის ნომერზე",
-  "workplaceCodeIsIncorrect": "გავიდა სამუშაო ადგილის კოდი"
+  "workplaceCodeIsIncorrect": "გავიდა სამუშაო ადგილის კოდი",
+  "workplaceDetails": "სამუშაო ადგილის დეტალები",
+  "tapBtnNextToTheRightToSetLocation": "მდებარეობის დასაყენებლად შეეხეთ ღილაკს მარჯვნივ",
+  "workplaceNameUpperCase": "სამუშაო ადგილის სახელი",
+  "setNewNameForWorkplace": "დააყენეთ ახალი სახელი სამუშაო ადგილისთვის",
+  "textSomeWorkplaceName": "გაგზავნეთ სამუშაო ადგილის სახელი ...",
+  "workplaceNameUpdatedSuccessfully": "სამუშაო ადგილის სახელი წარმატებით განახლდა",
+  "workplaceNameNeedToBeUnique": "სამუშაო ადგილის სახელი უნდა იყოს უნიკალური"
 }

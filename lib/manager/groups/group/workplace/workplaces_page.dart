@@ -11,6 +11,7 @@ import 'package:give_job/api/workplace/dto/workplace_dto.dart';
 import 'package:give_job/api/workplace/service/workplace_service.dart';
 import 'package:give_job/internationalization/localization/localization_constants.dart';
 import 'package:give_job/manager/groups/group/group_page.dart';
+import 'package:give_job/manager/groups/group/workplace/details/workplace_details_page.dart';
 import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
@@ -194,7 +195,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                                 child: BouncingWidget(
                                                   duration: Duration(milliseconds: 100),
                                                   scaleFactor: 2,
-                                                  onPressed: () => _editWorkplace(workplace),
+                                                  onPressed: () => NavigatorUtil.navigate(this.context, WorkplaceDetailsPage(_model, workplace)),
                                                   child: Image(image: AssetImage('images/workplace-icon.png'), fit: BoxFit.fitHeight),
                                                 ),
                                               ),
@@ -492,125 +493,6 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
     );
   }
 
-  _buildEditGoogleMapButton(double latitude, double longitude, double radiusLength) {
-    this._radius = radiusLength;
-    return Padding(
-      padding: const EdgeInsets.only(top: 10, bottom: 20),
-      child: MaterialButton(
-        child: textDarkBold(getTranslated(context, 'editWorkplaceArea')),
-        color: GREEN,
-        onPressed: () {
-          showGeneralDialog(
-            context: context,
-            barrierColor: DARK.withOpacity(0.95),
-            barrierDismissible: false,
-            barrierLabel: getTranslated(context, 'contact'),
-            transitionDuration: Duration(milliseconds: 400),
-            pageBuilder: (_, __, ___) {
-              return SizedBox.expand(
-                child: StatefulBuilder(
-                  builder: (context, setState) {
-                    return WillPopScope(
-                      child: Scaffold(
-                        appBar: AppBar(
-                          iconTheme: IconThemeData(color: WHITE),
-                          backgroundColor: BRIGHTER_DARK,
-                          elevation: 0.0,
-                          bottomOpacity: 0.0,
-                          title: textWhite(getTranslated(context, 'editWorkplaceArea')),
-                          leading: IconButton(
-                            icon: iconWhite(Icons.arrow_back),
-                            onPressed: () {
-                              onWillPop();
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ),
-                        body: GoogleMap(
-                          initialCameraPosition: _cameraPosition,
-                          markers: _markersList.toSet(),
-                          onMapCreated: (controller) {
-                            this._controller = controller;
-                            LatLng currentLatLng = new LatLng(latitude, longitude);
-                            this._cameraPosition = new CameraPosition(target: currentLatLng, zoom: 10);
-                            _controller.animateCamera(CameraUpdate.newLatLng(currentLatLng));
-                            _markersList.clear();
-                            _markersList.add(
-                              new Marker(
-                                position: currentLatLng,
-                                markerId: MarkerId('$latitude-$longitude'),
-                              ),
-                            );
-                            _circles.clear();
-                            _circles.add(
-                              new Circle(
-                                circleId: CircleId('$latitude-$longitude'),
-                                center: LatLng(latitude, longitude),
-                                radius: radiusLength * 1000,
-                              ),
-                            );
-                            setState(() {});
-                          },
-                          circles: _circles,
-                          onTap: (coordinates) {
-                            _controller.animateCamera(CameraUpdate.newLatLng(coordinates));
-                            _markersList.clear();
-                            _markersList.add(
-                              new Marker(
-                                position: coordinates,
-                                markerId: MarkerId('${coordinates.latitude}-${coordinates.longitude}'),
-                              ),
-                            );
-                            _circles.clear();
-                            _circles.add(
-                              new Circle(
-                                circleId: CircleId('${coordinates.latitude}-${coordinates.longitude}'),
-                                center: LatLng(coordinates.latitude, coordinates.longitude),
-                                radius: _radius * 1000,
-                              ),
-                            );
-                            setState(() {});
-                          },
-                        ),
-                        bottomNavigationBar: SafeArea(
-                          child: Container(
-                            height: 100,
-                            child: SfSlider(
-                              min: 0.01,
-                              max: 0.25,
-                              value: _radius,
-                              interval: 0.03,
-                              showTicks: true,
-                              showLabels: true,
-                              minorTicksPerInterval: 1,
-                              onChanged: (dynamic value) {
-                                Circle circle = _circles.elementAt(0);
-                                _circles.clear();
-                                _circles.add(
-                                  new Circle(
-                                    circleId: CircleId('${circle.circleId}'),
-                                    center: circle.center,
-                                    radius: _radius * 1000,
-                                  ),
-                                );
-                                setState(() => _radius = value);
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      onWillPop: onWillPop,
-                    );
-                  },
-                ),
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
-
   Future<bool> onWillPop() async {
     if (_markersList.isEmpty) {
       ToastUtil.showErrorToast(getTranslated(context, 'workplaceAreaIsNotSet'));
@@ -750,131 +632,6 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
               onPressed: () => Navigator.of(this.context).pop(),
             ),
           ],
-        );
-      },
-    );
-  }
-
-  void _editWorkplace(WorkplaceDto workplace) {
-    TextEditingController _workplaceController = new TextEditingController();
-    _workplaceController.text = utf8.decode(workplace.name.runes.toList());
-    double latitude = workplace.latitude;
-    double longitude = workplace.longitude;
-    double radiusLength = workplace.radiusLength;
-    showGeneralDialog(
-      context: context,
-      barrierColor: DARK.withOpacity(0.95),
-      barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'name'),
-      transitionDuration: Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return SizedBox.expand(
-          child: Scaffold(
-            backgroundColor: Colors.black12,
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 50),
-                    child: text20GreenBold(getTranslated(context, 'editWorkplace')),
-                  ),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: EdgeInsets.only(left: 25, right: 25),
-                    child: TextFormField(
-                      autofocus: true,
-                      controller: _workplaceController,
-                      keyboardType: TextInputType.multiline,
-                      maxLength: 200,
-                      maxLines: 5,
-                      cursorColor: WHITE,
-                      textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: WHITE),
-                      decoration: InputDecoration(
-                        hintText: getTranslated(context, 'textSomeWorkplace') + ' ...',
-                        hintStyle: TextStyle(color: MORE_BRIGHTER_DARK),
-                        counterStyle: TextStyle(color: WHITE),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: GREEN, width: 2.5),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: GREEN, width: 2.5),
-                        ),
-                      ),
-                    ),
-                  ),
-                  _buildEditGoogleMapButton(latitude, longitude, radiusLength),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        minWidth: 40,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.close)],
-                        ),
-                        color: Colors.red,
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      SizedBox(width: 25),
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.check)],
-                        ),
-                        color: GREEN,
-                        onPressed: () {
-                          String name = _workplaceController.text;
-                          String invalidMessage = ValidatorUtil.validateWorkplace(name, context);
-                          if (invalidMessage != null) {
-                            ToastUtil.showErrorToast(invalidMessage);
-                            return;
-                          }
-                          FocusScope.of(context).unfocus();
-                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                          Circle circle;
-                          if (_circles != null && _circles.isNotEmpty) {
-                            circle = _circles.elementAt(0);
-                          }
-                          _workplaceService.updateFieldsValuesById(
-                            workplace.id,
-                            {
-                              'name': name,
-                              'radiusLength': _radius != 0 ? double.parse(_radius.toString()) : 0,
-                              'latitude': circle != null ? circle.center.latitude : 0,
-                              'longitude': circle != null ? circle.center.longitude : 0,
-                            },
-                          ).then((res) {
-                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              Navigator.pop(context);
-                              _refresh();
-                              ToastUtil.showSuccessToast(getTranslated(context, 'workplaceUpdatedSuccessfully'));
-                            });
-                          }).catchError((onError) {
-                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              String errorMsg = onError.toString();
-                              if (errorMsg.contains("WORKPLACE_NAME_EXISTS")) {
-                                ToastUtil.showErrorToast(getTranslated(context, 'workplaceNameExists'));
-                              } else {
-                                DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
-                              }
-                            });
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
         );
       },
     );

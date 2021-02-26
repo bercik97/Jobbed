@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
 class WorkplaceDto {
-  final String id;
-  final String name;
+  String id;
+  String name;
   final String location;
   final double radiusLength;
   final double latitude;

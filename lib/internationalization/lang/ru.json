@@ -641,5 +641,12 @@
   "enterWorkplaceCode": "Введите код рабочего места",
   "enterWorkplaceCodePopupTitle": "Введите код рабочего места, чтобы начать работу",
   "startTimeConfirmation": "Вы уверены, что хотите приступить к работе на рабочем месте номер",
-  "workplaceCodeIsIncorrect": "Пройденный код рабочего места неверен"
+  "workplaceCodeIsIncorrect": "Пройденный код рабочего места неверен",
+  "workplaceDetails": "Детали рабочего места",
+  "tapBtnNextToTheRightToSetLocation": "Нажмите кнопку справа, чтобы указать местоположение",
+  "workplaceNameUpperCase": "НАЗВАНИЕ РАБОЧЕГО МЕСТА",
+  "setNewNameForWorkplace": "Установить новое имя для рабочего места",
+  "textSomeWorkplaceName": "Напишите название рабочего места ...",
+  "workplaceNameUpdatedSuccessfully": "Название рабочего места успешно обновлено",
+  "workplaceNameNeedToBeUnique": "Название рабочего места должно быть уникальным"
 }

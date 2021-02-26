@@ -641,5 +641,12 @@
   "enterWorkplaceCode": "Wpisz kod miejsca pracy",
   "enterWorkplaceCodePopupTitle": "Wpisz kod miejsca pracy aby rozpocząc pracę",
   "startTimeConfirmation": "Czy na pewno chcesz rozpocząć pracę w miejscu pracy o kodzie",
-  "workplaceCodeIsIncorrect": "Wpisany kod miejsca pracy jest niepoprawny"
+  "workplaceCodeIsIncorrect": "Wpisany kod miejsca pracy jest niepoprawny",
+  "workplaceDetails": "Szczegóły miejsca pracy",
+  "tapBtnNextToTheRightToSetLocation": "Naciśnij przycisk po prawej stronie aby ustawić lokalizację",
+  "workplaceNameUpperCase": "NAZWA MIEJSCA PRACY",
+  "setNewNameForWorkplace": "Ustaw nową nazwę miejsca pracy",
+  "textSomeWorkplaceName": "Nazwij miejsce pracy ...",
+  "workplaceNameUpdatedSuccessfully": "Nazwa miejsca pracy została zaktualizowana",
+  "workplaceNameNeedToBeUnique": "Nazwa miejsca pracy już istnieje"
 }

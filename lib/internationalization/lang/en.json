@@ -641,5 +641,12 @@
   "enterWorkplaceCode": "Enter workplace code",
   "enterWorkplaceCodePopupTitle": "Enter workplace code to begin work",
   "startTimeConfirmation": "Are you sure you want to start work at workplace of number",
-  "workplaceCodeIsIncorrect": "Passed workplace code is not correct"
+  "workplaceCodeIsIncorrect": "Passed workplace code is not correct",
+  "workplaceDetails": "Workplace details",
+  "tapBtnNextToTheRightToSetLocation": "Tap button next to the right to set location",
+  "workplaceNameUpperCase": "WORKPLACE NAME",
+  "setNewNameForWorkplace": "Set new name for workplace",
+  "textSomeWorkplaceName": "Text some workplace name ...",
+  "workplaceNameUpdatedSuccessfully": "Workplace name updated successfully",
+  "workplaceNameNeedToBeUnique": "Workplace name need to be unique"
 }
