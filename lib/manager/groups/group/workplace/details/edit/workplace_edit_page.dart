@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:give_job/api/shared/service_initializer.dart';
 import 'package:give_job/api/workplace/dto/workplace_dto.dart';
 import 'package:give_job/api/workplace/service/workplace_service.dart';
@@ -11,6 +12,7 @@ import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/util/validator_util.dart';
@@ -177,21 +179,21 @@ class _WorkplaceEditPageState extends State<WorkplaceEditPage> {
                             ToastUtil.showErrorToast(invalidMessage);
                             return;
                           }
-                          // showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                          // _workplaceService.update(_model.groupId, {'name': name}).then((res) {
-                          //   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                          //     ToastUtil.showSuccessToast(getTranslated(context, 'workplaceNameUpdatedSuccessfully'));
-                          //     _workplace.name = name;
-                          //     NavigatorUtil.navigate(context, WorkplaceDetailsPage(_model, _workplace));
-                          //   });
-                          // }).catchError((onError) {
-                          //   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                          //     String s = onError.toString();
-                          //     if (s.contains('WORKPLACE_NAME_TAKEN')) {
-                          //       DialogUtil.showErrorDialog(context, getTranslated(context, 'workplaceNameNeedToBeUnique'));
-                          //     }
-                          //   });
-                          // });
+                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+                          _workplaceService.updateFieldsValuesById(_workplace.id, {'name': name}).then((res) {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              ToastUtil.showSuccessToast(getTranslated(context, 'workplaceNameUpdatedSuccessfully'));
+                              _workplace.name = name;
+                              NavigatorUtil.navigate(context, WorkplaceDetailsPage(_model, _workplace));
+                            });
+                          }).catchError((onError) {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              String s = onError.toString();
+                              if (s.contains('WORKPLACE_NAME_TAKEN')) {
+                                DialogUtil.showErrorDialog(context, getTranslated(context, 'workplaceNameNeedToBeUnique'));
+                              }
+                            });
+                          });
                         },
                       ),
                     ],
