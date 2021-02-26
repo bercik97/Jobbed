@@ -640,7 +640,6 @@
   "selectTypeOfWorkingTime": "Wybierz typ czasu pracy",
   "enterWorkplaceCode": "Wpisz kod miejsca pracy",
   "enterWorkplaceCodePopupTitle": "Wpisz kod miejsca pracy aby rozpocząc pracę",
-  "correctWorkplaceCode": "Kod miejsca pracy jest POPRAWNY",
   "startTimeConfirmation": "Czy na pewno chcesz rozpocząć pracę w miejscu pracy o kodzie",
-  "workplaceCodeIsIncorrect": "Wpisany kod miejsca pracy jest NIEPOPRAWNY"
+  "workplaceCodeIsIncorrect": "Wpisany kod miejsca pracy jest niepoprawny"
 }

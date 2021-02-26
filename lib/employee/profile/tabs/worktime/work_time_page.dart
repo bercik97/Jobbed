@@ -659,19 +659,19 @@ class _WorkTimePageState extends State<WorkTimePage> {
                         ),
                         color: GREEN,
                         onPressed: () {
-                          // showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                          // _workplaceService.isCorrectByIdAndCompanyId(_workplaceCodeController.text, _user.companyId).then((res) {
-                          //   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                          //     Navigator.pop(context);
-                          //     _resultWorkplaceCodeAlertDialog(res);
-                          //   });
-                          // }).catchError((onError) {
-                          //   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                          //     DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
-                          //     Navigator.pop(context);
-                          //     _resultWorkplaceCodeAlertDialog(false);
-                          //   });
-                          // });
+                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+                          _workplaceService.isCorrectByIdAndCompanyId(_workplaceCodeController.text, _user.companyId).then((res) {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Navigator.pop(context);
+                              _resultWorkplaceCodeAlertDialog(res);
+                            });
+                          }).catchError((onError) {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+                              Navigator.pop(context);
+                              _resultWorkplaceCodeAlertDialog(false);
+                            });
+                          });
                         },
                       ),
                     ],
@@ -693,7 +693,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: DARK,
-          title: isCorrect ? textGreen(getTranslated(context, 'correctWorkplaceCode')) : textWhite(getTranslated(context, 'failure')),
+          title: isCorrect ? textGreen(getTranslated(context, 'confirmation')) : textRed(getTranslated(context, 'failure')),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
@@ -714,21 +714,13 @@ class _WorkTimePageState extends State<WorkTimePage> {
                 ? Row(
                     children: [
                       FlatButton(
-                        child: textWhite(getTranslated(context, 'yesImSure')),
+                        child: textWhite(getTranslated(context, 'yes')),
                         onPressed: () => _isStartWorkButtonTapped ? null : _startWorkByWorkplaceCode(workplaceId, _todayWorkdayId),
                       ),
                       FlatButton(child: textWhite(getTranslated(context, 'no')), onPressed: () => Navigator.of(context).pop()),
                     ],
                   )
-                : MaterialButton(
-                    elevation: 0,
-                    height: 50,
-                    minWidth: double.maxFinite,
-                    shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                    color: GREEN,
-                    child: text20WhiteBold(getTranslated(context, 'close')),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
+                : FlatButton(child: textWhite(getTranslated(context, 'close')), onPressed: () => Navigator.of(context).pop()),
           ],
         );
       },
@@ -742,7 +734,6 @@ class _WorkTimePageState extends State<WorkTimePage> {
     _workTimeService.create(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _refresh();
-        Navigator.pop(context);
         setState(() => _isPauseWorkButtonTapped = false);
       });
     }).catchError((onError) {

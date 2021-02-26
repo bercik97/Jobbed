@@ -640,7 +640,6 @@
   "selectTypeOfWorkingTime": "Select type of working time",
   "enterWorkplaceCode": "Enter workplace code",
   "enterWorkplaceCodePopupTitle": "Enter workplace code to begin work",
-  "correctWorkplaceCode": "Workplace code is CORRECT",
   "startTimeConfirmation": "Are you sure you want to start work at workplace of number",
   "workplaceCodeIsIncorrect": "Passed workplace code is not correct"
 }

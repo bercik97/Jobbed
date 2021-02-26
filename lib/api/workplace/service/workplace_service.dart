@@ -50,8 +50,19 @@ class WorkplaceService {
     }
   }
 
-  Future<dynamic> deleteByIdIn(List<String> ids) async {
-    Response res = await delete(_url + '/$ids', headers: _headers);
+  Future<bool> isCorrectByIdAndCompanyId(String id, String companyId) async {
+    Response res = await get(_url + '/exists?id=$id&company_id=$companyId', headers: _header);
+    if (res.statusCode == 200) {
+      return res.body == 'true';
+    } else if (res.statusCode == 401) {
+      return LogoutUtil.handle401WithLogout(_context);
+    } else {
+      return false;
+    }
+  }
+
+  Future<dynamic> updateFieldsValuesById(String id, Map<String, Object> fieldsValues) async {
+    Response res = await put('$_url/id?id=$id', body: jsonEncode(fieldsValues), headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
@@ -61,8 +72,8 @@ class WorkplaceService {
     }
   }
 
-  Future<dynamic> updateFieldsValuesById(String id, Map<String, Object> fieldsValues) async {
-    Response res = await put('$_url/id?id=$id', body: jsonEncode(fieldsValues), headers: _headers);
+  Future<dynamic> deleteByIdIn(List<String> ids) async {
+    Response res = await delete(_url + '/$ids', headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {

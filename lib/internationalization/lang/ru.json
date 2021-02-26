@@ -640,7 +640,6 @@
   "selectTypeOfWorkingTime": "Выберите тип рабочего времени",
   "enterWorkplaceCode": "Введите код рабочего места",
   "enterWorkplaceCodePopupTitle": "Введите код рабочего места, чтобы начать работу",
-  "correctWorkplaceCode": "Код рабочего места ПРАВИЛЬНЫЙ",
   "startTimeConfirmation": "Вы уверены, что хотите приступить к работе на рабочем месте номер",
   "workplaceCodeIsIncorrect": "Пройденный код рабочего места неверен"
 }
