@@ -57,7 +57,6 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
   bool _isAddButtonTapped = false;
   bool _isDeleteButtonTapped = false;
 
-  CameraPosition _cameraPosition = new CameraPosition(target: LatLng(51.9189046, 19.1343786), zoom: 10);
   GoogleMapController _controller;
 
   List<Marker> _markersList = new List();
@@ -412,7 +411,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                             ),
                           ),
                           body: GoogleMap(
-                            initialCameraPosition: _cameraPosition,
+                            initialCameraPosition: new CameraPosition(target: result.latLng, zoom: 16),
                             markers: _markersList.toSet(),
                             onMapCreated: (controller) {
                               this._controller = controller;
@@ -420,7 +419,6 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                               double latitude = result.latLng.latitude;
                               double longitude = result.latLng.longitude;
                               this._workplaceLocation = result.name + ', ' + result.locality;
-                              this._cameraPosition = new CameraPosition(target: currentLatLng, zoom: 10);
                               _controller.animateCamera(CameraUpdate.newLatLng(currentLatLng));
                               _markersList.clear();
                               _markersList.add(
@@ -653,6 +651,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
         _markersList.clear();
         _circles.clear();
         _radius = 0;
+        _workplaceLocation = null;
         _loading = false;
       });
     });

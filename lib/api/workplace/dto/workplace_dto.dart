@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 class WorkplaceDto {
   String id;
   String name;
-  final String location;
-  final double radiusLength;
-  final double latitude;
-  final double longitude;
+  String location;
+  double radiusLength;
+  double latitude;
+  double longitude;
 
   WorkplaceDto({
     @required this.id,
