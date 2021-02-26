@@ -652,6 +652,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
         _circles.clear();
         _radius = 0;
         _workplaceLocation = null;
+        _isChecked = false;
         _loading = false;
       });
     });

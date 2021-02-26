@@ -648,5 +648,6 @@
   "setNewNameForWorkplace": "Встановити нову назву для робочого місця",
   "textSomeWorkplaceName": "Введіть текст на ім’я робочого місця ...",
   "workplaceNameUpdatedSuccessfully": "Ім’я робочого місця успішно оновлено",
-  "workplaceNameNeedToBeUnique": "Ім'я робочого місця має бути унікальним"
+  "workplaceNameNeedToBeUnique": "Ім'я робочого місця має бути унікальним",
+  "selectedWorkplacesRemoved": "Вибрані робочі місця було видалено"
 }

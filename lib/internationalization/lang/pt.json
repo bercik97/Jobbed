@@ -648,5 +648,6 @@
   "setNewNameForWorkplace": "დააყენეთ ახალი სახელი სამუშაო ადგილისთვის",
   "textSomeWorkplaceName": "გაგზავნეთ სამუშაო ადგილის სახელი ...",
   "workplaceNameUpdatedSuccessfully": "სამუშაო ადგილის სახელი წარმატებით განახლდა",
-  "workplaceNameNeedToBeUnique": "სამუშაო ადგილის სახელი უნდა იყოს უნიკალური"
+  "workplaceNameNeedToBeUnique": "სამუშაო ადგილის სახელი უნდა იყოს უნიკალური",
+  "selectedWorkplacesRemoved": "არჩეული სამუშაო ადგილები ამოღებულია"
 }

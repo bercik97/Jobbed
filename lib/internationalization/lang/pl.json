@@ -648,5 +648,6 @@
   "setNewNameForWorkplace": "Ustaw nową nazwę miejsca pracy",
   "textSomeWorkplaceName": "Nazwij miejsce pracy ...",
   "workplaceNameUpdatedSuccessfully": "Nazwa miejsca pracy została zaktualizowana",
-  "workplaceNameNeedToBeUnique": "Nazwa miejsca pracy już istnieje"
+  "workplaceNameNeedToBeUnique": "Nazwa miejsca pracy już istnieje",
+  "selectedWorkplacesRemoved": "Wybrane miejsca pracy zostały usunięte"
 }

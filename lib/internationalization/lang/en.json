@@ -648,5 +648,6 @@
   "setNewNameForWorkplace": "Set new name for workplace",
   "textSomeWorkplaceName": "Text some workplace name ...",
   "workplaceNameUpdatedSuccessfully": "Workplace name updated successfully",
-  "workplaceNameNeedToBeUnique": "Workplace name need to be unique"
+  "workplaceNameNeedToBeUnique": "Workplace name need to be unique",
+  "selectedWorkplacesRemoved": "Selected workplaces has been removed"
 }
