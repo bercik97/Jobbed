@@ -739,31 +739,12 @@ class _WorkTimePageState extends State<WorkTimePage> {
   }
 
   _showPauseWorkDialog() {
-    return showDialog(
-      barrierDismissible: false,
+    DialogUtil.showConfirmationDialog(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: DARK,
-          title: textGreen(getTranslated(context, 'confirmation')),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[textCenter20Green(getTranslated(context, 'pauseWorkForSelectedEmployeesConfirmation'))],
-            ),
-          ),
-          actions: <Widget>[
-            Row(
-              children: [
-                FlatButton(
-                  child: textWhite(getTranslated(context, 'workIsDone')),
-                  onPressed: () => _isPauseButtonTapped ? null : _pauseSelectedEmployeesWork(),
-                ),
-                FlatButton(child: textWhite(getTranslated(context, 'no')), onPressed: () => Navigator.of(context).pop()),
-              ],
-            ),
-          ],
-        );
-      },
+      title: getTranslated(context, 'confirmation'),
+      content: getTranslated(context, 'pauseWorkForSelectedEmployeesConfirmation'),
+      isBtnTapped: _isPauseButtonTapped,
+      fun: () => _isPauseButtonTapped ? null : _pauseSelectedEmployeesWork(),
     );
   }
 

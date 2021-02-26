@@ -190,7 +190,14 @@ class _WorkTimePageState extends State<WorkTimePage> {
       child: Center(
         child: Column(
           children: [
-            _buildBtn('images/stop-icon.png', _isPauseWorkButtonTapped, () => _showChooseWorkTimeType(() => _showPauseWorkByGPSDialog(workTimes.last), () => print('object'))),
+            _buildBtn(
+              'images/stop-icon.png',
+              _isPauseWorkButtonTapped,
+              () => _showChooseWorkTimeType(
+                () => _showPauseWorkByGPSDialog(workTimes.last),
+                () => print('object'),
+              ),
+            ),
             _buildPauseHint(),
             _displayWorkTimes(workTimes),
           ],
@@ -204,7 +211,14 @@ class _WorkTimePageState extends State<WorkTimePage> {
     return Center(
       child: Column(
         children: [
-          _buildBtn('images/play-icon.png', _isStartDialogButtonTapped, () => _showChooseWorkTimeType(() => _findWorkByGPS(), () => _showEnterWorkplaceCode())),
+          _buildBtn(
+            'images/play-icon.png',
+            _isStartDialogButtonTapped,
+            () => _showChooseWorkTimeType(
+              () => _findWorkByGPS(),
+              () => _showEnterWorkplaceCode(),
+            ),
+          ),
           _buildStartHint(),
           _displayWorkTimes(workTimes),
         ],
@@ -242,6 +256,40 @@ class _WorkTimePageState extends State<WorkTimePage> {
           SizedBox(height: 5),
           textCenter15Red(getTranslated(context, 'noteFinishWorkInPlaceWhereYouStarted')),
         ],
+      ),
+    );
+  }
+
+  _displayWorkTimes(List workTimes) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Theme(
+          data: Theme.of(this.context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
+          child: DataTable(
+            columnSpacing: 20,
+            columns: [
+              DataColumn(label: textWhiteBold('No.')),
+              DataColumn(label: textWhiteBold(getTranslated(this.context, 'from'))),
+              DataColumn(label: textWhiteBold(getTranslated(this.context, 'to'))),
+              DataColumn(label: textWhiteBold(getTranslated(this.context, 'sum'))),
+              DataColumn(label: textWhiteBold(getTranslated(this.context, 'workplaceName'))),
+            ],
+            rows: [
+              for (int i = 0; i < workTimes.length; i++)
+                DataRow(
+                  cells: [
+                    DataCell(textWhite((i + 1).toString())),
+                    DataCell(textWhite(workTimes[i].startTime)),
+                    DataCell(textWhite(workTimes[i].endTime != null ? workTimes[i].endTime : '-')),
+                    DataCell(textWhite(workTimes[i].totalTime != null ? workTimes[i].totalTime : '-')),
+                    DataCell(textWhite(workTimes[i].workplaceName != null ? utf8.decode(workTimes[i].workplaceName.runes.toList()) : '-')),
+                  ],
+                ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -552,35 +600,12 @@ class _WorkTimePageState extends State<WorkTimePage> {
   }
 
   _showPauseWorkByGPSConfirmDialog(res) {
-    return showDialog(
-      barrierDismissible: false,
+    DialogUtil.showConfirmationDialog(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: DARK,
-          title: textGreen(getTranslated(this.context, 'confirmation')),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                textCenter20Green(
-                  getTranslated(this.context, 'pauseWorkConfirmation'),
-                )
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            Row(
-              children: [
-                FlatButton(
-                  child: textWhite(getTranslated(this.context, 'workIsDone')),
-                  onPressed: () => _isPauseWorkButtonTapped ? null : _finishWorkByGPS(),
-                ),
-                FlatButton(child: textWhite(getTranslated(this.context, 'no')), onPressed: () => Navigator.of(context).pop()),
-              ],
-            ),
-          ],
-        );
-      },
+      title: getTranslated(context, 'confirmation'),
+      content: getTranslated(context, 'pauseWorkConfirmation'),
+      isBtnTapped: _isPauseWorkButtonTapped,
+      fun: () => _isPauseWorkButtonTapped ? null : _finishWorkByGPS(),
     );
   }
 
@@ -687,45 +712,18 @@ class _WorkTimePageState extends State<WorkTimePage> {
   }
 
   _resultWorkplaceCodeAlertDialog(bool isCorrect) {
-    String workplaceId = _workplaceCodeController.text;
-    return showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: DARK,
-          title: isCorrect ? textGreen(getTranslated(context, 'confirmation')) : textRed(getTranslated(context, 'failure')),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                isCorrect
-                    ? Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          textCenter20White(getTranslated(context, 'startTimeConfirmation')),
-                          textCenter20GreenBold(workplaceId + '?'),
-                        ],
-                      )
-                    : textWhite(getTranslated(context, 'workplaceCodeIsIncorrect'))
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            isCorrect
-                ? Row(
-                    children: [
-                      FlatButton(
-                        child: textWhite(getTranslated(context, 'yes')),
-                        onPressed: () => _isStartWorkButtonTapped ? null : _startWorkByWorkplaceCode(workplaceId, _todayWorkdayId),
-                      ),
-                      FlatButton(child: textWhite(getTranslated(context, 'no')), onPressed: () => Navigator.of(context).pop()),
-                    ],
-                  )
-                : FlatButton(child: textWhite(getTranslated(context, 'close')), onPressed: () => Navigator.of(context).pop()),
-          ],
-        );
-      },
-    );
+    String workplaceCode = _workplaceCodeController.text;
+    if (isCorrect) {
+      DialogUtil.showConfirmationDialog(
+        context: context,
+        title: getTranslated(context, 'confirmation'),
+        content: getTranslated(context, 'startTimeConfirmation') + ': $workplaceCode?',
+        isBtnTapped: _isStartWorkButtonTapped,
+        fun: () => _isStartWorkButtonTapped ? null : _startWorkByWorkplaceCode(workplaceCode, _todayWorkdayId),
+      );
+    } else {
+      DialogUtil.showErrorDialog(context, getTranslated(context, 'workplaceCodeIsIncorrect'));
+    }
   }
 
   _startWorkByWorkplaceCode(String workplaceId, num workdayId) {
@@ -743,40 +741,6 @@ class _WorkTimePageState extends State<WorkTimePage> {
         setState(() => _isPauseWorkButtonTapped = false);
       });
     });
-  }
-
-  _displayWorkTimes(List workTimes) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Theme(
-          data: Theme.of(this.context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
-          child: DataTable(
-            columnSpacing: 20,
-            columns: [
-              DataColumn(label: textWhiteBold('No.')),
-              DataColumn(label: textWhiteBold(getTranslated(this.context, 'from'))),
-              DataColumn(label: textWhiteBold(getTranslated(this.context, 'to'))),
-              DataColumn(label: textWhiteBold(getTranslated(this.context, 'sum'))),
-              DataColumn(label: textWhiteBold(getTranslated(this.context, 'workplaceName'))),
-            ],
-            rows: [
-              for (int i = 0; i < workTimes.length; i++)
-                DataRow(
-                  cells: [
-                    DataCell(textWhite((i + 1).toString())),
-                    DataCell(textWhite(workTimes[i].startTime)),
-                    DataCell(textWhite(workTimes[i].endTime != null ? workTimes[i].endTime : '-')),
-                    DataCell(textWhite(workTimes[i].totalTime != null ? workTimes[i].totalTime : '-')),
-                    DataCell(textWhite(workTimes[i].workplaceName != null ? utf8.decode(workTimes[i].workplaceName.runes.toList()) : '-')),
-                  ],
-                ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 
   void _refresh() {
