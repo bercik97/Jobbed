@@ -195,7 +195,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
               _isPauseWorkButtonTapped,
               () => _showChooseWorkTimeType(
                 () => _showPauseWorkByGPSDialog(workTimes.last),
-                () => print('object'),
+                () => _showEnterWorkplaceCodeForPause(),
               ),
             ),
             _buildPauseHint(),
@@ -216,7 +216,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
             _isStartDialogButtonTapped,
             () => _showChooseWorkTimeType(
               () => _findWorkByGPS(),
-              () => _showEnterWorkplaceCode(),
+              () => _showEnterWorkplaceCodeForStart(),
             ),
           ),
           _buildStartHint(),
@@ -622,7 +622,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     });
   }
 
-  _showEnterWorkplaceCode() {
+  _showEnterWorkplaceCodeForStart() {
     return showGeneralDialog(
       context: context,
       barrierColor: DARK.withOpacity(0.95),
@@ -686,16 +686,25 @@ class _WorkTimePageState extends State<WorkTimePage> {
                         color: GREEN,
                         onPressed: () {
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                          _workplaceService.isCorrectByIdAndCompanyId(_workplaceCodeController.text, _user.companyId).then((res) {
+                          _workplaceService.isCorrectByIdAndCompanyId(_workplaceCodeController.text, _user.companyId).then((isCorrect) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.pop(context);
-                              _resultWorkplaceCodeAlertDialog(res);
+                              if (isCorrect) {
+                                String workplaceCode = _workplaceCodeController.text;
+                                DialogUtil.showConfirmationDialog(
+                                  context: context,
+                                  title: getTranslated(context, 'confirmation'),
+                                  content: getTranslated(context, 'startTimeConfirmation') + ': $workplaceCode?',
+                                  isBtnTapped: _isStartWorkButtonTapped,
+                                  fun: () => _isStartWorkButtonTapped ? null : _startWorkByWorkplaceCode(workplaceCode, _todayWorkdayId),
+                                );
+                              } else {
+                                DialogUtil.showErrorDialog(context, getTranslated(context, 'workplaceCodeIsIncorrect'));
+                              }
                             });
                           }).catchError((onError) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
-                              Navigator.pop(context);
-                              _resultWorkplaceCodeAlertDialog(false);
                             });
                           });
                         },
@@ -711,29 +720,126 @@ class _WorkTimePageState extends State<WorkTimePage> {
     );
   }
 
-  _resultWorkplaceCodeAlertDialog(bool isCorrect) {
-    String workplaceCode = _workplaceCodeController.text;
-    if (isCorrect) {
-      DialogUtil.showConfirmationDialog(
-        context: context,
-        title: getTranslated(context, 'confirmation'),
-        content: getTranslated(context, 'startTimeConfirmation') + ': $workplaceCode?',
-        isBtnTapped: _isStartWorkButtonTapped,
-        fun: () => _isStartWorkButtonTapped ? null : _startWorkByWorkplaceCode(workplaceCode, _todayWorkdayId),
-      );
-    } else {
-      DialogUtil.showErrorDialog(context, getTranslated(context, 'workplaceCodeIsIncorrect'));
-    }
-  }
-
   _startWorkByWorkplaceCode(String workplaceId, num workdayId) {
-    setState(() => _isStartWorkButtonTapped = !_isStartWorkButtonTapped);
+    setState(() => _isStartWorkButtonTapped = true);
     CreateWorkTimeDto dto = new CreateWorkTimeDto(workplaceId: workplaceId, workdayId: workdayId);
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _workTimeService.create(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _refresh();
-        setState(() => _isPauseWorkButtonTapped = false);
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+        setState(() => _isStartWorkButtonTapped = false);
+      });
+    });
+  }
+
+  _showEnterWorkplaceCodeForPause() {
+    return showGeneralDialog(
+      context: context,
+      barrierColor: DARK.withOpacity(0.95),
+      barrierDismissible: false,
+      barrierLabel: getTranslated(context, 'enterWorkplaceCode'),
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: Scaffold(
+            backgroundColor: Colors.black12,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  textCenter20GreenBold(getTranslated(context, 'enterWorkplaceCodePopupTitle')),
+                  SizedBox(height: 30),
+                  PinCodeTextField(
+                    autofocus: true,
+                    highlight: true,
+                    controller: _workplaceCodeController,
+                    highlightColor: WHITE,
+                    defaultBorderColor: MORE_BRIGHTER_DARK,
+                    hasTextBorderColor: GREEN,
+                    maxLength: 4,
+                    pinBoxWidth: 50,
+                    pinBoxHeight: 64,
+                    pinBoxDecoration: ProvidedPinBoxDecoration.defaultPinBoxDecoration,
+                    pinTextStyle: TextStyle(fontSize: 22, color: WHITE),
+                    pinTextAnimatedSwitcherTransition: ProvidedPinBoxTextAnimation.scalingTransition,
+                    pinTextAnimatedSwitcherDuration: Duration(milliseconds: 300),
+                    keyboardType: TextInputType.number,
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      MaterialButton(
+                        elevation: 0,
+                        height: 50,
+                        minWidth: 40,
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[iconWhite(Icons.close)],
+                        ),
+                        color: Colors.red,
+                        onPressed: () => {
+                          Navigator.pop(context),
+                          _workplaceCodeController.clear(),
+                        },
+                      ),
+                      SizedBox(width: 25),
+                      MaterialButton(
+                        elevation: 0,
+                        height: 50,
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[iconWhite(Icons.check)],
+                        ),
+                        color: GREEN,
+                        onPressed: () {
+                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+                          _workplaceService.isCorrectByIdAndCompanyId(_workplaceCodeController.text, _user.companyId).then((isCorrect) {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Navigator.pop(context);
+                              if (isCorrect) {
+                                DialogUtil.showConfirmationDialog(
+                                  context: context,
+                                  title: getTranslated(context, 'confirmation'),
+                                  content: getTranslated(context, 'pauseWorkConfirmation'),
+                                  isBtnTapped: _isPauseWorkButtonTapped,
+                                  fun: () => _isPauseWorkButtonTapped ? null : _pauseWorkByWorkplaceCode(_workplaceCodeController.text, _todayWorkdayId),
+                                );
+                              } else {
+                                DialogUtil.showErrorDialog(context, getTranslated(context, 'workplaceCodeIsIncorrect'));
+                              }
+                            });
+                          }).catchError((onError) {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              Navigator.pop(context);
+                              DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+                            });
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  _pauseWorkByWorkplaceCode(String workplaceId, num workdayId) {
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    setState(() => _isPauseWorkButtonTapped = true);
+    _workTimeService.finish(_dto.notFinishedWorkTimeId).then((res) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        _refresh();
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
