@@ -25,6 +25,7 @@ import 'package:give_job/shared/util/navigator_util.dart';
 import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/widget/circular_progress_indicator.dart';
 import 'package:give_job/shared/widget/icons.dart';
+import 'package:give_job/shared/widget/radio_button.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:location/location.dart' as locc;
 import 'package:permission_handler/permission_handler.dart';
@@ -279,7 +280,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    _buildRadioBtn(
+                                    RadioButton.buildRadioBtn(
                                       color: GREEN,
                                       title: getTranslated(context, 'gps'),
                                       value: 0,
@@ -290,7 +291,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                         _isChoseWorkTimeTypeBtnDisabled = false;
                                       }),
                                     ),
-                                    _buildRadioBtn(
+                                    RadioButton.buildRadioBtn(
                                       color: GREEN,
                                       title: getTranslated(context, 'workplaceCode'),
                                       value: 0,
@@ -775,16 +776,6 @@ class _WorkTimePageState extends State<WorkTimePage> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildRadioBtn({Color color, String title, int value, int groupValue, Function onChanged}) {
-    return RadioListTile(
-      activeColor: color,
-      value: value,
-      groupValue: groupValue,
-      onChanged: onChanged,
-      title: textWhite(title),
     );
   }
 

@@ -20,14 +20,15 @@ import 'package:give_job/manager/shared/group_model.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/logout_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/settings/settings_page.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
+import 'package:give_job/shared/util/logout_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/widget/buttons.dart';
 import 'package:give_job/shared/widget/icons.dart';
+import 'package:give_job/shared/widget/radio_button.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
 import '../../shared/widget/loader.dart';
@@ -524,7 +525,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                                 children: [
                                   Flexible(
                                     fit: FlexFit.loose,
-                                    child: _buildRadioBtn(
+                                    child: RadioButton.buildRadioBtn(
                                       color: Colors.blueAccent,
                                       title: getTranslated(context, 'male'),
                                       value: 0,
@@ -534,7 +535,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                                   ),
                                   Flexible(
                                     fit: FlexFit.loose,
-                                    child: _buildRadioBtn(
+                                    child: RadioButton.buildRadioBtn(
                                       color: Colors.pinkAccent,
                                       title: getTranslated(context, 'female'),
                                       value: 1,
@@ -732,17 +733,6 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
         ),
         SizedBox(height: 10),
       ],
-    );
-  }
-
-  Widget _buildRadioBtn({Color color, String title, int value, int groupValue, Function onChanged}) {
-    return RadioListTile(
-      activeColor: color,
-      dense: true,
-      value: value,
-      groupValue: groupValue,
-      onChanged: onChanged,
-      title: text15White(title),
     );
   }
 

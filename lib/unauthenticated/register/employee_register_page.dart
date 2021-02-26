@@ -15,6 +15,7 @@ import 'package:give_job/shared/pdf_viewer_from_asset.dart';
 import 'package:give_job/shared/util/dialog_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
+import 'package:give_job/shared/widget/radio_button.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:give_job/unauthenticated/login_page.dart';
 
@@ -313,17 +314,6 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
     );
   }
 
-  Widget _buildRadioBtn({Color color, String title, int value, int groupValue, Function onChanged}) {
-    return RadioListTile(
-      activeColor: color,
-      dense: true,
-      value: value,
-      groupValue: groupValue,
-      onChanged: onChanged,
-      title: text15White(title),
-    );
-  }
-
   Widget _buildRequiredTextField(TextEditingController controller, int maxLength, String labelText, String errorText, IconData icon) {
     return Column(
       children: <Widget>[
@@ -473,7 +463,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
             children: [
               Flexible(
                 fit: FlexFit.loose,
-                child: _buildRadioBtn(
+                child: RadioButton.buildRadioBtn(
                   color: Colors.blueAccent,
                   title: getTranslated(context, 'male'),
                   value: 0,
@@ -483,7 +473,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
               ),
               Flexible(
                 fit: FlexFit.loose,
-                child: _buildRadioBtn(
+                child: RadioButton.buildRadioBtn(
                   color: Colors.pinkAccent,
                   title: getTranslated(context, 'female'),
                   value: 1,

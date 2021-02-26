@@ -31,6 +31,7 @@ import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/icons_legend_dialog.dart';
 import 'package:give_job/shared/widget/loader.dart';
+import 'package:give_job/shared/widget/radio_button.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:intl/intl.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
@@ -626,7 +627,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     for (int i = 0; i < _workplaces.length; i++)
-                                      _buildRadioBtn(
+                                      RadioButton.buildRadioBtn(
                                         color: GREEN,
                                         title: utf8.decode(_workplaces[i].name.runes.toList()),
                                         value: 0,
@@ -783,16 +784,6 @@ class _WorkTimePageState extends State<WorkTimePage> {
         setState(() => _isPauseButtonTapped = false);
       });
     });
-  }
-
-  Widget _buildRadioBtn({Color color, String title, int value, int groupValue, Function onChanged}) {
-    return RadioListTile(
-      activeColor: color,
-      value: value,
-      groupValue: groupValue,
-      onChanged: onChanged,
-      title: textWhite(title),
-    );
   }
 
   Widget _handleWorkStatus(MainAxisAlignment alignment, String workStatus, String workplace, String workplaceCode) {

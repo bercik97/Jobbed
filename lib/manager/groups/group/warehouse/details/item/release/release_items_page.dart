@@ -17,10 +17,11 @@ import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
 import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/loader.dart';
+import 'package:give_job/shared/widget/radio_button.dart';
 import 'package:give_job/shared/widget/texts.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
@@ -232,7 +233,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           for (int i = 0; i < _itemPlaces.length; i++)
-                            _buildRadioBtn(
+                            RadioButton.buildRadioBtn(
                               color: GREEN,
                               title: utf8.decode(_itemPlaces[i].location.runes.toList()),
                               value: 0,
@@ -336,16 +337,6 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
         setState(() => _isAddButtonTapped = false);
       });
     });
-  }
-
-  Widget _buildRadioBtn({Color color, String title, int value, int groupValue, Function onChanged}) {
-    return RadioListTile(
-      activeColor: color,
-      value: value,
-      groupValue: groupValue,
-      onChanged: onChanged,
-      title: textWhite(title),
-    );
   }
 
   _showFailureDialogWithNavigate(String content) {

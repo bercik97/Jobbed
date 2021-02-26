@@ -16,15 +16,16 @@ import 'package:give_job/manager/shared/manager_app_bar.dart';
 import 'package:give_job/shared/libraries/colors.dart';
 import 'package:give_job/shared/libraries/constants.dart';
 import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/util/validator_util.dart';
 import 'package:give_job/shared/util/avatars_util.dart';
+import 'package:give_job/shared/util/dialog_util.dart';
 import 'package:give_job/shared/util/language_util.dart';
 import 'package:give_job/shared/util/navigator_util.dart';
+import 'package:give_job/shared/util/toast_util.dart';
+import 'package:give_job/shared/util/validator_util.dart';
 import 'package:give_job/shared/widget/hint.dart';
 import 'package:give_job/shared/widget/icons.dart';
 import 'package:give_job/shared/widget/loader.dart';
+import 'package:give_job/shared/widget/radio_button.dart';
 import 'package:give_job/shared/widget/texts.dart';
 
 import '../group_page.dart';
@@ -377,14 +378,14 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                       SizedBox(height: 7.5),
                       Column(
                         children: <Widget>[
-                          _buildRadioBtn(
+                          RadioButton.buildRadioBtn(
                             color: GREEN,
                             title: getTranslated(context, 'moneyPerHour'),
                             value: 0,
                             groupValue: _moneyRadioValue,
                             onChanged: (newValue) => setState(() => _moneyRadioValue = newValue),
                           ),
-                          _buildRadioBtn(
+                          RadioButton.buildRadioBtn(
                             color: GREEN,
                             title: getTranslated(context, 'moneyPerHourForCompany'),
                             value: 1,
@@ -526,14 +527,14 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                       SizedBox(height: 7.5),
                       Column(
                         children: <Widget>[
-                          _buildRadioBtn(
+                          RadioButton.buildRadioBtn(
                             color: GREEN,
                             title: getTranslated(context, 'yesEmployeeCanFillHoursOnHisOwn'),
                             value: 0,
                             groupValue: _selfFillingHoursRadioValue,
                             onChanged: (newValue) => setState(() => _selfFillingHoursRadioValue = newValue),
                           ),
-                          _buildRadioBtn(
+                          RadioButton.buildRadioBtn(
                             color: Colors.red,
                             title: getTranslated(context, 'noEmployeeCannotFillHoursOnHisOwn'),
                             value: 1,
@@ -639,14 +640,14 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                       SizedBox(height: 7.5),
                       Column(
                         children: <Widget>[
-                          _buildRadioBtn(
+                          RadioButton.buildRadioBtn(
                             color: GREEN,
                             title: getTranslated(context, 'yesEmployeeCanDoWorkTimeByLocation'),
                             value: 0,
                             groupValue: _workTimeByLocationRadioValue,
                             onChanged: (newValue) => setState(() => _workTimeByLocationRadioValue = newValue),
                           ),
-                          _buildRadioBtn(
+                          RadioButton.buildRadioBtn(
                             color: Colors.red,
                             title: getTranslated(context, 'noEmployeeCannotDoWorkTimeByLocation'),
                             value: 1,
@@ -752,14 +753,14 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                       SizedBox(height: 7.5),
                       Column(
                         children: <Widget>[
-                          _buildRadioBtn(
+                          RadioButton.buildRadioBtn(
                             color: GREEN,
                             title: getTranslated(context, 'yesEmployeeCanDoPieceworkUsingCompanyPriceList'),
                             value: 0,
                             groupValue: _pieceworkRadioValue,
                             onChanged: (newValue) => setState(() => _pieceworkRadioValue = newValue),
                           ),
-                          _buildRadioBtn(
+                          RadioButton.buildRadioBtn(
                             color: Colors.red,
                             title: getTranslated(context, 'noEmployeeCannotDoPiecework'),
                             value: 1,
@@ -833,16 +834,6 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
           }),
         );
       },
-    );
-  }
-
-  Widget _buildRadioBtn({Color color, String title, int value, int groupValue, Function onChanged}) {
-    return RadioListTile(
-      activeColor: color,
-      value: value,
-      groupValue: groupValue,
-      onChanged: onChanged,
-      title: text13White(title),
     );
   }
 
