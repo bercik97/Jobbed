@@ -79,14 +79,14 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                       padding: EdgeInsets.only(right: 10),
                       child: IconButton(
                         icon: Image(image: AssetImage('images/white-groups-icon.png')),
-                        onPressed: () => NavigatorUtil.navigate(context, GroupsDashboardPage(_user)),
+                        onPressed: () => NavigatorUtil.navigate(this.context, GroupsDashboardPage(_user)),
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(right: 15.0),
                       child: IconButton(
                         icon: iconWhite(Icons.settings),
-                        onPressed: () => NavigatorUtil.navigate(context, SettingsPage(_user)),
+                        onPressed: () => NavigatorUtil.navigate(this.context, SettingsPage(_user)),
                       ),
                     ),
                   ],
