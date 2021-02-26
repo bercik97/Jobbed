@@ -96,8 +96,8 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                             ? textWhite(utf8.decode(_workplaceDto.location.runes.toList()))
                             : Row(
                                 children: [
-                                  textRed(getTranslated(context, 'empty') + ' ('),
-                                  textWhite(getTranslated(context, 'tapBtnNextToTheRightToSetLocation') + ')'),
+                                  textWhite(getTranslated(context, 'location') + ': '),
+                                  textRed(getTranslated(context, 'empty')),
                                 ],
                               ),
                         alignment: Alignment.topLeft,

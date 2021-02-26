@@ -208,7 +208,14 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                                 ),
                                                 Align(
                                                   alignment: Alignment.topLeft,
-                                                  child: textWhite(location != null ? utf8.decode(location.runes.toList()) : getTranslated(this.context, 'empty')),
+                                                  child: location != null
+                                                      ? textWhite(utf8.decode(location.runes.toList()))
+                                                      : Row(
+                                                          children: [
+                                                            textWhite(getTranslated(this.context, 'location') + ': '),
+                                                            textRed(getTranslated(this.context, 'empty')),
+                                                          ],
+                                                        ),
                                                 ),
                                                 Align(
                                                   alignment: Alignment.topLeft,
@@ -510,11 +517,6 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
       setState(() => _isAddButtonTapped = false);
       ToastUtil.showErrorToast(invalidMessage);
       return;
-    } else if (_markersList.isEmpty) {
-      setState(() => _isAddButtonTapped = false);
-      ToastUtil.showErrorToast(getTranslated(context, 'workplaceAreNotSet'));
-      this._workplaceLocation = null;
-      return;
     }
     CreateWorkplaceDto dto;
     showDialog(
@@ -530,10 +532,10 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                 textCenter16GreenBold(workplaceName),
                 SizedBox(height: 5),
                 textCenterWhite(getTranslated(this.context, 'location') + ': '),
-                textCenter16GreenBold(_workplaceLocation),
+                textCenter16GreenBold(_workplaceLocation != null ? _workplaceLocation : getTranslated(context, 'empty')),
                 SizedBox(height: 5),
                 textCenterWhite(getTranslated(this.context, 'workplaceAreaRadius') + ': '),
-                textCenter16GreenBold(_radius != 0 ? _radius.toString().substring(0, 4) + ' KM' : getTranslated(context, 'empty')),
+                textCenter16GreenBold(_workplaceLocation != null && _radius != 0 ? _radius.toString().substring(0, 4) + ' KM' : getTranslated(context, 'empty')),
               ],
             ),
           ),
@@ -549,8 +551,8 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                 dto = new CreateWorkplaceDto(
                   companyId: _user.companyId,
                   name: workplaceName,
-                  location: this._workplaceLocation,
-                  radiusLength: _radius != 0 ? double.parse(_radius.toString()) : 0,
+                  location: _workplaceLocation,
+                  radiusLength: _workplaceLocation != null && _radius != 0 ? double.parse(_radius.toString()) : 0,
                   latitude: circle != null ? circle.center.latitude : 0,
                   longitude: circle != null ? circle.center.longitude : 0,
                 );
@@ -559,7 +561,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                     Navigator.pop(context);
                     Navigator.pop(context);
                     _refresh();
-                    _showSuccessDialog(getTranslated(this.context, 'successfullyAddedNewWorkplace'));
+                    ToastUtil.showSuccessToast(getTranslated(this.context, 'successfullyAddedNewWorkplace'));
                   });
                 }).catchError((onError) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
@@ -592,74 +594,36 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
       showHint(context, getTranslated(context, 'needToSelectWorkplaces') + ' ', getTranslated(context, 'whichYouWantToRemove'));
       return;
     }
-    showDialog(
+    DialogUtil.showConfirmationDialog(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: DARK,
-          title: textWhite(getTranslated(this.context, 'confirmation')),
-          content: textWhite(getTranslated(this.context, 'areYouSureYouWantToDeleteSelectedWorkplaces')),
-          actions: <Widget>[
-            FlatButton(
-              child: textWhite(getTranslated(this.context, 'yesDeleteThem')),
-              onPressed: () {
-                showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                _workplaceService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
-                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (BuildContext context) => WorkplacesPage(_model)),
-                      ModalRoute.withName('/'),
-                    );
-                    ToastUtil.showSuccessToast(getTranslated(this.context, 'selectedWorkplacesRemoved'));
-                  });
-                }).catchError((onError) {
-                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                    String errorMsg = onError.toString();
-                    if (errorMsg.contains("SOMEONE_IS_WORKING_IN_WORKPLACE_FOR_DELETE")) {
-                      setState(() => _isDeleteButtonTapped = false);
-                      Navigator.pop(this.context);
-                      DialogUtil.showErrorDialog(context, getTranslated(context, 'cannotDeleteWorkplaceWhenSomeoneWorkingThere'));
-                      return;
-                    }
-                    setState(() => _isDeleteButtonTapped = false);
-                    ToastUtil.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
-                  });
-                });
-              },
-            ),
-            FlatButton(
-              child: textWhite(getTranslated(this.context, 'no')),
-              onPressed: () => Navigator.of(this.context).pop(),
-            ),
-          ],
-        );
-      },
+      title: getTranslated(context, 'confirmation'),
+      content: getTranslated(context, 'areYouSureYouWantToDeleteSelectedWorkplaces'),
+      isBtnTapped: _isDeleteButtonTapped,
+      fun: () => _isDeleteButtonTapped ? null : _handleDeleteWorkplaces(ids),
     );
   }
 
-  _showSuccessDialog(String msg) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: DARK,
-          title: textGreen(getTranslated(this.context, 'success')),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                textWhite(msg),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: textWhite(getTranslated(this.context, 'ok')),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ],
-        );
-      },
-    );
+  _handleDeleteWorkplaces(LinkedHashSet<String> ids) {
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _workplaceService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        Navigator.pop(context);
+        _refresh();
+        ToastUtil.showSuccessToast(getTranslated(this.context, 'selectedWorkplacesRemoved'));
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        String errorMsg = onError.toString();
+        if (errorMsg.contains("SOMEONE_IS_WORKING_IN_WORKPLACE_FOR_DELETE")) {
+          setState(() => _isDeleteButtonTapped = false);
+          Navigator.pop(this.context);
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'cannotDeleteWorkplaceWhenSomeoneWorkingThere'));
+          return;
+        }
+        setState(() => _isDeleteButtonTapped = false);
+        ToastUtil.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
+      });
+    });
   }
 
   Widget _handleNoWorkplaces() {

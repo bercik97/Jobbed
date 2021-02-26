@@ -77,7 +77,7 @@ class _WorkplaceEditPageState extends State<WorkplaceEditPage> {
                         ),
                         ListTile(
                           title: text18WhiteBold(getTranslated(context, 'location')),
-                          subtitle: text16White(utf8.decode(_workplace.location.runes.toList())),
+                          subtitle: text16White(_workplace.location != null ? utf8.decode(_workplace.location.runes.toList()) : getTranslated(context, 'empty')),
                           trailing: Ink(
                             decoration: ShapeDecoration(color: GREEN, shape: CircleBorder()),
                             child: IconButton(
