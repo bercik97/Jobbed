@@ -4,14 +4,14 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:give_job/api/employee/dto/employee_basic_dto.dart';
-import 'package:give_job/api/employee/service/employee_service.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/api/timesheet/service/timesheet_service.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/hint.dart';
+import 'package:jobbed/api/employee/dto/employee_basic_dto.dart';
+import 'package:jobbed/api/employee/service/employee_service.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/hint.dart';
 
 import '../../../../../internationalization/localization/localization_constants.dart';
 import '../../../../../shared/libraries/colors.dart';
@@ -86,17 +86,17 @@ class _AddTsPageState extends State<AddTsPage> {
         theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          backgroundColor: DARK,
+          backgroundColor: WHITE,
           appBar: managerAppBar(context, _user, utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'), () => NavigatorUtil.navigate(this.context, TsPage(_model))),
           body: WillPopScope(
             onWillPop: () => NavigatorUtil.onWillPopNavigate(context, TsPage(_model)),
             child: AlertDialog(
-              backgroundColor: BRIGHTER_DARK,
-              title: textWhite(getTranslated(context, 'failure')),
-              content: textWhite(getTranslated(context, 'allEmployeesHaveTsForChosenYearAndMonth')),
+              backgroundColor: BRIGHTER_BLUE,
+              title: textRedBold(getTranslated(context, 'failure')),
+              content: textBlack(getTranslated(context, 'allEmployeesHaveTsForChosenYearAndMonth')),
               actions: <Widget>[
                 FlatButton(
-                  child: textGreen(getTranslated(context, 'goBack')),
+                  child: textBlack(getTranslated(context, 'goBack')),
                   onPressed: () => NavigatorUtil.navigate(this.context, TsPage(_model)),
                 ),
               ],
@@ -111,11 +111,11 @@ class _AddTsPageState extends State<AddTsPage> {
         theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          backgroundColor: DARK,
+          backgroundColor: WHITE,
           appBar: managerAppBar(context, _user, utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'), () => Navigator.pop(context)),
           body: RefreshIndicator(
-            color: DARK,
-            backgroundColor: WHITE,
+            color: WHITE,
+            backgroundColor: BLUE,
             onRefresh: _refresh,
             child: Column(
               children: <Widget>[
@@ -123,7 +123,7 @@ class _AddTsPageState extends State<AddTsPage> {
                   padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
                   child: Column(
                     children: [
-                      text20White(getTranslated(context, 'addNewTsForSelectedEmployeesForChosenDate')),
+                      text20Black(getTranslated(context, 'addNewTsForSelectedEmployeesForChosenDate')),
                       SizedBox(height: 5),
                       Align(
                         alignment: Alignment.centerLeft,
@@ -139,15 +139,16 @@ class _AddTsPageState extends State<AddTsPage> {
                   child: TextFormField(
                     autofocus: false,
                     autocorrect: true,
-                    cursorColor: WHITE,
-                    style: TextStyle(color: WHITE),
+                    cursorColor: BLACK,
+                    style: TextStyle(color: BLACK),
                     decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-                      counterStyle: TextStyle(color: WHITE),
+                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2)),
+                      counterStyle: TextStyle(color: BLACK),
                       border: OutlineInputBorder(),
                       labelText: getTranslated(this.context, 'search'),
-                      prefixIcon: iconWhite(Icons.search),
-                      labelStyle: TextStyle(color: WHITE),
+                      prefixIcon: iconBlack(Icons.search),
+                      labelStyle: TextStyle(color: BLACK),
                     ),
                     onChanged: (string) {
                       setState(
@@ -161,9 +162,9 @@ class _AddTsPageState extends State<AddTsPage> {
                 ListTileTheme(
                   contentPadding: EdgeInsets.only(left: 3),
                   child: CheckboxListTile(
-                    title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
+                    title: textBlack(getTranslated(this.context, 'selectUnselectAll')),
                     value: _isChecked,
-                    activeColor: GREEN,
+                    activeColor: BLUE,
                     checkColor: WHITE,
                     onChanged: (bool value) {
                       setState(() {
@@ -194,19 +195,19 @@ class _AddTsPageState extends State<AddTsPage> {
                       String info = employee.name + ' ' + employee.surname;
                       String nationality = employee.nationality;
                       return Card(
-                        color: DARK,
+                        color: WHITE,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Container(
-                              color: BRIGHTER_DARK,
+                              color: BRIGHTER_BLUE,
                               child: ListTileTheme(
                                 contentPadding: EdgeInsets.only(right: 10),
                                 child: CheckboxListTile(
                                   controlAffinity: ListTileControlAffinity.leading,
-                                  title: text20WhiteBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
-                                  activeColor: GREEN,
+                                  title: text20BlackBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                  activeColor: BLUE,
                                   checkColor: WHITE,
                                   value: _checked[foundIndex],
                                   onChanged: (bool value) {
@@ -264,7 +265,7 @@ class _AddTsPageState extends State<AddTsPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[iconWhite(Icons.check)],
                     ),
-                    color: GREEN,
+                    color: BLUE,
                     onPressed: () => _isAddBtnTapped ? null : _createTsForSelectedEmployees(),
                   ),
                 ],

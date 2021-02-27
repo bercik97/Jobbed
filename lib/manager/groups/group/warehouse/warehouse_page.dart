@@ -5,22 +5,21 @@ import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/api/warehouse/dto/warehouse_dashboard_dto.dart';
-import 'package:give_job/api/warehouse/service/warehouse_service.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/group_page.dart';
-import 'package:give_job/manager/shared/group_model.dart';
-import 'package:give_job/manager/shared/manager_app_bar.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/hint.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/texts.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/widget/texts.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/warehouse/dto/warehouse_dashboard_dto.dart';
+import 'package:jobbed/api/warehouse/service/warehouse_service.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/groups/group/group_page.dart';
+import 'package:jobbed/manager/shared/group_model.dart';
+import 'package:jobbed/manager/shared/manager_app_bar.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/hint.dart';
+import 'package:jobbed/shared/widget/icons.dart';
 
 import '../../../../shared/widget/loader.dart';
 import 'add/add_warehouse_page.dart';
@@ -81,7 +80,7 @@ class _WarehousePageState extends State<WarehousePage> {
         theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          backgroundColor: DARK,
+          backgroundColor: WHITE,
           appBar: managerAppBar(context, _user, getTranslated(context, 'warehouses'), () => NavigatorUtil.navigate(context, GroupPage(_model))),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
@@ -92,15 +91,16 @@ class _WarehousePageState extends State<WarehousePage> {
                   child: TextFormField(
                     autofocus: false,
                     autocorrect: true,
-                    cursorColor: WHITE,
-                    style: TextStyle(color: WHITE),
+                    cursorColor: BLACK,
+                    style: TextStyle(color: BLACK),
                     decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-                      counterStyle: TextStyle(color: WHITE),
+                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2)),
+                      counterStyle: TextStyle(color: BLACK),
                       border: OutlineInputBorder(),
                       labelText: getTranslated(context, 'search'),
-                      prefixIcon: iconWhite(Icons.search),
-                      labelStyle: TextStyle(color: WHITE),
+                      prefixIcon: iconBlack(Icons.search),
+                      labelStyle: TextStyle(color: BLACK),
                     ),
                     onChanged: (string) {
                       setState(
@@ -114,9 +114,9 @@ class _WarehousePageState extends State<WarehousePage> {
                 ListTileTheme(
                   contentPadding: EdgeInsets.only(left: 3),
                   child: CheckboxListTile(
-                    title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
+                    title: textBlack(getTranslated(this.context, 'selectUnselectAll')),
                     value: _isChecked,
-                    activeColor: GREEN,
+                    activeColor: BLUE,
                     checkColor: WHITE,
                     onChanged: (bool value) {
                       setState(() {
@@ -138,8 +138,8 @@ class _WarehousePageState extends State<WarehousePage> {
                     : Expanded(
                         flex: 2,
                         child: RefreshIndicator(
-                          color: DARK,
-                          backgroundColor: WHITE,
+                          color: WHITE,
+                          backgroundColor: BLUE,
                           onRefresh: _refresh,
                           child: Scrollbar(
                             isAlwaysShown: true,
@@ -159,42 +159,38 @@ class _WarehousePageState extends State<WarehousePage> {
                                 String numberOfTypeOfItems = warehouse.numberOfTypeOfItems.toString();
                                 String totalNumberOfItems = warehouse.totalNumberOfItems.toString();
                                 return Card(
-                                  color: DARK,
+                                  color: WHITE,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Container(
-                                        color: BRIGHTER_DARK,
+                                        color: BRIGHTER_BLUE,
                                         child: ListTileTheme(
                                           contentPadding: EdgeInsets.only(right: 10),
                                           child: CheckboxListTile(
                                             controlAffinity: ListTileControlAffinity.trailing,
                                             secondary: Padding(
                                               padding: EdgeInsets.only(left: 10),
-                                              child: Shimmer.fromColors(
-                                                baseColor: GREEN,
-                                                highlightColor: WHITE,
-                                                child: BouncingWidget(
-                                                  duration: Duration(milliseconds: 100),
-                                                  scaleFactor: 2,
-                                                  onPressed: () => NavigatorUtil.navigate(this.context, WarehouseDetailsPage(_model, warehouse)),
-                                                  child: Image(image: AssetImage('images/warehouse-icon.png'), fit: BoxFit.fitHeight),
-                                                ),
+                                              child: BouncingWidget(
+                                                duration: Duration(milliseconds: 100),
+                                                scaleFactor: 2,
+                                                onPressed: () => NavigatorUtil.navigate(this.context, WarehouseDetailsPage(_model, warehouse)),
+                                                child: Image(image: AssetImage('images/warehouse.png'), fit: BoxFit.fitHeight),
                                               ),
                                             ),
                                             title: Column(
                                               children: [
                                                 Align(
                                                   alignment: Alignment.topLeft,
-                                                  child: textWhiteBold(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
+                                                  child: text17BlueBold(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
                                                 ),
                                                 Align(
                                                   alignment: Alignment.topLeft,
                                                   child: Row(
                                                     children: [
-                                                      textWhite(getTranslated(this.context, 'numberOfTypeOfItems') + ': '),
-                                                      textGreen(numberOfTypeOfItems),
+                                                      text16Black(getTranslated(this.context, 'numberOfTypeOfItems') + ': '),
+                                                      text17BlackBold(numberOfTypeOfItems),
                                                     ],
                                                   ),
                                                 ),
@@ -202,14 +198,14 @@ class _WarehousePageState extends State<WarehousePage> {
                                                   alignment: Alignment.topLeft,
                                                   child: Row(
                                                     children: [
-                                                      textWhite(getTranslated(this.context, 'totalNumberOfItems') + ': '),
-                                                      textGreen(totalNumberOfItems),
+                                                      text16Black(getTranslated(this.context, 'totalNumberOfItems') + ': '),
+                                                      text17BlackBold(totalNumberOfItems),
                                                     ],
                                                   ),
                                                 ),
                                               ],
                                             ),
-                                            activeColor: GREEN,
+                                            activeColor: BLUE,
                                             checkColor: WHITE,
                                             value: _checked[foundIndex],
                                             onChanged: (bool value) {
@@ -249,9 +245,9 @@ class _WarehousePageState extends State<WarehousePage> {
               FloatingActionButton(
                 heroTag: "plusBtn",
                 tooltip: getTranslated(context, 'createWarehouse'),
-                backgroundColor: GREEN,
+                backgroundColor: BLUE,
                 onPressed: () => NavigatorUtil.navigate(context, AddWarehousePage(_model)),
-                child: text25Dark('+'),
+                child: text25White('+'),
               ),
               SizedBox(height: 15),
               FloatingActionButton(
@@ -280,12 +276,12 @@ class _WarehousePageState extends State<WarehousePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: DARK,
-          title: textWhite(getTranslated(this.context, 'confirmation')),
-          content: textWhite(getTranslated(this.context, 'areYouSureYouWantToDeleteSelectedWarehouses')),
+          backgroundColor: WHITE,
+          title: textGreenBold(getTranslated(this.context, 'confirmation')),
+          content: textBlack(getTranslated(this.context, 'areYouSureYouWantToDeleteSelectedWarehouses')),
           actions: <Widget>[
             FlatButton(
-              child: textWhite(getTranslated(this.context, 'yesDeleteThem')),
+              child: textBlack(getTranslated(this.context, 'yesDeleteThem')),
               onPressed: () {
                 showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                 _warehouseService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
@@ -305,7 +301,7 @@ class _WarehousePageState extends State<WarehousePage> {
               },
             ),
             FlatButton(
-              child: textWhite(getTranslated(this.context, 'no')),
+              child: textBlack(getTranslated(this.context, 'no')),
               onPressed: () {
                 Navigator.of(this.context).pop();
                 setState(() => _isDeleteButtonTapped = false);
@@ -322,11 +318,11 @@ class _WarehousePageState extends State<WarehousePage> {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(top: 20),
-          child: Align(alignment: Alignment.center, child: text20GreenBold(getTranslated(this.context, 'noWarehouses'))),
+          child: Align(alignment: Alignment.center, child: text20BlueBold(getTranslated(this.context, 'noWarehouses'))),
         ),
         Padding(
           padding: EdgeInsets.only(right: 30, left: 30, top: 10),
-          child: Align(alignment: Alignment.center, child: textCenter19White(getTranslated(this.context, 'noWarehousesHint'))),
+          child: Align(alignment: Alignment.center, child: textCenter19Black(getTranslated(this.context, 'noWarehousesHint'))),
         ),
       ],
     );

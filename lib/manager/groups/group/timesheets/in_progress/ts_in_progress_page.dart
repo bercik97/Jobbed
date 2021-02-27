@@ -8,33 +8,33 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:give_job/api/employee/dto/employee_statistics_dto.dart';
-import 'package:give_job/api/employee/service/employee_service.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
-import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
-import 'package:give_job/api/workday/service/workday_service.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/employee/employee_profile_page.dart';
-import 'package:give_job/manager/groups/group/employee/employee_ts_in_progress_page.dart';
-import 'package:give_job/manager/groups/group/piecework/add_piecework_for_selected_employees_page.dart';
-import 'package:give_job/manager/groups/group/timesheets/ts_page.dart';
-import 'package:give_job/manager/shared/group_model.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/avatars_util.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/icons_legend_util.dart';
-import 'package:give_job/shared/util/language_util.dart';
-import 'package:give_job/shared/util/month_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/util/validator_util.dart';
-import 'package:give_job/shared/widget/hint.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/icons_legend_dialog.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/employee/dto/employee_statistics_dto.dart';
+import 'package:jobbed/api/employee/service/employee_service.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/timesheet/dto/timesheet_for_employee_dto.dart';
+import 'package:jobbed/api/timesheet/dto/timesheet_with_status_dto.dart';
+import 'package:jobbed/api/workday/service/workday_service.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/groups/group/employee/employee_profile_page.dart';
+import 'package:jobbed/manager/groups/group/employee/employee_ts_in_progress_page.dart';
+import 'package:jobbed/manager/groups/group/piecework/add_piecework_for_selected_employees_page.dart';
+import 'package:jobbed/manager/groups/group/timesheets/ts_page.dart';
+import 'package:jobbed/manager/shared/group_model.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/avatars_util.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/icons_legend_util.dart';
+import 'package:jobbed/shared/util/language_util.dart';
+import 'package:jobbed/shared/util/month_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/validator_util.dart';
+import 'package:jobbed/shared/widget/hint.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 import 'package:intl/intl.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
@@ -109,7 +109,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
         theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          backgroundColor: DARK,
+          backgroundColor: WHITE,
           appBar: managerAppBar(
             context,
             _model.user,
@@ -117,8 +117,8 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
             () => NavigatorUtil.navigate(context, TsPage(_model)),
           ),
           body: RefreshIndicator(
-            color: DARK,
-            backgroundColor: WHITE,
+            color: WHITE,
+            backgroundColor: BLUE,
             onRefresh: _refresh,
             child: Column(
               children: <Widget>[
@@ -131,15 +131,16 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                   child: TextFormField(
                     autofocus: false,
                     autocorrect: true,
-                    cursorColor: WHITE,
-                    style: TextStyle(color: WHITE),
+                    cursorColor: BLACK,
+                    style: TextStyle(color: BLACK),
                     decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-                      counterStyle: TextStyle(color: WHITE),
+                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2)),
+                      counterStyle: TextStyle(color: BLACK),
                       border: OutlineInputBorder(),
                       labelText: getTranslated(this.context, 'search'),
-                      prefixIcon: iconWhite(Icons.search),
-                      labelStyle: TextStyle(color: WHITE),
+                      prefixIcon: iconBlack(Icons.search),
+                      labelStyle: TextStyle(color: BLACK),
                     ),
                     onChanged: (string) {
                       setState(
@@ -153,9 +154,9 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                 ListTileTheme(
                   contentPadding: EdgeInsets.only(left: 3),
                   child: CheckboxListTile(
-                    title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
+                    title: textBlack(getTranslated(this.context, 'selectUnselectAll')),
                     value: _isChecked,
-                    activeColor: GREEN,
+                    activeColor: BLUE,
                     checkColor: WHITE,
                     onChanged: (bool value) {
                       setState(() {
@@ -187,7 +188,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                       String nationality = employee.nationality;
                       String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.gender, info.substring(0, 1));
                       return Card(
-                        color: DARK,
+                        color: BRIGHTER_BLUE,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -195,12 +196,12 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                             Ink(
                               width: MediaQuery.of(context).size.width * 0.15,
                               height: 106,
-                              color: BRIGHTER_DARK,
+                              color: BRIGHTER_BLUE,
                               child: ListTileTheme(
                                 contentPadding: EdgeInsets.only(right: 10),
                                 child: CheckboxListTile(
                                   controlAffinity: ListTileControlAffinity.leading,
-                                  activeColor: GREEN,
+                                  activeColor: BLUE,
                                   checkColor: WHITE,
                                   value: _checked[foundIndex],
                                   onChanged: (bool value) {
@@ -222,7 +223,6 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                 ),
                               ),
                             ),
-                            SizedBox(width: 10),
                             InkWell(
                               onTap: () {
                                 TimesheetForEmployeeDto _inProgressTs = new TimesheetForEmployeeDto(
@@ -242,35 +242,35 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                               },
                               child: Ink(
                                 width: MediaQuery.of(context).size.width * 0.60,
-                                color: BRIGHTER_DARK,
+                                color: BRIGHTER_BLUE,
                                 child: Padding(
                                   padding: const EdgeInsets.all(6),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      text17WhiteBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                      text17BlackBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                       Row(
                                         children: <Widget>[
-                                          textWhite(getTranslated(this.context, 'hours') + ': '),
-                                          textGreenBold(employee.totalMoneyForHoursForEmployee.toString() + ' PLN' + ' (' + employee.totalHours + ' h)'),
+                                          textBlackBold(getTranslated(this.context, 'hours') + ': '),
+                                          textBlack(employee.totalMoneyForHoursForEmployee.toString() + ' PLN' + ' (' + employee.totalHours + ' h)'),
                                         ],
                                       ),
                                       Row(
                                         children: <Widget>[
-                                          textWhite(getTranslated(this.context, 'accord') + ': '),
-                                          textGreenBold(employee.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
+                                          textBlackBold(getTranslated(this.context, 'accord') + ': '),
+                                          textBlack(employee.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
                                         ],
                                       ),
                                       Row(
                                         children: <Widget>[
-                                          textWhite(getTranslated(this.context, 'time') + ': '),
-                                          textGreenBold(employee.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + employee.totalTime + ')'),
+                                          textBlackBold(getTranslated(this.context, 'time') + ': '),
+                                          textBlack(employee.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + employee.totalTime + ')'),
                                         ],
                                       ),
                                       Row(
                                         children: <Widget>[
-                                          textWhite(getTranslated(this.context, 'sum') + ': '),
-                                          textGreenBold(employee.totalMoneyEarned.toString() + ' PLN'),
+                                          textBlackBold(getTranslated(this.context, 'sum') + ': '),
+                                          textBlack(employee.totalMoneyEarned.toString() + ' PLN'),
                                         ],
                                       ),
                                     ],
@@ -278,11 +278,9 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                 ),
                               ),
                             ),
-                            SizedBox(width: 15),
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.15,
-                              child: Padding(
-                                padding: EdgeInsets.all(10),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 25, left: 25),
+                              child: Container(
                                 child: Transform.scale(
                                   scale: 1.2,
                                   child: BouncingWidget(
@@ -316,8 +314,8 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                   SizedBox(width: 1),
                   Expanded(
                     child: MaterialButton(
-                      color: GREEN,
-                      child: Image(image: AssetImage('images/dark-hours-icon.png')),
+                      color: BLUE,
+                      child: Image(image: AssetImage('images/hours.png')),
                       onPressed: () {
                         if (_selectedIds.isNotEmpty) {
                           _hoursController.clear();
@@ -332,8 +330,8 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                   SizedBox(width: 1),
                   Expanded(
                     child: MaterialButton(
-                      color: GREEN,
-                      child: Image(image: AssetImage('images/dark-piecework-icon.png')),
+                      color: BLUE,
+                      child: Image(image: AssetImage('images/piecework.png')),
                       onPressed: () {
                         if (_selectedIds.isNotEmpty) {
                           _showUpdatePiecework(_selectedIds);
@@ -346,10 +344,10 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                   SizedBox(width: 1),
                   Expanded(
                     child: MaterialButton(
-                      color: GREEN,
+                      color: BLUE,
                       child: Row(
                         children: [
-                          Image(image: AssetImage('images/dark-piecework-icon.png')),
+                          Image(image: AssetImage('images/piecework.png')),
                           iconRed(Icons.close),
                         ],
                       ),
@@ -365,8 +363,8 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                   SizedBox(width: 1),
                   Expanded(
                     child: MaterialButton(
-                      color: GREEN,
-                      child: Image(image: AssetImage('images/dark-note-icon.png')),
+                      color: BLUE,
+                      child: Image(image: AssetImage('images/note.png')),
                       onPressed: () {
                         if (_selectedIds.isNotEmpty) {
                           _noteController.clear();
@@ -387,10 +385,10 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
             getTranslated(context, 'iconsLegend'),
             [
               IconsLegendUtil.buildImageRow('images/letters/male/unknown_letter.png', getTranslated(context, 'employeeProfile')),
-              IconsLegendUtil.buildImageRow('images/green-hours-icon.png', getTranslated(context, 'settingHours')),
-              IconsLegendUtil.buildImageRow('images/green-piecework-icon.png', getTranslated(context, 'settingPiecework')),
-              IconsLegendUtil.buildImageWithIconRow('images/green-piecework-icon.png', iconRed(Icons.close), getTranslated(context, 'deletingPiecework')),
-              IconsLegendUtil.buildImageRow('images/green-note-icon.png', getTranslated(context, 'settingNote')),
+              IconsLegendUtil.buildImageRow('images/hours.png', getTranslated(context, 'settingHours')),
+              IconsLegendUtil.buildImageRow('images/piecework.png', getTranslated(context, 'settingPiecework')),
+              IconsLegendUtil.buildImageWithIconRow('images/piecework.png', iconRed(Icons.close), getTranslated(context, 'deletingPiecework')),
+              IconsLegendUtil.buildImageRow('images/note.png', getTranslated(context, 'settingNote')),
             ],
           ),
         ),
@@ -418,7 +416,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
       String dateTo = DateFormat('yyyy-MM-dd').format(picked[1]);
       showGeneralDialog(
         context: context,
-        barrierColor: DARK.withOpacity(0.95),
+        barrierColor: WHITE.withOpacity(0.95),
         barrierDismissible: false,
         barrierLabel: 'Hours',
         transitionDuration: Duration(milliseconds: 400),
@@ -430,11 +428,11 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'hoursUpperCase'))),
+                    Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'hoursUpperCase'))),
                     SizedBox(height: 2.5),
-                    textGreen(getTranslated(context, 'setHoursForSelectedEmployee')),
+                    text16Black(getTranslated(context, 'setHoursForSelectedEmployee')),
                     SizedBox(height: 2.5),
-                    textGreenBold('[' + dateFrom + ' - ' + dateTo + ']'),
+                    text17BlueBold('[' + dateFrom + ' - ' + dateTo + ']'),
                     SizedBox(height: 2.5),
                     Row(
                       children: [
@@ -444,7 +442,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
                               children: [
-                                textWhite(getTranslated(context, 'hoursNumber')),
+                                textBlack(getTranslated(context, 'hoursNumber')),
                                 SizedBox(height: 2.5),
                                 NumberInputWithIncrementDecrement(
                                   controller: _hoursController,
@@ -460,8 +458,8 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                       setState(() => _hoursController.text = 24.toString());
                                     }
                                   },
-                                  style: TextStyle(color: GREEN),
-                                  widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
+                                  style: TextStyle(color: BLUE),
+                                  widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
                                 ),
                               ],
                             ),
@@ -473,7 +471,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
                               children: [
-                                textWhite(getTranslated(context, 'minutesNumber')),
+                                textBlack(getTranslated(context, 'minutesNumber')),
                                 SizedBox(height: 2.5),
                                 NumberInputWithIncrementDecrement(
                                   controller: _minutesController,
@@ -489,8 +487,8 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                       setState(() => _minutesController.text = 59.toString());
                                     }
                                   },
-                                  style: TextStyle(color: GREEN),
-                                  widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
+                                  style: TextStyle(color: BLUE),
+                                  widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
                                 ),
                               ],
                             ),
@@ -523,7 +521,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[iconWhite(Icons.check)],
                           ),
-                          color: GREEN,
+                          color: BLUE,
                           onPressed: () {
                             double hours;
                             double minutes;
@@ -676,7 +674,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
       String dateTo = DateFormat('yyyy-MM-dd').format(picked[1]);
       showGeneralDialog(
         context: context,
-        barrierColor: DARK.withOpacity(0.95),
+        barrierColor: WHITE.withOpacity(0.95),
         barrierDismissible: false,
         barrierLabel: 'Note',
         transitionDuration: Duration(milliseconds: 400),
@@ -688,11 +686,11 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'note'))),
+                    Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'note'))),
                     SizedBox(height: 2.5),
-                    textGreen(getTranslated(context, 'noteForSelectedEmployees')),
+                    text16Black(getTranslated(context, 'noteForSelectedEmployees')),
                     SizedBox(height: 2.5),
-                    textGreenBold('[' + dateFrom + ' - ' + dateTo + ']'),
+                    text17BlueBold('[' + dateFrom + ' - ' + dateTo + ']'),
                     SizedBox(height: 20),
                     Padding(
                       padding: EdgeInsets.only(left: 25, right: 25),
@@ -702,19 +700,13 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                         keyboardType: TextInputType.multiline,
                         maxLength: 510,
                         maxLines: 5,
-                        cursorColor: WHITE,
+                        cursorColor: BLACK,
                         textAlignVertical: TextAlignVertical.center,
-                        style: TextStyle(color: WHITE),
+                        style: TextStyle(color: BLACK),
                         decoration: InputDecoration(
-                          hintText: getTranslated(context, 'textSomeNote'),
-                          hintStyle: TextStyle(color: MORE_BRIGHTER_DARK),
-                          counterStyle: TextStyle(color: WHITE),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: GREEN, width: 2.5),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: GREEN, width: 2.5),
-                          ),
+                          counterStyle: TextStyle(color: BLACK),
+                          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2.5)),
+                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2.5)),
                         ),
                       ),
                     ),
@@ -742,7 +734,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[iconWhite(Icons.check)],
                           ),
-                          color: GREEN,
+                          color: BLUE,
                           onPressed: () {
                             String note = _noteController.text;
                             String invalidMessage = ValidatorUtil.validateNote(note, context);

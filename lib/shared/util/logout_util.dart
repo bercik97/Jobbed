@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 
 import '../../internationalization/localization/localization_constants.dart';
 import '../../main.dart';
@@ -14,15 +14,15 @@ class LogoutUtil {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: DARK,
-          title: textGreen(getTranslated(context, 'logout')),
-          content: textWhite(getTranslated(context, 'logoutConfirm')),
+          backgroundColor: WHITE,
+          title: textGreenBold(getTranslated(context, 'logout')),
+          content: textBlack(getTranslated(context, 'logoutConfirm')),
           actions: <Widget>[
             FlatButton(
-              child: textWhite(getTranslated(context, 'yes')),
+              child: textBlack(getTranslated(context, 'yes')),
               onPressed: () => logoutWithoutConfirm(context, getTranslated(context, 'logoutSuccessfully')),
             ),
-            FlatButton(child: textWhite(getTranslated(context, 'no')), onPressed: () => Navigator.of(context).pop()),
+            FlatButton(child: textBlack(getTranslated(context, 'no')), onPressed: () => Navigator.of(context).pop()),
           ],
         );
       },
@@ -43,12 +43,12 @@ class LogoutUtil {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: DARK,
+          backgroundColor: WHITE,
           title: textRed(getTranslated(context, 'accountExpired')),
-          content: textWhite(getTranslated(context, 'yourAccountProbablyExpired')),
+          content: textBlack(getTranslated(context, 'yourAccountProbablyExpired')),
           actions: <Widget>[
             FlatButton(
-              child: textWhite(getTranslated(context, 'ok')),
+              child: textBlack(getTranslated(context, 'ok')),
               onPressed: () => logoutWithoutConfirm(context, null),
             ),
           ],

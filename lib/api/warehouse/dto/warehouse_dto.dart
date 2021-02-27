@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:give_job/api/item/dto/item_dto.dart';
+import 'package:jobbed/api/item/dto/item_dto.dart';
 
 class WarehouseDto {
   final int id;

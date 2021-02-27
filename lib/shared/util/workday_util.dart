@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 
 class WorkdayUtil {
   static void showScrollableWorkTimesAndNote(BuildContext context, String date, List pieceworks, List workTimes, String note) {
@@ -14,7 +14,7 @@ class WorkdayUtil {
     }
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       transitionDuration: Duration(milliseconds: 400),
       pageBuilder: (_, __, ___) {
@@ -29,19 +29,19 @@ class WorkdayUtil {
                     padding: EdgeInsets.all(10),
                     child: Column(
                       children: <Widget>[
-                        text20GreenBold(date.substring(0, 10)),
+                        text20BlueBold(date.substring(0, 10)),
                         SizedBox(height: 20),
-                        text20GreenBold(getTranslated(context, 'workTimes')),
+                        text20BlueBold(getTranslated(context, 'workTimes')),
                         SizedBox(height: 5),
                         _buildWorkTimesDataTable(context, workTimes),
                         SizedBox(height: 5),
-                        text20GreenBold(getTranslated(context, 'pieceworks')),
+                        text20BlueBold(getTranslated(context, 'pieceworks')),
                         SizedBox(height: 5),
                         _buildPieceworksDataTable(context, pieceworks, false),
                         SizedBox(height: 5),
-                        text20GreenBold(getTranslated(context, 'note')),
+                        text20BlueBold(getTranslated(context, 'note')),
                         SizedBox(height: 5),
-                        textCenter20White(note != null ? utf8.decode(note.runes.toList()) : getTranslated(context, 'empty')),
+                        textCenter20Black(note != null ? utf8.decode(note.runes.toList()) : getTranslated(context, 'empty')),
                         SizedBox(height: 20),
                         Container(
                           width: 60,
@@ -75,7 +75,7 @@ class WorkdayUtil {
     }
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       barrierLabel: title,
       transitionDuration: Duration(milliseconds: 400),
@@ -91,7 +91,7 @@ class WorkdayUtil {
                     padding: EdgeInsets.all(10),
                     child: Column(
                       children: <Widget>[
-                        text20GreenBold(title),
+                        text20BlueBold(title),
                         SizedBox(height: 20),
                         _buildWorkTimesDataTable(context, workTimes),
                         SizedBox(height: 20),
@@ -127,7 +127,7 @@ class WorkdayUtil {
     }
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       transitionDuration: Duration(milliseconds: 400),
       pageBuilder: (_, __, ___) {
@@ -142,7 +142,7 @@ class WorkdayUtil {
                     padding: EdgeInsets.all(10),
                     child: Column(
                       children: <Widget>[
-                        text20GreenBold(getTranslated(context, 'pieceworkReports')),
+                        text20BlueBold(getTranslated(context, 'pieceworkReports')),
                         SizedBox(height: 20),
                         _buildPieceworksDataTable(context, pieceworks, displayCompanyPrice),
                         SizedBox(height: 20),
@@ -178,31 +178,31 @@ class WorkdayUtil {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Theme(
-          data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
+          data: Theme.of(context).copyWith(dividerColor: BLUE),
           child: DataTable(
             columnSpacing: 10,
             columns: [
-              DataColumn(label: textWhiteBold('No.')),
-              DataColumn(label: textWhiteBold(getTranslated(context, 'serviceName'))),
-              DataColumn(label: textWhiteBold(getTranslated(context, 'quantity'))),
+              DataColumn(label: textBlackBold('No.')),
+              DataColumn(label: textBlackBold(getTranslated(context, 'serviceName'))),
+              DataColumn(label: textBlackBold(getTranslated(context, 'quantity'))),
               displayCompanyPrice
                   ? DataColumn(
                       label: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          textWhiteBold(getTranslated(context, 'price')),
-                          text12White('(' + getTranslated(context, 'employee') + ')'),
+                          textBlackBold(getTranslated(context, 'price')),
+                          text12Black('(' + getTranslated(context, 'employee') + ')'),
                         ],
                       ),
                     )
-                  : DataColumn(label: textWhiteBold(getTranslated(context, 'price'))),
+                  : DataColumn(label: textBlackBold(getTranslated(context, 'price'))),
               displayCompanyPrice
                   ? DataColumn(
                       label: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          textWhiteBold(getTranslated(context, 'price')),
-                          text12White('(' + getTranslated(context, 'company') + ')'),
+                          textBlackBold(getTranslated(context, 'price')),
+                          text12Black('(' + getTranslated(context, 'company') + ')'),
                         ],
                       ),
                     )
@@ -212,11 +212,11 @@ class WorkdayUtil {
               for (int i = 0; i < pieceworks.length; i++)
                 DataRow(
                   cells: [
-                    DataCell(textWhite((i + 1).toString())),
-                    DataCell(textWhite(utf8.decode(pieceworks[i].service.runes.toList()))),
-                    DataCell(Align(alignment: Alignment.center, child: textWhite(pieceworks[i].quantity.toString()))),
-                    DataCell(Align(alignment: Alignment.center, child: textWhite(pieceworks[i].priceForEmployee.toString()))),
-                    displayCompanyPrice ? DataCell(Align(alignment: Alignment.center, child: textWhite(pieceworks[i].priceForCompany.toString()))) : DataCell(SizedBox(height: 0)),
+                    DataCell(textBlack((i + 1).toString())),
+                    DataCell(textBlack(utf8.decode(pieceworks[i].service.runes.toList()))),
+                    DataCell(Align(alignment: Alignment.center, child: textBlack(pieceworks[i].quantity.toString()))),
+                    DataCell(Align(alignment: Alignment.center, child: textBlack(pieceworks[i].priceForEmployee.toString()))),
+                    displayCompanyPrice ? DataCell(Align(alignment: Alignment.center, child: textBlack(pieceworks[i].priceForCompany.toString()))) : DataCell(SizedBox(height: 0)),
                   ],
                 ),
             ],
@@ -232,25 +232,25 @@ class WorkdayUtil {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Theme(
-          data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
+          data: Theme.of(context).copyWith(dividerColor: BLUE),
           child: DataTable(
             columnSpacing: 10,
             columns: [
-              DataColumn(label: textWhiteBold('No.')),
-              DataColumn(label: textWhiteBold(getTranslated(context, 'from'))),
-              DataColumn(label: textWhiteBold(getTranslated(context, 'to'))),
-              DataColumn(label: textWhiteBold(getTranslated(context, 'sum'))),
-              DataColumn(label: textWhiteBold(getTranslated(context, 'workplace'))),
+              DataColumn(label: textBlackBold('No.')),
+              DataColumn(label: textBlackBold(getTranslated(context, 'from'))),
+              DataColumn(label: textBlackBold(getTranslated(context, 'to'))),
+              DataColumn(label: textBlackBold(getTranslated(context, 'sum'))),
+              DataColumn(label: textBlackBold(getTranslated(context, 'workplace'))),
             ],
             rows: [
               for (int i = 0; i < workTimes.length; i++)
                 DataRow(
                   cells: [
-                    DataCell(textWhite((i + 1).toString())),
-                    DataCell(textWhite(workTimes[i].startTime.toString())),
-                    DataCell(textWhite(workTimes[i].endTime != null ? workTimes[i].endTime.toString() : '-')),
-                    DataCell(textWhite(workTimes[i].totalTime != null ? workTimes[i].totalTime.toString() : '-')),
-                    DataCell(textWhite(utf8.decode(workTimes[i].workplaceName.toString().runes.toList()))),
+                    DataCell(textBlack((i + 1).toString())),
+                    DataCell(textBlack(workTimes[i].startTime.toString())),
+                    DataCell(textBlack(workTimes[i].endTime != null ? workTimes[i].endTime.toString() : '-')),
+                    DataCell(textBlack(workTimes[i].totalTime != null ? workTimes[i].totalTime.toString() : '-')),
+                    DataCell(textBlack(utf8.decode(workTimes[i].workplaceName.toString().runes.toList()))),
                   ],
                 ),
             ],

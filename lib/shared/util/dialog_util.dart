@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 
 class DialogUtil {
   static showFailureDialogWithWillPopScope(BuildContext context, String msg, StatefulWidget widget) {
@@ -14,18 +14,18 @@ class DialogUtil {
       builder: (BuildContext context) {
         return WillPopScope(
           child: AlertDialog(
-            backgroundColor: DARK,
-            title: textRed(getTranslated(context, 'failure')),
+            backgroundColor: WHITE,
+            title: textRedBold(getTranslated(context, 'failure')),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  textWhite(msg),
+                  textBlack(msg),
                 ],
               ),
             ),
             actions: <Widget>[
               FlatButton(
-                child: textWhite(getTranslated(context, 'ok')),
+                child: textBlack(getTranslated(context, 'ok')),
                 onPressed: () => _resetAndOpenPage(context, widget),
               ),
             ],
@@ -43,18 +43,18 @@ class DialogUtil {
       builder: (BuildContext context) {
         return WillPopScope(
           child: AlertDialog(
-            backgroundColor: DARK,
-            title: textGreen(getTranslated(context, 'success')),
+            backgroundColor: WHITE,
+            title: textGreenBold(getTranslated(context, 'success')),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  textWhite(msg),
+                  textBlack(msg),
                 ],
               ),
             ),
             actions: <Widget>[
               FlatButton(
-                child: textWhite(getTranslated(context, 'ok')),
+                child: textBlack(getTranslated(context, 'ok')),
                 onPressed: () => _resetAndOpenPage(context, widget),
               ),
             ],
@@ -83,18 +83,18 @@ class DialogUtil {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: DARK,
+          backgroundColor: WHITE,
           title: textRed(getTranslated(context, 'failure')),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                textWhite(content),
+                textBlack(content),
               ],
             ),
           ),
           actions: <Widget>[
             FlatButton(
-              child: textWhite(getTranslated(context, 'close')),
+              child: textBlack(getTranslated(context, 'close')),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ],
@@ -108,22 +108,22 @@ class DialogUtil {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: DARK,
+          backgroundColor: WHITE,
           title: textGreenBold(title),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                textWhite(content),
+                textBlack(content),
               ],
             ),
           ),
           actions: [
             FlatButton(
-              child: textWhite(getTranslated(context, 'yes')),
+              child: textBlack(getTranslated(context, 'yes')),
               onPressed: () => isBtnTapped ? null : fun(),
             ),
             FlatButton(
-              child: textWhite(getTranslated(context, 'no')),
+              child: textBlack(getTranslated(context, 'no')),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ],
@@ -138,7 +138,7 @@ class DialogUtil {
     }
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       barrierLabel: title,
       transitionDuration: Duration(milliseconds: 400),
@@ -154,9 +154,9 @@ class DialogUtil {
                     padding: EdgeInsets.all(10),
                     child: Column(
                       children: <Widget>[
-                        text20GreenBold(title),
+                        text20BlueBold(title),
                         SizedBox(height: 20),
-                        textCenter20White(value != null ? utf8.decode(value.runes.toList()) : getTranslated(context, 'empty')),
+                        textCenter20Black(value != null ? utf8.decode(value.runes.toList()) : getTranslated(context, 'empty')),
                         SizedBox(height: 20),
                         Container(
                           width: 60,

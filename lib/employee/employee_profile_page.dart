@@ -6,27 +6,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:give_job/api/employee/dto/employee_profile_dto.dart';
-import 'package:give_job/api/employee/service/employee_service.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/api/workday/service/workday_service.dart';
-import 'package:give_job/employee/profile/tabs/employee_panel.dart';
-import 'package:give_job/employee/profile/tabs/employee_timesheets.tab.dart';
-import 'package:give_job/employee/profile/tabs/employee_today.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/logout_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/util/validator_util.dart';
-import 'package:give_job/shared/settings/settings_page.dart';
-import 'package:give_job/shared/util/avatars_util.dart';
-import 'package:give_job/shared/util/language_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/silver_app_bar_delegate.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/employee/dto/employee_profile_dto.dart';
+import 'package:jobbed/api/employee/service/employee_service.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/workday/service/workday_service.dart';
+import 'package:jobbed/employee/profile/tabs/employee_panel.dart';
+import 'package:jobbed/employee/profile/tabs/employee_timesheets.tab.dart';
+import 'package:jobbed/employee/profile/tabs/employee_today.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/settings/settings_page.dart';
+import 'package:jobbed/shared/util/avatars_util.dart';
+import 'package:jobbed/shared/util/language_util.dart';
+import 'package:jobbed/shared/util/logout_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/validator_util.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/silver_app_bar_delegate.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
 import '../shared/widget/loader.dart';
@@ -71,16 +71,16 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
       return loader(
         AppBar(
           iconTheme: IconThemeData(color: WHITE),
-          backgroundColor: BRIGHTER_DARK,
+          backgroundColor: WHITE,
           elevation: 0.0,
           bottomOpacity: 0.0,
-          title: text15White(getTranslated(context, 'loading')),
-          leading: IconButton(icon: iconWhite(Icons.power_settings_new), onPressed: () => LogoutUtil.logout(context)),
+          title: text15Black(getTranslated(context, 'loading')),
+          leading: IconButton(icon: iconBlack(Icons.power_settings_new), onPressed: () => LogoutUtil.logout(context)),
           actions: <Widget>[
             Padding(
               padding: EdgeInsets.only(right: 15.0),
               child: IconButton(
-                icon: iconWhite(Icons.settings),
+                icon: iconBlack(Icons.settings),
                 onPressed: () => NavigatorUtil.navigate(context, SettingsPage(_user)),
               ),
             ),
@@ -95,7 +95,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
         theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          backgroundColor: DARK,
+          backgroundColor: WHITE,
           body: DefaultTabController(
             length: 3,
             child: NestedScrollView(
@@ -107,7 +107,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                       Padding(
                         padding: EdgeInsets.only(right: 15.0),
                         child: IconButton(
-                          icon: iconWhite(Icons.settings),
+                          icon: iconBlack(Icons.settings),
                           onPressed: () => NavigatorUtil.navigate(this.context, SettingsPage(_user)),
                         ),
                       ),
@@ -115,8 +115,9 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                     iconTheme: IconThemeData(color: WHITE),
                     expandedHeight: expandedHeight,
                     pinned: true,
-                    leading: IconButton(icon: iconWhite(Icons.power_settings_new), onPressed: () => LogoutUtil.logout(this.context)),
-                    backgroundColor: BRIGHTER_DARK,
+                    automaticallyImplyLeading: true,
+                    leading: IconButton(icon: iconBlack(Icons.power_settings_new), onPressed: () => LogoutUtil.logout(this.context)),
+                    backgroundColor: WHITE,
                     flexibleSpace: FlexibleSpaceBar(
                       background: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -131,11 +132,9 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                             ),
                           ),
                           SizedBox(height: 5),
-                          textCenter15White(utf8.decode(_user.info != null ? _user.info.runes.toList() : '-') + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
-                          SizedBox(height: 5),
-                          textCenter15White(getTranslated(this.context, 'employee') + ' #' + _user.id.toString()),
+                          text25BlackBold(utf8.decode(_user.info != null ? _user.info.runes.toList() : '-') + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
                           SizedBox(height: 10),
-                          textCenter15GreenBold(getTranslated(this.context, 'statisticsForThe') + _employeePageDto.tsCurrentYear + ' ' + getTranslated(this.context, _employeePageDto.tsCurrentMonth)),
+                          text18Black(getTranslated(this.context, 'statisticsForThe') + _employeePageDto.tsCurrentYear + ' ' + getTranslated(this.context, _employeePageDto.tsCurrentMonth)),
                           SizedBox(height: 5),
                           Row(
                             children: <Widget>[
@@ -144,13 +143,13 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                                 flex: 2,
                                 child: Column(
                                   children: <Widget>[
-                                    textCenterWhite(getTranslated(this.context, 'daysWorked')),
+                                    textCenter15BlueBold(getTranslated(this.context, 'daysWorked')),
                                     SizedBox(height: 5.0),
                                     Countup(
                                       begin: 0,
                                       end: _employeePageDto.tsDaysWorked.toDouble(),
                                       duration: Duration(seconds: 2),
-                                      style: TextStyle(fontSize: 18.0, color: WHITE),
+                                      style: TextStyle(fontSize: 18.0, color: BLACK),
                                     ),
                                   ],
                                 ),
@@ -160,14 +159,14 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                                 flex: 2,
                                 child: Column(
                                   children: <Widget>[
-                                    textCenterWhite(getTranslated(this.context, 'money')),
-                                    textCenter15White('(PLN)'),
+                                    textCenter15BlueBold(getTranslated(this.context, 'money')),
+                                    textCenter15BlueBold('(PLN)'),
                                     Countup(
                                       begin: 0,
                                       end: _employeePageDto.tsEarnedMoney,
                                       duration: Duration(seconds: 2),
                                       separator: ',',
-                                      style: TextStyle(fontSize: 18, color: WHITE),
+                                      style: TextStyle(fontSize: 18, color: BLACK),
                                     ),
                                   ],
                                 ),
@@ -182,12 +181,13 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                   SliverPersistentHeader(
                     delegate: SliverAppBarDelegate(
                       TabBar(
-                        labelColor: GREEN,
+                        labelColor: BLUE,
+                        indicatorColor: BLUE,
                         unselectedLabelColor: Colors.grey,
                         tabs: <Widget>[
-                          Tab(icon: iconWhite(Icons.assignment), text: getTranslated(this.context, 'timesheets')),
-                          Tab(icon: iconWhite(Icons.timelapse), text: getTranslated(this.context, 'today')),
-                          Tab(icon: iconWhite(Icons.sort), text: getTranslated(this.context, 'panel')),
+                          Tab(icon: iconBlack(Icons.assignment), text: getTranslated(this.context, 'timesheets')),
+                          Tab(icon: iconBlack(Icons.timelapse), text: getTranslated(this.context, 'today')),
+                          Tab(icon: iconBlack(Icons.sort), text: getTranslated(this.context, 'panel')),
                         ],
                       ),
                     ),
@@ -231,7 +231,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
   }
 
   RefreshIndicator _buildTab(Widget tab) {
-    return RefreshIndicator(color: DARK, backgroundColor: WHITE, onRefresh: _refresh, child: tab);
+    return RefreshIndicator(color: WHITE, backgroundColor: BLUE, onRefresh: _refresh, child: tab);
   }
 
   Future<Null> _refresh() {
@@ -248,7 +248,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
     TextEditingController _minutesController = new TextEditingController();
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       barrierLabel: getTranslated(context, 'hours'),
       transitionDuration: Duration(milliseconds: 400),
@@ -260,9 +260,9 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'hoursUpperCase'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'hoursUpperCase'))),
                   SizedBox(height: 2.5),
-                  textGreen(getTranslated(context, 'settingHoursForToday')),
+                  text16Black(getTranslated(context, 'settingHoursForToday')),
                   Row(
                     children: [
                       Expanded(
@@ -271,7 +271,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
                             children: [
-                              textWhite(getTranslated(context, 'hoursNumber')),
+                              textBlack(getTranslated(context, 'hoursNumber')),
                               SizedBox(height: 2.5),
                               NumberInputWithIncrementDecrement(
                                 controller: _hoursController,
@@ -287,8 +287,8 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                                     setState(() => _hoursController.text = 24.toString());
                                   }
                                 },
-                                style: TextStyle(color: GREEN),
-                                widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
+                                style: TextStyle(color: BLUE),
+                                widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
                               ),
                             ],
                           ),
@@ -300,7 +300,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
                             children: [
-                              textWhite(getTranslated(context, 'minutesNumber')),
+                              textBlack(getTranslated(context, 'minutesNumber')),
                               SizedBox(height: 2.5),
                               NumberInputWithIncrementDecrement(
                                 controller: _minutesController,
@@ -316,8 +316,8 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                                     setState(() => _minutesController.text = 59.toString());
                                   }
                                 },
-                                style: TextStyle(color: GREEN),
-                                widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
+                                style: TextStyle(color: BLUE),
+                                widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
                               ),
                             ],
                           ),
@@ -350,7 +350,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
                         ),
-                        color: GREEN,
+                        color: BLUE,
                         onPressed: () {
                           double hours;
                           double minutes;
@@ -401,7 +401,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
     _noteController.text = note != null ? utf8.decode(note != null ? note.runes.toList() : '-') : null;
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       barrierLabel: getTranslated(context, 'noteDetails'),
       transitionDuration: Duration(milliseconds: 400),
@@ -413,9 +413,9 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'noteUpperCase'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20BlueBold(getTranslated(context, 'noteUpperCase'))),
                   SizedBox(height: 2.5),
-                  textGreen(getTranslated(context, 'writeNote')),
+                  text16Black(getTranslated(context, 'writeNote')),
                   SizedBox(height: 20),
                   Padding(
                     padding: EdgeInsets.only(left: 25, right: 25),
@@ -425,19 +425,13 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                       keyboardType: TextInputType.multiline,
                       maxLength: 100,
                       maxLines: 3,
-                      cursorColor: WHITE,
+                      cursorColor: BLACK,
                       textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: WHITE),
+                      style: TextStyle(color: BLACK),
                       decoration: InputDecoration(
-                        hintText: getTranslated(context, 'textSomeNote'),
-                        hintStyle: TextStyle(color: MORE_BRIGHTER_DARK),
-                        counterStyle: TextStyle(color: WHITE),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: GREEN, width: 2.5),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: GREEN, width: 2.5),
-                        ),
+                        counterStyle: TextStyle(color: BLACK),
+                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
+                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
                       ),
                     ),
                   ),
@@ -465,7 +459,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
                         ),
-                        color: GREEN,
+                        color: BLUE,
                         onPressed: () {
                           FocusScope.of(context).unfocus();
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));

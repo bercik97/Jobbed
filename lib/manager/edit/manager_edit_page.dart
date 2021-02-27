@@ -6,19 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:give_job/api/manager/service/manager_service.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/shared/manager_app_bar.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/util/language_util.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/loader.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/manager/service/manager_service.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/shared/manager_app_bar.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/language_util.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/loader.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 
 class ManagerEditPage extends StatefulWidget {
   final User _user;
@@ -102,7 +102,7 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
       theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: DARK,
+        backgroundColor: WHITE,
         appBar: managerAppBar(context, _user, getTranslated(context, 'informationAboutYou'), () => Navigator.pop(context)),
         body: Padding(
           padding: EdgeInsets.fromLTRB(25, 0, 25, 25),
@@ -118,7 +118,7 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
                         children: <Widget>[
                           _buildReadOnlySection(),
                           SizedBox(height: 20),
-                          Align(alignment: Alignment.topLeft, child: text25GreenUnderline(getTranslated(context, 'editableSection'))),
+                          Align(alignment: Alignment.topLeft, child: text20BlueUnderline(getTranslated(context, 'editableSection'))),
                           SizedBox(height: 20),
                           _buildBasicSection(),
                           _buildContactSection(),
@@ -146,26 +146,26 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
         ListTile(
           dense: true,
           contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-          title: text16GreenBold(getTranslated(context, 'companyName')),
-          subtitle: text16White(_companyName),
+          title: text17BlueBold(getTranslated(context, 'companyName')),
+          subtitle: text18Black(_companyName),
         ),
         ListTile(
           dense: true,
           contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-          title: text16GreenBold(getTranslated(context, 'accountExpirationDate')),
-          subtitle: text16White(_accountExpirationDate != null ? _accountExpirationDate : getTranslated(context, 'empty')),
+          title: text17BlueBold(getTranslated(context, 'accountExpirationDate')),
+          subtitle: text18Black(_accountExpirationDate != null ? _accountExpirationDate : getTranslated(context, 'empty')),
         ),
         ListTile(
           dense: true,
           contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-          title: text16GreenBold(getTranslated(context, 'role')),
-          subtitle: text16White(getTranslated(context, 'manager')),
+          title: text17BlueBold(getTranslated(context, 'role')),
+          subtitle: text18Black(getTranslated(context, 'manager')),
         ),
         ListTile(
           dense: true,
           contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-          title: text16GreenBold(getTranslated(context, 'username')),
-          subtitle: text16White(_usernameController.text),
+          title: text17BlueBold(getTranslated(context, 'username')),
+          subtitle: text18Black(_usernameController.text),
         ),
       ],
     );
@@ -225,16 +225,16 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
           controller: controller,
           readOnly: isReadOnly,
           autocorrect: true,
-          cursorColor: WHITE,
+          cursorColor: BLACK,
           maxLength: maxLength,
-          style: TextStyle(color: WHITE),
+          style: TextStyle(color: BLACK),
           decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            counterStyle: TextStyle(color: WHITE),
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+            counterStyle: TextStyle(color: BLACK),
             border: OutlineInputBorder(),
             labelText: labelText,
-            prefixIcon: iconWhite(icon),
-            labelStyle: TextStyle(color: WHITE),
+            prefixIcon: iconBlack(icon),
+            labelStyle: TextStyle(color: BLACK),
           ),
           validator: RequiredValidator(errorText: errorText),
         ),
@@ -258,19 +258,19 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
       children: <Widget>[
         TextFormField(
           autocorrect: true,
-          cursorColor: WHITE,
+          cursorColor: BLACK,
           maxLength: 15,
           controller: controller,
-          style: TextStyle(color: WHITE),
+          style: TextStyle(color: BLACK),
           keyboardType: TextInputType.number,
           inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
           decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            counterStyle: TextStyle(color: WHITE),
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+            counterStyle: TextStyle(color: BLACK),
             border: OutlineInputBorder(),
             labelText: labelText,
-            prefixIcon: iconWhite(icon),
-            labelStyle: TextStyle(color: WHITE),
+            prefixIcon: iconBlack(icon),
+            labelStyle: TextStyle(color: BLACK),
           ),
           validator: (value) => validate(value),
         ),
@@ -284,17 +284,17 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
       children: <Widget>[
         TextFormField(
           autocorrect: true,
-          cursorColor: WHITE,
+          cursorColor: BLACK,
           maxLength: 255,
           controller: _emailController,
-          style: TextStyle(color: WHITE),
+          style: TextStyle(color: BLACK),
           decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            counterStyle: TextStyle(color: WHITE),
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+            counterStyle: TextStyle(color: BLACK),
             border: OutlineInputBorder(),
             labelText: 'Email',
-            prefixIcon: iconWhite(Icons.alternate_email),
-            labelStyle: TextStyle(color: WHITE),
+            prefixIcon: iconBlack(Icons.alternate_email),
+            labelStyle: TextStyle(color: BLACK),
           ),
           validator: EmailValidator(errorText: getTranslated(context, 'emailWrongFormat')),
         ),
@@ -304,39 +304,36 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
   }
 
   Widget _buildNationalityDropdown() {
-    return Theme(
-      data: ThemeData(splashColor: GREEN, colorScheme: ColorScheme.dark()),
-      child: Column(
-        children: <Widget>[
-          DropDownFormField(
-            titleText: getTranslated(context, 'nationality'),
-            value: _nationality,
-            onSaved: (value) {
-              setState(() {
-                _nationality = value;
-              });
-            },
-            onChanged: (value) {
-              setState(() {
-                _nationality = value;
-                FocusScope.of(context).unfocus();
-              });
-            },
-            dataSource: [
-              {'display': 'English ' + LanguageUtil.findFlagByNationality('EN'), 'value': 'EN'},
-              {'display': 'ქართული ' + LanguageUtil.findFlagByNationality('GE'), 'value': 'GE'},
-              {'display': 'Polska ' + LanguageUtil.findFlagByNationality('PL'), 'value': 'PL'},
-              {'display': 'русский ' + LanguageUtil.findFlagByNationality('RU'), 'value': 'RU'},
-              {'display': 'Українська ' + LanguageUtil.findFlagByNationality('UK'), 'value': 'UK'},
-            ],
-            textField: 'display',
-            valueField: 'value',
-            required: true,
-            autovalidate: true,
-          ),
-          SizedBox(height: 20),
-        ],
-      ),
+    return Column(
+      children: <Widget>[
+        DropDownFormField(
+          titleText: getTranslated(context, 'nationality'),
+          value: _nationality,
+          onSaved: (value) {
+            setState(() {
+              _nationality = value;
+            });
+          },
+          onChanged: (value) {
+            setState(() {
+              _nationality = value;
+              FocusScope.of(context).unfocus();
+            });
+          },
+          dataSource: [
+            {'display': 'English ' + LanguageUtil.findFlagByNationality('EN'), 'value': 'EN'},
+            {'display': 'ქართული ' + LanguageUtil.findFlagByNationality('GE'), 'value': 'GE'},
+            {'display': 'Polska ' + LanguageUtil.findFlagByNationality('PL'), 'value': 'PL'},
+            {'display': 'русский ' + LanguageUtil.findFlagByNationality('RU'), 'value': 'RU'},
+            {'display': 'Українська ' + LanguageUtil.findFlagByNationality('UK'), 'value': 'UK'},
+          ],
+          textField: 'display',
+          valueField: 'value',
+          required: true,
+          autovalidate: true,
+        ),
+        SizedBox(height: 20),
+      ],
     );
   }
 
@@ -381,9 +378,8 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
                 });
               }
             },
-            color: GREEN,
+            color: BLUE,
             child: text20White(getTranslated(context, 'update')),
-            textColor: Colors.white,
           ),
         ],
       ),

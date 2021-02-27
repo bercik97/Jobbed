@@ -2,22 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/api/user/service/user_service.dart';
-import 'package:give_job/employee/profile/edit/employee_edit_page.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/internationalization/model/language.dart';
-import 'package:give_job/manager/edit/manager_edit_page.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/logout_util.dart';
-import 'package:give_job/shared/settings/bug_report_dialog.dart';
-import 'package:give_job/shared/util/language_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/util/url_util.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/user/service/user_service.dart';
+import 'package:jobbed/employee/profile/edit/employee_edit_page.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/internationalization/model/language.dart';
+import 'package:jobbed/manager/edit/manager_edit_page.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/language_util.dart';
+import 'package:jobbed/shared/util/logout_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/url_util.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 import 'package:open_appstore/open_appstore.dart';
 import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 
@@ -77,16 +76,16 @@ class _SettingsPageState extends State<SettingsPage> {
       theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: DARK,
+        backgroundColor: WHITE,
         appBar: AppBar(
           iconTheme: IconThemeData(color: WHITE),
-          backgroundColor: BRIGHTER_DARK,
+          backgroundColor: WHITE,
           elevation: 0.0,
           bottomOpacity: 0.0,
-          title: text13White(getTranslated(context, 'settings')),
+          title: text13Black(getTranslated(context, 'settings')),
           centerTitle: false,
           automaticallyImplyLeading: true,
-          leading: IconButton(icon: iconWhite(Icons.arrow_back), onPressed: () => Navigator.pop(context)),
+          leading: IconButton(icon: iconBlack(Icons.arrow_back), onPressed: () => Navigator.pop(context)),
         ),
         body: ListView(
           children: <Widget>[
@@ -110,7 +109,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     onTap: () {
                       showGeneralDialog(
                         context: context,
-                        barrierColor: DARK.withOpacity(0.95),
+                        barrierColor: WHITE.withOpacity(0.95),
                         barrierDismissible: false,
                         barrierLabel: getTranslated(context, 'changePassword'),
                         transitionDuration: Duration(milliseconds: 400),
@@ -153,24 +152,24 @@ class _SettingsPageState extends State<SettingsPage> {
                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                 children: <Widget>[iconWhite(Icons.check)],
                                               ),
-                                              color: GREEN,
+                                              color: BLUE,
                                               onPressed: () {
                                                 if (_isValid == null || !_isValid()) {
                                                   return;
                                                 }
                                                 slideDialog.showSlideDialog(
                                                   context: context,
-                                                  backgroundColor: DARK,
+                                                  backgroundColor: WHITE,
                                                   child: Padding(
                                                     padding: EdgeInsets.all(10),
                                                     child: Column(
                                                       children: <Widget>[
-                                                        text20GreenBold(getTranslated(context, 'warning')),
+                                                        text20BlueBold(getTranslated(context, 'warning')),
                                                         SizedBox(height: 10),
-                                                        textCenter20White(getTranslated(context, 'changingLanguageWarning')),
+                                                        textCenter20Black(getTranslated(context, 'changingLanguageWarning')),
                                                         SizedBox(height: 10),
                                                         FlatButton(
-                                                          child: textWhite(getTranslated(context, 'changeMyPassword')),
+                                                          child: textBlack(getTranslated(context, 'changeMyPassword')),
                                                           onPressed: () {
                                                             showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                                                             _userService.updatePasswordByUsername(_user.username, _passwordController.text).then((res) {
@@ -181,7 +180,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                                             });
                                                           },
                                                         ),
-                                                        FlatButton(child: textWhite(getTranslated(context, 'doNotChangeMyPassword')), onPressed: () => Navigator.of(context).pop()),
+                                                        FlatButton(child: textBlack(getTranslated(context, 'doNotChangeMyPassword')), onPressed: () => Navigator.of(context).pop()),
                                                       ],
                                                     ),
                                                   ),
@@ -212,20 +211,20 @@ class _SettingsPageState extends State<SettingsPage> {
             Container(
               margin: EdgeInsets.only(left: 15),
               child: Theme(
-                data: Theme.of(context).copyWith(canvasColor: DARK),
+                data: Theme.of(context).copyWith(canvasColor: WHITE),
                 child: Container(
-                  decoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
+                  decoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
                   padding: EdgeInsets.only(left: 10),
                   alignment: Alignment.centerLeft,
                   height: 30,
-                  child: (DropdownButtonHideUnderline(
-                      child: DropdownButton(
-                          style: TextStyle(color: Colors.white, fontSize: 22),
-                          hint: text16White(getTranslated(context, 'language')),
-                          items: _dropdownMenuItems,
-                          onChanged: (Language language) => {
-                                _changeLanguage(language, context),
-                              }))),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                      style: TextStyle(color: BLACK, fontSize: 22),
+                      hint: text16Black(getTranslated(context, 'language')),
+                      items: _dropdownMenuItems,
+                      onChanged: (Language language) => _changeLanguage(language, context),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -259,17 +258,23 @@ class _SettingsPageState extends State<SettingsPage> {
                       );
                     },
                     child: _subtitleInkWellContainer(getTranslated(context, 'privacyPolicy')))),
-            Container(margin: EdgeInsets.only(left: 15, top: 10), child: InkWell(onTap: () => OpenAppstore.launch(androidAppId: ANDROID_APP_ID, iOSAppId: IOS_APP_ID), child: _subtitleInkWellContainer(getTranslated(context, 'rate')))),
-            Container(margin: EdgeInsets.only(left: 15, top: 10), child: InkWell(onTap: () => bugReportDialog(context), child: _subtitleInkWellContainer(getTranslated(context, 'bugReport')))),
-            Container(margin: EdgeInsets.only(left: 25), alignment: Alignment.centerLeft, height: 30, child: text13White(getTranslated(context, 'version') + ': 1.0.28+29')),
-            _titleContainer(getTranslated(context, 'graphics')),
-            _socialMediaInkWell('https://plumko.business.site/ ', 'Plumko', 'images/plumko-logo.png'),
+            Container(
+              margin: EdgeInsets.only(left: 15, top: 10),
+              child: InkWell(
+                onTap: () => OpenAppstore.launch(androidAppId: ANDROID_APP_ID, iOSAppId: IOS_APP_ID),
+                child: _subtitleInkWellContainer(getTranslated(context, 'rate')),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 25),
+              alignment: Alignment.centerLeft,
+              height: 30,
+              child: text13Black(getTranslated(context, 'version') + ': 1.0.0'),
+            ),
             _titleContainer(getTranslated(context, 'followUs')),
-            SizedBox(height: 5.0),
-            _socialMediaInkWell('https://www.givejob.pl', 'GiveJob', 'images/logo.png'),
-            _socialMediaInkWell('https://www.facebook.com/givejobb', 'Facebook', 'images/facebook-logo.png'),
-            _socialMediaInkWell('https://www.instagram.com/give_job', 'Instagram', 'images/instagram-logo.png'),
-            _socialMediaInkWell('https://www.linkedin.com/company/give-job', 'Linkedin', 'images/linkedin-logo.png'),
+            _socialMediaInkWell('https://www.jobbed.pl', 'Jobbed', 'images/logo.png'),
+            _titleContainer(getTranslated(context, 'graphics')),
+            _socialMediaInkWell('https://plumko.business.site/ ', 'Plumko', 'images/plumko.png'),
           ],
         ),
       ),
@@ -282,17 +287,17 @@ class _SettingsPageState extends State<SettingsPage> {
       padding: EdgeInsets.only(left: 10),
       alignment: Alignment.centerLeft,
       height: 60,
-      child: text20GreenBold(text),
+      child: text20BlueBold(text),
     );
   }
 
   Container _subtitleInkWellContainer(String text) {
     return Container(
-      decoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
+      decoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
       padding: EdgeInsets.only(left: 10),
       alignment: Alignment.centerLeft,
       height: 30,
-      child: text16White(text),
+      child: text16Black(text),
     );
   }
 
@@ -302,7 +307,7 @@ class _SettingsPageState extends State<SettingsPage> {
       child: Column(
         children: <Widget>[
           ListTile(
-            title: Align(child: text16White(text), alignment: Alignment(-1.05, 0)),
+            title: Align(child: text16Black(text), alignment: Alignment(-1.05, 0)),
             leading: Padding(
               padding: EdgeInsets.all(5.0),
               child: Container(
@@ -322,17 +327,17 @@ class _SettingsPageState extends State<SettingsPage> {
         TextFormField(
           obscureText: true,
           autofocus: true,
-          cursorColor: WHITE,
+          cursorColor: BLACK,
           maxLength: 60,
           controller: _passwordController,
-          style: TextStyle(color: WHITE),
+          style: TextStyle(color: BLACK),
           decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            counterStyle: TextStyle(color: WHITE),
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+            counterStyle: TextStyle(color: BLACK),
             border: OutlineInputBorder(),
             labelText: getTranslated(context, 'newPassword'),
-            labelStyle: TextStyle(color: WHITE),
-            prefixIcon: iconWhite(Icons.lock),
+            labelStyle: TextStyle(color: BLACK),
+            prefixIcon: iconBlack(Icons.lock),
           ),
           validator: MultiValidator([
             RequiredValidator(
@@ -364,16 +369,16 @@ class _SettingsPageState extends State<SettingsPage> {
         TextFormField(
           obscureText: true,
           controller: _rePasswordController,
-          cursorColor: WHITE,
+          cursorColor: BLACK,
           maxLength: 60,
-          style: TextStyle(color: WHITE),
+          style: TextStyle(color: BLACK),
           decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            counterStyle: TextStyle(color: WHITE),
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+            counterStyle: TextStyle(color: BLACK),
             border: OutlineInputBorder(),
             labelText: getTranslated(context, 'retypedPassword'),
-            prefixIcon: iconWhite(Icons.lock),
-            labelStyle: TextStyle(color: WHITE),
+            prefixIcon: iconBlack(Icons.lock),
+            labelStyle: TextStyle(color: BLACK),
           ),
           validator: (value) => validate(value),
         ),

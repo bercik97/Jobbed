@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:give_job/api/employee/dto/employee_profile_dto.dart';
-import 'package:give_job/employee/profile/tabs/calendar/employee_calendar_page.dart';
-import 'package:give_job/employee/profile/tabs/piecework/piecework_page.dart';
-import 'package:give_job/employee/profile/tabs/worktime/work_time_page.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/employee/dto/employee_profile_dto.dart';
+import 'package:jobbed/employee/profile/tabs/calendar/employee_calendar_page.dart';
+import 'package:jobbed/employee/profile/tabs/piecework/piecework_page.dart';
+import 'package:jobbed/employee/profile/tabs/worktime/work_time_page.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 
 Container employeePanel(BuildContext context, User user, EmployeeProfileDto employee) {
   return Container(
@@ -23,7 +23,7 @@ Container employeePanel(BuildContext context, User user, EmployeeProfileDto empl
               children: <Widget>[
                 Expanded(
                   child: Material(
-                    color: BRIGHTER_DARK,
+                    color: BRIGHTER_BLUE,
                     child: InkWell(
                       onTap: () async {
                         int todayWorkdayId = employee.todayWorkdayId;
@@ -37,14 +37,14 @@ Container employeePanel(BuildContext context, User user, EmployeeProfileDto empl
                         }
                         NavigatorUtil.navigate(context, WorkTimePage(user, employee.todayWorkdayId));
                       },
-                      child: _buildScrollableContainer(context, 'images/employee-work-icon.png', 'workTimeGPS', 'startFinishWork'),
+                      child: _buildScrollableContainer(context, 'images/employee-work.png', 'workTimeGPS', 'startFinishWork'),
                     ),
                   ),
                 ),
                 SizedBox(width: 10),
                 Expanded(
                   child: Material(
-                    color: BRIGHTER_DARK,
+                    color: BRIGHTER_BLUE,
                     child: InkWell(
                       onTap: () async {
                         int todayWorkdayId = employee.todayWorkdayId;
@@ -58,7 +58,7 @@ Container employeePanel(BuildContext context, User user, EmployeeProfileDto empl
                         }
                         NavigatorUtil.navigate(context, PieceworkPage(user, employee.todayDate, employee.todayWorkdayId));
                       },
-                      child: _buildScrollableContainer(context, 'images/green-piecework-icon.png', 'piecework', 'addNoteAboutPiecework'),
+                      child: _buildScrollableContainer(context, 'images/piecework.png', 'piecework', 'addNoteAboutPiecework'),
                     ),
                   ),
                 ),
@@ -69,15 +69,15 @@ Container employeePanel(BuildContext context, User user, EmployeeProfileDto empl
               children: [
                 Expanded(
                   child: Material(
-                    color: BRIGHTER_DARK,
+                    color: BRIGHTER_BLUE,
                     child: InkWell(
                       onTap: () async => NavigatorUtil.navigate(context, EmployeeCalendarPage(user, employee.id)),
-                      child: _buildScrollableContainer(context, 'images/calendar-icon.png', 'calendar', 'checkYourCalendar'),
+                      child: _buildScrollableContainer(context, 'images/calendar.png', 'calendar', 'checkYourCalendar'),
                     ),
                   ),
                 ),
                 SizedBox(width: 10),
-                Expanded(child: Material(color: BRIGHTER_DARK)),
+                Expanded(child: Material(color: BRIGHTER_BLUE)),
               ],
             )
           ],
@@ -95,10 +95,10 @@ Widget _buildScrollableContainer(BuildContext context, String imagePath, String 
       child: Column(
         children: <Widget>[
           Image(height: 100, image: AssetImage(imagePath)),
-          textCenter16WhiteBold(getTranslated(context, title)),
+          textCenter16BlackBold(getTranslated(context, title)),
           Padding(
             padding: EdgeInsets.only(left: 10, right: 10),
-            child: textCenter13White(getTranslated(context, subtitle)),
+            child: textCenter13Black(getTranslated(context, subtitle)),
           ),
           SizedBox(height: 10),
         ],

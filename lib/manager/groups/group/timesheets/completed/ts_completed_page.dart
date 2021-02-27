@@ -3,24 +3,24 @@ import 'dart:convert';
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:give_job/api/employee/dto/employee_statistics_dto.dart';
-import 'package:give_job/api/employee/service/employee_service.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
-import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/employee/employee_profile_page.dart';
-import 'package:give_job/manager/groups/group/employee/employee_ts_completed_page.dart';
-import 'package:give_job/manager/shared/group_model.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/avatars_util.dart';
-import 'package:give_job/shared/util/language_util.dart';
-import 'package:give_job/shared/util/month_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/employee/dto/employee_statistics_dto.dart';
+import 'package:jobbed/api/employee/service/employee_service.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/timesheet/dto/timesheet_for_employee_dto.dart';
+import 'package:jobbed/api/timesheet/dto/timesheet_with_status_dto.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/groups/group/employee/employee_profile_page.dart';
+import 'package:jobbed/manager/groups/group/employee/employee_ts_completed_page.dart';
+import 'package:jobbed/manager/shared/group_model.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/avatars_util.dart';
+import 'package:jobbed/shared/util/language_util.dart';
+import 'package:jobbed/shared/util/month_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 
 import '../../../../../shared/widget/loader.dart';
 import '../../../../shared/manager_app_bar.dart';
@@ -82,7 +82,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
       theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: DARK,
+        backgroundColor: WHITE,
         appBar: managerAppBar(
           context,
           _model.user,
@@ -100,15 +100,16 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
               child: TextFormField(
                 autofocus: false,
                 autocorrect: true,
-                cursorColor: WHITE,
-                style: TextStyle(color: WHITE),
+                cursorColor: BLACK,
+                style: TextStyle(color: BLACK),
                 decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-                  counterStyle: TextStyle(color: WHITE),
+                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2)),
+                  counterStyle: TextStyle(color: BLACK),
                   border: OutlineInputBorder(),
                   labelText: getTranslated(context, 'search'),
-                  prefixIcon: iconWhite(Icons.search),
-                  labelStyle: TextStyle(color: WHITE),
+                  prefixIcon: iconBlack(Icons.search),
+                  labelStyle: TextStyle(color: BLACK),
                 ),
                 onChanged: (string) {
                   setState(
@@ -128,7 +129,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                   String nationality = employee.nationality;
                   String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.gender, info.substring(0, 1));
                   return Card(
-                    color: DARK,
+                    color: WHITE,
                     child: InkWell(
                       onTap: () {
                         TimesheetForEmployeeDto _completedTimesheet = new TimesheetForEmployeeDto(
@@ -151,7 +152,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Container(
-                            color: BRIGHTER_DARK,
+                            color: BRIGHTER_BLUE,
                             child: ListTile(
                               trailing: Padding(
                                 padding: EdgeInsets.all(4),
@@ -170,31 +171,31 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                                   ),
                                 ),
                               ),
-                              title: text17WhiteBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                              title: text17BlackBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                               subtitle: Column(
                                 children: <Widget>[
                                   Row(
                                     children: <Widget>[
-                                      textWhite(getTranslated(this.context, 'hours') + ': '),
-                                      textGreenBold(employee.totalMoneyForHoursForEmployee.toString() + ' PLN' + ' (' + employee.totalHours + ' h)'),
+                                      text17BlackBold(getTranslated(this.context, 'hours') + ': '),
+                                      text16Black(employee.totalMoneyForHoursForEmployee.toString() + ' PLN' + ' (' + employee.totalHours + ' h)'),
                                     ],
                                   ),
                                   Row(
                                     children: <Widget>[
-                                      textWhite(getTranslated(this.context, 'accord') + ': '),
-                                      textGreenBold(employee.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
+                                      text17BlackBold(getTranslated(this.context, 'accord') + ': '),
+                                      text16Black(employee.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
                                     ],
                                   ),
                                   Row(
                                     children: <Widget>[
-                                      textWhite(getTranslated(this.context, 'time') + ': '),
-                                      textGreenBold(employee.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + employee.totalTime + ')'),
+                                      text17BlackBold(getTranslated(this.context, 'time') + ': '),
+                                      text16Black(employee.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + employee.totalTime + ')'),
                                     ],
                                   ),
                                   Row(
                                     children: <Widget>[
-                                      textWhite(getTranslated(this.context, 'sum') + ': '),
-                                      textGreenBold(employee.totalMoneyEarned.toString() + ' PLN'),
+                                      text17BlackBold(getTranslated(this.context, 'sum') + ': '),
+                                      text16Black(employee.totalMoneyEarned.toString() + ' PLN'),
                                     ],
                                   ),
                                 ],

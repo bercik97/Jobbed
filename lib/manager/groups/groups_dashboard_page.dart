@@ -9,27 +9,28 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:give_job/api/employee/dto/create_basic_employee_dto.dart';
-import 'package:give_job/api/employee/service/employee_service.dart';
-import 'package:give_job/api/group/dto/group_dashboard_dto.dart';
-import 'package:give_job/api/group/service/group_service.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/manage/add_group_page.dart';
-import 'package:give_job/manager/shared/group_model.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/settings/settings_page.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/language_util.dart';
-import 'package:give_job/shared/util/logout_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/widget/buttons.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/radio_button.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/employee/dto/create_basic_employee_dto.dart';
+import 'package:jobbed/api/employee/service/employee_service.dart';
+import 'package:jobbed/api/group/dto/group_dashboard_dto.dart';
+import 'package:jobbed/api/group/service/group_service.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/groups/manage/add_group_page.dart';
+import 'package:jobbed/manager/shared/group_model.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/settings/settings_page.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/language_util.dart';
+import 'package:jobbed/shared/util/logout_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/widget/buttons.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/radio_button.dart';
+import 'package:jobbed/shared/widget/texts.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../shared/widget/loader.dart';
 import 'group/group_page.dart';
@@ -91,18 +92,18 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
       return loader(
         AppBar(
           iconTheme: IconThemeData(color: WHITE),
-          backgroundColor: BRIGHTER_DARK,
+          backgroundColor: WHITE,
           elevation: 0.0,
           bottomOpacity: 0.0,
-          title: text13White(getTranslated(context, 'loading')),
+          title: text13Black(getTranslated(context, 'loading')),
           centerTitle: false,
           automaticallyImplyLeading: true,
-          leading: IconButton(icon: iconWhite(Icons.power_settings_new), onPressed: () => LogoutUtil.logout(context)),
+          leading: IconButton(icon: iconBlack(Icons.power_settings_new), onPressed: () => LogoutUtil.logout(context)),
           actions: <Widget>[
             Padding(
               padding: EdgeInsets.only(right: 15.0),
               child: IconButton(
-                icon: iconWhite(Icons.settings),
+                icon: iconBlack(Icons.settings),
                 onPressed: () => NavigatorUtil.navigate(context, SettingsPage(_user)),
               ),
             ),
@@ -113,22 +114,22 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+        theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          backgroundColor: DARK,
+          backgroundColor: WHITE,
           appBar: AppBar(
             iconTheme: IconThemeData(color: WHITE),
-            backgroundColor: BRIGHTER_DARK,
+            backgroundColor: WHITE,
             elevation: 0.0,
             bottomOpacity: 0.0,
-            title: text15White(getTranslated(context, 'companyGroups')),
-            leading: IconButton(icon: iconWhite(Icons.power_settings_new), onPressed: () => LogoutUtil.logout(context)),
+            title: text16Black(getTranslated(context, 'companyGroups')),
+            leading: IconButton(icon: iconBlack(Icons.power_settings_new), onPressed: () => LogoutUtil.logout(context)),
             actions: <Widget>[
               Padding(
                 padding: EdgeInsets.only(right: 15.0),
                 child: IconButton(
-                  icon: iconWhite(Icons.settings),
+                  icon: iconBlack(Icons.settings),
                   onPressed: () => NavigatorUtil.navigate(context, SettingsPage(_user)),
                 ),
               ),
@@ -138,25 +139,26 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
           floatingActionButton: SafeArea(
             child: SpeedDial(
               animatedIcon: AnimatedIcons.menu_close,
-              backgroundColor: GREEN,
+              backgroundColor: BLUE,
+              foregroundColor: WHITE,
               animatedIconTheme: IconThemeData(size: 22.0),
               curve: Curves.bounceIn,
               children: [
                 SpeedDialChild(
-                  child: Icon(Icons.group_add_outlined, color: DARK),
-                  backgroundColor: GREEN,
+                  child: Icon(Icons.group_add_outlined, color: BLACK),
+                  backgroundColor: BRIGHTER_BLUE,
                   onTap: () => NavigatorUtil.navigate(this.context, AddGroupPage(_user)),
                   label: getTranslated(context, 'createGroup'),
-                  labelStyle: TextStyle(fontWeight: FontWeight.w500),
-                  labelBackgroundColor: GREEN,
+                  labelStyle: TextStyle(fontWeight: FontWeight.w500, color: BLACK),
+                  labelBackgroundColor: BRIGHTER_BLUE,
                 ),
                 SpeedDialChild(
-                  child: Icon(Icons.person_add, color: DARK),
-                  backgroundColor: GREEN,
+                  child: Icon(Icons.person_add, color: BLACK),
+                  backgroundColor: BRIGHTER_BLUE,
                   onTap: () => _createNewEmployeeAccount(),
                   label: getTranslated(context, 'createNewEmployeeAccount'),
-                  labelStyle: TextStyle(fontWeight: FontWeight.w500),
-                  labelBackgroundColor: GREEN,
+                  labelStyle: TextStyle(fontWeight: FontWeight.w500, color: BLACK),
+                  labelBackgroundColor: BRIGHTER_BLUE,
                 ),
               ],
             ),
@@ -184,17 +186,15 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                   child: Container(
                     child: Image(
                       width: 75,
-                      image: AssetImage(
-                        'images/company-icon.png',
-                      ),
+                      image: AssetImage('images/company.png'),
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
               ),
             ),
-            title: text18WhiteBold(_user.companyName != null ? utf8.decode(_user.companyName.runes.toList()) : getTranslated(context, 'empty')),
-            subtitle: text13White(_user.companyId != null ? _user.companyId : getTranslated(context, 'empty')),
+            title: text17BlueBold(_user.companyName != null ? utf8.decode(_user.companyName.runes.toList()) : getTranslated(context, 'empty')),
+            subtitle: text16Black(_user.companyId != null ? _user.companyId : getTranslated(context, 'empty')),
           ),
           SizedBox(height: 10),
           Expanded(
@@ -207,13 +207,13 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                 itemCount: _groups.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Card(
-                    color: DARK,
+                    color: WHITE,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Card(
-                          color: BRIGHTER_DARK,
+                          color: BRIGHTER_BLUE,
                           child: ListTile(
                             onTap: () {
                               GroupDashboardDto group = _groups[index];
@@ -224,7 +224,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                                 ),
                               );
                             },
-                            title: text18WhiteBold(
+                            title: text17BlueBold(
                               utf8.decode(
                                 _groups[index].name != null ? _groups[index].name.runes.toList() : getTranslated(this.context, 'empty'),
                               ),
@@ -233,11 +233,11 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                               children: <Widget>[
                                 SizedBox(height: 5),
                                 Align(
-                                  child: textWhite(getTranslated(this.context, 'numberOfEmployees') + ': ' + _groups[index].numberOfEmployees.toString()),
+                                  child: text16Black(getTranslated(this.context, 'numberOfEmployees') + ': ' + _groups[index].numberOfEmployees.toString()),
                                   alignment: Alignment.topLeft,
                                 ),
                                 Align(
-                                  child: textWhite(getTranslated(this.context, 'groupCreator') + ': ' + utf8.decode(_groups[index].groupCreator.runes.toList())),
+                                  child: text16Black(getTranslated(this.context, 'groupCreator') + ': ' + utf8.decode(_groups[index].groupCreator.runes.toList())),
                                   alignment: Alignment.topLeft,
                                 ),
                                 SizedBox(height: 5),
@@ -278,14 +278,14 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
           padding: EdgeInsets.only(top: 20),
           child: Align(
             alignment: Alignment.center,
-            child: text20GreenBold(getTranslated(context, 'welcome') + ' ' + _user.info),
+            child: text20BlueBold(getTranslated(context, 'welcome') + ' ' + _user.info),
           ),
         ),
         Padding(
           padding: EdgeInsets.only(right: 30, left: 30, top: 10),
           child: Align(
             alignment: Alignment.center,
-            child: textCenter19White(getTranslated(context, 'loggedSuccessButNoGroups')),
+            child: textCenter19Black(getTranslated(context, 'loggedSuccessButNoGroups')),
           ),
         ),
       ],
@@ -295,7 +295,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
   void _manageGroupEmployees(String groupName, int groupId) {
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       barrierLabel: getTranslated(context, 'manageGroupEmployees'),
       transitionDuration: Duration(milliseconds: 400),
@@ -312,20 +312,20 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.only(top: 50),
-                      child: text20GreenBold(getTranslated(context, 'manageGroupEmployees')),
+                      child: text17BlackBold(getTranslated(context, 'manageGroupEmployees')),
                     ),
                     SizedBox(height: 2.5),
-                    textWhite(utf8.decode(groupName.runes.toList())),
+                    text16Black(utf8.decode(groupName.runes.toList())),
                     SizedBox(height: 20),
                     Buttons.standardButton(
                       minWidth: 200.0,
-                      color: GREEN,
+                      color: BLUE,
                       title: getTranslated(context, 'addEmployees'),
                       fun: () => NavigatorUtil.navigate(this.context, AddGroupEmployeesPage(_user, groupId)),
                     ),
                     Buttons.standardButton(
                       minWidth: 200.0,
-                      color: GREEN,
+                      color: BLUE,
                       title: getTranslated(context, 'deleteEmployees'),
                       fun: () => NavigatorUtil.navigate(this.context, DeleteGroupEmployeesPage(_user, groupId)),
                     ),
@@ -358,7 +358,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
     TextEditingController _nameController = new TextEditingController();
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       barrierLabel: getTranslated(context, 'deleteGroup'),
       transitionDuration: Duration(milliseconds: 400),
@@ -388,15 +388,15 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                         keyboardType: TextInputType.text,
                         maxLength: 26,
                         maxLines: 1,
-                        cursorColor: WHITE,
+                        cursorColor: BLACK,
                         textAlignVertical: TextAlignVertical.center,
-                        style: TextStyle(color: WHITE),
+                        style: TextStyle(color: BLACK),
                         decoration: InputDecoration(
                           hintText: getTranslated(context, 'textGroupNameForDelete'),
-                          hintStyle: TextStyle(color: MORE_BRIGHTER_DARK),
-                          counterStyle: TextStyle(color: WHITE),
+                          hintStyle: TextStyle(color: BLUE),
+                          counterStyle: TextStyle(color: BLACK),
                           border: OutlineInputBorder(),
-                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
                         ),
                         validator: (value) => _validateGroupName(value, groupName),
                       ),
@@ -426,7 +426,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[iconWhite(Icons.check)],
                           ),
-                          color: GREEN,
+                          color: BLUE,
                           onPressed: () {
                             if (!_isValid()) {
                               DialogUtil.showErrorDialog(context, getTranslated(context, 'groupNameForDeleteInvalid'));
@@ -472,7 +472,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
   void _createNewEmployeeAccount() {
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       barrierLabel: getTranslated(context, 'createNewEmployeeAccount'),
       transitionDuration: Duration(milliseconds: 400),
@@ -519,7 +519,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                             children: [
                               Align(
                                 alignment: Alignment.topLeft,
-                                child: text18White(getTranslated(context, 'chooseEmployeeGender')),
+                                child: text18Black(getTranslated(context, 'chooseEmployeeGender')),
                               ),
                               Row(
                                 children: [
@@ -548,46 +548,43 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                             ],
                           ),
                         ),
-                        Theme(
-                          data: ThemeData(hintColor: Colors.white, splashColor: GREEN, colorScheme: ColorScheme.dark()),
-                          child: Column(
-                            children: <Widget>[
-                              DropDownFormField(
-                                titleText: getTranslated(context, 'nationality'),
-                                hintText: getTranslated(context, 'chooseYourNationality'),
-                                validator: (value) {
-                                  if (_isErrorMsgOfNationalityShouldBeShow || (_isCreateEmployeeAccountButtonTapped && value == null)) {
-                                    return getTranslated(context, 'nationalityIsRequired');
-                                  }
-                                  return null;
-                                },
-                                value: _nationality,
-                                onSaved: (value) {
-                                  setState(() {
-                                    _nationality = value;
-                                  });
-                                },
-                                onChanged: (value) {
-                                  setState(() {
-                                    _nationality = value;
-                                    _isErrorMsgOfNationalityShouldBeShow = false;
-                                  });
-                                },
-                                dataSource: [
-                                  {'display': 'English ' + LanguageUtil.findFlagByNationality('EN'), 'value': 'EN'},
-                                  {'display': 'ქართული ' + LanguageUtil.findFlagByNationality('GE'), 'value': 'GE'},
-                                  {'display': 'Polska ' + LanguageUtil.findFlagByNationality('PL'), 'value': 'PL'},
-                                  {'display': 'русский ' + LanguageUtil.findFlagByNationality('RU'), 'value': 'RU'},
-                                  {'display': 'Українська ' + LanguageUtil.findFlagByNationality('UK'), 'value': 'UK'},
-                                ],
-                                textField: 'display',
-                                valueField: 'value',
-                                required: true,
-                                autovalidate: true,
-                              ),
-                              SizedBox(height: 20),
-                            ],
-                          ),
+                        Column(
+                          children: <Widget>[
+                            DropDownFormField(
+                              titleText: getTranslated(context, 'nationality'),
+                              hintText: getTranslated(context, 'chooseYourNationality'),
+                              validator: (value) {
+                                if (_isErrorMsgOfNationalityShouldBeShow || (_isCreateEmployeeAccountButtonTapped && value == null)) {
+                                  return getTranslated(context, 'nationalityIsRequired');
+                                }
+                                return null;
+                              },
+                              value: _nationality,
+                              onSaved: (value) {
+                                setState(() {
+                                  _nationality = value;
+                                });
+                              },
+                              onChanged: (value) {
+                                setState(() {
+                                  _nationality = value;
+                                  _isErrorMsgOfNationalityShouldBeShow = false;
+                                });
+                              },
+                              dataSource: [
+                                {'display': 'English ' + LanguageUtil.findFlagByNationality('EN'), 'value': 'EN'},
+                                {'display': 'ქართული ' + LanguageUtil.findFlagByNationality('GE'), 'value': 'GE'},
+                                {'display': 'Polska ' + LanguageUtil.findFlagByNationality('PL'), 'value': 'PL'},
+                                {'display': 'русский ' + LanguageUtil.findFlagByNationality('RU'), 'value': 'RU'},
+                                {'display': 'Українська ' + LanguageUtil.findFlagByNationality('UK'), 'value': 'UK'},
+                              ],
+                              textField: 'display',
+                              valueField: 'value',
+                              required: true,
+                              autovalidate: true,
+                            ),
+                            SizedBox(height: 20),
+                          ],
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -619,7 +616,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[iconWhite(Icons.check)],
                               ),
-                              color: GREEN,
+                              color: BLUE,
                               onPressed: () => _isCreateEmployeeAccountButtonTapped ? null : _handleCreateEmployeeAccountButton(),
                             ),
                           ],
@@ -642,16 +639,16 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
         TextFormField(
           controller: controller,
           autocorrect: true,
-          cursorColor: WHITE,
+          cursorColor: BLACK,
           maxLength: maxLength,
-          style: TextStyle(color: WHITE),
+          style: TextStyle(color: BLACK),
           decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            counterStyle: TextStyle(color: WHITE),
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+            counterStyle: TextStyle(color: BLACK),
             border: OutlineInputBorder(),
             labelText: labelText,
-            prefixIcon: iconWhite(icon),
-            labelStyle: TextStyle(color: WHITE),
+            prefixIcon: iconBlack(icon),
+            labelStyle: TextStyle(color: BLACK),
           ),
           validator: RequiredValidator(errorText: errorText),
         ),
@@ -666,23 +663,23 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
         TextFormField(
           autocorrect: true,
           obscureText: !_passwordVisible,
-          cursorColor: WHITE,
+          cursorColor: BLACK,
           maxLength: 60,
           controller: _passwordController,
-          style: TextStyle(color: WHITE),
+          style: TextStyle(color: BLACK),
           decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-              counterStyle: TextStyle(color: WHITE),
+              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+              counterStyle: TextStyle(color: BLACK),
               border: OutlineInputBorder(),
               labelText: getTranslated(context, 'password'),
-              prefixIcon: iconWhite(Icons.lock),
+              prefixIcon: iconBlack(Icons.lock),
               suffixIcon: IconButton(
-                icon: iconWhite(_passwordVisible ? Icons.visibility : Icons.visibility_off),
+                icon: iconBlack(_passwordVisible ? Icons.visibility : Icons.visibility_off),
                 onPressed: () => setState(
                   () => _passwordVisible = !_passwordVisible,
                 ),
               ),
-              labelStyle: TextStyle(color: WHITE)),
+              labelStyle: TextStyle(color: BLACK)),
           validator: MultiValidator([
             RequiredValidator(
               errorText: getTranslated(context, 'passwordIsRequired'),
@@ -713,22 +710,22 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
         TextFormField(
           autocorrect: true,
           obscureText: !_rePasswordVisible,
-          cursorColor: WHITE,
+          cursorColor: BLACK,
           maxLength: 60,
-          style: TextStyle(color: WHITE),
+          style: TextStyle(color: BLACK),
           decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-              counterStyle: TextStyle(color: WHITE),
+              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+              counterStyle: TextStyle(color: BLACK),
               border: OutlineInputBorder(),
               labelText: getTranslated(context, 'retypedPassword'),
-              prefixIcon: iconWhite(Icons.lock),
+              prefixIcon: iconBlack(Icons.lock),
               suffixIcon: IconButton(
-                icon: iconWhite(_rePasswordVisible ? Icons.visibility : Icons.visibility_off),
+                icon: iconBlack(_rePasswordVisible ? Icons.visibility : Icons.visibility_off),
                 onPressed: () => setState(
                   () => _rePasswordVisible = !_rePasswordVisible,
                 ),
               ),
-              labelStyle: TextStyle(color: WHITE)),
+              labelStyle: TextStyle(color: BLACK)),
           validator: (value) => validate(value),
         ),
         SizedBox(height: 10),

@@ -1,14 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:give_job/api/employee/dto/create_basic_employee_dto.dart';
-import 'package:give_job/api/employee/dto/employee_basic_dto.dart';
-import 'package:give_job/api/employee/dto/employee_profile_dto.dart';
-import 'package:give_job/api/employee/dto/employee_settings_dto.dart';
-import 'package:give_job/api/employee/dto/employee_statistics_dto.dart';
-import 'package:give_job/api/employee/dto/employee_work_time_dto.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/util/logout_util.dart';
+import 'package:jobbed/api/employee/dto/create_basic_employee_dto.dart';
+import 'package:jobbed/api/employee/dto/employee_basic_dto.dart';
+import 'package:jobbed/api/employee/dto/employee_profile_dto.dart';
+import 'package:jobbed/api/employee/dto/employee_settings_dto.dart';
+import 'package:jobbed/api/employee/dto/employee_statistics_dto.dart';
+import 'package:jobbed/api/employee/dto/employee_work_time_dto.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/util/logout_util.dart';
 import 'package:http/http.dart';
 
 class EmployeeService {

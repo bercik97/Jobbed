@@ -4,22 +4,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/api/token/service/token_service.dart';
-import 'package:give_job/employee/employee_profile_page.dart';
-import 'package:give_job/main.dart';
-import 'package:give_job/manager/groups/groups_dashboard_page.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/util/validator_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/texts.dart';
-import 'package:give_job/unauthenticated/get_started_page.dart';
-import 'package:give_job/unauthenticated/register/employee_register_page.dart';
-import 'package:give_job/unauthenticated/register/manager_register_page.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/token/service/token_service.dart';
+import 'package:jobbed/employee/employee_profile_page.dart';
+import 'package:jobbed/main.dart';
+import 'package:jobbed/manager/groups/groups_dashboard_page.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/validator_util.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/texts.dart';
+import 'package:jobbed/unauthenticated/get_started_page.dart';
+import 'package:jobbed/unauthenticated/register/employee_register_page.dart';
+import 'package:jobbed/unauthenticated/register/manager_register_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 
@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: DARK,
+      backgroundColor: WHITE,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -79,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
 
   _buildBackIconButton() {
     return IconButton(
-      icon: iconWhite(Icons.arrow_back),
+      icon: iconBlack(Icons.arrow_back),
       onPressed: () {
         Navigator.of(context).push(
           CupertinoPageRoute<Null>(
@@ -95,9 +95,9 @@ class _LoginPageState extends State<LoginPage> {
   _buildTitle() {
     return Column(
       children: [
-        textCenter28White(getTranslated(context, 'loginTitle')),
+        textCenter28Black(getTranslated(context, 'loginTitle')),
         SizedBox(height: 20),
-        textCenter14White(getTranslated(context, 'loginDescription')),
+        textCenter14Black(getTranslated(context, 'loginDescription')),
       ],
     );
   }
@@ -107,18 +107,15 @@ class _LoginPageState extends State<LoginPage> {
       padding: EdgeInsets.only(top: 50),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: DARK),
-        ),
+        decoration: BoxDecoration(color: BRIGHTER_BLUE),
         child: TextField(
           controller: _usernameController,
-          style: TextStyle(color: DARK),
+          style: TextStyle(color: BLACK),
           decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(horizontal: 10),
             labelText: getTranslated(context, 'username'),
-            labelStyle: TextStyle(color: DARK),
-            icon: iconDark(Icons.account_circle),
+            labelStyle: TextStyle(color: BLACK),
+            icon: iconBlack(Icons.account_circle),
             border: InputBorder.none,
           ),
         ),
@@ -131,19 +128,16 @@ class _LoginPageState extends State<LoginPage> {
       padding: EdgeInsets.only(top: 20),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: DARK),
-        ),
+        decoration: BoxDecoration(color: BRIGHTER_BLUE),
         child: TextField(
           controller: _passwordController,
-          style: TextStyle(color: DARK),
+          style: TextStyle(color: BLACK),
           obscureText: !_passwordVisible,
           decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(horizontal: 10),
             labelText: getTranslated(context, 'password'),
-            labelStyle: TextStyle(color: DARK),
-            icon: iconDark(Icons.lock),
+            labelStyle: TextStyle(color: BLACK),
+            icon: iconBlack(Icons.lock),
             border: InputBorder.none,
             suffixIcon: IconButton(
               icon: Icon(_passwordVisible ? Icons.visibility : Icons.visibility_off),
@@ -166,9 +160,8 @@ class _LoginPageState extends State<LoginPage> {
         height: 50,
         shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
         onPressed: () => _isLoginButtonTapped ? null : _handleLogin(),
-        color: GREEN,
+        color: BLUE,
         child: text20White(getTranslated(context, 'login')),
-        textColor: Colors.white,
       ),
     );
   }
@@ -240,14 +233,14 @@ class _LoginPageState extends State<LoginPage> {
   _buildCreateAccountDialog() {
     return InkWell(
       onTap: () => _showCreateAccountDialog(),
-      child: textCenter20WhiteBoldUnderline(getTranslated(context, 'createNewAccount')),
+      child: textCenter20BlackBoldUnderline(getTranslated(context, 'createNewAccount')),
     );
   }
 
   _showCreateAccountDialog() {
     return showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       barrierLabel: getTranslated(context, 'createNewAccount'),
       transitionDuration: Duration(milliseconds: 400),
@@ -259,20 +252,20 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  textCenter20GreenBold(getTranslated(context, 'createNewAccountPopupTitle')),
+                  textCenter20BlackBold(getTranslated(context, 'createNewAccountPopupTitle')),
                   SizedBox(height: 30),
                   PinCodeTextField(
                     autofocus: true,
                     highlight: true,
                     controller: _tokenController,
                     highlightColor: WHITE,
-                    defaultBorderColor: MORE_BRIGHTER_DARK,
-                    hasTextBorderColor: GREEN,
+                    defaultBorderColor: BLUE,
+                    hasTextBorderColor: BLUE,
                     maxLength: 6,
                     pinBoxWidth: 50,
                     pinBoxHeight: 64,
                     pinBoxDecoration: ProvidedPinBoxDecoration.defaultPinBoxDecoration,
-                    pinTextStyle: TextStyle(fontSize: 22, color: WHITE),
+                    pinTextStyle: TextStyle(fontSize: 22, color: BLACK),
                     pinTextAnimatedSwitcherTransition: ProvidedPinBoxTextAnimation.scalingTransition,
                     pinTextAnimatedSwitcherDuration: Duration(milliseconds: 300),
                     keyboardType: TextInputType.number,
@@ -305,7 +298,7 @@ class _LoginPageState extends State<LoginPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
                         ),
-                        color: GREEN,
+                        color: BLUE,
                         onPressed: () => _isConfirmTokenButtonTapped ? null : _handleConfirmTokenButton(),
                       ),
                     ],
@@ -350,12 +343,12 @@ class _LoginPageState extends State<LoginPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: DARK,
-          title: isCorrect ? textGreen(getTranslated(context, 'success')) : textWhite(getTranslated(context, 'failure')),
+          backgroundColor: WHITE,
+          title: isCorrect ? textGreenBold(getTranslated(context, 'success')) : textRedBold(getTranslated(context, 'failure')),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                textWhite(
+                textBlack(
                   isCorrect ? getTranslated(context, 'tokenIsCorrect') + '\n\n' + getTranslated(context, 'redirectToRegistration') : getTranslated(context, 'tokenIsIncorrect'),
                 ),
               ],
@@ -367,13 +360,13 @@ class _LoginPageState extends State<LoginPage> {
               height: 50,
               minWidth: double.maxFinite,
               shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-              color: GREEN,
+              color: BLUE,
               child: isCorrect
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[text20White(getTranslated(context, 'continue')), iconWhite(Icons.arrow_forward_ios)],
                     )
-                  : text20WhiteBold(getTranslated(context, 'close')),
+                  : text20BlackBold(getTranslated(context, 'close')),
               onPressed: () {
                 if (!isCorrect) {
                   Navigator.of(context).pop();
@@ -417,9 +410,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image.asset('images/logo.png', height: 40),
-            SizedBox(width: 5),
-            text20WhiteBold(APP_NAME),
+            Image.asset('images/logo.png', height: 75),
           ],
         ),
       ),

@@ -3,24 +3,24 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:give_job/api/employee/service/employee_service.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
-import 'package:give_job/api/timesheet/service/timesheet_service.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/groups_dashboard_page.dart';
-import 'package:give_job/manager/shared/group_model.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/settings/settings_page.dart';
-import 'package:give_job/shared/util/language_util.dart';
-import 'package:give_job/shared/util/month_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/circular_progress_indicator.dart';
-import 'package:give_job/shared/widget/contact_section.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/silver_app_bar_delegate.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/employee/service/employee_service.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/timesheet/dto/timesheet_for_employee_dto.dart';
+import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/groups/groups_dashboard_page.dart';
+import 'package:jobbed/manager/shared/group_model.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/settings/settings_page.dart';
+import 'package:jobbed/shared/util/language_util.dart';
+import 'package:jobbed/shared/util/month_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
+import 'package:jobbed/shared/widget/contact_section.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/silver_app_bar_delegate.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 
 import '../../../../shared/libraries/constants.dart';
 import 'employee_ts_completed_page.dart';
@@ -66,7 +66,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
       theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: DARK,
+        backgroundColor: WHITE,
         body: DefaultTabController(
           length: 3,
           child: NestedScrollView(
@@ -78,14 +78,14 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                     Padding(
                       padding: EdgeInsets.only(right: 10),
                       child: IconButton(
-                        icon: Image(image: AssetImage('images/white-groups-icon.png')),
+                        icon: Image(image: AssetImage('images/groups.png')),
                         onPressed: () => NavigatorUtil.navigate(this.context, GroupsDashboardPage(_user)),
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(right: 15.0),
                       child: IconButton(
-                        icon: iconWhite(Icons.settings),
+                        icon: iconBlack(Icons.settings),
                         onPressed: () => NavigatorUtil.navigate(this.context, SettingsPage(_user)),
                       ),
                     ),
@@ -93,10 +93,10 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                   iconTheme: IconThemeData(color: WHITE),
                   expandedHeight: 250.0,
                   pinned: true,
-                  backgroundColor: BRIGHTER_DARK,
+                  backgroundColor: WHITE,
                   automaticallyImplyLeading: true,
                   leading: IconButton(
-                    icon: iconWhite(Icons.arrow_back),
+                    icon: iconBlack(Icons.arrow_back),
                     onPressed: () => Navigator.pop(this.context),
                   ),
                   flexibleSpace: FlexibleSpaceBar(
@@ -112,11 +112,11 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                           ),
                         ),
                         SizedBox(height: 5),
-                        text25WhiteBold(utf8.decode(_employeeInfo != null ? _employeeInfo.runes.toList() : '-')),
+                        text25BlackBold(utf8.decode(_employeeInfo != null ? _employeeInfo.runes.toList() : '-')),
                         SizedBox(height: 2.5),
-                        text20White(LanguageUtil.convertShortNameToFullName(this.context, _employeeNationality) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality)),
+                        text20Black(LanguageUtil.convertShortNameToFullName(this.context, _employeeNationality) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality)),
                         SizedBox(height: 2.5),
-                        text18White(getTranslated(this.context, 'employee') + ' #' + _employeeId.toString()),
+                        text18Black(getTranslated(this.context, 'employee') + ' #' + _employeeId.toString()),
                         SizedBox(height: 10),
                       ],
                     ),
@@ -125,12 +125,13 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                 SliverPersistentHeader(
                   delegate: SliverAppBarDelegate(
                     TabBar(
-                      labelColor: GREEN,
+                      labelColor: BLUE,
+                      indicatorColor: BLUE,
                       unselectedLabelColor: Colors.grey,
                       tabs: [
-                        Tab(icon: Icon(Icons.event_note), text: getTranslated(this.context, 'timesheets')),
-                        Tab(icon: Icon(Icons.import_contacts), text: getTranslated(this.context, 'contact')),
-                        Tab(icon: Icon(Icons.info), text: getTranslated(this.context, 'information')),
+                        Tab(icon: iconBlack(Icons.event_note), text: getTranslated(this.context, 'timesheets')),
+                        Tab(icon: iconBlack(Icons.import_contacts), text: getTranslated(this.context, 'contact')),
+                        Tab(icon: iconBlack(Icons.info), text: getTranslated(this.context, 'information')),
                       ],
                     ),
                   ),
@@ -169,7 +170,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                       children: <Widget>[
                         for (var timesheet in sheets)
                           Card(
-                            color: BRIGHTER_DARK,
+                            color: BRIGHTER_BLUE,
                             child: InkWell(
                               onTap: () {
                                 if (timesheet.status == 'Completed') {
@@ -188,31 +189,31 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                                         image: timesheet.status == STATUS_IN_PROGRESS ? AssetImage('images/unchecked.png') : AssetImage('images/checked.png'),
                                       ),
                                     ),
-                                    title: textWhiteBold(timesheet.year.toString() + ' ' + MonthUtil.translateMonth(this.context, timesheet.month)),
+                                    title: text17BlackBold(timesheet.year.toString() + ' ' + MonthUtil.translateMonth(this.context, timesheet.month)),
                                     subtitle: Column(
                                       children: <Widget>[
                                         Row(
                                           children: <Widget>[
-                                            textWhite(getTranslated(this.context, 'hours') + ': '),
-                                            textGreenBold(timesheet.totalMoneyForHoursForEmployee.toString() + ' PLN' + ' (' + timesheet.totalHours + ' h)'),
+                                            text17BlackBold(getTranslated(this.context, 'hours') + ': '),
+                                            text16Black(timesheet.totalMoneyForHoursForEmployee.toString() + ' PLN' + ' (' + timesheet.totalHours + ' h)'),
                                           ],
                                         ),
                                         Row(
                                           children: <Widget>[
-                                            textWhite(getTranslated(this.context, 'accord') + ': '),
-                                            textGreenBold(timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
+                                            text17BlackBold(getTranslated(this.context, 'accord') + ': '),
+                                            text16Black(timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
                                           ],
                                         ),
                                         Row(
                                           children: <Widget>[
-                                            textWhite(getTranslated(this.context, 'time') + ': '),
-                                            textGreenBold(timesheet.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + timesheet.totalTime + ')'),
+                                            text17BlackBold(getTranslated(this.context, 'time') + ': '),
+                                            text16Black(timesheet.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + timesheet.totalTime + ')'),
                                           ],
                                         ),
                                         Row(
                                           children: <Widget>[
-                                            textWhite(getTranslated(this.context, 'sum') + ': '),
-                                            textGreenBold(timesheet.totalMoneyEarned.toString() + ' PLN'),
+                                            text17BlackBold(getTranslated(this.context, 'sum') + ': '),
+                                            text16Black(timesheet.totalMoneyEarned.toString() + ' PLN'),
                                           ],
                                         ),
                                       ],
@@ -294,8 +295,8 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
 
   Widget _buildListTile(BuildContext context, String title, String value) {
     return ListTile(
-      title: text16GreenBold(getTranslated(context, title)),
-      subtitle: text16White(value != null && value != '' ? value : getTranslated(context, 'empty')),
+      title: text17BlueBold(getTranslated(context, title)),
+      subtitle: text16Black(value != null && value != '' ? value : getTranslated(context, 'empty')),
     );
   }
 
@@ -306,14 +307,14 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
           padding: EdgeInsets.only(top: 10),
           child: Align(
             alignment: Alignment.center,
-            child: text16GreenBold(getTranslated(context, 'noTimesheets')),
+            child: text17BlueBold(getTranslated(context, 'noTimesheets')),
           ),
         ),
         Padding(
           padding: EdgeInsets.only(top: 10),
           child: Align(
             alignment: Alignment.center,
-            child: textCenter19White(getTranslated(context, 'employeeHasNoTimesheets')),
+            child: textCenter19Black(getTranslated(context, 'employeeHasNoTimesheets')),
           ),
         ),
       ],

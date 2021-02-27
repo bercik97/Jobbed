@@ -8,25 +8,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/api/work_time/dto/create_work_time_dto.dart';
-import 'package:give_job/api/work_time/dto/is_currently_at_work_with_work_times_dto.dart';
-import 'package:give_job/api/work_time/dto/work_time_dto.dart';
-import 'package:give_job/api/work_time/service/work_time_service.dart';
-import 'package:give_job/api/workplace/dto/workplace_id_name_dto.dart';
-import 'package:give_job/api/workplace/service/workplace_service.dart';
-import 'package:give_job/employee/shared/employee_app_bar.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/widget/circular_progress_indicator.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/radio_button.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/work_time/dto/create_work_time_dto.dart';
+import 'package:jobbed/api/work_time/dto/is_currently_at_work_with_work_times_dto.dart';
+import 'package:jobbed/api/work_time/dto/work_time_dto.dart';
+import 'package:jobbed/api/work_time/service/work_time_service.dart';
+import 'package:jobbed/api/workplace/dto/workplace_id_name_dto.dart';
+import 'package:jobbed/api/workplace/service/workplace_service.dart';
+import 'package:jobbed/employee/shared/employee_app_bar.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/radio_button.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 import 'package:location/location.dart' as locc;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
@@ -87,7 +87,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
         theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          backgroundColor: DARK,
+          backgroundColor: WHITE,
           appBar: employeeAppBar(context, _user, getTranslated(context, 'workTimeForToday'), () => NavigatorUtil.navigate(context, EmployeeProfilePage(_user))),
           body: SingleChildScrollView(
             child: FutureBuilder(
@@ -191,7 +191,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
         child: Column(
           children: [
             _buildBtn(
-              'images/stop-icon.png',
+              'images/stop.png',
               _isPauseWorkButtonTapped,
               () => _showChooseWorkTimeType(
                 () => _showPauseWorkByGPSDialog(workTimes.last),
@@ -212,7 +212,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
       child: Column(
         children: [
           _buildBtn(
-            'images/play-icon.png',
+            'images/play.png',
             _isStartDialogButtonTapped,
             () => _showChooseWorkTimeType(
               () => _findWorkByGPS(),
@@ -243,7 +243,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
   Widget _buildStartHint() {
     return Padding(
       padding: EdgeInsets.only(top: 10, left: 20, right: 20),
-      child: textCenter18Green(getTranslated(context, 'pressBtnToStart')),
+      child: textCenter18Blue(getTranslated(context, 'pressBtnToStart')),
     );
   }
 
@@ -252,7 +252,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
       padding: EdgeInsets.only(top: 10, left: 20, right: 20),
       child: Column(
         children: [
-          textCenter18Green(getTranslated(context, 'pressBtnToPause')),
+          textCenter18Blue(getTranslated(context, 'pressBtnToPause')),
           SizedBox(height: 5),
           textCenter15Red(getTranslated(context, 'noteFinishWorkInPlaceWhereYouStarted')),
         ],
@@ -266,25 +266,25 @@ class _WorkTimePageState extends State<WorkTimePage> {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Theme(
-          data: Theme.of(this.context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
+          data: Theme.of(this.context).copyWith(dividerColor: BLUE),
           child: DataTable(
             columnSpacing: 20,
             columns: [
-              DataColumn(label: textWhiteBold('No.')),
-              DataColumn(label: textWhiteBold(getTranslated(this.context, 'from'))),
-              DataColumn(label: textWhiteBold(getTranslated(this.context, 'to'))),
-              DataColumn(label: textWhiteBold(getTranslated(this.context, 'sum'))),
-              DataColumn(label: textWhiteBold(getTranslated(this.context, 'workplaceName'))),
+              DataColumn(label: textBlackBold('No.')),
+              DataColumn(label: textBlackBold(getTranslated(this.context, 'from'))),
+              DataColumn(label: textBlackBold(getTranslated(this.context, 'to'))),
+              DataColumn(label: textBlackBold(getTranslated(this.context, 'sum'))),
+              DataColumn(label: textBlackBold(getTranslated(this.context, 'workplaceName'))),
             ],
             rows: [
               for (int i = 0; i < workTimes.length; i++)
                 DataRow(
                   cells: [
-                    DataCell(textWhite((i + 1).toString())),
-                    DataCell(textWhite(workTimes[i].startTime)),
-                    DataCell(textWhite(workTimes[i].endTime != null ? workTimes[i].endTime : '-')),
-                    DataCell(textWhite(workTimes[i].totalTime != null ? workTimes[i].totalTime : '-')),
-                    DataCell(textWhite(workTimes[i].workplaceName != null ? utf8.decode(workTimes[i].workplaceName.runes.toList()) : '-')),
+                    DataCell(textBlack((i + 1).toString())),
+                    DataCell(textBlack(workTimes[i].startTime)),
+                    DataCell(textBlack(workTimes[i].endTime != null ? workTimes[i].endTime : '-')),
+                    DataCell(textBlack(workTimes[i].totalTime != null ? workTimes[i].totalTime : '-')),
+                    DataCell(textBlack(workTimes[i].workplaceName != null ? utf8.decode(workTimes[i].workplaceName.runes.toList()) : '-')),
                   ],
                 ),
             ],
@@ -297,7 +297,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
   void _showChooseWorkTimeType(Function() gpsFun, Function() workplaceCodeFun) {
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       transitionDuration: Duration(milliseconds: 400),
       pageBuilder: (_, __, ___) {
@@ -315,7 +315,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                           padding: EdgeInsets.only(top: 50, bottom: 10),
                           child: Column(
                             children: [
-                              textCenter20GreenBold(getTranslated(context, 'selectTypeOfWorkingTime')),
+                              textCenter20BlueBold(getTranslated(context, 'selectTypeOfWorkingTime')),
                             ],
                           ),
                         ),
@@ -329,7 +329,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     RadioButton.buildRadioBtn(
-                                      color: GREEN,
+                                      color: BLUE,
                                       title: getTranslated(context, 'gps'),
                                       value: 0,
                                       groupValue: _gpsTypeRadioValue,
@@ -340,7 +340,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                       }),
                                     ),
                                     RadioButton.buildRadioBtn(
-                                      color: GREEN,
+                                      color: BLUE,
                                       title: getTranslated(context, 'workplaceCode'),
                                       value: 0,
                                       groupValue: _workplaceCodeTypeRadioValue,
@@ -387,7 +387,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[iconWhite(Icons.check)],
                                 ),
-                                color: !_isChoseWorkTimeTypeBtnDisabled ? GREEN : Colors.grey,
+                                color: !_isChoseWorkTimeTypeBtnDisabled ? BLUE : Colors.grey,
                                 onPressed: () {
                                   if (_isChoseWorkTimeTypeBtnDisabled) {
                                     return;
@@ -444,7 +444,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
   _showStartWorkByGPSConfirmDialog(List<WorkplaceIdNameDto> workplaces) {
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       transitionDuration: Duration(milliseconds: 400),
       pageBuilder: (_, __, ___) {
@@ -459,62 +459,62 @@ class _WorkTimePageState extends State<WorkTimePage> {
                     padding: EdgeInsets.all(10),
                     child: Column(
                       children: <Widget>[
-                        textCenter19White(getTranslated(context, 'followingWorkplacesHaveBeenFoundInYourLocation')),
+                        textCenter19Black(getTranslated(context, 'followingWorkplacesHaveBeenFoundInYourLocation')),
                         SizedBox(height: 5),
-                        textCenter18Green(getTranslated(context, 'selectBtnNextToWhereYouWantToStartWork')),
+                        textCenter18Blue(getTranslated(context, 'selectBtnNextToWhereYouWantToStartWork')),
                         SizedBox(height: 20),
                         SingleChildScrollView(
                           scrollDirection: Axis.vertical,
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Theme(
-                              data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
+                              data: Theme.of(context).copyWith(dividerColor: BLUE),
                               child: DataTable(
                                 columnSpacing: 10,
                                 columns: [
-                                  DataColumn(label: textWhiteBold('No.')),
-                                  DataColumn(label: textWhiteBold(getTranslated(context, 'workplace'))),
-                                  DataColumn(label: textWhiteBold(getTranslated(context, 'confirmation'))),
+                                  DataColumn(label: textBlackBold('No.')),
+                                  DataColumn(label: textBlackBold(getTranslated(context, 'workplace'))),
+                                  DataColumn(label: textBlackBold(getTranslated(context, 'confirmation'))),
                                 ],
                                 rows: [
                                   for (int i = 0; i < workplaces.length; i++)
                                     DataRow(
                                       cells: [
-                                        DataCell(textWhite((i + 1).toString())),
-                                        DataCell(textWhite(utf8.decode(workplaces[i].name.runes.toList()))),
+                                        DataCell(textBlack((i + 1).toString())),
+                                        DataCell(textBlack(utf8.decode(workplaces[i].name.runes.toList()))),
                                         DataCell(
                                           MaterialButton(
                                             child: Text(getTranslated(context, 'startUpperCase')),
-                                            color: GREEN,
+                                            color: BLUE,
                                             onPressed: () {
                                               showDialog(
                                                 context: context,
                                                 builder: (BuildContext context) {
                                                   return AlertDialog(
-                                                    backgroundColor: DARK,
-                                                    title: textGreenBold(getTranslated(this.context, 'confirmation')),
+                                                    backgroundColor: WHITE,
+                                                    title: textBlueBold(getTranslated(this.context, 'confirmation')),
                                                     content: SingleChildScrollView(
                                                       child: Column(
                                                         children: [
-                                                          textCenterWhite(getTranslated(this.context, 'areYouSureYouWantToStartYourWork')),
+                                                          textCenterBlack(getTranslated(this.context, 'areYouSureYouWantToStartYourWork')),
                                                           SizedBox(height: 10),
-                                                          textCenterGreenBold(getTranslated(this.context, 'workplaceName')),
+                                                          textCenterBlueBold(getTranslated(this.context, 'workplaceName')),
                                                           SizedBox(height: 2),
-                                                          textCenterWhite(utf8.decode(workplaces[i].name.runes.toList())),
+                                                          textCenterBlack(utf8.decode(workplaces[i].name.runes.toList())),
                                                           SizedBox(height: 10),
-                                                          textCenterGreenBold(getTranslated(this.context, 'location')),
+                                                          textCenterBlueBold(getTranslated(this.context, 'location')),
                                                           SizedBox(height: 2),
-                                                          textCenterWhite(utf8.decode(workplaces[i].location.runes.toList())),
+                                                          textCenterBlack(utf8.decode(workplaces[i].location.runes.toList())),
                                                         ],
                                                       ),
                                                     ),
                                                     actions: <Widget>[
                                                       FlatButton(
-                                                        child: textGreen(getTranslated(this.context, 'yesIWantToStart')),
+                                                        child: textBlue(getTranslated(this.context, 'yesIWantToStart')),
                                                         onPressed: () => _isStartWorkButtonTapped ? null : _startWorkByGPS(workplaces[i].id),
                                                       ),
                                                       FlatButton(
-                                                        child: textWhite(getTranslated(this.context, 'no')),
+                                                        child: textBlack(getTranslated(this.context, 'no')),
                                                         onPressed: () => Navigator.of(context).pop(),
                                                       ),
                                                     ],
@@ -625,7 +625,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
   _showEnterWorkplaceCodeForStart() {
     return showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       barrierLabel: getTranslated(context, 'enterWorkplaceCode'),
       transitionDuration: Duration(milliseconds: 400),
@@ -637,15 +637,15 @@ class _WorkTimePageState extends State<WorkTimePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  textCenter20GreenBold(getTranslated(context, 'enterWorkplaceCodePopupTitle')),
+                  textCenter20BlueBold(getTranslated(context, 'enterWorkplaceCodePopupTitle')),
                   SizedBox(height: 30),
                   PinCodeTextField(
                     autofocus: true,
                     highlight: true,
                     controller: _workplaceCodeController,
                     highlightColor: WHITE,
-                    defaultBorderColor: MORE_BRIGHTER_DARK,
-                    hasTextBorderColor: GREEN,
+                    defaultBorderColor: BLUE,
+                    hasTextBorderColor: BLUE,
                     maxLength: 4,
                     pinBoxWidth: 50,
                     pinBoxHeight: 64,
@@ -683,7 +683,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
                         ),
-                        color: GREEN,
+                        color: BLUE,
                         onPressed: () {
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _workplaceService.isCorrectByIdAndCompanyId(_workplaceCodeController.text, _user.companyId).then((isCorrect) {
@@ -739,7 +739,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
   _showEnterWorkplaceCodeForPause() {
     return showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       barrierLabel: getTranslated(context, 'enterWorkplaceCode'),
       transitionDuration: Duration(milliseconds: 400),
@@ -751,15 +751,15 @@ class _WorkTimePageState extends State<WorkTimePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  textCenter20GreenBold(getTranslated(context, 'enterWorkplaceCodePopupTitle')),
+                  textCenter20BlueBold(getTranslated(context, 'enterWorkplaceCodePopupTitle')),
                   SizedBox(height: 30),
                   PinCodeTextField(
                     autofocus: true,
                     highlight: true,
                     controller: _workplaceCodeController,
                     highlightColor: WHITE,
-                    defaultBorderColor: MORE_BRIGHTER_DARK,
-                    hasTextBorderColor: GREEN,
+                    defaultBorderColor: BLUE,
+                    hasTextBorderColor: BLUE,
                     maxLength: 4,
                     pinBoxWidth: 50,
                     pinBoxHeight: 64,
@@ -797,7 +797,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
                         ),
-                        color: GREEN,
+                        color: BLUE,
                         onPressed: () {
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _workplaceService.isCorrectByIdAndCompanyId(_workplaceCodeController.text, _user.companyId).then((isCorrect) {

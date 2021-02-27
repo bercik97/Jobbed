@@ -1,7 +1,7 @@
-name: give_job
-description: GiveJob
+name: jobbed
+description: Jobbed
 
-version: 1.0.28+29
+version: 1.0.0
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -72,50 +72,35 @@ flutter:
     - lib/internationalization/lang/uk.json
 
     - images/logo.png
-    - images/plumko-logo.png
-    - images/facebook-logo.png
-    - images/instagram-logo.png
-    - images/linkedin-logo.png
-    - images/viber-logo.png
-    - images/whatsapp-logo.png
+    - images/plumko.png
+    - images/viber.png
+    - images/whatsapp.png
     - images/unchecked.png
     - images/checked.png
-    - images/play-icon.png
-    - images/stop-icon.png
-    - images/excel-icon.png
+    - images/excel.png
 
-    - images/animated-logo.gif
-
-    - images/company-icon.png
-    - images/group-icon.png
-    - images/groups-icon.png
-    - images/employees-icon.png
-    - images/quick_update-icon.png
-    - images/timesheets-icon.png
-    - images/workplace-icon.png
-    - images/manager-icon.png
-    - images/employee-icon.png
-    - images/contact-with-manager-icon.png
-    - images/employee-work-icon.png
-    - images/calendar-icon.png
-    - images/employees-settings-icon.png
-    - images/green-piecework-icon.png
-    - images/items-icon.png
-    - images/price-list-icon.png
-    - images/warehouse-icon.png
-
-    - images/green-hours-icon.png
-    - images/green-note-icon.png
-    - images/green-workplace-icon.png
-
-    - images/dark-play-icon.png
-    - images/dark-stop-icon.png
-    - images/dark-hours-icon.png
-    - images/dark-piecework-icon.png
-    - images/dark-note-icon.png
-    - images/dark-help-icon.png
-
-    - images/white-groups-icon.png
+    - images/company.png
+    - images/group.png
+    - images/groups.png
+    - images/employees.png
+    - images/quick-update.png
+    - images/timesheet.png
+    - images/workplace.png
+    - images/manager.png
+    - images/employee.png
+    - images/contact-with-manager.png
+    - images/employee-work.png
+    - images/calendar.png
+    - images/employees-settings.png
+    - images/items.png
+    - images/price-list.png
+    - images/warehouse.png
+    - images/play.png
+    - images/stop.png
+    - images/hours.png
+    - images/piecework.png
+    - images/note.png
+    - images/groups.png
 
     - images/letters/male/A.png
     - images/letters/male/B.png

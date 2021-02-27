@@ -2,21 +2,22 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/employees_settings/employees_settings_page.dart';
-import 'package:give_job/manager/groups/group/price_list/price_lists_page.dart';
-import 'package:give_job/manager/groups/group/quick_update/quick_update_dialog.dart';
-import 'package:give_job/manager/groups/group/timesheets/ts_page.dart';
-import 'package:give_job/manager/groups/group/warehouse/warehouse_page.dart';
-import 'package:give_job/manager/groups/group/work_time/work_time_page.dart';
-import 'package:give_job/manager/groups/group/workplace/workplaces_page.dart';
-import 'package:give_job/manager/shared/group_model.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/groups/group/employees_settings/employees_settings_page.dart';
+import 'package:jobbed/manager/groups/group/price_list/price_lists_page.dart';
+import 'package:jobbed/manager/groups/group/quick_update/quick_update_dialog.dart';
+import 'package:jobbed/manager/groups/group/timesheets/ts_page.dart';
+import 'package:jobbed/manager/groups/group/warehouse/warehouse_page.dart';
+import 'package:jobbed/manager/groups/group/work_time/work_time_page.dart';
+import 'package:jobbed/manager/groups/group/workplace/workplaces_page.dart';
+import 'package:jobbed/manager/shared/group_model.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/texts.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../shared/manager_app_bar.dart';
 import '../groups_dashboard_page.dart';
@@ -46,7 +47,7 @@ class _GroupPageState extends State<GroupPage> {
         theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          backgroundColor: DARK,
+          backgroundColor: WHITE,
           appBar: managerAppBar(
             context,
             _user,
@@ -67,37 +68,26 @@ class _GroupPageState extends State<GroupPage> {
                             child: Container(
                               child: Image(
                                 width: 75,
-                                image: AssetImage(
-                                  'images/group-icon.png',
-                                ),
+                                image: AssetImage('images/group.png'),
                                 fit: BoxFit.cover,
                               ),
                             ),
                           ),
                         ),
                       ),
-                      title: text18WhiteBold(
+                      title: text17BlueBold(
                         utf8.decode(
                           _model.groupName != null ? _model.groupName.runes.toList() : getTranslated(context, 'empty'),
                         ),
                       ),
-                      subtitle: Column(
-                        children: <Widget>[
-                          Align(
-                            child: textWhite(utf8.decode(_model.groupDescription != null ? _model.groupDescription.runes.toList() : getTranslated(context, 'empty'))),
-                            alignment: Alignment.topLeft,
-                          ),
-                          SizedBox(height: 5),
-                          Align(
-                            child: textWhite(getTranslated(context, 'numberOfEmployees') + ': ' + _model.numberOfEmployees.toString()),
-                            alignment: Alignment.topLeft,
-                          ),
-                        ],
+                      subtitle: Align(
+                        child: text16Black(utf8.decode(_model.groupDescription != null ? _model.groupDescription.runes.toList() : getTranslated(context, 'empty'))),
+                        alignment: Alignment.topLeft,
                       ),
                       trailing: Ink(
-                        decoration: ShapeDecoration(color: GREEN, shape: CircleBorder()),
+                        decoration: ShapeDecoration(color: BLUE, shape: CircleBorder()),
                         child: IconButton(
-                          icon: iconDark(Icons.border_color),
+                          icon: iconWhite(Icons.border_color),
                           onPressed: () => NavigatorUtil.navigate(this.context, GroupEditPage(_model)),
                         ),
                       ),
@@ -107,20 +97,20 @@ class _GroupPageState extends State<GroupPage> {
                       children: <Widget>[
                         Expanded(
                           child: Material(
-                            color: BRIGHTER_DARK,
+                            color: BRIGHTER_BLUE,
                             child: InkWell(
                               onTap: () => NavigatorUtil.navigate(context, EmployeesSettingsPage(_model)),
-                              child: _buildScrollableContainer('images/employees-settings-icon.png', 'settings', 'employeesSettingsDescription'),
+                              child: _buildScrollableContainer('images/employees-settings.png', 'settings', 'employeesSettingsDescription'),
                             ),
                           ),
                         ),
                         SizedBox(width: 10),
                         Expanded(
                           child: Material(
-                            color: BRIGHTER_DARK,
+                            color: BRIGHTER_BLUE,
                             child: InkWell(
                               onTap: () => NavigatorUtil.navigate(context, WorkTimePage(_model)),
-                              child: _buildScrollableContainer('images/employees-icon.png', 'workTimes', 'manageEmployeesWorkTimeAndWorkplace'),
+                              child: _buildScrollableContainer('images/employees.png', 'workTimes', 'manageEmployeesWorkTimeAndWorkplace'),
                             ),
                           ),
                         ),
@@ -131,20 +121,20 @@ class _GroupPageState extends State<GroupPage> {
                       children: <Widget>[
                         Expanded(
                           child: Material(
-                            color: BRIGHTER_DARK,
+                            color: BRIGHTER_BLUE,
                             child: InkWell(
                               onTap: () => NavigatorUtil.navigate(context, TsPage(_model)),
-                              child: _buildScrollableContainer('images/timesheets-icon.png', 'timesheets', 'fillHoursPieceworks'),
+                              child: _buildScrollableContainer('images/timesheet.png', 'timesheets', 'fillHoursPieceworks'),
                             ),
                           ),
                         ),
                         SizedBox(width: 10),
                         Expanded(
                           child: Material(
-                            color: BRIGHTER_DARK,
+                            color: BRIGHTER_BLUE,
                             child: InkWell(
                               onTap: () => QuickUpdateDialog.showQuickUpdateDialog(context, _model),
-                              child: _buildScrollableContainer('images/quick_update-icon.png', 'quickUpdate', 'quickUpdateDescription'),
+                              child: _buildScrollableContainer('images/quick-update.png', 'quickUpdate', 'quickUpdateDescription'),
                             ),
                           ),
                         ),
@@ -155,20 +145,20 @@ class _GroupPageState extends State<GroupPage> {
                       children: <Widget>[
                         Expanded(
                           child: Material(
-                            color: BRIGHTER_DARK,
+                            color: BRIGHTER_BLUE,
                             child: InkWell(
                               onTap: () => NavigatorUtil.navigate(context, WorkplacesPage(_model)),
-                              child: _buildScrollableContainer('images/workplace-icon.png', 'workplaces', 'manageCompanyWorkplaces'),
+                              child: _buildScrollableContainer('images/workplace.png', 'workplaces', 'manageCompanyWorkplaces'),
                             ),
                           ),
                         ),
                         SizedBox(width: 10),
                         Expanded(
                           child: Material(
-                            color: BRIGHTER_DARK,
+                            color: BRIGHTER_BLUE,
                             child: InkWell(
                               onTap: () => NavigatorUtil.navigate(context, PriceListsPage(_model)),
-                              child: _buildScrollableContainer('images/price-list-icon.png', 'priceList', 'manageCompanyPriceList'),
+                              child: _buildScrollableContainer('images/price-list.png', 'priceList', 'manageCompanyPriceList'),
                             ),
                           ),
                         ),
@@ -179,20 +169,20 @@ class _GroupPageState extends State<GroupPage> {
                       children: <Widget>[
                         Expanded(
                           child: Material(
-                            color: BRIGHTER_DARK,
+                            color: BRIGHTER_BLUE,
                             child: InkWell(
                               onTap: () => NavigatorUtil.navigate(context, WarehousePage(_model)),
-                              child: _buildScrollableContainer('images/warehouse-icon.png', 'warehouses', 'manageCompanyWarehouses'),
+                              child: _buildScrollableContainer('images/warehouse.png', 'warehouses', 'manageCompanyWarehouses'),
                             ),
                           ),
                         ),
                         SizedBox(width: 10),
                         Expanded(
                           child: Material(
-                            color: BRIGHTER_DARK,
+                            color: BRIGHTER_BLUE,
                             child: InkWell(
                               onTap: () => NavigatorUtil.navigate(context, ItemPlacesPage(_model)),
-                              child: _buildScrollableContainer('images/items-icon.png', 'itemPlaces', 'manageCompanyItemPlaces'),
+                              child: _buildScrollableContainer('images/items.png', 'itemPlaces', 'manageCompanyItemPlaces'),
                             ),
                           ),
                         ),
@@ -217,12 +207,10 @@ class _GroupPageState extends State<GroupPage> {
         child: Column(
           children: <Widget>[
             Image(height: 100, image: AssetImage(imagePath)),
-            textCenter16WhiteBold(getTranslated(context, title)),
+            textCenter17BlueBold(getTranslated(context, title)),
             Padding(
               padding: EdgeInsets.only(left: 10, right: 10),
-              child: textCenter13White(
-                getTranslated(context, subtitle),
-              ),
+              child: textCenter13Black(getTranslated(context, subtitle)),
             ),
           ],
         ),

@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:give_job/api/work_time/dto/create_work_time_dto.dart';
-import 'package:give_job/api/work_time/dto/is_currently_at_work_with_work_times_dto.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/util/logout_util.dart';
+import 'package:jobbed/api/work_time/dto/create_work_time_dto.dart';
+import 'package:jobbed/api/work_time/dto/is_currently_at_work_with_work_times_dto.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/util/logout_util.dart';
 import 'package:http/http.dart';
 
 class WorkTimeService {

@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:give_job/api/workplace/dto/create_workplace_dto.dart';
-import 'package:give_job/api/workplace/dto/workplace_dto.dart';
-import 'package:give_job/api/workplace/dto/workplace_id_name_dto.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/util/logout_util.dart';
+import 'package:jobbed/api/workplace/dto/create_workplace_dto.dart';
+import 'package:jobbed/api/workplace/dto/workplace_dto.dart';
+import 'package:jobbed/api/workplace/dto/workplace_id_name_dto.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/util/logout_util.dart';
 import 'package:http/http.dart';
 
 class WorkplaceService {

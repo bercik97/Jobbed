@@ -1,20 +1,22 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:give_job/api/piecework/dto/piecework_for_employee_dto.dart';
-import 'package:give_job/api/piecework/service/piecework_service.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/employee/shared/employee_app_bar.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/loader.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/piecework/dto/piecework_for_employee_dto.dart';
+import 'package:jobbed/api/piecework/service/piecework_service.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/employee/shared/employee_app_bar.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/loader.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 
 import '../../../employee_profile_page.dart';
 import 'add/add_piecework_page.dart';
@@ -70,7 +72,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
         theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          backgroundColor: DARK,
+          backgroundColor: WHITE,
           appBar: employeeAppBar(context, _user, getTranslated(context, 'piecework') + ' / ' + _todayDate, () => NavigatorUtil.navigate(context, EmployeeProfilePage(_user))),
           body: Padding(
             padding: EdgeInsets.all(12),
@@ -83,9 +85,9 @@ class _PieceworkPageState extends State<PieceworkPage> {
               FloatingActionButton(
                 heroTag: "plusBtn",
                 tooltip: getTranslated(context, 'createNote'),
-                backgroundColor: GREEN,
+                backgroundColor: BLUE,
                 onPressed: () => NavigatorUtil.navigate(context, AddPieceworkPage(_user, _todayDate, _todayWorkdayId)),
-                child: text25Dark('+'),
+                child: text25White('+'),
               ),
               SizedBox(height: 15),
               FloatingActionButton(
@@ -123,14 +125,14 @@ class _PieceworkPageState extends State<PieceworkPage> {
             padding: EdgeInsets.only(top: 10),
             child: Align(
               alignment: Alignment.center,
-              child: text20GreenBold(getTranslated(context, 'noPieceworkReports')),
+              child: text20BlueBold(getTranslated(context, 'noPieceworkReports')),
             ),
           ),
           Padding(
             padding: EdgeInsets.only(top: 10),
             child: Align(
               alignment: Alignment.center,
-              child: textCenter19White(getTranslated(context, 'hintToAddPieceworkReport')),
+              child: textCenter19Black(getTranslated(context, 'hintToAddPieceworkReport')),
             ),
           ),
         ],
@@ -146,7 +148,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
             padding: EdgeInsets.only(top: 10),
             child: Align(
               alignment: Alignment.center,
-              child: text20GreenBold(getTranslated(context, 'pieceworkReports')),
+              child: text20BlueBold(getTranslated(context, 'pieceworkReports')),
             ),
           ),
           SingleChildScrollView(
@@ -154,24 +156,24 @@ class _PieceworkPageState extends State<PieceworkPage> {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Theme(
-                data: Theme.of(context).copyWith(dividerColor: MORE_BRIGHTER_DARK),
+                data: Theme.of(context).copyWith(dividerColor: BLUE),
                 child: DataTable(
                   columnSpacing: 10,
                   columns: [
-                    DataColumn(label: textWhiteBold('No.')),
-                    DataColumn(label: textWhiteBold(getTranslated(context, 'serviceName'))),
-                    DataColumn(label: textWhiteBold(getTranslated(context, 'quantity'))),
-                    DataColumn(label: textWhiteBold(getTranslated(context, 'price'))),
-                    DataColumn(label: textWhiteBold('')),
+                    DataColumn(label: textBlackBold('No.')),
+                    DataColumn(label: textBlackBold(getTranslated(context, 'serviceName'))),
+                    DataColumn(label: textBlackBold(getTranslated(context, 'quantity'))),
+                    DataColumn(label: textBlackBold(getTranslated(context, 'price'))),
+                    DataColumn(label: textBlackBold('')),
                   ],
                   rows: [
                     for (int i = 0; i < _pieceworks.length; i++)
                       DataRow(
                         cells: [
-                          DataCell(textWhite((i + 1).toString())),
-                          DataCell(textWhite(_pieceworks[i].service)),
-                          DataCell(textWhite(_pieceworks[i].quantity.toString())),
-                          DataCell(textWhite(_pieceworks[i].priceForEmployee.toString())),
+                          DataCell(textBlack((i + 1).toString())),
+                          DataCell(textBlack(utf8.decode(_pieceworks[i].service.runes.toList()))),
+                          DataCell(textBlack(_pieceworks[i].quantity.toString())),
+                          DataCell(textBlack(_pieceworks[i].priceForEmployee.toString())),
                           DataCell(
                             IconButton(
                               icon: iconRed(Icons.delete),

@@ -4,15 +4,15 @@ library constant;
 const String SERVER_IP = 'http://localhost:8080/api';
 
 // production
-//const String SERVER_IP = 'https://givejob-server.herokuapp.com/api';
+//const String SERVER_IP = 'https://jobbed-server.herokuapp.com/api';
 
 // test
-//const String SERVER_IP = 'https://givejob-mobile-api-test.herokuapp.com/api';
+//const String SERVER_IP = 'https://jobbed-mobile-api-test.herokuapp.com/api';
 
-const String ANDROID_APP_ID = 'com.givejob.mobile.give_job';
-const String IOS_APP_ID = 'com.givejob.mobile';
+const String ANDROID_APP_ID = 'com.jobbed.mobile';
+const String IOS_APP_ID = 'com.jobbed.mobile';
 
-const String APP_NAME = 'GiveJob';
+const String APP_NAME = 'Jobbed';
 
 const String ROLE_EMPLOYEE = 'ROLE_EMPLOYEE';
 const String ROLE_MANAGER = 'ROLE_MANAGER';

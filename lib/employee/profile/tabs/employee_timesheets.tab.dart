@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:give_job/employee/profile/timesheet/employee_ts_completed_page.dart';
-import 'package:give_job/employee/profile/timesheet/employee_ts_in_progress_page.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/month_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/employee/profile/timesheet/employee_ts_completed_page.dart';
+import 'package:jobbed/employee/profile/timesheet/employee_ts_in_progress_page.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/month_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 
 Widget employeeTimesheetsTab(BuildContext context, bool canFillHours, User user, List sheets) {
   if (sheets.isEmpty) {
@@ -23,7 +23,7 @@ Widget employeeTimesheetsTab(BuildContext context, bool canFillHours, User user,
           children: <Widget>[
             for (var timesheet in sheets)
               Card(
-                color: BRIGHTER_DARK,
+                color: BRIGHTER_BLUE,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
@@ -42,31 +42,31 @@ Widget employeeTimesheetsTab(BuildContext context, bool canFillHours, User user,
                             image: timesheet.status == STATUS_IN_PROGRESS ? AssetImage('images/unchecked.png') : AssetImage('images/checked.png'),
                           ),
                         ),
-                        title: textWhiteBold(timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, timesheet.month)),
+                        title: text17BlackBold(timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, timesheet.month)),
                         subtitle: Column(
                           children: <Widget>[
                             Row(
                               children: <Widget>[
-                                textWhite(getTranslated(context, 'hours') + ': '),
-                                textGreenBold(timesheet.totalMoneyForHoursForEmployee.toString() + ' PLN' + ' (' + timesheet.totalHours + ' h)'),
+                                text17BlackBold(getTranslated(context, 'hours') + ': '),
+                                text16Black(timesheet.totalMoneyForHoursForEmployee.toString() + ' PLN' + ' (' + timesheet.totalHours + ' h)'),
                               ],
                             ),
                             Row(
                               children: <Widget>[
-                                textWhite(getTranslated(context, 'accord') + ': '),
-                                textGreenBold(timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
+                                text17BlackBold(getTranslated(context, 'accord') + ': '),
+                                text16Black(timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
                               ],
                             ),
                             Row(
                               children: <Widget>[
-                                textWhite(getTranslated(context, 'time') + ': '),
-                                textGreenBold(timesheet.totalMoneyForTimeForEmployee.toString() + ' PLN'),
+                                text17BlackBold(getTranslated(context, 'time') + ': '),
+                                text16Black(timesheet.totalMoneyForTimeForEmployee.toString() + ' PLN'),
                               ],
                             ),
                             Row(
                               children: <Widget>[
-                                textWhite(getTranslated(context, 'sum') + ': '),
-                                textGreenBold(timesheet.totalMoneyEarned.toString() + ' PLN'),
+                                text17BlackBold(getTranslated(context, 'sum') + ': '),
+                                text16Black(timesheet.totalMoneyEarned.toString() + ' PLN'),
                               ],
                             ),
                           ],
@@ -91,14 +91,14 @@ Widget _handleEmptyData(BuildContext context) {
           padding: EdgeInsets.only(top: 10),
           child: Align(
             alignment: Alignment.center,
-            child: text20GreenBold(getTranslated(context, 'noTimesheets')),
+            child: text20BlueBold(getTranslated(context, 'noTimesheets')),
           ),
         ),
         Padding(
           padding: EdgeInsets.only(top: 10),
           child: Align(
             alignment: Alignment.center,
-            child: textCenter19White(getTranslated(context, 'noTimesheetsYet')),
+            child: textCenter19Black(getTranslated(context, 'noTimesheetsYet')),
           ),
         ),
       ],

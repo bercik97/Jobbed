@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:give_job/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
 
 class ToastUtil {
   static showSuccessToast(String msg) {
@@ -10,7 +10,7 @@ class ToastUtil {
       gravity: ToastGravity.CENTER,
       timeInSecForIosWeb: 3,
       backgroundColor: GREEN,
-      textColor: BRIGHTER_DARK,
+      textColor: BLACK,
       fontSize: 16,
     );
   }

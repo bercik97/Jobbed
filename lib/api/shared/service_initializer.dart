@@ -1,23 +1,23 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:give_job/api/employee/service/employee_service.dart';
-import 'package:give_job/api/employee/service/employee_unauthenticated_service.dart';
-import 'package:give_job/api/excel/service/excel_service.dart';
-import 'package:give_job/api/group/service/group_service.dart';
-import 'package:give_job/api/item/service/item_service.dart';
-import 'package:give_job/api/item_place/service/item_place_service.dart';
-import 'package:give_job/api/manager/service/manager_service.dart';
-import 'package:give_job/api/manager/service/manager_unauthenticated_service.dart';
-import 'package:give_job/api/piecework/service/piecework_service.dart';
-import 'package:give_job/api/price_list/service/price_list_service.dart';
-import 'package:give_job/api/timesheet/service/timesheet_service.dart';
-import 'package:give_job/api/token/service/token_service.dart';
-import 'package:give_job/api/user/service/user_service.dart';
-import 'package:give_job/api/warehouse/service/warehouse_service.dart';
-import 'package:give_job/api/work_time/service/work_time_service.dart';
-import 'package:give_job/api/workday/service/workday_service.dart';
-import 'package:give_job/api/workplace/service/workplace_service.dart';
+import 'package:jobbed/api/employee/service/employee_service.dart';
+import 'package:jobbed/api/employee/service/employee_unauthenticated_service.dart';
+import 'package:jobbed/api/excel/service/excel_service.dart';
+import 'package:jobbed/api/group/service/group_service.dart';
+import 'package:jobbed/api/item/service/item_service.dart';
+import 'package:jobbed/api/item_place/service/item_place_service.dart';
+import 'package:jobbed/api/manager/service/manager_service.dart';
+import 'package:jobbed/api/manager/service/manager_unauthenticated_service.dart';
+import 'package:jobbed/api/piecework/service/piecework_service.dart';
+import 'package:jobbed/api/price_list/service/price_list_service.dart';
+import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
+import 'package:jobbed/api/token/service/token_service.dart';
+import 'package:jobbed/api/user/service/user_service.dart';
+import 'package:jobbed/api/warehouse/service/warehouse_service.dart';
+import 'package:jobbed/api/work_time/service/work_time_service.dart';
+import 'package:jobbed/api/workday/service/workday_service.dart';
+import 'package:jobbed/api/workplace/service/workplace_service.dart';
 
 class ServiceInitializer {
   static initialize(BuildContext context, String authHeader, Object obj) {

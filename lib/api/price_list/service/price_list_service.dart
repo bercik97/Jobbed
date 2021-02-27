@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:give_job/api/price_list/dto/create_price_list_dto.dart';
-import 'package:give_job/api/price_list/dto/price_list_dto.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/util/logout_util.dart';
+import 'package:jobbed/api/price_list/dto/create_price_list_dto.dart';
+import 'package:jobbed/api/price_list/dto/price_list_dto.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/util/logout_util.dart';
 import 'package:http/http.dart';
 
 class PriceListService {

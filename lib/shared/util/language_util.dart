@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/internationalization/model/language.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/internationalization/model/language.dart';
 
 class LanguageUtil {
 

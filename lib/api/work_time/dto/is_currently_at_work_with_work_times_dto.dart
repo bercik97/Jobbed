@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:give_job/api/work_time/dto/work_time_dto.dart';
+import 'package:jobbed/api/work_time/dto/work_time_dto.dart';
 
 class IsCurrentlyAtWorkWithWorkTimesDto {
   final bool currentlyAtWork;

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/shared/util/toast_util.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UrlUtil {

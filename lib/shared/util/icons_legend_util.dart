@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 
 class IconsLegendUtil {
   static Widget buildImageRow(String imagePath, String text) {
@@ -10,7 +10,7 @@ class IconsLegendUtil {
         children: [
           Image(height: 25, image: AssetImage(imagePath)),
           SizedBox(width: 5),
-          text18White(text),
+          text18Black(text),
         ],
       ),
     );
@@ -24,7 +24,7 @@ class IconsLegendUtil {
         children: [
           widget,
           SizedBox(width: 5),
-          text18White(text),
+          text18Black(text),
         ],
       ),
     );
@@ -40,7 +40,7 @@ class IconsLegendUtil {
           SizedBox(width: 1),
           widget,
           SizedBox(width: 5),
-          text18White(text),
+          text18Black(text),
         ],
       ),
     );

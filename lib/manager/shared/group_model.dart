@@ -1,4 +1,4 @@
-import 'package:give_job/shared/model/user.dart';
+import 'package:jobbed/shared/model/user.dart';
 
 class GroupModel {
   User user;

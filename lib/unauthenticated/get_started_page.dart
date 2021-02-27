@@ -1,14 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/main.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/util/language_util.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/texts.dart';
-import 'package:give_job/unauthenticated/login_page.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/main.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/util/language_util.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/texts.dart';
+import 'package:jobbed/unauthenticated/login_page.dart';
 
 import '../internationalization/model/language.dart';
 
@@ -49,7 +48,7 @@ class _GetStartedPageState extends State<GetStartedPage> {
     }
 
     return Scaffold(
-      backgroundColor: DARK,
+      backgroundColor: WHITE,
       body: Center(
         child: SingleChildScrollView(
           child: Container(
@@ -57,25 +56,19 @@ class _GetStartedPageState extends State<GetStartedPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(height: MediaQuery.of(context).size.height * 0.08),
-                Image.asset('images/logo.png', height: 100),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                textCenter30White(getTranslated(context, 'getStartedTitle')),
-                textCenter30White('$APP_NAME !'),
+                Container(child: textCenter30Black(getTranslated(context, 'getStartedTitle'))),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                Container(child: textCenter19White(getTranslated(context, 'getStartedDescription'))),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                Center(child: textCenter19White(getTranslated(context, 'getStartedLanguage'))),
+                Center(child: textCenter19Black(getTranslated(context, 'getStartedLanguage'))),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                 Container(
                   child: Center(
                     child: Theme(
-                      data: Theme.of(context).copyWith(canvasColor: DARK),
+                      data: Theme.of(context).copyWith(canvasColor: WHITE),
                       child: Column(
                         children: <Widget>[
                           DropdownButtonHideUnderline(
                             child: DropdownButton(
-                              style: TextStyle(color: Colors.white, fontSize: 25),
+                              style: TextStyle(color: BLACK, fontSize: 25),
                               value: _selectedLanguage,
                               items: _dropdownMenuItems,
                               onChanged: (Language language) => (_changeLanguage(language, context)),
@@ -117,7 +110,7 @@ class _GetStartedPageState extends State<GetStartedPage> {
                       ),
                     );
                   },
-                  color: GREEN,
+                  color: BLUE,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[

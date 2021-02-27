@@ -3,22 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/api/warehouse/dto/create_warehouse_dto.dart';
-import 'package:give_job/api/warehouse/service/warehouse_service.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/shared/group_model.dart';
-import 'package:give_job/manager/shared/manager_app_bar.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/util/validator_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/buttons.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/warehouse/dto/create_warehouse_dto.dart';
+import 'package:jobbed/api/warehouse/service/warehouse_service.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/shared/group_model.dart';
+import 'package:jobbed/manager/shared/manager_app_bar.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/validator_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/buttons.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
 import '../warehouse_page.dart';
@@ -65,7 +65,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
       theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: DARK,
+        backgroundColor: WHITE,
         appBar: managerAppBar(context, _user, getTranslated(context, 'createWarehouse'), () => Navigator.pop(context)),
         body: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -126,8 +126,8 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
                               setState(() => _quantityController.text = 999.toString());
                             }
                           },
-                          style: TextStyle(color: GREEN),
-                          widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
+                          style: TextStyle(color: BLUE),
+                          widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
                         ),
                       ),
                     ),
@@ -136,7 +136,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
                 SizedBox(height: 10),
                 Buttons.standardButton(
                   minWidth: double.infinity,
-                  color: GREEN,
+                  color: BLUE,
                   title: getTranslated(context, 'addItem'),
                   fun: () {
                     String itemName = _itemNameController.text;
@@ -191,17 +191,18 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
       keyboardType: TextInputType.multiline,
       inputFormatters: [LengthLimitingTextInputFormatter(length)],
       maxLines: lines,
-      cursorColor: WHITE,
+      cursorColor: BLACK,
       textAlignVertical: TextAlignVertical.center,
-      style: TextStyle(color: WHITE),
+      style: TextStyle(color: BLACK),
       validator: isRequired ? RequiredValidator(errorText: errorText) : null,
       decoration: InputDecoration(
-        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-        counterStyle: TextStyle(color: WHITE),
+        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2)),
+        counterStyle: TextStyle(color: BLACK),
         border: OutlineInputBorder(),
         hintText: hintText,
         labelText: labelText,
-        labelStyle: TextStyle(color: WHITE),
+        labelStyle: TextStyle(color: BLACK),
       ),
     );
   }
@@ -219,19 +220,19 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
             String itemName = _itemNamesWithQuantities.keys.elementAt(index);
             String quantity = _itemNamesWithQuantities.values.elementAt(index).toString();
             return Card(
-              color: DARK,
+              color: WHITE,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Card(
-                    color: BRIGHTER_DARK,
+                    color: BRIGHTER_BLUE,
                     child: ListTile(
-                      title: textGreen(itemName),
+                      title: text17BlueBold(itemName),
                       subtitle: Row(
                         children: [
-                          textWhite(getTranslated(this.context, 'quantity') + ': '),
-                          textGreen(quantity),
+                          text17BlackBold(getTranslated(this.context, 'quantity') + ': '),
+                          text16Black(quantity),
                         ],
                       ),
                       trailing: IconButton(
@@ -280,7 +281,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[iconWhite(Icons.check)],
               ),
-              color: GREEN,
+              color: BLUE,
               onPressed: () => _isAddButtonTapped ? null : _createWarehouse(),
             ),
           ],

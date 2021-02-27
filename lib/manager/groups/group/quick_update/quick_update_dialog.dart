@@ -2,19 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/api/timesheet/service/timesheet_service.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/piecework/add_piecework_for_quick_update.dart';
-import 'package:give_job/manager/shared/group_model.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/util/validator_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/buttons.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/groups/group/piecework/add_piecework_for_quick_update.dart';
+import 'package:jobbed/manager/shared/group_model.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/validator_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/buttons.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 import 'package:intl/intl.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
@@ -23,17 +23,17 @@ import '../../../../internationalization/localization/localization_constants.dar
 class QuickUpdateDialog {
   static TimesheetService _timesheetService;
   static GroupModel _model;
-  static String _todaysDate;
+  static String _todayDate;
 
   static void showQuickUpdateDialog(BuildContext context, GroupModel model) {
     DateTime now = DateTime.now();
     DateFormat formatter = DateFormat('yyyy-MM-dd');
     String formattedDate = formatter.format(now);
     _model = model;
-    _todaysDate = formattedDate;
+    _todayDate = formattedDate;
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       barrierLabel: getTranslated(context, 'quickUpdateOfTodayDate'),
       transitionDuration: Duration(milliseconds: 400),
@@ -44,25 +44,25 @@ class QuickUpdateDialog {
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Center(child: text16GreenBold(getTranslated(context, 'quickUpdateOfTodayDate') + ' $formattedDate')),
+                Center(child: text17BlackBold(getTranslated(context, 'quickUpdateOfTodayDate') + ' $formattedDate')),
                 SizedBox(height: 5),
-                Center(child: text16White(getTranslated(context, 'updateDataForAllEmployeesOfGroup'))),
+                Center(child: text16Black(getTranslated(context, 'updateDataForAllEmployeesOfGroup'))),
                 SizedBox(height: 30),
                 Buttons.standardButton(
                   minWidth: 200.0,
-                  color: GREEN,
+                  color: BLUE,
                   title: getTranslated(context, 'hours'),
                   fun: () => _buildUpdateHoursDialog(context),
                 ),
                 Buttons.standardButton(
                   minWidth: 200.0,
-                  color: GREEN,
+                  color: BLUE,
                   title: getTranslated(context, 'piecework'),
-                  fun: () => NavigatorUtil.navigate(context, AddPieceworkForQuickUpdate(_model, _todaysDate)),
+                  fun: () => NavigatorUtil.navigate(context, AddPieceworkForQuickUpdate(_model, _todayDate)),
                 ),
                 Buttons.standardButton(
                   minWidth: 200.0,
-                  color: GREEN,
+                  color: BLUE,
                   title: getTranslated(context, 'note'),
                   fun: () => _buildUpdateNoteDialog(context),
                 ),
@@ -94,7 +94,7 @@ class QuickUpdateDialog {
     TextEditingController _minutesController = new TextEditingController();
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       barrierLabel: getTranslated(context, 'hours'),
       transitionDuration: Duration(milliseconds: 400),
@@ -106,9 +106,9 @@ class QuickUpdateDialog {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'hoursUpperCase'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'hoursUpperCase'))),
                   SizedBox(height: 2.5),
-                  textGreen(getTranslated(context, 'fillTodayGroupHours')),
+                  text16Black(getTranslated(context, 'fillTodayGroupHours')),
                   Row(
                     children: [
                       Expanded(
@@ -117,14 +117,14 @@ class QuickUpdateDialog {
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
                             children: [
-                              textWhite(getTranslated(context, 'hoursNumber')),
+                              textBlack(getTranslated(context, 'hoursNumber')),
                               SizedBox(height: 2.5),
                               NumberInputWithIncrementDecrement(
                                 controller: _hoursController,
                                 min: 0,
                                 max: 24,
-                                style: TextStyle(color: GREEN),
-                                widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
+                                style: TextStyle(color: BLUE),
+                                widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
                               ),
                             ],
                           ),
@@ -136,14 +136,14 @@ class QuickUpdateDialog {
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
                             children: [
-                              textWhite(getTranslated(context, 'minutesNumber')),
+                              textBlack(getTranslated(context, 'minutesNumber')),
                               SizedBox(height: 2.5),
                               NumberInputWithIncrementDecrement(
                                 controller: _minutesController,
                                 min: 0,
                                 max: 59,
-                                style: TextStyle(color: GREEN),
-                                widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
+                                style: TextStyle(color: BLUE),
+                                widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
                               ),
                             ],
                           ),
@@ -176,7 +176,7 @@ class QuickUpdateDialog {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
                         ),
-                        color: GREEN,
+                        color: BLUE,
                         onPressed: () {
                           double hours;
                           double minutes;
@@ -197,7 +197,7 @@ class QuickUpdateDialog {
                           Navigator.of(context).pop();
                           _initialize(context, _model.user.authHeader);
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                          _timesheetService.updateHoursByGroupIdAndDate(_model.groupId, _todaysDate, hours).then((res) {
+                          _timesheetService.updateHoursByGroupIdAndDate(_model.groupId, _todayDate, hours).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               ToastUtil.showSuccessToast(getTranslated(context, 'todayGroupHoursUpdatedSuccessfully'));
                             });
@@ -228,7 +228,7 @@ class QuickUpdateDialog {
     TextEditingController _noteController = new TextEditingController();
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       barrierLabel: getTranslated(context, 'note'),
       transitionDuration: Duration(milliseconds: 400),
@@ -240,9 +240,9 @@ class QuickUpdateDialog {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'noteUpperCase'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'noteUpperCase'))),
                   SizedBox(height: 2.5),
-                  textGreen(getTranslated(context, 'writeTodayNoteForTheGroup')),
+                  text16Black(getTranslated(context, 'writeTodayNoteForTheGroup')),
                   SizedBox(height: 20),
                   Padding(
                     padding: EdgeInsets.only(left: 25, right: 25),
@@ -252,19 +252,13 @@ class QuickUpdateDialog {
                       keyboardType: TextInputType.multiline,
                       maxLength: 510,
                       maxLines: 5,
-                      cursorColor: WHITE,
+                      cursorColor: BLACK,
                       textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: WHITE),
+                      style: TextStyle(color: BLACK),
                       decoration: InputDecoration(
-                        hintText: getTranslated(context, 'textSomeNote'),
-                        hintStyle: TextStyle(color: MORE_BRIGHTER_DARK),
-                        counterStyle: TextStyle(color: WHITE),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: GREEN, width: 2.5),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: GREEN, width: 2.5),
-                        ),
+                        counterStyle: TextStyle(color: BLACK),
+                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2.5)),
+                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2.5)),
                       ),
                     ),
                   ),
@@ -292,7 +286,7 @@ class QuickUpdateDialog {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
                         ),
-                        color: GREEN,
+                        color: BLUE,
                         onPressed: () {
                           String note = _noteController.text;
                           String invalidMessage = ValidatorUtil.validateNote(note, context);
@@ -303,7 +297,7 @@ class QuickUpdateDialog {
                           Navigator.of(context).pop();
                           _initialize(context, _model.user.authHeader);
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                          _timesheetService.updateNoteByGroupIdAndDate(_model.groupId, _todaysDate, note).then((res) {
+                          _timesheetService.updateNoteByGroupIdAndDate(_model.groupId, _todayDate, note).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               ToastUtil.showSuccessToast(getTranslated(context, 'todayGroupNoteUpdatedSuccessfully'));
                             });

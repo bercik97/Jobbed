@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:give_job/shared/libraries/constants.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:http/http.dart';
 
 class TokenService {

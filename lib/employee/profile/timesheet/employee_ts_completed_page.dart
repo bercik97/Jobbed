@@ -2,26 +2,26 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
-import 'package:give_job/api/workday/dto/workday_for_timesheet_dto.dart';
-import 'package:give_job/api/workday/service/workday_service.dart';
-import 'package:give_job/employee/shared/employee_app_bar.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/workday_util.dart';
-import 'package:give_job/shared/util/data_table_util.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/icons_legend_util.dart';
-import 'package:give_job/shared/util/language_util.dart';
-import 'package:give_job/shared/util/month_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/icons_legend_dialog.dart';
-import 'package:give_job/shared/widget/loader.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/timesheet/dto/timesheet_for_employee_dto.dart';
+import 'package:jobbed/api/workday/dto/workday_for_timesheet_dto.dart';
+import 'package:jobbed/api/workday/service/workday_service.dart';
+import 'package:jobbed/employee/shared/employee_app_bar.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/workday_util.dart';
+import 'package:jobbed/shared/util/data_table_util.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/icons_legend_util.dart';
+import 'package:jobbed/shared/util/language_util.dart';
+import 'package:jobbed/shared/util/month_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
+import 'package:jobbed/shared/widget/loader.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 
 import '../../employee_profile_page.dart';
@@ -71,17 +71,17 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
         theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-            backgroundColor: DARK,
+            backgroundColor: WHITE,
             appBar: employeeAppBar(context, _user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, _timesheet.status), () => Navigator.pop(context)),
             body: RefreshIndicator(
-              color: DARK,
-              backgroundColor: WHITE,
+              color: WHITE,
+              backgroundColor: BLUE,
               onRefresh: _refresh,
               child: SafeArea(
                 child: Column(
                   children: <Widget>[
                     Container(
-                      color: BRIGHTER_DARK,
+                      color: BRIGHTER_BLUE,
                       child: Padding(
                         padding: EdgeInsets.only(bottom: 5),
                         child: ListTile(
@@ -92,35 +92,35 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                               fit: BoxFit.fitHeight,
                             ),
                           ),
-                          title: textWhiteBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
+                          title: text17BlackBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
                           subtitle: Column(
                             children: <Widget>[
                               Align(
                                 alignment: Alignment.topLeft,
-                                child: textWhiteBold(_user.info != null ? utf8.decode(_user.info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(_user.nationality) : getTranslated(context, 'empty')),
+                                child: text17BlackBold(_user.info != null ? utf8.decode(_user.info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(_user.nationality) : getTranslated(context, 'empty')),
                               ),
                               Row(
                                 children: <Widget>[
-                                  textWhite(getTranslated(this.context, 'hours') + ': '),
-                                  textGreenBold(_timesheet.totalMoneyForHoursForEmployee.toString() + ' PLN' + ' (' + _timesheet.totalHours + ' h)'),
+                                  text17BlackBold(getTranslated(this.context, 'hours') + ': '),
+                                  text16Black(_timesheet.totalMoneyForHoursForEmployee.toString() + ' PLN' + ' (' + _timesheet.totalHours + ' h)'),
                                 ],
                               ),
                               Row(
                                 children: <Widget>[
-                                  textWhite(getTranslated(this.context, 'accord') + ': '),
-                                  textGreenBold(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
+                                  text17BlackBold(getTranslated(this.context, 'accord') + ': '),
+                                  text16Black(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
                                 ],
                               ),
                               Row(
                                 children: <Widget>[
-                                  textWhite(getTranslated(this.context, 'time') + ': '),
-                                  textGreenBold(_timesheet.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + _timesheet.totalTime + ')'),
+                                  text17BlackBold(getTranslated(this.context, 'time') + ': '),
+                                  text16Black(_timesheet.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + _timesheet.totalTime + ')'),
                                 ],
                               ),
                               Row(
                                 children: <Widget>[
-                                  textWhite(getTranslated(this.context, 'sum') + ': '),
-                                  textGreenBold(_timesheet.totalMoneyEarned.toString() + ' PLN'),
+                                  text17BlackBold(getTranslated(this.context, 'sum') + ': '),
+                                  text16Black(_timesheet.totalMoneyEarned.toString() + ' PLN'),
                                 ],
                               ),
                             ],
@@ -138,9 +138,9 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                           leftSideItemBuilder: _buildFirstColumnRow,
                           rightSideItemBuilder: _buildRightHandSideColumnRow,
                           itemCount: workdays.length,
-                          rowSeparatorWidget: Divider(color: MORE_BRIGHTER_DARK, height: 1.0, thickness: 0.0),
-                          leftHandSideColBackgroundColor: BRIGHTER_DARK,
-                          rightHandSideColBackgroundColor: DARK,
+                          rowSeparatorWidget: Divider(color: BLUE, height: 1.0, thickness: 0.0),
+                          leftHandSideColBackgroundColor: WHITE,
+                          rightHandSideColBackgroundColor: WHITE,
                         ),
                         height: MediaQuery.of(context).size.height,
                       ),
@@ -154,7 +154,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
               getTranslated(context, 'iconsLegend'),
               [
                 IconsLegendUtil.buildImageRow('images/checked.png', getTranslated(context, 'tsCompleted')),
-                IconsLegendUtil.buildIconRow(iconWhite(Icons.search), getTranslated(context, 'checkDetails')),
+                IconsLegendUtil.buildIconRow(iconBlack(Icons.search), getTranslated(context, 'checkDetails')),
               ],
             )),
       ),
@@ -176,8 +176,8 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
   Widget _buildFirstColumnRow(BuildContext context, int index) {
     return Container(
       height: 50,
-      color: BRIGHTER_DARK,
-      child: Align(alignment: Alignment.center, child: textWhite(workdays[index].number.toString())),
+      color: BRIGHTER_BLUE,
+      child: Align(alignment: Alignment.center, child: text16Black(workdays[index].number.toString())),
     );
   }
 
@@ -185,14 +185,14 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
     return Row(
       children: <Widget>[
         Container(
-          child: Align(alignment: Alignment.center, child: textWhite(workdays[index].hours)),
+          child: Align(alignment: Alignment.center, child: text16Black(workdays[index].hours)),
           width: 75,
           height: 50,
         ),
         InkWell(
           onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workdays[index].pieceworks, false),
           child: Ink(
-            child: workdays[index].pieceworks != null && workdays[index].pieceworks.isNotEmpty ? iconWhite(Icons.zoom_in) : Align(alignment: Alignment.center, child: textWhite('-')),
+            child: workdays[index].pieceworks != null && workdays[index].pieceworks.isNotEmpty ? iconBlack(Icons.zoom_in) : Align(alignment: Alignment.center, child: text16Black('-')),
             width: 50,
             height: 50,
           ),
@@ -200,20 +200,20 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
         InkWell(
           onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workdays[index].workTimes),
           child: Ink(
-            child: workdays[index].workTimes != null && workdays[index].workTimes.isNotEmpty ? iconWhite(Icons.zoom_in) : Align(alignment: Alignment.center, child: textWhite('-')),
+            child: workdays[index].workTimes != null && workdays[index].workTimes.isNotEmpty ? iconBlack(Icons.zoom_in) : Align(alignment: Alignment.center, child: text16Black('-')),
             width: 50,
             height: 50,
           ),
         ),
         Container(
-          child: Align(alignment: Alignment.center, child: textWhite(workdays[index].money)),
+          child: Align(alignment: Alignment.center, child: text16Black(workdays[index].money)),
           width: 80,
           height: 50,
         ),
         InkWell(
           onTap: () => DialogUtil.showScrollableDialog(this.context, getTranslated(this.context, 'noteDetails'), workdays[index].note),
           child: Ink(
-            child: workdays[index].note != null && workdays[index].note != '' ? iconWhite(Icons.zoom_in) : Align(alignment: Alignment.center, child: textWhite('-')),
+            child: workdays[index].note != null && workdays[index].note != '' ? iconBlack(Icons.zoom_in) : Align(alignment: Alignment.center, child: text16Black('-')),
             width: 75,
             height: 50,
           ),

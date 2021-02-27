@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:give_job/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
 
 class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   SliverAppBarDelegate(this._tabBar);
@@ -15,7 +15,7 @@ class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return new Container(color: DARK, child: _tabBar);
+    return new Container(color: WHITE, child: _tabBar);
   }
 
   @override

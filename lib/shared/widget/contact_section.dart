@@ -1,10 +1,10 @@
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/util/url_util.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/util/url_util.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 
 import 'icons.dart';
 
@@ -22,13 +22,13 @@ Widget buildContactSection(BuildContext context, String phone, String viber, Str
 
 Widget _buildPhoneNumber(BuildContext context, String phone) {
   return ListTile(
-    title: text16GreenBold(getTranslated(context, 'phone')),
+    title: text17BlueBold(getTranslated(context, 'phone')),
     subtitle: Row(
       children: <Widget>[
-        SelectableText(phone, style: TextStyle(fontSize: 16, color: WHITE)),
+        SelectableText(phone, style: TextStyle(fontSize: 16, color: BLACK)),
         SizedBox(width: 5),
-        IconButton(icon: icon30White(Icons.phone), onPressed: () => _launchAction(context, 'tel', phone)),
-        IconButton(icon: icon30White(Icons.local_post_office), onPressed: () => _launchAction(context, 'sms', phone)),
+        IconButton(icon: icon30Black(Icons.phone), onPressed: () => _launchAction(context, 'tel', phone)),
+        IconButton(icon: icon30Black(Icons.local_post_office), onPressed: () => _launchAction(context, 'sms', phone)),
       ],
     ),
   );
@@ -36,10 +36,10 @@ Widget _buildPhoneNumber(BuildContext context, String phone) {
 
 Widget _buildViber(BuildContext context, String viber) {
   return ListTile(
-    title: text16GreenBold(getTranslated(context, 'viber')),
+    title: text17BlueBold(getTranslated(context, 'viber')),
     subtitle: Row(
       children: <Widget>[
-        SelectableText(viber, style: TextStyle(fontSize: 16, color: WHITE)),
+        SelectableText(viber, style: TextStyle(fontSize: 16, color: BLACK)),
         SizedBox(width: 5),
         SizedBox(width: 7.5),
         Padding(
@@ -50,7 +50,7 @@ Widget _buildViber(BuildContext context, String viber) {
               duration: Duration(milliseconds: 100),
               scaleFactor: 2,
               onPressed: () => _launchApp(context, 'viber', viber),
-              child: Image(width: 40, height: 40, image: AssetImage('images/viber-logo.png')),
+              child: Image(width: 40, height: 40, image: AssetImage('images/viber.png')),
             ),
           ),
         ),
@@ -61,10 +61,10 @@ Widget _buildViber(BuildContext context, String viber) {
 
 Widget _buildWhatsApp(BuildContext context, String whatsAppNumber) {
   return ListTile(
-    title: text16GreenBold(getTranslated(context, 'whatsApp')),
+    title: text17BlueBold(getTranslated(context, 'whatsApp')),
     subtitle: Row(
       children: <Widget>[
-        SelectableText(whatsAppNumber, style: TextStyle(fontSize: 16, color: WHITE)),
+        SelectableText(whatsAppNumber, style: TextStyle(fontSize: 16, color: BLACK)),
         SizedBox(width: 7.5),
         Padding(
           padding: EdgeInsets.all(4),
@@ -77,7 +77,7 @@ Widget _buildWhatsApp(BuildContext context, String whatsAppNumber) {
               child: Image(
                 width: 40,
                 height: 40,
-                image: AssetImage('images/whatsapp-logo.png'),
+                image: AssetImage('images/whatsapp.png'),
               ),
             ),
           ),
@@ -99,7 +99,7 @@ _launchApp(BuildContext context, String app, String number) async {
 
 Widget _buildEmptyListTile(BuildContext context, String title) {
   return ListTile(
-    title: text16GreenBold(getTranslated(context, title)),
-    subtitle: text16White(getTranslated(context, 'empty')),
+    title: text17BlueBold(getTranslated(context, title)),
+    subtitle: text16Black(getTranslated(context, 'empty')),
   );
 }

@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:give_job/api/employee/dto/employee_calendar_dto.dart';
-import 'package:give_job/api/timesheet/dto/timesheet_for_employee_dto.dart';
-import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
-import 'package:give_job/api/timesheet/dto/timesheet_without_status_dto.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/util/logout_util.dart';
+import 'package:jobbed/api/employee/dto/employee_calendar_dto.dart';
+import 'package:jobbed/api/timesheet/dto/timesheet_for_employee_dto.dart';
+import 'package:jobbed/api/timesheet/dto/timesheet_with_status_dto.dart';
+import 'package:jobbed/api/timesheet/dto/timesheet_without_status_dto.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/util/logout_util.dart';
 import 'package:http/http.dart';
 
 class TimesheetService {

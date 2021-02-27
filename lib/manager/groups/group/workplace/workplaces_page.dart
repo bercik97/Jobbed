@@ -5,28 +5,27 @@ import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/api/workplace/dto/create_workplace_dto.dart';
-import 'package:give_job/api/workplace/dto/workplace_dto.dart';
-import 'package:give_job/api/workplace/service/workplace_service.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/group_page.dart';
-import 'package:give_job/manager/groups/group/workplace/details/workplace_details_page.dart';
-import 'package:give_job/manager/shared/group_model.dart';
-import 'package:give_job/manager/shared/manager_app_bar.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/util/validator_util.dart';
-import 'package:give_job/shared/widget/hint.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/texts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/workplace/dto/create_workplace_dto.dart';
+import 'package:jobbed/api/workplace/dto/workplace_dto.dart';
+import 'package:jobbed/api/workplace/service/workplace_service.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/groups/group/group_page.dart';
+import 'package:jobbed/manager/groups/group/workplace/details/workplace_details_page.dart';
+import 'package:jobbed/manager/shared/group_model.dart';
+import 'package:jobbed/manager/shared/manager_app_bar.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/validator_util.dart';
+import 'package:jobbed/shared/widget/hint.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 import 'package:place_picker/place_picker.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import '../../../../shared/widget/loader.dart';
@@ -95,7 +94,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
         theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          backgroundColor: DARK,
+          backgroundColor: WHITE,
           appBar: managerAppBar(context, _user, getTranslated(context, 'workplaces'), () => NavigatorUtil.navigate(context, GroupPage(_model))),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
@@ -106,15 +105,16 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                   child: TextFormField(
                     autofocus: false,
                     autocorrect: true,
-                    cursorColor: WHITE,
-                    style: TextStyle(color: WHITE),
+                    cursorColor: BLACK,
+                    style: TextStyle(color: BLACK),
                     decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-                      counterStyle: TextStyle(color: WHITE),
+                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2)),
+                      counterStyle: TextStyle(color: BLACK),
                       border: OutlineInputBorder(),
                       labelText: getTranslated(context, 'search'),
-                      prefixIcon: iconWhite(Icons.search),
-                      labelStyle: TextStyle(color: WHITE),
+                      prefixIcon: iconBlack(Icons.search),
+                      labelStyle: TextStyle(color: BLACK),
                     ),
                     onChanged: (string) {
                       setState(
@@ -128,9 +128,9 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                 ListTileTheme(
                   contentPadding: EdgeInsets.only(left: 3),
                   child: CheckboxListTile(
-                    title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
+                    title: textBlack(getTranslated(this.context, 'selectUnselectAll')),
                     value: _isChecked,
-                    activeColor: GREEN,
+                    activeColor: BLUE,
                     checkColor: WHITE,
                     onChanged: (bool value) {
                       setState(() {
@@ -152,8 +152,8 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                     : Expanded(
                         flex: 2,
                         child: RefreshIndicator(
-                          color: DARK,
-                          backgroundColor: WHITE,
+                          color: WHITE,
+                          backgroundColor: BLUE,
                           onRefresh: _refresh,
                           child: Scrollbar(
                             isAlwaysShown: true,
@@ -175,43 +175,39 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                 }
                                 String location = workplace.location;
                                 return Card(
-                                  color: DARK,
+                                  color: WHITE,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Container(
-                                        color: BRIGHTER_DARK,
+                                        color: BRIGHTER_BLUE,
                                         child: ListTileTheme(
                                           contentPadding: EdgeInsets.only(right: 10),
                                           child: CheckboxListTile(
                                             controlAffinity: ListTileControlAffinity.trailing,
                                             secondary: Padding(
                                               padding: EdgeInsets.only(left: 10),
-                                              child: Shimmer.fromColors(
-                                                baseColor: GREEN,
-                                                highlightColor: WHITE,
-                                                child: BouncingWidget(
-                                                  duration: Duration(milliseconds: 100),
-                                                  scaleFactor: 2,
-                                                  onPressed: () => NavigatorUtil.navigate(this.context, WorkplaceDetailsPage(_model, workplace)),
-                                                  child: Image(image: AssetImage('images/workplace-icon.png'), fit: BoxFit.fitHeight),
-                                                ),
+                                              child: BouncingWidget(
+                                                duration: Duration(milliseconds: 100),
+                                                scaleFactor: 2,
+                                                onPressed: () => NavigatorUtil.navigate(this.context, WorkplaceDetailsPage(_model, workplace)),
+                                                child: Image(image: AssetImage('images/workplace.png'), fit: BoxFit.fitHeight),
                                               ),
                                             ),
                                             title: Column(
                                               children: [
                                                 Align(
                                                   alignment: Alignment.topLeft,
-                                                  child: textWhiteBold(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
+                                                  child: text17BlueBold(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
                                                 ),
                                                 Align(
                                                   alignment: Alignment.topLeft,
                                                   child: location != null
-                                                      ? textWhite(utf8.decode(location.runes.toList()))
+                                                      ? text16Black(utf8.decode(location.runes.toList()))
                                                       : Row(
                                                           children: [
-                                                            textWhite(getTranslated(this.context, 'location') + ': '),
+                                                            text16Black(getTranslated(this.context, 'location') + ': '),
                                                             textRed(getTranslated(this.context, 'empty')),
                                                           ],
                                                         ),
@@ -220,14 +216,14 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                                   alignment: Alignment.topLeft,
                                                   child: Row(
                                                     children: [
-                                                      textWhite(getTranslated(this.context, 'workplaceId') + ': '),
-                                                      textGreen(workplace.id),
+                                                      text16Black(getTranslated(this.context, 'workplaceId') + ': '),
+                                                      text17BlackBold(workplace.id),
                                                     ],
                                                   ),
                                                 ),
                                               ],
                                             ),
-                                            activeColor: GREEN,
+                                            activeColor: BLUE,
                                             checkColor: WHITE,
                                             value: _checked[foundIndex],
                                             onChanged: (bool value) {
@@ -267,9 +263,9 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
               FloatingActionButton(
                 heroTag: "plusBtn",
                 tooltip: getTranslated(context, 'createWorkplace'),
-                backgroundColor: GREEN,
+                backgroundColor: BLUE,
                 onPressed: () => _addWorkplace(context),
-                child: text25Dark('+'),
+                child: text25White('+'),
               ),
               SizedBox(height: 15),
               FloatingActionButton(
@@ -291,7 +287,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
     TextEditingController _workplaceController = new TextEditingController();
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       barrierLabel: getTranslated(context, 'workplace'),
       transitionDuration: Duration(milliseconds: 400),
@@ -303,7 +299,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'createWorkplace'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'createWorkplace'))),
                   SizedBox(height: 20),
                   Padding(
                     padding: EdgeInsets.only(left: 25, right: 25),
@@ -313,19 +309,13 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                       keyboardType: TextInputType.multiline,
                       maxLength: 200,
                       maxLines: 5,
-                      cursorColor: WHITE,
+                      cursorColor: BLACK,
                       textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: WHITE),
+                      style: TextStyle(color: BLACK),
                       decoration: InputDecoration(
-                        hintText: getTranslated(this.context, 'textSomeWorkplace') + ' ...',
-                        hintStyle: TextStyle(color: MORE_BRIGHTER_DARK),
-                        counterStyle: TextStyle(color: WHITE),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: GREEN, width: 2.5),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: GREEN, width: 2.5),
-                        ),
+                        counterStyle: TextStyle(color: BLACK),
+                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
+                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
                       ),
                     ),
                   ),
@@ -361,7 +351,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
                         ),
-                        color: GREEN,
+                        color: BLUE,
                         onPressed: () => _isAddButtonTapped ? null : _handleAddWorkplace(_workplaceController.text),
                       ),
                     ],
@@ -379,14 +369,14 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
     return Padding(
       padding: const EdgeInsets.only(top: 10, bottom: 20),
       child: MaterialButton(
-        child: textDarkBold(getTranslated(context, 'setWorkplaceArea')),
-        color: GREEN,
+        child: textWhiteBold(getTranslated(context, 'setWorkplaceArea')),
+        color: BLUE,
         onPressed: () async {
           LocationResult result = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => PlacePicker("AIzaSyCrRENePPPb2DEztbvO67H-sowEaPXUXAU")));
           if (result != null) {
             showGeneralDialog(
               context: context,
-              barrierColor: DARK.withOpacity(0.95),
+              barrierColor: WHITE.withOpacity(0.95),
               barrierDismissible: false,
               barrierLabel: getTranslated(context, 'contact'),
               transitionDuration: Duration(milliseconds: 400),
@@ -398,12 +388,12 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                         child: Scaffold(
                           appBar: AppBar(
                             iconTheme: IconThemeData(color: WHITE),
-                            backgroundColor: BRIGHTER_DARK,
+                            backgroundColor: BRIGHTER_BLUE,
                             elevation: 0.0,
                             bottomOpacity: 0.0,
-                            title: textWhite(getTranslated(context, 'setWorkplaceArea')),
+                            title: textBlack(getTranslated(context, 'setWorkplaceArea')),
                             leading: IconButton(
-                              icon: iconWhite(Icons.arrow_back),
+                              icon: iconBlack(Icons.arrow_back),
                               onPressed: () {
                                 onWillPop();
                                 Navigator.pop(context);
@@ -521,25 +511,25 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: DARK,
-          title: textCenter16GreenBold(getTranslated(this.context, 'informationAboutNewWorkplace')),
+          backgroundColor: WHITE,
+          title: textCenter16BlueBold(getTranslated(this.context, 'informationAboutNewWorkplace')),
           content: SingleChildScrollView(
             child: Column(
               children: [
-                textCenterWhite(getTranslated(this.context, 'workplaceName') + ': '),
-                textCenter16GreenBold(workplaceName),
+                textCenterBlack(getTranslated(this.context, 'workplaceName') + ': '),
+                textCenter16BlueBold(workplaceName),
                 SizedBox(height: 5),
-                textCenterWhite(getTranslated(this.context, 'location') + ': '),
-                textCenter16GreenBold(_workplaceLocation != null ? _workplaceLocation : getTranslated(context, 'empty')),
+                textCenterBlack(getTranslated(this.context, 'location') + ': '),
+                textCenter16BlueBold(_workplaceLocation != null ? _workplaceLocation : getTranslated(context, 'empty')),
                 SizedBox(height: 5),
-                textCenterWhite(getTranslated(this.context, 'workplaceAreaRadius') + ': '),
-                textCenter16GreenBold(_workplaceLocation != null && _radius != 0 ? _radius.toString().substring(0, 4) + ' KM' : getTranslated(context, 'empty')),
+                textCenterBlack(getTranslated(this.context, 'workplaceAreaRadius') + ': '),
+                textCenter16BlueBold(_workplaceLocation != null && _radius != 0 ? _radius.toString().substring(0, 4) + ' KM' : getTranslated(context, 'empty')),
               ],
             ),
           ),
           actions: <Widget>[
             FlatButton(
-              child: textGreen(getTranslated(this.context, 'add')),
+              child: textBlue(getTranslated(this.context, 'add')),
               onPressed: () {
                 showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                 Circle circle;
@@ -629,11 +619,11 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(top: 20),
-          child: Align(alignment: Alignment.center, child: text20GreenBold(getTranslated(this.context, 'noWorkplaces'))),
+          child: Align(alignment: Alignment.center, child: text20BlueBold(getTranslated(this.context, 'noWorkplaces'))),
         ),
         Padding(
           padding: EdgeInsets.only(right: 30, left: 30, top: 10),
-          child: Align(alignment: Alignment.center, child: textCenter19White(getTranslated(this.context, 'noWorkplacesHint'))),
+          child: Align(alignment: Alignment.center, child: textCenter19Black(getTranslated(this.context, 'noWorkplacesHint'))),
         ),
       ],
     );

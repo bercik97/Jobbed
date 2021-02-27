@@ -6,18 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:give_job/api/employee/dto/create_employee_dto.dart';
-import 'package:give_job/api/employee/service/employee_unauthenticated_service.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/pdf_viewer_from_asset.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/language_util.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/radio_button.dart';
-import 'package:give_job/shared/widget/texts.dart';
-import 'package:give_job/unauthenticated/login_page.dart';
+import 'package:jobbed/api/employee/dto/create_employee_dto.dart';
+import 'package:jobbed/api/employee/service/employee_unauthenticated_service.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/pdf_viewer_from_asset.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/language_util.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/radio_button.dart';
+import 'package:jobbed/shared/widget/texts.dart';
+import 'package:jobbed/unauthenticated/login_page.dart';
 
 class EmployeeRegisterPage extends StatefulWidget {
   final String _tokenId;
@@ -75,16 +75,16 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
-        backgroundColor: DARK,
+        backgroundColor: WHITE,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           automaticallyImplyLeading: true,
           leading: IconButton(
-            icon: iconWhite(Icons.arrow_back),
+            icon: iconBlack(Icons.arrow_back),
             onPressed: () => _exitDialog(),
           ),
-          title: textCenterWhite(getTranslated(context, 'registrationForm')),
+          title: textCenterBlack(getTranslated(context, 'registrationForm')),
         ),
         body: Padding(
           padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
@@ -127,20 +127,20 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
         ListTile(
           dense: true,
           contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-          title: text16GreenBold(getTranslated(context, 'companyName')),
-          subtitle: text16White(_companyName),
+          title: text17BlueBold(getTranslated(context, 'companyName')),
+          subtitle: text18Black(_companyName),
         ),
         ListTile(
           dense: true,
           contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-          title: text16GreenBold(getTranslated(context, 'accountExpirationDate')),
-          subtitle: text16White(_accountExpirationDate != null ? _accountExpirationDate : getTranslated(context, 'empty')),
+          title: text17BlueBold(getTranslated(context, 'accountExpirationDate')),
+          subtitle: text18Black(_accountExpirationDate != null ? _accountExpirationDate : getTranslated(context, 'empty')),
         ),
         ListTile(
           dense: true,
           contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-          title: text16GreenBold(getTranslated(context, 'role')),
-          subtitle: text16White(getTranslated(context, 'employee')),
+          title: text17BlueBold(getTranslated(context, 'role')),
+          subtitle: text18Black(getTranslated(context, 'employee')),
         ),
       ],
     );
@@ -231,9 +231,9 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
           child: CheckboxListTile(
             title: Row(
               children: [
-                textWhite(getTranslated(context, 'accept') + ' '),
+                textBlack(getTranslated(context, 'accept') + ' '),
                 GestureDetector(
-                  child: textWhiteBoldUnderline(getTranslated(context, 'acceptRegulations')),
+                  child: textBlackBoldUnderline(getTranslated(context, 'acceptRegulations')),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -267,9 +267,9 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
           child: CheckboxListTile(
             title: Row(
               children: [
-                textWhite(getTranslated(context, 'accept') + ' '),
+                textBlack(getTranslated(context, 'accept') + ' '),
                 GestureDetector(
-                  child: textWhiteBoldUnderline(getTranslated(context, 'acceptPrivacyPolicy')),
+                  child: textBlackBoldUnderline(getTranslated(context, 'acceptPrivacyPolicy')),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -306,9 +306,9 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
     return Column(
       children: <Widget>[
         SizedBox(height: 15),
-        Align(alignment: Alignment.topLeft, child: text25GreenUnderline(title)),
+        Align(alignment: Alignment.topLeft, child: text20BlueUnderline(title)),
         SizedBox(height: 5),
-        Align(alignment: Alignment.topLeft, child: text13White(subtitle)),
+        Align(alignment: Alignment.topLeft, child: text13Black(subtitle)),
         SizedBox(height: 20),
       ],
     );
@@ -320,16 +320,16 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
         TextFormField(
           controller: controller,
           autocorrect: true,
-          cursorColor: WHITE,
+          cursorColor: BLACK,
           maxLength: maxLength,
-          style: TextStyle(color: WHITE),
+          style: TextStyle(color: BLACK),
           decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            counterStyle: TextStyle(color: WHITE),
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+            counterStyle: TextStyle(color: BLACK),
             border: OutlineInputBorder(),
             labelText: labelText,
-            prefixIcon: iconWhite(icon),
-            labelStyle: TextStyle(color: WHITE),
+            prefixIcon: iconBlack(icon),
+            labelStyle: TextStyle(color: BLACK),
           ),
           validator: RequiredValidator(errorText: errorText),
         ),
@@ -353,19 +353,19 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
       children: <Widget>[
         TextFormField(
           autocorrect: true,
-          cursorColor: WHITE,
+          cursorColor: BLACK,
           maxLength: 15,
           controller: controller,
-          style: TextStyle(color: WHITE),
+          style: TextStyle(color: BLACK),
           keyboardType: TextInputType.number,
           inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
           decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            counterStyle: TextStyle(color: WHITE),
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+            counterStyle: TextStyle(color: BLACK),
             border: OutlineInputBorder(),
             labelText: labelText,
-            prefixIcon: iconWhite(icon),
-            labelStyle: TextStyle(color: WHITE),
+            prefixIcon: iconBlack(icon),
+            labelStyle: TextStyle(color: BLACK),
           ),
           validator: (value) => validate(value),
         ),
@@ -383,20 +383,20 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
           cursorColor: WHITE,
           maxLength: 60,
           controller: _passwordController,
-          style: TextStyle(color: WHITE),
+          style: TextStyle(color: BLACK),
           decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-              counterStyle: TextStyle(color: WHITE),
+              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+              counterStyle: TextStyle(color: BLACK),
               border: OutlineInputBorder(),
               labelText: getTranslated(context, 'password'),
-              prefixIcon: iconWhite(Icons.lock),
+              prefixIcon: iconBlack(Icons.lock),
               suffixIcon: IconButton(
-                icon: iconWhite(_passwordVisible ? Icons.visibility : Icons.visibility_off),
+                icon: iconBlack(_passwordVisible ? Icons.visibility : Icons.visibility_off),
                 onPressed: () => setState(
                   () => _passwordVisible = !_passwordVisible,
                 ),
               ),
-              labelStyle: TextStyle(color: WHITE)),
+              labelStyle: TextStyle(color: BLACK)),
           validator: MultiValidator([
             RequiredValidator(
               errorText: getTranslated(context, 'passwordIsRequired'),
@@ -427,22 +427,22 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
         TextFormField(
           autocorrect: true,
           obscureText: !_rePasswordVisible,
-          cursorColor: WHITE,
+          cursorColor: BLACK,
           maxLength: 60,
-          style: TextStyle(color: WHITE),
+          style: TextStyle(color: BLACK),
           decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-              counterStyle: TextStyle(color: WHITE),
+              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+              counterStyle: TextStyle(color: BLACK),
               border: OutlineInputBorder(),
               labelText: getTranslated(context, 'retypedPassword'),
-              prefixIcon: iconWhite(Icons.lock),
+              prefixIcon: iconBlack(Icons.lock),
               suffixIcon: IconButton(
-                icon: iconWhite(_rePasswordVisible ? Icons.visibility : Icons.visibility_off),
+                icon: iconBlack(_rePasswordVisible ? Icons.visibility : Icons.visibility_off),
                 onPressed: () => setState(
                   () => _rePasswordVisible = !_rePasswordVisible,
                 ),
               ),
-              labelStyle: TextStyle(color: WHITE)),
+              labelStyle: TextStyle(color: BLACK)),
           validator: (value) => validate(value),
         ),
         SizedBox(height: 10),
@@ -457,7 +457,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
         children: [
           Align(
             alignment: Alignment.topLeft,
-            child: text18White(getTranslated(context, 'chooseGender')),
+            child: text18Black(getTranslated(context, 'chooseGender')),
           ),
           Row(
             children: [
@@ -489,47 +489,44 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
   }
 
   Widget _buildNationalityDropdown() {
-    return Theme(
-      data: ThemeData(hintColor: Colors.white, splashColor: GREEN, colorScheme: ColorScheme.dark()),
-      child: Column(
-        children: <Widget>[
-          DropDownFormField(
-            titleText: getTranslated(context, 'nationality'),
-            hintText: getTranslated(context, 'chooseYourNationality'),
-            validator: (value) {
-              if (_isErrorMsgOfNationalityShouldBeShow || (_isRegisterButtonTapped && value == null)) {
-                return getTranslated(context, 'nationalityIsRequired');
-              }
-              return null;
-            },
-            value: _nationality,
-            onSaved: (value) {
-              setState(() {
-                _nationality = value;
-              });
-            },
-            onChanged: (value) {
-              setState(() {
-                _nationality = value;
-                FocusScope.of(context).unfocus();
-                _isErrorMsgOfNationalityShouldBeShow = false;
-              });
-            },
-            dataSource: [
-              {'display': 'English ' + LanguageUtil.findFlagByNationality('EN'), 'value': 'EN'},
-              {'display': 'ქართული ' + LanguageUtil.findFlagByNationality('GE'), 'value': 'GE'},
-              {'display': 'Polska ' + LanguageUtil.findFlagByNationality('PL'), 'value': 'PL'},
-              {'display': 'русский ' + LanguageUtil.findFlagByNationality('RU'), 'value': 'RU'},
-              {'display': 'Українська ' + LanguageUtil.findFlagByNationality('UK'), 'value': 'UK'},
-            ],
-            textField: 'display',
-            valueField: 'value',
-            required: true,
-            autovalidate: true,
-          ),
-          SizedBox(height: 20),
-        ],
-      ),
+    return Column(
+      children: <Widget>[
+        DropDownFormField(
+          titleText: getTranslated(context, 'nationality'),
+          hintText: getTranslated(context, 'chooseYourNationality'),
+          validator: (value) {
+            if (_isErrorMsgOfNationalityShouldBeShow || (_isRegisterButtonTapped && value == null)) {
+              return getTranslated(context, 'nationalityIsRequired');
+            }
+            return null;
+          },
+          value: _nationality,
+          onSaved: (value) {
+            setState(() {
+              _nationality = value;
+            });
+          },
+          onChanged: (value) {
+            setState(() {
+              _nationality = value;
+              FocusScope.of(context).unfocus();
+              _isErrorMsgOfNationalityShouldBeShow = false;
+            });
+          },
+          dataSource: [
+            {'display': 'English ' + LanguageUtil.findFlagByNationality('EN'), 'value': 'EN'},
+            {'display': 'ქართული ' + LanguageUtil.findFlagByNationality('GE'), 'value': 'GE'},
+            {'display': 'Polska ' + LanguageUtil.findFlagByNationality('PL'), 'value': 'PL'},
+            {'display': 'русский ' + LanguageUtil.findFlagByNationality('RU'), 'value': 'RU'},
+            {'display': 'Українська ' + LanguageUtil.findFlagByNationality('UK'), 'value': 'UK'},
+          ],
+          textField: 'display',
+          valueField: 'value',
+          required: true,
+          autovalidate: true,
+        ),
+        SizedBox(height: 20),
+      ],
     );
   }
 
@@ -544,9 +541,8 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
             height: 50,
             shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
             onPressed: () => _isRegisterButtonTapped ? null : _handleRegisterButton(),
-            color: GREEN,
+            color: BLUE,
             child: text20White(getTranslated(context, 'register')),
-            textColor: Colors.white,
           ),
         ],
       ),
@@ -613,22 +609,22 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: DARK,
-          title: textGreen(getTranslated(context, 'confirmation')),
+          backgroundColor: WHITE,
+          title: textGreenBold(getTranslated(context, 'confirmation')),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                textWhite(getTranslated(context, 'exitRegistrationContent')),
+                textBlack(getTranslated(context, 'exitRegistrationContent')),
               ],
             ),
           ),
           actions: <Widget>[
             FlatButton(
-              child: textWhite(getTranslated(context, 'exitAgree')),
+              child: textBlack(getTranslated(context, 'exitAgree')),
               onPressed: () => {Navigator.of(context).pop(), _resetAndOpenPage()},
             ),
             FlatButton(
-              child: textWhite(getTranslated(context, 'no')),
+              child: textBlack(getTranslated(context, 'no')),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ],

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:give_job/api/manager/dto/create_manager_dto.dart';
-import 'package:give_job/shared/libraries/constants.dart';
+import 'package:jobbed/api/manager/dto/create_manager_dto.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:http/http.dart';
 
 class ManagerUnauthenticatedService {

@@ -3,15 +3,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:give_job/employee/employee_profile_page.dart';
-import 'package:give_job/manager/groups/groups_dashboard_page.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/own_http_overrides.dart';
-import 'package:give_job/shared/own_upgrader_messages.dart';
-import 'package:give_job/unauthenticated/get_started_page.dart';
-import 'package:give_job/unauthenticated/login_page.dart';
+import 'package:jobbed/employee/employee_profile_page.dart';
+import 'package:jobbed/manager/groups/groups_dashboard_page.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/own_http_overrides.dart';
+import 'package:jobbed/shared/own_upgrader_messages.dart';
+import 'package:jobbed/unauthenticated/get_started_page.dart';
+import 'package:jobbed/unauthenticated/login_page.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -90,11 +90,11 @@ class _MyAppState extends State<MyApp> {
     if (_locale == null) {
       return Container(child: Center(child: CircularProgressIndicator()));
     } else {
-      final appcastURL = 'https://givejob.pl/mobile-app/appcast.xml';
+      final appcastURL = 'https://jobbed.pl/mobile-app/appcast.xml';
       final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ['android']);
       return MaterialApp(
         title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xFFB5D76D, GREEN_RGBO)),
+        theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
         locale: _locale,
         supportedLocales: [
           Locale('en', 'EN'),
@@ -120,11 +120,12 @@ class _MyAppState extends State<MyApp> {
         },
         debugShowCheckedModeBanner: false,
         home: SplashScreen(
-          seconds: 2,
-          image: new Image.asset('images/animated-logo.gif'),
-          backgroundColor: DARK,
+          seconds: 1,
+          image: new Image.asset('images/logo.png'),
+          backgroundColor: WHITE,
           photoSize: 80,
-          useLoader: false,
+          useLoader: true,
+          loaderColor: BLUE,
           navigateAfterSeconds: FutureBuilder(
             future: authOrEmpty,
             builder: (context, snapshot) {

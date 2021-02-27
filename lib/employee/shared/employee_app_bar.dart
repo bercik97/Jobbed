@@ -1,27 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/settings/settings_page.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/settings/settings_page.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 
 AppBar employeeAppBar(BuildContext context, User user, String title, Function() fun) {
   return AppBar(
     iconTheme: IconThemeData(color: WHITE),
-    backgroundColor: BRIGHTER_DARK,
+    backgroundColor: WHITE,
     elevation: 0.0,
     bottomOpacity: 0.0,
-    title: text13White(title),
+    title: text13Black(title),
     centerTitle: false,
     automaticallyImplyLeading: true,
-    leading: IconButton(icon: iconWhite(Icons.arrow_back), onPressed: () => fun()),
+    leading: IconButton(icon: iconBlack(Icons.arrow_back), onPressed: () => fun()),
     actions: <Widget>[
       Padding(
         padding: EdgeInsets.only(right: 15.0),
         child: IconButton(
-          icon: iconWhite(Icons.settings),
+          icon: iconBlack(Icons.settings),
           onPressed: () => NavigatorUtil.navigate(context, SettingsPage(user)),
         ),
       ),

@@ -6,35 +6,36 @@ import 'package:date_util/date_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:give_job/api/employee/dto/employee_work_time_dto.dart';
-import 'package:give_job/api/employee/service/employee_service.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/api/work_time/service/work_time_service.dart';
-import 'package:give_job/api/workplace/dto/workplace_dto.dart';
-import 'package:give_job/api/workplace/service/workplace_service.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/employee/employee_profile_page.dart';
-import 'package:give_job/manager/groups/group/group_page.dart';
-import 'package:give_job/manager/shared/group_model.dart';
-import 'package:give_job/manager/shared/manager_app_bar.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/avatars_util.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/icons_legend_util.dart';
-import 'package:give_job/shared/util/language_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/util/validator_util.dart';
-import 'package:give_job/shared/widget/hint.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/icons_legend_dialog.dart';
-import 'package:give_job/shared/widget/loader.dart';
-import 'package:give_job/shared/widget/radio_button.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/employee/dto/employee_work_time_dto.dart';
+import 'package:jobbed/api/employee/service/employee_service.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/work_time/service/work_time_service.dart';
+import 'package:jobbed/api/workplace/dto/workplace_dto.dart';
+import 'package:jobbed/api/workplace/service/workplace_service.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/groups/group/employee/employee_profile_page.dart';
+import 'package:jobbed/manager/groups/group/group_page.dart';
+import 'package:jobbed/manager/shared/group_model.dart';
+import 'package:jobbed/manager/shared/manager_app_bar.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/avatars_util.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/icons_legend_util.dart';
+import 'package:jobbed/shared/util/language_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/validator_util.dart';
+import 'package:jobbed/shared/widget/hint.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
+import 'package:jobbed/shared/widget/loader.dart';
+import 'package:jobbed/shared/widget/radio_button.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 import 'package:intl/intl.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
+import 'package:shimmer/shimmer.dart';
 
 class WorkTimePage extends StatefulWidget {
   final GroupModel _model;
@@ -116,7 +117,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
       theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: DARK,
+        backgroundColor: WHITE,
         appBar: managerAppBar(context, _user, getTranslated(context, 'workTimes'), () => NavigatorUtil.navigate(context, GroupPage(_model))),
         body: Column(
           children: <Widget>[
@@ -125,15 +126,16 @@ class _WorkTimePageState extends State<WorkTimePage> {
               child: TextFormField(
                 autofocus: false,
                 autocorrect: true,
-                cursorColor: WHITE,
-                style: TextStyle(color: WHITE),
+                cursorColor: BLACK,
+                style: TextStyle(color: BLACK),
                 decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
+                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2)),
                   counterStyle: TextStyle(color: WHITE),
                   border: OutlineInputBorder(),
                   labelText: getTranslated(context, 'search'),
-                  prefixIcon: iconWhite(Icons.search),
-                  labelStyle: TextStyle(color: WHITE),
+                  prefixIcon: iconBlack(Icons.search),
+                  labelStyle: TextStyle(color: BLACK),
                 ),
                 onChanged: (string) {
                   setState(
@@ -147,9 +149,9 @@ class _WorkTimePageState extends State<WorkTimePage> {
             ListTileTheme(
               contentPadding: EdgeInsets.only(left: 3),
               child: CheckboxListTile(
-                title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
+                title: textBlack(getTranslated(this.context, 'selectUnselectAll')),
                 value: _isChecked,
-                activeColor: GREEN,
+                activeColor: BLUE,
                 checkColor: WHITE,
                 onChanged: (bool value) {
                   setState(() {
@@ -172,8 +174,8 @@ class _WorkTimePageState extends State<WorkTimePage> {
             _employees.isNotEmpty
                 ? Expanded(
                     child: RefreshIndicator(
-                      color: DARK,
-                      backgroundColor: WHITE,
+                      color: WHITE,
+                      backgroundColor: BLUE,
                       onRefresh: _refresh,
                       child: ListView.builder(
                         itemCount: _filteredEmployees.length,
@@ -188,7 +190,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                             }
                           }
                           return Card(
-                            color: DARK,
+                            color: WHITE,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,12 +198,12 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                 Ink(
                                   width: MediaQuery.of(context).size.width * 0.15,
                                   height: 116,
-                                  color: BRIGHTER_DARK,
+                                  color: BRIGHTER_BLUE,
                                   child: ListTileTheme(
                                     contentPadding: EdgeInsets.only(right: 10),
                                     child: CheckboxListTile(
                                       controlAffinity: ListTileControlAffinity.leading,
-                                      activeColor: GREEN,
+                                      activeColor: BLUE,
                                       checkColor: WHITE,
                                       value: _checked[foundIndex],
                                       onChanged: (bool value) {
@@ -225,7 +227,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(width: 15),
+                                SizedBox(width: 5),
                                 Expanded(
                                   child: InkWell(
                                     onTap: () {
@@ -233,17 +235,17 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                       NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, employee.id, info, avatarPath));
                                     },
                                     child: Ink(
-                                      color: BRIGHTER_DARK,
+                                      color: BRIGHTER_BLUE,
                                       child: Padding(
                                         padding: const EdgeInsets.all(6),
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            text20WhiteBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                            text20BlackBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                             Row(
                                               children: <Widget>[
-                                                textWhite(getTranslated(this.context, 'timeWorkedToday') + ': '),
-                                                textGreenBold(employee.timeWorkedToday != null ? employee.timeWorkedToday : getTranslated(this.context, 'empty')),
+                                                textBlack(getTranslated(this.context, 'timeWorkedToday') + ': '),
+                                                textBlackBold(employee.timeWorkedToday != null ? employee.timeWorkedToday : getTranslated(this.context, 'empty')),
                                               ],
                                             ),
                                             _handleWorkStatus(MainAxisAlignment.start, employee.workStatus, employee.workplace, employee.workplaceCode)
@@ -271,8 +273,8 @@ class _WorkTimePageState extends State<WorkTimePage> {
                 SizedBox(width: 1),
                 Expanded(
                   child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-hours-icon.png')),
+                    color: BLUE,
+                    child: Image(image: AssetImage('images/hours.png')),
                     onPressed: () {
                       if (_selectedIds.isEmpty) {
                         showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
@@ -289,8 +291,8 @@ class _WorkTimePageState extends State<WorkTimePage> {
                 SizedBox(width: 1),
                 Expanded(
                   child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-play-icon.png')),
+                    color: BLUE,
+                    child: Image(image: AssetImage('images/play.png')),
                     onPressed: () {
                       if (_selectedIds.isEmpty) {
                         showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
@@ -311,8 +313,8 @@ class _WorkTimePageState extends State<WorkTimePage> {
                 SizedBox(width: 1),
                 Expanded(
                   child: MaterialButton(
-                    color: GREEN,
-                    child: Image(image: AssetImage('images/dark-stop-icon.png')),
+                    color: BLUE,
+                    child: Image(image: AssetImage('images/stop.png')),
                     onPressed: () {
                       if (_selectedIds.isEmpty) {
                         showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
@@ -335,9 +337,9 @@ class _WorkTimePageState extends State<WorkTimePage> {
           context,
           getTranslated(context, 'iconsLegend'),
           [
-            IconsLegendUtil.buildImageRow('images/green-hours-icon.png', getTranslated(context, 'manualSettingOfWorkingTimes')),
-            IconsLegendUtil.buildImageRow('images/play-icon.png', getTranslated(context, 'startingWork')),
-            IconsLegendUtil.buildImageRow('images/stop-icon.png', getTranslated(context, 'stoppingWork')),
+            IconsLegendUtil.buildImageRow('images/hours.png', getTranslated(context, 'manualSettingOfWorkingTimes')),
+            IconsLegendUtil.buildImageRow('images/play.png', getTranslated(context, 'startingWork')),
+            IconsLegendUtil.buildImageRow('images/stop.png', getTranslated(context, 'stoppingWork')),
           ],
         ),
       ),
@@ -382,7 +384,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
       String dateTo = DateFormat('yyyy-MM-dd').format(picked[1]);
       showGeneralDialog(
         context: context,
-        barrierColor: DARK.withOpacity(0.95),
+        barrierColor: WHITE.withOpacity(0.95),
         barrierDismissible: false,
         barrierLabel: 'workTime',
         transitionDuration: Duration(milliseconds: 400),
@@ -394,13 +396,13 @@ class _WorkTimePageState extends State<WorkTimePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'workTimeUpperCase'))),
+                    Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'workTimeUpperCase'))),
                     SizedBox(height: 2.5),
-                    textGreen(getTranslated(context, 'setWorkTimeForSelectedEmployees')),
+                    text16Black(getTranslated(context, 'setWorkTimeForSelectedEmployees')),
                     SizedBox(height: 2.5),
-                    textGreenBold('[' + dateFrom + ' - ' + dateTo + ']'),
+                    text17BlueBold('[' + dateFrom + ' - ' + dateTo + ']'),
                     SizedBox(height: 20),
-                    text20WhiteBold(getTranslated(context, 'startWorkTimeFrom')),
+                    text17BlackBold(getTranslated(context, 'startWorkTimeFrom')),
                     Row(
                       children: [
                         Expanded(
@@ -409,7 +411,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
                               children: [
-                                textWhite(getTranslated(context, 'hours')),
+                                textBlack(getTranslated(context, 'hours')),
                                 SizedBox(height: 2.5),
                                 NumberInputWithIncrementDecrement(
                                   controller: _fromHoursController,
@@ -425,8 +427,8 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                       setState(() => _fromHoursController.text = 24.toString());
                                     }
                                   },
-                                  style: TextStyle(color: GREEN),
-                                  widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
+                                  style: TextStyle(color: BLUE),
+                                  widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
                                 ),
                               ],
                             ),
@@ -438,7 +440,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
                               children: [
-                                textWhite(getTranslated(context, 'minutes')),
+                                textBlack(getTranslated(context, 'minutes')),
                                 SizedBox(height: 2.5),
                                 NumberInputWithIncrementDecrement(
                                   controller: _fromMinutesController,
@@ -454,8 +456,8 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                       setState(() => _fromMinutesController.text = 59.toString());
                                     }
                                   },
-                                  style: TextStyle(color: GREEN),
-                                  widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
+                                  style: TextStyle(color: BLUE),
+                                  widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
                                 ),
                               ],
                             ),
@@ -464,7 +466,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                       ],
                     ),
                     SizedBox(height: 20),
-                    text20WhiteBold(getTranslated(context, 'finishWorkTimeTo')),
+                    text17BlackBold(getTranslated(context, 'finishWorkTimeTo')),
                     Row(
                       children: [
                         Expanded(
@@ -473,7 +475,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
                               children: [
-                                textWhite(getTranslated(context, 'hours')),
+                                textBlack(getTranslated(context, 'hours')),
                                 SizedBox(height: 2.5),
                                 NumberInputWithIncrementDecrement(
                                   controller: _toHoursController,
@@ -489,8 +491,8 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                       setState(() => _toHoursController.text = 24.toString());
                                     }
                                   },
-                                  style: TextStyle(color: GREEN),
-                                  widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
+                                  style: TextStyle(color: BLUE),
+                                  widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
                                 ),
                               ],
                             ),
@@ -502,7 +504,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
                               children: [
-                                textWhite(getTranslated(context, 'minutes')),
+                                textBlack(getTranslated(context, 'minutes')),
                                 SizedBox(height: 2.5),
                                 NumberInputWithIncrementDecrement(
                                   controller: _toMinutesController,
@@ -518,8 +520,8 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                       setState(() => _toMinutesController.text = 59.toString());
                                     }
                                   },
-                                  style: TextStyle(color: GREEN),
-                                  widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
+                                  style: TextStyle(color: BLUE),
+                                  widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
                                 ),
                               ],
                             ),
@@ -552,7 +554,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[iconWhite(Icons.check)],
                           ),
-                          color: GREEN,
+                          color: BLUE,
                           onPressed: () {
                             int fromHours;
                             int fromMinutes;
@@ -595,7 +597,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
   void _showChooseWorkplaceDialog(String title, Function() fun) {
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       transitionDuration: Duration(milliseconds: 400),
       pageBuilder: (_, __, ___) {
@@ -613,7 +615,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                           padding: EdgeInsets.only(top: 50, bottom: 10),
                           child: Column(
                             children: [
-                              textCenter20GreenBold(title),
+                              textCenter20BlueBold(title),
                             ],
                           ),
                         ),
@@ -628,7 +630,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                   children: [
                                     for (int i = 0; i < _workplaces.length; i++)
                                       RadioButton.buildRadioBtn(
-                                        color: GREEN,
+                                        color: BLUE,
                                         title: utf8.decode(_workplaces[i].name.runes.toList()),
                                         value: 0,
                                         groupValue: _workplacesRadioValues[i],
@@ -682,7 +684,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[iconWhite(Icons.check)],
                                 ),
-                                color: !_isChoseWorkplaceBtnDisabled ? GREEN : Colors.grey,
+                                color: !_isChoseWorkplaceBtnDisabled ? BLUE : Colors.grey,
                                 onPressed: () {
                                   if (_isChoseWorkplaceBtnDisabled) {
                                     return;
@@ -773,25 +775,25 @@ class _WorkTimePageState extends State<WorkTimePage> {
         return _buildWorkStatusRow(
           alignment,
           iconGreen(Icons.check),
-          textGreen(getTranslated(context, 'workIsDoneStatus')),
-          textGreen(workplace != null ? utf8.decode(workplace.runes.toList()) : '-'),
-          textGreen(workplaceCode != null ? workplaceCode : '-'),
+          textGreenBold(getTranslated(context, 'workIsDoneStatus')),
+          textBlackBold(workplace != null ? utf8.decode(workplace.runes.toList()) : '-'),
+          textBlackBold(workplaceCode != null ? workplaceCode : '-'),
         );
       case 'In progress':
         return _buildWorkStatusRow(
           alignment,
           iconOrange(Icons.timer),
-          textOrange(getTranslated(context, 'workIsInProgress')),
-          textOrange(workplace != null ? utf8.decode(workplace.runes.toList()) : '-'),
-          textOrange(workplaceCode != null ? workplaceCode : '-'),
+          textOrangeBold(getTranslated(context, 'workIsInProgress')),
+          textBlackBold(workplace != null ? utf8.decode(workplace.runes.toList()) : '-'),
+          textBlackBold(workplaceCode != null ? workplaceCode : '-'),
         );
       default:
         return _buildWorkStatusRow(
           alignment,
           iconRed(Icons.remove),
-          textRed(getTranslated(context, 'workDoNotStarted')),
-          textRed('-'),
-          textRed('-'),
+          textRedBold(getTranslated(context, 'workDoNotStarted')),
+          textBlackBold('-'),
+          textBlackBold('-'),
         );
     }
   }
@@ -802,15 +804,15 @@ class _WorkTimePageState extends State<WorkTimePage> {
         children: [
           Row(
             mainAxisAlignment: alignment,
-            children: <Widget>[textWhite(getTranslated(context, 'status') + ': '), icon, workStatusWidget],
+            children: <Widget>[textBlack(getTranslated(context, 'status') + ': '), icon, workStatusWidget],
           ),
           Row(
             mainAxisAlignment: alignment,
-            children: <Widget>[textWhite(getTranslated(context, 'workplace') + ': '), workplaceWidget],
+            children: <Widget>[textBlack(getTranslated(context, 'workplace') + ': '), workplaceWidget],
           ),
           Row(
             mainAxisAlignment: alignment,
-            children: <Widget>[textWhite(getTranslated(context, 'workplaceId') + ': '), workplaceCodeWidget],
+            children: <Widget>[textBlack(getTranslated(context, 'workplaceId') + ': '), workplaceCodeWidget],
           ),
         ],
       ),
@@ -824,14 +826,14 @@ class _WorkTimePageState extends State<WorkTimePage> {
           padding: EdgeInsets.only(top: 10),
           child: Align(
             alignment: Alignment.center,
-            child: text20GreenBold(getTranslated(context, 'noEmployees')),
+            child: text20BlueBold(getTranslated(context, 'noEmployees')),
           ),
         ),
         Padding(
           padding: EdgeInsets.only(top: 10),
           child: Align(
             alignment: Alignment.center,
-            child: textCenter19White(getTranslated(context, 'youHaveNoEmployees')),
+            child: textCenter19Black(getTranslated(context, 'youHaveNoEmployees')),
           ),
         ),
       ],

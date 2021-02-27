@@ -3,23 +3,23 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/api/workplace/dto/workplace_dto.dart';
-import 'package:give_job/api/workplace/service/workplace_service.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/workplace/workplaces_page.dart';
-import 'package:give_job/manager/shared/group_model.dart';
-import 'package:give_job/manager/shared/manager_app_bar.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/util/validator_util.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/texts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/workplace/dto/workplace_dto.dart';
+import 'package:jobbed/api/workplace/service/workplace_service.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/groups/group/workplace/workplaces_page.dart';
+import 'package:jobbed/manager/shared/group_model.dart';
+import 'package:jobbed/manager/shared/manager_app_bar.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/validator_util.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 import 'package:place_picker/entities/location_result.dart';
 import 'package:place_picker/widgets/place_picker.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
@@ -82,7 +82,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
         theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          backgroundColor: DARK,
+          backgroundColor: WHITE,
           appBar: managerAppBar(context, _user, getTranslated(context, 'workplaceDetails'), () => NavigatorUtil.navigate(context, WorkplacesPage(_model))),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
@@ -94,23 +94,21 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                       child: Container(
                         child: Image(
                           width: 60,
-                          image: AssetImage(
-                            'images/workplace-icon.png',
-                          ),
+                          image: AssetImage('images/workplace.png'),
                           fit: BoxFit.cover,
                         ),
                       ),
                     ),
                   ),
-                  title: textWhiteBold(utf8.decode(_workplaceDto.name.runes.toList())),
+                  title: text17BlueBold(utf8.decode(_workplaceDto.name.runes.toList())),
                   subtitle: Column(
                     children: <Widget>[
                       Align(
                         child: _workplaceDto.location != null
-                            ? textWhite(utf8.decode(_workplaceDto.location.runes.toList()))
+                            ? text16Black(utf8.decode(_workplaceDto.location.runes.toList()))
                             : Row(
                                 children: [
-                                  textWhite(getTranslated(context, 'location') + ': '),
+                                  text16Black(getTranslated(context, 'location') + ': '),
                                   textRed(getTranslated(context, 'empty')),
                                 ],
                               ),
@@ -119,8 +117,8 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                       Align(
                         child: Row(
                           children: [
-                            textWhite(getTranslated(context, 'workplaceCode') + ': '),
-                            textGreen(_workplaceDto.id),
+                            text16Black(getTranslated(context, 'workplaceCode') + ': '),
+                            text17BlackBold(_workplaceDto.id),
                           ],
                         ),
                         alignment: Alignment.topLeft,
@@ -128,9 +126,9 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                     ],
                   ),
                   trailing: Ink(
-                    decoration: ShapeDecoration(color: GREEN, shape: CircleBorder()),
+                    decoration: ShapeDecoration(color: BLUE, shape: CircleBorder()),
                     child: IconButton(
-                      icon: iconDark(Icons.border_color),
+                      icon: iconWhite(Icons.border_color),
                       onPressed: () => _editWorkplace(_workplaceDto),
                     ),
                   ),
@@ -140,15 +138,16 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                   child: TextFormField(
                     autofocus: false,
                     autocorrect: true,
-                    cursorColor: WHITE,
-                    style: TextStyle(color: WHITE),
+                    cursorColor: BLACK,
+                    style: TextStyle(color: BLACK),
                     decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-                      counterStyle: TextStyle(color: WHITE),
+                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2)),
+                      counterStyle: TextStyle(color: BLACK),
                       border: OutlineInputBorder(),
                       labelText: getTranslated(context, 'search'),
-                      prefixIcon: iconWhite(Icons.search),
-                      labelStyle: TextStyle(color: WHITE),
+                      prefixIcon: iconBlack(Icons.search),
+                      labelStyle: TextStyle(color: BLACK),
                     ),
                     onChanged: (string) {
                       setState(
@@ -174,7 +173,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
     double radiusLength = workplace.radiusLength;
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       barrierLabel: getTranslated(context, 'name'),
       transitionDuration: Duration(milliseconds: 400),
@@ -188,7 +187,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.only(top: 50),
-                    child: text20GreenBold(getTranslated(context, 'editWorkplace')),
+                    child: text20BlackBold(getTranslated(context, 'editWorkplace')),
                   ),
                   SizedBox(height: 20),
                   Padding(
@@ -199,19 +198,13 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                       keyboardType: TextInputType.multiline,
                       maxLength: 200,
                       maxLines: 5,
-                      cursorColor: WHITE,
+                      cursorColor: BLACK,
                       textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: WHITE),
+                      style: TextStyle(color: BLACK),
                       decoration: InputDecoration(
-                        hintText: getTranslated(context, 'textSomeWorkplace') + ' ...',
-                        hintStyle: TextStyle(color: MORE_BRIGHTER_DARK),
-                        counterStyle: TextStyle(color: WHITE),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: GREEN, width: 2.5),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: GREEN, width: 2.5),
-                        ),
+                        counterStyle: TextStyle(color: BLACK),
+                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
+                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
                       ),
                     ),
                   ),
@@ -240,7 +233,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
                         ),
-                        color: GREEN,
+                        color: BLUE,
                         onPressed: () {
                           String name = _workplaceController.text;
                           String invalidMessage = ValidatorUtil.validateWorkplace(name, context);
@@ -296,12 +289,12 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
     return Padding(
       padding: const EdgeInsets.only(top: 10, bottom: 20),
       child: MaterialButton(
-        child: textDarkBold(getTranslated(context, 'editWorkplaceArea')),
-        color: GREEN,
+        child: textWhiteBold(getTranslated(context, 'editWorkplaceArea')),
+        color: BLUE,
         onPressed: () {
           showGeneralDialog(
             context: context,
-            barrierColor: DARK.withOpacity(0.95),
+            barrierColor: WHITE.withOpacity(0.95),
             barrierDismissible: false,
             barrierLabel: getTranslated(context, 'contact'),
             transitionDuration: Duration(milliseconds: 400),
@@ -313,12 +306,12 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                       child: Scaffold(
                         appBar: AppBar(
                           iconTheme: IconThemeData(color: WHITE),
-                          backgroundColor: BRIGHTER_DARK,
+                          backgroundColor: BRIGHTER_BLUE,
                           elevation: 0.0,
                           bottomOpacity: 0.0,
-                          title: textWhite(getTranslated(context, 'editWorkplaceArea')),
+                          title: textBlack(getTranslated(context, 'editWorkplaceArea')),
                           leading: IconButton(
-                            icon: iconWhite(Icons.arrow_back),
+                            icon: iconBlack(Icons.arrow_back),
                             onPressed: () {
                               onWillPop();
                               Navigator.pop(context);
@@ -413,14 +406,14 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
     return Padding(
       padding: const EdgeInsets.only(top: 10, bottom: 20),
       child: MaterialButton(
-        child: textDarkBold(getTranslated(context, 'setWorkplaceArea')),
-        color: GREEN,
+        child: textWhiteBold(getTranslated(context, 'setWorkplaceArea')),
+        color: BLUE,
         onPressed: () async {
           LocationResult result = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => PlacePicker("AIzaSyCrRENePPPb2DEztbvO67H-sowEaPXUXAU")));
           if (result != null) {
             showGeneralDialog(
               context: context,
-              barrierColor: DARK.withOpacity(0.95),
+              barrierColor: WHITE.withOpacity(0.95),
               barrierDismissible: false,
               barrierLabel: getTranslated(context, 'contact'),
               transitionDuration: Duration(milliseconds: 400),
@@ -432,12 +425,12 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                         child: Scaffold(
                           appBar: AppBar(
                             iconTheme: IconThemeData(color: WHITE),
-                            backgroundColor: BRIGHTER_DARK,
+                            backgroundColor: BRIGHTER_BLUE,
                             elevation: 0.0,
                             bottomOpacity: 0.0,
-                            title: textWhite(getTranslated(context, 'setWorkplaceArea')),
+                            title: textBlack(getTranslated(context, 'setWorkplaceArea')),
                             leading: IconButton(
-                              icon: iconWhite(Icons.arrow_back),
+                              icon: iconBlack(Icons.arrow_back),
                               onPressed: () {
                                 onWillPop();
                                 Navigator.pop(context);

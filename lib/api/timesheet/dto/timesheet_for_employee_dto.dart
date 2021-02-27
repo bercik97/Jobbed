@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:give_job/api/employee/dto/employee_basic_dto.dart';
+import 'package:jobbed/api/employee/dto/employee_basic_dto.dart';
 
 class TimesheetForEmployeeDto {
   final int id;

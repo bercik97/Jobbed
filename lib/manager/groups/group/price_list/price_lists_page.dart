@@ -4,23 +4,23 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:give_job/api/excel/service/excel_service.dart';
-import 'package:give_job/api/price_list/dto/price_list_dto.dart';
-import 'package:give_job/api/price_list/service/price_list_service.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/group_page.dart';
-import 'package:give_job/manager/shared/group_model.dart';
-import 'package:give_job/manager/shared/manager_app_bar.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/hint.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/shared/widget/texts.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/api/excel/service/excel_service.dart';
+import 'package:jobbed/api/price_list/dto/price_list_dto.dart';
+import 'package:jobbed/api/price_list/service/price_list_service.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/groups/group/group_page.dart';
+import 'package:jobbed/manager/shared/group_model.dart';
+import 'package:jobbed/manager/shared/manager_app_bar.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/hint.dart';
+import 'package:jobbed/shared/widget/icons.dart';
 
 import '../../../../shared/widget/loader.dart';
 import 'add/add_price_list_page.dart';
@@ -85,7 +85,7 @@ class _PriceListsPageState extends State<PriceListsPage> {
         theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          backgroundColor: DARK,
+          backgroundColor: WHITE,
           appBar: managerAppBar(context, _user, getTranslated(context, 'priceList'), () => NavigatorUtil.navigate(context, GroupPage(_model))),
           body: Padding(
             padding: const EdgeInsets.only(left: 12, right: 12),
@@ -96,15 +96,16 @@ class _PriceListsPageState extends State<PriceListsPage> {
                   child: TextFormField(
                     autofocus: false,
                     autocorrect: true,
-                    cursorColor: WHITE,
-                    style: TextStyle(color: WHITE),
+                    cursorColor: BLACK,
+                    style: TextStyle(color: BLACK),
                     decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-                      counterStyle: TextStyle(color: WHITE),
+                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2)),
+                      counterStyle: TextStyle(color: BLACK),
                       border: OutlineInputBorder(),
                       labelText: getTranslated(context, 'search'),
-                      prefixIcon: iconWhite(Icons.search),
-                      labelStyle: TextStyle(color: WHITE),
+                      prefixIcon: iconBlack(Icons.search),
+                      labelStyle: TextStyle(color: BLACK),
                     ),
                     onChanged: (string) {
                       setState(
@@ -121,9 +122,9 @@ class _PriceListsPageState extends State<PriceListsPage> {
                       child: ListTileTheme(
                         contentPadding: EdgeInsets.only(left: 3),
                         child: CheckboxListTile(
-                          title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
+                          title: textBlack(getTranslated(this.context, 'selectUnselectAll')),
                           value: _isChecked,
-                          activeColor: GREEN,
+                          activeColor: BLUE,
                           checkColor: WHITE,
                           onChanged: (bool value) {
                             setState(() {
@@ -145,7 +146,7 @@ class _PriceListsPageState extends State<PriceListsPage> {
                       padding: EdgeInsets.only(right: 12),
                       child: InkWell(
                         onTap: () => _isGenerateExcelBtnTapped ? null : _handleGenerateExcelAndSendEmail(),
-                        child: Image(image: AssetImage('images/excel-icon.png'), height: 40),
+                        child: Image(image: AssetImage('images/excel.png'), height: 40),
                       ),
                     )
                   ],
@@ -156,8 +157,8 @@ class _PriceListsPageState extends State<PriceListsPage> {
                     : Expanded(
                         flex: 2,
                         child: RefreshIndicator(
-                          color: DARK,
-                          backgroundColor: WHITE,
+                          color: WHITE,
+                          backgroundColor: BLUE,
                           onRefresh: _refresh,
                           child: Scrollbar(
                             isAlwaysShown: true,
@@ -177,13 +178,13 @@ class _PriceListsPageState extends State<PriceListsPage> {
                                 String priceForEmployee = priceList.priceForEmployee.toString();
                                 String priceForCompany = priceList.priceForCompany.toString();
                                 return Card(
-                                  color: DARK,
+                                  color: WHITE,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Container(
-                                        color: BRIGHTER_DARK,
+                                        color: BRIGHTER_BLUE,
                                         child: ListTileTheme(
                                           contentPadding: EdgeInsets.only(right: 10, left: 10),
                                           child: CheckboxListTile(
@@ -192,14 +193,14 @@ class _PriceListsPageState extends State<PriceListsPage> {
                                               children: [
                                                 Align(
                                                   alignment: Alignment.topLeft,
-                                                  child: textWhiteBold(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
+                                                  child: text17BlueBold(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
                                                 ),
                                                 Align(
                                                   alignment: Alignment.topLeft,
                                                   child: Row(
                                                     children: [
-                                                      textWhite(getTranslated(this.context, 'priceForEmployee') + ': '),
-                                                      textGreenBold(priceForEmployee),
+                                                      text17BlackBold(getTranslated(this.context, 'priceForEmployee') + ': '),
+                                                      text16Black(priceForEmployee),
                                                     ],
                                                   ),
                                                 ),
@@ -207,14 +208,14 @@ class _PriceListsPageState extends State<PriceListsPage> {
                                                   alignment: Alignment.topLeft,
                                                   child: Row(
                                                     children: [
-                                                      textWhite(getTranslated(this.context, 'priceForCompany') + ': '),
-                                                      textGreenBold(priceForCompany),
+                                                      text17BlackBold(getTranslated(this.context, 'priceForCompany') + ': '),
+                                                      text16Black(priceForCompany),
                                                     ],
                                                   ),
                                                 ),
                                               ],
                                             ),
-                                            activeColor: GREEN,
+                                            activeColor: BLUE,
                                             checkColor: WHITE,
                                             value: _checked[foundIndex],
                                             onChanged: (bool value) {
@@ -254,9 +255,9 @@ class _PriceListsPageState extends State<PriceListsPage> {
               FloatingActionButton(
                 heroTag: "plusBtn",
                 tooltip: getTranslated(context, 'createPriceList'),
-                backgroundColor: GREEN,
+                backgroundColor: BLUE,
                 onPressed: () => NavigatorUtil.navigate(this.context, AddPriceListPage(_model)),
-                child: text25Dark('+'),
+                child: text25White('+'),
               ),
               SizedBox(height: 15),
               FloatingActionButton(
@@ -277,7 +278,7 @@ class _PriceListsPageState extends State<PriceListsPage> {
   _handleGenerateExcelAndSendEmail() {
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       barrierLabel: getTranslated(context, 'generateExcelFile'),
       transitionDuration: Duration(milliseconds: 400),
@@ -296,7 +297,7 @@ class _PriceListsPageState extends State<PriceListsPage> {
                         padding: EdgeInsets.only(top: 50),
                         child: Column(
                           children: [
-                            textCenter20GreenBold(getTranslated(context, 'generateExcelFile')),
+                            textCenter20BlackBold(getTranslated(context, 'generateExcelFile')),
                           ],
                         ),
                       ),
@@ -304,22 +305,22 @@ class _PriceListsPageState extends State<PriceListsPage> {
                       Column(
                         children: <Widget>[
                           RadioListTile(
-                            activeColor: GREEN,
-                            title: textWhite(getTranslated(context, 'priceForEmployee')),
+                            activeColor: BLUE,
+                            title: textBlack(getTranslated(context, 'priceForEmployee')),
                             value: 0,
                             groupValue: _excelType,
                             onChanged: (newValue) => setState(() => _excelType = newValue),
                           ),
                           RadioListTile(
-                            activeColor: GREEN,
-                            title: textWhite(getTranslated(context, 'priceForCompany')),
+                            activeColor: BLUE,
+                            title: textBlack(getTranslated(context, 'priceForCompany')),
                             value: 1,
                             groupValue: _excelType,
                             onChanged: (newValue) => setState(() => _excelType = newValue),
                           ),
                           RadioListTile(
-                            activeColor: GREEN,
-                            title: textWhite(getTranslated(context, 'priceForEmployeeAndCompany')),
+                            activeColor: BLUE,
+                            title: textBlack(getTranslated(context, 'priceForEmployeeAndCompany')),
                             value: 2,
                             groupValue: _excelType,
                             onChanged: (newValue) => setState(() => _excelType = newValue),
@@ -354,7 +355,7 @@ class _PriceListsPageState extends State<PriceListsPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[iconWhite(Icons.check)],
                             ),
-                            color: GREEN,
+                            color: BLUE,
                             onPressed: () => _isGenerateExcelBtnTapped ? null : _handleGenerateExcel(),
                           ),
                         ],
@@ -412,12 +413,12 @@ class _PriceListsPageState extends State<PriceListsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: DARK,
-          title: textWhite(getTranslated(this.context, 'confirmation')),
-          content: textWhite(getTranslated(this.context, 'areYouSureYouWantToDeleteSelectedPriceLists')),
+          backgroundColor: WHITE,
+          title: textGreenBold(getTranslated(this.context, 'confirmation')),
+          content: textBlack(getTranslated(this.context, 'areYouSureYouWantToDeleteSelectedPriceLists')),
           actions: <Widget>[
             FlatButton(
-              child: textWhite(getTranslated(this.context, 'yesDeleteThem')),
+              child: textBlack(getTranslated(this.context, 'yesDeleteThem')),
               onPressed: () {
                 showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                 _priceListService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
@@ -437,7 +438,7 @@ class _PriceListsPageState extends State<PriceListsPage> {
               },
             ),
             FlatButton(
-              child: textWhite(getTranslated(this.context, 'no')),
+              child: textBlack(getTranslated(this.context, 'no')),
               onPressed: () {
                 Navigator.of(this.context).pop();
                 setState(() => _isDeleteButtonTapped = false);
@@ -454,11 +455,11 @@ class _PriceListsPageState extends State<PriceListsPage> {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(top: 20),
-          child: Align(alignment: Alignment.center, child: text20GreenBold(getTranslated(this.context, 'noPriceLists'))),
+          child: Align(alignment: Alignment.center, child: text20BlueBold(getTranslated(this.context, 'noPriceLists'))),
         ),
         Padding(
           padding: EdgeInsets.only(right: 30, left: 30, top: 10),
-          child: Align(alignment: Alignment.center, child: textCenter19White(getTranslated(this.context, 'noPriceListsHint'))),
+          child: Align(alignment: Alignment.center, child: textCenter19Black(getTranslated(this.context, 'noPriceListsHint'))),
         ),
       ],
     );

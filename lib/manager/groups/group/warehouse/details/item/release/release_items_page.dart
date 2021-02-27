@@ -3,26 +3,26 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:give_job/api/item/dto/item_dto.dart';
-import 'package:give_job/api/item_place/dto/assign_items_dto.dart';
-import 'package:give_job/api/item_place/dto/item_place_dashboard_dto.dart';
-import 'package:give_job/api/item_place/service/item_place_service.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/api/warehouse/dto/warehouse_dashboard_dto.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/warehouse/details/warehouse_details_page.dart';
-import 'package:give_job/manager/shared/group_model.dart';
-import 'package:give_job/manager/shared/manager_app_bar.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/loader.dart';
-import 'package:give_job/shared/widget/radio_button.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/item/dto/item_dto.dart';
+import 'package:jobbed/api/item_place/dto/assign_items_dto.dart';
+import 'package:jobbed/api/item_place/dto/item_place_dashboard_dto.dart';
+import 'package:jobbed/api/item_place/service/item_place_service.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/warehouse/dto/warehouse_dashboard_dto.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/groups/group/warehouse/details/warehouse_details_page.dart';
+import 'package:jobbed/manager/shared/group_model.dart';
+import 'package:jobbed/manager/shared/manager_app_bar.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/loader.dart';
+import 'package:jobbed/shared/widget/radio_button.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
 class ReleaseItemsPage extends StatefulWidget {
@@ -89,7 +89,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
         theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          backgroundColor: DARK,
+          backgroundColor: WHITE,
           appBar: managerAppBar(context, _user, getTranslated(context, 'releaseItems'), () => Navigator.pop(context)),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
@@ -106,19 +106,19 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
                           children: [
                             for (var i = 0; i < _items.length; i++)
                               Card(
-                                color: DARK,
+                                color: WHITE,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Card(
-                                      color: BRIGHTER_DARK,
+                                      color: BRIGHTER_BLUE,
                                       child: ListTile(
-                                        title: textGreen(utf8.decode(_items[i].name.runes.toList())),
+                                        title: text17BlueBold(utf8.decode(_items[i].name.runes.toList())),
                                         subtitle: Row(
                                           children: [
-                                            textWhite(getTranslated(this.context, 'quantity') + ': '),
-                                            textGreen(_items[i].quantity.toString()),
+                                            text16Black(getTranslated(this.context, 'quantity') + ': '),
+                                            text17BlackBold(_items[i].quantity.toString()),
                                           ],
                                         ),
                                         trailing: Container(
@@ -161,8 +161,8 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
       controller: controller,
       min: 0,
       max: max,
-      style: TextStyle(color: GREEN),
-      widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
+      style: TextStyle(color: BLUE),
+      widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
     );
   }
 
@@ -194,7 +194,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[iconWhite(Icons.check)],
               ),
-              color: GREEN,
+              color: BLUE,
               onPressed: () => _releaseItemsToItemPlace(),
             ),
           ],
@@ -206,7 +206,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
   void _releaseItemsToItemPlace() {
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       transitionDuration: Duration(milliseconds: 400),
       pageBuilder: (_, __, ___) {
@@ -224,7 +224,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
                         padding: EdgeInsets.only(top: 50),
                         child: Column(
                           children: [
-                            textCenter20GreenBold(getTranslated(this.context, 'choosePlaceWhereSelectedItemsWillBePlaced')),
+                            textCenter20BlueBold(getTranslated(this.context, 'choosePlaceWhereSelectedItemsWillBePlaced')),
                           ],
                         ),
                       ),
@@ -234,7 +234,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
                         children: [
                           for (int i = 0; i < _itemPlaces.length; i++)
                             RadioButton.buildRadioBtn(
-                              color: GREEN,
+                              color: BLUE,
                               title: utf8.decode(_itemPlaces[i].location.runes.toList()),
                               value: 0,
                               groupValue: _itemPlacesRadioValues[i],
@@ -283,7 +283,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[iconWhite(Icons.check)],
                             ),
-                            color: !_isAddBtnDisabled ? GREEN : Colors.grey,
+                            color: !_isAddBtnDisabled ? BLUE : Colors.grey,
                             onPressed: () => _isAddBtnDisabled || _isAddButtonTapped ? null : _handleAddBtn(),
                           ),
                         ],
@@ -300,8 +300,6 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
   }
 
   void _handleAddBtn() {
-    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    setState(() => _isAddButtonTapped = true);
     Map<String, int> itemsWithQuantities = new Map();
     for (int i = 0; i < _items.length; i++) {
       int quantity = int.parse(_textEditingItemControllers[i].text);
@@ -312,10 +310,11 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
     if (itemsWithQuantities.isEmpty) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showErrorToast(getTranslated(context, 'noQuantitySetForRelease'));
-        setState(() => _isAddButtonTapped = false);
       });
       return;
     }
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    setState(() => _isAddButtonTapped = true);
     AssignItemsDto dto = new AssignItemsDto(
       warehouseId: _warehouseDto.id,
       itemPlaceId: _itemPlaces[_chosenIndex].id,
@@ -346,18 +345,18 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
       builder: (BuildContext context) {
         return WillPopScope(
           child: AlertDialog(
-            backgroundColor: DARK,
-            title: textGreen(getTranslated(this.context, 'failure')),
+            backgroundColor: WHITE,
+            title: textBlue(getTranslated(this.context, 'failure')),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  textWhite(content),
+                  textBlack(content),
                 ],
               ),
             ),
             actions: <Widget>[
               FlatButton(
-                child: textWhite(getTranslated(this.context, 'goToWarehousesPage')),
+                child: textBlack(getTranslated(this.context, 'goToWarehousesPage')),
                 onPressed: () => _resetAndOpenPage(),
               ),
             ],

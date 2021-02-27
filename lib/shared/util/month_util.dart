@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
 
 import '../../internationalization/localization/localization_constants.dart';
 import '../libraries/constants.dart';

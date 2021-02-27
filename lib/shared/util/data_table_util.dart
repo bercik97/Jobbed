@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 
 class DataTableUtil {
   static Widget buildTitleItemWidget(String label, double width) {
     return Container(
-      child: Align(alignment: Alignment.center, child: textWhiteBold(label)),
+      color: WHITE,
+      child: Align(alignment: Alignment.center, child: textBlackBold(label)),
       width: width,
       height: 50,
     );
@@ -16,9 +18,9 @@ class DataTableUtil {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Align(alignment: Alignment.center, child: textWhiteBold(firstLabel)),
-          Align(alignment: Alignment.center, child: text12White('(' + secondLabel + ')')),
-          Align(alignment: Alignment.center, child: text12White('(' + thirdLabel + ')')),
+          Align(alignment: Alignment.center, child: textBlackBold(firstLabel)),
+          Align(alignment: Alignment.center, child: text12Black('(' + secondLabel + ')')),
+          Align(alignment: Alignment.center, child: text12Black('(' + thirdLabel + ')')),
         ],
       ),
     );

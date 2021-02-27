@@ -6,27 +6,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:give_job/api/employee/dto/employee_settings_dto.dart';
-import 'package:give_job/api/employee/service/employee_service.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/employee/employee_profile_page.dart';
-import 'package:give_job/manager/shared/group_model.dart';
-import 'package:give_job/manager/shared/manager_app_bar.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/avatars_util.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/language_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/util/validator_util.dart';
-import 'package:give_job/shared/widget/hint.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/loader.dart';
-import 'package:give_job/shared/widget/radio_button.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/employee/dto/employee_settings_dto.dart';
+import 'package:jobbed/api/employee/service/employee_service.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/groups/group/employee/employee_profile_page.dart';
+import 'package:jobbed/manager/shared/group_model.dart';
+import 'package:jobbed/manager/shared/manager_app_bar.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/avatars_util.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/language_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/validator_util.dart';
+import 'package:jobbed/shared/widget/hint.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/loader.dart';
+import 'package:jobbed/shared/widget/radio_button.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 
 import '../group_page.dart';
 
@@ -92,7 +92,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
         theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          backgroundColor: DARK,
+          backgroundColor: WHITE,
           appBar: managerAppBar(
             context,
             _model.user,
@@ -100,8 +100,8 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
             () => NavigatorUtil.navigate(context, GroupPage(_model)),
           ),
           body: RefreshIndicator(
-            color: DARK,
-            backgroundColor: WHITE,
+            color: WHITE,
+            backgroundColor: BLUE,
             onRefresh: _refresh,
             child: Column(
               children: <Widget>[
@@ -110,15 +110,16 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                   child: TextFormField(
                     autofocus: false,
                     autocorrect: true,
-                    cursorColor: WHITE,
-                    style: TextStyle(color: WHITE),
+                    cursorColor: BLACK,
+                    style: TextStyle(color: BLACK),
                     decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-                      counterStyle: TextStyle(color: WHITE),
+                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2)),
+                      counterStyle: TextStyle(color: BLACK),
                       border: OutlineInputBorder(),
                       labelText: getTranslated(this.context, 'search'),
-                      prefixIcon: iconWhite(Icons.search),
-                      labelStyle: TextStyle(color: WHITE),
+                      prefixIcon: iconBlack(Icons.search),
+                      labelStyle: TextStyle(color: BLACK),
                     ),
                     onChanged: (string) {
                       setState(
@@ -132,9 +133,9 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                 ListTileTheme(
                   contentPadding: EdgeInsets.only(left: 3),
                   child: CheckboxListTile(
-                    title: text13White(getTranslated(this.context, 'selectUnselectAll')),
+                    title: text13Black(getTranslated(this.context, 'selectUnselectAll')),
                     value: _isChecked,
-                    activeColor: GREEN,
+                    activeColor: BLUE,
                     checkColor: WHITE,
                     onChanged: (bool value) {
                       setState(() {
@@ -166,13 +167,13 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                       String nationality = employee.employeeNationality;
                       String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.employeeGender, info.substring(0, 1));
                       return Card(
-                        color: DARK,
+                        color: WHITE,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Container(
-                              color: BRIGHTER_DARK,
+                              color: BRIGHTER_BLUE,
                               child: ListTileTheme(
                                 contentPadding: EdgeInsets.only(right: 10),
                                 child: CheckboxListTile(
@@ -194,52 +195,52 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                       ),
                                     ),
                                   ),
-                                  title: text20WhiteBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                  title: text20BlackBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                   subtitle: Column(
                                     children: <Widget>[
                                       Align(
                                           child: Row(
                                             children: <Widget>[
-                                              text13White(getTranslated(this.context, 'moneyPerHour') + ': '),
-                                              textGreenBold(employee.moneyPerHour.toString() + ' PLN'),
+                                              text13Black(getTranslated(this.context, 'moneyPerHour') + ': '),
+                                              textBlackBold(employee.moneyPerHour.toString() + ' PLN'),
                                             ],
                                           ),
                                           alignment: Alignment.topLeft),
                                       Align(
                                           child: Row(
                                             children: <Widget>[
-                                              text13White(getTranslated(this.context, 'moneyPerHourForCompany') + ': '),
-                                              textGreenBold(employee.moneyPerHourForCompany.toString() + ' PLN'),
+                                              text13Black(getTranslated(this.context, 'moneyPerHourForCompany') + ': '),
+                                              textBlackBold(employee.moneyPerHourForCompany.toString() + ' PLN'),
                                             ],
                                           ),
                                           alignment: Alignment.topLeft),
                                       Align(
                                           child: Row(
                                             children: <Widget>[
-                                              text13White(getTranslated(this.context, 'selfUpdatingHours') + ': '),
-                                              employee.canFillHours ? textGreenBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
+                                              text13Black(getTranslated(this.context, 'selfUpdatingHours') + ': '),
+                                              employee.canFillHours ? textBlueBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
                                             ],
                                           ),
                                           alignment: Alignment.topLeft),
                                       Align(
                                           child: Row(
                                             children: <Widget>[
-                                              text13White(getTranslated(this.context, 'workTimeByLocation') + ': '),
-                                              employee.workTimeByLocation ? textGreenBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
+                                              text13Black(getTranslated(this.context, 'workTimeByLocation') + ': '),
+                                              employee.workTimeByLocation ? textBlueBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
                                             ],
                                           ),
                                           alignment: Alignment.topLeft),
                                       Align(
                                           child: Row(
                                             children: <Widget>[
-                                              text13White(getTranslated(this.context, 'piecework') + ': '),
-                                              employee.piecework ? textGreenBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
+                                              text13Black(getTranslated(this.context, 'piecework') + ': '),
+                                              employee.piecework ? textBlueBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
                                             ],
                                           ),
                                           alignment: Alignment.topLeft),
                                     ],
                                   ),
-                                  activeColor: GREEN,
+                                  activeColor: BLUE,
                                   checkColor: WHITE,
                                   value: _checked[foundIndex],
                                   onChanged: (bool value) {
@@ -278,8 +279,8 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                   SizedBox(width: 1),
                   Expanded(
                     child: MaterialButton(
-                      color: GREEN,
-                      child: textCenter12Dark(getTranslated(context, 'hourlyWage')),
+                      color: BLUE,
+                      child: textCenter12White(getTranslated(context, 'hourlyWage')),
                       onPressed: () {
                         if (_selectedIds.isNotEmpty && !_isMoneyBtnTapped) {
                           _moneyPerHourController.clear();
@@ -293,8 +294,8 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                   SizedBox(width: 1),
                   Expanded(
                     child: MaterialButton(
-                      color: GREEN,
-                      child: textCenter12Dark(getTranslated(context, 'fillingHours')),
+                      color: BLUE,
+                      child: textCenter12White(getTranslated(context, 'fillingHours')),
                       onPressed: () {
                         if (_selectedIds.isNotEmpty && !_isSelfFillingHoursBtnTapped) {
                           _changePermissionToSelfFillHours();
@@ -307,8 +308,8 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                   SizedBox(width: 1),
                   Expanded(
                     child: MaterialButton(
-                      color: GREEN,
-                      child: textCenter12Dark(getTranslated(context, 'workTimeGPS')),
+                      color: BLUE,
+                      child: textCenter12White(getTranslated(context, 'workTimeGPS')),
                       onPressed: () {
                         if (_selectedIds.isNotEmpty && !_isWorkTimeByLocationBtnTapped) {
                           _changePermissionToWorkTimeByLocation();
@@ -321,8 +322,8 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                   SizedBox(width: 1),
                   Expanded(
                     child: MaterialButton(
-                      color: GREEN,
-                      child: textCenter12Dark(getTranslated(context, 'piecework')),
+                      color: BLUE,
+                      child: textCenter12White(getTranslated(context, 'piecework')),
                       onPressed: () {
                         if (_selectedIds.isNotEmpty) {
                           _changePermissionToPiecework();
@@ -347,7 +348,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
     TextEditingController _moneyPerHourController = new TextEditingController();
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       barrierLabel: getTranslated(context, 'moneyPerHour'),
       transitionDuration: Duration(milliseconds: 400),
@@ -366,12 +367,12 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                         padding: EdgeInsets.only(top: 50),
                         child: Column(
                           children: [
-                            text20GreenBold(getTranslated(context, 'moneyPerHourUpperCase')),
+                            textCenter20Black(getTranslated(context, 'moneyPerHourUpperCase')),
                           ],
                         ),
                       ),
                       SizedBox(height: 7.5),
-                      textGreen(getTranslated(context, 'changeMoneyPerHourForEmployeesOrCompany')),
+                      textCenter15Black(getTranslated(context, 'changeMoneyPerHourForEmployeesOrCompany')),
                       SizedBox(height: 5.0),
                       textCenter15Red(getTranslated(context, 'theRateWillNotBeSetToPreviouslyFilledHours')),
                       textCenter15Red(getTranslated(context, 'updateAmountsOfPrevSheetsOverwrite')),
@@ -379,14 +380,14 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                       Column(
                         children: <Widget>[
                           RadioButton.buildRadioBtn(
-                            color: GREEN,
+                            color: BLUE,
                             title: getTranslated(context, 'moneyPerHour'),
                             value: 0,
                             groupValue: _moneyRadioValue,
                             onChanged: (newValue) => setState(() => _moneyRadioValue = newValue),
                           ),
                           RadioButton.buildRadioBtn(
-                            color: GREEN,
+                            color: BLUE,
                             title: getTranslated(context, 'moneyPerHourForCompany'),
                             value: 1,
                             groupValue: _moneyRadioValue,
@@ -405,12 +406,12 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                             FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,3}')),
                           ],
                           maxLength: 8,
-                          cursorColor: WHITE,
+                          cursorColor: BLACK,
                           textAlignVertical: TextAlignVertical.center,
-                          style: TextStyle(color: WHITE),
+                          style: TextStyle(color: BLACK),
                           decoration: InputDecoration(
-                            counterStyle: TextStyle(color: WHITE),
-                            labelStyle: TextStyle(color: WHITE),
+                            counterStyle: TextStyle(color: BLACK),
+                            labelStyle: TextStyle(color: BLACK),
                             labelText: '(0-200)',
                           ),
                         ),
@@ -443,7 +444,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[iconWhite(Icons.check)],
                             ),
-                            color: GREEN,
+                            color: BLUE,
                             onPressed: () {
                               if (_isMoneyBtnTapped) {
                                 return;
@@ -501,7 +502,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
   void _changePermissionToSelfFillHours() {
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       barrierLabel: getTranslated(context, 'selfUpdatingHours'),
       transitionDuration: Duration(milliseconds: 400),
@@ -520,7 +521,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                         padding: EdgeInsets.only(top: 50),
                         child: Column(
                           children: [
-                            textCenter20GreenBold(getTranslated(context, 'permissionToSelfUpdatingHoursUpperCase')),
+                            textCenter20Black(getTranslated(context, 'permissionToSelfUpdatingHoursUpperCase')),
                           ],
                         ),
                       ),
@@ -528,7 +529,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                       Column(
                         children: <Widget>[
                           RadioButton.buildRadioBtn(
-                            color: GREEN,
+                            color: BLUE,
                             title: getTranslated(context, 'yesEmployeeCanFillHoursOnHisOwn'),
                             value: 0,
                             groupValue: _selfFillingHoursRadioValue,
@@ -571,7 +572,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[iconWhite(Icons.check)],
                             ),
-                            color: GREEN,
+                            color: BLUE,
                             onPressed: () {
                               if (_isSelfFillingHoursBtnTapped) {
                                 return;
@@ -614,7 +615,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
   void _changePermissionToWorkTimeByLocation() {
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       barrierLabel: getTranslated(context, 'workTimeByLocation'),
       transitionDuration: Duration(milliseconds: 400),
@@ -633,7 +634,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                         padding: EdgeInsets.only(top: 50),
                         child: Column(
                           children: [
-                            textCenter20GreenBold(getTranslated(context, 'permissionToWorkTimeByLocationUpperCase')),
+                            textCenter20BlackBold(getTranslated(context, 'permissionToWorkTimeByLocationUpperCase')),
                           ],
                         ),
                       ),
@@ -641,7 +642,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                       Column(
                         children: <Widget>[
                           RadioButton.buildRadioBtn(
-                            color: GREEN,
+                            color: BLUE,
                             title: getTranslated(context, 'yesEmployeeCanDoWorkTimeByLocation'),
                             value: 0,
                             groupValue: _workTimeByLocationRadioValue,
@@ -684,7 +685,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[iconWhite(Icons.check)],
                             ),
-                            color: GREEN,
+                            color: BLUE,
                             onPressed: () {
                               if (_isWorkTimeByLocationBtnTapped) {
                                 return;
@@ -727,7 +728,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
   void _changePermissionToPiecework() {
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       barrierLabel: getTranslated(context, 'piecework'),
       transitionDuration: Duration(milliseconds: 400),
@@ -746,7 +747,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                         padding: EdgeInsets.only(top: 50),
                         child: Column(
                           children: [
-                            textCenter20GreenBold(getTranslated(context, 'permissionToPieceworkUpperCase')),
+                            textCenter20BlackBold(getTranslated(context, 'permissionToPieceworkUpperCase')),
                           ],
                         ),
                       ),
@@ -754,7 +755,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                       Column(
                         children: <Widget>[
                           RadioButton.buildRadioBtn(
-                            color: GREEN,
+                            color: BLUE,
                             title: getTranslated(context, 'yesEmployeeCanDoPieceworkUsingCompanyPriceList'),
                             value: 0,
                             groupValue: _pieceworkRadioValue,
@@ -797,7 +798,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[iconWhite(Icons.check)],
                             ),
-                            color: GREEN,
+                            color: BLUE,
                             onPressed: () {
                               if (_isPieceworkBtnTapped) {
                                 return;

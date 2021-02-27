@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:give_job/api/price_list/dto/create_price_list_dto.dart';
-import 'package:give_job/api/price_list/service/price_list_service.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/shared/group_model.dart';
-import 'package:give_job/manager/shared/manager_app_bar.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/buttons.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/price_list/dto/create_price_list_dto.dart';
+import 'package:jobbed/api/price_list/service/price_list_service.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/shared/group_model.dart';
+import 'package:jobbed/manager/shared/manager_app_bar.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/buttons.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 
 import '../price_lists_page.dart';
 
@@ -64,7 +64,7 @@ class _AddPriceListPageState extends State<AddPriceListPage> {
           theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
           debugShowCheckedModeBanner: false,
           home: Scaffold(
-            backgroundColor: DARK,
+            backgroundColor: WHITE,
             appBar: managerAppBar(context, _user, getTranslated(context, 'createPriceList'), () => NavigatorUtil.navigate(context, PriceListsPage(_model))),
             body: Padding(
               padding: const EdgeInsets.all(12.0),
@@ -80,16 +80,17 @@ class _AddPriceListPageState extends State<AddPriceListPage> {
                       keyboardType: TextInputType.multiline,
                       inputFormatters: [LengthLimitingTextInputFormatter(100)],
                       maxLines: 2,
-                      cursorColor: WHITE,
+                      cursorColor: BLACK,
                       textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: WHITE),
+                      style: TextStyle(color: BLACK),
                       validator: RequiredValidator(errorText: getTranslated(context, 'thisFieldIsRequired')),
                       decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-                        counterStyle: TextStyle(color: WHITE),
+                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2)),
+                        counterStyle: TextStyle(color: BLACK),
                         border: OutlineInputBorder(),
                         labelText: getTranslated(context, 'priceListName'),
-                        labelStyle: TextStyle(color: WHITE),
+                        labelStyle: TextStyle(color: BLACK),
                       ),
                     ),
                     Row(
@@ -102,7 +103,7 @@ class _AddPriceListPageState extends State<AddPriceListPage> {
                     SizedBox(height: 10),
                     Buttons.standardButton(
                       minWidth: double.infinity,
-                      color: GREEN,
+                      color: BLUE,
                       title: getTranslated(context, 'add'),
                       fun: () {
                         if (!_isValid()) {
@@ -152,16 +153,17 @@ class _AddPriceListPageState extends State<AddPriceListPage> {
         controller: controller,
         keyboardType: TextInputType.numberWithOptions(decimal: true),
         inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,3}')), LengthLimitingTextInputFormatter(8)],
-        cursorColor: WHITE,
+        cursorColor: BLACK,
         textAlignVertical: TextAlignVertical.center,
-        style: TextStyle(color: WHITE),
+        style: TextStyle(color: BLACK),
         validator: RequiredValidator(errorText: getTranslated(context, 'thisFieldIsRequired')),
         decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-          counterStyle: TextStyle(color: WHITE),
+          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2)),
+          counterStyle: TextStyle(color: BLACK),
           border: OutlineInputBorder(),
           labelText: labelText,
-          labelStyle: TextStyle(color: WHITE),
+          labelStyle: TextStyle(color: BLACK),
         ),
       ),
     );
@@ -178,25 +180,28 @@ class _AddPriceListPageState extends State<AddPriceListPage> {
           itemCount: _priceListsToAdd.length,
           itemBuilder: (BuildContext context, int index) {
             return Card(
-              color: DARK,
+              color: WHITE,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Card(
-                    color: BRIGHTER_DARK,
+                    color: BRIGHTER_BLUE,
                     child: ListTile(
-                      title: textGreen(_priceListsToAdd[index].name),
+                      title: text17BlueBold(_priceListsToAdd[index].name),
                       subtitle: Column(
                         children: <Widget>[
-                          Align(
-                            child: textGreen(getTranslated(this.context, 'priceForEmployee') + ': ' + _priceListsToAdd[index].priceForEmployee.toString()),
-                            alignment: Alignment.topLeft,
+                          Row(
+                            children: [
+                              text17BlackBold(getTranslated(this.context, 'priceForEmployee') + ': '),
+                              text16Black(_priceListsToAdd[index].priceForEmployee.toString()),
+                            ],
                           ),
-                          SizedBox(height: 5),
-                          Align(
-                            child: textGreen(getTranslated(this.context, 'priceForCompany') + ': ' + _priceListsToAdd[index].priceForCompany.toString()),
-                            alignment: Alignment.topLeft,
+                          Row(
+                            children: [
+                              text17BlackBold(getTranslated(this.context, 'priceForCompany') + ': '),
+                              text16Black(_priceListsToAdd[index].priceForCompany.toString()),
+                            ],
                           ),
                         ],
                       ),
@@ -249,7 +254,7 @@ class _AddPriceListPageState extends State<AddPriceListPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[iconWhite(Icons.check)],
               ),
-              color: GREEN,
+              color: BLUE,
               onPressed: () => _isAddButtonTapped ? null : _createPriceListServices(),
             ),
           ],

@@ -4,23 +4,23 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:give_job/api/piecework/dto/create_piecework_dto.dart';
-import 'package:give_job/api/piecework/service/piecework_service.dart';
-import 'package:give_job/api/price_list/dto/price_list_dto.dart';
-import 'package:give_job/api/price_list/service/price_list_service.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/employee/employee_profile_page.dart';
-import 'package:give_job/employee/shared/employee_app_bar.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/loader.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/piecework/dto/create_piecework_dto.dart';
+import 'package:jobbed/api/piecework/service/piecework_service.dart';
+import 'package:jobbed/api/price_list/dto/price_list_dto.dart';
+import 'package:jobbed/api/price_list/service/price_list_service.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/employee/employee_profile_page.dart';
+import 'package:jobbed/employee/shared/employee_app_bar.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/loader.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
 import '../piecework_page.dart';
@@ -84,18 +84,18 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
       builder: (BuildContext context) {
         return WillPopScope(
           child: AlertDialog(
-            backgroundColor: DARK,
-            title: textGreen(getTranslated(this.context, 'failure')),
+            backgroundColor: WHITE,
+            title: textBlue(getTranslated(this.context, 'failure')),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  textWhite(getTranslated(this.context, 'noPriceList')),
+                  textBlack(getTranslated(this.context, 'noPriceList')),
                 ],
               ),
             ),
             actions: <Widget>[
               FlatButton(
-                child: textWhite(getTranslated(this.context, 'goToTheEmployeeProfilePage')),
+                child: textBlack(getTranslated(this.context, 'goToTheEmployeeProfilePage')),
                 onPressed: () => _resetAndOpenPage(),
               ),
             ],
@@ -129,7 +129,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
         theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          backgroundColor: DARK,
+          backgroundColor: WHITE,
           appBar: employeeAppBar(context, _user, getTranslated(context, 'createReport') + ' / ' + _todayDate, () => Navigator.pop(context)),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
@@ -161,19 +161,19 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
                 children: [
                   for (var priceList in _priceLists)
                     Card(
-                      color: DARK,
+                      color: WHITE,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Card(
-                            color: BRIGHTER_DARK,
+                            color: BRIGHTER_BLUE,
                             child: ListTile(
-                              title: textGreen(utf8.decode(priceList.name.runes.toList())),
+                              title: text17BlueBold(utf8.decode(priceList.name.runes.toList())),
                               subtitle: Row(
                                 children: [
-                                  textWhite(getTranslated(this.context, 'price') + ': '),
-                                  textGreen(priceList.priceForEmployee.toString()),
+                                  text17BlackBold(getTranslated(this.context, 'price') + ': '),
+                                  text16Black(priceList.priceForEmployee.toString()),
                                 ],
                               ),
                               trailing: Container(
@@ -196,8 +196,8 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
     return NumberInputWithIncrementDecrement(
       controller: controller,
       min: 0,
-      style: TextStyle(color: GREEN),
-      widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
+      style: TextStyle(color: BLUE),
+      widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
     );
   }
 
@@ -229,7 +229,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[iconWhite(Icons.check)],
               ),
-              color: GREEN,
+              color: BLUE,
               onPressed: () => _isAddButtonTapped ? null : _handleAdd(),
             ),
           ],

@@ -3,20 +3,20 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:give_job/api/item_place/dto/item_place_dashboard_dto.dart';
-import 'package:give_job/api/item_place/dto/item_place_details_dto.dart';
-import 'package:give_job/api/item_place/service/item_place_service.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/shared/group_model.dart';
-import 'package:give_job/manager/shared/manager_app_bar.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/hint.dart';
-import 'package:give_job/shared/widget/loader.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/item_place/dto/item_place_dashboard_dto.dart';
+import 'package:jobbed/api/item_place/dto/item_place_details_dto.dart';
+import 'package:jobbed/api/item_place/service/item_place_service.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/shared/group_model.dart';
+import 'package:jobbed/manager/shared/manager_app_bar.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/hint.dart';
+import 'package:jobbed/shared/widget/loader.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 
 import '../item_places_page.dart';
 import 'item/return/return_items_page.dart';
@@ -78,7 +78,7 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
         theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          backgroundColor: DARK,
+          backgroundColor: WHITE,
           appBar: managerAppBar(context, _user, getTranslated(context, 'itemPlaceDetails'), () => NavigatorUtil.navigate(context, ItemPlacesPage(_model))),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
@@ -90,22 +90,20 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
                       child: Container(
                         child: Image(
                           width: 75,
-                          image: AssetImage(
-                            'images/items-icon.png',
-                          ),
+                          image: AssetImage('images/items.png'),
                           fit: BoxFit.cover,
                         ),
                       ),
                     ),
                   ),
-                  title: text18WhiteBold(utf8.decode(_itemPlaceDto.location.runes.toList())),
+                  title: text17BlueBold(utf8.decode(_itemPlaceDto.location.runes.toList())),
                 ),
                 ListTileTheme(
                   contentPadding: EdgeInsets.only(left: 3),
                   child: CheckboxListTile(
-                    title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
+                    title: textBlack(getTranslated(this.context, 'selectUnselectAll')),
                     value: _isChecked,
-                    activeColor: GREEN,
+                    activeColor: BLUE,
                     checkColor: WHITE,
                     onChanged: (bool value) {
                       setState(() {
@@ -147,13 +145,13 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
                               String name = utf8.decode(item.name.runes.toList());
                               String quantity = item.quantity;
                               return Card(
-                                color: DARK,
+                                color: WHITE,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Container(
-                                      color: BRIGHTER_DARK,
+                                      color: BRIGHTER_BLUE,
                                       child: ListTileTheme(
                                         contentPadding: EdgeInsets.all(10),
                                         child: CheckboxListTile(
@@ -163,8 +161,8 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
                                                 alignment: Alignment.topLeft,
                                                 child: Row(
                                                   children: [
-                                                    textWhite(getTranslated(this.context, 'warehouse') + ': '),
-                                                    textGreen(warehouseName),
+                                                    text17BlueBold(getTranslated(this.context, 'warehouse') + ': '),
+                                                    text16Black(warehouseName),
                                                   ],
                                                 ),
                                               ),
@@ -176,8 +174,8 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
                                                 alignment: Alignment.topLeft,
                                                 child: Row(
                                                   children: [
-                                                    textWhite(getTranslated(this.context, 'itemName') + ': '),
-                                                    textGreen(name),
+                                                    text16Black(getTranslated(this.context, 'itemName') + ': '),
+                                                    text17BlackBold(name),
                                                   ],
                                                 ),
                                               ),
@@ -185,14 +183,14 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
                                                 alignment: Alignment.topLeft,
                                                 child: Row(
                                                   children: [
-                                                    textWhite(getTranslated(this.context, 'quantity') + ': '),
-                                                    textGreen(quantity),
+                                                    text16Black(getTranslated(this.context, 'quantity') + ': '),
+                                                    text17BlackBold(quantity),
                                                   ],
                                                 ),
                                               ),
                                             ],
                                           ),
-                                          activeColor: GREEN,
+                                          activeColor: BLUE,
                                           checkColor: WHITE,
                                           value: _checked[foundIndex],
                                           onChanged: (bool value) {
@@ -234,8 +232,8 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
                   SizedBox(width: 1),
                   Expanded(
                     child: MaterialButton(
-                      color: GREEN,
-                      child: textDarkBold(getTranslated(context, 'returnToWarehouse')),
+                      color: BLUE,
+                      child: textWhiteBold(getTranslated(context, 'returnToWarehouse')),
                       onPressed: () {
                         if (_selectedItems.isEmpty) {
                           showHint(context, getTranslated(context, 'needToSelectItems') + ' ', getTranslated(context, 'whichYouWantToReturnToWarehouse'));
@@ -261,11 +259,11 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(top: 20),
-          child: Align(alignment: Alignment.center, child: text20GreenBold(getTranslated(this.context, 'noItems'))),
+          child: Align(alignment: Alignment.center, child: text20BlueBold(getTranslated(this.context, 'noItems'))),
         ),
         Padding(
           padding: EdgeInsets.only(right: 30, left: 30, top: 10),
-          child: Align(alignment: Alignment.center, child: textCenter19White(getTranslated(this.context, 'noItemsInItemPlaceHint'))),
+          child: Align(alignment: Alignment.center, child: textCenter19Black(getTranslated(this.context, 'noItemsInItemPlaceHint'))),
         ),
       ],
     );

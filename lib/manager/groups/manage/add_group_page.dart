@@ -5,25 +5,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:give_job/api/employee/dto/employee_basic_dto.dart';
-import 'package:give_job/api/employee/service/employee_service.dart';
-import 'package:give_job/api/group/dto/create_group_dto.dart';
-import 'package:give_job/api/group/service/group_service.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/groups_dashboard_page.dart';
-import 'package:give_job/manager/shared/manager_app_bar.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/util/language_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/hint.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/loader.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/employee/dto/employee_basic_dto.dart';
+import 'package:jobbed/api/employee/service/employee_service.dart';
+import 'package:jobbed/api/group/dto/create_group_dto.dart';
+import 'package:jobbed/api/group/service/group_service.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/groups/groups_dashboard_page.dart';
+import 'package:jobbed/manager/shared/manager_app_bar.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/language_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/hint.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/loader.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 
 class AddGroupPage extends StatefulWidget {
   final User user;
@@ -80,7 +80,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
         theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          backgroundColor: DARK,
+          backgroundColor: WHITE,
           appBar: managerAppBar(context, _user, getTranslated(context, 'createGroup'), () => NavigatorUtil.navigate(context, GroupsDashboardPage(_user))),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
@@ -132,17 +132,17 @@ class _AddGroupPageState extends State<AddGroupPage> {
       keyboardType: TextInputType.multiline,
       maxLength: length,
       maxLines: lines,
-      cursorColor: WHITE,
+      cursorColor: BLACK,
       textAlignVertical: TextAlignVertical.center,
-      style: TextStyle(color: WHITE),
+      style: TextStyle(color: BLACK),
       validator: RequiredValidator(errorText: errorText),
       decoration: InputDecoration(
-        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-        counterStyle: TextStyle(color: WHITE),
+        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+        counterStyle: TextStyle(color: BLACK),
         border: OutlineInputBorder(),
         hintText: hintText,
         labelText: labelText,
-        labelStyle: TextStyle(color: WHITE),
+        labelStyle: TextStyle(color: BLACK),
       ),
     );
   }
@@ -151,9 +151,9 @@ class _AddGroupPageState extends State<AddGroupPage> {
     return ListTileTheme(
       contentPadding: EdgeInsets.only(left: 3),
       child: CheckboxListTile(
-        title: textWhite(getTranslated(this.context, 'selectUnselectAll')),
+        title: textBlack(getTranslated(this.context, 'selectUnselectAll')),
         value: _isChecked,
-        activeColor: GREEN,
+        activeColor: BLUE,
         checkColor: WHITE,
         onChanged: (bool value) {
           setState(() {
@@ -192,19 +192,19 @@ class _AddGroupPageState extends State<AddGroupPage> {
             String info = employee.name + ' ' + employee.surname;
             String nationality = employee.nationality;
             return Card(
-              color: DARK,
+              color: WHITE,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    color: BRIGHTER_DARK,
+                    color: BRIGHTER_BLUE,
                     child: ListTileTheme(
                       contentPadding: EdgeInsets.only(right: 10),
                       child: CheckboxListTile(
                         controlAffinity: ListTileControlAffinity.leading,
-                        title: text20WhiteBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
-                        activeColor: GREEN,
+                        title: text20BlackBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                        activeColor: BLUE,
                         checkColor: WHITE,
                         value: _checked[foundIndex],
                         onChanged: (bool value) {
@@ -265,7 +265,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[iconWhite(Icons.check)],
               ),
-              color: GREEN,
+              color: BLUE,
               onPressed: () => _isAddButtonTapped ? null : _createGroup(),
             ),
           ],

@@ -3,19 +3,19 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:give_job/api/group/service/group_service.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/shared/group_model.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/util/validator_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/group/service/group_service.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/shared/group_model.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/validator_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 
 import '../../../shared/manager_app_bar.dart';
 import '../group_page.dart';
@@ -45,7 +45,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
         theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          backgroundColor: DARK,
+          backgroundColor: WHITE,
           appBar: managerAppBar(
             context,
             _model.user,
@@ -62,23 +62,23 @@ class _GroupEditPageState extends State<GroupEditPage> {
                       children: <Widget>[
                         SizedBox(height: 10),
                         ListTile(
-                          title: text18WhiteBold(getTranslated(context, 'groupName')),
-                          subtitle: text16White(utf8.decode(_model.groupName.runes.toList())),
+                          title: text17BlackBold(getTranslated(context, 'groupName')),
+                          subtitle: text16Black(utf8.decode(_model.groupName.runes.toList())),
                           trailing: Ink(
-                            decoration: ShapeDecoration(color: GREEN, shape: CircleBorder()),
+                            decoration: ShapeDecoration(color: BLUE, shape: CircleBorder()),
                             child: IconButton(
-                              icon: iconDark(Icons.border_color),
+                              icon: iconWhite(Icons.border_color),
                               onPressed: () => _updateGroupName(context, utf8.decode(_model.groupName.runes.toList())),
                             ),
                           ),
                         ),
                         ListTile(
-                          title: text18WhiteBold(getTranslated(context, 'groupDescription')),
-                          subtitle: text16White(utf8.decode(_model.groupDescription.runes.toList())),
+                          title: text17BlackBold(getTranslated(context, 'groupDescription')),
+                          subtitle: text16Black(utf8.decode(_model.groupDescription.runes.toList())),
                           trailing: Ink(
-                            decoration: ShapeDecoration(color: GREEN, shape: CircleBorder()),
+                            decoration: ShapeDecoration(color: BLUE, shape: CircleBorder()),
                             child: IconButton(
-                              icon: iconDark(Icons.border_color),
+                              icon: iconWhite(Icons.border_color),
                               onPressed: () => _updateGroupDescription(context, utf8.decode(_model.groupDescription.runes.toList())),
                             ),
                           ),
@@ -101,7 +101,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
     _groupNameController.text = groupName;
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       barrierLabel: getTranslated(context, 'name'),
       transitionDuration: Duration(milliseconds: 400),
@@ -113,9 +113,9 @@ class _GroupEditPageState extends State<GroupEditPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'groupNameUpperCase'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'groupNameUpperCase'))),
                   SizedBox(height: 2.5),
-                  textGreen(getTranslated(context, 'setNewNameForGroup')),
+                  textBlack(getTranslated(context, 'setNewNameForGroup')),
                   SizedBox(height: 20),
                   Padding(
                     padding: EdgeInsets.only(left: 25, right: 25),
@@ -125,18 +125,18 @@ class _GroupEditPageState extends State<GroupEditPage> {
                       keyboardType: TextInputType.multiline,
                       maxLength: 26,
                       maxLines: 1,
-                      cursorColor: WHITE,
+                      cursorColor: BLACK,
                       textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: WHITE),
+                      style: TextStyle(color: BLACK),
                       decoration: InputDecoration(
                         hintText: getTranslated(context, 'textSomeGroupName'),
-                        hintStyle: TextStyle(color: MORE_BRIGHTER_DARK),
-                        counterStyle: TextStyle(color: WHITE),
+                        hintStyle: TextStyle(color: BLUE),
+                        counterStyle: TextStyle(color: BLACK),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: GREEN, width: 2.5),
+                          borderSide: BorderSide(color: BLACK, width: 2.5),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: GREEN, width: 2.5),
+                          borderSide: BorderSide(color: BLACK, width: 2.5),
                         ),
                       ),
                     ),
@@ -165,7 +165,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
                         ),
-                        color: GREEN,
+                        color: BLUE,
                         onPressed: () {
                           String name = _groupNameController.text;
                           String invalidMessage = ValidatorUtil.validateUpdatingGroupName(name, context);
@@ -206,7 +206,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
     _groupDescriptionController.text = groupDescription;
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       barrierLabel: getTranslated(context, 'description'),
       transitionDuration: Duration(milliseconds: 400),
@@ -218,9 +218,9 @@ class _GroupEditPageState extends State<GroupEditPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20GreenBold(getTranslated(context, 'groupDescriptionUpperCase'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'groupDescriptionUpperCase'))),
                   SizedBox(height: 2.5),
-                  textGreen(getTranslated(context, 'setNewDescriptionForGroup')),
+                  textBlack(getTranslated(context, 'setNewDescriptionForGroup')),
                   SizedBox(height: 20),
                   Padding(
                     padding: EdgeInsets.only(left: 25, right: 25),
@@ -230,18 +230,18 @@ class _GroupEditPageState extends State<GroupEditPage> {
                       keyboardType: TextInputType.multiline,
                       maxLength: 100,
                       maxLines: 3,
-                      cursorColor: WHITE,
+                      cursorColor: BLACK,
                       textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: WHITE),
+                      style: TextStyle(color: BLACK),
                       decoration: InputDecoration(
                         hintText: getTranslated(context, 'textSomeGroupDescription'),
-                        hintStyle: TextStyle(color: MORE_BRIGHTER_DARK),
-                        counterStyle: TextStyle(color: WHITE),
+                        hintStyle: TextStyle(color: BLUE),
+                        counterStyle: TextStyle(color: BLACK),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: GREEN, width: 2.5),
+                          borderSide: BorderSide(color: BLACK, width: 2.5),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: GREEN, width: 2.5),
+                          borderSide: BorderSide(color: BLACK, width: 2.5),
                         ),
                       ),
                     ),
@@ -270,7 +270,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[iconWhite(Icons.check)],
                         ),
-                        color: GREEN,
+                        color: BLUE,
                         onPressed: () {
                           String description = _groupDescriptionController.text;
                           String invalidMessage = ValidatorUtil.validateUpdatingGroupDescription(description, context);

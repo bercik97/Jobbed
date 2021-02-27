@@ -3,27 +3,27 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:give_job/api/excel/service/excel_service.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/api/timesheet/dto/timesheet_with_status_dto.dart';
-import 'package:give_job/api/timesheet/service/timesheet_service.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/groups/group/group_page.dart';
-import 'package:give_job/manager/groups/group/timesheets/add/add_ts_page.dart';
-import 'package:give_job/manager/groups/group/timesheets/delete/delete_ts_page.dart';
-import 'package:give_job/manager/groups/group/timesheets/status/change_ts_status_page.dart';
-import 'package:give_job/manager/shared/group_model.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/util/icons_legend_util.dart';
-import 'package:give_job/shared/util/month_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/icons_legend_dialog.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/excel/service/excel_service.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/timesheet/dto/timesheet_with_status_dto.dart';
+import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/groups/group/group_page.dart';
+import 'package:jobbed/manager/groups/group/timesheets/add/add_ts_page.dart';
+import 'package:jobbed/manager/groups/group/timesheets/delete/delete_ts_page.dart';
+import 'package:jobbed/manager/groups/group/timesheets/status/change_ts_status_page.dart';
+import 'package:jobbed/manager/shared/group_model.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/icons_legend_util.dart';
+import 'package:jobbed/shared/util/month_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 import '../../../../internationalization/localization/localization_constants.dart';
@@ -92,7 +92,7 @@ class _TsPageState extends State<TsPage> {
         theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          backgroundColor: DARK,
+          backgroundColor: WHITE,
           appBar: managerAppBar(
             context,
             _model.user,
@@ -114,13 +114,13 @@ class _TsPageState extends State<TsPage> {
                         padding: EdgeInsets.only(left: 20),
                         child: Align(
                           alignment: Alignment.topLeft,
-                          child: text15White(getTranslated(context, 'noInProgressTimesheets')),
+                          child: text16Black(getTranslated(context, 'noInProgressTimesheets')),
                         ),
                       )
                     : Container(),
                 for (var inProgressTs in _inProgressTimesheets)
                   Card(
-                    color: BRIGHTER_DARK,
+                    color: BRIGHTER_BLUE,
                     child: InkWell(
                       onTap: () => NavigatorUtil.navigate(this.context, TsInProgressPage(_model, inProgressTs)),
                       child: Column(
@@ -140,7 +140,7 @@ class _TsPageState extends State<TsPage> {
                                 InkWell(
                                   onTap: () => _handleGenerateExcelAndSendEmail(inProgressTs.year, inProgressTs.month, inProgressTs.status),
                                   child: Image(
-                                    image: AssetImage('images/excel-icon.png'),
+                                    image: AssetImage('images/excel.png'),
                                     height: 30,
                                   ),
                                 ),
@@ -156,7 +156,7 @@ class _TsPageState extends State<TsPage> {
                                 ),
                               ],
                             ),
-                            title: textWhiteBold(inProgressTs.year.toString() + ' ' + MonthUtil.translateMonth(context, inProgressTs.month)),
+                            title: text17BlackBold(inProgressTs.year.toString() + ' ' + MonthUtil.translateMonth(context, inProgressTs.month)),
                           ),
                         ],
                       ),
@@ -174,13 +174,13 @@ class _TsPageState extends State<TsPage> {
                         padding: EdgeInsets.only(left: 20),
                         child: Align(
                           alignment: Alignment.topLeft,
-                          child: text15White(getTranslated(this.context, 'noCompletedTimesheets')),
+                          child: text16Black(getTranslated(this.context, 'noCompletedTimesheets')),
                         ),
                       )
                     : Container(),
                 for (var completedTs in _completedTimesheets)
                   Card(
-                    color: BRIGHTER_DARK,
+                    color: BRIGHTER_BLUE,
                     child: InkWell(
                       onTap: () => NavigatorUtil.navigate(context, TsCompletedPage(_model, completedTs)),
                       child: Column(
@@ -200,7 +200,7 @@ class _TsPageState extends State<TsPage> {
                                 InkWell(
                                   onTap: () => _handleGenerateExcelAndSendEmail(completedTs.year, completedTs.month, completedTs.status),
                                   child: Image(
-                                    image: AssetImage('images/excel-icon.png'),
+                                    image: AssetImage('images/excel.png'),
                                     height: 30,
                                   ),
                                 ),
@@ -216,7 +216,7 @@ class _TsPageState extends State<TsPage> {
                                 ),
                               ],
                             ),
-                            title: textWhiteBold(completedTs.year.toString() + ' ' + MonthUtil.translateMonth(context, completedTs.month)),
+                            title: text17BlackBold(completedTs.year.toString() + ' ' + MonthUtil.translateMonth(context, completedTs.month)),
                           ),
                         ],
                       ),
@@ -233,8 +233,8 @@ class _TsPageState extends State<TsPage> {
                   SizedBox(width: 1),
                   Expanded(
                     child: MaterialButton(
-                      color: GREEN,
-                      child: text18Dark(getTranslated(context, 'addNewTs')),
+                      color: BLUE,
+                      child: text18White(getTranslated(context, 'addNewTs')),
                       onPressed: () => _addNewTs(),
                     ),
                   ),
@@ -249,7 +249,7 @@ class _TsPageState extends State<TsPage> {
             [
               IconsLegendUtil.buildImageRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
               IconsLegendUtil.buildImageRow('images/checked.png', getTranslated(context, 'tsCompleted')),
-              IconsLegendUtil.buildImageRow('images/excel-icon.png', getTranslated(context, 'generateExcel')),
+              IconsLegendUtil.buildImageRow('images/excel.png', getTranslated(context, 'generateExcel')),
               IconsLegendUtil.buildIconRow(iconGreen(Icons.arrow_upward), getTranslated(context, 'settingTsStatusToCompleted')),
               IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_downward), getTranslated(context, 'settingTsStatusToInProgress')),
             ],
@@ -263,7 +263,7 @@ class _TsPageState extends State<TsPage> {
   _handleGenerateExcelAndSendEmail(int year, String monthName, String status) {
     showGeneralDialog(
       context: context,
-      barrierColor: DARK.withOpacity(0.95),
+      barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
       barrierLabel: getTranslated(context, 'generateExcelFile'),
       transitionDuration: Duration(milliseconds: 400),
@@ -282,7 +282,7 @@ class _TsPageState extends State<TsPage> {
                         padding: EdgeInsets.only(top: 50),
                         child: Column(
                           children: [
-                            textCenter20GreenBold(getTranslated(context, 'generateExcelFile')),
+                            textCenter20BlackBold(getTranslated(context, 'generateExcelFile')),
                           ],
                         ),
                       ),
@@ -290,15 +290,15 @@ class _TsPageState extends State<TsPage> {
                       Column(
                         children: <Widget>[
                           RadioListTile(
-                            activeColor: GREEN,
-                            title: textWhite(getTranslated(context, 'hoursPieceworkForEmployees')),
+                            activeColor: BLUE,
+                            title: textBlack(getTranslated(context, 'hoursPieceworkForEmployees')),
                             value: 0,
                             groupValue: _excelType,
                             onChanged: (newValue) => setState(() => _excelType = newValue),
                           ),
                           RadioListTile(
-                            activeColor: GREEN,
-                            title: textWhite(getTranslated(context, 'hoursPieceworkForCompany')),
+                            activeColor: BLUE,
+                            title: textBlack(getTranslated(context, 'hoursPieceworkForCompany')),
                             value: 1,
                             groupValue: _excelType,
                             onChanged: (newValue) => setState(() => _excelType = newValue),
@@ -333,7 +333,7 @@ class _TsPageState extends State<TsPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[iconWhite(Icons.check)],
                             ),
-                            color: GREEN,
+                            color: BLUE,
                             onPressed: () => _isGenerateExcelAndSendEmailBtnTapped ? null : _handleGenerateExcel(year, monthName, status),
                           ),
                         ],

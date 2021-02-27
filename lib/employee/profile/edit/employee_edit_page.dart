@@ -4,21 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:give_job/api/employee/service/employee_service.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/employee/employee_profile_page.dart';
-import 'package:give_job/employee/shared/employee_app_bar.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/util/language_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/loader.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/employee/service/employee_service.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/employee/employee_profile_page.dart';
+import 'package:jobbed/employee/shared/employee_app_bar.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/language_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/loader.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 
 class EmployeeEditPage extends StatefulWidget {
   final int _employeeId;
@@ -99,7 +99,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
         theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          backgroundColor: DARK,
+          backgroundColor: WHITE,
           appBar: employeeAppBar(context, _user, getTranslated(context, 'informationAboutYou'), () => Navigator.pop(context)),
           body: Padding(
             padding: EdgeInsets.fromLTRB(25, 0, 25, 25),
@@ -115,7 +115,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
                           children: <Widget>[
                             _buildReadOnlySection(),
                             SizedBox(height: 20),
-                            Align(alignment: Alignment.topLeft, child: text25GreenUnderline(getTranslated(context, 'editableSection'))),
+                            Align(alignment: Alignment.topLeft, child: text20BlueUnderline(getTranslated(context, 'editableSection'))),
                             SizedBox(height: 20),
                             _buildBasicSection(),
                             _buildContactSection(),
@@ -145,26 +145,26 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
         ListTile(
           dense: true,
           contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-          title: text16GreenBold(getTranslated(context, 'companyName')),
-          subtitle: text16White(_companyName),
+          title: text17BlueBold(getTranslated(context, 'companyName')),
+          subtitle: text18Black(_companyName),
         ),
         ListTile(
           dense: true,
           contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-          title: text16GreenBold(getTranslated(context, 'accountExpirationDate')),
-          subtitle: text16White(_accountExpirationDate != null ? _accountExpirationDate : getTranslated(context, 'empty')),
+          title: text17BlueBold(getTranslated(context, 'accountExpirationDate')),
+          subtitle: text18Black(_accountExpirationDate != null ? _accountExpirationDate : getTranslated(context, 'empty')),
         ),
         ListTile(
           dense: true,
           contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-          title: text16GreenBold(getTranslated(context, 'role')),
-          subtitle: text16White(getTranslated(context, 'employee')),
+          title: text17BlueBold(getTranslated(context, 'role')),
+          subtitle: text18Black(getTranslated(context, 'employee')),
         ),
         ListTile(
           dense: true,
           contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-          title: text16GreenBold(getTranslated(context, 'username')),
-          subtitle: text16White(_usernameController.text),
+          title: text17BlueBold(getTranslated(context, 'username')),
+          subtitle: text18Black(_usernameController.text),
         ),
       ],
     );
@@ -223,16 +223,16 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
           controller: controller,
           readOnly: isReadOnly,
           autocorrect: true,
-          cursorColor: WHITE,
+          cursorColor: BLACK,
           maxLength: maxLength,
-          style: TextStyle(color: WHITE),
+          style: TextStyle(color: BLACK),
           decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            counterStyle: TextStyle(color: WHITE),
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+            counterStyle: TextStyle(color: BLACK),
             border: OutlineInputBorder(),
             labelText: labelText,
-            prefixIcon: iconWhite(icon),
-            labelStyle: TextStyle(color: WHITE),
+            prefixIcon: iconBlack(icon),
+            labelStyle: TextStyle(color: BLACK),
           ),
           validator: RequiredValidator(errorText: errorText),
         ),
@@ -256,19 +256,19 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
       children: <Widget>[
         TextFormField(
           autocorrect: true,
-          cursorColor: WHITE,
+          cursorColor: BLACK,
           maxLength: 15,
           controller: controller,
-          style: TextStyle(color: WHITE),
+          style: TextStyle(color: BLACK),
           keyboardType: TextInputType.number,
           inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
           decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: WHITE, width: 2)),
-            counterStyle: TextStyle(color: WHITE),
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+            counterStyle: TextStyle(color: BLACK),
             border: OutlineInputBorder(),
             labelText: labelText,
-            prefixIcon: iconWhite(icon),
-            labelStyle: TextStyle(color: WHITE),
+            prefixIcon: iconBlack(icon),
+            labelStyle: TextStyle(color: BLACK),
           ),
           validator: (value) => validate(value),
         ),
@@ -278,39 +278,36 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
   }
 
   Widget _buildNationalityDropdown() {
-    return Theme(
-      data: ThemeData(splashColor: GREEN, colorScheme: ColorScheme.dark()),
-      child: Column(
-        children: <Widget>[
-          DropDownFormField(
-            titleText: getTranslated(context, 'nationality'),
-            value: _nationality,
-            onSaved: (value) {
-              setState(() {
-                _nationality = value;
-              });
-            },
-            onChanged: (value) {
-              setState(() {
-                _nationality = value;
-                FocusScope.of(context).unfocus();
-              });
-            },
-            dataSource: [
-              {'display': 'English ' + LanguageUtil.findFlagByNationality('EN'), 'value': 'EN'},
-              {'display': 'ქართული ' + LanguageUtil.findFlagByNationality('GE'), 'value': 'GE'},
-              {'display': 'Polska ' + LanguageUtil.findFlagByNationality('PL'), 'value': 'PL'},
-              {'display': 'русский ' + LanguageUtil.findFlagByNationality('RU'), 'value': 'RU'},
-              {'display': 'Українська ' + LanguageUtil.findFlagByNationality('UK'), 'value': 'UK'},
-            ],
-            textField: 'display',
-            valueField: 'value',
-            required: true,
-            autovalidate: true,
-          ),
-          SizedBox(height: 20),
-        ],
-      ),
+    return Column(
+      children: <Widget>[
+        DropDownFormField(
+          titleText: getTranslated(context, 'nationality'),
+          value: _nationality,
+          onSaved: (value) {
+            setState(() {
+              _nationality = value;
+            });
+          },
+          onChanged: (value) {
+            setState(() {
+              _nationality = value;
+              FocusScope.of(context).unfocus();
+            });
+          },
+          dataSource: [
+            {'display': 'English ' + LanguageUtil.findFlagByNationality('EN'), 'value': 'EN'},
+            {'display': 'ქართული ' + LanguageUtil.findFlagByNationality('GE'), 'value': 'GE'},
+            {'display': 'Polska ' + LanguageUtil.findFlagByNationality('PL'), 'value': 'PL'},
+            {'display': 'русский ' + LanguageUtil.findFlagByNationality('RU'), 'value': 'RU'},
+            {'display': 'Українська ' + LanguageUtil.findFlagByNationality('UK'), 'value': 'UK'},
+          ],
+          textField: 'display',
+          valueField: 'value',
+          required: true,
+          autovalidate: true,
+        ),
+        SizedBox(height: 20),
+      ],
     );
   }
 
@@ -357,9 +354,8 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
                 );
               }
             },
-            color: GREEN,
+            color: BLUE,
             child: text20White(getTranslated(context, 'update')),
-            textColor: Colors.white,
           ),
         ],
       ),

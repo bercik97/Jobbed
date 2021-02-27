@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:give_job/api/piecework/dto/piecework_details_dto.dart';
-import 'package:give_job/api/work_time/dto/work_time_dto.dart';
+import 'package:jobbed/api/piecework/dto/piecework_details_dto.dart';
+import 'package:jobbed/api/work_time/dto/work_time_dto.dart';
 
 class WorkdayDto {
   final int id;

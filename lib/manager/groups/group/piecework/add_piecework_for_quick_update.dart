@@ -4,22 +4,22 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:give_job/api/price_list/dto/price_list_dto.dart';
-import 'package:give_job/api/price_list/service/price_list_service.dart';
-import 'package:give_job/api/shared/service_initializer.dart';
-import 'package:give_job/api/timesheet/service/timesheet_service.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/manager/shared/group_model.dart';
-import 'package:give_job/manager/shared/manager_app_bar.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/libraries/constants.dart';
-import 'package:give_job/shared/model/user.dart';
-import 'package:give_job/shared/util/dialog_util.dart';
-import 'package:give_job/shared/util/toast_util.dart';
-import 'package:give_job/shared/util/navigator_util.dart';
-import 'package:give_job/shared/widget/icons.dart';
-import 'package:give_job/shared/widget/loader.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/api/price_list/dto/price_list_dto.dart';
+import 'package:jobbed/api/price_list/service/price_list_service.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/shared/group_model.dart';
+import 'package:jobbed/manager/shared/manager_app_bar.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/loader.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
 import '../group_page.dart';
@@ -77,15 +77,15 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'piecework'), () => Navigator.pop(context)));
     }
     return MaterialApp(
       title: APP_NAME,
       theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: DARK,
-        appBar: managerAppBar(context, _user, _todayDate, () => Navigator.pop(context)),
+        backgroundColor: WHITE,
+        appBar: managerAppBar(context, _user, getTranslated(context, 'piecework'), () => Navigator.pop(context)),
         body: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Form(
@@ -93,7 +93,7 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
             key: formKey,
             child: Column(
               children: [
-                _buildPricelist(),
+                _buildPriceList(),
               ],
             ),
           ),
@@ -103,7 +103,7 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
     );
   }
 
-  Widget _buildPricelist() {
+  Widget _buildPriceList() {
     return Expanded(
       flex: 2,
       child: Scrollbar(
@@ -112,42 +112,60 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
           child: Center(
             child: Column(
               children: [
-                for (var pricelist in _priceLists)
-                  Card(
-                    color: DARK,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Card(
-                          color: BRIGHTER_DARK,
-                          child: ListTile(
-                            title: textGreen(utf8.decode(pricelist.name.runes.toList())),
-                            subtitle: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    textWhite(getTranslated(this.context, 'priceForEmployee') + ': '),
-                                    textGreen(pricelist.priceForEmployee.toString()),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    textWhite(getTranslated(this.context, 'priceForCompany') + ': '),
-                                    textGreen(pricelist.priceForCompany.toString()),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            trailing: Container(
-                              width: 100,
-                              child: _buildNumberField(_textEditingItemControllers[utf8.decode(pricelist.name.runes.toList())]),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                Padding(
+                  padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: text20Black(getTranslated(context, 'pieceworkForTodayAndAllGroupEmployees')),
                   ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 5, left: 15, bottom: 10),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: text20BlueBold(_todayDate),
+                  ),
+                ),
+                Column(
+                  children: [
+                    for (var priceList in _priceLists)
+                      Card(
+                        color: WHITE,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Card(
+                              color: BRIGHTER_BLUE,
+                              child: ListTile(
+                                title: text17BlueBold(utf8.decode(priceList.name.runes.toList())),
+                                subtitle: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        text17BlackBold(getTranslated(this.context, 'priceForEmployee') + ': '),
+                                        text16Black(priceList.priceForEmployee.toString()),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        text17BlackBold(getTranslated(this.context, 'priceForCompany') + ': '),
+                                        text16Black(priceList.priceForCompany.toString()),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                trailing: Container(
+                                  width: 100,
+                                  child: _buildNumberField(_textEditingItemControllers[utf8.decode(priceList.name.runes.toList())]),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -160,8 +178,8 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
     return NumberInputWithIncrementDecrement(
       controller: controller,
       min: 0,
-      style: TextStyle(color: GREEN),
-      widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_DARK)),
+      style: TextStyle(color: BLUE),
+      widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
     );
   }
 
@@ -193,7 +211,7 @@ class _AddPieceworkForQuickUpdateState extends State<AddPieceworkForQuickUpdate>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[iconWhite(Icons.check)],
               ),
-              color: GREEN,
+              color: BLUE,
               onPressed: () => _isAddButtonTapped ? null : _handleAdd(),
             ),
           ],

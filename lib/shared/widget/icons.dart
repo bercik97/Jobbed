@@ -1,14 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:give_job/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+
+// BLACK //
+Icon iconBlack(IconData iconData) { return Icon(iconData, color: Colors.black); }
+Icon icon30Black(IconData iconData) { return Icon(iconData, size: 30, color: Colors.black); }
+
 
 // WHITE //
 Icon iconWhite(IconData iconData) { return Icon(iconData, color: WHITE); }
-Icon icon30White(IconData iconData) { return Icon(iconData, size: 30, color: WHITE); }
 
 
-// DARK //
-Icon iconDark(IconData iconData) { return Icon(iconData, color: DARK); }
+// GREEN //
+Icon iconGreen(IconData iconData) { return Icon(iconData, color: GREEN); }
+Icon icon30Green(IconData iconData) { return Icon(iconData, size: 30, color: GREEN); }
 
 
 // RED //
@@ -23,7 +28,7 @@ Icon icon30Orange(IconData iconData) { return Icon(iconData, size: 30, color: Co
 Icon icon50Orange(IconData iconData) { return Icon(iconData, size: 50, color: Colors.orange); }
 
 
-// GREEN //
-Icon iconGreen(IconData iconData) { return Icon(iconData, color: GREEN); }
-Icon icon30Green(IconData iconData) { return Icon(iconData, size: 30, color: GREEN); }
-Icon icon50Green(IconData iconData) { return Icon(iconData, size: 50, color: GREEN); }
+// BLUE //
+Icon iconBlue(IconData iconData) { return Icon(iconData, color: BLUE); }
+Icon icon30Blue(IconData iconData) { return Icon(iconData, size: 30, color: BLUE); }
+Icon icon50Blue(IconData iconData) { return Icon(iconData, size: 50, color: BLUE); }

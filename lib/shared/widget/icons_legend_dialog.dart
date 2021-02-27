@@ -1,9 +1,10 @@
 import 'package:draggable_widget/draggable_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:give_job/internationalization/localization/localization_constants.dart';
-import 'package:give_job/shared/libraries/colors.dart';
-import 'package:give_job/shared/widget/texts.dart';
+import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/widget/texts.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 
 Widget iconsLegendDialog(BuildContext context, String title, List<Widget> widgets) {
@@ -18,11 +19,11 @@ Widget iconsLegendDialog(BuildContext context, String title, List<Widget> widget
         child: FloatingActionButton(
           heroTag: "iconsLegend",
           tooltip: getTranslated(context, 'iconsLegend'),
-          backgroundColor: GREEN,
+          backgroundColor: BLUE,
           onPressed: () {
             slideDialog.showSlideDialog(
               context: context,
-              backgroundColor: DARK,
+              backgroundColor: WHITE,
               child: Padding(
                 padding: EdgeInsets.all(10),
                 child: Column(
@@ -35,7 +36,11 @@ Widget iconsLegendDialog(BuildContext context, String title, List<Widget> widget
               ),
             );
           },
-          child: Image(image: AssetImage('images/dark-help-icon.png')),
+          child: Shimmer.fromColors(
+            baseColor: WHITE,
+            highlightColor: WHITE,
+            child: text35WhiteBold('?'),
+          ),
         ),
         initialPosition: AnchoringPosition.bottomRight,
         //dragController: dragController,
