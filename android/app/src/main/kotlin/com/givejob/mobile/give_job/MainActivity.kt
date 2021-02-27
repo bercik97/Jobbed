@@ -1,4 +1,4 @@
-package com.jobbed.mobile.jobbed
+package com.jobbed
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
