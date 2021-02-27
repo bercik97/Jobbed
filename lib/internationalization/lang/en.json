@@ -291,9 +291,6 @@
   "groupNameExists": "Group name is in use by another group",
   "chooseOtherGroupName": "Please write another group name",
   "successfullyAddedNewGroup": "Successfully added new group",
-  "deleteGroup": "Delete group",
-  "textGroupNameForDelete": "Rewrite group name",
-  "groupNameForDeleteInvalid": "Provided group name does not equal real group name",
   "groupNameForDelete": "Group name for delete",
   "successfullyDeletedGroup": "The selected group was successfully deleted",
   "groupDoesNotExists": "Group does not exists",
@@ -643,5 +640,6 @@
   "setNewNameForWorkplace": "Set new name for workplace",
   "workplaceNameUpdatedSuccessfully": "Workplace name updated successfully",
   "workplaceNameNeedToBeUnique": "Workplace name need to be unique",
-  "selectedWorkplacesRemoved": "Selected workplaces has been removed"
+  "selectedWorkplacesRemoved": "Selected workplaces has been removed",
+  "deleteGroupConfirmation": "Are you sure you want to delete selected group?"
 }

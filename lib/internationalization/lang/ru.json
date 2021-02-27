@@ -291,9 +291,6 @@
   "groupNameExists": "Имя группы используется другой группой",
   "chooseOtherGroupName": "Укажите другое имя группы",
   "successfullyAddedNewGroup": "Успешно добавлена новая группа",
-  "deleteGroup": "Удалить группу",
-  "textGroupNameForDelete": "Переписать название группы",
-  "groupNameForDeleteInvalid": "Указанное имя группы не совпадает с настоящим именем группы",
   "groupNameForDelete": "Название группы для удаления",
   "successfullyDeletedGroup": "Выбранная группа была успешно удалена",
   "groupDoesNotExists": "Группа не существует",
@@ -643,5 +640,6 @@
   "setNewNameForWorkplace": "Установить новое имя для рабочего места",
   "workplaceNameUpdatedSuccessfully": "Название рабочего места успешно обновлено",
   "workplaceNameNeedToBeUnique": "Название рабочего места должно быть уникальным",
-  "selectedWorkplacesRemoved": "Выбранные рабочие места удалены"
+  "selectedWorkplacesRemoved": "Выбранные рабочие места удалены",
+  "deleteGroupConfirmation": "Вы уверены, что хотите удалить выбранную группу?"
 }

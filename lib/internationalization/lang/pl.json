@@ -291,9 +291,6 @@
   "groupNameExists": "Nazwa grupy jest używana przez inną grupę",
   "chooseOtherGroupName": "Proszę wpisz inną nazwę grupy",
   "successfullyAddedNewGroup": "Pomyślnie dodano nową grupę",
-  "deleteGroup": "Usuń grupę",
-  "textGroupNameForDelete": "Przepisz wybraną nazwę grupy",
-  "groupNameForDeleteInvalid": "Wpisana nazwa grupy nie jest taka sama jak realna nazwa grupy",
   "groupNameForDelete": "Nazwa grupy do usunięcia",
   "successfullyDeletedGroup": "Pomyślnie usunięto wybraną grupę",
   "groupDoesNotExists": "Grupa nie istnieje",
@@ -643,5 +640,6 @@
   "setNewNameForWorkplace": "Ustaw nową nazwę miejsca pracy",
   "workplaceNameUpdatedSuccessfully": "Nazwa miejsca pracy została zaktualizowana",
   "workplaceNameNeedToBeUnique": "Nazwa miejsca pracy już istnieje",
-  "selectedWorkplacesRemoved": "Wybrane miejsca pracy zostały usunięte"
+  "selectedWorkplacesRemoved": "Wybrane miejsca pracy zostały usunięte",
+  "deleteGroupConfirmation": "Czy na pewno chcesz usunąć wybraną grupę?"
 }

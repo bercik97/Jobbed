@@ -291,9 +291,6 @@
   "groupNameExists": "ჯგუფის სახელს იყენებს სხვა ჯგუფი",
   "chooseOtherGroupName": "გთხოვთ, დაწეროთ სხვა ჯგუფის სახელი",
   "successfullyAddedNewGroup": "წარმატებით დაემატა ახალი ჯგუფი",
-  "deleteGroup": "ჯგუფის წაშლა",
-  "textGroupNameForDelete": "ჯგუფის სახელის გადაწერა",
-  "groupNameForDeleteInvalid": "მოცემული ჯგუფის სახელი არ უდრის ჯგუფის ნამდვილ სახელს",
   "groupNameForDelete": "ჯგუფის სახელი წაშლისთვის",
   "successfullyDeletedGroup": "შერჩეული ჯგუფი წარმატებით წაიშალა",
   "groupDoesNotExists": "ჯგუფი არ არსებობს",
@@ -643,5 +640,6 @@
   "setNewNameForWorkplace": "დააყენეთ ახალი სახელი სამუშაო ადგილისთვის",
   "workplaceNameUpdatedSuccessfully": "სამუშაო ადგილის სახელი წარმატებით განახლდა",
   "workplaceNameNeedToBeUnique": "სამუშაო ადგილის სახელი უნდა იყოს უნიკალური",
-  "selectedWorkplacesRemoved": "არჩეული სამუშაო ადგილები ამოღებულია"
+  "selectedWorkplacesRemoved": "არჩეული სამუშაო ადგილები ამოღებულია",
+  "deleteGroupConfirmation": "დარწმუნებული ხართ, რომ გსურთ წაშალოთ შერჩეული ჯგუფი?"
 }
