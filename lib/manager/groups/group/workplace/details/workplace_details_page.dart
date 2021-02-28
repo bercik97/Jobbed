@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/work_time/service/work_time_service.dart';
 import 'package:jobbed/api/workplace/dto/workplace_dto.dart';
 import 'package:jobbed/api/workplace/service/workplace_service.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
@@ -15,10 +16,12 @@ import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/month_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/loader.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 import 'package:place_picker/entities/location_result.dart';
 import 'package:place_picker/widgets/place_picker.dart';
@@ -40,6 +43,9 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
   WorkplaceDto _workplaceDto;
 
   WorkplaceService _workplaceService;
+  WorkTimeService _workTimeService;
+
+  List<String> _workTimeDates;
 
   GoogleMapController _controller;
 
@@ -51,31 +57,28 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
 
   bool _loading = false;
 
-  ScrollController _scrollController = new ScrollController();
-
   @override
   void initState() {
     this._model = widget._model;
     this._user = _model.user;
     this._workplaceDto = widget._workplaceDto;
     this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
+    this._workTimeService = ServiceInitializer.initialize(context, _user.authHeader, WorkTimeService);
     super.initState();
     _loading = true;
-    // _itemService.findAllByWarehouseId(_workplaceDto.id).then((res) {
-    //   setState(() {
-    //     _items = res;
-    //     _items.forEach((e) => _checked.add(false));
-    //     _filteredItems = _items;
-    //     _loading = false;
-    //   });
-    // });
+    _workTimeService.findAllYearMonthDatesByWorkplaceId(_workplaceDto.id).then((res) {
+      setState(() {
+        _workTimeDates = res;
+        _loading = false;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // if (_loading) {
-    //   return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.navigate(context, WorkplacesPage(_model))));
-    // }
+    if (_loading) {
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.navigate(context, WorkplacesPage(_model))));
+    }
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -133,27 +136,60 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                     ),
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
-                  child: TextFormField(
-                    autofocus: false,
-                    autocorrect: true,
-                    cursorColor: BLACK,
-                    style: TextStyle(color: BLACK),
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
-                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2)),
-                      counterStyle: TextStyle(color: BLACK),
-                      border: OutlineInputBorder(),
-                      labelText: getTranslated(context, 'search'),
-                      prefixIcon: iconBlack(Icons.search),
-                      labelStyle: TextStyle(color: BLACK),
-                    ),
-                    onChanged: (string) {
-                      setState(
-                        () {},
-                      );
-                    },
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 20, top: 15, bottom: 5),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: text20Black(getTranslated(context, 'workingTime')),
+                        ),
+                      ),
+                      _workTimeDates.isEmpty
+                          ? Padding(
+                              padding: EdgeInsets.only(left: 20),
+                              child: Align(
+                                alignment: Alignment.topLeft,
+                                child: text15RedBold(getTranslated(context, 'noWorkingTime')),
+                              ),
+                            )
+                          : Container(),
+                      for (var date in _workTimeDates)
+                        Card(
+                          color: BRIGHTER_BLUE,
+                          child: InkWell(
+                            onTap: () {},
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                ListTile(
+                                  trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      InkWell(
+                                        onTap: () {},
+                                        child: Image(
+                                          image: AssetImage('images/excel.png'),
+                                          height: 30,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  title: text17BlackBold(
+                                    date.substring(0, 4).toString() +
+                                        ' ' +
+                                        MonthUtil.translateMonth(
+                                          context,
+                                          MonthUtil.findMonthNameByMonthNumber(context, int.parse(date.substring(5, 7))),
+                                        ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                 ),
               ],

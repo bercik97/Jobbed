@@ -327,6 +327,7 @@
   "addNote": "ჩანიშვნა",
   "notesSavedSuccessfully": "ჩანიშვნები წარმატებით შეინახეს",
   "workingTime": "სამუშაო დრო",
+  "noWorkingTime": "სამუშაო დროის ჩანაწერები არ არის",
   "startFinishWork": "სამუშაოს დაწყება ან დასრულება",
   "workTimeForToday": "დღევანდელი სამუშაო დრო",
   "pressBtnToStart": "მუშაობის დასაწყებად დააჭირე დაწყების ღილაკს",

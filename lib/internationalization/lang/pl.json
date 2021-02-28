@@ -327,6 +327,7 @@
   "addNote": "Dodawanie notatki",
   "notesSavedSuccessfully": "Notatki zostały zapisana pomyślnie",
   "workingTime": "Czas pracy",
+  "noWorkingTime": "Brak rekordów dot. czasu pracy",
   "startFinishWork": "Rozpocznij lub zakończ pracę",
   "workTimeForToday": "Dzisiejszy czas pracy",
   "pressBtnToStart": "Naciśnij przycisk start aby rozpocząc pracę",

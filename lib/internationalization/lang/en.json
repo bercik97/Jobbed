@@ -327,6 +327,7 @@
   "addNote": "Add note",
   "notesSavedSuccessfully": "Notes saved successfully",
   "workingTime": "Working time",
+  "noWorkingTime": "No working time records",
   "startFinishWork": "Start or finish work",
   "workTimeForToday": "Today's working time",
   "pressBtnToStart": "Press start button to begin work",

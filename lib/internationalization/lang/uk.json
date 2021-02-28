@@ -327,6 +327,7 @@
   "addNote": "Додати коментар",
   "notesSavedSuccessfully": "Нотатки успішно збережено",
   "workingTime": "Робочий час",
+  "noWorkingTime": "Немає даних про робочий час",
   "startFinishWork": "Почати або закінчити роботу",
   "workTimeForToday": "Сьогоднішній робочий час",
   "pressBtnToStart": "Натисніть кнопку Пуск, щоб розпочати роботу",

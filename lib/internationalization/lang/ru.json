@@ -327,6 +327,7 @@
   "addNote": "Добавить заметку",
   "notesSavedSuccessfully": "Заметки успешно сохранены",
   "workingTime": "Время работы",
+  "noWorkingTime": "Нет учета рабочего времени",
   "startFinishWork": "Начать или закончить работу",
   "workTimeForToday": "Рабочее время сегодня",
   "pressBtnToStart": "Нажмите кнопку пуска, чтобы начать работу",
