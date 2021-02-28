@@ -9,6 +9,7 @@ import 'package:jobbed/api/work_time/service/work_time_service.dart';
 import 'package:jobbed/api/workplace/dto/workplace_dto.dart';
 import 'package:jobbed/api/workplace/service/workplace_service.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/groups/group/workplace/details/work_time/workplace_work_time_page.dart';
 import 'package:jobbed/manager/groups/group/workplace/workplaces_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
@@ -159,7 +160,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                         Card(
                           color: BRIGHTER_BLUE,
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () => NavigatorUtil.navigate(context, WorkplaceWorkTimePage(date, _model, _workplaceDto)),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[

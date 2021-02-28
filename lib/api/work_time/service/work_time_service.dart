@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:jobbed/api/work_time/dto/create_work_time_dto.dart';
 import 'package:jobbed/api/work_time/dto/is_currently_at_work_with_work_times_dto.dart';
+import 'package:jobbed/api/work_time/dto/work_time_details_dto.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/util/logout_util.dart';
 
@@ -48,6 +49,18 @@ class WorkTimeService {
     Response res = await get(_url + '/workplaces/$workplaceId', headers: _header);
     if (res.statusCode == 200) {
       return (jsonDecode(res.body) as List<dynamic>).cast<String>();
+    } else if (res.statusCode == 401) {
+      return LogoutUtil.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<List<WorkTimeDetailsDto>> findAllDatesWithTotalTimeByWorkplaceIdAndYearMonthIn(String workplaceId, String date) async {
+    String url = _url + '?workplace_id=$workplaceId&date=$date';
+    Response res = await get(url, headers: _header);
+    if (res.statusCode == 200) {
+      return (json.decode(res.body) as List).map((data) => WorkTimeDetailsDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
       return LogoutUtil.handle401WithLogout(_context);
     } else {
