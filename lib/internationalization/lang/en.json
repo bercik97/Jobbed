@@ -642,5 +642,6 @@
   "workplaceNameUpdatedSuccessfully": "Workplace name updated successfully",
   "workplaceNameNeedToBeUnique": "Workplace name need to be unique",
   "selectedWorkplacesRemoved": "Selected workplaces has been removed",
-  "deleteGroupConfirmation": "Are you sure you want to delete selected group?"
+  "deleteGroupConfirmation": "Are you sure you want to delete selected group?",
+  "generateExcelForWorkTimesConfirmation": "Are you sure you want to generate excel file for selected date?"
 }

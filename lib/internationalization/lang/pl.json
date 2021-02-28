@@ -642,5 +642,6 @@
   "workplaceNameUpdatedSuccessfully": "Nazwa miejsca pracy została zaktualizowana",
   "workplaceNameNeedToBeUnique": "Nazwa miejsca pracy już istnieje",
   "selectedWorkplacesRemoved": "Wybrane miejsca pracy zostały usunięte",
-  "deleteGroupConfirmation": "Czy na pewno chcesz usunąć wybraną grupę?"
+  "deleteGroupConfirmation": "Czy na pewno chcesz usunąć wybraną grupę?",
+  "generateExcelForWorkTimesConfirmation": "Czy na pewno chcesz wygenerować plik excel dla wybranej daty?"
 }

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:jobbed/api/excel/service/excel_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/work_time/service/work_time_service.dart';
 import 'package:jobbed/api/workplace/dto/workplace_dto.dart';
@@ -45,6 +46,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
 
   WorkplaceService _workplaceService;
   WorkTimeService _workTimeService;
+  ExcelService _excelService;
 
   List<String> _workTimeDates;
 
@@ -58,6 +60,8 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
 
   bool _loading = false;
 
+  bool _isGenerateExcelButtonTapped = false;
+
   @override
   void initState() {
     this._model = widget._model;
@@ -65,6 +69,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
     this._workplaceDto = widget._workplaceDto;
     this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
     this._workTimeService = ServiceInitializer.initialize(context, _user.authHeader, WorkTimeService);
+    this._excelService = ServiceInitializer.initialize(context, _user.authHeader, ExcelService);
     super.initState();
     _loading = true;
     _workTimeService.findAllYearMonthDatesByWorkplaceId(_workplaceDto.id).then((res) {
@@ -169,7 +174,15 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       InkWell(
-                                        onTap: () {},
+                                        onTap: () {
+                                          DialogUtil.showConfirmationDialog(
+                                            context: context,
+                                            title: getTranslated(context, 'confirmation'),
+                                            content: getTranslated(context, 'generateExcelForWorkTimesConfirmation') + ' ($date)',
+                                            isBtnTapped: _isGenerateExcelButtonTapped,
+                                            fun: () => _isGenerateExcelButtonTapped ? null : _handleGenerateExcel(_workplaceDto.id, _workplaceDto.name, date),
+                                          );
+                                        },
                                         child: Image(
                                           image: AssetImage('images/excel.png'),
                                           height: 30,
@@ -570,5 +583,27 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
       ToastUtil.showSuccessToast(getTranslated(context, 'workplaceAreaIsSetTo') + ' $km KM ✓');
     }
     return true;
+  }
+
+  _handleGenerateExcel(String workplaceId, String workplaceName, String date) {
+    setState(() => _isGenerateExcelButtonTapped = true);
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _excelService.generateWorkTimesExcel(workplaceId, workplaceName, date, _user.username).then((res) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyGeneratedExcelAndSendEmail') + '!');
+        setState(() => _isGenerateExcelButtonTapped = false);
+        Navigator.pop(context);
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        String errorMsg = onError.toString();
+        if (errorMsg.contains("EMAIL_IS_NULL")) {
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'excelEmailIsEmpty'));
+        } else {
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+        }
+        setState(() => _isGenerateExcelButtonTapped = false);
+      });
+    });
   }
 }

@@ -642,5 +642,6 @@
   "workplaceNameUpdatedSuccessfully": "Ім’я робочого місця успішно оновлено",
   "workplaceNameNeedToBeUnique": "Ім'я робочого місця має бути унікальним",
   "selectedWorkplacesRemoved": "Вибрані робочі місця було видалено",
-  "deleteGroupConfirmation": "Ви впевнені, що хочете видалити вибрану групу?"
+  "deleteGroupConfirmation": "Ви впевнені, що хочете видалити вибрану групу?",
+  "generateExcelForWorkTimesConfirmation": "Ви впевнені, що хочете створити файл Excel на вибрану дату?"
 }
