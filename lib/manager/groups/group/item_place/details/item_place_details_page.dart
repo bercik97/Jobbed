@@ -86,14 +86,10 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
               children: <Widget>[
                 ListTile(
                   leading: Tab(
-                    icon: Container(
-                      child: Container(
-                        child: Image(
-                          width: 75,
-                          image: AssetImage('images/items.png'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                    icon: Image(
+                      width: 75,
+                      image: AssetImage('images/items.png'),
+                      fit: BoxFit.cover,
                     ),
                   ),
                   title: text17BlueBold(utf8.decode(_itemPlaceDto.location.runes.toList())),

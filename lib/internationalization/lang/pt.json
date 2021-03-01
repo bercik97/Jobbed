@@ -294,7 +294,6 @@
   "groupNameForDelete": "ჯგუფის სახელი წაშლისთვის",
   "successfullyDeletedGroup": "შერჩეული ჯგუფი წარმატებით წაიშალა",
   "groupDoesNotExists": "ჯგუფი არ არსებობს",
-  "manageGroupEmployees": "ჯგუფის თანამშრომლების მართვა",
   "addEmployees": "თანამშრომლების დამატება",
   "deleteEmployees": "თანამშრომლების წაშლა",
   "noEmployeesToAddGroup": "არ არსებობს თანამშრომლები, რომლებსაც დაამატებენ შერჩეულ ჯგუფს, რადგან კომპანიის ყველა თანამშრომელს ამჟამად აქვს ჯგუფი.",
@@ -643,5 +642,6 @@
   "workplaceNameNeedToBeUnique": "სამუშაო ადგილის სახელი უნდა იყოს უნიკალური",
   "selectedWorkplacesRemoved": "არჩეული სამუშაო ადგილები ამოღებულია",
   "deleteGroupConfirmation": "დარწმუნებული ხართ, რომ გსურთ წაშალოთ შერჩეული ჯგუფი?",
-  "generateExcelForWorkTimesConfirmation": "დარწმუნებული ხართ, რომ გსურთ Excel ფაილის შექმნა შერჩეული თარიღისთვის?"
+  "generateExcelForWorkTimesConfirmation": "დარწმუნებული ხართ, რომ გსურთ Excel ფაილის შექმნა შერჩეული თარიღისთვის?",
+  "workTime": "სამუშაო დრო"
 }

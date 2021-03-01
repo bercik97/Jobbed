@@ -96,14 +96,10 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
               children: <Widget>[
                 ListTile(
                   leading: Tab(
-                    icon: Container(
-                      child: Container(
-                        child: Image(
-                          width: 75,
-                          image: AssetImage('images/warehouse.png'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                    icon: Image(
+                      width: 70,
+                      image: AssetImage('images/warehouse.png'),
+                      fit: BoxFit.cover,
                     ),
                   ),
                   title: text17BlueBold(utf8.decode(_warehouseDto.name.runes.toList())),

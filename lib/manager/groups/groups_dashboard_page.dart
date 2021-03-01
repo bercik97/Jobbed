@@ -180,14 +180,11 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
           ListTile(
             leading: Tab(
               icon: Container(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 13),
-                  child: Container(
-                    child: Image(
-                      width: 75,
-                      image: AssetImage('images/company.png'),
-                      fit: BoxFit.cover,
-                    ),
+                child: Container(
+                  child: Image(
+                    width: 75,
+                    image: AssetImage('images/company.png'),
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
@@ -310,7 +307,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
           padding: EdgeInsets.only(top: 20),
           child: Align(
             alignment: Alignment.center,
-            child: text20BlueBold(getTranslated(context, 'welcome') + ' ' + _user.info),
+            child: text20BlueBold(getTranslated(context, 'welcome') + ' ' + utf8.decode(_user.info.runes.toList())),
           ),
         ),
         Padding(
@@ -329,7 +326,6 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
       context: context,
       barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'manageGroupEmployees'),
       transitionDuration: Duration(milliseconds: 400),
       pageBuilder: (_, __, ___) {
         return SizedBox.expand(
@@ -342,12 +338,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 50),
-                      child: text17BlackBold(getTranslated(context, 'manageGroupEmployees')),
-                    ),
-                    SizedBox(height: 2.5),
-                    text16Black(utf8.decode(groupName.runes.toList())),
+                    text20Black(utf8.decode(groupName.runes.toList())),
                     SizedBox(height: 20),
                     Buttons.standardButton(
                       minWidth: 200.0,

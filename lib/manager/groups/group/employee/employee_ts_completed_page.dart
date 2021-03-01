@@ -73,11 +73,8 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                   padding: EdgeInsets.only(bottom: 5),
                   child: ListTile(
                     leading: Padding(
-                      padding: EdgeInsets.only(bottom: 15),
-                      child: Image(
-                        image: AssetImage('images/checked.png'),
-                        fit: BoxFit.fitHeight,
-                      ),
+                      padding: EdgeInsets.only(top: 30),
+                      child: icon30Green(Icons.check_circle_outline),
                     ),
                     title: text17BlackBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
                     subtitle: Column(
@@ -153,7 +150,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
           this.context,
           getTranslated(context, 'iconsLegend'),
           [
-            IconsLegendUtil.buildImageRow('images/checked.png', getTranslated(context, 'tsCompleted')),
+            IconsLegendUtil.buildIconRow(iconGreen(Icons.check_circle_outline), getTranslated(context, 'tsCompleted')),
             IconsLegendUtil.buildIconRow(iconBlack(Icons.search), getTranslated(context, 'checkDetails')),
           ],
         ),

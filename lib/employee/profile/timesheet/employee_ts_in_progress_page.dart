@@ -103,11 +103,8 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                     padding: EdgeInsets.only(bottom: 5),
                     child: ListTile(
                       leading: Padding(
-                        padding: EdgeInsets.only(bottom: 15),
-                        child: Image(
-                          image: _timesheet.status == STATUS_COMPLETED ? AssetImage('images/checked.png') : AssetImage('images/unchecked.png'),
-                          fit: BoxFit.fitHeight,
-                        ),
+                        padding: EdgeInsets.only(top: 30),
+                        child: _timesheet.status == STATUS_IN_PROGRESS ? icon30Orange(Icons.arrow_circle_up) : icon30Green(Icons.check_circle_outline),
                       ),
                       title: text17BlackBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
                       subtitle: Column(
@@ -169,7 +166,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
             this.context,
             getTranslated(context, 'iconsLegend'),
             [
-              IconsLegendUtil.buildImageRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
+              IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_circle_up), getTranslated(context, 'tsInProgress')),
               IconsLegendUtil.buildIconRow(iconBlack(Icons.search), getTranslated(context, 'checkDetails')),
               IconsLegendUtil.buildImageRow('images/hours.png', getTranslated(context, 'settingHours')),
               IconsLegendUtil.buildImageRow('images/note.png', getTranslated(context, 'settingNotes')),
@@ -185,7 +182,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                       ? Expanded(
                           child: MaterialButton(
                             color: BLUE,
-                            child: Image(image: AssetImage('images/hours.png')),
+                            child: Image(image: AssetImage('images/white-hours.png')),
                             onPressed: () {
                               if (selectedIds.isNotEmpty) {
                                 _hoursController.clear();
@@ -202,7 +199,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                   Expanded(
                     child: MaterialButton(
                       color: BLUE,
-                      child: Image(image: AssetImage('images/note.png')),
+                      child: Image(image: AssetImage('images/white-note.png')),
                       onPressed: () {
                         if (selectedIds.isNotEmpty) {
                           _noteController.clear();

@@ -292,9 +292,8 @@
   "chooseOtherGroupName": "Please write another group name",
   "successfullyAddedNewGroup": "Successfully added new group",
   "groupNameForDelete": "Group name for delete",
-  "successfullyDeletedGroup": "The selected group was successfully deleted",
+  "successfullyDeletedGroup": "The selected group has been successfully deleted",
   "groupDoesNotExists": "Group does not exists",
-  "manageGroupEmployees": "Manage group employees",
   "addEmployees": "Add employees",
   "deleteEmployees": "Delete employees",
   "noEmployeesToAddGroup": "There are no employees to add to selected group as all employees of the company currently have a group.",
@@ -643,5 +642,6 @@
   "workplaceNameNeedToBeUnique": "Workplace name need to be unique",
   "selectedWorkplacesRemoved": "Selected workplaces has been removed",
   "deleteGroupConfirmation": "Are you sure you want to delete selected group?",
-  "generateExcelForWorkTimesConfirmation": "Are you sure you want to generate excel file for selected date?"
+  "generateExcelForWorkTimesConfirmation": "Are you sure you want to generate excel file for selected date?",
+  "workTime": "Work time"
 }

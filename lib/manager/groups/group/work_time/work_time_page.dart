@@ -274,7 +274,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                 Expanded(
                   child: MaterialButton(
                     color: BLUE,
-                    child: Image(image: AssetImage('images/hours.png')),
+                    child: Image(image: AssetImage('images/white-hours.png')),
                     onPressed: () {
                       if (_selectedIds.isEmpty) {
                         showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
@@ -292,7 +292,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                 Expanded(
                   child: MaterialButton(
                     color: BLUE,
-                    child: Image(image: AssetImage('images/play.png')),
+                    child: Image(image: AssetImage('images/white-play.png')),
                     onPressed: () {
                       if (_selectedIds.isEmpty) {
                         showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
@@ -314,7 +314,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                 Expanded(
                   child: MaterialButton(
                     color: BLUE,
-                    child: Image(image: AssetImage('images/stop.png')),
+                    child: Image(image: AssetImage('images/white-stop.png')),
                     onPressed: () {
                       if (_selectedIds.isEmpty) {
                         showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));

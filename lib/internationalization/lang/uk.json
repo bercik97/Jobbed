@@ -294,7 +294,6 @@
   "groupNameForDelete": "Название группы для удаления",
   "successfullyDeletedGroup": "Выбранная группа была успешно удалена",
   "groupDoesNotExists": "Группа не существует",
-  "manageGroupEmployees": "Управлять сотрудниками группы",
   "addEmployees": "Добавить сотрудников",
   "deleteEmployees": "Удалить сотрудников",
   "noEmployeesToAddGroup": "Нет сотрудников для добавления в выбранную группу, поскольку все сотрудники компании в настоящее время входят в группу.",
@@ -643,5 +642,6 @@
   "workplaceNameNeedToBeUnique": "Ім'я робочого місця має бути унікальним",
   "selectedWorkplacesRemoved": "Вибрані робочі місця було видалено",
   "deleteGroupConfirmation": "Ви впевнені, що хочете видалити вибрану групу?",
-  "generateExcelForWorkTimesConfirmation": "Ви впевнені, що хочете створити файл Excel на вибрану дату?"
+  "generateExcelForWorkTimesConfirmation": "Ви впевнені, що хочете створити файл Excel на вибрану дату?",
+  "workTime": "робочий час"
 }

@@ -17,10 +17,10 @@ import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
-import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/month_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
 import 'package:jobbed/shared/widget/texts.dart';
@@ -127,13 +127,7 @@ class _TsPageState extends State<TsPage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           ListTile(
-                            leading: Padding(
-                              padding: EdgeInsets.only(bottom: 15),
-                              child: Image(
-                                image: AssetImage('images/unchecked.png'),
-                                fit: BoxFit.fitHeight,
-                              ),
-                            ),
+                            leading: icon30Orange(Icons.arrow_circle_up),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -187,13 +181,7 @@ class _TsPageState extends State<TsPage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           ListTile(
-                            leading: Padding(
-                              padding: EdgeInsets.only(bottom: 15),
-                              child: Image(
-                                image: AssetImage('images/checked.png'),
-                                fit: BoxFit.fitHeight,
-                              ),
-                            ),
+                            leading: icon30Green(Icons.check_circle_outline),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -247,8 +235,8 @@ class _TsPageState extends State<TsPage> {
             context,
             getTranslated(context, 'iconsLegend'),
             [
-              IconsLegendUtil.buildImageRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
-              IconsLegendUtil.buildImageRow('images/checked.png', getTranslated(context, 'tsCompleted')),
+              IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_circle_up), getTranslated(context, 'tsInProgress')),
+              IconsLegendUtil.buildIconRow(iconGreen(Icons.check_circle_outline), getTranslated(context, 'tsCompleted')),
               IconsLegendUtil.buildImageRow('images/excel.png', getTranslated(context, 'generateExcel')),
               IconsLegendUtil.buildIconRow(iconGreen(Icons.arrow_upward), getTranslated(context, 'settingTsStatusToCompleted')),
               IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_downward), getTranslated(context, 'settingTsStatusToInProgress')),

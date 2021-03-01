@@ -22,7 +22,7 @@ AppBar managerAppBar(BuildContext context, User user, String title, Function() f
       Padding(
         padding: EdgeInsets.only(right: 10),
         child: IconButton(
-          icon: Image(image: AssetImage('images/groups.png')),
+          icon: iconBlack(Icons.arrow_back_ios),
           onPressed: () => NavigatorUtil.navigate(context, GroupsDashboardPage(user)),
         ),
       ),

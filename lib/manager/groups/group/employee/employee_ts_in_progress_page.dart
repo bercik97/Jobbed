@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
+import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:jobbed/api/piecework/service/piecework_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/timesheet/dto/timesheet_for_employee_dto.dart';
@@ -27,7 +28,6 @@ import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
 import 'package:jobbed/shared/widget/loader.dart';
 import 'package:jobbed/shared/widget/texts.dart';
-import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
 import '../../../../shared/libraries/constants.dart';
@@ -128,11 +128,8 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                   padding: EdgeInsets.only(bottom: 5),
                   child: ListTile(
                     leading: Padding(
-                      padding: EdgeInsets.only(bottom: 15),
-                      child: Image(
-                        image: AssetImage('images/unchecked.png'),
-                        fit: BoxFit.fitHeight,
-                      ),
+                      padding: EdgeInsets.only(top: 30),
+                      child: icon30Orange(Icons.arrow_circle_up),
                     ),
                     title: text17BlackBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
                     subtitle: Column(
@@ -199,7 +196,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                 Expanded(
                   child: MaterialButton(
                     color: BLUE,
-                    child: Image(image: AssetImage('images/hours.png')),
+                    child: Image(image: AssetImage('images/white-hours.png')),
                     onPressed: () {
                       if (selectedIds.isNotEmpty) {
                         _hoursController.clear();
@@ -215,7 +212,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                 Expanded(
                   child: MaterialButton(
                     color: BLUE,
-                    child: Image(image: AssetImage('images/piecework.png')),
+                    child: Image(image: AssetImage('images/white-piecework.png')),
                     onPressed: () {
                       if (selectedIds.isNotEmpty) {
                         NavigatorUtil.navigate(
@@ -241,7 +238,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                     color: BLUE,
                     child: Row(
                       children: [
-                        Image(image: AssetImage('images/piecework.png')),
+                        Image(image: AssetImage('images/white-piecework.png')),
                         iconRed(Icons.close),
                       ],
                     ),
@@ -258,7 +255,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                 Expanded(
                   child: MaterialButton(
                     color: BLUE,
-                    child: Image(image: AssetImage('images/note.png')),
+                    child: Image(image: AssetImage('images/white-note.png')),
                     onPressed: () {
                       if (selectedIds.isNotEmpty) {
                         _noteController.clear();
@@ -278,7 +275,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
           this.context,
           getTranslated(context, 'iconsLegend'),
           [
-            IconsLegendUtil.buildImageRow('images/unchecked.png', getTranslated(context, 'tsInProgress')),
+            IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_circle_up), getTranslated(context, 'tsInProgress')),
             IconsLegendUtil.buildIconRow(iconBlack(Icons.search), getTranslated(context, 'checkDetails')),
             IconsLegendUtil.buildImageRow('images/hours.png', getTranslated(context, 'settingHours')),
             IconsLegendUtil.buildImageRow('images/piecework.png', getTranslated(context, 'settingPiecework')),

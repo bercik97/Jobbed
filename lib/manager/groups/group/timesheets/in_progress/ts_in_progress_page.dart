@@ -315,7 +315,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                   Expanded(
                     child: MaterialButton(
                       color: BLUE,
-                      child: Image(image: AssetImage('images/hours.png')),
+                      child: Image(image: AssetImage('images/white-hours.png')),
                       onPressed: () {
                         if (_selectedIds.isNotEmpty) {
                           _hoursController.clear();
@@ -331,7 +331,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                   Expanded(
                     child: MaterialButton(
                       color: BLUE,
-                      child: Image(image: AssetImage('images/piecework.png')),
+                      child: Image(image: AssetImage('images/white-piecework.png')),
                       onPressed: () {
                         if (_selectedIds.isNotEmpty) {
                           _showUpdatePiecework(_selectedIds);
@@ -347,7 +347,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                       color: BLUE,
                       child: Row(
                         children: [
-                          Image(image: AssetImage('images/piecework.png')),
+                          Image(image: AssetImage('images/white-piecework.png')),
                           iconRed(Icons.close),
                         ],
                       ),
@@ -364,7 +364,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                   Expanded(
                     child: MaterialButton(
                       color: BLUE,
-                      child: Image(image: AssetImage('images/note.png')),
+                      child: Image(image: AssetImage('images/white-note.png')),
                       onPressed: () {
                         if (_selectedIds.isNotEmpty) {
                           _noteController.clear();

@@ -78,7 +78,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                     Padding(
                       padding: EdgeInsets.only(right: 10),
                       child: IconButton(
-                        icon: Image(image: AssetImage('images/groups.png')),
+                        icon: iconBlack(Icons.arrow_back_ios),
                         onPressed: () => NavigatorUtil.navigate(this.context, GroupsDashboardPage(_user)),
                       ),
                     ),
@@ -184,10 +184,8 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                                 children: <Widget>[
                                   ListTile(
                                     leading: Padding(
-                                      padding: EdgeInsets.only(bottom: 15),
-                                      child: Image(
-                                        image: timesheet.status == STATUS_IN_PROGRESS ? AssetImage('images/unchecked.png') : AssetImage('images/checked.png'),
-                                      ),
+                                      padding: EdgeInsets.only(top: 25),
+                                      child: timesheet.status == STATUS_IN_PROGRESS ? icon30Orange(Icons.arrow_circle_up) : icon30Green(Icons.check_circle_outline),
                                     ),
                                     title: text17BlackBold(timesheet.year.toString() + ' ' + MonthUtil.translateMonth(this.context, timesheet.month)),
                                     subtitle: Column(

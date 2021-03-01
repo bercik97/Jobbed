@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:jobbed/api/workday/dto/workday_for_timesheet_dto.dart';
@@ -11,18 +12,17 @@ import 'package:jobbed/internationalization/localization/localization_constants.
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
-import 'package:jobbed/shared/util/workday_util.dart';
 import 'package:jobbed/shared/util/data_table_util.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/month_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/workday_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
 import 'package:jobbed/shared/widget/loader.dart';
 import 'package:jobbed/shared/widget/texts.dart';
-import 'package:horizontal_data_table/horizontal_data_table.dart';
 
 import '../../employee_profile_page.dart';
 
@@ -86,11 +86,8 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                         padding: EdgeInsets.only(bottom: 5),
                         child: ListTile(
                           leading: Padding(
-                            padding: EdgeInsets.only(bottom: 15),
-                            child: Image(
-                              image: _timesheet.status == STATUS_COMPLETED ? AssetImage('images/checked.png') : AssetImage('images/unchecked.png'),
-                              fit: BoxFit.fitHeight,
-                            ),
+                            padding: EdgeInsets.only(top: 30),
+                            child: _timesheet.status == STATUS_IN_PROGRESS ? icon30Orange(Icons.arrow_circle_up) : icon30Green(Icons.check_circle_outline),
                           ),
                           title: text17BlackBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
                           subtitle: Column(
@@ -153,7 +150,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
               this.context,
               getTranslated(context, 'iconsLegend'),
               [
-                IconsLegendUtil.buildImageRow('images/checked.png', getTranslated(context, 'tsCompleted')),
+                IconsLegendUtil.buildIconRow(iconGreen(Icons.check_circle_outline), getTranslated(context, 'tsCompleted')),
                 IconsLegendUtil.buildIconRow(iconBlack(Icons.search), getTranslated(context, 'checkDetails')),
               ],
             )),

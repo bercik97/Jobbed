@@ -294,7 +294,6 @@
   "groupNameForDelete": "Nazwa grupy do usunięcia",
   "successfullyDeletedGroup": "Pomyślnie usunięto wybraną grupę",
   "groupDoesNotExists": "Grupa nie istnieje",
-  "manageGroupEmployees": "Zarządzaj pracownikami grupy",
   "addEmployees": "Dodaj pracowników",
   "deleteEmployees": "Usuń pracowników",
   "noEmployeesToAddGroup": "Brak pracowników do dodania do wybranej grupy ponieważ wszyscy pracownicy firmy aktualnie posiadają grupę.",
@@ -643,5 +642,6 @@
   "workplaceNameNeedToBeUnique": "Nazwa miejsca pracy już istnieje",
   "selectedWorkplacesRemoved": "Wybrane miejsca pracy zostały usunięte",
   "deleteGroupConfirmation": "Czy na pewno chcesz usunąć wybraną grupę?",
-  "generateExcelForWorkTimesConfirmation": "Czy na pewno chcesz wygenerować plik excel dla wybranej daty?"
+  "generateExcelForWorkTimesConfirmation": "Czy na pewno chcesz wygenerować plik excel dla wybranej daty?",
+  "workTime": "Czas pracy"
 }

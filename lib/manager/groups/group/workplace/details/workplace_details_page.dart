@@ -191,12 +191,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                                     ],
                                   ),
                                   title: text17BlackBold(
-                                    date.substring(0, 4).toString() +
-                                        ' ' +
-                                        MonthUtil.translateMonth(
-                                          context,
-                                          MonthUtil.findMonthNameByMonthNumber(context, int.parse(date.substring(5, 7))),
-                                        ),
+                                    date.substring(0, 4).toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, int.parse(date.substring(5, 7))),
                                   ),
                                 ),
                               ],

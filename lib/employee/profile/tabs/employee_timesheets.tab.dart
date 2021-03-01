@@ -9,6 +9,7 @@ import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/month_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
 Widget employeeTimesheetsTab(BuildContext context, bool canFillHours, User user, List sheets) {
@@ -37,10 +38,8 @@ Widget employeeTimesheetsTab(BuildContext context, bool canFillHours, User user,
                       },
                       child: ListTile(
                         leading: Padding(
-                          padding: EdgeInsets.only(bottom: 15),
-                          child: Image(
-                            image: timesheet.status == STATUS_IN_PROGRESS ? AssetImage('images/unchecked.png') : AssetImage('images/checked.png'),
-                          ),
+                          padding: EdgeInsets.only(top: 25),
+                          child: timesheet.status == STATUS_IN_PROGRESS ? icon30Orange(Icons.arrow_circle_up) : icon30Green(Icons.check_circle_outline),
                         ),
                         title: text17BlackBold(timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, timesheet.month)),
                         subtitle: Column(

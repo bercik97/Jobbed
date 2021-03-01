@@ -75,8 +75,6 @@ flutter:
     - images/plumko.png
     - images/viber.png
     - images/whatsapp.png
-    - images/unchecked.png
-    - images/checked.png
     - images/excel.png
 
     - images/company.png
@@ -101,6 +99,11 @@ flutter:
     - images/piecework.png
     - images/note.png
     - images/groups.png
+    - images/white-piecework.png
+    - images/white-hours.png
+    - images/white-note.png
+    - images/white-play.png
+    - images/white-stop.png
 
     - images/letters/male/A.png
     - images/letters/male/B.png

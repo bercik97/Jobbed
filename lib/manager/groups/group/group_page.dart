@@ -63,14 +63,11 @@ class _GroupPageState extends State<GroupPage> {
                     ListTile(
                       leading: Tab(
                         icon: Container(
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 13),
-                            child: Container(
-                              child: Image(
-                                width: 75,
-                                image: AssetImage('images/group.png'),
-                                fit: BoxFit.cover,
-                              ),
+                          child: Container(
+                            child: Image(
+                              width: 75,
+                              image: AssetImage('images/group.png'),
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
