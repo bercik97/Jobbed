@@ -80,7 +80,7 @@ flutter:
     - images/company.png
     - images/group.png
     - images/groups.png
-    - images/employees.png
+    - images/work-time.png
     - images/quick-update.png
     - images/timesheet.png
     - images/workplace.png
@@ -98,7 +98,6 @@ flutter:
     - images/hours.png
     - images/piecework.png
     - images/note.png
-    - images/groups.png
     - images/white-piecework.png
     - images/white-hours.png
     - images/white-note.png
