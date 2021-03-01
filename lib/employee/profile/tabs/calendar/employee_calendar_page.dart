@@ -103,7 +103,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
             getTranslated(context, 'iconsLegend'),
             [
               IconsLegendUtil.buildIconRow(iconOrange(Icons.error_outline), getTranslated(context, 'dayWithNote')),
-              IconsLegendUtil.buildIconRow(iconBlue(Icons.check), getTranslated(context, 'workedDay')),
+              IconsLegendUtil.buildIconRow(iconGreen(Icons.check), getTranslated(context, 'workedDay')),
               IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_circle_up), getTranslated(context, 'workInProgress')),
             ],
           ),
@@ -189,7 +189,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
   Widget _buildEventsMarker(DateTime date, List events) {
     EmployeeCalendarDto workday = events[0];
     if (workday.money != '0.000') {
-      return workday.money != '0.000' ? icon30Blue(Icons.check) : icon30Orange(Icons.arrow_circle_up);
+      return workday.money != '0.000' ? icon30Green(Icons.check) : icon30Orange(Icons.arrow_circle_up);
     } else if (workday.note != null && workday.note.isNotEmpty) {
       return iconOrange(Icons.error_outline);
     } else {
@@ -238,7 +238,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
                 getTranslated(context, 'workInProgress') + ' ' + _selectedDay.toString().substring(0, 10),
               ),
         ListTile(
-          trailing: money != '0.000' ? icon50Blue(Icons.check) : icon50Orange(Icons.arrow_circle_up),
+          trailing: money != '0.000' ? icon50Green(Icons.check) : icon50Orange(Icons.arrow_circle_up),
           subtitle: Column(
             children: <Widget>[
               Align(
