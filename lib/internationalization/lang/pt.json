@@ -153,7 +153,7 @@
   "profile": "პროფილი",
   "welcome": "მოგესალმებით",
   "loggedSuccessButNoGroups": "თქვენ წარმატებით შეხვედით, მაგრამ, როგორც ჩანს, ჯგუფები არ შეგიქმნით. ჯგუფის შესაქმნელად, გთხოვთ, აირჩიოთ ეკრანის ქვედა ღილაკი.",
-  "manageEmployeesWorkTimeAndWorkplace": "მართეთ თანამშრომლების სამუშაო დრო და სამუშაო ადგილი",
+  "manageEmployeesWorkTime": "თანამშრომლების სამუშაო დროის მართვა",
   "quickUpdate": "სწრაფი განახლება",
   "quickUpdateDescription": "სწრაფად განახლება დღეს",
   "fillHoursPieceworks": "შეავსეთ საათები, ნაჭერი და ა.შ.",

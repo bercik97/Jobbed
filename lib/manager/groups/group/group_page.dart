@@ -107,7 +107,7 @@ class _GroupPageState extends State<GroupPage> {
                             color: BRIGHTER_BLUE,
                             child: InkWell(
                               onTap: () => NavigatorUtil.navigate(context, WorkTimePage(_model)),
-                              child: _buildScrollableContainer('images/work-time.png', 'workTimes', 'manageEmployeesWorkTimeAndWorkplace'),
+                              child: _buildScrollableContainer('images/work-time.png', 'workTimes', 'manageEmployeesWorkTime'),
                             ),
                           ),
                         ),

@@ -153,7 +153,7 @@
   "profile": "Profil",
   "welcome": "Witaj",
   "loggedSuccessButNoGroups": "Udało Ci się zalogować, ale wygląda na to, że nie masz utworzonych grup. Aby utworzyć grupę, wybierz proszę przycisk znajdujący się na dole ekranu.",
-  "manageEmployeesWorkTimeAndWorkplace": "Zarządzaj czasem pracy i miejscem pracy pracowników",
+  "manageEmployeesWorkTime": "Zarządzaj czasem pracy pracowników",
   "quickUpdate": "Szybka aktualizacja",
   "quickUpdateDescription": "Zaktualizuj dzisiejszy dzień",
   "fillHoursPieceworks": "Wypełnij godziny, prace akordowe itp.",
