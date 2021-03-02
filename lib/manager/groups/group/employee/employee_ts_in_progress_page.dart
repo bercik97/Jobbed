@@ -945,18 +945,22 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                               child: DataTable(
                                 columnSpacing: 10,
                                 columns: [
-                                  DataColumn(label: textBlackBold('')),
                                   DataColumn(label: textBlackBold('No.')),
                                   DataColumn(label: textBlackBold(getTranslated(context, 'from'))),
                                   DataColumn(label: textBlackBold(getTranslated(context, 'to'))),
                                   DataColumn(label: textBlackBold(getTranslated(context, 'sum'))),
                                   DataColumn(label: textBlackBold(getTranslated(context, 'workplace'))),
+                                  DataColumn(label: textBlackBold('')),
                                 ],
                                 rows: [
                                   for (int i = 0; i < workTimes.length; i++)
                                     DataRow(
                                       cells: [
-                                        DataCell(
+                                        DataCell(text16Black((i + 1).toString())),
+                                        DataCell(text16Black(workTimes[i].startTime.toString())),
+                                        DataCell(text16Black(workTimes[i].endTime != null ? workTimes[i].endTime.toString() : '-')),
+                                        DataCell(text16Black(workTimes[i].totalTime != null ? workTimes[i].totalTime.toString() : '-')),
+                                        DataCell(text16Black(utf8.decode(workTimes[i].workplaceName.toString().runes.toList()))),        DataCell(
                                           IconButton(
                                             icon: iconRed(Icons.delete),
                                             onPressed: () {
@@ -970,11 +974,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                             },
                                           ),
                                         ),
-                                        DataCell(text16Black((i + 1).toString())),
-                                        DataCell(text16Black(workTimes[i].startTime.toString())),
-                                        DataCell(text16Black(workTimes[i].endTime != null ? workTimes[i].endTime.toString() : '-')),
-                                        DataCell(text16Black(workTimes[i].totalTime != null ? workTimes[i].totalTime.toString() : '-')),
-                                        DataCell(text16Black(utf8.decode(workTimes[i].workplaceName.toString().runes.toList()))),
                                       ],
                                     ),
                                 ],
