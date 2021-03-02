@@ -384,7 +384,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
   void _createNewEmployeeAccount() {
     showGeneralDialog(
       context: context,
-      barrierColor: WHITE.withOpacity(0.95),
+      barrierColor: WHITE,
       barrierDismissible: false,
       barrierLabel: getTranslated(context, 'createNewEmployeeAccount'),
       transitionDuration: Duration(milliseconds: 400),
@@ -409,8 +409,66 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                           getTranslated(context, 'usernameIsRequired'),
                           Icons.person,
                         ),
-                        _buildPasswordTextField(),
-                        _buildRePasswordTextField(),
+                        TextFormField(
+                          autocorrect: true,
+                          obscureText: !_passwordVisible,
+                          cursorColor: BLACK,
+                          maxLength: 60,
+                          controller: _passwordController,
+                          style: TextStyle(color: BLACK),
+                          decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+                              counterStyle: TextStyle(color: BLACK),
+                              border: OutlineInputBorder(),
+                              labelText: getTranslated(context, 'password'),
+                              prefixIcon: iconBlack(Icons.lock),
+                              suffixIcon: IconButton(
+                                icon: iconBlack(_passwordVisible ? Icons.visibility : Icons.visibility_off),
+                                onPressed: () => setState(
+                                  () => _passwordVisible = !_passwordVisible,
+                                ),
+                              ),
+                              labelStyle: TextStyle(color: BLACK)),
+                          validator: MultiValidator([
+                            RequiredValidator(
+                              errorText: getTranslated(context, 'passwordIsRequired'),
+                            ),
+                            MinLengthValidator(
+                              6,
+                              errorText: getTranslated(context, 'passwordWrongLength'),
+                            ),
+                          ]),
+                        ),
+                        SizedBox(height: 10),
+                        TextFormField(
+                          autocorrect: true,
+                          obscureText: !_rePasswordVisible,
+                          cursorColor: BLACK,
+                          maxLength: 60,
+                          style: TextStyle(color: BLACK),
+                          decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+                              counterStyle: TextStyle(color: BLACK),
+                              border: OutlineInputBorder(),
+                              labelText: getTranslated(context, 'retypedPassword'),
+                              prefixIcon: iconBlack(Icons.lock),
+                              suffixIcon: IconButton(
+                                icon: iconBlack(_rePasswordVisible ? Icons.visibility : Icons.visibility_off),
+                                onPressed: () => setState(
+                                  () => _rePasswordVisible = !_rePasswordVisible,
+                                ),
+                              ),
+                              labelStyle: TextStyle(color: BLACK)),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return getTranslated(context, 'retypeYourPassword');
+                            } else if (value != _passwordController.text) {
+                              return getTranslated(context, 'passwordAndRetypedPasswordDoNotMatch');
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 10),
                         _buildRequiredTextField(
                           _nameController,
                           26,
@@ -571,79 +629,11 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
 
   Widget _buildPasswordTextField() {
     return Column(
-      children: <Widget>[
-        TextFormField(
-          autocorrect: true,
-          obscureText: !_passwordVisible,
-          cursorColor: BLACK,
-          maxLength: 60,
-          controller: _passwordController,
-          style: TextStyle(color: BLACK),
-          decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
-              counterStyle: TextStyle(color: BLACK),
-              border: OutlineInputBorder(),
-              labelText: getTranslated(context, 'password'),
-              prefixIcon: iconBlack(Icons.lock),
-              suffixIcon: IconButton(
-                icon: iconBlack(_passwordVisible ? Icons.visibility : Icons.visibility_off),
-                onPressed: () => setState(
-                  () => _passwordVisible = !_passwordVisible,
-                ),
-              ),
-              labelStyle: TextStyle(color: BLACK)),
-          validator: MultiValidator([
-            RequiredValidator(
-              errorText: getTranslated(context, 'passwordIsRequired'),
-            ),
-            MinLengthValidator(
-              6,
-              errorText: getTranslated(context, 'passwordWrongLength'),
-            ),
-          ]),
-        ),
-        SizedBox(height: 10),
-      ],
+      children: <Widget>[],
     );
   }
 
-  Widget _buildRePasswordTextField() {
-    validate(String value) {
-      if (value.isEmpty) {
-        return getTranslated(context, 'retypeYourPassword');
-      } else if (value != _passwordController.text) {
-        return getTranslated(context, 'passwordAndRetypedPasswordDoNotMatch');
-      }
-      return null;
-    }
-
-    return Column(
-      children: <Widget>[
-        TextFormField(
-          autocorrect: true,
-          obscureText: !_rePasswordVisible,
-          cursorColor: BLACK,
-          maxLength: 60,
-          style: TextStyle(color: BLACK),
-          decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
-              counterStyle: TextStyle(color: BLACK),
-              border: OutlineInputBorder(),
-              labelText: getTranslated(context, 'retypedPassword'),
-              prefixIcon: iconBlack(Icons.lock),
-              suffixIcon: IconButton(
-                icon: iconBlack(_rePasswordVisible ? Icons.visibility : Icons.visibility_off),
-                onPressed: () => setState(
-                  () => _rePasswordVisible = !_rePasswordVisible,
-                ),
-              ),
-              labelStyle: TextStyle(color: BLACK)),
-          validator: (value) => validate(value),
-        ),
-        SizedBox(height: 10),
-      ],
-    );
-  }
+  Widget _buildRePasswordTextField() {}
 
   _handleCreateEmployeeAccountButton() {
     setState(() => _isCreateEmployeeAccountButtonTapped = true);
