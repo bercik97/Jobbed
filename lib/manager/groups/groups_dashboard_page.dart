@@ -628,14 +628,6 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
     );
   }
 
-  Widget _buildPasswordTextField() {
-    return Column(
-      children: <Widget>[],
-    );
-  }
-
-  Widget _buildRePasswordTextField() {}
-
   _handleCreateEmployeeAccountButton() {
     setState(() => _isCreateEmployeeAccountButtonTapped = true);
     if (!_isValid() || _genderRadioValue == -1) {
