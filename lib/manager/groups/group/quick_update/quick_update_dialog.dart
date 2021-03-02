@@ -44,9 +44,15 @@ class QuickUpdateDialog {
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Center(child: text17BlackBold(getTranslated(context, 'quickUpdateOfTodayDate') + ' $formattedDate')),
+                Padding(
+                  padding: const EdgeInsets.only(left: 30, right: 30),
+                  child: Center(child: textCenter19Black(getTranslated(context, 'quickUpdateOfTodayDate') + ' $formattedDate')),
+                ),
                 SizedBox(height: 5),
-                Center(child: text16Black(getTranslated(context, 'updateDataForAllEmployeesOfGroup'))),
+                Padding(
+                  padding: const EdgeInsets.only(left: 30, right: 30),
+                  child: Center(child: textCenter15Black(getTranslated(context, 'updateDataForAllEmployeesOfGroup'))),
+                ),
                 SizedBox(height: 30),
                 Buttons.standardButton(
                   minWidth: 200.0,
