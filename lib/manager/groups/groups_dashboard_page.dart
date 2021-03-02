@@ -538,6 +538,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                               onChanged: (value) {
                                 setState(() {
                                   _nationality = value;
+                                  FocusScope.of(context).unfocus();
                                   _isErrorMsgOfNationalityShouldBeShow = false;
                                 });
                               },
