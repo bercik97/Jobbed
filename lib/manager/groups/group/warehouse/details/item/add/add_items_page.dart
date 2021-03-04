@@ -275,6 +275,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
       setState(() => _isAddButtonTapped = false);
       return;
     }
+    _itemsToAdd.forEach((element) { element.warehouseId = _warehouseDto.id; });
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _itemService.create(_itemsToAdd).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

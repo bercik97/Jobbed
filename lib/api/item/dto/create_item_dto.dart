@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class CreateItemDto {
-  final int warehouseId;
+  int warehouseId;
   final String name;
   final int quantity;
 
@@ -13,7 +13,7 @@ class CreateItemDto {
 
   static Map<String, dynamic> jsonEncode(CreateItemDto dto) {
     Map<String, dynamic> map = new Map();
-    map['id'] = dto.warehouseId;
+    map['warehouseId'] = dto.warehouseId;
     map['name'] = dto.name;
     map['quantity'] = dto.quantity;
     return map;
