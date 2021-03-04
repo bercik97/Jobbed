@@ -151,7 +151,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                         _checked.forEach((b) => l.add(value));
                         _checked = l;
                         if (value) {
-                          _selectedNames.addAll(_filteredItems.map((e) => e.name));
+                          _selectedNames.addAll(_filteredItems.map((e) => utf8.decode(e.name.runes.toList())));
                           _selectedItems.addAll(_filteredItems);
                         } else {
                           _selectedNames.clear();
@@ -250,7 +250,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                                               setState(() {
                                                 _checked[foundIndex] = value;
                                                 if (value) {
-                                                  _selectedNames.add(_items[foundIndex].name);
+                                                  _selectedNames.add(utf8.decode(_items[foundIndex].name.runes.toList()));
                                                   _selectedItems.add(_items[foundIndex]);
                                                 } else {
                                                   _selectedNames.remove(_items[foundIndex].name);
