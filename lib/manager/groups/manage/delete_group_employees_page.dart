@@ -76,7 +76,7 @@ class _DeleteGroupEmployeesPageState extends State<DeleteGroupEmployeesPage> {
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xffFFFFFF, WHITE_RGBO)),
+        theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: WHITE,

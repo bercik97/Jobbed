@@ -8,7 +8,7 @@ MaterialApp loader(AppBar appBar) {
   return MaterialApp(
     debugShowCheckedModeBanner: false,
     title: APP_NAME,
-    theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, WHITE_RGBO)),
+    theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
     home: Scaffold(
       backgroundColor: WHITE,
       appBar: appBar,
