@@ -90,7 +90,7 @@ class _MyAppState extends State<MyApp> {
     if (_locale == null) {
       return Container(child: Center(child: CircularProgressIndicator()));
     } else {
-      final appcastURL = 'https://jobbed.pl/mobile-app/appcast.xml';
+      final appcastURL = 'https://jobbed.pl/appcast.xml';
       final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ['android']);
       return MaterialApp(
         title: APP_NAME,
