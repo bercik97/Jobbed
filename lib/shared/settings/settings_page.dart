@@ -269,7 +269,7 @@ class _SettingsPageState extends State<SettingsPage> {
               margin: EdgeInsets.only(left: 25),
               alignment: Alignment.centerLeft,
               height: 30,
-              child: text13Black(getTranslated(context, 'version') + ': 1.0.0'),
+              child: text13Black(getTranslated(context, 'version') + ': 1.0.1'),
             ),
             _titleContainer(getTranslated(context, 'followUs')),
             _socialMediaInkWell('https://www.jobbed.pl', 'Jobbed', 'images/logo.png'),
