@@ -64,11 +64,8 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     void _changeLanguage(Language language, BuildContext context) async {
-      showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
       Locale _temp = await setLocale(language.languageCode);
-      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        MyApp.setLocale(context, _temp);
-      });
+      MyApp.setLocale(context, _temp);
     }
 
     return MaterialApp(

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/main.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
@@ -39,12 +38,9 @@ class _GetStartedPageState extends State<GetStartedPage> {
   @override
   Widget build(BuildContext context) {
     void _changeLanguage(Language language, BuildContext context) async {
-      showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
       Locale _temp = await setLocale(language.languageCode);
-      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        MyApp.setLocale(context, _temp);
-        setState(() => _selectedLanguage = language);
-      });
+      MyApp.setLocale(context, _temp);
+      setState(() => _selectedLanguage = language);
     }
 
     return Scaffold(
