@@ -643,5 +643,8 @@
   "selectedWorkplacesRemoved": "Selected workplaces has been removed",
   "deleteGroupConfirmation": "Are you sure you want to delete selected group?",
   "generateExcelForWorkTimesConfirmation": "Are you sure you want to generate excel file for selected date?",
-  "workTime": "Work time"
+  "workTime": "Work time",
+  "deletingWork": "Deleting work",
+  "deleteWorkConfirmation": "Are you sure you want to delete all work time for selected employees?",
+  "workHasBeenSuccessfullyDeleted": "Work has been successfully deleted!"
 }

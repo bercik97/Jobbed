@@ -643,5 +643,8 @@
   "selectedWorkplacesRemoved": "არჩეული სამუშაო ადგილები ამოღებულია",
   "deleteGroupConfirmation": "დარწმუნებული ხართ, რომ გსურთ წაშალოთ შერჩეული ჯგუფი?",
   "generateExcelForWorkTimesConfirmation": "დარწმუნებული ხართ, რომ გსურთ Excel ფაილის შექმნა შერჩეული თარიღისთვის?",
-  "workTime": "სამუშაო დრო"
+  "workTime": "სამუშაო დრო",
+  "deletingWork": "სამუშაოების წაშლა",
+  "deleteWorkConfirmation": "დარწმუნებული ხართ, რომ გსურთ წაშალოთ მთელი სამუშაო დრო შერჩეული თანამშრომლებისთვის?",
+  "workHasBeenSuccessfullyDeleted": "სამუშაო წარმატებით წაიშალა!"
 }

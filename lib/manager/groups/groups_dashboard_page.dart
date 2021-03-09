@@ -254,7 +254,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                                     DialogUtil.showConfirmationDialog(
                                       context: this.context,
                                       title: getTranslated(this.context, 'confirmation'),
-                                      content: 'Are you sure you want to delete selected group? ($groupName)',
+                                      content: getTranslated(this.context, 'deleteGroupConfirmation') + ' ($groupName)',
                                       isBtnTapped: _isDeleteGroupButtonTapped,
                                       fun: () => _isDeleteGroupButtonTapped ? null : _handleDeleteGroup(groupName),
                                     );

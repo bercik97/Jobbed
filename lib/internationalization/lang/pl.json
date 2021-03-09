@@ -643,5 +643,8 @@
   "selectedWorkplacesRemoved": "Wybrane miejsca pracy zostały usunięte",
   "deleteGroupConfirmation": "Czy na pewno chcesz usunąć wybraną grupę?",
   "generateExcelForWorkTimesConfirmation": "Czy na pewno chcesz wygenerować plik excel dla wybranej daty?",
-  "workTime": "Czas pracy"
+  "workTime": "Czas pracy",
+  "deletingWork": "Usuwanie pracy",
+  "deleteWorkConfirmation": "Czy na pewno chcesz usunąć cały czas pracy dla wybranych pracowników?",
+  "workHasBeenSuccessfullyDeleted": "Czas pracy został pomyślnie usunięty!"
 }

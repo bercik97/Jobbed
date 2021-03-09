@@ -643,5 +643,8 @@
   "selectedWorkplacesRemoved": "Вибрані робочі місця було видалено",
   "deleteGroupConfirmation": "Ви впевнені, що хочете видалити вибрану групу?",
   "generateExcelForWorkTimesConfirmation": "Ви впевнені, що хочете створити файл Excel на вибрану дату?",
-  "workTime": "робочий час"
+  "workTime": "робочий час",
+  "deletingWork": "Видалення роботи",
+  "deleteWorkConfirmation": "Ви впевнені, що хочете видалити весь робочий час для вибраних працівників?",
+  "workHasBeenSuccessfullyDeleted": "Робота успішно видалена!"
 }

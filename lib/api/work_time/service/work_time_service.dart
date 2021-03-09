@@ -120,4 +120,15 @@ class WorkTimeService {
       return Future.error(res.body);
     }
   }
+
+  Future<dynamic> deleteByEmployeeIdsAndFromDateToDate(List<String> employeeIds, String dateFrom, String dateTo) async {
+    Response res = await delete('$_url/employees/$employeeIds?date_from=$dateFrom&date_to=$dateTo', headers: _headers);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return LogoutUtil.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
 }

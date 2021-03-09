@@ -6,6 +6,7 @@ import 'package:date_util/date_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
+import 'package:intl/intl.dart';
 import 'package:jobbed/api/employee/dto/employee_work_time_dto.dart';
 import 'package:jobbed/api/employee/service/employee_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
@@ -33,9 +34,7 @@ import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
 import 'package:jobbed/shared/widget/loader.dart';
 import 'package:jobbed/shared/widget/radio_button.dart';
 import 'package:jobbed/shared/widget/texts.dart';
-import 'package:intl/intl.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
-import 'package:shimmer/shimmer.dart';
 
 class WorkTimePage extends StatefulWidget {
   final GroupModel _model;
@@ -67,6 +66,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
   int _chosenIndex = -1;
   bool _isChoseWorkplaceBtnDisabled = true;
   bool _isPauseButtonTapped = false;
+  bool _isDeleteWorkButtonTapped = false;
 
   bool _loading = false;
 
@@ -329,6 +329,25 @@ class _WorkTimePageState extends State<WorkTimePage> {
                   ),
                 ),
                 SizedBox(width: 1),
+                Expanded(
+                  child: MaterialButton(
+                    color: BLUE,
+                    child: Row(
+                      children: [
+                        Image(image: AssetImage('images/white-hours.png')),
+                        iconRed(Icons.close),
+                      ],
+                    ),
+                    onPressed: () {
+                      if (_selectedIds.isEmpty) {
+                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                        return;
+                      }
+                      _showDeleteWorkDialog(_selectedIds);
+                    },
+                  ),
+                ),
+                SizedBox(width: 1),
               ],
             ),
           ),
@@ -340,6 +359,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
             IconsLegendUtil.buildImageRow('images/hours.png', getTranslated(context, 'manualSettingOfWorkingTimes')),
             IconsLegendUtil.buildImageRow('images/play.png', getTranslated(context, 'startingWork')),
             IconsLegendUtil.buildImageRow('images/stop.png', getTranslated(context, 'stoppingWork')),
+            IconsLegendUtil.buildImageWithIconRow('images/hours.png', iconRed(Icons.close), getTranslated(context, 'deletingWork')),
           ],
         ),
       ),
@@ -767,6 +787,55 @@ class _WorkTimePageState extends State<WorkTimePage> {
         setState(() => _isPauseButtonTapped = false);
       });
     });
+  }
+
+  void _showDeleteWorkDialog(LinkedHashSet<int> selectedIds) async {
+    DateTime now = new DateTime.now();
+    int year = now.year;
+    int month = now.month;
+    int days = DateUtil().daysInMonth(month, year);
+    final List<DateTime> picked = await DateRagePicker.showDatePicker(
+      context: context,
+      initialFirstDate: new DateTime(year, month, 1),
+      initialLastDate: new DateTime(year, month, days),
+      firstDate: new DateTime(year, month, 1),
+      lastDate: new DateTime(year, month, days),
+    );
+    if (picked != null && picked.length == 1) {
+      picked.add(picked[0]);
+    }
+    if (picked != null && picked.length == 2) {
+      String dateFrom = DateFormat('yyyy-MM-dd').format(picked[0]);
+      String dateTo = DateFormat('yyyy-MM-dd').format(picked[1]);
+      DialogUtil.showConfirmationDialog(
+        context: this.context,
+        title: getTranslated(this.context, 'confirmation'),
+        content: getTranslated(this.context, 'deleteWorkConfirmation') + ' $dateFrom - $dateTo)',
+        isBtnTapped: _isDeleteWorkButtonTapped,
+        fun: () => _isDeleteWorkButtonTapped ? null : _handleDeleteWork(dateFrom, dateTo),
+      );
+    }
+  }
+
+  _handleDeleteWork(String dateFrom, String dateTo) {
+    setState(() => _isDeleteWorkButtonTapped = true);
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _workTimeService.deleteByEmployeeIdsAndFromDateToDate(_selectedIds.map((el) => el.toString()).toList(), dateFrom, dateTo).then((value) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        _uncheckAll();
+        _refresh();
+        Navigator.pop(context);
+        setState(() => _isDeleteWorkButtonTapped = false);
+        ToastUtil.showSuccessToast(getTranslated(context, 'workHasBeenSuccessfullyDeleted'));
+      });
+    }).catchError(
+      (onError) {
+        Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+          DialogUtil.showErrorDialog(this.context, getTranslated(this.context, 'somethingWentWrong'));
+          setState(() => _isDeleteWorkButtonTapped = false);
+        });
+      },
+    );
   }
 
   Widget _handleWorkStatus(MainAxisAlignment alignment, String workStatus, String workplace, String workplaceCode) {
