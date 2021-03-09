@@ -173,7 +173,7 @@ packages:
       name: flutter_cache_manager
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.1"
+    version: "2.1.2"
   flutter_cached_pdfview:
     dependency: "direct main"
     description:
@@ -648,14 +648,14 @@ packages:
       name: syncfusion_flutter_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "18.4.46"
+    version: "18.4.47"
   syncfusion_flutter_sliders:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_sliders
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "18.4.46-beta"
+    version: "18.4.47-beta"
   synchronized:
     dependency: transitive
     description:
