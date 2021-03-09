@@ -29,13 +29,13 @@ Locale _locale(String languageCode) {
     case POLISH: _temp = Locale(languageCode, 'PL'); break;
     case RUSSIAN: _temp = Locale(languageCode, 'RU'); break;
     case UKRAINIAN: _temp = Locale(languageCode, 'UA'); break;
-    default: _temp = Locale(ENGLISH, 'EN');
+    default: _temp = Locale(POLISH, 'PL');
   }
   return _temp;
 }
 
 Future<Locale> getLocale() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  String languageCode = _prefs.getString(LANGUAGE_CODE) ?? ENGLISH;
+  String languageCode = _prefs.getString(LANGUAGE_CODE) ?? POLISH;
   return _locale(languageCode);
 }

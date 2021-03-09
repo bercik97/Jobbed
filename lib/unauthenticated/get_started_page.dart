@@ -24,7 +24,7 @@ class _GetStartedPageState extends State<GetStartedPage> {
   @override
   void initState() {
     _dropdownMenuItems = buildDropdownMenuItems(_languages);
-    _selectedLanguage = _dropdownMenuItems[0].value;
+    _selectedLanguage = _dropdownMenuItems[2].value;
     super.initState();
   }
 
