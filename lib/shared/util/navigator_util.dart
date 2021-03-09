@@ -14,4 +14,8 @@ class NavigatorUtil {
   static void navigateReplacement(BuildContext context, StatefulWidget widget) {
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => widget));
   }
+
+  static void navigatePushAndRemoveUntil(BuildContext context, StatefulWidget widget) {
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => widget), (e) => false);
+  }
 }

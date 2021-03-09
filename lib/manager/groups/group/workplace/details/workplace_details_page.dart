@@ -304,7 +304,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                           ).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               ToastUtil.showSuccessToast(getTranslated(context, 'workplaceUpdatedSuccessfully'));
-                              NavigatorUtil.navigate(context, WorkplacesPage(_model));
+                              NavigatorUtil.navigatePushAndRemoveUntil(context, WorkplacesPage(_model));
                             });
                           }).catchError((onError) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

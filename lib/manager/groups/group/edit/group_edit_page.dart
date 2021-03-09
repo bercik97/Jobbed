@@ -6,14 +6,15 @@ import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:jobbed/api/group/service/group_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/groups/groups_dashboard_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
-import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
@@ -177,8 +178,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
                           _groupService.update(_model.groupId, {'name': name}).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               ToastUtil.showSuccessToast(getTranslated(context, 'groupNameUpdatedSuccessfully'));
-                              _model.groupName = name;
-                              NavigatorUtil.navigate(context, GroupPage(_model));
+                              NavigatorUtil.navigatePushAndRemoveUntil(context, GroupsDashboardPage(_user));
                             });
                           }).catchError((onError) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
@@ -282,8 +282,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
                           _groupService.update(_model.groupId, {'description': description}).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               ToastUtil.showSuccessToast(getTranslated(context, 'groupDescriptionUpdatedSuccessfully'));
-                              _model.groupDescription = description;
-                              NavigatorUtil.navigate(context, GroupPage(_model));
+                              NavigatorUtil.navigatePushAndRemoveUntil(context, GroupsDashboardPage(_user));
                             });
                           }).catchError((onError) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
