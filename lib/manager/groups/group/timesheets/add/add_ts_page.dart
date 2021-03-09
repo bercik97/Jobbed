@@ -87,7 +87,7 @@ class _AddTsPageState extends State<AddTsPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: WHITE,
-          appBar: managerAppBar(context, _user, utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'), () => NavigatorUtil.navigate(this.context, TsPage(_model))),
+          appBar: managerAppBar(context, _user, utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'), () => NavigatorUtil.navigateReplacement(this.context, TsPage(_model))),
           body: WillPopScope(
             onWillPop: () => NavigatorUtil.onWillPopNavigate(context, TsPage(_model)),
             child: AlertDialog(

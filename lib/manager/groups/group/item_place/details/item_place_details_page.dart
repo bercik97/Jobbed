@@ -70,7 +70,7 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.navigate(context, ItemPlacesPage(_model))));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.navigateReplacement(context, ItemPlacesPage(_model))));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -79,7 +79,7 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: WHITE,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'itemPlaceDetails'), () => NavigatorUtil.navigate(context, ItemPlacesPage(_model))),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'itemPlaceDetails'), () => NavigatorUtil.navigateReplacement(context, ItemPlacesPage(_model))),
           body: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(

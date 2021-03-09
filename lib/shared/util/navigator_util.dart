@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class NavigatorUtil {
   static Future<bool> onWillPopNavigate(BuildContext context, StatefulWidget page) async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => page));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => page));
     return false;
   }
 

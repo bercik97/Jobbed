@@ -17,7 +17,6 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '../../shared/manager_app_bar.dart';
 import '../groups_dashboard_page.dart';
@@ -52,7 +51,7 @@ class _GroupPageState extends State<GroupPage> {
             context,
             _user,
             getTranslated(context, 'group'),
-            () => NavigatorUtil.navigate(context, GroupsDashboardPage(_user)),
+            () => NavigatorUtil.navigateReplacement(context, GroupsDashboardPage(_user)),
           ),
           body: SafeArea(
             child: SingleChildScrollView(

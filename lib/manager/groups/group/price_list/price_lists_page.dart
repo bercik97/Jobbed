@@ -77,7 +77,7 @@ class _PriceListsPageState extends State<PriceListsPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.navigate(context, GroupPage(_model))));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.navigateReplacement(context, GroupPage(_model))));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -86,7 +86,7 @@ class _PriceListsPageState extends State<PriceListsPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: WHITE,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'priceList'), () => NavigatorUtil.navigate(context, GroupPage(_model))),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'priceList'), () => NavigatorUtil.navigateReplacement(context, GroupPage(_model))),
           body: Padding(
             padding: const EdgeInsets.only(left: 12, right: 12),
             child: Column(

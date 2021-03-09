@@ -23,7 +23,7 @@ AppBar managerAppBar(BuildContext context, User user, String title, Function() f
         padding: EdgeInsets.only(right: 10),
         child: IconButton(
           icon: iconBlack(Icons.arrow_back_ios),
-          onPressed: () => NavigatorUtil.navigate(context, GroupsDashboardPage(user)),
+          onPressed: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => GroupsDashboardPage(user)), (e) => false),
         ),
       ),
       Padding(

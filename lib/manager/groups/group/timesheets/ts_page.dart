@@ -84,7 +84,7 @@ class _TsPageState extends State<TsPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading'), () => NavigatorUtil.navigate(context, GroupPage(_model))));
+      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading'), () => NavigatorUtil.navigateReplacement(context, GroupPage(_model))));
     }
     return WillPopScope(
       child: MaterialApp(
@@ -97,7 +97,7 @@ class _TsPageState extends State<TsPage> {
             context,
             _model.user,
             utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
-            () => NavigatorUtil.navigate(context, GroupPage(_model)),
+            () => NavigatorUtil.navigateReplacement(context, GroupPage(_model)),
           ),
           body: SingleChildScrollView(
             child: Column(

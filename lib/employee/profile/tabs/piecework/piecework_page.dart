@@ -12,8 +12,8 @@ import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
-import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/loader.dart';
 import 'package:jobbed/shared/widget/texts.dart';
@@ -64,7 +64,9 @@ class _PieceworkPageState extends State<PieceworkPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.navigate(context, EmployeeProfilePage(_user))));
+      return loader(
+        employeeAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.navigateReplacement(context, EmployeeProfilePage(_user))),
+      );
     }
     return WillPopScope(
       child: MaterialApp(
@@ -73,7 +75,12 @@ class _PieceworkPageState extends State<PieceworkPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: WHITE,
-          appBar: employeeAppBar(context, _user, getTranslated(context, 'piecework') + ' / ' + _todayDate, () => NavigatorUtil.navigate(context, EmployeeProfilePage(_user))),
+          appBar: employeeAppBar(
+            context,
+            _user,
+            getTranslated(context, 'piecework') + ' / ' + _todayDate,
+            () => NavigatorUtil.navigateReplacement(context, EmployeeProfilePage(_user)),
+          ),
           body: Padding(
             padding: EdgeInsets.all(12),
             child: _pieceworks.isEmpty ? _handleEmptyData(context) : _handleData(context),

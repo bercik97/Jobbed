@@ -61,7 +61,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
 
   final Map<String, TextEditingController> _textEditingItemControllers = new Map();
 
-  List<PriceListDto> _pricelists = new List();
+  List<PriceListDto> _priceLists = new List();
 
   Map<String, int> serviceWithQuantity = new LinkedHashMap();
 
@@ -85,8 +85,8 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
     _loading = true;
     _priceListService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
-        _pricelists = res;
-        _pricelists.forEach((i) => _textEditingItemControllers[utf8.decode(i.name.runes.toList())] = new TextEditingController());
+        _priceLists = res;
+        _priceLists.forEach((i) => _textEditingItemControllers[utf8.decode(i.name.runes.toList())] = new TextEditingController());
         _loading = false;
       });
     }).catchError((onError) => DialogUtil.showFailureDialogWithWillPopScope(context, getTranslated(context, 'noPriceList'), TsInProgressPage(_model, _timeSheet)));
@@ -142,7 +142,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
                 ),
                 Column(
                   children: [
-                    for (var priceList in _pricelists)
+                    for (var priceList in _priceLists)
                       Card(
                         color: WHITE,
                         child: Column(

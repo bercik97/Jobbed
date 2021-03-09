@@ -50,7 +50,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
             context,
             _model.user,
             getTranslated(context, 'editGroup'),
-            () => NavigatorUtil.navigate(context, GroupPage(_model)),
+            () => NavigatorUtil.navigateReplacement(context, GroupPage(_model)),
           ),
           body: SingleChildScrollView(
             child: Center(

@@ -72,7 +72,12 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
             backgroundColor: WHITE,
-            appBar: employeeAppBar(context, _user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, _timesheet.status), () => Navigator.pop(context)),
+            appBar: employeeAppBar(
+              context,
+              _user,
+              getTranslated(context, 'workdays') + ' - ' + getTranslated(context, _timesheet.status),
+              () => Navigator.pop(context),
+            ),
             body: RefreshIndicator(
               color: WHITE,
               backgroundColor: BLUE,

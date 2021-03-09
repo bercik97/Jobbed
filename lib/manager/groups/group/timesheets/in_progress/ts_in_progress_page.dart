@@ -114,7 +114,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
             context,
             _model.user,
             utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
-            () => NavigatorUtil.navigate(context, TsPage(_model)),
+            () => NavigatorUtil.navigateReplacement(context, TsPage(_model)),
           ),
           body: RefreshIndicator(
             color: WHITE,

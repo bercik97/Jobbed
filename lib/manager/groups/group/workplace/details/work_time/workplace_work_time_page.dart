@@ -52,7 +52,7 @@ class _WorkplaceWorkTimePageState extends State<WorkplaceWorkTimePage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: WHITE,
-        appBar: managerAppBar(context, _user, getTranslated(context, 'workingTime'), () => NavigatorUtil.navigate(context, WorkplaceDetailsPage(_model, _workplaceDto))),
+        appBar: managerAppBar(context, _user, getTranslated(context, 'workingTime'), () => NavigatorUtil.navigateReplacement(context, WorkplaceDetailsPage(_model, _workplaceDto))),
         body: SingleChildScrollView(
           child: Column(
             children: [

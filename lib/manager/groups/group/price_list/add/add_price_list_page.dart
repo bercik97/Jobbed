@@ -65,7 +65,7 @@ class _AddPriceListPageState extends State<AddPriceListPage> {
           debugShowCheckedModeBanner: false,
           home: Scaffold(
             backgroundColor: WHITE,
-            appBar: managerAppBar(context, _user, getTranslated(context, 'createPriceList'), () => NavigatorUtil.navigate(context, PriceListsPage(_model))),
+            appBar: managerAppBar(context, _user, getTranslated(context, 'createPriceList'), () => NavigatorUtil.navigateReplacement(context, PriceListsPage(_model))),
             body: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Form(

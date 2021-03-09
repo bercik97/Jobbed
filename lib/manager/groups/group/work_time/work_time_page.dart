@@ -110,7 +110,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.navigate(context, GroupPage(_model))));
+      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.navigateReplacement(context, GroupPage(_model))));
     }
     return MaterialApp(
       title: APP_NAME,
@@ -118,7 +118,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: WHITE,
-        appBar: managerAppBar(context, _user, getTranslated(context, 'workTimes'), () => NavigatorUtil.navigate(context, GroupPage(_model))),
+        appBar: managerAppBar(context, _user, getTranslated(context, 'workTimes'), () => NavigatorUtil.navigateReplacement(context, GroupPage(_model))),
         body: Column(
           children: <Widget>[
             Container(
