@@ -271,7 +271,7 @@ class _SettingsPageState extends State<SettingsPage> {
             _titleContainer(getTranslated(context, 'followUs')),
             _socialMediaInkWell('https://www.jobbed.pl', 'Jobbed', 'images/logo.png'),
             _titleContainer(getTranslated(context, 'graphics')),
-            _socialMediaInkWell('https://plumko.business.site/ ', 'Plumko', 'images/plumko.png'),
+            _socialMediaInkWell('https://plumko.business.site', 'Plumko', 'images/plumko.png'),
           ],
         ),
       ),
