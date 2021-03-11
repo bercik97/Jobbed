@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:jobbed/api/employee/dto/employee_calendar_dto.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
-import 'package:jobbed/manager/groups/group/calendar/edit_calendar_page.dart';
 import 'package:jobbed/manager/groups/group/group_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
@@ -14,16 +13,18 @@ import 'package:jobbed/shared/widget/buttons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class CalendarPage extends StatefulWidget {
+import 'edit/edit_schedule_page.dart';
+
+class SchedulePage extends StatefulWidget {
   final GroupModel _model;
 
-  CalendarPage(this._model);
+  SchedulePage(this._model);
 
   @override
-  _CalendarPageState createState() => _CalendarPageState();
+  _SchedulePageState createState() => _SchedulePageState();
 }
 
-class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMixin {
+class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMixin {
   GroupModel _model;
   User _user;
 
@@ -78,7 +79,7 @@ class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMix
                 minWidth: 200.0,
                 color: BLUE,
                 title: getTranslated(context, 'scheduleEditMode'),
-                fun: () => NavigatorUtil.navigate(context, EditCalendarPage(_model)),
+                fun: () => NavigatorUtil.navigate(context, EditSchedulePage(_model)),
               ),
               _buildTableCalendarWithBuilders(),
               Expanded(child: _buildEventList()),

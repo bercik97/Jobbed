@@ -7,8 +7,9 @@ import 'package:jobbed/api/employee/dto/employee_basic_dto.dart';
 import 'package:jobbed/api/employee/service/employee_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
-import 'package:jobbed/manager/groups/group/calendar/edit_calendar_page.dart';
+import 'package:jobbed/manager/groups/group/schedule/edit/edit_schedule_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
+import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
@@ -17,23 +18,21 @@ import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/loader.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
-import '../../../../../shared/widget/loader.dart';
-import '../../../../shared/manager_app_bar.dart';
-
-class EditCalendarEmployeesPage extends StatefulWidget {
+class EditScheduleEmployeesPage extends StatefulWidget {
   final GroupModel _model;
   final Set<String> _yearsWithMonths;
   final bool _isAddAction;
 
-  EditCalendarEmployeesPage(this._model, this._yearsWithMonths, this._isAddAction);
+  EditScheduleEmployeesPage(this._model, this._yearsWithMonths, this._isAddAction);
 
   @override
-  _EditCalendarEmployeesPageState createState() => _EditCalendarEmployeesPageState();
+  _EditScheduleEmployeesPageState createState() => _EditScheduleEmployeesPageState();
 }
 
-class _EditCalendarEmployeesPageState extends State<EditCalendarEmployeesPage> {
+class _EditScheduleEmployeesPageState extends State<EditScheduleEmployeesPage> {
   GroupModel _model;
   User _user;
   Set<String> _yearsWithMonths;
@@ -67,7 +66,7 @@ class _EditCalendarEmployeesPageState extends State<EditCalendarEmployeesPage> {
         _filteredEmployees = _employees;
         _loading = false;
       });
-    }).catchError((onError) => DialogUtil.showFailureDialogWithWillPopScopeByDoublePopNavigator(context, getTranslated(context, 'noEmployeesWhoHaveTsForSelectedDaysFromSelectedMonthsAndYears') + ' $_yearsWithMonths', EditCalendarPage(_model)));
+    }).catchError((onError) => DialogUtil.showFailureDialogWithWillPopScopeByDoublePopNavigator(context, getTranslated(context, 'noEmployeesWhoHaveTsForSelectedDaysFromSelectedMonthsAndYears') + ' $_yearsWithMonths', EditSchedulePage(_model)));
   }
 
   @override
@@ -197,7 +196,7 @@ class _EditCalendarEmployeesPageState extends State<EditCalendarEmployeesPage> {
           bottomNavigationBar: _buildBottomNavigationBar(),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EditCalendarPage(_model)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EditSchedulePage(_model)),
     );
   }
 

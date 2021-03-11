@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:jobbed/api/employee/dto/employee_calendar_dto.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
-import 'package:jobbed/manager/groups/group/calendar/calendar_page.dart';
-import 'package:jobbed/manager/groups/group/calendar/employees/edit_calendar_employees_page.dart';
+import 'package:jobbed/manager/groups/group/schedule/schedule_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
@@ -17,16 +16,18 @@ import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class EditCalendarPage extends StatefulWidget {
+import 'employees/edit_schedule_employees_page.dart';
+
+class EditSchedulePage extends StatefulWidget {
   final GroupModel _model;
 
-  EditCalendarPage(this._model);
+  EditSchedulePage(this._model);
 
   @override
-  _EditCalendarPageState createState() => _EditCalendarPageState();
+  _EditSchedulePageState createState() => _EditSchedulePageState();
 }
 
-class _EditCalendarPageState extends State<EditCalendarPage> with TickerProviderStateMixin {
+class _EditSchedulePageState extends State<EditSchedulePage> with TickerProviderStateMixin {
   GroupModel _model;
   User _user;
 
@@ -76,7 +77,7 @@ class _EditCalendarPageState extends State<EditCalendarPage> with TickerProvider
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: WHITE,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'editMode'), () => NavigatorUtil.navigateReplacement(context, CalendarPage(_model))),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'editMode'), () => Navigator.pop(context)),
           body: Column(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
@@ -116,7 +117,7 @@ class _EditCalendarPageState extends State<EditCalendarPage> with TickerProvider
                       onPressed: () {
                         if (_selectedDays.isNotEmpty) {
                           Set<String> yearsWithMonths = _buildYearsWithMonthsFromSelectedDays();
-                          NavigatorUtil.navigate(context, EditCalendarEmployeesPage(_model, yearsWithMonths, true));
+                          NavigatorUtil.navigate(context, EditScheduleEmployeesPage(_model, yearsWithMonths, true));
                         } else {
                           showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
                         }
@@ -137,7 +138,7 @@ class _EditCalendarPageState extends State<EditCalendarPage> with TickerProvider
                       onPressed: () {
                         if (_selectedDays.isNotEmpty) {
                           Set<String> yearsWithMonths = _buildYearsWithMonthsFromSelectedDays();
-                          NavigatorUtil.navigate(context, EditCalendarEmployeesPage(_model, yearsWithMonths, false));
+                          NavigatorUtil.navigate(context, EditScheduleEmployeesPage(_model, yearsWithMonths, false));
                         } else {
                           showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
                         }
@@ -159,7 +160,7 @@ class _EditCalendarPageState extends State<EditCalendarPage> with TickerProvider
           ),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, CalendarPage(_model)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, SchedulePage(_model)),
     );
   }
 
