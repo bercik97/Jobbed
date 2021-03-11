@@ -8,7 +8,11 @@ import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/hint.dart';
+import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -96,6 +100,56 @@ class _EditCalendarPageState extends State<EditCalendarPage> with TickerProvider
               ),
               _buildTableCalendarWithBuilders(),
               Expanded(child: _buildEventList()),
+            ],
+          ),
+          bottomNavigationBar: SafeArea(
+            child: Container(
+              height: 40,
+              child: Row(
+                children: <Widget>[
+                  SizedBox(width: 1),
+                  Expanded(
+                    child: MaterialButton(
+                      color: BLUE,
+                      child: Image(image: AssetImage('images/white-note.png')),
+                      onPressed: () {
+                        if (_selectedDays.isNotEmpty) {
+                        } else {
+                          showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 1),
+                  Expanded(
+                    child: MaterialButton(
+                      color: BLUE,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image(image: AssetImage('images/white-note.png')),
+                          iconRed(Icons.close),
+                        ],
+                      ),
+                      onPressed: () {
+                        if (_selectedDays.isNotEmpty) {
+                        } else {
+                          showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 1),
+                ],
+              ),
+            ),
+          ),
+          floatingActionButton: iconsLegendDialog(
+            context,
+            getTranslated(context, 'iconsLegend'),
+            [
+              IconsLegendUtil.buildImageRow('images/note.png', getTranslated(context, 'settingNote')),
+              IconsLegendUtil.buildImageWithIconRow('images/note.png', iconRed(Icons.close), getTranslated(context, 'deletingNote')),
             ],
           ),
         ),

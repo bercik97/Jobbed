@@ -651,5 +651,6 @@
   "checkSchedule": "Sprawdź harmonogram",
   "editMode": "Tryb edycji",
   "scheduleEditMode": "Edycja harmonogramu",
-  "scheduleEditModeHint": "Podpowiedź: Zaznacz dni, a następnie wybierz przycisk dodawania lub usuwania notatki na dole aby dokonać edycji harmonogramu"
+  "scheduleEditModeHint": "Podpowiedź: Zaznacz dni, a następnie wybierz przycisk dodawania lub usuwania notatki na dole aby dokonać edycji harmonogramu",
+  "deletingNote": "Usuwanie notatki"
 }
