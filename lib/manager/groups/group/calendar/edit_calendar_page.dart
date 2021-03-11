@@ -2,28 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:jobbed/api/employee/dto/employee_calendar_dto.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
-import 'package:jobbed/manager/groups/group/calendar/edit_calendar_page.dart';
-import 'package:jobbed/manager/groups/group/group_page.dart';
+import 'package:jobbed/manager/groups/group/calendar/calendar_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
-import 'package:jobbed/shared/widget/buttons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class CalendarPage extends StatefulWidget {
+class EditCalendarPage extends StatefulWidget {
   final GroupModel _model;
 
-  CalendarPage(this._model);
+  EditCalendarPage(this._model);
 
   @override
-  _CalendarPageState createState() => _CalendarPageState();
+  _EditCalendarPageState createState() => _EditCalendarPageState();
 }
 
-class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMixin {
+class _EditCalendarPageState extends State<EditCalendarPage> with TickerProviderStateMixin {
   GroupModel _model;
   User _user;
 
@@ -32,6 +30,9 @@ class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMix
   DateTime _selectedDay = DateTime.now();
   AnimationController _animationController;
   CalendarController _calendarController = new CalendarController();
+
+  Set<DateTime> _selectedDays = new Set();
+  bool _isEntered = true;
 
   @override
   void initState() {
@@ -70,15 +71,28 @@ class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMix
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: WHITE,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'schedule'), () => Navigator.pop(context)),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'editMode'), () => Navigator.pop(context)),
           body: Column(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              Buttons.standardButton(
-                minWidth: 200.0,
-                color: BLUE,
-                title: getTranslated(context, 'scheduleEditMode'),
-                fun: () => NavigatorUtil.navigate(context, EditCalendarPage(_model)),
+              Container(
+                padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        children: [
+                          text20OrangeBold(getTranslated(context, 'scheduleEditMode')),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5, right: 15),
+                      child: textGreen(getTranslated(context, 'scheduleEditModeHint')),
+                    ),
+                  ],
+                ),
               ),
               _buildTableCalendarWithBuilders(),
               Expanded(child: _buildEventList()),
@@ -86,7 +100,7 @@ class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMix
           ),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, CalendarPage(_model)),
     );
   }
 
@@ -114,12 +128,18 @@ class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMix
       headerStyle: HeaderStyle(centerHeaderTitle: true, formatButtonVisible: false),
       builders: CalendarBuilders(
         selectedDayBuilder: (context, date, _) {
+          bool isDaySelected = _selectedDays.contains(date);
+          if (isDaySelected) {
+            _selectedDays.remove(date);
+          } else {
+            _selectedDays.add(date);
+          }
           return FadeTransition(
             opacity: Tween(begin: 0.0, end: 1.0).animate(_animationController),
             child: Container(
               margin: const EdgeInsets.all(4.0),
               padding: const EdgeInsets.only(top: 5.0, left: 6.0),
-              color: Colors.blueGrey,
+              color: !isDaySelected && _isEntered ? Colors.blueAccent : Colors.white,
               width: 100,
               height: 100,
               child: Text(
@@ -129,11 +149,12 @@ class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMix
             ),
           );
         },
-        todayDayBuilder: (context, date, _) {
+        dayBuilder: (context, date, _) {
+          bool isDaySelected = _selectedDays.contains(date);
           return Container(
             margin: const EdgeInsets.all(4.0),
             padding: const EdgeInsets.only(top: 5.0, left: 6.0),
-            color: Colors.blueAccent,
+            color: isDaySelected ? Colors.blueAccent : Colors.white,
             width: 100,
             height: 100,
             child: Text(

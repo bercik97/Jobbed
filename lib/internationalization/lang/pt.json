@@ -647,5 +647,9 @@
   "deletingWork": "სამუშაოების წაშლა",
   "deleteWorkConfirmation": "დარწმუნებული ხართ, რომ გსურთ წაშალოთ მთელი სამუშაო დრო შერჩეული თანამშრომლებისთვის?",
   "workHasBeenSuccessfullyDeleted": "სამუშაო წარმატებით წაიშალა!",
-  "checkCalendar": "შეამოწმეთ კალენდარი"
+  "schedule": "Schedule",
+  "checkSchedule": "Check schedule",
+  "editMode": "Edit mode",
+  "scheduleEditMode": "Schedule edit mode",
+  "scheduleEditModeHint": "Hint: Select days, then select add or delete note button at bottom screen to edit schedule"
 }

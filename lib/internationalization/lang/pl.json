@@ -647,5 +647,9 @@
   "deletingWork": "Usuwanie pracy",
   "deleteWorkConfirmation": "Czy na pewno chcesz usunąć cały czas pracy dla wybranych pracowników?",
   "workHasBeenSuccessfullyDeleted": "Czas pracy został pomyślnie usunięty!",
-  "checkCalendar": "Sprawdź kalendarz"
+  "schedule": "Harmonogram",
+  "checkSchedule": "Sprawdź harmonogram",
+  "editMode": "Tryb edycji",
+  "scheduleEditMode": "Edycja harmonogramu",
+  "scheduleEditModeHint": "Podpowiedź: Zaznacz dni, a następnie wybierz przycisk dodawania lub usuwania notatki na dole aby dokonać edycji harmonogramu"
 }

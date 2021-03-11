@@ -130,7 +130,7 @@ class _GroupPageState extends State<GroupPage> {
                             color: BRIGHTER_BLUE,
                             child: InkWell(
                               onTap: () => NavigatorUtil.navigate(context, CalendarPage(_model)),
-                              child: _buildScrollableContainer('images/calendar.png', 'calendar', 'checkCalendar'),
+                              child: _buildScrollableContainer('images/calendar.png', 'schedule', 'checkSchedule'),
                             ),
                           ),
                         ),

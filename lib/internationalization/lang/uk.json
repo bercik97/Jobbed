@@ -647,5 +647,9 @@
   "deletingWork": "Видалення роботи",
   "deleteWorkConfirmation": "Ви впевнені, що хочете видалити весь робочий час для вибраних працівників?",
   "workHasBeenSuccessfullyDeleted": "Робота успішно видалена!",
-  "checkCalendar": "Перевірити календар"
+  "schedule": "Schedule",
+  "checkSchedule": "Check schedule",
+  "editMode": "Edit mode",
+  "scheduleEditMode": "Schedule edit mode",
+  "scheduleEditModeHint": "Hint: Select days, then select add or delete note button at bottom screen to edit schedule"
 }
