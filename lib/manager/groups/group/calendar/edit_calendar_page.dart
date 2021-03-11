@@ -129,17 +129,20 @@ class _EditCalendarPageState extends State<EditCalendarPage> with TickerProvider
       builders: CalendarBuilders(
         selectedDayBuilder: (context, date, _) {
           bool isDaySelected = _selectedDays.contains(date);
+          Color color = !isDaySelected && !_isEntered ? Colors.blueAccent : Colors.white;
           if (isDaySelected) {
             _selectedDays.remove(date);
-          } else {
+          } else if (!_isEntered) {
             _selectedDays.add(date);
+          } else {
+            _isEntered = false;
           }
           return FadeTransition(
             opacity: Tween(begin: 0.0, end: 1.0).animate(_animationController),
             child: Container(
               margin: const EdgeInsets.all(4.0),
               padding: const EdgeInsets.only(top: 5.0, left: 6.0),
-              color: !isDaySelected && _isEntered ? Colors.blueAccent : Colors.white,
+              color: color,
               width: 100,
               height: 100,
               child: Text(
