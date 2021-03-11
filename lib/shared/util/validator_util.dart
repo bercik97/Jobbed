@@ -67,6 +67,17 @@ class ValidatorUtil {
     return null;
   }
 
+  static String validateSubWorkplace(String name, String description, BuildContext context) {
+    if (name.isEmpty) {
+      return getTranslated(context, 'subWorkplaceNameIsRequired');
+    } else if (name.length > 200) {
+      return getTranslated(context, 'subWorkplaceNameWrongLength');
+    } else if (description.length > 510) {
+      return getTranslated(context, 'subWorkplaceDescriptionWrongLength');
+    }
+    return null;
+  }
+
   static String validateItemQuantity(int quantity, BuildContext context) {
     if (quantity < 1) {
       return getTranslated(context, 'itemQuantityCannotBeLowerThan0');

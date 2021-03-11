@@ -655,5 +655,13 @@
   "deletingNote": "Usuwanie notatki",
   "forWhomYouWantToAddNoteForSelectedDays": "dla których chcesz dodać notatke dla wybranych dni",
   "forWhomYouWantToDeleteNoteForSelectedDays": "dla których chcesz usunąć notatkę dla wybranych dni",
-  "noEmployeesWhoHaveTsForSelectedDaysFromSelectedMonthsAndYears": "Brak pracowników którzy posiadają arkusz czasu pracy na wybrane dni z wybranych miesięcy oraz lat."
+  "noEmployeesWhoHaveTsForSelectedDaysFromSelectedMonthsAndYears": "Brak pracowników którzy posiadają arkusz czasu pracy na wybrane dni z wybranych miesięcy oraz lat.",
+  "subWorkplaces": "Podobiekty",
+  "noSubWorkplaces": "Brak podobiektów",
+  "editSubWorkplace": "Edytuj podobiekt",
+  "subWorkplaceNameIsRequired": "Nazwa podobiektu jest wymagana",
+  "subWorkplaceNameWrongLength": "Nazwa podobiektu nie może zawierać więcej niż 200 znaków",
+  "subWorkplaceDescriptionWrongLength": "Nazwa podobiektu nie może zawierać więcej niż 510 znaków",
+  "subWorkplaceUpdatedSuccessfully": "Podobiekt został zaktualizowany pomyślnie",
+  "subWorkplaceNameExists": "Nazwa podobiektu już istnieje"
 }

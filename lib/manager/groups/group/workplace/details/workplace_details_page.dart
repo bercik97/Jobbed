@@ -6,6 +6,8 @@ import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jobbed/api/excel/service/excel_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/sub_workplace/dto/sub_workplace_dto.dart';
+import 'package:jobbed/api/sub_workplace/service/sub_workplace_service.dart';
 import 'package:jobbed/api/work_time/service/work_time_service.dart';
 import 'package:jobbed/api/workplace/dto/workplace_dto.dart';
 import 'package:jobbed/api/workplace/service/workplace_service.dart';
@@ -45,10 +47,12 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
   WorkplaceDto _workplaceDto;
 
   WorkplaceService _workplaceService;
+  SubWorkplaceService _subWorkplaceService;
   WorkTimeService _workTimeService;
   ExcelService _excelService;
 
   List<String> _workTimeDates;
+  List<SubWorkplaceDto> _subWorkplaces;
 
   GoogleMapController _controller;
 
@@ -68,6 +72,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
     this._user = _model.user;
     this._workplaceDto = widget._workplaceDto;
     this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
+    this._subWorkplaceService = ServiceInitializer.initialize(context, _user.authHeader, SubWorkplaceService);
     this._workTimeService = ServiceInitializer.initialize(context, _user.authHeader, WorkTimeService);
     this._excelService = ServiceInitializer.initialize(context, _user.authHeader, ExcelService);
     super.initState();
@@ -75,7 +80,12 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
     _workTimeService.findAllYearMonthDatesByWorkplaceId(_workplaceDto.id).then((res) {
       setState(() {
         _workTimeDates = res;
-        _loading = false;
+        _subWorkplaceService.findAllByWorkplaceId(_workplaceDto.id).then((res) {
+          setState(() {
+            _subWorkplaces = res;
+            _loading = false;
+          });
+        });
       });
     });
   }
@@ -198,6 +208,38 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                             ),
                           ),
                         ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 20, top: 15, bottom: 5),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: text20Black(getTranslated(context, 'subWorkplaces')),
+                        ),
+                      ),
+                      _subWorkplaces.isEmpty
+                          ? Padding(
+                              padding: EdgeInsets.only(left: 20),
+                              child: Align(
+                                alignment: Alignment.topLeft,
+                                child: text15RedBold(getTranslated(context, 'noSubWorkplaces')),
+                              ),
+                            )
+                          : Container(),
+                      for (var subWorkplace in _subWorkplaces)
+                        Card(
+                          color: BRIGHTER_BLUE,
+                          child: InkWell(
+                            onTap: () => _editSubWorkplace(subWorkplace),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                ListTile(
+                                  title: text17BlackBold(utf8.decode(subWorkplace.name.runes.toList())),
+                                  subtitle: textBlack(utf8.decode(subWorkplace.description.runes.toList())),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),
@@ -207,6 +249,130 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
         ),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, WorkplacesPage(_model)),
+    );
+  }
+
+  void _editSubWorkplace(SubWorkplaceDto subWorkplaceDto) {
+    TextEditingController _nameController = new TextEditingController();
+    TextEditingController _descriptionController = new TextEditingController();
+    _nameController.text = utf8.decode(subWorkplaceDto.name.runes.toList());
+    _descriptionController.text = utf8.decode(subWorkplaceDto.description.runes.toList());
+    showGeneralDialog(
+      context: context,
+      barrierColor: WHITE.withOpacity(0.95),
+      barrierDismissible: false,
+      barrierLabel: getTranslated(context, 'name'),
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: Scaffold(
+            backgroundColor: Colors.black12,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(top: 50),
+                    child: text20BlackBold(getTranslated(context, 'editSubWorkplace')),
+                  ),
+                  SizedBox(height: 20),
+                  Padding(
+                    padding: EdgeInsets.only(left: 25, right: 25),
+                    child: TextFormField(
+                      autofocus: true,
+                      controller: _nameController,
+                      keyboardType: TextInputType.multiline,
+                      maxLength: 200,
+                      maxLines: 2,
+                      cursorColor: BLACK,
+                      textAlignVertical: TextAlignVertical.center,
+                      style: TextStyle(color: BLACK),
+                      decoration: InputDecoration(
+                        counterStyle: TextStyle(color: BLACK),
+                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
+                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Padding(
+                    padding: EdgeInsets.only(left: 25, right: 25),
+                    child: TextFormField(
+                      autofocus: false,
+                      controller: _descriptionController,
+                      keyboardType: TextInputType.multiline,
+                      maxLength: 510,
+                      maxLines: 5,
+                      cursorColor: BLACK,
+                      textAlignVertical: TextAlignVertical.center,
+                      style: TextStyle(color: BLACK),
+                      decoration: InputDecoration(
+                        counterStyle: TextStyle(color: BLACK),
+                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
+                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      MaterialButton(
+                        elevation: 0,
+                        height: 50,
+                        minWidth: 40,
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[iconWhite(Icons.close)],
+                        ),
+                        color: Colors.red,
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                      SizedBox(width: 25),
+                      MaterialButton(
+                        elevation: 0,
+                        height: 50,
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[iconWhite(Icons.check)],
+                        ),
+                        color: BLUE,
+                        onPressed: () {
+                          String name = _nameController.text;
+                          String description = _descriptionController.text;
+                          String invalidMessage = ValidatorUtil.validateSubWorkplace(name, description, context);
+                          if (invalidMessage != null) {
+                            ToastUtil.showErrorToast(invalidMessage);
+                            return;
+                          }
+                          FocusScope.of(context).unfocus();
+                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+                          _subWorkplaceService.updateFieldsValuesById(subWorkplaceDto.id, {'name': name, 'description': description}).then((res) {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              ToastUtil.showSuccessToast(getTranslated(context, 'subWorkplaceUpdatedSuccessfully'));
+                              NavigatorUtil.navigatePushAndRemoveUntil(context, WorkplacesPage(_model));
+                            });
+                          }).catchError((onError) {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              String errorMsg = onError.toString();
+                              if (errorMsg.contains("SUB_WORKPLACE_NAME_EXISTS")) {
+                                ToastUtil.showErrorToast(getTranslated(context, 'subWorkplaceNameExists'));
+                              } else {
+                                DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+                              }
+                            });
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 

@@ -655,5 +655,13 @@
   "deletingNote": "Deleting note",
   "forWhomYouWantToAddNoteForSelectedDays": "for whom you want to add note for selected days",
   "forWhomYouWantToDeleteNoteForSelectedDays": "for whom you want to delete note for selected days",
-  "noEmployeesWhoHaveTsForSelectedDaysFromSelectedMonthsAndYears": "There are no employees who have a time sheet for selected days from selected months and years."
+  "noEmployeesWhoHaveTsForSelectedDaysFromSelectedMonthsAndYears": "There are no employees who have a time sheet for selected days from selected months and years.",
+  "subWorkplaces": "Sub workplaces",
+  "noSubWorkplaces": "No sub workplaces",
+  "editSubWorkplace": "Edit sub workplace",
+  "subWorkplaceNameIsRequired": "Sub workplace name is required",
+  "subWorkplaceNameWrongLength": "Sub workplace length cannot be higher than 200 characters",
+  "subWorkplaceDescriptionWrongLength": "Sub workplace length cannot be higher than 510 characters",
+  "subWorkplaceUpdatedSuccessfully": "Sub workplace updated successfully",
+  "subWorkplaceNameExists": "Sub workplace name exists"
 }
