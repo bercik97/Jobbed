@@ -646,5 +646,6 @@
   "workTime": "Work time",
   "deletingWork": "Deleting work",
   "deleteWorkConfirmation": "Are you sure you want to delete all work time for selected employees?",
-  "workHasBeenSuccessfullyDeleted": "Work has been successfully deleted!"
+  "workHasBeenSuccessfullyDeleted": "Work has been successfully deleted!",
+  "checkCalendar": "Check calendar"
 }

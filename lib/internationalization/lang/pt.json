@@ -646,5 +646,6 @@
   "workTime": "სამუშაო დრო",
   "deletingWork": "სამუშაოების წაშლა",
   "deleteWorkConfirmation": "დარწმუნებული ხართ, რომ გსურთ წაშალოთ მთელი სამუშაო დრო შერჩეული თანამშრომლებისთვის?",
-  "workHasBeenSuccessfullyDeleted": "სამუშაო წარმატებით წაიშალა!"
+  "workHasBeenSuccessfullyDeleted": "სამუშაო წარმატებით წაიშალა!",
+  "checkCalendar": "შეამოწმეთ კალენდარი"
 }

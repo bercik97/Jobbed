@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/groups/group/calendar/calendar_page.dart';
 import 'package:jobbed/manager/groups/group/employees_settings/employees_settings_page.dart';
 import 'package:jobbed/manager/groups/group/price_list/price_lists_page.dart';
-import 'package:jobbed/manager/groups/group/quick_update/quick_update_dialog.dart';
 import 'package:jobbed/manager/groups/group/timesheets/ts_page.dart';
 import 'package:jobbed/manager/groups/group/warehouse/warehouse_page.dart';
 import 'package:jobbed/manager/groups/group/work_time/work_time_page.dart';
@@ -129,11 +129,20 @@ class _GroupPageState extends State<GroupPage> {
                           child: Material(
                             color: BRIGHTER_BLUE,
                             child: InkWell(
-                              onTap: () => QuickUpdateDialog.showQuickUpdateDialog(context, _model),
-                              child: _buildScrollableContainer('images/quick-update.png', 'quickUpdate', 'quickUpdateDescription'),
+                              onTap: () => NavigatorUtil.navigate(context, CalendarPage(_model)),
+                              child: _buildScrollableContainer('images/calendar.png', 'calendar', 'checkCalendar'),
                             ),
                           ),
                         ),
+                        // Expanded(
+                        //   child: Material(
+                        //     color: BRIGHTER_BLUE,
+                        //     child: InkWell(
+                        //       onTap: () => QuickUpdateDialog.showQuickUpdateDialog(context, _model),
+                        //       child: _buildScrollableContainer('images/quick-update.png', 'quickUpdate', 'quickUpdateDescription'),
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                     SizedBox(height: 10),

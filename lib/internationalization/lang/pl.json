@@ -646,5 +646,6 @@
   "workTime": "Czas pracy",
   "deletingWork": "Usuwanie pracy",
   "deleteWorkConfirmation": "Czy na pewno chcesz usunąć cały czas pracy dla wybranych pracowników?",
-  "workHasBeenSuccessfullyDeleted": "Czas pracy został pomyślnie usunięty!"
+  "workHasBeenSuccessfullyDeleted": "Czas pracy został pomyślnie usunięty!",
+  "checkCalendar": "Sprawdź kalendarz"
 }

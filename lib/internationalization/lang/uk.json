@@ -646,5 +646,6 @@
   "workTime": "робочий час",
   "deletingWork": "Видалення роботи",
   "deleteWorkConfirmation": "Ви впевнені, що хочете видалити весь робочий час для вибраних працівників?",
-  "workHasBeenSuccessfullyDeleted": "Робота успішно видалена!"
+  "workHasBeenSuccessfullyDeleted": "Робота успішно видалена!",
+  "checkCalendar": "Перевірити календар"
 }
