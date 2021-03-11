@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:jobbed/api/employee/dto/employee_calendar_dto.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
@@ -15,7 +14,6 @@ import 'package:jobbed/shared/util/workday_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
 import 'package:jobbed/shared/widget/texts.dart';
-import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../shared/widget/loader.dart';
@@ -190,8 +188,6 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
     EmployeeCalendarDto workday = events[0];
     if (workday.money != '0.000') {
       return workday.money != '0.000' ? icon30Green(Icons.check) : icon30Orange(Icons.arrow_circle_up);
-    } else if (workday.note != null && workday.note.isNotEmpty) {
-      return iconOrange(Icons.error_outline);
     } else {
       return Container();
     }
@@ -217,8 +213,6 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
   Widget _buildDay(EmployeeCalendarDto workday) {
     if (workday.money != '0.000') {
       return _buildWorkday(workday);
-    } else if (workday.note != null && workday.note.isNotEmpty) {
-      return _buildDayWithNote(workday.note);
     } else {
       return _handleEmptyDay();
     }
@@ -227,7 +221,6 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
   Widget _buildWorkday(EmployeeCalendarDto workday) {
     List pieceworks = workday.pieceworks;
     List workTimes = workday.workTimes;
-    String note = workday.note;
     double hours = double.parse(workday.hours);
     String money = workday.money;
     return Column(
@@ -287,42 +280,10 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
                   text15BlueBold(workday.money),
                 ],
               ),
-              Align(
-                  child: Row(
-                    children: <Widget>[
-                      text15Black(getTranslated(context, 'note') + ': '),
-                      note != null && note.isNotEmpty
-                          ? Row(
-                              children: [
-                                text15BlueBold(getTranslated(context, 'yes') + ' '),
-                                iconBlue(Icons.search),
-                              ],
-                            )
-                          : text15RedBold(getTranslated(context, 'empty')),
-                    ],
-                  ),
-                  alignment: Alignment.topLeft),
             ],
           ),
-          onTap: () => WorkdayUtil.showScrollableWorkTimesAndNote(context, _selectedDay.toString(), pieceworks, workTimes, note),
+          onTap: () => WorkdayUtil.showScrollableWorkTimes(context, _selectedDay.toString(), pieceworks, workTimes),
         ),
-      ],
-    );
-  }
-
-  Widget _buildDayWithNote(String note) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            iconOrange(Icons.error_outline),
-            SizedBox(width: 5),
-            text15BlueBold(getTranslated(context, 'noteFor') + ' ' + _selectedDay.toString().substring(0, 10)),
-          ],
-        ),
-        SizedBox(height: 5),
-        textBlack(utf8.decode(note.runes.toList())),
       ],
     );
   }

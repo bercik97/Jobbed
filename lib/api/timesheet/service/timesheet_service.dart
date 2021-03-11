@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart';
 import 'package:jobbed/api/employee/dto/employee_calendar_dto.dart';
 import 'package:jobbed/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:jobbed/api/timesheet/dto/timesheet_with_status_dto.dart';
 import 'package:jobbed/api/timesheet/dto/timesheet_without_status_dto.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/util/logout_util.dart';
-import 'package:http/http.dart';
 
 class TimesheetService {
   final BuildContext _context;
@@ -91,17 +91,6 @@ class TimesheetService {
 
   Future<dynamic> updatePieceworkByGroupIdAndDate(int groupId, String date, Map<String, int> servicesWithQuantities) async {
     Response res = await put('$_url/piecework/groups/$groupId?date=$date', body: jsonEncode(servicesWithQuantities), headers: _headers);
-    if (res.statusCode == 200) {
-      return res;
-    } else if (res.statusCode == 401) {
-      return LogoutUtil.handle401WithLogout(_context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<dynamic> updateNoteByGroupIdAndDate(int groupId, String date, String note) async {
-    Response res = await put('$_url/note/groups/$groupId?date=$date', body: note, headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {

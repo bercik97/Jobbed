@@ -8,7 +8,7 @@ import 'package:jobbed/shared/widget/buttons.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
-Container employeeToday(BuildContext context, EmployeeProfileDto dto, Function() fillHoursFun, Function() editNoteFun) {
+Container employeeToday(BuildContext context, EmployeeProfileDto dto, Function() fillHoursFun) {
   bool isTsNotCreated = dto.todayWorkdayId == 0;
   if (isTsNotCreated) {
     return Container(
@@ -32,7 +32,6 @@ Container employeeToday(BuildContext context, EmployeeProfileDto dto, Function()
   String todayHours = dto.todayHours.toString();
   List todayPiecework = dto.todayPiecework;
   List todayWorkTimes = dto.todayWorkTimes;
-  String todayNote = dto.todayNote;
   bool canFillHours = dto.canFillHours;
   return Container(
     child: SingleChildScrollView(
@@ -97,26 +96,9 @@ Container employeeToday(BuildContext context, EmployeeProfileDto dto, Function()
                       ],
                     ),
                     SizedBox(height: 5),
-                    Align(
-                        child: Row(
-                          children: <Widget>[
-                            text15Black(getTranslated(context, 'note') + ': '),
-                            todayNote != null && todayNote.isNotEmpty
-                                ? Row(
-                                    children: [
-                                      text15BlueBold(getTranslated(context, 'yes') + ' '),
-                                      iconBlue(Icons.search),
-                                      textBlue('(' + getTranslated(context, 'checkingDetails') + ')'),
-                                    ],
-                                  )
-                                : text15RedBold(getTranslated(context, 'empty'))
-                          ],
-                        ),
-                        alignment: Alignment.topLeft),
-                    SizedBox(height: 5),
                   ],
                 ),
-                onTap: () => WorkdayUtil.showScrollableWorkTimesAndNote(context, todayDate, todayPiecework, todayWorkTimes, todayNote),
+                onTap: () => WorkdayUtil.showScrollableWorkTimes(context, todayDate, todayPiecework, todayWorkTimes),
               ),
             ),
             canFillHours
@@ -132,12 +114,6 @@ Container employeeToday(BuildContext context, EmployeeProfileDto dto, Function()
                     ],
                   )
                 : SizedBox(height: 10),
-            Buttons.standardButton(
-              minWidth: 200.0,
-              color: BLUE,
-              title: getTranslated(context, 'editNote'),
-              fun: () => editNoteFun(),
-            ),
           ],
         ),
       ),

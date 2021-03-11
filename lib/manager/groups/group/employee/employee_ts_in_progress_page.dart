@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
@@ -51,7 +50,6 @@ class EmployeeTsInProgressPage extends StatefulWidget {
 class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   final TextEditingController _hoursController = new TextEditingController();
   final TextEditingController _minutesController = new TextEditingController();
-  final TextEditingController _noteController = new TextEditingController();
 
   GroupModel _model;
   User _user;
@@ -171,7 +169,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                 child: Container(
                   child: HorizontalDataTable(
                     leftHandSideColumnWidth: 90,
-                    rightHandSideColumnWidth: 460,
+                    rightHandSideColumnWidth: 385,
                     isFixedHeader: true,
                     headerWidgets: _buildTitleWidget(),
                     leftSideItemBuilder: _buildFirstColumnRow,
@@ -208,7 +206,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                     },
                   ),
                 ),
-                SizedBox(width: 2.5),
+                SizedBox(width: 1),
                 Expanded(
                   child: MaterialButton(
                     color: BLUE,
@@ -232,7 +230,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                     },
                   ),
                 ),
-                SizedBox(width: 2.5),
+                SizedBox(width: 1),
                 Expanded(
                   child: MaterialButton(
                     color: BLUE,
@@ -245,21 +243,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                     onPressed: () {
                       if (selectedIds.isNotEmpty) {
                         _showDeletePiecework();
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
-                  ),
-                ),
-                SizedBox(width: 2.5),
-                Expanded(
-                  child: MaterialButton(
-                    color: BLUE,
-                    child: Image(image: AssetImage('images/white-note.png')),
-                    onPressed: () {
-                      if (selectedIds.isNotEmpty) {
-                        _noteController.clear();
-                        _showUpdateNoteDialog(selectedIds);
                       } else {
                         showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
                       }
@@ -280,7 +263,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
             IconsLegendUtil.buildImageRow('images/hours.png', getTranslated(context, 'settingHours')),
             IconsLegendUtil.buildImageRow('images/piecework.png', getTranslated(context, 'settingPiecework')),
             IconsLegendUtil.buildImageWithIconRow('images/piecework.png', iconRed(Icons.close), getTranslated(context, 'deletingPiecework')),
-            IconsLegendUtil.buildImageRow('images/note.png', getTranslated(context, 'settingNote')),
           ],
         ),
       ),
@@ -326,7 +308,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
       DataTableUtil.buildTitleItemWidget(getTranslated(context, 'time'), 50),
       DataTableUtil.buildTitleItemWidgetWithRow(getTranslated(context, 'money'), getTranslated(context, 'employee'), getTranslated(context, 'net'), 80),
       DataTableUtil.buildTitleItemWidgetWithRow(getTranslated(context, 'money'), getTranslated(context, 'company'), getTranslated(context, 'gross'), 80),
-      DataTableUtil.buildTitleItemWidget(getTranslated(context, 'note'), 75),
     ];
   }
 
@@ -388,14 +369,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
           child: Align(alignment: Alignment.center, child: text16Black(workdays[index].totalMoneyForCompany)),
           width: 80,
           height: 50,
-        ),
-        InkWell(
-          onTap: () => _editNote(this.context, workdays[index].id, workdays[index].note),
-          child: Ink(
-            child: workdays[index].note != null && workdays[index].note != '' ? iconBlack(Icons.zoom_in) : Align(alignment: Alignment.center, child: text16Black('-')),
-            width: 75,
-            height: 50,
-          ),
         ),
       ],
     );
@@ -580,208 +553,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     });
   }
 
-  void _showUpdateNoteDialog(Set<int> selectedIds) {
-    showGeneralDialog(
-      context: context,
-      barrierColor: WHITE.withOpacity(0.95),
-      barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'note'),
-      transitionDuration: Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return SizedBox.expand(
-          child: Scaffold(
-            backgroundColor: Colors.black12,
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'noteUpperCase'))),
-                  SizedBox(height: 2.5),
-                  text16Black(getTranslated(context, 'noteForSelectedDays')),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: EdgeInsets.only(left: 25, right: 25),
-                    child: TextFormField(
-                      autofocus: false,
-                      controller: _noteController,
-                      keyboardType: TextInputType.multiline,
-                      maxLength: 510,
-                      maxLines: 5,
-                      cursorColor: BLACK,
-                      textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: BLACK),
-                      decoration: InputDecoration(
-                        counterStyle: TextStyle(color: BLACK),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: BLACK, width: 2.5),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: BLACK, width: 2.5),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        minWidth: 40,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.close)],
-                        ),
-                        color: Colors.red,
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      SizedBox(width: 25),
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.check)],
-                        ),
-                        color: BLUE,
-                        onPressed: () {
-                          String note = _noteController.text;
-                          String invalidMessage = ValidatorUtil.validateNote(note, context);
-                          if (invalidMessage != null) {
-                            ToastUtil.showErrorToast(invalidMessage);
-                            return;
-                          }
-                          FocusScope.of(context).unfocus();
-                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                          _workdayService.updateFieldsValuesByIds(selectedIds.map((el) => el.toString()).toList(), {'note': note}).then((res) {
-                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              Navigator.of(context).pop();
-                              ToastUtil.showSuccessToast(getTranslated(context, 'noteUpdatedSuccessfully'));
-                              _refresh();
-                            }).catchError(() {
-                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                Navigator.of(context).pop();
-                                ToastUtil.showSuccessToast(getTranslated(context, 'somethingWentWrong'));
-                              });
-                            });
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void _editNote(BuildContext context, int workdayId, String note) {
-    TextEditingController _noteController = new TextEditingController();
-    _noteController.text = note != null ? utf8.decode(note != null ? note.runes.toList() : '-') : null;
-    showGeneralDialog(
-      context: context,
-      barrierColor: WHITE.withOpacity(0.95),
-      barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'noteDetails'),
-      transitionDuration: Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return SizedBox.expand(
-          child: Scaffold(
-            backgroundColor: Colors.black12,
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'noteUpperCase'))),
-                  SizedBox(height: 2.5),
-                  text16Black(getTranslated(context, 'setNewNote')),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: EdgeInsets.only(left: 25, right: 25),
-                    child: TextFormField(
-                      autofocus: false,
-                      controller: _noteController,
-                      keyboardType: TextInputType.multiline,
-                      maxLength: 510,
-                      maxLines: 5,
-                      cursorColor: BLACK,
-                      textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: BLACK),
-                      decoration: InputDecoration(
-                        counterStyle: TextStyle(color: BLACK),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: BLACK, width: 2.5),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: BLACK, width: 2.5),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        minWidth: 40,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.close)],
-                        ),
-                        color: Colors.red,
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      SizedBox(width: 25),
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.check)],
-                        ),
-                        color: BLUE,
-                        onPressed: () {
-                          String note = _noteController.text;
-                          String invalidMessage = ValidatorUtil.validateNote(note, context);
-                          if (invalidMessage != null) {
-                            ToastUtil.showErrorToast(invalidMessage);
-                            return;
-                          }
-                          FocusScope.of(context).unfocus();
-                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                          _workdayService.updateFieldsValuesById(workdayId, {'note': note}).then((res) {
-                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              Navigator.of(context).pop();
-                              ToastUtil.showSuccessToast(getTranslated(context, 'noteUpdatedSuccessfully'));
-                              _refresh();
-                            }).catchError(() {
-                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                Navigator.of(context).pop();
-                                DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
-                              });
-                            });
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   void _showScrollablePieceworksDialog(BuildContext context, num workdayId, List pieceworks) {
     if (pieceworks == null || pieceworks.isEmpty) {
       return;
@@ -960,7 +731,8 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                         DataCell(text16Black(workTimes[i].startTime.toString())),
                                         DataCell(text16Black(workTimes[i].endTime != null ? workTimes[i].endTime.toString() : '-')),
                                         DataCell(text16Black(workTimes[i].totalTime != null ? workTimes[i].totalTime.toString() : '-')),
-                                        DataCell(text16Black(utf8.decode(workTimes[i].workplaceName.toString().runes.toList()))),        DataCell(
+                                        DataCell(text16Black(utf8.decode(workTimes[i].workplaceName.toString().runes.toList()))),
+                                        DataCell(
                                           IconButton(
                                             icon: iconRed(Icons.delete),
                                             onPressed: () {

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
+import 'package:intl/intl.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
@@ -9,13 +9,12 @@ import 'package:jobbed/manager/groups/group/piecework/add_piecework_for_quick_up
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
-import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/widget/buttons.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
-import 'package:intl/intl.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
 import '../../../../internationalization/localization/localization_constants.dart';
@@ -65,12 +64,6 @@ class QuickUpdateDialog {
                   color: BLUE,
                   title: getTranslated(context, 'piecework'),
                   fun: () => NavigatorUtil.navigate(context, AddPieceworkForQuickUpdate(_model, _todayDate)),
-                ),
-                Buttons.standardButton(
-                  minWidth: 200.0,
-                  color: BLUE,
-                  title: getTranslated(context, 'note'),
-                  fun: () => _buildUpdateNoteDialog(context),
                 ),
                 SizedBox(height: 30),
                 Container(
@@ -213,106 +206,6 @@ class QuickUpdateDialog {
                                 String s = onError.toString();
                                 if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
                                   DialogUtil.showErrorDialog(context, getTranslated(context, 'cannotUpdateTodayHours'));
-                                }
-                              });
-                            },
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  static void _buildUpdateNoteDialog(BuildContext context) {
-    TextEditingController _noteController = new TextEditingController();
-    showGeneralDialog(
-      context: context,
-      barrierColor: WHITE.withOpacity(0.95),
-      barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'note'),
-      transitionDuration: Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return SizedBox.expand(
-          child: Scaffold(
-            backgroundColor: Colors.black12,
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'noteUpperCase'))),
-                  SizedBox(height: 2.5),
-                  text16Black(getTranslated(context, 'writeTodayNoteForTheGroup')),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: EdgeInsets.only(left: 25, right: 25),
-                    child: TextFormField(
-                      autofocus: true,
-                      controller: _noteController,
-                      keyboardType: TextInputType.multiline,
-                      maxLength: 510,
-                      maxLines: 5,
-                      cursorColor: BLACK,
-                      textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: BLACK),
-                      decoration: InputDecoration(
-                        counterStyle: TextStyle(color: BLACK),
-                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2.5)),
-                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2.5)),
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        minWidth: 40,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.close)],
-                        ),
-                        color: Colors.red,
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      SizedBox(width: 25),
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.check)],
-                        ),
-                        color: BLUE,
-                        onPressed: () {
-                          String note = _noteController.text;
-                          String invalidMessage = ValidatorUtil.validateNote(note, context);
-                          if (invalidMessage != null) {
-                            ToastUtil.showErrorToast(invalidMessage);
-                            return;
-                          }
-                          Navigator.of(context).pop();
-                          _initialize(context, _model.user.authHeader);
-                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                          _timesheetService.updateNoteByGroupIdAndDate(_model.groupId, _todayDate, note).then((res) {
-                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              ToastUtil.showSuccessToast(getTranslated(context, 'todayGroupNoteUpdatedSuccessfully'));
-                            });
-                          }).catchError(
-                            (onError) {
-                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                String s = onError.toString();
-                                if (s.contains('TIMESHEET_NULL_OR_EMPTY')) {
-                                  DialogUtil.showErrorDialog(context, getTranslated(context, 'cannotUpdateTodayNote'));
                                 }
                               });
                             },

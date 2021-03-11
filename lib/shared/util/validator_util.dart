@@ -27,10 +27,6 @@ class ValidatorUtil {
     return null;
   }
 
-  static String validateNote(String note, BuildContext context) {
-    return note != null && note.length > 510 ? getTranslated(context, 'wrongNoteLength') : null;
-  }
-
   static String validateUpdatingGroupName(String groupName, BuildContext context) {
     if (groupName.isEmpty) {
       return getTranslated(context, 'groupNameCannotBeEmpty');

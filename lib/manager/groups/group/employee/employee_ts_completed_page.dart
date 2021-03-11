@@ -10,7 +10,6 @@ import 'package:jobbed/internationalization/localization/localization_constants.
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/data_table_util.dart';
-import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/month_util.dart';
@@ -127,7 +126,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                       child: Container(
                         child: HorizontalDataTable(
                           leftHandSideColumnWidth: 50,
-                          rightHandSideColumnWidth: 460,
+                          rightHandSideColumnWidth: 385,
                           isFixedHeader: true,
                           headerWidgets: _buildTitleWidget(),
                           leftSideItemBuilder: _buildFirstColumnRow,
@@ -166,7 +165,6 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
       DataTableUtil.buildTitleItemWidget(getTranslated(context, 'time'), 50),
       DataTableUtil.buildTitleItemWidgetWithRow(getTranslated(context, 'money'), getTranslated(context, 'employee'), getTranslated(context, 'net'), 80),
       DataTableUtil.buildTitleItemWidgetWithRow(getTranslated(context, 'money'), getTranslated(context, 'company'), getTranslated(context, 'gross'), 80),
-      DataTableUtil.buildTitleItemWidget(getTranslated(context, 'note'), 75),
     ];
   }
 
@@ -212,14 +210,6 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
           child: Align(alignment: Alignment.center, child: text16Black(workdays[index].totalMoneyForCompany)),
           width: 80,
           height: 50,
-        ),
-        InkWell(
-          onTap: () => DialogUtil.showScrollableDialog(this.context, getTranslated(this.context, 'noteDetails'), workdays[index].note),
-          child: Ink(
-            child: workdays[index].note != null && workdays[index].note != '' ? iconBlack(Icons.zoom_in) : Align(alignment: Alignment.center, child: text16Black('-')),
-            width: 75,
-            height: 50,
-          ),
         ),
       ],
     );

@@ -8,8 +8,8 @@ import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
 class WorkdayUtil {
-  static void showScrollableWorkTimesAndNote(BuildContext context, String date, List pieceworks, List workTimes, String note) {
-    if ((pieceworks == null || pieceworks.isEmpty) && (workTimes == null || workTimes.isEmpty) && (note == null || note.isEmpty)) {
+  static void showScrollableWorkTimes(BuildContext context, String date, List pieceworks, List workTimes) {
+    if ((pieceworks == null || pieceworks.isEmpty) && (workTimes == null || workTimes.isEmpty)) {
       return;
     }
     showGeneralDialog(
@@ -38,10 +38,6 @@ class WorkdayUtil {
                         text20BlueBold(getTranslated(context, 'pieceworks')),
                         SizedBox(height: 5),
                         _buildPieceworksDataTable(context, pieceworks, false),
-                        SizedBox(height: 5),
-                        text20BlueBold(getTranslated(context, 'note')),
-                        SizedBox(height: 5),
-                        textCenter20Black(note != null ? utf8.decode(note.runes.toList()) : getTranslated(context, 'empty')),
                         SizedBox(height: 20),
                         Container(
                           width: 60,

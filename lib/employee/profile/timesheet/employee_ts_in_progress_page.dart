@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:jobbed/api/piecework/dto/piecework_dto.dart';
@@ -16,7 +15,6 @@ import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/data_table_util.dart';
-import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/month_util.dart';
@@ -47,7 +45,6 @@ class EmployeeTsInProgressPage extends StatefulWidget {
 class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   final TextEditingController _hoursController = new TextEditingController();
   final TextEditingController _minutesController = new TextEditingController();
-  final TextEditingController _noteController = new TextEditingController();
 
   bool _canFillHours;
   User _user;
@@ -151,7 +148,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                   child: Container(
                     child: HorizontalDataTable(
                       leftHandSideColumnWidth: 90,
-                      rightHandSideColumnWidth: 380,
+                      rightHandSideColumnWidth: 305,
                       isFixedHeader: true,
                       headerWidgets: _buildTitleWidget(),
                       leftSideItemBuilder: _buildFirstColumnRow,
@@ -174,7 +171,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
               IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_circle_up), getTranslated(context, 'tsInProgress')),
               IconsLegendUtil.buildIconRow(iconBlack(Icons.search), getTranslated(context, 'checkDetails')),
               IconsLegendUtil.buildImageRow('images/hours.png', getTranslated(context, 'settingHours')),
-              IconsLegendUtil.buildImageRow('images/note.png', getTranslated(context, 'settingNotes')),
             ],
           ),
           bottomNavigationBar: SafeArea(
@@ -200,21 +196,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                           ),
                         )
                       : SizedBox(width: 0),
-                  SizedBox(width: 2.5),
-                  Expanded(
-                    child: MaterialButton(
-                      color: BLUE,
-                      child: Image(image: AssetImage('images/white-note.png')),
-                      onPressed: () {
-                        if (selectedIds.isNotEmpty) {
-                          _noteController.clear();
-                          _showUpdateNotesDialog(selectedIds);
-                        } else {
-                          showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                        }
-                      },
-                    ),
-                  ),
                   SizedBox(width: 1),
                 ],
               ),
@@ -255,7 +236,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
       DataTableUtil.buildTitleItemWidget(getTranslated(context, 'accord'), 50),
       DataTableUtil.buildTitleItemWidget(getTranslated(context, 'time'), 50),
       DataTableUtil.buildTitleItemWidgetWithRow(getTranslated(context, 'money'), getTranslated(context, 'sum'), getTranslated(context, 'net'), 80),
-      DataTableUtil.buildTitleItemWidget(getTranslated(context, 'note'), 75),
     ];
   }
 
@@ -312,14 +292,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
           child: Align(alignment: Alignment.center, child: text16Black(workdays[index].money)),
           width: 80,
           height: 50,
-        ),
-        InkWell(
-          onTap: () => DialogUtil.showScrollableDialog(this.context, getTranslated(this.context, 'noteDetails'), workdays[index].note),
-          child: Ink(
-            child: workdays[index].note != null && workdays[index].note != '' ? iconBlack(Icons.zoom_in) : Align(alignment: Alignment.center, child: text16Black('-')),
-            width: 75,
-            height: 50,
-          ),
         ),
       ],
     );
@@ -454,97 +426,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                               Navigator.of(context).pop();
                               selectedIds.clear();
                               ToastUtil.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
-                              _refresh();
-                            });
-                          }).catchError(() {
-                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              Navigator.of(context).pop();
-                              ToastUtil.showSuccessToast(getTranslated(context, 'somethingWentWrong'));
-                            });
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void _showUpdateNotesDialog(Set<int> selectedIds) {
-    showGeneralDialog(
-      context: context,
-      barrierColor: WHITE.withOpacity(0.95),
-      barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'note'),
-      transitionDuration: Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return SizedBox.expand(
-          child: Scaffold(
-            backgroundColor: Colors.black12,
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20BlueBold(getTranslated(context, 'noteUpperCase'))),
-                  SizedBox(height: 2.5),
-                  text16Black(getTranslated(context, 'writeNote')),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: EdgeInsets.only(left: 25, right: 25),
-                    child: TextFormField(
-                      autofocus: false,
-                      controller: _noteController,
-                      keyboardType: TextInputType.multiline,
-                      maxLength: 100,
-                      maxLines: 3,
-                      cursorColor: BLACK,
-                      textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: BLACK),
-                      decoration: InputDecoration(
-                        counterStyle: TextStyle(color: BLACK),
-                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
-                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        minWidth: 40,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.close)],
-                        ),
-                        color: Colors.red,
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      SizedBox(width: 25),
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.check)],
-                        ),
-                        color: BLUE,
-                        onPressed: () {
-                          FocusScope.of(context).unfocus();
-                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                          String note = _noteController.text;
-                          _workdayService.updateFieldsValuesByIds(selectedIds.map((el) => el.toString()).toList(), {'note': note}).then((res) {
-                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              Navigator.of(context).pop();
-                              ToastUtil.showSuccessToast(getTranslated(context, 'notesSavedSuccessfully'));
                               _refresh();
                             });
                           }).catchError(() {

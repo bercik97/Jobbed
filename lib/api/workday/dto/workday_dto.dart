@@ -10,7 +10,6 @@ class WorkdayDto {
   final String totalMoneyForCompany;
   final List pieceworks;
   final List workTimes;
-  final String note;
 
   WorkdayDto({
     @required this.id,
@@ -20,7 +19,6 @@ class WorkdayDto {
     @required this.totalMoneyForCompany,
     @required this.pieceworks,
     @required this.workTimes,
-    @required this.note,
   });
 
   factory WorkdayDto.fromJson(Map<String, dynamic> json) {
@@ -34,7 +32,6 @@ class WorkdayDto {
       totalMoneyForCompany: json['totalMoneyForCompany'] as String,
       pieceworks: pieceworksAsJson != null ? pieceworksAsJson.map((data) => PieceworkDetailsDto.fromJson(data)).toList() : null,
       workTimes: workTimesAsJson != null ? workTimesAsJson.map((data) => WorkTimeDto.fromJson(data)).toList() : null,
-      note: json['note'] as String,
     );
   }
 }
