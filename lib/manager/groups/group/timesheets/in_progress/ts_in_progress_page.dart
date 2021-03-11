@@ -6,8 +6,8 @@ import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:date_util/date_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
+import 'package:intl/intl.dart';
 import 'package:jobbed/api/employee/dto/employee_statistics_dto.dart';
 import 'package:jobbed/api/employee/service/employee_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
@@ -35,7 +35,6 @@ import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
 import 'package:jobbed/shared/widget/texts.dart';
-import 'package:intl/intl.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
 import '../../../../../shared/widget/loader.dart';
@@ -54,7 +53,6 @@ class TsInProgressPage extends StatefulWidget {
 class _TsInProgressPageState extends State<TsInProgressPage> {
   final TextEditingController _hoursController = new TextEditingController();
   final TextEditingController _minutesController = new TextEditingController();
-  final TextEditingController _noteController = new TextEditingController();
 
   GroupModel _model;
   User _user;
@@ -346,6 +344,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                     child: MaterialButton(
                       color: BLUE,
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image(image: AssetImage('images/white-piecework.png')),
                           iconRed(Icons.close),
@@ -354,21 +353,6 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                       onPressed: () {
                         if (_selectedIds.isNotEmpty) {
                           _showDeletePiecework(_selectedIds);
-                        } else {
-                          showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                        }
-                      },
-                    ),
-                  ),
-                  SizedBox(width: 1),
-                  Expanded(
-                    child: MaterialButton(
-                      color: BLUE,
-                      child: Image(image: AssetImage('images/white-note.png')),
-                      onPressed: () {
-                        if (_selectedIds.isNotEmpty) {
-                          _noteController.clear();
-                          _showUpdateNoteDialog(_selectedIds);
                         } else {
                           showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
                         }
@@ -388,7 +372,6 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
               IconsLegendUtil.buildImageRow('images/hours.png', getTranslated(context, 'settingHours')),
               IconsLegendUtil.buildImageRow('images/piecework.png', getTranslated(context, 'settingPiecework')),
               IconsLegendUtil.buildImageWithIconRow('images/piecework.png', iconRed(Icons.close), getTranslated(context, 'deletingPiecework')),
-              IconsLegendUtil.buildImageRow('images/note.png', getTranslated(context, 'settingNote')),
             ],
           ),
         ),
@@ -653,130 +636,6 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
         setState(() => _isDeletePieceworkButtonTapped = false);
       });
     });
-  }
-
-  void _showUpdateNoteDialog(LinkedHashSet<int> selectedIds) async {
-    int year = _timesheet.year;
-    int monthNum = MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
-    int days = DateUtil().daysInMonth(monthNum, year);
-    final List<DateTime> picked = await DateRagePicker.showDatePicker(
-      context: context,
-      initialFirstDate: new DateTime(year, monthNum, 1),
-      initialLastDate: new DateTime(year, monthNum, days),
-      firstDate: new DateTime(year, monthNum, 1),
-      lastDate: new DateTime(year, monthNum, days),
-    );
-    if (picked.length == 1) {
-      picked.add(picked[0]);
-    }
-    if (picked != null && picked.length == 2) {
-      String dateFrom = DateFormat('yyyy-MM-dd').format(picked[0]);
-      String dateTo = DateFormat('yyyy-MM-dd').format(picked[1]);
-      showGeneralDialog(
-        context: context,
-        barrierColor: WHITE.withOpacity(0.95),
-        barrierDismissible: false,
-        barrierLabel: 'Note',
-        transitionDuration: Duration(milliseconds: 400),
-        pageBuilder: (_, __, ___) {
-          return SizedBox.expand(
-            child: Scaffold(
-              backgroundColor: Colors.black12,
-              body: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'note'))),
-                    SizedBox(height: 2.5),
-                    text16Black(getTranslated(context, 'noteForSelectedEmployees')),
-                    SizedBox(height: 2.5),
-                    text17BlueBold('[' + dateFrom + ' - ' + dateTo + ']'),
-                    SizedBox(height: 20),
-                    Padding(
-                      padding: EdgeInsets.only(left: 25, right: 25),
-                      child: TextFormField(
-                        autofocus: false,
-                        controller: _noteController,
-                        keyboardType: TextInputType.multiline,
-                        maxLength: 510,
-                        maxLines: 5,
-                        cursorColor: BLACK,
-                        textAlignVertical: TextAlignVertical.center,
-                        style: TextStyle(color: BLACK),
-                        decoration: InputDecoration(
-                          counterStyle: TextStyle(color: BLACK),
-                          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2.5)),
-                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2.5)),
-                        ),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        MaterialButton(
-                          elevation: 0,
-                          height: 50,
-                          minWidth: 40,
-                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[iconWhite(Icons.close)],
-                          ),
-                          color: Colors.red,
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                        SizedBox(width: 25),
-                        MaterialButton(
-                          elevation: 0,
-                          height: 50,
-                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[iconWhite(Icons.check)],
-                          ),
-                          color: BLUE,
-                          onPressed: () {
-                            String note = _noteController.text;
-                            String invalidMessage = ValidatorUtil.validateNote(note, context);
-                            if (invalidMessage != null) {
-                              ToastUtil.showErrorToast(invalidMessage);
-                              return;
-                            }
-                            FocusScope.of(context).unfocus();
-                            showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                            _workdayService
-                                .updateNoteByEmployeeIds(
-                              note,
-                              dateFrom,
-                              dateTo,
-                              _selectedIds.map((el) => el.toString()).toList(),
-                              year,
-                              monthNum,
-                              STATUS_IN_PROGRESS,
-                            )
-                                .then((res) {
-                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                _refresh();
-                                Navigator.of(context).pop();
-                                ToastUtil.showSuccessToast(getTranslated(context, 'noteUpdatedSuccessfully'));
-                              });
-                            }).catchError((onError) {
-                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                ToastUtil.showErrorToast('somethingWentWrong');
-                              });
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-      );
-    }
   }
 
   Future<Null> _refresh() {
