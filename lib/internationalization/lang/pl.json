@@ -663,5 +663,10 @@
   "subWorkplaceNameWrongLength": "Nazwa podobiektu nie może zawierać więcej niż 200 znaków",
   "subWorkplaceDescriptionWrongLength": "Nazwa podobiektu nie może zawierać więcej niż 510 znaków",
   "subWorkplaceUpdatedSuccessfully": "Podobiekt został zaktualizowany pomyślnie",
-  "subWorkplaceNameExists": "Nazwa podobiektu już istnieje"
+  "subWorkplaceNameExists": "Nazwa podobiektu już istnieje",
+  "createSubWorkplace": "Dodaj podobiekt",
+  "needToSelectSubWorkplaces": "Musisz wybrać podobiekty",
+  "areYouSureYouWantToDeleteSelectedSubWorkplaces": "Czy na pewno chcesz usunąć wybrane podobiekty?",
+  "selectedSubWorkplacesRemoved": "Wybrane podobiekty zostały usunięte",
+  "successfullyAddedNewSubWorkplace": "Pomyślnie dodano nowy podobiekt"
 }

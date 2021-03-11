@@ -663,5 +663,10 @@
   "subWorkplaceNameWrongLength": "Sub workplace length cannot be higher than 200 characters",
   "subWorkplaceDescriptionWrongLength": "Sub workplace length cannot be higher than 510 characters",
   "subWorkplaceUpdatedSuccessfully": "Sub workplace updated successfully",
-  "subWorkplaceNameExists": "Sub workplace name exists"
+  "subWorkplaceNameExists": "Sub workplace name exists",
+  "createSubWorkplace": "Create sub workplace",
+  "needToSelectSubWorkplaces": "Need to select sub workplaces",
+  "areYouSureYouWantToDeleteSelectedSubWorkplaces": "Are you sure you want to delete selected sub workplaces?",
+  "selectedSubWorkplacesRemoved": "Selected sub workplaces has been removed",
+  "successfullyAddedNewSubWorkplace": "Successfully added new sub workplace"
 }
