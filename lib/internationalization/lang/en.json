@@ -652,5 +652,8 @@
   "editMode": "Edit mode",
   "scheduleEditMode": "Schedule edit mode",
   "scheduleEditModeHint": "Hint: Select days, then select add or delete note button at bottom screen to edit schedule",
-  "deletingNote": "Deleting note"
+  "deletingNote": "Deleting note",
+  "forWhomYouWantToAddNoteForSelectedDays": "for whom you want to add note for selected days",
+  "forWhomYouWantToDeleteNoteForSelectedDays": "for whom you want to delete note for selected days",
+  "noEmployeesWhoHaveTsForSelectedDaysFromSelectedMonthsAndYears": "There are no employees who have a time sheet for selected days from selected months and years."
 }

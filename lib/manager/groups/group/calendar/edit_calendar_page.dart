@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:jobbed/api/employee/dto/employee_calendar_dto.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/manager/groups/group/calendar/calendar_page.dart';
+import 'package:jobbed/manager/groups/group/calendar/employees/edit_calendar_employees_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
@@ -75,7 +76,7 @@ class _EditCalendarPageState extends State<EditCalendarPage> with TickerProvider
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: WHITE,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'editMode'), () => Navigator.pop(context)),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'editMode'), () => NavigatorUtil.navigateReplacement(context, CalendarPage(_model))),
           body: Column(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
@@ -114,6 +115,8 @@ class _EditCalendarPageState extends State<EditCalendarPage> with TickerProvider
                       child: Image(image: AssetImage('images/white-note.png')),
                       onPressed: () {
                         if (_selectedDays.isNotEmpty) {
+                          Set<String> yearsWithMonths = _buildYearsWithMonthsFromSelectedDays();
+                          NavigatorUtil.navigate(context, EditCalendarEmployeesPage(_model, yearsWithMonths, true));
                         } else {
                           showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
                         }
@@ -133,6 +136,8 @@ class _EditCalendarPageState extends State<EditCalendarPage> with TickerProvider
                       ),
                       onPressed: () {
                         if (_selectedDays.isNotEmpty) {
+                          Set<String> yearsWithMonths = _buildYearsWithMonthsFromSelectedDays();
+                          NavigatorUtil.navigate(context, EditCalendarEmployeesPage(_model, yearsWithMonths, false));
                         } else {
                           showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
                         }
@@ -274,5 +279,13 @@ class _EditCalendarPageState extends State<EditCalendarPage> with TickerProvider
         textBlack('-'),
       ],
     );
+  }
+
+  Set<String> _buildYearsWithMonthsFromSelectedDays() {
+    Set<String> yearsWithMonths = new Set();
+    _selectedDays.forEach((element) {
+      yearsWithMonths.add(element.year.toString() + '-' + element.month.toString());
+    });
+    return yearsWithMonths;
   }
 }

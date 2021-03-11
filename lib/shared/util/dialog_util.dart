@@ -7,6 +7,42 @@ import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
 class DialogUtil {
+  static showFailureDialogWithWillPopScopeByDoublePopNavigator(BuildContext context, String msg, StatefulWidget widget) {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return WillPopScope(
+          child: AlertDialog(
+            backgroundColor: WHITE,
+            title: textRedBold(getTranslated(context, 'failure')),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  textBlack(msg),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: textBlack(getTranslated(context, 'ok')),
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+          onWillPop: () async {
+            Navigator.pop(context);
+            Navigator.pop(context);
+            return true;
+          },
+        );
+      },
+    );
+  }
+
   static showFailureDialogWithWillPopScope(BuildContext context, String msg, StatefulWidget widget) {
     return showDialog(
       barrierDismissible: false,

@@ -70,7 +70,7 @@ class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMix
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: WHITE,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'schedule'), () => Navigator.pop(context)),
+          appBar: managerAppBar(context, _user, getTranslated(context, 'schedule'), () => NavigatorUtil.navigateReplacement(context, GroupPage(_model))),
           body: Column(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[

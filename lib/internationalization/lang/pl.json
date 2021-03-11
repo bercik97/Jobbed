@@ -652,5 +652,8 @@
   "editMode": "Tryb edycji",
   "scheduleEditMode": "Edycja harmonogramu",
   "scheduleEditModeHint": "Podpowiedź: Zaznacz dni, a następnie wybierz przycisk dodawania lub usuwania notatki na dole aby dokonać edycji harmonogramu",
-  "deletingNote": "Usuwanie notatki"
+  "deletingNote": "Usuwanie notatki",
+  "forWhomYouWantToAddNoteForSelectedDays": "dla których chcesz dodać notatke dla wybranych dni",
+  "forWhomYouWantToDeleteNoteForSelectedDays": "dla których chcesz usunąć notatkę dla wybranych dni",
+  "noEmployeesWhoHaveTsForSelectedDaysFromSelectedMonthsAndYears": "Brak pracowników którzy posiadają arkusz czasu pracy na wybrane dni z wybranych miesięcy oraz lat."
 }
