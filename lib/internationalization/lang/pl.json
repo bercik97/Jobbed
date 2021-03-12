@@ -668,5 +668,6 @@
   "needToSelectSubWorkplaces": "Musisz wybrać podobiekty",
   "areYouSureYouWantToDeleteSelectedSubWorkplaces": "Czy na pewno chcesz usunąć wybrane podobiekty?",
   "selectedSubWorkplacesRemoved": "Wybrane podobiekty zostały usunięte",
-  "successfullyAddedNewSubWorkplace": "Pomyślnie dodano nowy podobiekt"
+  "successfullyAddedNewSubWorkplace": "Pomyślnie dodano nowy podobiekt",
+  "noteBasedOnWorkplace": "Notatka na podstawie miejsca pracy"
 }

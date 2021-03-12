@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/workplace/dto/workplace_for_add_note_dto.dart';
 import 'package:jobbed/api/workplace/service/workplace_service.dart';
@@ -13,6 +16,7 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/loader.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 
 class AddNotePage extends StatefulWidget {
   final GroupModel _model;
@@ -43,6 +47,7 @@ class _AddNotePageState extends State<AddNotePage> {
     _workplaceService.findAllByCompanyIdForAddNoteView(_user.companyId).then((res) {
       setState(() {
         workplaces = res;
+        workplaces.insert(0, new WorkplaceForAddNoteDto(id: '', name: '', subWorkplacesDto: new List()));
         _loading = false;
       });
     });
@@ -62,7 +67,30 @@ class _AddNotePageState extends State<AddNotePage> {
           backgroundColor: WHITE,
           appBar: managerAppBar(context, _model.user, getTranslated(context, 'scheduleEditMode'), () => Navigator.pop(context)),
           body: Column(
-            children: <Widget>[],
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 10),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: text20OrangeBold(getTranslated(context, 'noteBasedOnWorkplace')),
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: DropDown<String>(
+                        isExpanded: true,
+                        items: [for (var workplace in workplaces) utf8.decode(workplace.name.runes.toList())],
+                        customWidgets: [
+                          for (var workplace in workplaces) Row(children: <Widget>[Text(utf8.decode(workplace.name.runes.toList()))]),
+                        ],
+                        onChanged: () {},
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
           bottomNavigationBar: _buildBottomNavigationBar(),
         ),
