@@ -671,5 +671,6 @@
   "successfullyAddedNewSubWorkplace": "Pomyślnie dodano nowy podobiekt",
   "noteBasedOnWorkplace": "Notatka na podstawie miejsca pracy",
   "areYouSureYouWantToAddNote": "Czy na pewno chcesz dodać nową notatkę?",
-  "noteHasBeenCreated": "Notatka została utworzona!"
+  "noteHasBeenCreated": "Notatka została utworzona!",
+  "tapToAdd": "Dotknij aby dodać"
 }
