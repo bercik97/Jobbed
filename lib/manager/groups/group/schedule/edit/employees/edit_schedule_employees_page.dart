@@ -7,6 +7,7 @@ import 'package:jobbed/api/employee/dto/employee_basic_dto.dart';
 import 'package:jobbed/api/employee/service/employee_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/groups/group/note/add_note.dart';
 import 'package:jobbed/manager/groups/group/schedule/edit/edit_schedule_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
@@ -245,17 +246,10 @@ class _EditScheduleEmployeesPageState extends State<EditScheduleEmployeesPage> {
       setState(() => _isFillNoteButtonTapped = false);
       return;
     }
-    // showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    // _groupService.addGroupEmployees(_groupId, _selectedIds.map((e) => e.toInt()).toList()).then((value) {
-    //   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-    //     ToastUtil.showSuccessToast(getTranslated(context, 'successfullyAddedGroupEmployees'));
-    //     NavigatorUtil.navigate(context, GroupsDashboardPage(_user));
-    //   });
-    // }).catchError((onError) {
-    //   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-    //     DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
-    //     setState(() => _isFillNoteButtonTapped = false);
-    //   });
-    // });
+    if (_isAddAction) {
+      NavigatorUtil.navigate(context, AddNotePage(_model));
+    } else {
+      // TODO
+    }
   }
 }
