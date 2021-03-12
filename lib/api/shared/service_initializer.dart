@@ -9,6 +9,7 @@ import 'package:jobbed/api/item/service/item_service.dart';
 import 'package:jobbed/api/item_place/service/item_place_service.dart';
 import 'package:jobbed/api/manager/service/manager_service.dart';
 import 'package:jobbed/api/manager/service/manager_unauthenticated_service.dart';
+import 'package:jobbed/api/note/api/note_service.dart';
 import 'package:jobbed/api/piecework/service/piecework_service.dart';
 import 'package:jobbed/api/price_list/service/price_list_service.dart';
 import 'package:jobbed/api/sub_workplace/service/sub_workplace_service.dart';
@@ -36,6 +37,7 @@ class ServiceInitializer {
       case 'ItemPlaceService': return new ItemPlaceService(context, header, headers);
       case 'ManagerService': return new ManagerService(context, header, headers);
       case 'ManagerUnauthenticatedService': return new ManagerUnauthenticatedService();
+      case 'NoteService': return new NoteService(context, header, headers);
       case 'PieceworkService': return new PieceworkService(context, header, headers);
       case 'PriceListService': return new PriceListService(context, header, headers);
       case 'SubWorkplaceService': return new SubWorkplaceService(context, header, headers);

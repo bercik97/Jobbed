@@ -4,18 +4,23 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropdown/flutter_dropdown.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
+import 'package:jobbed/api/note/api/note_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/sub_workplace/dto/sub_workplace_dto.dart';
 import 'package:jobbed/api/workplace/dto/workplace_for_add_note_dto.dart';
 import 'package:jobbed/api/workplace/service/workplace_service.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/manager/groups/group/schedule/edit/edit_schedule_page.dart';
+import 'package:jobbed/manager/groups/group/schedule/schedule_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/loader.dart';
 import 'package:jobbed/shared/widget/texts.dart';
@@ -34,6 +39,7 @@ class _AddNotePageState extends State<AddNotePage> {
   User _user;
 
   WorkplaceService _workplaceService;
+  NoteService _noteService;
 
   List<WorkplaceForAddNoteDto> workplaces = new List();
   WorkplaceForAddNoteDto _selectedWorkplace;
@@ -41,15 +47,17 @@ class _AddNotePageState extends State<AddNotePage> {
   final ScrollController _scrollController = new ScrollController();
 
   bool _loading = false;
-  bool _isChecked = false;
   List<bool> _checked = new List();
   LinkedHashSet<int> _selectedSubWorkplacesIds = new LinkedHashSet();
+
+  bool _isAddNoteButtonTapped = false;
 
   @override
   void initState() {
     this._model = widget._model;
     this._user = _model.user;
     this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
+    this._noteService = ServiceInitializer.initialize(context, _user.authHeader, NoteService);
     super.initState();
     _loading = true;
     _workplaceService.findAllByCompanyIdForAddNoteView(_user.companyId).then((res) {
@@ -151,12 +159,6 @@ class _AddNotePageState extends State<AddNotePage> {
                                               } else {
                                                 _selectedSubWorkplacesIds.remove(_selectedWorkplace.subWorkplacesDto[foundIndex].id);
                                               }
-                                              int selectedIdsLength = _selectedSubWorkplacesIds.length;
-                                              if (selectedIdsLength == _selectedWorkplace.subWorkplacesDto.length) {
-                                                _isChecked = true;
-                                              } else if (selectedIdsLength == 0) {
-                                                _isChecked = false;
-                                              }
                                             });
                                           },
                                         ),
@@ -208,11 +210,35 @@ class _AddNotePageState extends State<AddNotePage> {
                 children: <Widget>[iconWhite(Icons.check)],
               ),
               color: BLUE,
-              onPressed: () {},
+              onPressed: () {
+                DialogUtil.showConfirmationDialog(
+                  context: context,
+                  title: getTranslated(context, 'confirmation'),
+                  content: getTranslated(context, 'areYouSureYouWantToAddNote'),
+                  isBtnTapped: _isAddNoteButtonTapped,
+                  fun: () => _isAddNoteButtonTapped ? null : _handleAddNote(_selectedSubWorkplacesIds.map((el) => el.toString()).toList()),
+                );
+              },
             ),
           ],
         ),
       ),
     );
+  }
+
+  void _handleAddNote(List<String> ids) {
+    setState(() => _isAddNoteButtonTapped = true);
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _noteService.create().then((res) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastUtil.showSuccessToast(getTranslated(context, 'noteHasBeenCreated'));
+        NavigatorUtil.navigatePushAndRemoveUntil(context, SchedulePage(_model));
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+        setState(() => _isAddNoteButtonTapped = false);
+      });
+    });
   }
 }
