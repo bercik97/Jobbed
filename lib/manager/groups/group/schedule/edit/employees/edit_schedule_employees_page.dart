@@ -247,6 +247,7 @@ class _EditScheduleEmployeesPageState extends State<EditScheduleEmployeesPage> {
       return;
     }
     if (_isAddAction) {
+      setState(() => _isFillNoteButtonTapped = false);
       NavigatorUtil.navigate(context, AddNotePage(_model));
     } else {
       // TODO
