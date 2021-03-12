@@ -25,9 +25,10 @@ import 'package:jobbed/shared/widget/texts.dart';
 class EditScheduleEmployeesPage extends StatefulWidget {
   final GroupModel _model;
   final Set<String> _yearsWithMonths;
+  final List<DateTime> _selectedDates;
   final bool _isAddAction;
 
-  EditScheduleEmployeesPage(this._model, this._yearsWithMonths, this._isAddAction);
+  EditScheduleEmployeesPage(this._model, this._yearsWithMonths, this._selectedDates, this._isAddAction);
 
   @override
   _EditScheduleEmployeesPageState createState() => _EditScheduleEmployeesPageState();
@@ -37,6 +38,7 @@ class _EditScheduleEmployeesPageState extends State<EditScheduleEmployeesPage> {
   GroupModel _model;
   User _user;
   Set<String> _yearsWithMonths;
+  List<DateTime> _selectedDates;
   bool _isAddAction;
 
   EmployeeService _employeeService;
@@ -56,6 +58,7 @@ class _EditScheduleEmployeesPageState extends State<EditScheduleEmployeesPage> {
     this._model = widget._model;
     this._user = _model.user;
     this._yearsWithMonths = widget._yearsWithMonths;
+    this._selectedDates = widget._selectedDates;
     this._isAddAction = widget._isAddAction;
     this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
     super.initState();
@@ -248,7 +251,7 @@ class _EditScheduleEmployeesPageState extends State<EditScheduleEmployeesPage> {
     }
     if (_isAddAction) {
       setState(() => _isFillNoteButtonTapped = false);
-      NavigatorUtil.navigate(context, AddNotePage(_model));
+      NavigatorUtil.navigate(context, AddNotePage(_model, _selectedIds, _yearsWithMonths, _selectedDates));
     } else {
       // TODO
     }

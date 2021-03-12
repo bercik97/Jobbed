@@ -672,5 +672,7 @@
   "noteBasedOnWorkplace": "Note based on selected workplace",
   "areYouSureYouWantToAddNote": "Are you sure you want to add note?",
   "noteHasBeenCreated": "Note has been created!",
-  "tapToAdd": "Tap to add"
+  "tapToAdd": "Tap to add",
+  "noteIsRequired": "Note is required",
+  "noteWrongLength": "Note length cannot be higher than 510"
 }

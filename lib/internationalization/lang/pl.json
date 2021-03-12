@@ -672,5 +672,7 @@
   "noteBasedOnWorkplace": "Notatka na podstawie miejsca pracy",
   "areYouSureYouWantToAddNote": "Czy na pewno chcesz dodać nową notatkę?",
   "noteHasBeenCreated": "Notatka została utworzona!",
-  "tapToAdd": "Dotknij aby dodać"
+  "tapToAdd": "Dotknij aby dodać",
+  "noteIsRequired": "Notatka jest wymagana",
+  "noteWrongLength": "Rozmiar notatki nie może być większy niż 510 znaków"
 }

@@ -37,7 +37,7 @@ class _EditSchedulePageState extends State<EditSchedulePage> with TickerProvider
   AnimationController _animationController;
   CalendarController _calendarController = new CalendarController();
 
-  Set<DateTime> _selectedDays = new Set();
+  List<DateTime> _selectedDates = new List();
   bool _isEntered = true;
 
   @override
@@ -115,9 +115,9 @@ class _EditSchedulePageState extends State<EditSchedulePage> with TickerProvider
                       color: BLUE,
                       child: Image(image: AssetImage('images/white-note.png')),
                       onPressed: () {
-                        if (_selectedDays.isNotEmpty) {
+                        if (_selectedDates.isNotEmpty) {
                           Set<String> yearsWithMonths = _buildYearsWithMonthsFromSelectedDays();
-                          NavigatorUtil.navigate(context, EditScheduleEmployeesPage(_model, yearsWithMonths, true));
+                          NavigatorUtil.navigate(context, EditScheduleEmployeesPage(_model, yearsWithMonths, _selectedDates.toList(), true));
                         } else {
                           showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
                         }
@@ -136,9 +136,9 @@ class _EditSchedulePageState extends State<EditSchedulePage> with TickerProvider
                         ],
                       ),
                       onPressed: () {
-                        if (_selectedDays.isNotEmpty) {
+                        if (_selectedDates.isNotEmpty) {
                           Set<String> yearsWithMonths = _buildYearsWithMonthsFromSelectedDays();
-                          NavigatorUtil.navigate(context, EditScheduleEmployeesPage(_model, yearsWithMonths, false));
+                          NavigatorUtil.navigate(context, EditScheduleEmployeesPage(_model, yearsWithMonths, _selectedDates.toList(), false));
                         } else {
                           showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
                         }
@@ -188,12 +188,12 @@ class _EditSchedulePageState extends State<EditSchedulePage> with TickerProvider
       headerStyle: HeaderStyle(centerHeaderTitle: true, formatButtonVisible: false),
       builders: CalendarBuilders(
         selectedDayBuilder: (context, date, _) {
-          bool isDaySelected = _selectedDays.contains(date);
+          bool isDaySelected = _selectedDates.contains(date);
           Color color = !isDaySelected && !_isEntered ? Colors.blueAccent : Colors.white;
           if (isDaySelected) {
-            _selectedDays.remove(date);
+            _selectedDates.remove(date);
           } else if (!_isEntered) {
-            _selectedDays.add(date);
+            _selectedDates.add(date);
           } else {
             _isEntered = false;
           }
@@ -213,7 +213,7 @@ class _EditSchedulePageState extends State<EditSchedulePage> with TickerProvider
           );
         },
         dayBuilder: (context, date, _) {
-          bool isDaySelected = _selectedDays.contains(date);
+          bool isDaySelected = _selectedDates.contains(date);
           return Container(
             margin: const EdgeInsets.all(4.0),
             padding: const EdgeInsets.only(top: 5.0, left: 6.0),
@@ -284,7 +284,7 @@ class _EditSchedulePageState extends State<EditSchedulePage> with TickerProvider
 
   Set<String> _buildYearsWithMonthsFromSelectedDays() {
     Set<String> yearsWithMonths = new Set();
-    _selectedDays.forEach((element) {
+    _selectedDates.forEach((element) {
       yearsWithMonths.add(element.year.toString() + '-' + element.month.toString());
     });
     return yearsWithMonths;

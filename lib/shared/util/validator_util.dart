@@ -74,6 +74,15 @@ class ValidatorUtil {
     return null;
   }
 
+  static String validateNote(String note, BuildContext context) {
+    if (note.isEmpty) {
+      return getTranslated(context, 'noteIsRequired');
+    } else if (note.length > 510) {
+      return getTranslated(context, 'noteWrongLength');
+    }
+    return null;
+  }
+
   static String validateItemQuantity(int quantity, BuildContext context) {
     if (quantity < 1) {
       return getTranslated(context, 'itemQuantityCannotBeLowerThan0');

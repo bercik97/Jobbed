@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:jobbed/api/note/api/note_service.dart';
+import 'package:jobbed/api/note/dto/create_note_dto.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/sub_workplace/dto/sub_workplace_dto.dart';
 import 'package:jobbed/api/workplace/dto/workplace_for_add_note_dto.dart';
@@ -21,14 +22,18 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/validator_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/loader.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
 class AddNotePage extends StatefulWidget {
   final GroupModel _model;
+  final LinkedHashSet _employeeIds;
+  final Set<String> _yearsWithMonths;
+  final List<DateTime> _selectedDates;
 
-  AddNotePage(this._model);
+  AddNotePage(this._model, this._employeeIds, this._yearsWithMonths, this._selectedDates);
 
   @override
   _AddNotePageState createState() => _AddNotePageState();
@@ -37,6 +42,9 @@ class AddNotePage extends StatefulWidget {
 class _AddNotePageState extends State<AddNotePage> {
   GroupModel _model;
   User _user;
+  LinkedHashSet _employeeIds;
+  Set<String> _yearsWithMonths;
+  List<DateTime> _selectedDates;
 
   WorkplaceService _workplaceService;
   NoteService _noteService;
@@ -57,6 +65,9 @@ class _AddNotePageState extends State<AddNotePage> {
   void initState() {
     this._model = widget._model;
     this._user = _model.user;
+    this._employeeIds = widget._employeeIds;
+    this._yearsWithMonths = widget._yearsWithMonths;
+    this._selectedDates = widget._selectedDates;
     this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
     this._noteService = ServiceInitializer.initialize(context, _user.authHeader, NoteService);
     super.initState();
@@ -246,7 +257,7 @@ class _AddNotePageState extends State<AddNotePage> {
                   title: getTranslated(context, 'confirmation'),
                   content: getTranslated(context, 'areYouSureYouWantToAddNote'),
                   isBtnTapped: _isAddNoteButtonTapped,
-                  fun: () => _isAddNoteButtonTapped ? null : _handleAddNote(_selectedSubWorkplacesIds.map((el) => el.toString()).toList()),
+                  fun: () => _isAddNoteButtonTapped ? null : _handleAddNote(),
                 );
               },
             ),
@@ -256,10 +267,30 @@ class _AddNotePageState extends State<AddNotePage> {
     );
   }
 
-  void _handleAddNote(List<String> ids) {
+  void _handleAddNote() {
     setState(() => _isAddNoteButtonTapped = true);
+    String managerNote = _managerNoteController.text;
+    String invalidMessage = ValidatorUtil.validateNote(managerNote, context);
+    if (invalidMessage != null) {
+      setState(() => _isAddNoteButtonTapped = false);
+      ToastUtil.showErrorToast(invalidMessage);
+      return;
+    }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _noteService.create().then((res) {
+    CreateNoteDto dto = new CreateNoteDto(
+      managerNote: managerNote,
+      subWorkplaceIds: _selectedSubWorkplacesIds.map((el) => el.toString()).toList(),
+      employeeIds: _employeeIds.toList(),
+      yearsWithMonths: _yearsWithMonths.toList(),
+      dates: _selectedDates
+          .map((e) => {
+                (e.year.toString() + '-' + (e.month < 10 ? ('0' + e.month.toString()) : e.month.toString()) + '-' + (e.day < 10 ? ('0' + e.day.toString()) : e.day.toString())).toString(),
+              })
+          .toList()
+          .map((e) => e.toString())
+          .toList(),
+    );
+    _noteService.create(dto).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessToast(getTranslated(context, 'noteHasBeenCreated'));
         NavigatorUtil.navigatePushAndRemoveUntil(context, SchedulePage(_model));
