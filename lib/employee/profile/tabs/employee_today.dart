@@ -8,7 +8,7 @@ import 'package:jobbed/shared/widget/buttons.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
-Container employeeToday(BuildContext context, EmployeeProfileDto dto, Function() fillHoursFun) {
+Widget employeeToday(BuildContext context, EmployeeProfileDto dto, Function() fillHoursFun) {
   bool isTsNotCreated = dto.todayWorkdayId == 0;
   if (isTsNotCreated) {
     return Container(
@@ -27,6 +27,14 @@ Container employeeToday(BuildContext context, EmployeeProfileDto dto, Function()
       ),
     );
   }
+  return Column(
+    children: [
+      _buildStatisticsContainer(context, dto, fillHoursFun),
+    ],
+  );
+}
+
+Widget _buildStatisticsContainer(BuildContext context, EmployeeProfileDto dto, Function() fillHoursFun) {
   String todayDate = dto.todayDate;
   String todayMoney = dto.todayMoney.toString();
   String todayHours = dto.todayHours.toString();
