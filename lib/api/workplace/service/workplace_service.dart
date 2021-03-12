@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:jobbed/api/workplace/dto/create_workplace_dto.dart';
 import 'package:jobbed/api/workplace/dto/workplace_dto.dart';
+import 'package:jobbed/api/workplace/dto/workplace_for_add_note_dto.dart';
 import 'package:jobbed/api/workplace/dto/workplace_id_name_dto.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/util/logout_util.dart';
@@ -32,6 +33,17 @@ class WorkplaceService {
     Response res = await get(_url + '/companies/$companyId', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => WorkplaceDto.fromJson(data)).toList();
+    } else if (res.statusCode == 401) {
+      return LogoutUtil.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<List<WorkplaceForAddNoteDto>> findAllByCompanyIdForAddNoteView(String companyId) async {
+    Response res = await get(_url + '/view/add-note/companies/$companyId', headers: _header);
+    if (res.statusCode == 200) {
+      return (json.decode(res.body) as List).map((data) => WorkplaceForAddNoteDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
       return LogoutUtil.handle401WithLogout(_context);
     } else {
