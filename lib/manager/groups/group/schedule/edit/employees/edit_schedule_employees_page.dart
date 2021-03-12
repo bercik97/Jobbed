@@ -7,7 +7,7 @@ import 'package:jobbed/api/employee/dto/employee_basic_dto.dart';
 import 'package:jobbed/api/employee/service/employee_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
-import 'package:jobbed/manager/groups/group/note/add_note.dart';
+import 'package:jobbed/manager/groups/group/note/add_note_page.dart';
 import 'package:jobbed/manager/groups/group/schedule/edit/edit_schedule_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
