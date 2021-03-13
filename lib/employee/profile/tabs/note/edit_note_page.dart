@@ -51,6 +51,7 @@ class _EditNotePageState extends State<EditNotePage> {
   LinkedHashSet<int> _selectedNoteWorkplacesIds = new LinkedHashSet();
   LinkedHashSet<int> _selectedNoteSubWorkplacesIds = new LinkedHashSet();
 
+  List doneWorkplaceNoteIds = new List();
   List undoneWorkplaceNoteIds = new List();
 
   NoteSubWorkplaceService _noteSubWorkplaceService;
@@ -76,15 +77,17 @@ class _EditNotePageState extends State<EditNotePage> {
         noteSubWorkplaces[element.workplaceName].add(element);
       }
       if (element.done) {
-        doneTasks++;
+        doneWorkplaceNoteIds.add(element.id);
+      } else {
+        undoneWorkplaceNoteIds.add(element.id);
       }
-      allTasks++;
-      undoneWorkplaceNoteIds.add(element.id);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    doneTasks = doneWorkplaceNoteIds.length;
+    allTasks = doneTasks + undoneWorkplaceNoteIds.length;
     String managerNote = _noteDto.managerNote;
     return WillPopScope(
       child: MaterialApp(
@@ -198,8 +201,12 @@ class _EditNotePageState extends State<EditNotePage> {
                                         setState(() {
                                           _checkedNoteWorkplaces[foundIndex] = value;
                                           if (value) {
+                                            doneWorkplaceNoteIds.add(noteWorkplaces[foundIndex].id);
+                                            undoneWorkplaceNoteIds.remove(noteWorkplaces[foundIndex].id);
                                             _selectedNoteWorkplacesIds.add(noteWorkplaces[foundIndex].id);
                                           } else {
+                                            doneWorkplaceNoteIds.remove(noteWorkplaces[foundIndex].id);
+                                            undoneWorkplaceNoteIds.add(noteWorkplaces[foundIndex].id);
                                             _selectedNoteWorkplacesIds.remove(noteWorkplaces[foundIndex].id);
                                           }
                                         });
@@ -269,8 +276,12 @@ class _EditNotePageState extends State<EditNotePage> {
                                                           setState(() {
                                                             noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].done = value;
                                                             if (value) {
+                                                              doneWorkplaceNoteIds.add(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
+                                                              undoneWorkplaceNoteIds.remove(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
                                                               _selectedNoteSubWorkplacesIds.add(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
                                                             } else {
+                                                              doneWorkplaceNoteIds.remove(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
+                                                              undoneWorkplaceNoteIds.add(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
                                                               _selectedNoteSubWorkplacesIds.remove(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
                                                             }
                                                           });
@@ -321,14 +332,6 @@ class _EditNotePageState extends State<EditNotePage> {
   void _handleUpdateNote() {
     setState(() => _isUpdateButtonTapped = true);
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    List doneWorkplaceNoteIds = new List();
-    doneWorkplaceNoteIds.addAll(_selectedNoteWorkplacesIds);
-    doneWorkplaceNoteIds.addAll(_selectedNoteSubWorkplacesIds);
-    doneWorkplaceNoteIds.forEach((element) {
-      if (undoneWorkplaceNoteIds.contains(element)) {
-        undoneWorkplaceNoteIds.remove(element);
-      }
-    });
     UpdateNoteSubWorkplaceDto dto = new UpdateNoteSubWorkplaceDto(
       employeeNote: _employeeNoteController.text,
       undoneWorkplaceNoteIds: undoneWorkplaceNoteIds,
@@ -337,8 +340,17 @@ class _EditNotePageState extends State<EditNotePage> {
     _noteSubWorkplaceService.update(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessToast(getTranslated(context, 'successfullyUpdatedNote'));
-        NavigatorUtil.navigateReplacement(context, EmployeeProfilePage(_user)); // todo Should be replaced by refresh
-        setState(() => _isUpdateButtonTapped = false);
+        setState(() {
+          _noteDto.employeeNote = _employeeNoteController.text;
+          _noteDto.noteSubWorkplaceDto.forEach((element) {
+            if (doneWorkplaceNoteIds.contains(element.id)) {
+              element = true;
+            } else {
+              element = false;
+            }
+          });
+          _isUpdateButtonTapped = false;
+        });
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

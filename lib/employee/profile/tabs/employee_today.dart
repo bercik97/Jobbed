@@ -34,7 +34,7 @@ Widget employeeToday(BuildContext context, User user, EmployeeProfileDto dto, Fu
   }
   return Column(
     children: [
-      _buildNoteContainer(context, user, dto.todayDate, dto.todayNote),
+      dto.todayNote != null ? _buildNoteContainer(context, user, dto.todayDate, dto.todayNote) : Container(),
       //_buildStatisticsContainer(context, dto, fillHoursFun),
     ],
   );

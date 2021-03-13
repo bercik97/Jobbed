@@ -4,7 +4,7 @@ import 'package:jobbed/api/note_sub_workplace/dto/note_sub_workplace_dto.dart';
 class NoteDto {
   final int id;
   final String managerNote;
-  final String employeeNote;
+  String employeeNote;
   final List noteSubWorkplaceDto;
 
   NoteDto({
