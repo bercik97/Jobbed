@@ -679,5 +679,6 @@
   "workplaceHasNoSubWorkplaces": "Miejsce pracy nie posiada podobiektów",
   "todo": "Do zrobienia",
   "showMore": "pokaż więcej",
-  "showLess": "pokaż mniej"
+  "showLess": "pokaż mniej",
+  "noteManagerEmpty": "Brak notatki od menadżera"
 }

@@ -679,5 +679,6 @@
   "workplaceHasNoSubWorkplaces": "Workplace do not have sub workplaces",
   "todo": "To do",
   "showMore": "show more",
-  "showLess": "show less"
+  "showLess": "show less",
+  "noteManagerEmpty": "No note from manager"
 }

@@ -76,12 +76,12 @@ class _EditNotePageState extends State<EditNotePage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: WHITE,
-          appBar: employeeAppBar(context, _user, _todayDate, () => NavigatorUtil.navigateReplacement(context, EmployeeProfilePage(_user))),
+          appBar: employeeAppBar(context, _user, '', () => NavigatorUtil.navigateReplacement(context, EmployeeProfilePage(_user))),
           body: SingleChildScrollView(
             child: Column(
               children: [
                 ListTile(
-                  title: text25BlackBold(getTranslated(this.context, 'todo')),
+                  title: text20BlackBold(getTranslated(this.context, 'todo') + ' ($_todayDate)'),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -99,17 +99,17 @@ class _EditNotePageState extends State<EditNotePage> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 30, top: 10, right: 30),
+                  padding: EdgeInsets.only(left: 30, top: 5, right: 30),
                   child: Align(
                     alignment: Alignment.topLeft,
-                    child: ExpandableText(
+                    child: managerNote != null && managerNote != '' ? ExpandableText(
                       managerNote,
                       expandText: getTranslated(context, 'showMore'),
                       collapseText: getTranslated(context, 'showLess'),
                       maxLines: 2,
                       linkColor: Colors.blue,
                       style: TextStyle(fontSize: 17),
-                    ),
+                    ) : text16BlueGrey(getTranslated(context, 'noteManagerEmpty')),
                   ),
                 ),
                 SizedBox(
