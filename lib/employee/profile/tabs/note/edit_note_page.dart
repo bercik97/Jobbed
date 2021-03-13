@@ -48,7 +48,6 @@ class _EditNotePageState extends State<EditNotePage> {
   @override
   Widget build(BuildContext context) {
     String managerNote = _noteDto.managerNote;
-    String workplaceName = _noteDto.workplaceName;
     List noteSubWorkplaces = _noteDto.noteSubWorkplaceDto;
     noteSubWorkplaces.forEach((e) => _checkedNoteSubWorkplaces.add(e.done));
     List doneTasks = noteSubWorkplaces.where((e) => e.done).toList();

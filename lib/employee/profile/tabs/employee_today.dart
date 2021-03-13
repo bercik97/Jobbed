@@ -54,7 +54,7 @@ Widget _buildNoteContainer(BuildContext context, User user, String todayDate, No
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ListTile(
-                  title: text22Black(noteDto.workplaceName),
+                  title: text22Black(getTranslated(context, 'note')),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

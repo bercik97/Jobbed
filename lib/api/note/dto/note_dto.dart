@@ -5,14 +5,12 @@ class NoteDto {
   final int id;
   final String managerNote;
   final String employeeNote;
-  final String workplaceName;
   final List noteSubWorkplaceDto;
 
   NoteDto({
     @required this.id,
     @required this.managerNote,
     @required this.employeeNote,
-    @required this.workplaceName,
     @required this.noteSubWorkplaceDto,
   });
 
@@ -21,7 +19,6 @@ class NoteDto {
       id: json['id'] as int,
       managerNote: json['managerNote'] as String,
       employeeNote: json['employeeNote'] as String,
-      workplaceName: json['workplaceName'] as String,
       noteSubWorkplaceDto: json['noteSubWorkplaceDto'].map((data) => NoteSubWorkplaceDto.fromJson(data)).toList(),
     );
   }
