@@ -680,5 +680,6 @@
   "todo": "Do zrobienia",
   "showMore": "pokaż więcej",
   "showLess": "pokaż mniej",
-  "noteManagerEmpty": "Brak notatki od menadżera"
+  "noteManagerEmpty": "Brak notatki od menadżera",
+  "yourNote": "Twoja notatka"
 }

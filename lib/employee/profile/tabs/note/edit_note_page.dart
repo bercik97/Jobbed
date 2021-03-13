@@ -37,6 +37,7 @@ class _EditNotePageState extends State<EditNotePage> {
   Map<String, List<NoteSubWorkplaceDto>> noteSubWorkplaces = new Map();
   int doneTasks = 0;
   int allTasks = 0;
+  final TextEditingController _employeeNoteController = new TextEditingController();
 
   List<bool> _checkedNoteWorkplaces = new List();
   LinkedHashSet<int> _selectedNoteWorkplacesIds = new LinkedHashSet();
@@ -110,6 +111,33 @@ class _EditNotePageState extends State<EditNotePage> {
                       linkColor: Colors.blue,
                       style: TextStyle(fontSize: 17),
                     ) : text16BlueGrey(getTranslated(context, 'noteManagerEmpty')),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 15, top: 5, right: 15),
+                  child: ExpansionTile(
+                    title: text20OrangeBold(getTranslated(context, 'yourNote')),
+                    subtitle: text16BlueGrey(getTranslated(context, 'tapToAdd')),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15, right: 15),
+                        child: TextFormField(
+                          autofocus: false,
+                          controller: _employeeNoteController,
+                          keyboardType: TextInputType.multiline,
+                          maxLength: 510,
+                          maxLines: 5,
+                          cursorColor: BLACK,
+                          textAlignVertical: TextAlignVertical.center,
+                          style: TextStyle(color: BLACK),
+                          decoration: InputDecoration(
+                            counterStyle: TextStyle(color: BLACK),
+                            focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
+                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 SizedBox(

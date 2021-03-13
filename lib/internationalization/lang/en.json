@@ -680,5 +680,6 @@
   "todo": "To do",
   "showMore": "show more",
   "showLess": "show less",
-  "noteManagerEmpty": "No note from manager"
+  "noteManagerEmpty": "No note from manager",
+  "yourNote": "Your note"
 }
