@@ -13,7 +13,7 @@ AppBar employeeAppBar(BuildContext context, User user, String title, Function() 
     backgroundColor: WHITE,
     elevation: 0.0,
     bottomOpacity: 0.0,
-    title: text13Black(title),
+    title: text20Black(title),
     centerTitle: false,
     automaticallyImplyLeading: true,
     leading: IconButton(icon: iconBlack(Icons.arrow_back), onPressed: () => fun()),

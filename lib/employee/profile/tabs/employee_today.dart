@@ -62,7 +62,7 @@ Widget _buildNoteContainer(BuildContext context, User user, String todayDate, No
                       text16BlueGrey(getTranslated(context, 'tapToSeeDetails')),
                     ],
                   ),
-                  trailing: doneTasks.length == noteSubWorkplaces.length ? icon50Green(Icons.check) : icon50Red(Icons.close),
+                  leading: doneTasks.length == noteSubWorkplaces.length ? icon50Green(Icons.check) : icon50Red(Icons.close),
                   onTap: () => NavigatorUtil.navigate(context, EditNotePage(user, todayDate, noteDto)),
                 ),
               ),
