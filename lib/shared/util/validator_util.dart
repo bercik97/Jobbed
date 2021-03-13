@@ -76,7 +76,7 @@ class ValidatorUtil {
   }
 
   static String validateAddNote(String note, Map<WorkplaceForAddNoteDto, List<bool>> _selectedWorkplacesWithChecked, BuildContext context) {
-    if (note.isEmpty || _selectedWorkplacesWithChecked.isEmpty) {
+    if (note.isEmpty && _selectedWorkplacesWithChecked.isEmpty) {
       return getTranslated(context, 'noteAddFailure');
     } else if (note.length > 510) {
       return getTranslated(context, 'noteWrongLength');

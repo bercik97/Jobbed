@@ -675,5 +675,6 @@
   "tapToAdd": "Tap to add",
   "noteAddFailure": "Cannot add empty note",
   "noteWrongLength": "Note length cannot be higher than 510",
-  "tapToSeeDetails": "Tap to see details"
+  "tapToSeeDetails": "Tap to see details",
+  "workplaceHasNoSubWorkplaces": "Workplace do not have sub workplaces"
 }

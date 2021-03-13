@@ -675,5 +675,6 @@
   "tapToAdd": "Dotknij aby dodać",
   "noteAddFailure": "Nie można dodać pustej notatki",
   "noteWrongLength": "Rozmiar notatki nie może być większy niż 510 znaków",
-  "tapToSeeDetails": "Naciśnij, aby sprawdzić szczegóły"
+  "tapToSeeDetails": "Naciśnij, aby sprawdzić szczegóły",
+  "workplaceHasNoSubWorkplaces": "Miejsce pracy nie posiada podobiektów"
 }

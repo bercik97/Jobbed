@@ -185,7 +185,7 @@ class _AddNotePageState extends State<AddNotePage> {
                                             onPressed: () => setState(() => _selectedWorkplacesWithChecked.remove(workplace)),
                                           ),
                                           subtitle: workplace.subWorkplacesDto.isEmpty
-                                              ? Container()
+                                              ? text16BlueGrey(getTranslated(context, 'workplaceHasNoSubWorkplaces'))
                                               : SizedBox(
                                                   height: workplace.subWorkplacesDto.length * 80.0,
                                                   child: ListView.builder(
