@@ -56,6 +56,7 @@ class _AddNotePageState extends State<AddNotePage> {
   final TextEditingController _managerNoteController = new TextEditingController();
 
   bool _loading = false;
+  LinkedHashSet<String> _selectedWorkplacesIds = new LinkedHashSet();
   LinkedHashSet<int> _selectedSubWorkplacesIds = new LinkedHashSet();
 
   bool _isAddNoteButtonTapped = false;
@@ -311,8 +312,14 @@ class _AddNotePageState extends State<AddNotePage> {
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _selectedWorkplacesWithChecked.forEach((key, value) {
+      if (value.isEmpty || !value.contains(true)) {
+        _selectedWorkplacesIds.add(key.id);
+      }
+    });
     CreateNoteDto dto = new CreateNoteDto(
       managerNote: managerNote,
+      workplaceIds: _selectedWorkplacesIds.map((e) => e.toString()).toList(),
       subWorkplaceIds: _selectedSubWorkplacesIds.map((el) => el.toString()).toList(),
       employeeIds: _employeeIds.toList(),
       yearsWithMonths: _yearsWithMonths.toList(),

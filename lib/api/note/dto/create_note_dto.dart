@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 class CreateNoteDto {
   final String managerNote;
+  final List workplaceIds;
   final List subWorkplaceIds;
   final List employeeIds;
   final List yearsWithMonths;
@@ -9,6 +10,7 @@ class CreateNoteDto {
 
   CreateNoteDto({
     @required this.managerNote,
+    @required this.workplaceIds,
     @required this.subWorkplaceIds,
     @required this.employeeIds,
     @required this.yearsWithMonths,
@@ -18,6 +20,7 @@ class CreateNoteDto {
   static Map<String, dynamic> jsonEncode(CreateNoteDto dto) {
     Map<String, dynamic> map = new Map();
     map['managerNote'] = dto.managerNote;
+    map['workplaceIds'] = dto.workplaceIds;
     map['subWorkplaceIds'] = dto.subWorkplaceIds;
     map['employeeIds'] = dto.employeeIds;
     map['yearsWithMonths'] = dto.yearsWithMonths;
