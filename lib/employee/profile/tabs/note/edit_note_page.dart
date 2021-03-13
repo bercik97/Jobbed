@@ -4,14 +4,20 @@ import 'dart:convert';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:jobbed/api/note/dto/note_dto.dart';
 import 'package:jobbed/api/note_sub_workplace/dto/note_sub_workplace_dto.dart';
+import 'package:jobbed/api/note_sub_workplace/dto/update_note_sub_workplace_dto.dart';
+import 'package:jobbed/api/note_sub_workplace/service/note_sub_workplace_service.dart';
+import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/employee/shared/employee_app_bar.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
@@ -45,11 +51,18 @@ class _EditNotePageState extends State<EditNotePage> {
   LinkedHashSet<int> _selectedNoteWorkplacesIds = new LinkedHashSet();
   LinkedHashSet<int> _selectedNoteSubWorkplacesIds = new LinkedHashSet();
 
+  List undoneWorkplaceNoteIds = new List();
+
+  NoteSubWorkplaceService _noteSubWorkplaceService;
+
+  bool _isUpdateButtonTapped = false;
+
   @override
   void initState() {
     this._user = widget._user;
     this._todayDate = widget._todayDate;
     this._noteDto = widget._noteDto;
+    this._noteSubWorkplaceService = ServiceInitializer.initialize(context, _user.authHeader, NoteSubWorkplaceService);
     super.initState();
     _noteDto.noteSubWorkplaceDto.forEach((element) {
       if (element.subWorkplaceName == null) {
@@ -66,6 +79,7 @@ class _EditNotePageState extends State<EditNotePage> {
         doneTasks++;
       }
       allTasks++;
+      undoneWorkplaceNoteIds.add(element.id);
     });
   }
 
@@ -283,9 +297,54 @@ class _EditNotePageState extends State<EditNotePage> {
               ],
             ),
           ),
+          bottomNavigationBar: SafeArea(
+            child: MaterialButton(
+              color: BLUE,
+              child: text20White(getTranslated(context, 'tapToUpdate')),
+              onPressed: () {
+                DialogUtil.showConfirmationDialog(
+                  context: context,
+                  title: getTranslated(context, 'confirmation'),
+                  content: getTranslated(context, 'areYouSureYouWantToUpdateNoteByGivenData'),
+                  isBtnTapped: _isUpdateButtonTapped,
+                  fun: () => _isUpdateButtonTapped ? null : _handleUpdateNote(),
+                );
+              },
+            ),
+          ),
         ),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilePage(_user)),
     );
+  }
+
+  void _handleUpdateNote() {
+    setState(() => _isUpdateButtonTapped = true);
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    List doneWorkplaceNoteIds = new List();
+    doneWorkplaceNoteIds.addAll(_selectedNoteWorkplacesIds);
+    doneWorkplaceNoteIds.addAll(_selectedNoteSubWorkplacesIds);
+    doneWorkplaceNoteIds.forEach((element) {
+      if (undoneWorkplaceNoteIds.contains(element)) {
+        undoneWorkplaceNoteIds.remove(element);
+      }
+    });
+    UpdateNoteSubWorkplaceDto dto = new UpdateNoteSubWorkplaceDto(
+      employeeNote: _employeeNoteController.text,
+      undoneWorkplaceNoteIds: undoneWorkplaceNoteIds,
+      doneWorkplaceNoteIds: doneWorkplaceNoteIds,
+    );
+    _noteSubWorkplaceService.update(dto).then((value) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyUpdatedNote'));
+        NavigatorUtil.navigateReplacement(context, EmployeeProfilePage(_user)); // todo Should be replaced by refresh
+        setState(() => _isUpdateButtonTapped = false);
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+        setState(() => _isUpdateButtonTapped = false);
+      });
+    });
   }
 }

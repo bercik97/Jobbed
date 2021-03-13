@@ -681,5 +681,8 @@
   "showMore": "pokaż więcej",
   "showLess": "pokaż mniej",
   "noteManagerEmpty": "Brak notatki od menadżera",
-  "yourNote": "Twoja notatka"
+  "yourNote": "Twoja notatka",
+  "tapToUpdate": "Naciśnij aby zaktualizować",
+  "areYouSureYouWantToUpdateNoteByGivenData": "Czy na pewno chcesz zaktualizować notatkę na podstawie wprowadzonych danych?",
+  "successfullyUpdatedNote": "Pomyślnie zaktualizowano notatkę"
 }

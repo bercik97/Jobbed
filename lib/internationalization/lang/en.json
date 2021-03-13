@@ -681,5 +681,8 @@
   "showMore": "show more",
   "showLess": "show less",
   "noteManagerEmpty": "No note from manager",
-  "yourNote": "Your note"
+  "yourNote": "Your note",
+  "tapToUpdate": "Tap to update",
+  "areYouSureYouWantToUpdateNoteByGivenData": "Are you sure you want to update note based on entered data?",
+  "successfullyUpdatedNote": "Successfully updated note"
 }
