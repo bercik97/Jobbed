@@ -39,6 +39,8 @@ class _EditNotePageState extends State<EditNotePage> {
   int allTasks = 0;
   final TextEditingController _employeeNoteController = new TextEditingController();
 
+  final ScrollController scrollController = new ScrollController();
+
   List<bool> _checkedNoteWorkplaces = new List();
   LinkedHashSet<int> _selectedNoteWorkplacesIds = new LinkedHashSet();
   LinkedHashSet<int> _selectedNoteSubWorkplacesIds = new LinkedHashSet();
@@ -103,14 +105,16 @@ class _EditNotePageState extends State<EditNotePage> {
                   padding: EdgeInsets.only(left: 30, top: 5, right: 30),
                   child: Align(
                     alignment: Alignment.topLeft,
-                    child: managerNote != null && managerNote != '' ? ExpandableText(
-                      managerNote,
-                      expandText: getTranslated(context, 'showMore'),
-                      collapseText: getTranslated(context, 'showLess'),
-                      maxLines: 2,
-                      linkColor: Colors.blue,
-                      style: TextStyle(fontSize: 17),
-                    ) : text16BlueGrey(getTranslated(context, 'noteManagerEmpty')),
+                    child: managerNote != null && managerNote != ''
+                        ? ExpandableText(
+                            managerNote,
+                            expandText: getTranslated(context, 'showMore'),
+                            collapseText: getTranslated(context, 'showLess'),
+                            maxLines: 2,
+                            linkColor: Colors.blue,
+                            style: TextStyle(fontSize: 17),
+                          )
+                        : text16BlueGrey(getTranslated(context, 'noteManagerEmpty')),
                   ),
                 ),
                 Padding(
@@ -140,133 +144,141 @@ class _EditNotePageState extends State<EditNotePage> {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: noteWorkplaces.length * 80.0,
-                  child: ListView.builder(
-                    padding: EdgeInsets.symmetric(vertical: 10.0),
-                    itemCount: noteWorkplaces.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      NoteSubWorkplaceDto noteWorkplace = noteWorkplaces[index];
-                      int foundIndex = 0;
-                      for (int i = 0; i < noteWorkplaces.length; i++) {
-                        if (noteWorkplaces[i].id == noteWorkplace.id) {
-                          foundIndex = i;
+                Scrollbar(
+                  controller: scrollController,
+                  child: SizedBox(
+                    height: noteWorkplaces.length * 80.0,
+                    child: ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.symmetric(vertical: 10.0),
+                      itemCount: noteWorkplaces.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        NoteSubWorkplaceDto noteWorkplace = noteWorkplaces[index];
+                        int foundIndex = 0;
+                        for (int i = 0; i < noteWorkplaces.length; i++) {
+                          if (noteWorkplaces[i].id == noteWorkplace.id) {
+                            foundIndex = i;
+                          }
                         }
-                      }
-                      String name = noteWorkplace.workplaceName;
-                      return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 25),
-                        child: Card(
-                          color: WHITE,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                color: BRIGHTER_BLUE,
-                                child: ListTileTheme(
-                                  contentPadding: EdgeInsets.only(right: 10),
-                                  child: CheckboxListTile(
-                                    controlAffinity: ListTileControlAffinity.leading,
-                                    title: text20BlackBold(utf8.decode(name.runes.toList())),
-                                    subtitle: text16BlueGrey(getTranslated(this.context, 'workplaceHasNoSubWorkplaces')),
-                                    activeColor: BLUE,
-                                    checkColor: WHITE,
-                                    value: _checkedNoteWorkplaces[foundIndex],
-                                    onChanged: (bool value) {
-                                      setState(() {
-                                        _checkedNoteWorkplaces[foundIndex] = value;
-                                        if (value) {
-                                          _selectedNoteWorkplacesIds.add(noteWorkplaces[foundIndex].id);
-                                        } else {
-                                          _selectedNoteWorkplacesIds.remove(noteWorkplaces[foundIndex].id);
-                                        }
-                                      });
-                                    },
+                        String name = noteWorkplace.workplaceName;
+                        return Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 25),
+                          child: Card(
+                            color: WHITE,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  color: BRIGHTER_BLUE,
+                                  child: ListTileTheme(
+                                    contentPadding: EdgeInsets.only(right: 10),
+                                    child: CheckboxListTile(
+                                      controlAffinity: ListTileControlAffinity.leading,
+                                      title: text20BlackBold(utf8.decode(name.runes.toList())),
+                                      subtitle: text16BlueGrey(getTranslated(this.context, 'workplaceHasNoSubWorkplaces')),
+                                      activeColor: BLUE,
+                                      checkColor: WHITE,
+                                      value: _checkedNoteWorkplaces[foundIndex],
+                                      onChanged: (bool value) {
+                                        setState(() {
+                                          _checkedNoteWorkplaces[foundIndex] = value;
+                                          if (value) {
+                                            _selectedNoteWorkplacesIds.add(noteWorkplaces[foundIndex].id);
+                                          } else {
+                                            _selectedNoteWorkplacesIds.remove(noteWorkplaces[foundIndex].id);
+                                          }
+                                        });
+                                      },
+                                    ),
                                   ),
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
                 ),
-                Column(
-                  children: [
-                    for (int i = 0; i < noteSubWorkplaces.keys.toList().length; i++)
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 25),
-                        child: Card(
-                          color: WHITE,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                color: BRIGHTER_BLUE,
-                                child: ListTileTheme(
-                                  child: ListTile(
-                                    title: text20BlackBold(utf8.decode(noteSubWorkplaces.keys.toList()[i].runes.toList())),
-                                    subtitle: SizedBox(
-                                      height: noteSubWorkplaces.values.elementAt(i).length * 80.0,
-                                      child: ListView.builder(
-                                        itemCount: noteSubWorkplaces.values.elementAt(i).length,
-                                        itemBuilder: (BuildContext context, int index) {
-                                          NoteSubWorkplaceDto subWorkplace = noteSubWorkplaces.values.elementAt(i)[index];
-                                          int foundIndex = 0;
-                                          for (int j = 0; j < noteSubWorkplaces.values.elementAt(i).length; j++) {
-                                            if (noteSubWorkplaces.values.elementAt(i)[j].id == subWorkplace.id) {
-                                              foundIndex = j;
+                Scrollbar(
+                  controller: scrollController,
+                  child: Column(
+                    children: [
+                      for (int i = 0; i < noteSubWorkplaces.keys.toList().length; i++)
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 25),
+                          child: Card(
+                            color: WHITE,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  color: BRIGHTER_BLUE,
+                                  child: ListTileTheme(
+                                    child: ListTile(
+                                      title: text20BlackBold(utf8.decode(noteSubWorkplaces.keys.toList()[i].runes.toList())),
+                                      subtitle: SizedBox(
+                                        height: noteSubWorkplaces.values.elementAt(i).length * 80.0,
+                                        child: ListView.builder(
+                                          physics: const NeverScrollableScrollPhysics(),
+                                          itemCount: noteSubWorkplaces.values.elementAt(i).length,
+                                          itemBuilder: (BuildContext context, int index) {
+                                            NoteSubWorkplaceDto subWorkplace = noteSubWorkplaces.values.elementAt(i)[index];
+                                            int foundIndex = 0;
+                                            for (int j = 0; j < noteSubWorkplaces.values.elementAt(i).length; j++) {
+                                              if (noteSubWorkplaces.values.elementAt(i)[j].id == subWorkplace.id) {
+                                                foundIndex = j;
+                                              }
                                             }
-                                          }
-                                          String name = subWorkplace.subWorkplaceName;
-                                          String description = subWorkplace.subWorkplaceDescription;
-                                          return Card(
-                                            color: WHITE,
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                Container(
-                                                  color: BRIGHTER_BLUE,
-                                                  child: ListTileTheme(
-                                                    contentPadding: EdgeInsets.only(right: 10),
-                                                    child: CheckboxListTile(
-                                                      controlAffinity: ListTileControlAffinity.leading,
-                                                      title: text17BlueBold(utf8.decode(name.runes.toList())),
-                                                      subtitle: textBlack(utf8.decode(description.runes.toList())),
-                                                      activeColor: BLUE,
-                                                      checkColor: WHITE,
-                                                      value: noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].done,
-                                                      onChanged: (bool value) {
-                                                        setState(() {
-                                                          noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].done = value;
-                                                          if (value) {
-                                                            _selectedNoteSubWorkplacesIds.add(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
-                                                          } else {
-                                                            _selectedNoteSubWorkplacesIds.remove(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
-                                                          }
-                                                        });
-                                                      },
+                                            String name = subWorkplace.subWorkplaceName;
+                                            String description = subWorkplace.subWorkplaceDescription;
+                                            return Card(
+                                              color: WHITE,
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Container(
+                                                    color: BRIGHTER_BLUE,
+                                                    child: ListTileTheme(
+                                                      contentPadding: EdgeInsets.only(right: 10),
+                                                      child: CheckboxListTile(
+                                                        controlAffinity: ListTileControlAffinity.leading,
+                                                        title: text17BlueBold(utf8.decode(name.runes.toList())),
+                                                        subtitle: textBlack(utf8.decode(description.runes.toList())),
+                                                        activeColor: BLUE,
+                                                        checkColor: WHITE,
+                                                        value: noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].done,
+                                                        onChanged: (bool value) {
+                                                          setState(() {
+                                                            noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].done = value;
+                                                            if (value) {
+                                                              _selectedNoteSubWorkplacesIds.add(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
+                                                            } else {
+                                                              _selectedNoteSubWorkplacesIds.remove(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
+                                                            }
+                                                          });
+                                                        },
+                                                      ),
                                                     ),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          );
-                                        },
+                                                  )
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
