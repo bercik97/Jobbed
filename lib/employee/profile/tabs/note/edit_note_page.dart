@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:convert';
 
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jobbed/api/note/dto/note_dto.dart';
@@ -80,7 +81,7 @@ class _EditNotePageState extends State<EditNotePage> {
             child: Column(
               children: [
                 ListTile(
-                  title: text25BlackBold(getTranslated(this.context, 'note')),
+                  title: text25BlackBold(getTranslated(this.context, 'todo')),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -89,6 +90,27 @@ class _EditNotePageState extends State<EditNotePage> {
                     ],
                   ),
                   leading: doneTasks == allTasks ? icon50Green(Icons.check) : icon50Red(Icons.close),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 30, top: 10),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: text20OrangeBold(getTranslated(context, 'note')),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 30, top: 10, right: 30),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: ExpandableText(
+                      managerNote,
+                      expandText: getTranslated(context, 'showMore'),
+                      collapseText: getTranslated(context, 'showLess'),
+                      maxLines: 2,
+                      linkColor: Colors.blue,
+                      style: TextStyle(fontSize: 17),
+                    ),
+                  ),
                 ),
                 SizedBox(
                   height: noteWorkplaces.length * 80.0,

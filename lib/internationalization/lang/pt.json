@@ -676,5 +676,8 @@
   "noteAddFailure": "Cannot add empty note",
   "noteWrongLength": "Note length cannot be higher than 510",
   "tapToSeeDetails": "Tap to see details",
-  "workplaceHasNoSubWorkplaces": "Workplace do not have sub workplaces"
+  "workplaceHasNoSubWorkplaces": "Workplace do not have sub workplaces",
+  "todo": "To do",
+  "showMore": "show more",
+  "showLess": "show less"
 }

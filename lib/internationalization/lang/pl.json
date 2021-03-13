@@ -676,5 +676,8 @@
   "noteAddFailure": "Nie można dodać pustej notatki",
   "noteWrongLength": "Rozmiar notatki nie może być większy niż 510 znaków",
   "tapToSeeDetails": "Naciśnij, aby sprawdzić szczegóły",
-  "workplaceHasNoSubWorkplaces": "Miejsce pracy nie posiada podobiektów"
+  "workplaceHasNoSubWorkplaces": "Miejsce pracy nie posiada podobiektów",
+  "todo": "Do zrobienia",
+  "showMore": "pokaż więcej",
+  "showLess": "pokaż mniej"
 }
