@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 class NoteSubWorkplaceDto {
   final num id;
-  final bool done;
+  bool done;
   final String workplaceName;
   final String subWorkplaceName;
   final String subWorkplaceDescription;
