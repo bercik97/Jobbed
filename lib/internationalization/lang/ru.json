@@ -674,5 +674,6 @@
   "noteHasBeenCreated": "Note has been created!",
   "tapToAdd": "Tap to add",
   "noteIsRequired": "Note is required",
-  "noteWrongLength": "Note length cannot be higher than 510"
+  "noteWrongLength": "Note length cannot be higher than 510",
+  "tapToSeeDetails": "Tap to see details"
 }

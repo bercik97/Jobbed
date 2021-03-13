@@ -5,13 +5,15 @@ class NoteDto {
   final int id;
   final String managerNote;
   final String employeeNote;
-  final List subWorkplaceDto;
+  final String workplaceName;
+  final List noteSubWorkplaceDto;
 
   NoteDto({
     @required this.id,
     @required this.managerNote,
     @required this.employeeNote,
-    @required this.subWorkplaceDto,
+    @required this.workplaceName,
+    @required this.noteSubWorkplaceDto,
   });
 
   factory NoteDto.fromJson(Map<String, dynamic> json) {
@@ -19,7 +21,8 @@ class NoteDto {
       id: json['id'] as int,
       managerNote: json['managerNote'] as String,
       employeeNote: json['employeeNote'] as String,
-      subWorkplaceDto: json['noteSubWorkplaceDto'].map((data) => NoteSubWorkplaceDto.fromJson(data)).toList(),
+      workplaceName: json['workplaceName'] as String,
+      noteSubWorkplaceDto: json['noteSubWorkplaceDto'].map((data) => NoteSubWorkplaceDto.fromJson(data)).toList(),
     );
   }
 }

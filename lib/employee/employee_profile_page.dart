@@ -201,6 +201,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                     _buildTab(employeeTimesheetsTab(this.context, _employeePageDto.canFillHours, _user, _employeePageDto.timeSheets)),
                     _buildTab(employeeToday(
                       this.context,
+                      _user,
                       _employeePageDto,
                       () => _fillHoursFun(_employeePageDto.todayWorkdayId),
                     )),

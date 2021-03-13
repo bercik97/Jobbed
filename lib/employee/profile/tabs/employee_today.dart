@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jobbed/api/employee/dto/employee_profile_dto.dart';
+import 'package:jobbed/api/note/dto/note_dto.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/workday_util.dart';
 import 'package:jobbed/shared/widget/buttons.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
-Widget employeeToday(BuildContext context, EmployeeProfileDto dto, Function() fillHoursFun) {
+import 'note/edit_note_page.dart';
+
+Widget employeeToday(BuildContext context, User user, EmployeeProfileDto dto, Function() fillHoursFun) {
   bool isTsNotCreated = dto.todayWorkdayId == 0;
   if (isTsNotCreated) {
     return Container(
@@ -29,8 +34,43 @@ Widget employeeToday(BuildContext context, EmployeeProfileDto dto, Function() fi
   }
   return Column(
     children: [
-      _buildStatisticsContainer(context, dto, fillHoursFun),
+      _buildNoteContainer(context, user, dto.todayDate, dto.todayNote),
+      //_buildStatisticsContainer(context, dto, fillHoursFun),
     ],
+  );
+}
+
+Widget _buildNoteContainer(BuildContext context, User user, String todayDate, NoteDto noteDto) {
+  List noteSubWorkplaces = noteDto.noteSubWorkplaceDto;
+  List doneTasks = noteSubWorkplaces.where((e) => e.done).toList();
+  return Container(
+    child: SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          children: <Widget>[
+            Ink(
+              color: BRIGHTER_BLUE,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  title: text22Black(noteDto.workplaceName),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      text20Black(doneTasks.length.toString() + ' / ' + noteSubWorkplaces.length.toString()),
+                      text16BlueGrey(getTranslated(context, 'tapToSeeDetails')),
+                    ],
+                  ),
+                  trailing: doneTasks.length == noteSubWorkplaces.length ? icon50Green(Icons.check) : icon50Red(Icons.close),
+                  onTap: () => NavigatorUtil.navigate(context, EditNotePage(user, todayDate, noteDto)),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
   );
 }
 
