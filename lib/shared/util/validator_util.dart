@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jobbed/api/workplace/dto/workplace_for_add_note_dto.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 
 class ValidatorUtil {
@@ -74,9 +75,9 @@ class ValidatorUtil {
     return null;
   }
 
-  static String validateNote(String note, BuildContext context) {
-    if (note.isEmpty) {
-      return getTranslated(context, 'noteIsRequired');
+  static String validateAddNote(String note, Map<WorkplaceForAddNoteDto, List<bool>> _selectedWorkplacesWithChecked, BuildContext context) {
+    if (note.isEmpty || _selectedWorkplacesWithChecked.isEmpty) {
+      return getTranslated(context, 'noteAddFailure');
     } else if (note.length > 510) {
       return getTranslated(context, 'noteWrongLength');
     }

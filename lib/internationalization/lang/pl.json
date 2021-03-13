@@ -673,7 +673,7 @@
   "areYouSureYouWantToAddNote": "Czy na pewno chcesz dodać nową notatkę?",
   "noteHasBeenCreated": "Notatka została utworzona!",
   "tapToAdd": "Dotknij aby dodać",
-  "noteIsRequired": "Notatka jest wymagana",
+  "noteAddFailure": "Nie można dodać pustej notatki",
   "noteWrongLength": "Rozmiar notatki nie może być większy niż 510 znaków",
   "tapToSeeDetails": "Naciśnij, aby sprawdzić szczegóły"
 }

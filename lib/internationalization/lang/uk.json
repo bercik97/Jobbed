@@ -673,7 +673,7 @@
   "areYouSureYouWantToAddNote": "Are you sure you want to add note?",
   "noteHasBeenCreated": "Note has been created!",
   "tapToAdd": "Tap to add",
-  "noteIsRequired": "Note is required",
+  "noteAddFailure": "Cannot add empty note",
   "noteWrongLength": "Note length cannot be higher than 510",
   "tapToSeeDetails": "Tap to see details"
 }

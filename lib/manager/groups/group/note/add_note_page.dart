@@ -50,13 +50,12 @@ class _AddNotePageState extends State<AddNotePage> {
   NoteService _noteService;
 
   List<WorkplaceForAddNoteDto> workplaces = new List();
-  WorkplaceForAddNoteDto _selectedWorkplace;
+  Map<WorkplaceForAddNoteDto, List<bool>> _selectedWorkplacesWithChecked = new Map();
 
-  final ScrollController _scrollController = new ScrollController();
+  final ScrollController scrollController = new ScrollController();
   final TextEditingController _managerNoteController = new TextEditingController();
 
   bool _loading = false;
-  List<bool> _checked = new List();
   LinkedHashSet<int> _selectedSubWorkplacesIds = new LinkedHashSet();
 
   bool _isAddNoteButtonTapped = false;
@@ -94,126 +93,161 @@ class _AddNotePageState extends State<AddNotePage> {
         home: Scaffold(
           backgroundColor: WHITE,
           appBar: managerAppBar(context, _model.user, getTranslated(context, 'scheduleEditMode'), () => Navigator.pop(context)),
-          body: Column(
-            children: <Widget>[
-              ExpansionTile(
-                title: text20OrangeBold(getTranslated(context, 'note')),
-                subtitle: text16Black(getTranslated(context, 'tapToAdd')),
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15, right: 15),
-                    child: TextFormField(
-                      autofocus: false,
-                      controller: _managerNoteController,
-                      keyboardType: TextInputType.multiline,
-                      maxLength: 510,
-                      maxLines: 5,
-                      cursorColor: BLACK,
-                      textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: BLACK),
-                      decoration: InputDecoration(
-                        counterStyle: TextStyle(color: BLACK),
-                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
-                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10),
-                child: Column(
+          body: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                ExpansionTile(
+                  title: text20OrangeBold(getTranslated(context, 'note')),
+                  subtitle: text16BlueGrey(getTranslated(context, 'tapToAdd')),
                   children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: text20OrangeBold(getTranslated(context, 'noteBasedOnWorkplace')),
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: DropDown<String>(
-                        isExpanded: true,
-                        hint: textBlack(getTranslated(context, 'tapToAdd')),
-                        items: [
-                          for (var workplace in workplaces) utf8.decode(workplace.name.runes.toList()),
-                        ],
-                        customWidgets: [
-                          for (var workplace in workplaces) Row(children: <Widget>[Text(utf8.decode(workplace.name.runes.toList()))]),
-                        ],
-                        onChanged: (value) {
-                          setState(() {
-                            WorkplaceForAddNoteDto workplace = workplaces.firstWhere((element) => utf8.decode(element.name.runes.toList()) == value);
-                            if (workplace.name != '') {
-                              _selectedWorkplace = workplace;
-                              _selectedWorkplace.subWorkplacesDto.forEach((e) => _checked.add(false));
-                            } else {
-                              _selectedWorkplace = null;
-                              _checked.clear();
-                            }
-                          });
-                        },
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15, right: 15),
+                      child: TextFormField(
+                        autofocus: false,
+                        controller: _managerNoteController,
+                        keyboardType: TextInputType.multiline,
+                        maxLength: 510,
+                        maxLines: 5,
+                        cursorColor: BLACK,
+                        textAlignVertical: TextAlignVertical.center,
+                        style: TextStyle(color: BLACK),
+                        decoration: InputDecoration(
+                          counterStyle: TextStyle(color: BLACK),
+                          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
+                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
+                        ),
                       ),
                     ),
                   ],
                 ),
-              ),
-              _selectedWorkplace == null
-                  ? Container()
-                  : Expanded(
-                      flex: 2,
-                      child: Scrollbar(
-                        isAlwaysShown: true,
-                        controller: _scrollController,
-                        child: ListView.builder(
-                          controller: _scrollController,
-                          itemCount: _selectedWorkplace.subWorkplacesDto.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            SubWorkplaceDto subWorkplace = _selectedWorkplace.subWorkplacesDto[index];
-                            int foundIndex = 0;
-                            for (int i = 0; i < _selectedWorkplace.subWorkplacesDto.length; i++) {
-                              if (_selectedWorkplace.subWorkplacesDto[i].id == subWorkplace.id) {
-                                foundIndex = i;
-                              }
-                            }
-                            String name = subWorkplace.name;
-                            String description = subWorkplace.description;
-                            return Card(
-                              color: WHITE,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    color: BRIGHTER_BLUE,
-                                    child: ListTileTheme(
-                                      contentPadding: EdgeInsets.only(right: 10),
-                                      child: CheckboxListTile(
-                                        controlAffinity: ListTileControlAffinity.leading,
-                                        title: text20BlackBold(utf8.decode(name.runes.toList())),
-                                        subtitle: textBlack(utf8.decode(description.runes.toList())),
-                                        activeColor: BLUE,
-                                        checkColor: WHITE,
-                                        value: _checked[foundIndex],
-                                        onChanged: (bool value) {
-                                          setState(() {
-                                            _checked[foundIndex] = value;
-                                            if (value) {
-                                              _selectedSubWorkplacesIds.add(_selectedWorkplace.subWorkplacesDto[foundIndex].id);
-                                            } else {
-                                              _selectedSubWorkplacesIds.remove(_selectedWorkplace.subWorkplacesDto[foundIndex].id);
-                                            }
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                  )
+                Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10),
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: text20OrangeBold(getTranslated(context, 'noteBasedOnWorkplace')),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: DropDown<String>(
+                          isCleared: true,
+                          isExpanded: true,
+                          hint: text16BlueGrey(getTranslated(context, 'tapToAdd')),
+                          items: [
+                            for (var workplace in workplaces) utf8.decode(workplace.name.runes.toList()),
+                          ],
+                          customWidgets: [
+                            for (var workplace in workplaces)
+                              Row(
+                                children: [
+                                  textBlack(utf8.decode(workplace.name.runes.toList()) + ' '),
+                                  _selectedWorkplacesWithChecked.containsKey(workplace) ? iconGreen(Icons.check) : textBlack(' '),
                                 ],
                               ),
-                            );
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              WorkplaceForAddNoteDto workplace = workplaces.firstWhere((element) => utf8.decode(element.name.runes.toList()) == value);
+                              value = workplaces.first;
+                              if (workplace.name != '' && !_selectedWorkplacesWithChecked.containsKey(workplace)) {
+                                List<bool> _checked = new List();
+                                workplace.subWorkplacesDto.forEach((element) => _checked.add(false));
+                                _selectedWorkplacesWithChecked[workplace] = _checked;
+                              }
+                            });
                           },
                         ),
                       ),
-                    ),
-            ],
+                    ],
+                  ),
+                ),
+                _selectedWorkplacesWithChecked == null
+                    ? Container()
+                    : Column(
+                        children: [
+                          for (WorkplaceForAddNoteDto workplace in _selectedWorkplacesWithChecked.keys.toList())
+                            Padding(
+                              padding: const EdgeInsets.only(left: 15, right: 15),
+                              child: Card(
+                                color: WHITE,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Container(
+                                      color: BRIGHTER_BLUE,
+                                      child: ListTileTheme(
+                                        child: ListTile(
+                                          title: text20BlueBold(utf8.decode(workplace.name.runes.toList())),
+                                          trailing: IconButton(
+                                            icon: iconRed(Icons.remove),
+                                            onPressed: () => setState(() => _selectedWorkplacesWithChecked.remove(workplace)),
+                                          ),
+                                          subtitle: workplace.subWorkplacesDto.isEmpty
+                                              ? Container()
+                                              : SizedBox(
+                                                  height: workplace.subWorkplacesDto.length * 80.0,
+                                                  child: ListView.builder(
+                                                    controller: scrollController,
+                                                    itemCount: workplace.subWorkplacesDto.length,
+                                                    itemBuilder: (BuildContext context, int index) {
+                                                      SubWorkplaceDto subWorkplace = workplace.subWorkplacesDto[index];
+                                                      int foundIndex = 0;
+                                                      for (int i = 0; i < workplace.subWorkplacesDto.length; i++) {
+                                                        if (workplace.subWorkplacesDto[i].id == subWorkplace.id) {
+                                                          foundIndex = i;
+                                                        }
+                                                      }
+                                                      String name = subWorkplace.name;
+                                                      String description = subWorkplace.description;
+                                                      return Card(
+                                                        color: WHITE,
+                                                        child: Column(
+                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: <Widget>[
+                                                            Container(
+                                                              color: BRIGHTER_BLUE,
+                                                              child: ListTileTheme(
+                                                                contentPadding: EdgeInsets.only(right: 10),
+                                                                child: CheckboxListTile(
+                                                                  controlAffinity: ListTileControlAffinity.leading,
+                                                                  title: text17BlueBold(utf8.decode(name.runes.toList())),
+                                                                  subtitle: textBlack(utf8.decode(description.runes.toList())),
+                                                                  activeColor: BLUE,
+                                                                  checkColor: WHITE,
+                                                                  value: _selectedWorkplacesWithChecked[workplace][foundIndex],
+                                                                  onChanged: (bool value) {
+                                                                    setState(() {
+                                                                      _selectedWorkplacesWithChecked[workplace][foundIndex] = value;
+                                                                      if (value) {
+                                                                        _selectedSubWorkplacesIds.add(workplace.subWorkplacesDto[foundIndex].id);
+                                                                      } else {
+                                                                        _selectedSubWorkplacesIds.remove(workplace.subWorkplacesDto[foundIndex].id);
+                                                                      }
+                                                                    });
+                                                                  },
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+              ],
+            ),
           ),
           bottomNavigationBar: _buildBottomNavigationBar(),
         ),
@@ -270,7 +304,7 @@ class _AddNotePageState extends State<AddNotePage> {
   void _handleAddNote() {
     setState(() => _isAddNoteButtonTapped = true);
     String managerNote = _managerNoteController.text;
-    String invalidMessage = ValidatorUtil.validateNote(managerNote, context);
+    String invalidMessage = ValidatorUtil.validateAddNote(managerNote, _selectedWorkplacesWithChecked, context);
     if (invalidMessage != null) {
       setState(() => _isAddNoteButtonTapped = false);
       ToastUtil.showErrorToast(invalidMessage);
