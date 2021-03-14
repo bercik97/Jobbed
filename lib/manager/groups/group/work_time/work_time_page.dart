@@ -388,12 +388,15 @@ class _WorkTimePageState extends State<WorkTimePage> {
     int year = now.year;
     int month = now.month;
     int days = DateUtil().daysInMonth(month, year);
+    bool isJanuaryMonth = month == 1;
+    bool isDecemberMonth = month == 12;
+    int daysInLastDate = DateUtil().daysInMonth(isDecemberMonth ? 1 : month + 1, isDecemberMonth ? year + 1 : year);
     final List<DateTime> picked = await DateRagePicker.showDatePicker(
       context: context,
       initialFirstDate: new DateTime(year, month, 1),
       initialLastDate: new DateTime(year, month, days),
-      firstDate: new DateTime(year, month, 1),
-      lastDate: new DateTime(year, month, days),
+      firstDate: new DateTime(isJanuaryMonth ? year - 1 : year, isJanuaryMonth ? 12 : month - 1, 1),
+      lastDate: new DateTime(isDecemberMonth ? year + 1 : year, isDecemberMonth ? 1 : month + 1, daysInLastDate),
     );
     if (picked != null && picked.length == 1) {
       picked.add(picked[0]);
