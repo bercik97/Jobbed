@@ -129,7 +129,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
       autofocus: false,
       controller: controller,
       autocorrect: true,
-      keyboardType: TextInputType.multiline,
+      keyboardType: TextInputType.text,
       maxLength: length,
       maxLines: lines,
       cursorColor: BLACK,
@@ -157,6 +157,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
         checkColor: WHITE,
         onChanged: (bool value) {
           setState(() {
+            FocusScope.of(context).unfocus();
             _isChecked = value;
             List<bool> l = new List();
             _checked.forEach((b) => l.add(value));
@@ -209,6 +210,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
                         value: _checked[foundIndex],
                         onChanged: (bool value) {
                           setState(() {
+                            FocusScope.of(context).unfocus();
                             _checked[foundIndex] = value;
                             if (value) {
                               _selectedIds.add(_employees[foundIndex].id);
@@ -298,7 +300,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
     _groupService.create(dto).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessToast(getTranslated(context, 'successfullyAddedNewGroup'));
-        NavigatorUtil.navigate(context, GroupsDashboardPage(_user));
+        NavigatorUtil.navigatePushAndRemoveUntil(context, GroupsDashboardPage(_user));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
