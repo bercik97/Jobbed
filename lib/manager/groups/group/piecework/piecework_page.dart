@@ -94,7 +94,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: WHITE,
-        appBar: managerAppBar(context, _user, getTranslated(context, 'workTimes'), () => NavigatorUtil.navigateReplacement(context, GroupPage(_model))),
+        appBar: managerAppBar(context, _user, getTranslated(context, 'piecework'), () => NavigatorUtil.navigateReplacement(context, GroupPage(_model))),
         body: Column(
           children: <Widget>[
             Container(
