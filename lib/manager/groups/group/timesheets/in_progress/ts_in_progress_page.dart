@@ -823,10 +823,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
     if (picked != null && picked.length == 2) {
       String dateFrom = DateFormat('yyyy-MM-dd').format(picked[0]);
       String dateTo = DateFormat('yyyy-MM-dd').format(picked[1]);
-      NavigatorUtil.navigate(
-        context,
-        AddPieceworkForSelectedEmployeesPage(_model, _timesheet, dateFrom, dateTo, _selectedIds.map((el) => el.toString()).toList(), year, month, STATUS_IN_PROGRESS),
-      );
+      NavigatorUtil.navigate(context, AddPieceworkForSelectedEmployeesPage(_model, _timesheet, dateFrom, dateTo, _selectedIds.map((el) => el.toString()).toList()));
     }
   }
 

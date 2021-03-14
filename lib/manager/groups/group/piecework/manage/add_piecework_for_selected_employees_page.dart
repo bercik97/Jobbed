@@ -10,6 +10,7 @@ import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/timesheet/dto/timesheet_with_status_dto.dart';
 import 'package:jobbed/api/workday/service/workday_service.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/groups/group/piecework/piecework_page.dart';
 import 'package:jobbed/manager/groups/group/timesheets/in_progress/ts_in_progress_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
@@ -30,11 +31,8 @@ class AddPieceworkForSelectedEmployeesPage extends StatefulWidget {
   final String dateFrom;
   final String dateTo;
   final List<String> employeeIds;
-  final int tsYear;
-  final int tsMonth;
-  final String tsStatus;
 
-  AddPieceworkForSelectedEmployeesPage(this._model, this._timeSheet, this.dateFrom, this.dateTo, this.employeeIds, this.tsYear, this.tsMonth, this.tsStatus);
+  AddPieceworkForSelectedEmployeesPage(this._model, this._timeSheet, this.dateFrom, this.dateTo, this.employeeIds);
 
   @override
   _AddPieceworkForSelectedEmployeesPageState createState() => _AddPieceworkForSelectedEmployeesPageState();
@@ -46,9 +44,6 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
   String _dateFrom;
   String _dateTo;
   List<String> _employeeIds;
-  int _tsYear;
-  int _tsMonth;
-  String _tsStatus;
 
   User _user;
 
@@ -76,9 +71,6 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
     this._dateFrom = widget.dateFrom;
     this._dateTo = widget.dateTo;
     this._employeeIds = widget.employeeIds;
-    this._tsYear = widget.tsYear;
-    this._tsMonth = widget.tsMonth;
-    this._tsStatus = widget.tsStatus;
     this._priceListService = ServiceInitializer.initialize(context, _user.authHeader, PriceListService);
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     super.initState();
@@ -89,7 +81,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
         _priceLists.forEach((i) => _textEditingItemControllers[utf8.decode(i.name.runes.toList())] = new TextEditingController());
         _loading = false;
       });
-    }).catchError((onError) => DialogUtil.showFailureDialogWithWillPopScope(context, getTranslated(context, 'noPriceList'), TsInProgressPage(_model, _timeSheet)));
+    }).catchError((onError) => DialogUtil.showFailureDialogWithWillPopScope(context, getTranslated(context, 'noPriceList'), _timeSheet != null ? TsInProgressPage(_model, _timeSheet) : PieceworkPage(_model)));
   }
 
   @override
@@ -245,10 +237,10 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workdayService.updatePieceworkByEmployeeIds(serviceWithQuantity, _dateFrom, _dateTo, _employeeIds, _tsYear, _tsMonth, _tsStatus).then((res) {
+    _workdayService.updatePieceworkByEmployeeIds(serviceWithQuantity, _dateFrom, _dateTo, _employeeIds).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessToast(getTranslated(context, 'successfullyAddedNewReportsAboutPiecework'));
-        NavigatorUtil.navigateReplacement(context, TsInProgressPage(_model, _timeSheet));
+        NavigatorUtil.navigateReplacement(context, _timeSheet != null ? TsInProgressPage(_model, _timeSheet) : PieceworkPage(_model));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
