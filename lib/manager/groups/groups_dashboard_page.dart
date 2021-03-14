@@ -26,11 +26,11 @@ import 'package:jobbed/shared/util/logout_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/widget/buttons.dart';
+import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/radio_button.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
-import '../../shared/widget/loader.dart';
 import 'group/group_page.dart';
 import 'manage/add_group_employees_page.dart';
 import 'manage/delete_group_employees_page.dart';
@@ -87,29 +87,6 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      return loader(
-        AppBar(
-          iconTheme: IconThemeData(color: WHITE),
-          backgroundColor: WHITE,
-          elevation: 0.0,
-          bottomOpacity: 0.0,
-          title: text13Black(getTranslated(context, 'loading')),
-          centerTitle: false,
-          automaticallyImplyLeading: true,
-          leading: IconButton(icon: iconBlack(Icons.power_settings_new), onPressed: () => LogoutUtil.logout(context)),
-          actions: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(right: 15.0),
-              child: IconButton(
-                icon: iconBlack(Icons.settings),
-                onPressed: () => NavigatorUtil.navigate(context, SettingsPage(_user)),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -134,7 +111,34 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
               ),
             ],
           ),
-          body: _groups != null && _groups.isNotEmpty ? _handleGroups() : _handleNoGroups(),
+          body: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              children: [
+                ListTile(
+                  leading: Tab(
+                    icon: Container(
+                      child: Container(
+                        child: Image(
+                          width: 75,
+                          image: AssetImage('images/company.png'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                  title: text17BlueBold(_user.companyName != null ? utf8.decode(_user.companyName.runes.toList()) : getTranslated(context, 'empty')),
+                  subtitle: text16Black(_user.companyId != null ? _user.companyId : getTranslated(context, 'empty')),
+                ),
+                SizedBox(height: 10),
+                _loading
+                    ? Center(child: circularProgressIndicator())
+                    : _groups != null && _groups.isNotEmpty
+                        ? _handleGroups()
+                        : _handleNoGroups(),
+              ],
+            ),
+          ),
           floatingActionButton: SafeArea(
             child: SpeedDial(
               animatedIcon: AnimatedIcons.menu_close,
@@ -173,105 +177,82 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
   }
 
   Widget _handleGroups() {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: Column(
-        children: <Widget>[
-          ListTile(
-            leading: Tab(
-              icon: Container(
-                child: Container(
-                  child: Image(
-                    width: 75,
-                    image: AssetImage('images/company.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
-            title: text17BlueBold(_user.companyName != null ? utf8.decode(_user.companyName.runes.toList()) : getTranslated(context, 'empty')),
-            subtitle: text16Black(_user.companyId != null ? _user.companyId : getTranslated(context, 'empty')),
-          ),
-          SizedBox(height: 10),
-          Expanded(
-            flex: 2,
-            child: Scrollbar(
-              isAlwaysShown: true,
-              controller: _scrollController,
-              child: ListView.builder(
-                controller: _scrollController,
-                itemCount: _groups.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    color: WHITE,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Card(
-                          color: BRIGHTER_BLUE,
-                          child: ListTile(
-                            onTap: () {
-                              GroupDashboardDto group = _groups[index];
-                              NavigatorUtil.navigate(
-                                this.context,
-                                GroupPage(
-                                  new GroupModel(_user, group.id, group.name, group.description, group.numberOfEmployees.toString()),
-                                ),
+    return Expanded(
+      flex: 2,
+      child: Scrollbar(
+        isAlwaysShown: true,
+        controller: _scrollController,
+        child: ListView.builder(
+          controller: _scrollController,
+          itemCount: _groups.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Card(
+              color: WHITE,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Card(
+                    color: BRIGHTER_BLUE,
+                    child: ListTile(
+                      onTap: () {
+                        GroupDashboardDto group = _groups[index];
+                        NavigatorUtil.navigate(
+                          this.context,
+                          GroupPage(
+                            new GroupModel(_user, group.id, group.name, group.description, group.numberOfEmployees.toString()),
+                          ),
+                        );
+                      },
+                      title: text17BlueBold(
+                        utf8.decode(
+                          _groups[index].name != null ? _groups[index].name.runes.toList() : getTranslated(this.context, 'empty'),
+                        ),
+                      ),
+                      subtitle: Column(
+                        children: <Widget>[
+                          SizedBox(height: 5),
+                          Align(
+                            child: text16Black(getTranslated(this.context, 'numberOfEmployees') + ': ' + _groups[index].numberOfEmployees.toString()),
+                            alignment: Alignment.topLeft,
+                          ),
+                          Align(
+                            child: text16Black(getTranslated(this.context, 'groupCreator') + ': ' + utf8.decode(_groups[index].groupCreator.runes.toList())),
+                            alignment: Alignment.topLeft,
+                          ),
+                          SizedBox(height: 5),
+                        ],
+                      ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: icon30Green(Icons.group_add),
+                            onPressed: () => _manageGroupEmployees(_groups[index].name, _groups[index].id),
+                          ),
+                          SizedBox(width: 10),
+                          IconButton(
+                            icon: icon30Red(Icons.delete),
+                            onPressed: () {
+                              String groupName = utf8.decode(_groups[index].name.runes.toList());
+                              DialogUtil.showConfirmationDialog(
+                                context: this.context,
+                                title: getTranslated(this.context, 'confirmation'),
+                                content: getTranslated(this.context, 'deleteGroupConfirmation') + ' ($groupName)',
+                                isBtnTapped: _isDeleteGroupButtonTapped,
+                                fun: () => _isDeleteGroupButtonTapped ? null : _handleDeleteGroup(groupName),
                               );
                             },
-                            title: text17BlueBold(
-                              utf8.decode(
-                                _groups[index].name != null ? _groups[index].name.runes.toList() : getTranslated(this.context, 'empty'),
-                              ),
-                            ),
-                            subtitle: Column(
-                              children: <Widget>[
-                                SizedBox(height: 5),
-                                Align(
-                                  child: text16Black(getTranslated(this.context, 'numberOfEmployees') + ': ' + _groups[index].numberOfEmployees.toString()),
-                                  alignment: Alignment.topLeft,
-                                ),
-                                Align(
-                                  child: text16Black(getTranslated(this.context, 'groupCreator') + ': ' + utf8.decode(_groups[index].groupCreator.runes.toList())),
-                                  alignment: Alignment.topLeft,
-                                ),
-                                SizedBox(height: 5),
-                              ],
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  icon: icon30Green(Icons.group_add),
-                                  onPressed: () => _manageGroupEmployees(_groups[index].name, _groups[index].id),
-                                ),
-                                SizedBox(width: 10),
-                                IconButton(
-                                  icon: icon30Red(Icons.delete),
-                                  onPressed: () {
-                                    String groupName = utf8.decode(_groups[index].name.runes.toList());
-                                    DialogUtil.showConfirmationDialog(
-                                      context: this.context,
-                                      title: getTranslated(this.context, 'confirmation'),
-                                      content: getTranslated(this.context, 'deleteGroupConfirmation') + ' ($groupName)',
-                                      isBtnTapped: _isDeleteGroupButtonTapped,
-                                      fun: () => _isDeleteGroupButtonTapped ? null : _handleDeleteGroup(groupName),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  );
-                },
+                  ),
+                ],
               ),
-            ),
-          )
-        ],
+            );
+          },
+        ),
       ),
     );
   }
