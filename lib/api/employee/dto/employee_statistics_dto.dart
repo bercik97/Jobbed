@@ -8,7 +8,6 @@ class EmployeeStatisticsDto {
   final int timesheetId;
   final String totalHours;
   final String totalTime;
-  final String totalMoneyForHoursForEmployee;
   final String totalMoneyForPieceworkForEmployee;
   final String totalMoneyForTimeForEmployee;
   final String totalMoneyEarned;
@@ -21,7 +20,6 @@ class EmployeeStatisticsDto {
     @required this.timesheetId,
     @required this.totalHours,
     @required this.totalTime,
-    @required this.totalMoneyForHoursForEmployee,
     @required this.totalMoneyForPieceworkForEmployee,
     @required this.totalMoneyForTimeForEmployee,
     @required this.totalMoneyEarned,
@@ -36,7 +34,6 @@ class EmployeeStatisticsDto {
       timesheetId: json['timesheetId'] as int,
       totalHours: json['totalHours'] as String,
       totalTime: json['totalTime'] as String,
-      totalMoneyForHoursForEmployee: json['totalMoneyForHoursForEmployee'] as String,
       totalMoneyForPieceworkForEmployee: json['totalMoneyForPieceworkForEmployee'] as String,
       totalMoneyForTimeForEmployee: json['totalMoneyForTimeForEmployee'] as String,
       totalMoneyEarned: json['totalMoneyEarned'] as String,

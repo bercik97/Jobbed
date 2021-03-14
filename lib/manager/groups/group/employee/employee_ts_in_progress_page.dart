@@ -21,13 +21,11 @@ import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/month_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
-import 'package:jobbed/shared/util/validator_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
 import 'package:jobbed/shared/widget/texts.dart';
-import 'package:number_inc_dec/number_inc_dec.dart';
 
 import '../../../../shared/libraries/constants.dart';
 import '../../../shared/group_model.dart';
@@ -48,9 +46,6 @@ class EmployeeTsInProgressPage extends StatefulWidget {
 }
 
 class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
-  final TextEditingController _hoursController = new TextEditingController();
-  final TextEditingController _minutesController = new TextEditingController();
-
   GroupModel _model;
   User _user;
 
@@ -130,12 +125,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                         ),
                         Row(
                           children: <Widget>[
-                            text17BlackBold(getTranslated(this.context, 'hours') + ': '),
-                            text16Black(_timesheet.totalMoneyForHoursForEmployee.toString() + ' PLN' + ' (' + _timesheet.totalHours + ' h)'),
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
                             text17BlackBold(getTranslated(this.context, 'accord') + ': '),
                             text16Black(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
                           ],
@@ -188,22 +177,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                 Expanded(
                   child: MaterialButton(
                     color: BLUE,
-                    child: Image(image: AssetImage('images/white-hours.png')),
-                    onPressed: () {
-                      if (selectedIds.isNotEmpty) {
-                        _hoursController.clear();
-                        _minutesController.clear();
-                        _showUpdateHoursDialog(selectedIds);
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
-                  ),
-                ),
-                SizedBox(width: 1),
-                Expanded(
-                  child: MaterialButton(
-                    color: BLUE,
                     child: Image(image: AssetImage('images/white-piecework.png')),
                     onPressed: () {
                       if (selectedIds.isNotEmpty) {
@@ -229,6 +202,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                   child: MaterialButton(
                     color: BLUE,
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image(image: AssetImage('images/white-piecework.png')),
                         iconRed(Icons.close),
@@ -365,157 +339,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
           height: 50,
         ),
       ],
-    );
-  }
-
-  void _showUpdateHoursDialog(Set<int> selectedIds) {
-    showGeneralDialog(
-      context: context,
-      barrierColor: WHITE.withOpacity(0.95),
-      barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'hours'),
-      transitionDuration: Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return SizedBox.expand(
-          child: Scaffold(
-            backgroundColor: Colors.black12,
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'hoursUpperCase'))),
-                  SizedBox(height: 2.5),
-                  text16Black(getTranslated(context, 'setHoursForSelectedDays')),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            children: [
-                              text16Black(getTranslated(context, 'hoursNumber')),
-                              SizedBox(height: 2.5),
-                              NumberInputWithIncrementDecrement(
-                                controller: _hoursController,
-                                min: 0,
-                                max: 24,
-                                onIncrement: (value) {
-                                  if (value > 24) {
-                                    setState(() => value = 24);
-                                  }
-                                },
-                                onSubmitted: (value) {
-                                  if (value >= 24) {
-                                    setState(() => _hoursController.text = 24.toString());
-                                  }
-                                },
-                                style: TextStyle(color: BLUE),
-                                widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            children: [
-                              text16Black(getTranslated(context, 'minutesNumber')),
-                              SizedBox(height: 2.5),
-                              NumberInputWithIncrementDecrement(
-                                controller: _minutesController,
-                                min: 0,
-                                max: 59,
-                                onIncrement: (value) {
-                                  if (value > 59) {
-                                    setState(() => value = 59);
-                                  }
-                                },
-                                onSubmitted: (value) {
-                                  if (value >= 59) {
-                                    setState(() => _minutesController.text = 59.toString());
-                                  }
-                                },
-                                style: TextStyle(color: BLUE),
-                                widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        minWidth: 40,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.close)],
-                        ),
-                        color: Colors.red,
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      SizedBox(width: 25),
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.check)],
-                        ),
-                        color: BLUE,
-                        onPressed: () {
-                          double hours;
-                          double minutes;
-                          try {
-                            hours = double.parse(_hoursController.text);
-                            minutes = double.parse(_minutesController.text) * 0.01;
-                          } catch (FormatException) {
-                            ToastUtil.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
-                            return;
-                          }
-                          String invalidMessage = ValidatorUtil.validateUpdatingHoursWithMinutes(hours, minutes, context);
-                          if (invalidMessage != null) {
-                            ToastUtil.showErrorToast(invalidMessage);
-                            return;
-                          }
-                          FocusScope.of(context).unfocus();
-                          hours += minutes;
-                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                          _workdayService.updateHoursByIds(selectedIds.map((el) => el.toString()).toList(), hours).then(
-                            (res) {
-                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                Navigator.of(context).pop();
-                                ToastUtil.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
-                                _refresh();
-                              }).catchError(() {
-                                Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                  Navigator.of(context).pop();
-                                  ToastUtil.showSuccessToast(getTranslated(context, 'somethingWentWrong'));
-                                });
-                              });
-                            },
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 

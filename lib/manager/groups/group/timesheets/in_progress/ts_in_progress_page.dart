@@ -183,7 +183,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                 children: <Widget>[
                                   Ink(
                                     width: MediaQuery.of(context).size.width * 0.15,
-                                    height: 106,
+                                    height: 75,
                                     color: BRIGHTER_BLUE,
                                     child: ListTileTheme(
                                       contentPadding: EdgeInsets.only(right: 10),
@@ -220,7 +220,6 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                         status: _timesheet.status,
                                         totalHours: _filteredEmployees[index].totalHours,
                                         totalTime: _filteredEmployees[index].totalTime,
-                                        totalMoneyForHoursForEmployee: _filteredEmployees[index].totalMoneyForHoursForEmployee,
                                         totalMoneyForPieceworkForEmployee: _filteredEmployees[index].totalMoneyForPieceworkForEmployee,
                                         totalMoneyForTimeForEmployee: _filteredEmployees[index].totalMoneyForTimeForEmployee,
                                         totalMoneyEarned: _filteredEmployees[index].totalMoneyEarned,
@@ -237,12 +236,6 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             text17BlackBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
-                                            Row(
-                                              children: <Widget>[
-                                                textBlackBold(getTranslated(this.context, 'hours') + ': '),
-                                                textBlack(employee.totalMoneyForHoursForEmployee.toString() + ' PLN' + ' (' + employee.totalHours + ' h)'),
-                                              ],
-                                            ),
                                             Row(
                                               children: <Widget>[
                                                 textBlackBold(getTranslated(this.context, 'accord') + ': '),
@@ -303,22 +296,6 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                   Expanded(
                     child: MaterialButton(
                       color: BLUE,
-                      child: Image(image: AssetImage('images/white-hours.png')),
-                      onPressed: () {
-                        if (_selectedIds.isNotEmpty) {
-                          _hoursController.clear();
-                          _minutesController.clear();
-                          _showUpdateHoursDialog(_selectedIds);
-                        } else {
-                          showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                        }
-                      },
-                    ),
-                  ),
-                  SizedBox(width: 1),
-                  Expanded(
-                    child: MaterialButton(
-                      color: BLUE,
                       child: Image(image: AssetImage('images/white-piecework.png')),
                       onPressed: () {
                         if (_selectedIds.isNotEmpty) {
@@ -368,184 +345,6 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, TsPage(_model)),
     );
-  }
-
-  void _showUpdateHoursDialog(LinkedHashSet<int> selectedIds) async {
-    int year = _timesheet.year;
-    int monthNum = MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
-    int days = DateUtil().daysInMonth(monthNum, year);
-    final List<DateTime> picked = await DateRagePicker.showDatePicker(
-      context: context,
-      initialFirstDate: new DateTime(year, monthNum, 1),
-      initialLastDate: new DateTime(year, monthNum, days),
-      firstDate: new DateTime(year, monthNum, 1),
-      lastDate: new DateTime(year, monthNum, days),
-    );
-    if (picked != null && picked.length == 1) {
-      picked.add(picked[0]);
-    }
-    if (picked != null && picked.length == 2) {
-      String dateFrom = DateFormat('yyyy-MM-dd').format(picked[0]);
-      String dateTo = DateFormat('yyyy-MM-dd').format(picked[1]);
-      showGeneralDialog(
-        context: context,
-        barrierColor: WHITE.withOpacity(0.95),
-        barrierDismissible: false,
-        barrierLabel: 'Hours',
-        transitionDuration: Duration(milliseconds: 400),
-        pageBuilder: (_, __, ___) {
-          return SizedBox.expand(
-            child: Scaffold(
-              backgroundColor: Colors.black12,
-              body: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'hoursUpperCase'))),
-                    SizedBox(height: 2.5),
-                    text16Black(getTranslated(context, 'setHoursForSelectedEmployee')),
-                    SizedBox(height: 2.5),
-                    text17BlueBold('[' + dateFrom + ' - ' + dateTo + ']'),
-                    SizedBox(height: 2.5),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              children: [
-                                textBlack(getTranslated(context, 'hoursNumber')),
-                                SizedBox(height: 2.5),
-                                NumberInputWithIncrementDecrement(
-                                  controller: _hoursController,
-                                  min: 0,
-                                  max: 24,
-                                  onIncrement: (value) {
-                                    if (value > 24) {
-                                      setState(() => value = 24);
-                                    }
-                                  },
-                                  onSubmitted: (value) {
-                                    if (value >= 24) {
-                                      setState(() => _hoursController.text = 24.toString());
-                                    }
-                                  },
-                                  style: TextStyle(color: BLUE),
-                                  widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              children: [
-                                textBlack(getTranslated(context, 'minutesNumber')),
-                                SizedBox(height: 2.5),
-                                NumberInputWithIncrementDecrement(
-                                  controller: _minutesController,
-                                  min: 0,
-                                  max: 59,
-                                  onIncrement: (value) {
-                                    if (value > 59) {
-                                      setState(() => value = 59);
-                                    }
-                                  },
-                                  onSubmitted: (value) {
-                                    if (value >= 59) {
-                                      setState(() => _minutesController.text = 59.toString());
-                                    }
-                                  },
-                                  style: TextStyle(color: BLUE),
-                                  widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        MaterialButton(
-                          elevation: 0,
-                          height: 50,
-                          minWidth: 40,
-                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[iconWhite(Icons.close)],
-                          ),
-                          color: Colors.red,
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                        SizedBox(width: 25),
-                        MaterialButton(
-                          elevation: 0,
-                          height: 50,
-                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[iconWhite(Icons.check)],
-                          ),
-                          color: BLUE,
-                          onPressed: () {
-                            double hours;
-                            double minutes;
-                            try {
-                              hours = double.parse(_hoursController.text);
-                              minutes = double.parse(_minutesController.text) * 0.01;
-                            } catch (FormatException) {
-                              ToastUtil.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
-                              return;
-                            }
-                            String invalidMessage = ValidatorUtil.validateUpdatingHoursWithMinutes(hours, minutes, context);
-                            if (invalidMessage != null) {
-                              ToastUtil.showErrorToast(invalidMessage);
-                              return;
-                            }
-                            FocusScope.of(context).unfocus();
-                            hours += minutes;
-                            showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                            _workdayService
-                                .updateHoursByEmployeeIds(
-                              hours,
-                              dateFrom,
-                              dateTo,
-                              _selectedIds.map((el) => el.toString()).toList(),
-                              year,
-                              monthNum,
-                              STATUS_IN_PROGRESS,
-                            )
-                                .then((res) {
-                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                Navigator.of(context).pop();
-                                ToastUtil.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
-                                _refresh();
-                              });
-                            }).catchError((onError) {
-                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                ToastUtil.showErrorToast('somethingWentWrong');
-                              });
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-      );
-    }
   }
 
   void _showUpdatePiecework(LinkedHashSet<int> selectedIds) async {

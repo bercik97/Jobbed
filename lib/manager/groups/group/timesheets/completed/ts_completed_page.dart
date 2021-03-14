@@ -127,7 +127,6 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                                 status: _timesheet.status,
                                 totalHours: _filteredEmployees[index].totalHours,
                                 totalTime: _filteredEmployees[index].totalTime,
-                                totalMoneyForHoursForEmployee: _filteredEmployees[index].totalMoneyForHoursForEmployee,
                                 totalMoneyForPieceworkForEmployee: _filteredEmployees[index].totalMoneyForPieceworkForEmployee,
                                 totalMoneyForTimeForEmployee: _filteredEmployees[index].totalMoneyForTimeForEmployee,
                                 totalMoneyEarned: _filteredEmployees[index].totalMoneyEarned,
@@ -162,12 +161,6 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                                     title: text17BlackBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                     subtitle: Column(
                                       children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
-                                            text17BlackBold(getTranslated(this.context, 'hours') + ': '),
-                                            text16Black(employee.totalMoneyForHoursForEmployee.toString() + ' PLN' + ' (' + employee.totalHours + ' h)'),
-                                          ],
-                                        ),
                                         Row(
                                           children: <Widget>[
                                             text17BlackBold(getTranslated(this.context, 'accord') + ': '),

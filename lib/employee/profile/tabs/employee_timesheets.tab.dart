@@ -46,12 +46,6 @@ Widget employeeTimesheetsTab(BuildContext context, bool canFillHours, User user,
                           children: <Widget>[
                             Row(
                               children: <Widget>[
-                                text17BlackBold(getTranslated(context, 'hours') + ': '),
-                                text16Black(timesheet.totalMoneyForHoursForEmployee.toString() + ' PLN' + ' (' + timesheet.totalHours + ' h)'),
-                              ],
-                            ),
-                            Row(
-                              children: <Widget>[
                                 text17BlackBold(getTranslated(context, 'accord') + ': '),
                                 text16Black(timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
                               ],
