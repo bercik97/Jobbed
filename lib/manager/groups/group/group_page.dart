@@ -105,8 +105,56 @@ class _GroupPageState extends State<GroupPage> {
                           child: Material(
                             color: BRIGHTER_BLUE,
                             child: InkWell(
+                              onTap: () => NavigatorUtil.navigate(context, SchedulePage(_model)),
+                              child: _buildScrollableContainer('images/calendar.png', 'schedule', 'checkSchedule'),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Material(
+                            color: BRIGHTER_BLUE,
+                            child: InkWell(
                               onTap: () => NavigatorUtil.navigate(context, WorkTimePage(_model)),
                               child: _buildScrollableContainer('images/work-time.png', 'workTimes', 'manageEmployeesWorkTime'),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Material(
+                            color: BRIGHTER_BLUE,
+                            child: InkWell(
+                              onTap: () => NavigatorUtil.navigate(context, WorkplacesPage(_model)),
+                              child: _buildScrollableContainer('images/workplace.png', 'workplaces', 'manageCompanyWorkplaces'),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Material(
+                            color: BRIGHTER_BLUE,
+                            child: InkWell(
+                              onTap: () {},
+                              child: _buildScrollableContainer('images/piecework.png', 'pieceworks', 'pieceworks'),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Material(
+                            color: BRIGHTER_BLUE,
+                            child: InkWell(
+                              onTap: () => NavigatorUtil.navigate(context, PriceListsPage(_model)),
+                              child: _buildScrollableContainer('images/price-list.png', 'priceList', 'manageCompanyPriceList'),
                             ),
                           ),
                         ),
@@ -129,32 +177,8 @@ class _GroupPageState extends State<GroupPage> {
                           child: Material(
                             color: BRIGHTER_BLUE,
                             child: InkWell(
-                              onTap: () => NavigatorUtil.navigate(context, SchedulePage(_model)),
-                              child: _buildScrollableContainer('images/calendar.png', 'schedule', 'checkSchedule'),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Material(
-                            color: BRIGHTER_BLUE,
-                            child: InkWell(
-                              onTap: () => NavigatorUtil.navigate(context, WorkplacesPage(_model)),
-                              child: _buildScrollableContainer('images/workplace.png', 'workplaces', 'manageCompanyWorkplaces'),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: Material(
-                            color: BRIGHTER_BLUE,
-                            child: InkWell(
-                              onTap: () => NavigatorUtil.navigate(context, PriceListsPage(_model)),
-                              child: _buildScrollableContainer('images/price-list.png', 'priceList', 'manageCompanyPriceList'),
+                              onTap: () {},
+                              child: _buildScrollableContainer('images/plumko.png', 'disk', 'disk'),
                             ),
                           ),
                         ),

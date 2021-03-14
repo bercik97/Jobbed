@@ -674,5 +674,6 @@
   "tapToUpdate": "Naciśnij aby zaktualizować",
   "areYouSureYouWantToUpdateNoteByGivenData": "Czy na pewno chcesz zaktualizować notatkę na podstawie wprowadzonych danych?",
   "successfullyUpdatedNote": "Pomyślnie zaktualizowano notatkę",
-  "allEmployeesOfTheCompanyAreCurrentlyInThisGroup": "Wszyscy pracownicy firmy aktualnie znajdują się w tej grupie"
+  "allEmployeesOfTheCompanyAreCurrentlyInThisGroup": "Wszyscy pracownicy firmy aktualnie znajdują się w tej grupie",
+  "disk": "Dysk"
 }
