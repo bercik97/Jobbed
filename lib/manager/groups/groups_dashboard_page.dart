@@ -50,8 +50,8 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
   EmployeeService _employeeService;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   List<GroupDashboardDto> _groups = new List();
-  ScrollController _scrollController = new ScrollController();
 
+  final ScrollController _scrollController = new ScrollController();
   final _usernameController = new TextEditingController();
   final _passwordController = new TextEditingController();
   final _nameController = new TextEditingController();
@@ -111,24 +111,28 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
               ),
             ],
           ),
-          body: Padding(
-            padding: const EdgeInsets.all(12.0),
+          body: RefreshIndicator(
+            color: WHITE,
+            backgroundColor: BLUE,
+            onRefresh: _refresh,
             child: Column(
               children: [
-                ListTile(
-                  leading: Tab(
-                    icon: Container(
-                      child: Container(
-                        child: Image(
-                          width: 75,
-                          image: AssetImage('images/company.png'),
-                          fit: BoxFit.cover,
+                Container(
+                  child: ListTile(
+                    leading: Tab(
+                      icon: Container(
+                        child: Container(
+                          child: Image(
+                            width: 75,
+                            image: AssetImage('images/company.png'),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
+                    title: text17BlueBold(_user.companyName != null ? utf8.decode(_user.companyName.runes.toList()) : getTranslated(context, 'empty')),
+                    subtitle: text16Black(_user.companyId != null ? _user.companyId : getTranslated(context, 'empty')),
                   ),
-                  title: text17BlueBold(_user.companyName != null ? utf8.decode(_user.companyName.runes.toList()) : getTranslated(context, 'empty')),
-                  subtitle: text16Black(_user.companyId != null ? _user.companyId : getTranslated(context, 'empty')),
                 ),
                 SizedBox(height: 10),
                 _loading
@@ -178,12 +182,10 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
 
   Widget _handleGroups() {
     return Expanded(
-      flex: 2,
       child: Scrollbar(
         isAlwaysShown: true,
         controller: _scrollController,
         child: ListView.builder(
-          controller: _scrollController,
           itemCount: _groups.length,
           itemBuilder: (BuildContext context, int index) {
             return Card(
