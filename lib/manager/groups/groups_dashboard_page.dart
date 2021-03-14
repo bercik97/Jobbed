@@ -262,7 +262,8 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
     _groupService.deleteByName(groupName).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessToast(getTranslated(this.context, 'successfullyDeletedGroup'));
-        NavigatorUtil.navigate(this.context, GroupsDashboardPage(_user));
+        Navigator.pop(this.context);
+        _refresh();
       });
     }).catchError(
       (onError) {
@@ -664,6 +665,16 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
           DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
         }
         setState(() => _isCreateEmployeeAccountButtonTapped = false);
+      });
+    });
+  }
+
+  Future<Null> _refresh() {
+    this._loading = true;
+    return _groupService.findAllByCompanyId(_user.companyId).then((res) {
+      setState(() {
+        _groups = res;
+        _loading = false;
       });
     });
   }
