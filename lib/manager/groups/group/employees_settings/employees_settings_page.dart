@@ -22,9 +22,9 @@ import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
+import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
-import 'package:jobbed/shared/widget/loader.dart';
 import 'package:jobbed/shared/widget/radio_button.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
@@ -83,9 +83,6 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading'), () => NavigatorUtil.navigateReplacement(context, GroupPage(_model))));
-    }
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -93,12 +90,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: WHITE,
-          appBar: managerAppBar(
-            context,
-            _model.user,
-            utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
-            () => NavigatorUtil.navigateReplacement(context, GroupPage(_model)),
-          ),
+          appBar: managerAppBar(context, _model.user, utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'), () => Navigator.pop(context)),
           body: RefreshIndicator(
             color: WHITE,
             backgroundColor: BLUE,
@@ -152,122 +144,124 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                     controlAffinity: ListTileControlAffinity.leading,
                   ),
                 ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: _filteredEmployees.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      EmployeeSettingsDto employee = _filteredEmployees[index];
-                      int foundIndex = 0;
-                      for (int i = 0; i < _employees.length; i++) {
-                        if (_employees[i].employeeId == employee.employeeId) {
-                          foundIndex = i;
-                        }
-                      }
-                      String info = employee.employeeInfo;
-                      String nationality = employee.employeeNationality;
-                      String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.employeeGender, info.substring(0, 1));
-                      return Card(
-                        color: WHITE,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              color: BRIGHTER_BLUE,
-                              child: ListTileTheme(
-                                contentPadding: EdgeInsets.only(right: 10),
-                                child: CheckboxListTile(
-                                  controlAffinity: ListTileControlAffinity.leading,
-                                  secondary: Padding(
-                                    padding: EdgeInsets.all(4),
-                                    child: Transform.scale(
-                                      scale: 1.2,
-                                      child: BouncingWidget(
-                                        duration: Duration(milliseconds: 100),
-                                        scaleFactor: 2,
-                                        onPressed: () async => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, employee.employeeId, info, avatarPath)),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Image(image: AssetImage(avatarPath), height: 40),
+                _loading
+                    ? Center(child: circularProgressIndicator())
+                    : Expanded(
+                        child: ListView.builder(
+                          itemCount: _filteredEmployees.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            EmployeeSettingsDto employee = _filteredEmployees[index];
+                            int foundIndex = 0;
+                            for (int i = 0; i < _employees.length; i++) {
+                              if (_employees[i].employeeId == employee.employeeId) {
+                                foundIndex = i;
+                              }
+                            }
+                            String info = employee.employeeInfo;
+                            String nationality = employee.employeeNationality;
+                            String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.employeeGender, info.substring(0, 1));
+                            return Card(
+                              color: WHITE,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    color: BRIGHTER_BLUE,
+                                    child: ListTileTheme(
+                                      contentPadding: EdgeInsets.only(right: 10),
+                                      child: CheckboxListTile(
+                                        controlAffinity: ListTileControlAffinity.leading,
+                                        secondary: Padding(
+                                          padding: EdgeInsets.all(4),
+                                          child: Transform.scale(
+                                            scale: 1.2,
+                                            child: BouncingWidget(
+                                              duration: Duration(milliseconds: 100),
+                                              scaleFactor: 2,
+                                              onPressed: () async => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, employee.employeeId, info, avatarPath)),
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  Image(image: AssetImage(avatarPath), height: 40),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        title: text20BlackBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                        subtitle: Column(
+                                          children: <Widget>[
+                                            Align(
+                                                child: Row(
+                                                  children: <Widget>[
+                                                    text13Black(getTranslated(this.context, 'moneyPerHour') + ': '),
+                                                    textBlackBold(employee.moneyPerHour.toString() + ' PLN'),
+                                                  ],
+                                                ),
+                                                alignment: Alignment.topLeft),
+                                            Align(
+                                                child: Row(
+                                                  children: <Widget>[
+                                                    text13Black(getTranslated(this.context, 'moneyPerHourForCompany') + ': '),
+                                                    textBlackBold(employee.moneyPerHourForCompany.toString() + ' PLN'),
+                                                  ],
+                                                ),
+                                                alignment: Alignment.topLeft),
+                                            Align(
+                                                child: Row(
+                                                  children: <Widget>[
+                                                    text13Black(getTranslated(this.context, 'selfUpdatingHours') + ': '),
+                                                    employee.canFillHours ? textBlueBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
+                                                  ],
+                                                ),
+                                                alignment: Alignment.topLeft),
+                                            Align(
+                                                child: Row(
+                                                  children: <Widget>[
+                                                    text13Black(getTranslated(this.context, 'workTimeByLocation') + ': '),
+                                                    employee.workTimeByLocation ? textBlueBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
+                                                  ],
+                                                ),
+                                                alignment: Alignment.topLeft),
+                                            Align(
+                                                child: Row(
+                                                  children: <Widget>[
+                                                    text13Black(getTranslated(this.context, 'piecework') + ': '),
+                                                    employee.piecework ? textBlueBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
+                                                  ],
+                                                ),
+                                                alignment: Alignment.topLeft),
                                           ],
                                         ),
+                                        activeColor: BLUE,
+                                        checkColor: WHITE,
+                                        value: _checked[foundIndex],
+                                        onChanged: (bool value) {
+                                          setState(() {
+                                            _checked[foundIndex] = value;
+                                            if (value) {
+                                              _selectedIds.add(_employees[foundIndex].employeeId);
+                                            } else {
+                                              _selectedIds.remove(_employees[foundIndex].employeeId);
+                                            }
+                                            int selectedIdsLength = _selectedIds.length;
+                                            if (selectedIdsLength == _employees.length) {
+                                              _isChecked = true;
+                                            } else if (selectedIdsLength == 0) {
+                                              _isChecked = false;
+                                            }
+                                          });
+                                        },
                                       ),
                                     ),
-                                  ),
-                                  title: text20BlackBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
-                                  subtitle: Column(
-                                    children: <Widget>[
-                                      Align(
-                                          child: Row(
-                                            children: <Widget>[
-                                              text13Black(getTranslated(this.context, 'moneyPerHour') + ': '),
-                                              textBlackBold(employee.moneyPerHour.toString() + ' PLN'),
-                                            ],
-                                          ),
-                                          alignment: Alignment.topLeft),
-                                      Align(
-                                          child: Row(
-                                            children: <Widget>[
-                                              text13Black(getTranslated(this.context, 'moneyPerHourForCompany') + ': '),
-                                              textBlackBold(employee.moneyPerHourForCompany.toString() + ' PLN'),
-                                            ],
-                                          ),
-                                          alignment: Alignment.topLeft),
-                                      Align(
-                                          child: Row(
-                                            children: <Widget>[
-                                              text13Black(getTranslated(this.context, 'selfUpdatingHours') + ': '),
-                                              employee.canFillHours ? textBlueBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
-                                            ],
-                                          ),
-                                          alignment: Alignment.topLeft),
-                                      Align(
-                                          child: Row(
-                                            children: <Widget>[
-                                              text13Black(getTranslated(this.context, 'workTimeByLocation') + ': '),
-                                              employee.workTimeByLocation ? textBlueBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
-                                            ],
-                                          ),
-                                          alignment: Alignment.topLeft),
-                                      Align(
-                                          child: Row(
-                                            children: <Widget>[
-                                              text13Black(getTranslated(this.context, 'piecework') + ': '),
-                                              employee.piecework ? textBlueBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
-                                            ],
-                                          ),
-                                          alignment: Alignment.topLeft),
-                                    ],
-                                  ),
-                                  activeColor: BLUE,
-                                  checkColor: WHITE,
-                                  value: _checked[foundIndex],
-                                  onChanged: (bool value) {
-                                    setState(() {
-                                      _checked[foundIndex] = value;
-                                      if (value) {
-                                        _selectedIds.add(_employees[foundIndex].employeeId);
-                                      } else {
-                                        _selectedIds.remove(_employees[foundIndex].employeeId);
-                                      }
-                                      int selectedIdsLength = _selectedIds.length;
-                                      if (selectedIdsLength == _employees.length) {
-                                        _isChecked = true;
-                                      } else if (selectedIdsLength == 0) {
-                                        _isChecked = false;
-                                      }
-                                    });
-                                  },
-                                ),
+                                  )
+                                ],
                               ),
-                            )
-                          ],
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
-                ),
+                      ),
               ],
             ),
           ),
