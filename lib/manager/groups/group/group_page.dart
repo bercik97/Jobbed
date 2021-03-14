@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/manager/groups/group/employees_settings/employees_settings_page.dart';
+import 'package:jobbed/manager/groups/group/piecework/piecework_page.dart';
 import 'package:jobbed/manager/groups/group/price_list/price_lists_page.dart';
 import 'package:jobbed/manager/groups/group/schedule/schedule_page.dart';
 import 'package:jobbed/manager/groups/group/timesheets/ts_page.dart';
@@ -143,7 +144,7 @@ class _GroupPageState extends State<GroupPage> {
                           child: Material(
                             color: BRIGHTER_BLUE,
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () => NavigatorUtil.navigate(context, PieceworkPage(_model)),
                               child: _buildScrollableContainer('images/piecework.png', 'pieceworks', 'pieceworks'),
                             ),
                           ),

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:jobbed/api/employee/dto/create_basic_employee_dto.dart';
 import 'package:jobbed/api/employee/dto/employee_basic_dto.dart';
+import 'package:jobbed/api/employee/dto/employee_piecework_dto.dart';
 import 'package:jobbed/api/employee/dto/employee_profile_dto.dart';
 import 'package:jobbed/api/employee/dto/employee_settings_dto.dart';
 import 'package:jobbed/api/employee/dto/employee_statistics_dto.dart';
@@ -71,6 +72,17 @@ class EmployeeService {
     Response res = await get('$_url/view/work-time?group_id=$groupId', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeWorkTimeDto.fromJson(data)).toList();
+    } else if (res.statusCode == 401) {
+      return LogoutUtil.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<List<EmployeePieceworkDto>> findAllByGroupIdForPieceworkView(int groupId) async {
+    Response res = await get('$_url/view/piecework?group_id=$groupId', headers: _header);
+    if (res.statusCode == 200) {
+      return (json.decode(res.body) as List).map((data) => EmployeePieceworkDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
       return LogoutUtil.handle401WithLogout(_context);
     } else {
