@@ -145,7 +145,7 @@ class _EditNotePageState extends State<EditNotePage> {
                         child: TextFormField(
                           autofocus: false,
                           controller: _employeeNoteController,
-                          keyboardType: TextInputType.multiline,
+                          keyboardType: TextInputType.text,
                           maxLength: 510,
                           maxLines: 5,
                           cursorColor: BLACK,

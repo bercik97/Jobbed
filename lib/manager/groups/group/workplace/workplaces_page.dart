@@ -304,7 +304,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                     child: TextFormField(
                       autofocus: true,
                       controller: _workplaceController,
-                      keyboardType: TextInputType.multiline,
+                      keyboardType: TextInputType.text,
                       maxLength: 200,
                       maxLines: 5,
                       cursorColor: BLACK,

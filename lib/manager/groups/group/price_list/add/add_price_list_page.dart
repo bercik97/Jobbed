@@ -77,7 +77,7 @@ class _AddPriceListPageState extends State<AddPriceListPage> {
                       autofocus: false,
                       controller: _priceListNameController,
                       autocorrect: true,
-                      keyboardType: TextInputType.multiline,
+                      keyboardType: TextInputType.text,
                       inputFormatters: [LengthLimitingTextInputFormatter(100)],
                       maxLines: 2,
                       cursorColor: BLACK,

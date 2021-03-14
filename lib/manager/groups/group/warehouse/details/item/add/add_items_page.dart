@@ -84,7 +84,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
                         autofocus: false,
                         controller: _itemNameController,
                         autocorrect: true,
-                        keyboardType: TextInputType.multiline,
+                        keyboardType: TextInputType.text,
                         inputFormatters: [LengthLimitingTextInputFormatter(26)],
                         maxLines: 1,
                         cursorColor: BLACK,

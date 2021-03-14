@@ -188,7 +188,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
       autofocus: false,
       controller: controller,
       autocorrect: true,
-      keyboardType: TextInputType.multiline,
+      keyboardType: TextInputType.text,
       inputFormatters: [LengthLimitingTextInputFormatter(length)],
       maxLines: lines,
       cursorColor: BLACK,

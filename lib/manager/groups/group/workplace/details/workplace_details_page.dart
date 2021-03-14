@@ -402,7 +402,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                     child: TextFormField(
                       autofocus: true,
                       controller: _nameController,
-                      keyboardType: TextInputType.multiline,
+                      keyboardType: TextInputType.text,
                       maxLength: 200,
                       maxLines: 2,
                       cursorColor: BLACK,
@@ -421,7 +421,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                     child: TextFormField(
                       autofocus: false,
                       controller: _descriptionController,
-                      keyboardType: TextInputType.multiline,
+                      keyboardType: TextInputType.text,
                       maxLength: 510,
                       maxLines: 5,
                       cursorColor: BLACK,
@@ -528,7 +528,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                     child: TextFormField(
                       autofocus: true,
                       controller: _workplaceController,
-                      keyboardType: TextInputType.multiline,
+                      keyboardType: TextInputType.text,
                       maxLength: 200,
                       maxLines: 5,
                       cursorColor: BLACK,
@@ -914,7 +914,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                     child: TextFormField(
                       autofocus: true,
                       controller: _nameController,
-                      keyboardType: TextInputType.multiline,
+                      keyboardType: TextInputType.text,
                       maxLength: 200,
                       maxLines: 2,
                       cursorColor: BLACK,
@@ -933,7 +933,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                     child: TextFormField(
                       autofocus: false,
                       controller: _descriptionController,
-                      keyboardType: TextInputType.multiline,
+                      keyboardType: TextInputType.text,
                       maxLength: 510,
                       maxLines: 5,
                       cursorColor: BLACK,

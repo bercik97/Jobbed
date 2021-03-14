@@ -103,7 +103,7 @@ class _AddNotePageState extends State<AddNotePage> {
                       child: TextFormField(
                         autofocus: false,
                         controller: _managerNoteController,
-                        keyboardType: TextInputType.multiline,
+                        keyboardType: TextInputType.text,
                         maxLength: 510,
                         maxLines: 5,
                         cursorColor: BLACK,

@@ -123,7 +123,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
                     child: TextFormField(
                       autofocus: false,
                       controller: _groupNameController,
-                      keyboardType: TextInputType.multiline,
+                      keyboardType: TextInputType.text,
                       maxLength: 26,
                       maxLines: 1,
                       cursorColor: BLACK,
@@ -227,7 +227,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
                     child: TextFormField(
                       autofocus: false,
                       controller: _groupDescriptionController,
-                      keyboardType: TextInputType.multiline,
+                      keyboardType: TextInputType.text,
                       maxLength: 100,
                       maxLines: 3,
                       cursorColor: BLACK,

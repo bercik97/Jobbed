@@ -294,7 +294,7 @@ class _ItemPlacesPageState extends State<ItemPlacesPage> {
                     child: TextFormField(
                       autofocus: true,
                       controller: _locationController,
-                      keyboardType: TextInputType.multiline,
+                      keyboardType: TextInputType.text,
                       maxLength: 100,
                       maxLines: 2,
                       cursorColor: BLACK,
