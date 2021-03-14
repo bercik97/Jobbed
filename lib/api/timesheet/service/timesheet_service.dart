@@ -78,28 +78,6 @@ class TimesheetService {
     }
   }
 
-  Future<dynamic> updateHoursByGroupIdAndDate(int groupId, String date, double hours) async {
-    Response res = await put('$_url/hours/groups/$groupId?date=$date', body: hours.toString(), headers: _headers);
-    if (res.statusCode == 200) {
-      return res;
-    } else if (res.statusCode == 401) {
-      return LogoutUtil.handle401WithLogout(_context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<dynamic> updatePieceworkByGroupIdAndDate(int groupId, String date, Map<String, int> servicesWithQuantities) async {
-    Response res = await put('$_url/piecework/groups/$groupId?date=$date', body: jsonEncode(servicesWithQuantities), headers: _headers);
-    if (res.statusCode == 200) {
-      return res;
-    } else if (res.statusCode == 401) {
-      return LogoutUtil.handle401WithLogout(_context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
   Future<dynamic> updateTsStatusByGroupIdAndYearAndMonthAndStatusAndEmployeesIdIn(List<String> employeeIds, int newStatusId, int tsYear, int tsMonth, String currentTsStatus, int groupId) async {
     Response res = await put('$_url/groups/$groupId/employees/$employeeIds', body: jsonEncode({'newStatusId': newStatusId, 'tsYear': tsYear, 'tsMonth': tsMonth, 'currentTsStatus': currentTsStatus}), headers: _headers);
     if (res.statusCode == 200) {

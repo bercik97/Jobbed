@@ -134,15 +134,6 @@ class _GroupPageState extends State<GroupPage> {
                             ),
                           ),
                         ),
-                        // Expanded(
-                        //   child: Material(
-                        //     color: BRIGHTER_BLUE,
-                        //     child: InkWell(
-                        //       onTap: () => QuickUpdateDialog.showQuickUpdateDialog(context, _model),
-                        //       child: _buildScrollableContainer('images/quick-update.png', 'quickUpdate', 'quickUpdateDescription'),
-                        //     ),
-                        //   ),
-                        // ),
                       ],
                     ),
                     SizedBox(height: 10),
