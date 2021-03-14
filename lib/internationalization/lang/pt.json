@@ -684,5 +684,6 @@
   "yourNote": "Your note",
   "tapToUpdate": "Tap to update",
   "areYouSureYouWantToUpdateNoteByGivenData": "Are you sure you want to update note based on entered data?",
-  "successfullyUpdatedNote": "Successfully updated note"
+  "successfullyUpdatedNote": "Successfully updated note",
+  "allEmployeesOfTheCompanyAreCurrentlyInThisGroup": "All employees of the company are currently in this group"
 }

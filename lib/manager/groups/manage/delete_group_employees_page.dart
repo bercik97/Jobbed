@@ -18,9 +18,9 @@ import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
-import 'package:jobbed/shared/widget/loader.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
 class DeleteGroupEmployeesPage extends StatefulWidget {
@@ -70,9 +70,6 @@ class _DeleteGroupEmployeesPageState extends State<DeleteGroupEmployeesPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
-    }
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -88,7 +85,7 @@ class _DeleteGroupEmployeesPageState extends State<DeleteGroupEmployeesPage> {
                 SizedBox(height: 5),
                 _buildLoupe(),
                 _buildSelectUnselectAllCheckbox(),
-                _buildEmployees(),
+                _loading ? Center(child: circularProgressIndicator()) : _buildEmployees(),
               ],
             ),
           ),

@@ -264,6 +264,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
         ToastUtil.showSuccessToast(getTranslated(this.context, 'successfullyDeletedGroup'));
         Navigator.pop(this.context);
         _refresh();
+        setState(() => _isDeleteGroupButtonTapped = false);
       });
     }).catchError(
       (onError) {
