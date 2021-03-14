@@ -11,12 +11,12 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/workday_util.dart';
+import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../../../shared/widget/loader.dart';
 import '../../../employee_profile_page.dart';
 
 class EmployeeCalendarPage extends StatefulWidget {
@@ -78,9 +78,6 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
-    }
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -89,13 +86,15 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
         home: Scaffold(
           backgroundColor: WHITE,
           appBar: employeeAppBar(context, _user, getTranslated(context, 'calendar'), () => Navigator.pop(context)),
-          body: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              _buildTableCalendarWithBuilders(),
-              Expanded(child: _buildEventList()),
-            ],
-          ),
+          body: _loading
+              ? circularProgressIndicator()
+              : Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    _buildTableCalendarWithBuilders(),
+                    Expanded(child: _buildEventList()),
+                  ],
+                ),
           floatingActionButton: iconsLegendDialog(
             this.context,
             getTranslated(context, 'iconsLegend'),

@@ -20,7 +20,6 @@ import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
-import 'package:jobbed/shared/widget/loader.dart';
 import 'package:jobbed/shared/widget/radio_button.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
@@ -49,8 +48,6 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
 
   ItemPlaceService _itemPlaceService;
 
-  bool _loading = false;
-
   bool _isAddButtonTapped = false;
   bool _isAddBtnDisabled = true;
 
@@ -65,12 +62,10 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
     this._items.forEach((i) => _textEditingItemControllers.add(new TextEditingController()));
     this._itemPlaceService = ServiceInitializer.initialize(context, _user.authHeader, ItemPlaceService);
     super.initState();
-    _loading = true;
     _itemPlaceService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
         _itemPlaces = res;
         _itemPlaces.forEach((element) => _itemPlacesRadioValues.add(-1));
-        _loading = false;
         if (_itemPlaces.isEmpty) {
           _showFailureDialogWithNavigate(getTranslated(this.context, 'noItemPlacesToReleaseItems'));
         }
@@ -80,9 +75,6 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
-    }
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,

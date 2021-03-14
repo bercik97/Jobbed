@@ -136,7 +136,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                 ),
                 SizedBox(height: 10),
                 _loading
-                    ? Center(child: circularProgressIndicator())
+                    ? circularProgressIndicator()
                     : _groups != null && _groups.isNotEmpty
                         ? _handleGroups()
                         : _handleNoGroups(),

@@ -14,8 +14,8 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
-import 'package:jobbed/shared/widget/loader.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
 import '../../../employee_profile_page.dart';
@@ -63,11 +63,6 @@ class _PieceworkPageState extends State<PieceworkPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      return loader(
-        employeeAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.navigateReplacement(context, EmployeeProfilePage(_user))),
-      );
-    }
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -75,15 +70,14 @@ class _PieceworkPageState extends State<PieceworkPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: WHITE,
-          appBar: employeeAppBar(
-            context,
-            _user,
-            getTranslated(context, 'piecework') + ' / ' + _todayDate,
-            () => NavigatorUtil.navigateReplacement(context, EmployeeProfilePage(_user)),
-          ),
+          appBar: employeeAppBar(context, _user, getTranslated(context, 'piecework') + ' / ' + _todayDate, () => NavigatorUtil.navigateReplacement(context, EmployeeProfilePage(_user))),
           body: Padding(
             padding: EdgeInsets.all(12),
-            child: _pieceworks.isEmpty ? _handleEmptyData(context) : _handleData(context),
+            child: _loading
+                ? circularProgressIndicator()
+                : _pieceworks == null || _pieceworks.isEmpty
+                    ? _handleEmptyData(context)
+                    : _handleData(context),
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
           floatingActionButton: Column(

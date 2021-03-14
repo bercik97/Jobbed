@@ -13,8 +13,8 @@ import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
-import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/widget/buttons.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
@@ -274,7 +274,7 @@ class _AddPriceListPageState extends State<AddPriceListPage> {
     _priceListService.create(_priceListsToAdd).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessToast(getTranslated(context, 'successfullyAddedNewPriceListServices'));
-        NavigatorUtil.navigate(this.context, PriceListsPage(_model));
+        NavigatorUtil.navigateReplacement(this.context, PriceListsPage(_model));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

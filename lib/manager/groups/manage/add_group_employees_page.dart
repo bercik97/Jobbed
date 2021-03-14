@@ -86,7 +86,7 @@ class _AddGroupEmployeesPageState extends State<AddGroupEmployeesPage> {
                 SizedBox(height: 5),
                 _buildLoupe(),
                 _buildSelectUnselectAllCheckbox(),
-                _loading ? Center(child: circularProgressIndicator()) : _buildEmployees(),
+                _loading ? circularProgressIndicator() : _buildEmployees(),
               ],
             ),
           ),

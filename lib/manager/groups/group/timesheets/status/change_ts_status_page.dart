@@ -10,16 +10,16 @@ import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 
 import '../../../../../internationalization/localization/localization_constants.dart';
 import '../../../../../shared/libraries/colors.dart';
 import '../../../../../shared/libraries/constants.dart';
-import '../../../../../shared/util/toast_util.dart';
 import '../../../../../shared/util/language_util.dart';
 import '../../../../../shared/util/month_util.dart';
+import '../../../../../shared/util/toast_util.dart';
 import '../../../../../shared/widget/icons.dart';
-import '../../../../../shared/widget/loader.dart';
 import '../../../../../shared/widget/texts.dart';
 import '../../../../shared/group_model.dart';
 import '../../../../shared/manager_app_bar.dart';
@@ -67,14 +67,7 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
     this._timesheetService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
     super.initState();
     _loading = true;
-    _employeeService
-        .findAllByGroupIdAndTsInYearAndMonthAndStatus(
-      _model.groupId,
-      _year,
-      _month,
-      _status == STATUS_COMPLETED ? STATUS_IN_PROGRESS : STATUS_COMPLETED,
-    )
-        .then((res) {
+    _employeeService.findAllByGroupIdAndTsInYearAndMonthAndStatus(_model.groupId, _year, _month, _status == STATUS_COMPLETED ? STATUS_IN_PROGRESS : STATUS_COMPLETED).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
@@ -86,9 +79,6 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
-    }
     return MaterialApp(
       title: APP_NAME,
       theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
@@ -177,60 +167,62 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
                   controlAffinity: ListTileControlAffinity.leading,
                 ),
               ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: _filteredEmployees.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    EmployeeBasicDto employee = _filteredEmployees[index];
-                    int foundIndex = 0;
-                    for (int i = 0; i < _employees.length; i++) {
-                      if (_employees[i].id == employee.id) {
-                        foundIndex = i;
-                      }
-                    }
-                    String info = employee.name + ' ' + employee.surname;
-                    String nationality = employee.nationality;
-                    return Card(
-                      color: WHITE,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            color: BRIGHTER_BLUE,
-                            child: ListTileTheme(
-                              contentPadding: EdgeInsets.only(right: 10),
-                              child: CheckboxListTile(
-                                controlAffinity: ListTileControlAffinity.leading,
-                                title: text20BlackBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
-                                activeColor: BLUE,
-                                checkColor: WHITE,
-                                value: _checked[foundIndex],
-                                onChanged: (bool value) {
-                                  setState(() {
-                                    _checked[foundIndex] = value;
-                                    if (value) {
-                                      _selectedIds.add(_employees[foundIndex].id);
-                                    } else {
-                                      _selectedIds.remove(_employees[foundIndex].id);
-                                    }
-                                    int selectedIdsLength = _selectedIds.length;
-                                    if (selectedIdsLength == _employees.length) {
-                                      _isChecked = true;
-                                    } else if (selectedIdsLength == 0) {
-                                      _isChecked = false;
-                                    }
-                                  });
-                                },
-                              ),
+              _loading
+                  ? circularProgressIndicator()
+                  : Expanded(
+                      child: ListView.builder(
+                        itemCount: _filteredEmployees.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          EmployeeBasicDto employee = _filteredEmployees[index];
+                          int foundIndex = 0;
+                          for (int i = 0; i < _employees.length; i++) {
+                            if (_employees[i].id == employee.id) {
+                              foundIndex = i;
+                            }
+                          }
+                          String info = employee.name + ' ' + employee.surname;
+                          String nationality = employee.nationality;
+                          return Card(
+                            color: WHITE,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  color: BRIGHTER_BLUE,
+                                  child: ListTileTheme(
+                                    contentPadding: EdgeInsets.only(right: 10),
+                                    child: CheckboxListTile(
+                                      controlAffinity: ListTileControlAffinity.leading,
+                                      title: text20BlackBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                      activeColor: BLUE,
+                                      checkColor: WHITE,
+                                      value: _checked[foundIndex],
+                                      onChanged: (bool value) {
+                                        setState(() {
+                                          _checked[foundIndex] = value;
+                                          if (value) {
+                                            _selectedIds.add(_employees[foundIndex].id);
+                                          } else {
+                                            _selectedIds.remove(_employees[foundIndex].id);
+                                          }
+                                          int selectedIdsLength = _selectedIds.length;
+                                          if (selectedIdsLength == _employees.length) {
+                                            _isChecked = true;
+                                          } else if (selectedIdsLength == 0) {
+                                            _isChecked = false;
+                                          }
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
-                          )
-                        ],
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
-              ),
+                    ),
             ],
           ),
         ),
@@ -305,14 +297,7 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
   }
 
   Future<Null> _refresh() {
-    return _employeeService
-        .findAllByGroupIdAndTsInYearAndMonthAndStatus(
-      _model.groupId,
-      _year,
-      _month,
-      _status == STATUS_COMPLETED ? STATUS_IN_PROGRESS : STATUS_COMPLETED,
-    )
-        .then((res) {
+    return _employeeService.findAllByGroupIdAndTsInYearAndMonthAndStatus(_model.groupId, _year, _month, _status == STATUS_COMPLETED ? STATUS_IN_PROGRESS : STATUS_COMPLETED).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));

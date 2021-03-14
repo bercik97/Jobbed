@@ -22,13 +22,12 @@ import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
+import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 import 'package:place_picker/place_picker.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
-
-import '../../../../shared/widget/loader.dart';
 
 class WorkplacesPage extends StatefulWidget {
   final GroupModel _model;
@@ -85,9 +84,6 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model))));
-    }
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -147,112 +143,114 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                     controlAffinity: ListTileControlAffinity.leading,
                   ),
                 ),
-                _workplaces.isEmpty
-                    ? _handleNoWorkplaces()
-                    : Expanded(
-                        flex: 2,
-                        child: RefreshIndicator(
-                          color: WHITE,
-                          backgroundColor: BLUE,
-                          onRefresh: _refresh,
-                          child: Scrollbar(
-                            isAlwaysShown: true,
-                            controller: _scrollController,
-                            child: ListView.builder(
-                              controller: _scrollController,
-                              itemCount: _filteredWorkplaces.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                WorkplaceDto workplace = _filteredWorkplaces[index];
-                                int foundIndex = 0;
-                                for (int i = 0; i < _workplaces.length; i++) {
-                                  if (_workplaces[i].id == workplace.id) {
-                                    foundIndex = i;
-                                  }
-                                }
-                                String name = workplace.name;
-                                if (name != null && name.length >= 30) {
-                                  name = name.substring(0, 30) + ' ...';
-                                }
-                                String location = workplace.location;
-                                return Card(
-                                  color: WHITE,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Container(
-                                        color: BRIGHTER_BLUE,
-                                        child: ListTileTheme(
-                                          contentPadding: EdgeInsets.only(right: 10),
-                                          child: CheckboxListTile(
-                                            controlAffinity: ListTileControlAffinity.trailing,
-                                            secondary: Padding(
-                                              padding: EdgeInsets.only(left: 10),
-                                              child: BouncingWidget(
-                                                duration: Duration(milliseconds: 100),
-                                                scaleFactor: 2,
-                                                onPressed: () => NavigatorUtil.navigate(this.context, WorkplaceDetailsPage(_model, workplace)),
-                                                child: Image(image: AssetImage('images/workplace.png'), fit: BoxFit.fitHeight),
-                                              ),
-                                            ),
-                                            title: Column(
-                                              children: [
-                                                Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: text17BlueBold(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
-                                                ),
-                                                Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: location != null
-                                                      ? text16Black(utf8.decode(location.runes.toList()))
-                                                      : Row(
-                                                          children: [
-                                                            text16Black(getTranslated(this.context, 'location') + ': '),
-                                                            textRed(getTranslated(this.context, 'empty')),
-                                                          ],
-                                                        ),
-                                                ),
-                                                Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: Row(
-                                                    children: [
-                                                      text16Black(getTranslated(this.context, 'workplaceId') + ': '),
-                                                      text17BlackBold(workplace.id),
-                                                    ],
+                _loading
+                    ? circularProgressIndicator()
+                    : _workplaces.isEmpty
+                        ? _handleNoWorkplaces()
+                        : Expanded(
+                            flex: 2,
+                            child: RefreshIndicator(
+                              color: WHITE,
+                              backgroundColor: BLUE,
+                              onRefresh: _refresh,
+                              child: Scrollbar(
+                                isAlwaysShown: true,
+                                controller: _scrollController,
+                                child: ListView.builder(
+                                  controller: _scrollController,
+                                  itemCount: _filteredWorkplaces.length,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    WorkplaceDto workplace = _filteredWorkplaces[index];
+                                    int foundIndex = 0;
+                                    for (int i = 0; i < _workplaces.length; i++) {
+                                      if (_workplaces[i].id == workplace.id) {
+                                        foundIndex = i;
+                                      }
+                                    }
+                                    String name = workplace.name;
+                                    if (name != null && name.length >= 30) {
+                                      name = name.substring(0, 30) + ' ...';
+                                    }
+                                    String location = workplace.location;
+                                    return Card(
+                                      color: WHITE,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Container(
+                                            color: BRIGHTER_BLUE,
+                                            child: ListTileTheme(
+                                              contentPadding: EdgeInsets.only(right: 10),
+                                              child: CheckboxListTile(
+                                                controlAffinity: ListTileControlAffinity.trailing,
+                                                secondary: Padding(
+                                                  padding: EdgeInsets.only(left: 10),
+                                                  child: BouncingWidget(
+                                                    duration: Duration(milliseconds: 100),
+                                                    scaleFactor: 2,
+                                                    onPressed: () => NavigatorUtil.navigate(this.context, WorkplaceDetailsPage(_model, workplace)),
+                                                    child: Image(image: AssetImage('images/workplace.png'), fit: BoxFit.fitHeight),
                                                   ),
                                                 ),
-                                              ],
+                                                title: Column(
+                                                  children: [
+                                                    Align(
+                                                      alignment: Alignment.topLeft,
+                                                      child: text17BlueBold(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
+                                                    ),
+                                                    Align(
+                                                      alignment: Alignment.topLeft,
+                                                      child: location != null
+                                                          ? text16Black(utf8.decode(location.runes.toList()))
+                                                          : Row(
+                                                              children: [
+                                                                text16Black(getTranslated(this.context, 'location') + ': '),
+                                                                textRed(getTranslated(this.context, 'empty')),
+                                                              ],
+                                                            ),
+                                                    ),
+                                                    Align(
+                                                      alignment: Alignment.topLeft,
+                                                      child: Row(
+                                                        children: [
+                                                          text16Black(getTranslated(this.context, 'workplaceId') + ': '),
+                                                          text17BlackBold(workplace.id),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                activeColor: BLUE,
+                                                checkColor: WHITE,
+                                                value: _checked[foundIndex],
+                                                onChanged: (bool value) {
+                                                  setState(() {
+                                                    _checked[foundIndex] = value;
+                                                    if (value) {
+                                                      _selectedIds.add(_workplaces[foundIndex].id);
+                                                    } else {
+                                                      _selectedIds.remove(_workplaces[foundIndex].id);
+                                                    }
+                                                    int selectedIdsLength = _selectedIds.length;
+                                                    if (selectedIdsLength == _workplaces.length) {
+                                                      _isChecked = true;
+                                                    } else if (selectedIdsLength == 0) {
+                                                      _isChecked = false;
+                                                    }
+                                                  });
+                                                },
+                                              ),
                                             ),
-                                            activeColor: BLUE,
-                                            checkColor: WHITE,
-                                            value: _checked[foundIndex],
-                                            onChanged: (bool value) {
-                                              setState(() {
-                                                _checked[foundIndex] = value;
-                                                if (value) {
-                                                  _selectedIds.add(_workplaces[foundIndex].id);
-                                                } else {
-                                                  _selectedIds.remove(_workplaces[foundIndex].id);
-                                                }
-                                                int selectedIdsLength = _selectedIds.length;
-                                                if (selectedIdsLength == _workplaces.length) {
-                                                  _isChecked = true;
-                                                } else if (selectedIdsLength == 0) {
-                                                  _isChecked = false;
-                                                }
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              },
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
               ],
             ),
           ),

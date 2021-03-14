@@ -85,7 +85,7 @@ class _DeleteGroupEmployeesPageState extends State<DeleteGroupEmployeesPage> {
                 SizedBox(height: 5),
                 _buildLoupe(),
                 _buildSelectUnselectAllCheckbox(),
-                _loading ? Center(child: circularProgressIndicator()) : _buildEmployees(),
+                _loading ? circularProgressIndicator() : _buildEmployees(),
               ],
             ),
           ),

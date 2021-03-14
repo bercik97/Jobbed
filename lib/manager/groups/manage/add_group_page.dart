@@ -105,7 +105,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
                     getTranslated(context, 'groupDescriptionIsRequired'),
                   ),
                   _buildSelectUnselectAllCheckbox(),
-                  _loading ? Center(child: circularProgressIndicator()) : _buildEmployees(),
+                  _loading ? circularProgressIndicator() : _buildEmployees(),
                 ],
               ),
             ),

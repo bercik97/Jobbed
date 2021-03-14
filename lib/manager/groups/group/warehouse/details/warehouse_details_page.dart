@@ -20,9 +20,9 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
-import 'package:jobbed/shared/widget/loader.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
 import '../warehouse_page.dart';
@@ -79,9 +79,6 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.navigateReplacement(context, WarehousePage(_model))));
-    }
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -162,119 +159,116 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                     controlAffinity: ListTileControlAffinity.leading,
                   ),
                 ),
-                _items.isEmpty
-                    ? _handleNoItems()
-                    : Expanded(
-                        flex: 2,
-                        child: RefreshIndicator(
-                          color: WHITE,
-                          backgroundColor: BLUE,
-                          onRefresh: _refresh,
-                          child: Scrollbar(
-                            isAlwaysShown: true,
-                            controller: _scrollController,
-                            child: ListView.builder(
+                _loading
+                    ? circularProgressIndicator()
+                    : _items.isEmpty
+                        ? _handleNoItems()
+                        : Expanded(
+                            flex: 2,
+                            child: Scrollbar(
+                              isAlwaysShown: true,
                               controller: _scrollController,
-                              itemCount: _filteredItems.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                ItemDto item = _filteredItems[index];
-                                int foundIndex = 0;
-                                for (int i = 0; i < _items.length; i++) {
-                                  if (_items[i].id == item.id) {
-                                    foundIndex = i;
+                              child: ListView.builder(
+                                controller: _scrollController,
+                                itemCount: _filteredItems.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  ItemDto item = _filteredItems[index];
+                                  int foundIndex = 0;
+                                  for (int i = 0; i < _items.length; i++) {
+                                    if (_items[i].id == item.id) {
+                                      foundIndex = i;
+                                    }
                                   }
-                                }
-                                String name = item.name;
-                                String quantity = item.quantity.toString();
-                                return Card(
-                                  color: WHITE,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Container(
-                                        color: BRIGHTER_BLUE,
-                                        child: ListTileTheme(
-                                          contentPadding: EdgeInsets.only(right: 10),
-                                          child: CheckboxListTile(
-                                            controlAffinity: ListTileControlAffinity.trailing,
-                                            secondary: Padding(
-                                              padding: EdgeInsets.only(left: 10),
-                                              child: BouncingWidget(
-                                                duration: Duration(milliseconds: 100),
-                                                scaleFactor: 2,
-                                                onPressed: () => _editItem(item),
-                                                child: icon30Blue(Icons.border_color),
+                                  String name = item.name;
+                                  String quantity = item.quantity.toString();
+                                  return Card(
+                                    color: WHITE,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Container(
+                                          color: BRIGHTER_BLUE,
+                                          child: ListTileTheme(
+                                            contentPadding: EdgeInsets.only(right: 10),
+                                            child: CheckboxListTile(
+                                              controlAffinity: ListTileControlAffinity.trailing,
+                                              secondary: Padding(
+                                                padding: EdgeInsets.only(left: 10),
+                                                child: BouncingWidget(
+                                                  duration: Duration(milliseconds: 100),
+                                                  scaleFactor: 2,
+                                                  onPressed: () => _editItem(item),
+                                                  child: icon30Blue(Icons.border_color),
+                                                ),
                                               ),
-                                            ),
-                                            title: Column(
-                                              children: [
-                                                Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: text17BlueBold(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
-                                                ),
-                                                Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: Row(
-                                                    children: [
-                                                      text16Black(getTranslated(this.context, 'availableQuantity') + ': '),
-                                                      text17BlackBold(quantity),
-                                                    ],
+                                              title: Column(
+                                                children: [
+                                                  Align(
+                                                    alignment: Alignment.topLeft,
+                                                    child: text17BlueBold(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                            subtitle: Column(
-                                              children: [
-                                                SizedBox(height: 10),
-                                                for (int i = 0; i < item.locationInfoAboutItems.length; i++)
-                                                  Column(
-                                                    children: [
-                                                      Align(
-                                                        alignment: Alignment.topLeft,
-                                                        child: text15Black(utf8.decode(item.locationInfoAboutItems[i].name.runes.toList()) + ' x ' + item.locationInfoAboutItems[i].quantity),
-                                                      ),
-                                                      Align(
-                                                        alignment: Alignment.topLeft,
-                                                        child: text15Black(utf8.decode(item.locationInfoAboutItems[i].itemplace.runes.toList())),
-                                                      ),
-                                                      SizedBox(height: 5),
-                                                    ],
+                                                  Align(
+                                                    alignment: Alignment.topLeft,
+                                                    child: Row(
+                                                      children: [
+                                                        text16Black(getTranslated(this.context, 'availableQuantity') + ': '),
+                                                        text17BlackBold(quantity),
+                                                      ],
+                                                    ),
                                                   ),
-                                              ],
+                                                ],
+                                              ),
+                                              subtitle: Column(
+                                                children: [
+                                                  SizedBox(height: 10),
+                                                  for (int i = 0; i < item.locationInfoAboutItems.length; i++)
+                                                    Column(
+                                                      children: [
+                                                        Align(
+                                                          alignment: Alignment.topLeft,
+                                                          child: text15Black(utf8.decode(item.locationInfoAboutItems[i].name.runes.toList()) + ' x ' + item.locationInfoAboutItems[i].quantity),
+                                                        ),
+                                                        Align(
+                                                          alignment: Alignment.topLeft,
+                                                          child: text15Black(utf8.decode(item.locationInfoAboutItems[i].itemplace.runes.toList())),
+                                                        ),
+                                                        SizedBox(height: 5),
+                                                      ],
+                                                    ),
+                                                ],
+                                              ),
+                                              activeColor: BLUE,
+                                              checkColor: WHITE,
+                                              value: _checked[foundIndex],
+                                              onChanged: (bool value) {
+                                                setState(() {
+                                                  _checked[foundIndex] = value;
+                                                  if (value) {
+                                                    _selectedNames.add(utf8.decode(_items[foundIndex].name.runes.toList()));
+                                                    _selectedItems.add(_items[foundIndex]);
+                                                  } else {
+                                                    _selectedNames.remove(_items[foundIndex].name);
+                                                    _selectedItems.remove(_items[foundIndex]);
+                                                  }
+                                                  int selectedIdsLength = _selectedNames.length;
+                                                  if (selectedIdsLength == _items.length) {
+                                                    _isChecked = true;
+                                                  } else if (selectedIdsLength == 0) {
+                                                    _isChecked = false;
+                                                  }
+                                                });
+                                              },
                                             ),
-                                            activeColor: BLUE,
-                                            checkColor: WHITE,
-                                            value: _checked[foundIndex],
-                                            onChanged: (bool value) {
-                                              setState(() {
-                                                _checked[foundIndex] = value;
-                                                if (value) {
-                                                  _selectedNames.add(utf8.decode(_items[foundIndex].name.runes.toList()));
-                                                  _selectedItems.add(_items[foundIndex]);
-                                                } else {
-                                                  _selectedNames.remove(_items[foundIndex].name);
-                                                  _selectedItems.remove(_items[foundIndex]);
-                                                }
-                                                int selectedIdsLength = _selectedNames.length;
-                                                if (selectedIdsLength == _items.length) {
-                                                  _isChecked = true;
-                                                } else if (selectedIdsLength == 0) {
-                                                  _isChecked = false;
-                                                }
-                                              });
-                                            },
                                           ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              },
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                      ),
               ],
             ),
           ),

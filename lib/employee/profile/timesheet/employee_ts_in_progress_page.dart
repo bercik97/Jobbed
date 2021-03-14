@@ -22,10 +22,10 @@ import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
 import 'package:jobbed/shared/util/workday_util.dart';
+import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
-import 'package:jobbed/shared/widget/loader.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
@@ -77,9 +77,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
-    }
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -87,12 +84,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: WHITE,
-          appBar: employeeAppBar(
-            context,
-            _user,
-            getTranslated(context, 'workdays') + ' - ' + getTranslated(context, _timesheet.status),
-            () => Navigator.pop(context),
-          ),
+          appBar: employeeAppBar(context, _user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, _timesheet.status), () => Navigator.pop(context)),
           body: RefreshIndicator(
             color: WHITE,
             backgroundColor: BLUE,
@@ -144,23 +136,25 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                     ),
                   ),
                 ),
-                Expanded(
-                  child: Container(
-                    child: HorizontalDataTable(
-                      leftHandSideColumnWidth: 90,
-                      rightHandSideColumnWidth: 305,
-                      isFixedHeader: true,
-                      headerWidgets: _buildTitleWidget(),
-                      leftSideItemBuilder: _buildFirstColumnRow,
-                      rightSideItemBuilder: _buildRightHandSideColumnRow,
-                      itemCount: workdays.length,
-                      rowSeparatorWidget: Divider(color: BLUE, height: 1.0, thickness: 0.0),
-                      leftHandSideColBackgroundColor: WHITE,
-                      rightHandSideColBackgroundColor: WHITE,
-                    ),
-                    height: MediaQuery.of(context).size.height,
-                  ),
-                ),
+                _loading
+                    ? circularProgressIndicator()
+                    : Expanded(
+                        child: Container(
+                          child: HorizontalDataTable(
+                            leftHandSideColumnWidth: 90,
+                            rightHandSideColumnWidth: 305,
+                            isFixedHeader: true,
+                            headerWidgets: _buildTitleWidget(),
+                            leftSideItemBuilder: _buildFirstColumnRow,
+                            rightSideItemBuilder: _buildRightHandSideColumnRow,
+                            itemCount: workdays.length,
+                            rowSeparatorWidget: Divider(color: BLUE, height: 1.0, thickness: 0.0),
+                            leftHandSideColBackgroundColor: WHITE,
+                            rightHandSideColBackgroundColor: WHITE,
+                          ),
+                          height: MediaQuery.of(context).size.height,
+                        ),
+                      ),
               ],
             ),
           ),

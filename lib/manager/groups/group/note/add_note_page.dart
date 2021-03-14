@@ -23,8 +23,8 @@ import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
+import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
-import 'package:jobbed/shared/widget/loader.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
 class AddNotePage extends StatefulWidget {
@@ -83,9 +83,6 @@ class _AddNotePageState extends State<AddNotePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
-    }
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -129,37 +126,39 @@ class _AddNotePageState extends State<AddNotePage> {
                         alignment: Alignment.centerLeft,
                         child: text20OrangeBold(getTranslated(context, 'noteBasedOnWorkplace')),
                       ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: DropDown<String>(
-                          isCleared: true,
-                          isExpanded: true,
-                          hint: text16BlueGrey(getTranslated(context, 'tapToAdd')),
-                          items: [
-                            for (var workplace in workplaces) utf8.decode(workplace.name.runes.toList()),
-                          ],
-                          customWidgets: [
-                            for (var workplace in workplaces)
-                              Row(
-                                children: [
-                                  textBlack(utf8.decode(workplace.name.runes.toList()) + ' '),
-                                  _selectedWorkplacesWithChecked.containsKey(workplace) ? iconGreen(Icons.check) : textBlack(' '),
+                      _loading
+                          ? circularProgressIndicator()
+                          : Align(
+                              alignment: Alignment.centerLeft,
+                              child: DropDown<String>(
+                                isCleared: true,
+                                isExpanded: true,
+                                hint: text16BlueGrey(getTranslated(context, 'tapToAdd')),
+                                items: [
+                                  for (var workplace in workplaces) utf8.decode(workplace.name.runes.toList()),
                                 ],
+                                customWidgets: [
+                                  for (var workplace in workplaces)
+                                    Row(
+                                      children: [
+                                        textBlack(utf8.decode(workplace.name.runes.toList()) + ' '),
+                                        _selectedWorkplacesWithChecked.containsKey(workplace) ? iconGreen(Icons.check) : textBlack(' '),
+                                      ],
+                                    ),
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    WorkplaceForAddNoteDto workplace = workplaces.firstWhere((element) => utf8.decode(element.name.runes.toList()) == value);
+                                    value = workplaces.first;
+                                    if (workplace.name != '' && !_selectedWorkplacesWithChecked.containsKey(workplace)) {
+                                      List<bool> _checked = new List();
+                                      workplace.subWorkplacesDto.forEach((element) => _checked.add(false));
+                                      _selectedWorkplacesWithChecked[workplace] = _checked;
+                                    }
+                                  });
+                                },
                               ),
-                          ],
-                          onChanged: (value) {
-                            setState(() {
-                              WorkplaceForAddNoteDto workplace = workplaces.firstWhere((element) => utf8.decode(element.name.runes.toList()) == value);
-                              value = workplaces.first;
-                              if (workplace.name != '' && !_selectedWorkplacesWithChecked.containsKey(workplace)) {
-                                List<bool> _checked = new List();
-                                workplace.subWorkplacesDto.forEach((element) => _checked.add(false));
-                                _selectedWorkplacesWithChecked[workplace] = _checked;
-                              }
-                            });
-                          },
-                        ),
-                      ),
+                            ),
                     ],
                   ),
                 ),

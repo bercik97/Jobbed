@@ -17,11 +17,11 @@ import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
-import '../../../../shared/widget/loader.dart';
 import 'details/item_place_details_page.dart';
 
 class ItemPlacesPage extends StatefulWidget {
@@ -74,9 +74,6 @@ class _ItemPlacesPageState extends State<ItemPlacesPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.navigateReplacement(context, GroupPage(_model))));
-    }
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -139,110 +136,112 @@ class _ItemPlacesPageState extends State<ItemPlacesPage> {
                     controlAffinity: ListTileControlAffinity.leading,
                   ),
                 ),
-                _itemPlaces.isEmpty
-                    ? _handleNoItemPlaces()
-                    : Expanded(
-                        flex: 2,
-                        child: RefreshIndicator(
-                          color: WHITE,
-                          backgroundColor: BLUE,
-                          onRefresh: _refresh,
-                          child: Scrollbar(
-                            isAlwaysShown: true,
-                            controller: _scrollController,
-                            child: ListView.builder(
-                              controller: _scrollController,
-                              itemCount: _filteredItemPlaces.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                ItemPlaceDashboardDto itemPlace = _filteredItemPlaces[index];
-                                int foundIndex = 0;
-                                for (int i = 0; i < _itemPlaces.length; i++) {
-                                  if (_itemPlaces[i].id == itemPlace.id) {
-                                    foundIndex = i;
-                                  }
-                                }
-                                String location = utf8.decode(itemPlace.location.runes.toList());
-                                String numberOfTypeOfItems = itemPlace.numberOfTypeOfItems.toString();
-                                String totalNumberOfItems = itemPlace.totalNumberOfItems.toString();
-                                return Card(
-                                  color: WHITE,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Container(
-                                        color: BRIGHTER_BLUE,
-                                        child: ListTileTheme(
-                                          contentPadding: EdgeInsets.only(right: 10),
-                                          child: CheckboxListTile(
-                                            controlAffinity: ListTileControlAffinity.trailing,
-                                            secondary: Padding(
-                                              padding: EdgeInsets.only(left: 10),
-                                              child: BouncingWidget(
-                                                duration: Duration(milliseconds: 100),
-                                                scaleFactor: 2,
-                                                onPressed: () => NavigatorUtil.navigate(this.context, ItemPlaceDetailsPage(_model, itemPlace)),
-                                                child: Image(image: AssetImage('images/items.png'), fit: BoxFit.fitHeight),
+                _loading
+                    ? circularProgressIndicator()
+                    : _itemPlaces.isEmpty
+                        ? _handleNoItemPlaces()
+                        : Expanded(
+                            flex: 2,
+                            child: RefreshIndicator(
+                              color: WHITE,
+                              backgroundColor: BLUE,
+                              onRefresh: _refresh,
+                              child: Scrollbar(
+                                isAlwaysShown: true,
+                                controller: _scrollController,
+                                child: ListView.builder(
+                                  controller: _scrollController,
+                                  itemCount: _filteredItemPlaces.length,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    ItemPlaceDashboardDto itemPlace = _filteredItemPlaces[index];
+                                    int foundIndex = 0;
+                                    for (int i = 0; i < _itemPlaces.length; i++) {
+                                      if (_itemPlaces[i].id == itemPlace.id) {
+                                        foundIndex = i;
+                                      }
+                                    }
+                                    String location = utf8.decode(itemPlace.location.runes.toList());
+                                    String numberOfTypeOfItems = itemPlace.numberOfTypeOfItems.toString();
+                                    String totalNumberOfItems = itemPlace.totalNumberOfItems.toString();
+                                    return Card(
+                                      color: WHITE,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Container(
+                                            color: BRIGHTER_BLUE,
+                                            child: ListTileTheme(
+                                              contentPadding: EdgeInsets.only(right: 10),
+                                              child: CheckboxListTile(
+                                                controlAffinity: ListTileControlAffinity.trailing,
+                                                secondary: Padding(
+                                                  padding: EdgeInsets.only(left: 10),
+                                                  child: BouncingWidget(
+                                                    duration: Duration(milliseconds: 100),
+                                                    scaleFactor: 2,
+                                                    onPressed: () => NavigatorUtil.navigate(this.context, ItemPlaceDetailsPage(_model, itemPlace)),
+                                                    child: Image(image: AssetImage('images/items.png'), fit: BoxFit.fitHeight),
+                                                  ),
+                                                ),
+                                                title: Column(
+                                                  children: [
+                                                    Align(
+                                                      alignment: Alignment.topLeft,
+                                                      child: text17BlueBold(location),
+                                                    ),
+                                                    Align(
+                                                      alignment: Alignment.topLeft,
+                                                      child: Row(
+                                                        children: [
+                                                          text16Black(getTranslated(this.context, 'numberOfTypeOfItems') + ': '),
+                                                          text17BlackBold(numberOfTypeOfItems.toString()),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Align(
+                                                      alignment: Alignment.topLeft,
+                                                      child: Row(
+                                                        children: [
+                                                          text16Black(getTranslated(this.context, 'totalNumberOfItems') + ': '),
+                                                          text17BlackBold(totalNumberOfItems.toString()),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                activeColor: BLUE,
+                                                checkColor: WHITE,
+                                                value: _checked[foundIndex],
+                                                onChanged: (bool value) {
+                                                  setState(() {
+                                                    _checked[foundIndex] = value;
+                                                    if (value) {
+                                                      _selectedIds.add(_itemPlaces[foundIndex].id);
+                                                      _selectedItemPlaces.add(_itemPlaces[foundIndex]);
+                                                    } else {
+                                                      _selectedIds.remove(_itemPlaces[foundIndex].id);
+                                                      _selectedItemPlaces.remove(_itemPlaces[foundIndex]);
+                                                    }
+                                                    int selectedIdsLength = _selectedIds.length;
+                                                    if (selectedIdsLength == _itemPlaces.length) {
+                                                      _isChecked = true;
+                                                    } else if (selectedIdsLength == 0) {
+                                                      _isChecked = false;
+                                                    }
+                                                  });
+                                                },
                                               ),
                                             ),
-                                            title: Column(
-                                              children: [
-                                                Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: text17BlueBold(location),
-                                                ),
-                                                Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: Row(
-                                                    children: [
-                                                      text16Black(getTranslated(this.context, 'numberOfTypeOfItems') + ': '),
-                                                      text17BlackBold(numberOfTypeOfItems.toString()),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: Row(
-                                                    children: [
-                                                      text16Black(getTranslated(this.context, 'totalNumberOfItems') + ': '),
-                                                      text17BlackBold(totalNumberOfItems.toString()),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            activeColor: BLUE,
-                                            checkColor: WHITE,
-                                            value: _checked[foundIndex],
-                                            onChanged: (bool value) {
-                                              setState(() {
-                                                _checked[foundIndex] = value;
-                                                if (value) {
-                                                  _selectedIds.add(_itemPlaces[foundIndex].id);
-                                                  _selectedItemPlaces.add(_itemPlaces[foundIndex]);
-                                                } else {
-                                                  _selectedIds.remove(_itemPlaces[foundIndex].id);
-                                                  _selectedItemPlaces.remove(_itemPlaces[foundIndex]);
-                                                }
-                                                int selectedIdsLength = _selectedIds.length;
-                                                if (selectedIdsLength == _itemPlaces.length) {
-                                                  _isChecked = true;
-                                                } else if (selectedIdsLength == 0) {
-                                                  _isChecked = false;
-                                                }
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              },
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
               ],
             ),
           ),
@@ -397,8 +396,8 @@ class _ItemPlacesPageState extends State<ItemPlacesPage> {
                 showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                 _itemPlaceService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                    _refresh();
                     Navigator.pop(context);
-                    setState(() => _itemPlaces.removeWhere((element) => selectedItemPlaces.contains(element)));
                     setState(() => _isDeleteButtonTapped = false);
                     ToastUtil.showSuccessToast(getTranslated(this.context, 'selectedItemPlacesRemoved'));
                   });

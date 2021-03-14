@@ -14,8 +14,8 @@ import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
-import 'package:jobbed/shared/widget/loader.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
 import '../item_places_page.dart';
@@ -69,9 +69,6 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.navigateReplacement(context, ItemPlacesPage(_model))));
-    }
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -119,104 +116,106 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
                     controlAffinity: ListTileControlAffinity.leading,
                   ),
                 ),
-                _items.isEmpty
-                    ? _handleNoItems()
-                    : Expanded(
-                        flex: 2,
-                        child: Scrollbar(
-                          isAlwaysShown: true,
-                          controller: _scrollController,
-                          child: ListView.builder(
-                            controller: _scrollController,
-                            itemCount: _filteredItems.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              ItemPlaceDetailsDto item = _filteredItems[index];
-                              int foundIndex = 0;
-                              for (int i = 0; i < _items.length; i++) {
-                                if (utf8.decode(_items[i].name.runes.toList()) == utf8.decode(item.name.runes.toList())) {
-                                  foundIndex = i;
-                                }
-                              }
-                              String warehouseName = utf8.decode(item.warehouseName.runes.toList());
-                              String name = utf8.decode(item.name.runes.toList());
-                              String quantity = item.quantity;
-                              return Card(
-                                color: WHITE,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      color: BRIGHTER_BLUE,
-                                      child: ListTileTheme(
-                                        contentPadding: EdgeInsets.all(10),
-                                        child: CheckboxListTile(
-                                          title: Column(
-                                            children: [
-                                              Align(
-                                                alignment: Alignment.topLeft,
-                                                child: Row(
-                                                  children: [
-                                                    text17BlueBold(getTranslated(this.context, 'warehouse') + ': '),
-                                                    text16Black(warehouseName),
-                                                  ],
-                                                ),
+                _loading
+                    ? circularProgressIndicator()
+                    : _items.isEmpty
+                        ? _handleNoItems()
+                        : Expanded(
+                            flex: 2,
+                            child: Scrollbar(
+                              isAlwaysShown: true,
+                              controller: _scrollController,
+                              child: ListView.builder(
+                                controller: _scrollController,
+                                itemCount: _filteredItems.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  ItemPlaceDetailsDto item = _filteredItems[index];
+                                  int foundIndex = 0;
+                                  for (int i = 0; i < _items.length; i++) {
+                                    if (utf8.decode(_items[i].name.runes.toList()) == utf8.decode(item.name.runes.toList())) {
+                                      foundIndex = i;
+                                    }
+                                  }
+                                  String warehouseName = utf8.decode(item.warehouseName.runes.toList());
+                                  String name = utf8.decode(item.name.runes.toList());
+                                  String quantity = item.quantity;
+                                  return Card(
+                                    color: WHITE,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Container(
+                                          color: BRIGHTER_BLUE,
+                                          child: ListTileTheme(
+                                            contentPadding: EdgeInsets.all(10),
+                                            child: CheckboxListTile(
+                                              title: Column(
+                                                children: [
+                                                  Align(
+                                                    alignment: Alignment.topLeft,
+                                                    child: Row(
+                                                      children: [
+                                                        text17BlueBold(getTranslated(this.context, 'warehouse') + ': '),
+                                                        text16Black(warehouseName),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ],
+                                              subtitle: Column(
+                                                children: [
+                                                  Align(
+                                                    alignment: Alignment.topLeft,
+                                                    child: Row(
+                                                      children: [
+                                                        text16Black(getTranslated(this.context, 'itemName') + ': '),
+                                                        text17BlackBold(name),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Align(
+                                                    alignment: Alignment.topLeft,
+                                                    child: Row(
+                                                      children: [
+                                                        text16Black(getTranslated(this.context, 'quantity') + ': '),
+                                                        text17BlackBold(quantity),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              activeColor: BLUE,
+                                              checkColor: WHITE,
+                                              value: _checked[foundIndex],
+                                              onChanged: (bool value) {
+                                                setState(() {
+                                                  _checked[foundIndex] = value;
+                                                  if (value) {
+                                                    _selectedNames.add(utf8.decode(_items[foundIndex].name.runes.toList()));
+                                                    _selectedItems.add(_items[foundIndex]);
+                                                  } else {
+                                                    _selectedNames.remove(utf8.decode(_items[foundIndex].name.runes.toList()));
+                                                    _selectedItems.remove(_items[foundIndex]);
+                                                  }
+                                                  int selectedIdsLength = _selectedNames.length;
+                                                  if (selectedIdsLength == _items.length) {
+                                                    _isChecked = true;
+                                                  } else if (selectedIdsLength == 0) {
+                                                    _isChecked = false;
+                                                  }
+                                                });
+                                              },
+                                            ),
                                           ),
-                                          subtitle: Column(
-                                            children: [
-                                              Align(
-                                                alignment: Alignment.topLeft,
-                                                child: Row(
-                                                  children: [
-                                                    text16Black(getTranslated(this.context, 'itemName') + ': '),
-                                                    text17BlackBold(name),
-                                                  ],
-                                                ),
-                                              ),
-                                              Align(
-                                                alignment: Alignment.topLeft,
-                                                child: Row(
-                                                  children: [
-                                                    text16Black(getTranslated(this.context, 'quantity') + ': '),
-                                                    text17BlackBold(quantity),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          activeColor: BLUE,
-                                          checkColor: WHITE,
-                                          value: _checked[foundIndex],
-                                          onChanged: (bool value) {
-                                            setState(() {
-                                              _checked[foundIndex] = value;
-                                              if (value) {
-                                                _selectedNames.add(utf8.decode(_items[foundIndex].name.runes.toList()));
-                                                _selectedItems.add(_items[foundIndex]);
-                                              } else {
-                                                _selectedNames.remove(utf8.decode(_items[foundIndex].name.runes.toList()));
-                                                _selectedItems.remove(_items[foundIndex]);
-                                              }
-                                              int selectedIdsLength = _selectedNames.length;
-                                              if (selectedIdsLength == _items.length) {
-                                                _isChecked = true;
-                                              } else if (selectedIdsLength == 0) {
-                                                _isChecked = false;
-                                              }
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              );
-                            },
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
               ],
             ),
           ),

@@ -21,13 +21,13 @@ import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/month_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 import '../../../../internationalization/localization/localization_constants.dart';
-import '../../../../shared/widget/loader.dart';
 import '../../../../shared/widget/texts.dart';
 import '../../../shared/manager_app_bar.dart';
 import 'completed/ts_completed_page.dart';
@@ -83,9 +83,6 @@ class _TsPageState extends State<TsPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading'), () => NavigatorUtil.navigateReplacement(context, GroupPage(_model))));
-    }
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -93,12 +90,7 @@ class _TsPageState extends State<TsPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: WHITE,
-          appBar: managerAppBar(
-            context,
-            _model.user,
-            utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
-            () => NavigatorUtil.navigateReplacement(context, GroupPage(_model)),
-          ),
+          appBar: managerAppBar(context, _model.user, utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'), () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model))),
           body: SingleChildScrollView(
             child: Column(
               children: <Widget>[
@@ -118,44 +110,50 @@ class _TsPageState extends State<TsPage> {
                         ),
                       )
                     : Container(),
-                for (var inProgressTs in _inProgressTimesheets)
-                  Card(
-                    color: BRIGHTER_BLUE,
-                    child: InkWell(
-                      onTap: () => NavigatorUtil.navigate(this.context, TsInProgressPage(_model, inProgressTs)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          ListTile(
-                            leading: icon30Orange(Icons.arrow_circle_up),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                InkWell(
-                                  onTap: () => _handleGenerateExcelAndSendEmail(inProgressTs.year, inProgressTs.month, inProgressTs.status),
-                                  child: Image(
-                                    image: AssetImage('images/excel.png'),
-                                    height: 30,
-                                  ),
+                _loading
+                    ? circularProgressIndicator()
+                    : Column(
+                        children: [
+                          for (var inProgressTs in _inProgressTimesheets)
+                            Card(
+                              color: BRIGHTER_BLUE,
+                              child: InkWell(
+                                onTap: () => NavigatorUtil.navigate(this.context, TsInProgressPage(_model, inProgressTs)),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    ListTile(
+                                      leading: icon30Orange(Icons.arrow_circle_up),
+                                      trailing: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          InkWell(
+                                            onTap: () => _handleGenerateExcelAndSendEmail(inProgressTs.year, inProgressTs.month, inProgressTs.status),
+                                            child: Image(
+                                              image: AssetImage('images/excel.png'),
+                                              height: 30,
+                                            ),
+                                          ),
+                                          SizedBox(width: 10),
+                                          IconButton(
+                                            icon: iconGreen(Icons.arrow_upward),
+                                            onPressed: () => NavigatorUtil.navigate(context, ChangeTsStatusPage(_model, inProgressTs.year, inProgressTs.month, STATUS_COMPLETED)),
+                                          ),
+                                          SizedBox(width: 5),
+                                          IconButton(
+                                            icon: iconRed(Icons.delete),
+                                            onPressed: () => NavigatorUtil.navigate(context, DeleteTsPage(_model, inProgressTs.year, inProgressTs.month, STATUS_IN_PROGRESS)),
+                                          ),
+                                        ],
+                                      ),
+                                      title: text17BlackBold(inProgressTs.year.toString() + ' ' + MonthUtil.translateMonth(context, inProgressTs.month)),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(width: 10),
-                                IconButton(
-                                  icon: iconGreen(Icons.arrow_upward),
-                                  onPressed: () => NavigatorUtil.navigate(context, ChangeTsStatusPage(_model, inProgressTs.year, inProgressTs.month, STATUS_COMPLETED)),
-                                ),
-                                SizedBox(width: 5),
-                                IconButton(
-                                  icon: iconRed(Icons.delete),
-                                  onPressed: () => NavigatorUtil.navigate(context, DeleteTsPage(_model, inProgressTs.year, inProgressTs.month, STATUS_IN_PROGRESS)),
-                                ),
-                              ],
+                              ),
                             ),
-                            title: text17BlackBold(inProgressTs.year.toString() + ' ' + MonthUtil.translateMonth(context, inProgressTs.month)),
-                          ),
                         ],
                       ),
-                    ),
-                  ),
                 Padding(
                   padding: EdgeInsets.only(left: 20, top: 15, bottom: 5),
                   child: Align(
@@ -172,44 +170,50 @@ class _TsPageState extends State<TsPage> {
                         ),
                       )
                     : Container(),
-                for (var completedTs in _completedTimesheets)
-                  Card(
-                    color: BRIGHTER_BLUE,
-                    child: InkWell(
-                      onTap: () => NavigatorUtil.navigate(context, TsCompletedPage(_model, completedTs)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          ListTile(
-                            leading: icon30Green(Icons.check_circle_outline),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                InkWell(
-                                  onTap: () => _handleGenerateExcelAndSendEmail(completedTs.year, completedTs.month, completedTs.status),
-                                  child: Image(
-                                    image: AssetImage('images/excel.png'),
-                                    height: 30,
-                                  ),
+                _loading
+                    ? circularProgressIndicator()
+                    : Column(
+                        children: [
+                          for (var completedTs in _completedTimesheets)
+                            Card(
+                              color: BRIGHTER_BLUE,
+                              child: InkWell(
+                                onTap: () => NavigatorUtil.navigate(context, TsCompletedPage(_model, completedTs)),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    ListTile(
+                                      leading: icon30Green(Icons.check_circle_outline),
+                                      trailing: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          InkWell(
+                                            onTap: () => _handleGenerateExcelAndSendEmail(completedTs.year, completedTs.month, completedTs.status),
+                                            child: Image(
+                                              image: AssetImage('images/excel.png'),
+                                              height: 30,
+                                            ),
+                                          ),
+                                          SizedBox(width: 10),
+                                          IconButton(
+                                            icon: iconOrange(Icons.arrow_downward),
+                                            onPressed: () => NavigatorUtil.navigate(this.context, ChangeTsStatusPage(_model, completedTs.year, completedTs.month, STATUS_IN_PROGRESS)),
+                                          ),
+                                          SizedBox(width: 5),
+                                          IconButton(
+                                            icon: iconRed(Icons.delete),
+                                            onPressed: () => NavigatorUtil.navigate(this.context, DeleteTsPage(_model, completedTs.year, completedTs.month, STATUS_COMPLETED)),
+                                          ),
+                                        ],
+                                      ),
+                                      title: text17BlackBold(completedTs.year.toString() + ' ' + MonthUtil.translateMonth(context, completedTs.month)),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(width: 10),
-                                IconButton(
-                                  icon: iconOrange(Icons.arrow_downward),
-                                  onPressed: () => NavigatorUtil.navigate(this.context, ChangeTsStatusPage(_model, completedTs.year, completedTs.month, STATUS_IN_PROGRESS)),
-                                ),
-                                SizedBox(width: 5),
-                                IconButton(
-                                  icon: iconRed(Icons.delete),
-                                  onPressed: () => NavigatorUtil.navigate(this.context, DeleteTsPage(_model, completedTs.year, completedTs.month, STATUS_COMPLETED)),
-                                ),
-                              ],
+                              ),
                             ),
-                            title: text17BlackBold(completedTs.year.toString() + ' ' + MonthUtil.translateMonth(context, completedTs.month)),
-                          ),
                         ],
-                      ),
-                    ),
-                  ),
+                      )
               ],
             ),
           ),

@@ -17,9 +17,9 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
-import 'package:jobbed/shared/widget/loader.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
 class EditScheduleEmployeesPage extends StatefulWidget {
@@ -75,9 +75,6 @@ class _EditScheduleEmployeesPageState extends State<EditScheduleEmployeesPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
-    }
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -135,66 +132,68 @@ class _EditScheduleEmployeesPageState extends State<EditScheduleEmployeesPage> {
                   controlAffinity: ListTileControlAffinity.leading,
                 ),
               ),
-              Expanded(
-                flex: 2,
-                child: Scrollbar(
-                  isAlwaysShown: true,
-                  controller: _scrollController,
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    itemCount: _filteredEmployees.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      EmployeeBasicDto employee = _filteredEmployees[index];
-                      int foundIndex = 0;
-                      for (int i = 0; i < _employees.length; i++) {
-                        if (_employees[i].id == employee.id) {
-                          foundIndex = i;
-                        }
-                      }
-                      String info = employee.name + ' ' + employee.surname;
-                      String nationality = employee.nationality;
-                      return Card(
-                        color: WHITE,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              color: BRIGHTER_BLUE,
-                              child: ListTileTheme(
-                                contentPadding: EdgeInsets.only(right: 10),
-                                child: CheckboxListTile(
-                                  controlAffinity: ListTileControlAffinity.leading,
-                                  title: text20BlackBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
-                                  activeColor: BLUE,
-                                  checkColor: WHITE,
-                                  value: _checked[foundIndex],
-                                  onChanged: (bool value) {
-                                    setState(() {
-                                      _checked[foundIndex] = value;
-                                      if (value) {
-                                        _selectedIds.add(_employees[foundIndex].id);
-                                      } else {
-                                        _selectedIds.remove(_employees[foundIndex].id);
-                                      }
-                                      int selectedIdsLength = _selectedIds.length;
-                                      if (selectedIdsLength == _employees.length) {
-                                        _isChecked = true;
-                                      } else if (selectedIdsLength == 0) {
-                                        _isChecked = false;
-                                      }
-                                    });
-                                  },
-                                ),
+              _loading
+                  ? circularProgressIndicator()
+                  : Expanded(
+                      flex: 2,
+                      child: Scrollbar(
+                        isAlwaysShown: true,
+                        controller: _scrollController,
+                        child: ListView.builder(
+                          controller: _scrollController,
+                          itemCount: _filteredEmployees.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            EmployeeBasicDto employee = _filteredEmployees[index];
+                            int foundIndex = 0;
+                            for (int i = 0; i < _employees.length; i++) {
+                              if (_employees[i].id == employee.id) {
+                                foundIndex = i;
+                              }
+                            }
+                            String info = employee.name + ' ' + employee.surname;
+                            String nationality = employee.nationality;
+                            return Card(
+                              color: WHITE,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    color: BRIGHTER_BLUE,
+                                    child: ListTileTheme(
+                                      contentPadding: EdgeInsets.only(right: 10),
+                                      child: CheckboxListTile(
+                                        controlAffinity: ListTileControlAffinity.leading,
+                                        title: text20BlackBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                        activeColor: BLUE,
+                                        checkColor: WHITE,
+                                        value: _checked[foundIndex],
+                                        onChanged: (bool value) {
+                                          setState(() {
+                                            _checked[foundIndex] = value;
+                                            if (value) {
+                                              _selectedIds.add(_employees[foundIndex].id);
+                                            } else {
+                                              _selectedIds.remove(_employees[foundIndex].id);
+                                            }
+                                            int selectedIdsLength = _selectedIds.length;
+                                            if (selectedIdsLength == _employees.length) {
+                                              _isChecked = true;
+                                            } else if (selectedIdsLength == 0) {
+                                              _isChecked = false;
+                                            }
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
-                            )
-                          ],
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
-                ),
-              ),
+                      ),
+                    ),
             ],
           ),
           bottomNavigationBar: _buildBottomNavigationBar(),

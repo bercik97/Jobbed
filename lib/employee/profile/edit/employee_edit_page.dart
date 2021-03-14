@@ -13,11 +13,11 @@ import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
-import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
-import 'package:jobbed/shared/widget/loader.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
 class EmployeeEditPage extends StatefulWidget {
@@ -90,9 +90,6 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      return loader(employeeAppBar(context, _user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
-    }
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -109,23 +106,75 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
                 key: formKey,
                 child: Column(
                   children: <Widget>[
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: <Widget>[
-                            _buildReadOnlySection(),
-                            SizedBox(height: 20),
-                            Align(alignment: Alignment.topLeft, child: text20BlueUnderline(getTranslated(context, 'editableSection'))),
-                            SizedBox(height: 20),
-                            _buildBasicSection(),
-                            _buildContactSection(),
-                          ],
-                        ),
-                      ),
-                    ),
-                    _buildUpdateButton(),
+                    _loading
+                        ? circularProgressIndicator()
+                        : Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: <Widget>[
+                                  _buildReadOnlySection(),
+                                  SizedBox(height: 20),
+                                  Align(alignment: Alignment.topLeft, child: text20BlueUnderline(getTranslated(context, 'editableSection'))),
+                                  SizedBox(height: 20),
+                                  _buildBasicSection(),
+                                  _buildContactSection(),
+                                ],
+                              ),
+                            ),
+                          ),
                   ],
                 ),
+              ),
+            ),
+          ),
+          bottomNavigationBar: SafeArea(
+            child: Container(
+              height: 40,
+              child: Row(
+                children: <Widget>[
+                  SizedBox(width: 1),
+                  Expanded(
+                    child: MaterialButton(
+                      color: BLUE,
+                      child: text18White(getTranslated(context, 'update')),
+                      onPressed: () {
+                        if (!_isValid()) {
+                          DialogUtil.showErrorDialog(context, getTranslated(context, 'correctInvalidFields'));
+                          return;
+                        } else {
+                          FocusScope.of(context).unfocus();
+                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+                          _employeeService.updateEmployeeAndUserFieldsValuesById(
+                            widget._employeeId,
+                            {
+                              "username": _usernameController.text,
+                              "name": _nameController.text,
+                              "surname": _surnameController.text,
+                              "nationality": _nationality,
+                              "phone": _phoneController.text,
+                              "viber": _viberController.text,
+                              "whatsApp": _whatsAppController.text,
+                            },
+                          ).then((res) {
+                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                              ToastUtil.showSuccessToast(getTranslated(context, 'successfullyUpdatedInformationAboutYou'));
+                              _user.nationality = _nationality;
+                              _user.info = _nameController.text + ' ' + _surnameController.text;
+                              _user.username = _usernameController.text;
+                            });
+                          }).catchError(
+                            (onError) {
+                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                                DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+                              });
+                            },
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 1),
+                ],
               ),
             ),
           ),
@@ -308,57 +357,6 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
         ),
         SizedBox(height: 20),
       ],
-    );
-  }
-
-  Widget _buildUpdateButton() {
-    return SafeArea(
-      child: Column(
-        children: <Widget>[
-          MaterialButton(
-            elevation: 0,
-            minWidth: double.maxFinite,
-            height: 50,
-            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-            onPressed: () {
-              if (!_isValid()) {
-                DialogUtil.showErrorDialog(context, getTranslated(context, 'correctInvalidFields'));
-                return;
-              } else {
-                FocusScope.of(context).unfocus();
-                showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                _employeeService.updateEmployeeAndUserFieldsValuesById(
-                  widget._employeeId,
-                  {
-                    "username": _usernameController.text,
-                    "name": _nameController.text,
-                    "surname": _surnameController.text,
-                    "nationality": _nationality,
-                    "phone": _phoneController.text,
-                    "viber": _viberController.text,
-                    "whatsApp": _whatsAppController.text,
-                  },
-                ).then((res) {
-                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                    ToastUtil.showSuccessToast(getTranslated(context, 'successfullyUpdatedInformationAboutYou'));
-                    _user.nationality = _nationality;
-                    _user.info = _nameController.text + ' ' + _surnameController.text;
-                    _user.username = _usernameController.text;
-                  });
-                }).catchError(
-                  (onError) {
-                    Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                      DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
-                    });
-                  },
-                );
-              }
-            },
-            color: BLUE,
-            child: text20White(getTranslated(context, 'update')),
-          ),
-        ],
-      ),
     );
   }
 }

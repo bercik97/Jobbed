@@ -5,8 +5,6 @@ import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:jobbed/shared/libraries/colors.dart';
-import 'package:jobbed/shared/widget/texts.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/warehouse/dto/warehouse_dashboard_dto.dart';
 import 'package:jobbed/api/warehouse/service/warehouse_service.dart';
@@ -14,14 +12,16 @@ import 'package:jobbed/internationalization/localization/localization_constants.
 import 'package:jobbed/manager/groups/group/group_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
+import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
-import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
+import 'package:jobbed/shared/widget/texts.dart';
 
-import '../../../../shared/widget/loader.dart';
 import 'add/add_warehouse_page.dart';
 import 'details/warehouse_details_page.dart';
 
@@ -71,9 +71,6 @@ class _WarehousePageState extends State<WarehousePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.navigateReplacement(context, GroupPage(_model))));
-    }
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -133,108 +130,105 @@ class _WarehousePageState extends State<WarehousePage> {
                     controlAffinity: ListTileControlAffinity.leading,
                   ),
                 ),
-                _warehouses.isEmpty
-                    ? _handleNoWarehouses()
-                    : Expanded(
-                        flex: 2,
-                        child: RefreshIndicator(
-                          color: WHITE,
-                          backgroundColor: BLUE,
-                          onRefresh: _refresh,
-                          child: Scrollbar(
-                            isAlwaysShown: true,
-                            controller: _scrollController,
-                            child: ListView.builder(
+                _loading
+                    ? circularProgressIndicator()
+                    : _warehouses.isEmpty
+                        ? _handleNoWarehouses()
+                        : Expanded(
+                            flex: 2,
+                            child: Scrollbar(
+                              isAlwaysShown: true,
                               controller: _scrollController,
-                              itemCount: _filteredWarehouses.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                WarehouseDashboardDto warehouse = _filteredWarehouses[index];
-                                int foundIndex = 0;
-                                for (int i = 0; i < _warehouses.length; i++) {
-                                  if (_warehouses[i].id == warehouse.id) {
-                                    foundIndex = i;
+                              child: ListView.builder(
+                                controller: _scrollController,
+                                itemCount: _filteredWarehouses.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  WarehouseDashboardDto warehouse = _filteredWarehouses[index];
+                                  int foundIndex = 0;
+                                  for (int i = 0; i < _warehouses.length; i++) {
+                                    if (_warehouses[i].id == warehouse.id) {
+                                      foundIndex = i;
+                                    }
                                   }
-                                }
-                                String name = warehouse.name;
-                                String numberOfTypeOfItems = warehouse.numberOfTypeOfItems.toString();
-                                String totalNumberOfItems = warehouse.totalNumberOfItems.toString();
-                                return Card(
-                                  color: WHITE,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Container(
-                                        color: BRIGHTER_BLUE,
-                                        child: ListTileTheme(
-                                          contentPadding: EdgeInsets.only(right: 10),
-                                          child: CheckboxListTile(
-                                            controlAffinity: ListTileControlAffinity.trailing,
-                                            secondary: Padding(
-                                              padding: EdgeInsets.only(left: 10),
-                                              child: BouncingWidget(
-                                                duration: Duration(milliseconds: 100),
-                                                scaleFactor: 2,
-                                                onPressed: () => NavigatorUtil.navigate(this.context, WarehouseDetailsPage(_model, warehouse)),
-                                                child: Image(image: AssetImage('images/warehouse.png'), fit: BoxFit.fitHeight),
+                                  String name = warehouse.name;
+                                  String numberOfTypeOfItems = warehouse.numberOfTypeOfItems.toString();
+                                  String totalNumberOfItems = warehouse.totalNumberOfItems.toString();
+                                  return Card(
+                                    color: WHITE,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Container(
+                                          color: BRIGHTER_BLUE,
+                                          child: ListTileTheme(
+                                            contentPadding: EdgeInsets.only(right: 10),
+                                            child: CheckboxListTile(
+                                              controlAffinity: ListTileControlAffinity.trailing,
+                                              secondary: Padding(
+                                                padding: EdgeInsets.only(left: 10),
+                                                child: BouncingWidget(
+                                                  duration: Duration(milliseconds: 100),
+                                                  scaleFactor: 2,
+                                                  onPressed: () => NavigatorUtil.navigate(this.context, WarehouseDetailsPage(_model, warehouse)),
+                                                  child: Image(image: AssetImage('images/warehouse.png'), fit: BoxFit.fitHeight),
+                                                ),
                                               ),
-                                            ),
-                                            title: Column(
-                                              children: [
-                                                Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: text17BlueBold(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
-                                                ),
-                                                Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: Row(
-                                                    children: [
-                                                      text16Black(getTranslated(this.context, 'numberOfTypeOfItems') + ': '),
-                                                      text17BlackBold(numberOfTypeOfItems),
-                                                    ],
+                                              title: Column(
+                                                children: [
+                                                  Align(
+                                                    alignment: Alignment.topLeft,
+                                                    child: text17BlueBold(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
                                                   ),
-                                                ),
-                                                Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: Row(
-                                                    children: [
-                                                      text16Black(getTranslated(this.context, 'totalNumberOfItems') + ': '),
-                                                      text17BlackBold(totalNumberOfItems),
-                                                    ],
+                                                  Align(
+                                                    alignment: Alignment.topLeft,
+                                                    child: Row(
+                                                      children: [
+                                                        text16Black(getTranslated(this.context, 'numberOfTypeOfItems') + ': '),
+                                                        text17BlackBold(numberOfTypeOfItems),
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
+                                                  Align(
+                                                    alignment: Alignment.topLeft,
+                                                    child: Row(
+                                                      children: [
+                                                        text16Black(getTranslated(this.context, 'totalNumberOfItems') + ': '),
+                                                        text17BlackBold(totalNumberOfItems),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              activeColor: BLUE,
+                                              checkColor: WHITE,
+                                              value: _checked[foundIndex],
+                                              onChanged: (bool value) {
+                                                setState(() {
+                                                  _checked[foundIndex] = value;
+                                                  if (value) {
+                                                    _selectedIds.add(_warehouses[foundIndex].id);
+                                                  } else {
+                                                    _selectedIds.remove(_warehouses[foundIndex].id);
+                                                  }
+                                                  int selectedIdsLength = _selectedIds.length;
+                                                  if (selectedIdsLength == _warehouses.length) {
+                                                    _isChecked = true;
+                                                  } else if (selectedIdsLength == 0) {
+                                                    _isChecked = false;
+                                                  }
+                                                });
+                                              },
                                             ),
-                                            activeColor: BLUE,
-                                            checkColor: WHITE,
-                                            value: _checked[foundIndex],
-                                            onChanged: (bool value) {
-                                              setState(() {
-                                                _checked[foundIndex] = value;
-                                                if (value) {
-                                                  _selectedIds.add(_warehouses[foundIndex].id);
-                                                } else {
-                                                  _selectedIds.remove(_warehouses[foundIndex].id);
-                                                }
-                                                int selectedIdsLength = _selectedIds.length;
-                                                if (selectedIdsLength == _warehouses.length) {
-                                                  _isChecked = true;
-                                                } else if (selectedIdsLength == 0) {
-                                                  _isChecked = false;
-                                                }
-                                              });
-                                            },
                                           ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              },
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                      ),
               ],
             ),
           ),
@@ -286,10 +280,9 @@ class _WarehousePageState extends State<WarehousePage> {
                 showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                 _warehouseService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (BuildContext context) => WarehousePage(_model)),
-                      ModalRoute.withName('/'),
-                    );
+                    _refresh();
+                    Navigator.pop(this.context);
+                    setState(() => _isDeleteButtonTapped = false);
                     ToastUtil.showSuccessToast(getTranslated(this.context, 'selectedWarehousesRemoved'));
                   });
                 }).catchError((onError) {

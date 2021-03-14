@@ -27,9 +27,9 @@ import 'package:jobbed/shared/util/month_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
+import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
-import 'package:jobbed/shared/widget/loader.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 import 'package:place_picker/entities/location_result.dart';
 import 'package:place_picker/widgets/place_picker.dart';
@@ -105,9 +105,6 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.navigateReplacement(context, WorkplacesPage(_model))));
-    }
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -175,52 +172,51 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                           child: text20Black(getTranslated(context, 'workingTime')),
                         ),
                       ),
-                      _workTimeDates.isEmpty
-                          ? Padding(
-                              padding: EdgeInsets.only(left: 20),
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: text15RedBold(getTranslated(context, 'noWorkingTime')),
-                              ),
-                            )
-                          : Container(),
-                      for (var date in _workTimeDates)
-                        Card(
-                          color: BRIGHTER_BLUE,
-                          child: InkWell(
-                            onTap: () => NavigatorUtil.navigate(context, WorkplaceWorkTimePage(date, _model, _workplaceDto)),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                ListTile(
-                                  trailing: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          DialogUtil.showConfirmationDialog(
-                                            context: context,
-                                            title: getTranslated(context, 'confirmation'),
-                                            content: getTranslated(context, 'generateExcelForWorkTimesConfirmation') + ' ($date)',
-                                            isBtnTapped: _isGenerateExcelButtonTapped,
-                                            fun: () => _isGenerateExcelButtonTapped ? null : _handleGenerateExcel(_workplaceDto.id, _workplaceDto.name, date),
-                                          );
-                                        },
-                                        child: Image(
-                                          image: AssetImage('images/excel.png'),
-                                          height: 30,
+                      _loading
+                          ? circularProgressIndicator()
+                          : _workTimeDates == null || _workTimeDates.isEmpty
+                              ? _handleNoWorkTimes()
+                              : Column(
+                                  children: [
+                                    for (var date in _workTimeDates)
+                                      Card(
+                                        color: BRIGHTER_BLUE,
+                                        child: InkWell(
+                                          onTap: () => NavigatorUtil.navigate(context, WorkplaceWorkTimePage(date, _model, _workplaceDto)),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: <Widget>[
+                                              ListTile(
+                                                trailing: Row(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    InkWell(
+                                                      onTap: () {
+                                                        DialogUtil.showConfirmationDialog(
+                                                          context: context,
+                                                          title: getTranslated(context, 'confirmation'),
+                                                          content: getTranslated(context, 'generateExcelForWorkTimesConfirmation') + ' ($date)',
+                                                          isBtnTapped: _isGenerateExcelButtonTapped,
+                                                          fun: () => _isGenerateExcelButtonTapped ? null : _handleGenerateExcel(_workplaceDto.id, _workplaceDto.name, date),
+                                                        );
+                                                      },
+                                                      child: Image(
+                                                        image: AssetImage('images/excel.png'),
+                                                        height: 30,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                title: text17BlackBold(
+                                                  date.substring(0, 4).toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, int.parse(date.substring(5, 7))),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                  title: text17BlackBold(
-                                    date.substring(0, 4).toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, int.parse(date.substring(5, 7))),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                                  ],
+                                )
                     ],
                   ),
                 ),
@@ -231,132 +227,122 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                     child: text20Black(getTranslated(context, 'subWorkplaces')),
                   ),
                 ),
-                _subWorkplaces.isEmpty
-                    ? Padding(
-                        padding: EdgeInsets.only(left: 20),
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: text15RedBold(getTranslated(context, 'noSubWorkplaces')),
-                        ),
-                      )
-                    : Column(
-                        children: [
-                          ListTileTheme(
-                            contentPadding: EdgeInsets.only(left: 3),
-                            child: CheckboxListTile(
-                              title: textBlack(getTranslated(this.context, 'selectUnselectAll')),
-                              value: _isChecked,
-                              activeColor: BLUE,
-                              checkColor: WHITE,
-                              onChanged: (bool value) {
-                                setState(() {
-                                  _isChecked = value;
-                                  List<bool> l = new List();
-                                  _checked.forEach((b) => l.add(value));
-                                  _checked = l;
-                                  if (value) {
-                                    _selectedIds.addAll(_subWorkplaces.map((e) => e.id));
-                                  } else
-                                    _selectedIds.clear();
-                                });
-                              },
-                              controlAffinity: ListTileControlAffinity.leading,
-                            ),
-                          ),
-                        ],
-                      ),
-                Expanded(
-                  flex: 2,
-                  child: RefreshIndicator(
-                    color: WHITE,
-                    backgroundColor: BLUE,
-                    onRefresh: _refreshSubWorkplaces,
-                    child: Scrollbar(
-                      isAlwaysShown: true,
-                      controller: _scrollController,
-                      child: ListView.builder(
-                        controller: _scrollController,
-                        itemCount: _subWorkplaces.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          SubWorkplaceDto subWorkplace = _subWorkplaces[index];
-                          int foundIndex = 0;
-                          for (int i = 0; i < _subWorkplaces.length; i++) {
-                            if (_subWorkplaces[i].id == subWorkplace.id) {
-                              foundIndex = i;
-                            }
-                          }
-                          String name = subWorkplace.name;
-                          String description = subWorkplace.description;
-                          return Card(
-                            color: WHITE,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  color: BRIGHTER_BLUE,
-                                  child: ListTileTheme(
-                                    contentPadding: EdgeInsets.only(right: 10),
-                                    child: CheckboxListTile(
-                                      controlAffinity: ListTileControlAffinity.trailing,
-                                      secondary: Padding(
-                                        padding: EdgeInsets.only(left: 10),
-                                        child: BouncingWidget(
-                                          duration: Duration(milliseconds: 100),
-                                          scaleFactor: 2,
-                                          onPressed: () => _editSubWorkplace(subWorkplace),
-                                          child: iconBlue(Icons.search),
-                                        ),
-                                      ),
-                                      title: Column(
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.topLeft,
-                                            child: text17BlueBold(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
-                                          ),
-                                          Align(
-                                            alignment: Alignment.topLeft,
-                                            child: description != null
-                                                ? text16Black(utf8.decode(description.runes.toList()))
-                                                : Row(
-                                                    children: [
-                                                      text16Black(getTranslated(this.context, 'description') + ': '),
-                                                      textRed(getTranslated(this.context, 'empty')),
-                                                    ],
-                                                  ),
-                                          ),
-                                        ],
-                                      ),
-                                      activeColor: BLUE,
-                                      checkColor: WHITE,
-                                      value: _checked[foundIndex],
-                                      onChanged: (bool value) {
-                                        setState(() {
-                                          _checked[foundIndex] = value;
-                                          if (value) {
-                                            _selectedIds.add(_subWorkplaces[foundIndex].id);
-                                          } else {
-                                            _selectedIds.remove(_subWorkplaces[foundIndex].id);
-                                          }
-                                          int selectedIdsLength = _selectedIds.length;
-                                          if (selectedIdsLength == _subWorkplaces.length) {
-                                            _isChecked = true;
-                                          } else if (selectedIdsLength == 0) {
-                                            _isChecked = false;
-                                          }
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          );
+                Column(
+                  children: [
+                    ListTileTheme(
+                      contentPadding: EdgeInsets.only(left: 3),
+                      child: CheckboxListTile(
+                        title: textBlack(getTranslated(this.context, 'selectUnselectAll')),
+                        value: _isChecked,
+                        activeColor: BLUE,
+                        checkColor: WHITE,
+                        onChanged: (bool value) {
+                          setState(() {
+                            _isChecked = value;
+                            List<bool> l = new List();
+                            _checked.forEach((b) => l.add(value));
+                            _checked = l;
+                            if (value) {
+                              _selectedIds.addAll(_subWorkplaces.map((e) => e.id));
+                            } else
+                              _selectedIds.clear();
+                          });
                         },
+                        controlAffinity: ListTileControlAffinity.leading,
                       ),
                     ),
-                  ),
+                  ],
                 ),
+                _loading
+                    ? circularProgressIndicator()
+                    : _subWorkplaces == null || _subWorkplaces.isEmpty
+                        ? _handleNoSubWorkplaces()
+                        : Expanded(
+                            flex: 2,
+                            child: Scrollbar(
+                              isAlwaysShown: true,
+                              controller: _scrollController,
+                              child: ListView.builder(
+                                itemCount: _subWorkplaces.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  SubWorkplaceDto subWorkplace = _subWorkplaces[index];
+                                  int foundIndex = 0;
+                                  for (int i = 0; i < _subWorkplaces.length; i++) {
+                                    if (_subWorkplaces[i].id == subWorkplace.id) {
+                                      foundIndex = i;
+                                    }
+                                  }
+                                  String name = subWorkplace.name;
+                                  String description = subWorkplace.description;
+                                  return Card(
+                                    color: WHITE,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Container(
+                                          color: BRIGHTER_BLUE,
+                                          child: ListTileTheme(
+                                            contentPadding: EdgeInsets.only(right: 10),
+                                            child: CheckboxListTile(
+                                              controlAffinity: ListTileControlAffinity.trailing,
+                                              secondary: Padding(
+                                                padding: EdgeInsets.only(left: 10),
+                                                child: BouncingWidget(
+                                                  duration: Duration(milliseconds: 100),
+                                                  scaleFactor: 2,
+                                                  onPressed: () => _editSubWorkplace(subWorkplace),
+                                                  child: iconBlue(Icons.search),
+                                                ),
+                                              ),
+                                              title: Column(
+                                                children: [
+                                                  Align(
+                                                    alignment: Alignment.topLeft,
+                                                    child: text17BlueBold(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
+                                                  ),
+                                                  Align(
+                                                    alignment: Alignment.topLeft,
+                                                    child: description != null
+                                                        ? text16Black(utf8.decode(description.runes.toList()))
+                                                        : Row(
+                                                            children: [
+                                                              text16Black(getTranslated(this.context, 'description') + ': '),
+                                                              textRed(getTranslated(this.context, 'empty')),
+                                                            ],
+                                                          ),
+                                                  ),
+                                                ],
+                                              ),
+                                              activeColor: BLUE,
+                                              checkColor: WHITE,
+                                              value: _checked[foundIndex],
+                                              onChanged: (bool value) {
+                                                setState(() {
+                                                  _checked[foundIndex] = value;
+                                                  if (value) {
+                                                    _selectedIds.add(_subWorkplaces[foundIndex].id);
+                                                  } else {
+                                                    _selectedIds.remove(_subWorkplaces[foundIndex].id);
+                                                  }
+                                                  int selectedIdsLength = _selectedIds.length;
+                                                  if (selectedIdsLength == _subWorkplaces.length) {
+                                                    _isChecked = true;
+                                                  } else if (selectedIdsLength == 0) {
+                                                    _isChecked = false;
+                                                  }
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
               ],
             ),
           ),
@@ -1018,6 +1004,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         Navigator.pop(context);
         _refreshSubWorkplaces();
+        setState(() => _isAddButtonTapped = false);
         ToastUtil.showSuccessToast(getTranslated(this.context, 'successfullyAddedNewSubWorkplace'));
       });
     }).catchError((onError) {
@@ -1052,6 +1039,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
     _subWorkplaceService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _refreshSubWorkplaces();
+        setState(() => _isDeleteButtonTapped = false);
         ToastUtil.showSuccessToast(getTranslated(this.context, 'selectedSubWorkplacesRemoved'));
       });
     }).catchError((onError) {
@@ -1060,6 +1048,26 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
         ToastUtil.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
       });
     });
+  }
+
+  Widget _handleNoWorkTimes() {
+    return Padding(
+      padding: EdgeInsets.only(left: 20),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: text15RedBold(getTranslated(context, 'noWorkingTime')),
+      ),
+    );
+  }
+
+  Widget _handleNoSubWorkplaces() {
+    return Padding(
+      padding: EdgeInsets.only(left: 20),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: text15RedBold(getTranslated(context, 'noSubWorkplaces')),
+      ),
+    );
   }
 
   Future<Null> _refreshSubWorkplaces() {

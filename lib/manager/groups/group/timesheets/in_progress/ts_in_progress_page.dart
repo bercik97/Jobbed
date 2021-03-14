@@ -31,13 +31,13 @@ import 'package:jobbed/shared/util/month_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
+import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
-import '../../../../../shared/widget/loader.dart';
 import '../../../../shared/manager_app_bar.dart';
 
 class TsInProgressPage extends StatefulWidget {
@@ -79,14 +79,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
     this._timesheet = widget._timeSheet;
     super.initState();
     _loading = true;
-    _employeeService
-        .findAllByGroupIdAndTsYearAndMonthAndStatusForStatisticsView(
-      _model.groupId,
-      _timesheet.year,
-      MonthUtil.findMonthNumberByMonthName(context, _timesheet.month),
-      STATUS_IN_PROGRESS,
-    )
-        .then((res) {
+    _employeeService.findAllByGroupIdAndTsYearAndMonthAndStatusForStatisticsView(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_IN_PROGRESS).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
@@ -98,9 +91,6 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      return loader(managerAppBar(context, _model.user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
-    }
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -108,21 +98,19 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: WHITE,
-          appBar: managerAppBar(
-            context,
-            _model.user,
-            utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'),
-            () => NavigatorUtil.navigateReplacement(context, TsPage(_model)),
-          ),
+          appBar: managerAppBar(context, _model.user, utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'), () => Navigator.pop(context)),
           body: RefreshIndicator(
             color: WHITE,
             backgroundColor: BLUE,
             onRefresh: _refresh,
             child: Column(
               children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
-                  child: text20OrangeBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' → ' + getTranslated(context, STATUS_IN_PROGRESS)),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
+                    child: text20OrangeBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' → ' + getTranslated(context, STATUS_IN_PROGRESS)),
+                  ),
                 ),
                 Container(
                   padding: EdgeInsets.all(10),
@@ -171,136 +159,138 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                     controlAffinity: ListTileControlAffinity.leading,
                   ),
                 ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: _filteredEmployees.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      EmployeeStatisticsDto employee = _filteredEmployees[index];
-                      int foundIndex = 0;
-                      for (int i = 0; i < _employees.length; i++) {
-                        if (_employees[i].id == employee.id) {
-                          foundIndex = i;
-                        }
-                      }
-                      String info = employee.info;
-                      String nationality = employee.nationality;
-                      String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.gender, info.substring(0, 1));
-                      return Card(
-                        color: BRIGHTER_BLUE,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Ink(
-                              width: MediaQuery.of(context).size.width * 0.15,
-                              height: 106,
+                _loading
+                    ? circularProgressIndicator()
+                    : Expanded(
+                        child: ListView.builder(
+                          itemCount: _filteredEmployees.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            EmployeeStatisticsDto employee = _filteredEmployees[index];
+                            int foundIndex = 0;
+                            for (int i = 0; i < _employees.length; i++) {
+                              if (_employees[i].id == employee.id) {
+                                foundIndex = i;
+                              }
+                            }
+                            String info = employee.info;
+                            String nationality = employee.nationality;
+                            String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.gender, info.substring(0, 1));
+                            return Card(
                               color: BRIGHTER_BLUE,
-                              child: ListTileTheme(
-                                contentPadding: EdgeInsets.only(right: 10),
-                                child: CheckboxListTile(
-                                  controlAffinity: ListTileControlAffinity.leading,
-                                  activeColor: BLUE,
-                                  checkColor: WHITE,
-                                  value: _checked[foundIndex],
-                                  onChanged: (bool value) {
-                                    setState(() {
-                                      _checked[foundIndex] = value;
-                                      if (value) {
-                                        _selectedIds.add(_employees[foundIndex].id);
-                                      } else {
-                                        _selectedIds.remove(_employees[foundIndex].id);
-                                      }
-                                      int selectedIdsLength = _selectedIds.length;
-                                      if (selectedIdsLength == _employees.length) {
-                                        _isChecked = true;
-                                      } else if (selectedIdsLength == 0) {
-                                        _isChecked = false;
-                                      }
-                                    });
-                                  },
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                TimesheetForEmployeeDto _inProgressTs = new TimesheetForEmployeeDto(
-                                  id: employee.timesheetId,
-                                  year: _timesheet.year,
-                                  month: _timesheet.month,
-                                  status: _timesheet.status,
-                                  totalHours: _filteredEmployees[index].totalHours,
-                                  totalTime: _filteredEmployees[index].totalTime,
-                                  totalMoneyForHoursForEmployee: _filteredEmployees[index].totalMoneyForHoursForEmployee,
-                                  totalMoneyForPieceworkForEmployee: _filteredEmployees[index].totalMoneyForPieceworkForEmployee,
-                                  totalMoneyForTimeForEmployee: _filteredEmployees[index].totalMoneyForTimeForEmployee,
-                                  totalMoneyEarned: _filteredEmployees[index].totalMoneyEarned,
-                                  employeeBasicDto: null,
-                                );
-                                NavigatorUtil.navigate(this.context, EmployeeTsInProgressPage(_model, info, employee.id, nationality, _inProgressTs, avatarPath));
-                              },
-                              child: Ink(
-                                width: MediaQuery.of(context).size.width * 0.60,
-                                color: BRIGHTER_BLUE,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(6),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      text17BlackBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
-                                      Row(
-                                        children: <Widget>[
-                                          textBlackBold(getTranslated(this.context, 'hours') + ': '),
-                                          textBlack(employee.totalMoneyForHoursForEmployee.toString() + ' PLN' + ' (' + employee.totalHours + ' h)'),
-                                        ],
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Ink(
+                                    width: MediaQuery.of(context).size.width * 0.15,
+                                    height: 106,
+                                    color: BRIGHTER_BLUE,
+                                    child: ListTileTheme(
+                                      contentPadding: EdgeInsets.only(right: 10),
+                                      child: CheckboxListTile(
+                                        controlAffinity: ListTileControlAffinity.leading,
+                                        activeColor: BLUE,
+                                        checkColor: WHITE,
+                                        value: _checked[foundIndex],
+                                        onChanged: (bool value) {
+                                          setState(() {
+                                            _checked[foundIndex] = value;
+                                            if (value) {
+                                              _selectedIds.add(_employees[foundIndex].id);
+                                            } else {
+                                              _selectedIds.remove(_employees[foundIndex].id);
+                                            }
+                                            int selectedIdsLength = _selectedIds.length;
+                                            if (selectedIdsLength == _employees.length) {
+                                              _isChecked = true;
+                                            } else if (selectedIdsLength == 0) {
+                                              _isChecked = false;
+                                            }
+                                          });
+                                        },
                                       ),
-                                      Row(
-                                        children: <Widget>[
-                                          textBlackBold(getTranslated(this.context, 'accord') + ': '),
-                                          textBlack(employee.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: <Widget>[
-                                          textBlackBold(getTranslated(this.context, 'time') + ': '),
-                                          textBlack(employee.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + employee.totalTime + ')'),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: <Widget>[
-                                          textBlackBold(getTranslated(this.context, 'sum') + ': '),
-                                          textBlack(employee.totalMoneyEarned.toString() + ' PLN'),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 25, left: 25),
-                              child: Container(
-                                child: Transform.scale(
-                                  scale: 1.2,
-                                  child: BouncingWidget(
-                                    duration: Duration(milliseconds: 100),
-                                    scaleFactor: 2,
-                                    onPressed: () => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, employee.id, info, avatarPath)),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Image(image: AssetImage(avatarPath), height: 40),
-                                      ],
                                     ),
                                   ),
-                                ),
+                                  InkWell(
+                                    onTap: () {
+                                      TimesheetForEmployeeDto _inProgressTs = new TimesheetForEmployeeDto(
+                                        id: employee.timesheetId,
+                                        year: _timesheet.year,
+                                        month: _timesheet.month,
+                                        status: _timesheet.status,
+                                        totalHours: _filteredEmployees[index].totalHours,
+                                        totalTime: _filteredEmployees[index].totalTime,
+                                        totalMoneyForHoursForEmployee: _filteredEmployees[index].totalMoneyForHoursForEmployee,
+                                        totalMoneyForPieceworkForEmployee: _filteredEmployees[index].totalMoneyForPieceworkForEmployee,
+                                        totalMoneyForTimeForEmployee: _filteredEmployees[index].totalMoneyForTimeForEmployee,
+                                        totalMoneyEarned: _filteredEmployees[index].totalMoneyEarned,
+                                        employeeBasicDto: null,
+                                      );
+                                      NavigatorUtil.navigate(this.context, EmployeeTsInProgressPage(_model, info, employee.id, nationality, _inProgressTs, avatarPath));
+                                    },
+                                    child: Ink(
+                                      width: MediaQuery.of(context).size.width * 0.60,
+                                      color: BRIGHTER_BLUE,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(6),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            text17BlackBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                            Row(
+                                              children: <Widget>[
+                                                textBlackBold(getTranslated(this.context, 'hours') + ': '),
+                                                textBlack(employee.totalMoneyForHoursForEmployee.toString() + ' PLN' + ' (' + employee.totalHours + ' h)'),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: <Widget>[
+                                                textBlackBold(getTranslated(this.context, 'accord') + ': '),
+                                                textBlack(employee.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: <Widget>[
+                                                textBlackBold(getTranslated(this.context, 'time') + ': '),
+                                                textBlack(employee.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + employee.totalTime + ')'),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: <Widget>[
+                                                textBlackBold(getTranslated(this.context, 'sum') + ': '),
+                                                textBlack(employee.totalMoneyEarned.toString() + ' PLN'),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 25, left: 25),
+                                    child: Container(
+                                      child: Transform.scale(
+                                        scale: 1.2,
+                                        child: BouncingWidget(
+                                          duration: Duration(milliseconds: 100),
+                                          scaleFactor: 2,
+                                          onPressed: () => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, employee.id, info, avatarPath)),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Image(image: AssetImage(avatarPath), height: 40),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
-                            )
-                          ],
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
-                ),
+                      ),
               ],
             ),
           ),

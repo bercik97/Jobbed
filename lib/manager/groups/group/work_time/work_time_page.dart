@@ -28,10 +28,10 @@ import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
+import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
-import 'package:jobbed/shared/widget/loader.dart';
 import 'package:jobbed/shared/widget/radio_button.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
@@ -109,9 +109,6 @@ class _WorkTimePageState extends State<WorkTimePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => NavigatorUtil.navigateReplacement(context, GroupPage(_model))));
-    }
     return MaterialApp(
       title: APP_NAME,
       theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
@@ -171,98 +168,100 @@ class _WorkTimePageState extends State<WorkTimePage> {
                 controlAffinity: ListTileControlAffinity.leading,
               ),
             ),
-            _employees.isNotEmpty
-                ? Expanded(
-                    child: RefreshIndicator(
-                      color: WHITE,
-                      backgroundColor: BLUE,
-                      onRefresh: _refresh,
-                      child: ListView.builder(
-                        itemCount: _filteredEmployees.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          EmployeeWorkTimeDto employee = _filteredEmployees[index];
-                          String info = employee.name + ' ' + employee.surname;
-                          String nationality = employee.nationality;
-                          int foundIndex = 0;
-                          for (int i = 0; i < _employees.length; i++) {
-                            if (_employees[i].id == employee.id) {
-                              foundIndex = i;
-                            }
-                          }
-                          return Card(
-                            color: WHITE,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Ink(
-                                  width: MediaQuery.of(context).size.width * 0.15,
-                                  height: 116,
-                                  color: BRIGHTER_BLUE,
-                                  child: ListTileTheme(
-                                    contentPadding: EdgeInsets.only(right: 10),
-                                    child: CheckboxListTile(
-                                      controlAffinity: ListTileControlAffinity.leading,
-                                      activeColor: BLUE,
-                                      checkColor: WHITE,
-                                      value: _checked[foundIndex],
-                                      onChanged: (bool value) {
-                                        setState(() {
-                                          _checked[foundIndex] = value;
-                                          if (value) {
-                                            _selectedIds.add(_employees[foundIndex].id);
-                                            _selectedEmployees.add(_employees[foundIndex]);
-                                          } else {
-                                            _selectedIds.remove(_employees[foundIndex].id);
-                                            _selectedEmployees.removeWhere((e) => e.id == _employees[foundIndex].id);
-                                          }
-                                          int selectedIdsLength = _selectedIds.length;
-                                          if (selectedIdsLength == _employees.length) {
-                                            _isChecked = true;
-                                          } else if (selectedIdsLength == 0) {
-                                            _isChecked = false;
-                                          }
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 5),
-                                Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.gender, info.substring(0, 1));
-                                      NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, employee.id, info, avatarPath));
-                                    },
-                                    child: Ink(
+            _loading
+                ? circularProgressIndicator()
+                : _employees.isNotEmpty
+                    ? Expanded(
+                        child: RefreshIndicator(
+                          color: WHITE,
+                          backgroundColor: BLUE,
+                          onRefresh: _refresh,
+                          child: ListView.builder(
+                            itemCount: _filteredEmployees.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              EmployeeWorkTimeDto employee = _filteredEmployees[index];
+                              String info = employee.name + ' ' + employee.surname;
+                              String nationality = employee.nationality;
+                              int foundIndex = 0;
+                              for (int i = 0; i < _employees.length; i++) {
+                                if (_employees[i].id == employee.id) {
+                                  foundIndex = i;
+                                }
+                              }
+                              return Card(
+                                color: WHITE,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Ink(
+                                      width: MediaQuery.of(context).size.width * 0.15,
+                                      height: 116,
                                       color: BRIGHTER_BLUE,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(6),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            text20BlackBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
-                                            Row(
-                                              children: <Widget>[
-                                                textBlack(getTranslated(this.context, 'timeWorkedToday') + ': '),
-                                                textBlackBold(employee.timeWorkedToday != null ? employee.timeWorkedToday : getTranslated(this.context, 'empty')),
-                                              ],
-                                            ),
-                                            _handleWorkStatus(MainAxisAlignment.start, employee.workStatus, employee.workplace, employee.workplaceCode)
-                                          ],
+                                      child: ListTileTheme(
+                                        contentPadding: EdgeInsets.only(right: 10),
+                                        child: CheckboxListTile(
+                                          controlAffinity: ListTileControlAffinity.leading,
+                                          activeColor: BLUE,
+                                          checkColor: WHITE,
+                                          value: _checked[foundIndex],
+                                          onChanged: (bool value) {
+                                            setState(() {
+                                              _checked[foundIndex] = value;
+                                              if (value) {
+                                                _selectedIds.add(_employees[foundIndex].id);
+                                                _selectedEmployees.add(_employees[foundIndex]);
+                                              } else {
+                                                _selectedIds.remove(_employees[foundIndex].id);
+                                                _selectedEmployees.removeWhere((e) => e.id == _employees[foundIndex].id);
+                                              }
+                                              int selectedIdsLength = _selectedIds.length;
+                                              if (selectedIdsLength == _employees.length) {
+                                                _isChecked = true;
+                                              } else if (selectedIdsLength == 0) {
+                                                _isChecked = false;
+                                              }
+                                            });
+                                          },
                                         ),
                                       ),
                                     ),
-                                  ),
+                                    SizedBox(width: 5),
+                                    Expanded(
+                                      child: InkWell(
+                                        onTap: () {
+                                          String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.gender, info.substring(0, 1));
+                                          NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, employee.id, info, avatarPath));
+                                        },
+                                        child: Ink(
+                                          color: BRIGHTER_BLUE,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(6),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                text20BlackBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                                Row(
+                                                  children: <Widget>[
+                                                    textBlack(getTranslated(this.context, 'timeWorkedToday') + ': '),
+                                                    textBlackBold(employee.timeWorkedToday != null ? employee.timeWorkedToday : getTranslated(this.context, 'empty')),
+                                                  ],
+                                                ),
+                                                _handleWorkStatus(MainAxisAlignment.start, employee.workStatus, employee.workplace, employee.workplaceCode)
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  )
-                : _handleEmptyData()
+                              );
+                            },
+                          ),
+                        ),
+                      )
+                    : _handleEmptyData()
           ],
         ),
         bottomNavigationBar: SafeArea(

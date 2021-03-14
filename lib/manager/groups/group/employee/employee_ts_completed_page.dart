@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:jobbed/api/workday/dto/workday_dto.dart';
@@ -18,7 +19,6 @@ import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
 import 'package:jobbed/shared/widget/texts.dart';
-import 'package:horizontal_data_table/horizontal_data_table.dart';
 
 import '../../../../shared/libraries/constants.dart';
 import '../../../shared/group_model.dart';
@@ -48,14 +48,28 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
 
   List<WorkdayDto> workdays;
 
+  bool _loading = false;
+
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     this._model = widget._model;
     this._user = _model.user;
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     this._employeeInfo = widget._employeeInfo;
     this._employeeNationality = widget._employeeNationality;
     this._timesheet = widget._timesheet;
+    super.initState();
+    _loading = true;
+    _workdayService.findAllByTimesheetId(_timesheet.id).then((res) {
+      setState(() {
+        this.workdays = res;
+        _loading = false;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
       title: APP_NAME,
       theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
@@ -111,18 +125,9 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                   ),
                 ),
               ),
-              FutureBuilder(
-                future: _workdayService.findAllByTimesheetId(_timesheet.id),
-                builder: (BuildContext context, AsyncSnapshot<List<WorkdayDto>> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
-                    return Padding(
-                      padding: EdgeInsets.only(top: 50),
-                      child: Center(child: circularProgressIndicator()),
-                    );
-                  } else {
-                    List<WorkdayDto> workdays = snapshot.data;
-                    this.workdays = workdays;
-                    return Expanded(
+              _loading
+                  ? circularProgressIndicator()
+                  : Expanded(
                       child: Container(
                         child: HorizontalDataTable(
                           leftHandSideColumnWidth: 50,
@@ -138,10 +143,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                         ),
                         height: MediaQuery.of(context).size.height,
                       ),
-                    );
-                  }
-                },
-              ),
+                    ),
             ],
           ),
         ),
