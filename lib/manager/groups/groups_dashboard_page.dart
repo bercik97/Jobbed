@@ -399,200 +399,209 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                   key: formKey,
                   child: Padding(
                     padding: EdgeInsets.only(left: 30, right: 30),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        _buildRequiredTextField(
-                          _usernameController,
-                          26,
-                          getTranslated(context, 'username'),
-                          getTranslated(context, 'usernameIsRequired'),
-                          Icons.person,
-                        ),
-                        TextFormField(
-                          autocorrect: true,
-                          obscureText: !_passwordVisible,
-                          cursorColor: BLACK,
-                          maxLength: 60,
-                          controller: _passwordController,
-                          style: TextStyle(color: BLACK),
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
-                              counterStyle: TextStyle(color: BLACK),
-                              border: OutlineInputBorder(),
-                              labelText: getTranslated(context, 'password'),
-                              prefixIcon: iconBlack(Icons.lock),
-                              suffixIcon: IconButton(
-                                icon: iconBlack(_passwordVisible ? Icons.visibility : Icons.visibility_off),
-                                onPressed: () => setState(
-                                  () => _passwordVisible = !_passwordVisible,
-                                ),
-                              ),
-                              labelStyle: TextStyle(color: BLACK)),
-                          validator: MultiValidator([
-                            RequiredValidator(
-                              errorText: getTranslated(context, 'passwordIsRequired'),
-                            ),
-                            MinLengthValidator(
-                              6,
-                              errorText: getTranslated(context, 'passwordWrongLength'),
-                            ),
-                          ]),
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          autocorrect: true,
-                          obscureText: !_rePasswordVisible,
-                          cursorColor: BLACK,
-                          maxLength: 60,
-                          style: TextStyle(color: BLACK),
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
-                              counterStyle: TextStyle(color: BLACK),
-                              border: OutlineInputBorder(),
-                              labelText: getTranslated(context, 'retypedPassword'),
-                              prefixIcon: iconBlack(Icons.lock),
-                              suffixIcon: IconButton(
-                                icon: iconBlack(_rePasswordVisible ? Icons.visibility : Icons.visibility_off),
-                                onPressed: () => setState(
-                                  () => _rePasswordVisible = !_rePasswordVisible,
-                                ),
-                              ),
-                              labelStyle: TextStyle(color: BLACK)),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return getTranslated(context, 'retypeYourPassword');
-                            } else if (value != _passwordController.text) {
-                              return getTranslated(context, 'passwordAndRetypedPasswordDoNotMatch');
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        _buildRequiredTextField(
-                          _nameController,
-                          26,
-                          getTranslated(context, 'name'),
-                          getTranslated(context, 'nameIsRequired'),
-                          Icons.person_outline,
-                        ),
-                        _buildRequiredTextField(
-                          _surnameController,
-                          26,
-                          getTranslated(context, 'surname'),
-                          getTranslated(context, 'surnameIsRequired'),
-                          Icons.person_outline,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10, bottom: 10),
-                          child: Column(
-                            children: [
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: text18Black(getTranslated(context, 'chooseEmployeeGender')),
-                              ),
-                              Row(
-                                children: [
-                                  Flexible(
-                                    fit: FlexFit.loose,
-                                    child: RadioButton.buildRadioBtn(
-                                      color: Colors.blueAccent,
-                                      title: getTranslated(context, 'male'),
-                                      value: 0,
-                                      groupValue: _genderRadioValue,
-                                      onChanged: (newValue) => setState(() => _genderRadioValue = newValue),
-                                    ),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          _buildRequiredTextField(
+                            _usernameController,
+                            26,
+                            getTranslated(context, 'username'),
+                            getTranslated(context, 'usernameIsRequired'),
+                            Icons.person,
+                          ),
+                          TextFormField(
+                            autocorrect: true,
+                            obscureText: !_passwordVisible,
+                            cursorColor: BLACK,
+                            maxLength: 60,
+                            controller: _passwordController,
+                            style: TextStyle(color: BLACK),
+                            decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+                                counterStyle: TextStyle(color: BLACK),
+                                border: OutlineInputBorder(),
+                                labelText: getTranslated(context, 'password'),
+                                prefixIcon: iconBlack(Icons.lock),
+                                suffixIcon: IconButton(
+                                  icon: iconBlack(_passwordVisible ? Icons.visibility : Icons.visibility_off),
+                                  onPressed: () => setState(
+                                    () => _passwordVisible = !_passwordVisible,
                                   ),
-                                  Flexible(
-                                    fit: FlexFit.loose,
-                                    child: RadioButton.buildRadioBtn(
-                                      color: Colors.pinkAccent,
-                                      title: getTranslated(context, 'female'),
-                                      value: 1,
-                                      groupValue: _genderRadioValue,
-                                      onChanged: (newValue) => setState(() => _genderRadioValue = newValue),
-                                    ),
+                                ),
+                                labelStyle: TextStyle(color: BLACK)),
+                            validator: MultiValidator([
+                              RequiredValidator(
+                                errorText: getTranslated(context, 'passwordIsRequired'),
+                              ),
+                              MinLengthValidator(
+                                6,
+                                errorText: getTranslated(context, 'passwordWrongLength'),
+                              ),
+                            ]),
+                          ),
+                          SizedBox(height: 10),
+                          TextFormField(
+                            autocorrect: true,
+                            obscureText: !_rePasswordVisible,
+                            cursorColor: BLACK,
+                            maxLength: 60,
+                            style: TextStyle(color: BLACK),
+                            decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+                                counterStyle: TextStyle(color: BLACK),
+                                border: OutlineInputBorder(),
+                                labelText: getTranslated(context, 'retypedPassword'),
+                                prefixIcon: iconBlack(Icons.lock),
+                                suffixIcon: IconButton(
+                                  icon: iconBlack(_rePasswordVisible ? Icons.visibility : Icons.visibility_off),
+                                  onPressed: () => setState(
+                                    () => _rePasswordVisible = !_rePasswordVisible,
                                   ),
+                                ),
+                                labelStyle: TextStyle(color: BLACK)),
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return getTranslated(context, 'retypeYourPassword');
+                              } else if (value != _passwordController.text) {
+                                return getTranslated(context, 'passwordAndRetypedPasswordDoNotMatch');
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 10),
+                          _buildRequiredTextField(
+                            _nameController,
+                            26,
+                            getTranslated(context, 'name'),
+                            getTranslated(context, 'nameIsRequired'),
+                            Icons.person_outline,
+                          ),
+                          _buildRequiredTextField(
+                            _surnameController,
+                            26,
+                            getTranslated(context, 'surname'),
+                            getTranslated(context, 'surnameIsRequired'),
+                            Icons.person_outline,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10, bottom: 10),
+                            child: Column(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: text18Black(getTranslated(context, 'chooseEmployeeGender')),
+                                ),
+                                Row(
+                                  children: [
+                                    Flexible(
+                                      fit: FlexFit.loose,
+                                      child: RadioButton.buildRadioBtn(
+                                        color: Colors.blueAccent,
+                                        title: getTranslated(context, 'male'),
+                                        value: 0,
+                                        groupValue: _genderRadioValue,
+                                        onChanged: (newValue) => setState(() {
+                                          _genderRadioValue = newValue;
+                                          FocusScope.of(context).unfocus();
+                                        }),
+                                      ),
+                                    ),
+                                    Flexible(
+                                      fit: FlexFit.loose,
+                                      child: RadioButton.buildRadioBtn(
+                                        color: Colors.pinkAccent,
+                                        title: getTranslated(context, 'female'),
+                                        value: 1,
+                                        groupValue: _genderRadioValue,
+                                        onChanged: (newValue) => setState(() {
+                                          _genderRadioValue = newValue;
+                                          FocusScope.of(context).unfocus();
+                                        }),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                          Column(
+                            children: <Widget>[
+                              DropDownFormField(
+                                titleText: getTranslated(context, 'nationality'),
+                                hintText: getTranslated(context, 'chooseYourNationality'),
+                                validator: (value) {
+                                  if (_isErrorMsgOfNationalityShouldBeShow || (_isCreateEmployeeAccountButtonTapped && value == null)) {
+                                    return getTranslated(context, 'nationalityIsRequired');
+                                  }
+                                  return null;
+                                },
+                                value: _nationality,
+                                onSaved: (value) {
+                                  setState(() {
+                                    _nationality = value;
+                                    FocusScope.of(context).unfocus();
+                                  });
+                                },
+                                onChanged: (value) {
+                                  setState(() {
+                                    _nationality = value;
+                                    FocusScope.of(context).unfocus();
+                                    _isErrorMsgOfNationalityShouldBeShow = false;
+                                  });
+                                },
+                                dataSource: [
+                                  {'display': 'English ' + LanguageUtil.findFlagByNationality('EN'), 'value': 'EN'},
+                                  {'display': 'ქართული ' + LanguageUtil.findFlagByNationality('GE'), 'value': 'GE'},
+                                  {'display': 'Polska ' + LanguageUtil.findFlagByNationality('PL'), 'value': 'PL'},
+                                  {'display': 'русский ' + LanguageUtil.findFlagByNationality('RU'), 'value': 'RU'},
+                                  {'display': 'Українська ' + LanguageUtil.findFlagByNationality('UK'), 'value': 'UK'},
                                 ],
-                              )
+                                textField: 'display',
+                                valueField: 'value',
+                                required: true,
+                                autovalidate: true,
+                              ),
+                              SizedBox(height: 20),
                             ],
                           ),
-                        ),
-                        Column(
-                          children: <Widget>[
-                            DropDownFormField(
-                              titleText: getTranslated(context, 'nationality'),
-                              hintText: getTranslated(context, 'chooseYourNationality'),
-                              validator: (value) {
-                                if (_isErrorMsgOfNationalityShouldBeShow || (_isCreateEmployeeAccountButtonTapped && value == null)) {
-                                  return getTranslated(context, 'nationalityIsRequired');
-                                }
-                                return null;
-                              },
-                              value: _nationality,
-                              onSaved: (value) {
-                                setState(() {
-                                  _nationality = value;
-                                });
-                              },
-                              onChanged: (value) {
-                                setState(() {
-                                  _nationality = value;
-                                  FocusScope.of(context).unfocus();
-                                  _isErrorMsgOfNationalityShouldBeShow = false;
-                                });
-                              },
-                              dataSource: [
-                                {'display': 'English ' + LanguageUtil.findFlagByNationality('EN'), 'value': 'EN'},
-                                {'display': 'ქართული ' + LanguageUtil.findFlagByNationality('GE'), 'value': 'GE'},
-                                {'display': 'Polska ' + LanguageUtil.findFlagByNationality('PL'), 'value': 'PL'},
-                                {'display': 'русский ' + LanguageUtil.findFlagByNationality('RU'), 'value': 'RU'},
-                                {'display': 'Українська ' + LanguageUtil.findFlagByNationality('UK'), 'value': 'UK'},
-                              ],
-                              textField: 'display',
-                              valueField: 'value',
-                              required: true,
-                              autovalidate: true,
-                            ),
-                            SizedBox(height: 20),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            MaterialButton(
-                              elevation: 0,
-                              height: 50,
-                              minWidth: 40,
-                              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[iconWhite(Icons.close)],
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              MaterialButton(
+                                elevation: 0,
+                                height: 50,
+                                minWidth: 40,
+                                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[iconWhite(Icons.close)],
+                                ),
+                                color: Colors.red,
+                                onPressed: () {
+                                  _nameController.clear();
+                                  _surnameController.clear();
+                                  _nationality = '';
+                                  _isCreateEmployeeAccountButtonTapped = false;
+                                  Navigator.pop(context);
+                                },
                               ),
-                              color: Colors.red,
-                              onPressed: () {
-                                _nameController.clear();
-                                _surnameController.clear();
-                                _nationality = '';
-                                _isCreateEmployeeAccountButtonTapped = false;
-                                Navigator.pop(context);
-                              },
-                            ),
-                            SizedBox(width: 25),
-                            MaterialButton(
-                              elevation: 0,
-                              height: 50,
-                              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[iconWhite(Icons.check)],
+                              SizedBox(width: 25),
+                              MaterialButton(
+                                elevation: 0,
+                                height: 50,
+                                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[iconWhite(Icons.check)],
+                                ),
+                                color: BLUE,
+                                onPressed: () => _isCreateEmployeeAccountButtonTapped ? null : _handleCreateEmployeeAccountButton(),
                               ),
-                              color: BLUE,
-                              onPressed: () => _isCreateEmployeeAccountButtonTapped ? null : _handleCreateEmployeeAccountButton(),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
