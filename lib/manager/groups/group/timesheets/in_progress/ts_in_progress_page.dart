@@ -98,7 +98,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: WHITE,
-          appBar: managerAppBar(context, _model.user, utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'), () => Navigator.pop(context)),
+          appBar: managerAppBar(context, _model.user, utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'), () => NavigatorUtil.onWillPopNavigate(context, TsPage(_model))),
           body: RefreshIndicator(
             color: WHITE,
             backgroundColor: BLUE,
