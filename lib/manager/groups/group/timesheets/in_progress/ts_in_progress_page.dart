@@ -13,7 +13,10 @@ import 'package:jobbed/api/employee/service/employee_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:jobbed/api/timesheet/dto/timesheet_with_status_dto.dart';
+import 'package:jobbed/api/work_time/service/work_time_service.dart';
 import 'package:jobbed/api/workday/service/workday_service.dart';
+import 'package:jobbed/api/workplace/dto/workplace_dto.dart';
+import 'package:jobbed/api/workplace/service/workplace_service.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/manager/groups/group/employee/employee_profile_page.dart';
 import 'package:jobbed/manager/groups/group/employee/employee_ts_in_progress_page.dart';
@@ -35,6 +38,7 @@ import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
+import 'package:jobbed/shared/widget/radio_button.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
@@ -51,14 +55,18 @@ class TsInProgressPage extends StatefulWidget {
 }
 
 class _TsInProgressPageState extends State<TsInProgressPage> {
-  final TextEditingController _hoursController = new TextEditingController();
-  final TextEditingController _minutesController = new TextEditingController();
+  final TextEditingController _fromHoursController = new TextEditingController();
+  final TextEditingController _fromMinutesController = new TextEditingController();
+  final TextEditingController _toHoursController = new TextEditingController();
+  final TextEditingController _toMinutesController = new TextEditingController();
 
   GroupModel _model;
   User _user;
 
   EmployeeService _employeeService;
   WorkdayService _workdayService;
+  WorkTimeService _workTimeService;
+  WorkplaceService _workplaceService;
   TimesheetWithStatusDto _timesheet;
 
   List<EmployeeStatisticsDto> _employees = new List();
@@ -68,6 +76,12 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
   List<bool> _checked = new List();
   LinkedHashSet<int> _selectedIds = new LinkedHashSet();
 
+  List<WorkplaceDto> _workplaces = new List();
+  List<int> _workplacesRadioValues = new List();
+  int _chosenIndex = -1;
+  bool _isChoseWorkplaceBtnDisabled = true;
+
+  bool _isDeleteWorkTimeButtonTapped = false;
   bool _isDeletePieceworkButtonTapped = false;
 
   @override
@@ -76,6 +90,8 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
     this._user = _model.user;
     this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
+    this._workTimeService = ServiceInitializer.initialize(context, _user.authHeader, WorkTimeService);
+    this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
     this._timesheet = widget._timeSheet;
     super.initState();
     _loading = true;
@@ -84,7 +100,13 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
         _filteredEmployees = _employees;
-        _loading = false;
+        _workplaceService.findAllByCompanyId(_user.companyId).then((res) {
+          setState(() {
+            _workplaces = res;
+            _workplaces.forEach((element) => _workplacesRadioValues.add(-1));
+            _loading = false;
+          });
+        });
       });
     });
   }
@@ -296,6 +318,39 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                   Expanded(
                     child: MaterialButton(
                       color: BLUE,
+                      child: Image(image: AssetImage('images/white-hours.png')),
+                      onPressed: () {
+                        if (_selectedIds.isEmpty) {
+                          showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                          return;
+                        }
+                        _showUpdateWorkTimeDialog(_selectedIds);
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 1),
+                  Expanded(
+                    child: MaterialButton(
+                      color: BLUE,
+                      child: Row(
+                        children: [
+                          Image(image: AssetImage('images/white-hours.png')),
+                          iconRed(Icons.close),
+                        ],
+                      ),
+                      onPressed: () {
+                        if (_selectedIds.isEmpty) {
+                          showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                          return;
+                        }
+                        _showDeleteWorkTimeDialog(_selectedIds);
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 1),
+                  Expanded(
+                    child: MaterialButton(
+                      color: BLUE,
                       child: Image(image: AssetImage('images/white-piecework.png')),
                       onPressed: () {
                         if (_selectedIds.isNotEmpty) {
@@ -336,7 +391,8 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
             getTranslated(context, 'iconsLegend'),
             [
               IconsLegendUtil.buildImageRow('images/letters/male/unknown_letter.png', getTranslated(context, 'employeeProfile')),
-              IconsLegendUtil.buildImageRow('images/hours.png', getTranslated(context, 'settingHours')),
+              IconsLegendUtil.buildImageRow('images/hours.png', getTranslated(context, 'manualSettingOfWorkingTimes')),
+              IconsLegendUtil.buildImageWithIconRow('images/hours.png', iconRed(Icons.close), getTranslated(context, 'deletingWork')),
               IconsLegendUtil.buildImageRow('images/piecework.png', getTranslated(context, 'settingPiecework')),
               IconsLegendUtil.buildImageWithIconRow('images/piecework.png', iconRed(Icons.close), getTranslated(context, 'deletingPiecework')),
             ],
@@ -347,16 +403,419 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
     );
   }
 
-  void _showUpdatePiecework(LinkedHashSet<int> selectedIds) async {
+  void _showUpdateWorkTimeDialog(LinkedHashSet<int> selectedIds) async {
     int year = _timesheet.year;
-    int monthNum = MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
-    int days = DateUtil().daysInMonth(monthNum, year);
+    int month = MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
+    int days = DateUtil().daysInMonth(month, year);
     final List<DateTime> picked = await DateRagePicker.showDatePicker(
       context: context,
-      initialFirstDate: new DateTime(year, monthNum, 1),
-      initialLastDate: new DateTime(year, monthNum, days),
-      firstDate: new DateTime(year, monthNum, 1),
-      lastDate: new DateTime(year, monthNum, days),
+      initialFirstDate: new DateTime(year, month, 1),
+      initialLastDate: new DateTime(year, month, days),
+      firstDate: new DateTime(year, month, 1),
+      lastDate: new DateTime(year, month, days),
+    );
+    if (picked != null && picked.length == 1) {
+      picked.add(picked[0]);
+    }
+    if (picked != null && picked.length == 2) {
+      String dateFrom = DateFormat('yyyy-MM-dd').format(picked[0]);
+      String dateTo = DateFormat('yyyy-MM-dd').format(picked[1]);
+      showGeneralDialog(
+        context: context,
+        barrierColor: WHITE.withOpacity(0.95),
+        barrierDismissible: false,
+        barrierLabel: 'workTime',
+        transitionDuration: Duration(milliseconds: 400),
+        pageBuilder: (_, __, ___) {
+          return SizedBox.expand(
+            child: Scaffold(
+              backgroundColor: Colors.black12,
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'workTimeUpperCase'))),
+                    SizedBox(height: 2.5),
+                    text16Black(getTranslated(context, 'setWorkTimeForSelectedEmployees')),
+                    SizedBox(height: 2.5),
+                    text17BlueBold('[' + dateFrom + ' - ' + dateTo + ']'),
+                    SizedBox(height: 20),
+                    text17BlackBold(getTranslated(context, 'startWorkTimeFrom')),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              children: [
+                                textBlack(getTranslated(context, 'hours')),
+                                SizedBox(height: 2.5),
+                                NumberInputWithIncrementDecrement(
+                                  controller: _fromHoursController,
+                                  min: 0,
+                                  max: 24,
+                                  onIncrement: (value) {
+                                    if (value > 24) {
+                                      setState(() => value = 24);
+                                    }
+                                  },
+                                  onSubmitted: (value) {
+                                    if (value >= 24) {
+                                      setState(() => _fromHoursController.text = 24.toString());
+                                    }
+                                  },
+                                  style: TextStyle(color: BLUE),
+                                  widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              children: [
+                                textBlack(getTranslated(context, 'minutes')),
+                                SizedBox(height: 2.5),
+                                NumberInputWithIncrementDecrement(
+                                  controller: _fromMinutesController,
+                                  min: 0,
+                                  max: 59,
+                                  onIncrement: (value) {
+                                    if (value > 59) {
+                                      setState(() => value = 59);
+                                    }
+                                  },
+                                  onSubmitted: (value) {
+                                    if (value >= 59) {
+                                      setState(() => _fromMinutesController.text = 59.toString());
+                                    }
+                                  },
+                                  style: TextStyle(color: BLUE),
+                                  widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    text17BlackBold(getTranslated(context, 'finishWorkTimeTo')),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              children: [
+                                textBlack(getTranslated(context, 'hours')),
+                                SizedBox(height: 2.5),
+                                NumberInputWithIncrementDecrement(
+                                  controller: _toHoursController,
+                                  min: 0,
+                                  max: 24,
+                                  onIncrement: (value) {
+                                    if (value > 24) {
+                                      setState(() => value = 24);
+                                    }
+                                  },
+                                  onSubmitted: (value) {
+                                    if (value >= 24) {
+                                      setState(() => _toHoursController.text = 24.toString());
+                                    }
+                                  },
+                                  style: TextStyle(color: BLUE),
+                                  widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              children: [
+                                textBlack(getTranslated(context, 'minutes')),
+                                SizedBox(height: 2.5),
+                                NumberInputWithIncrementDecrement(
+                                  controller: _toMinutesController,
+                                  min: 0,
+                                  max: 59,
+                                  onIncrement: (value) {
+                                    if (value > 59) {
+                                      setState(() => value = 59);
+                                    }
+                                  },
+                                  onSubmitted: (value) {
+                                    if (value >= 59) {
+                                      setState(() => _toMinutesController.text = 59.toString());
+                                    }
+                                  },
+                                  style: TextStyle(color: BLUE),
+                                  widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        MaterialButton(
+                          elevation: 0,
+                          height: 50,
+                          minWidth: 40,
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[iconWhite(Icons.close)],
+                          ),
+                          color: Colors.red,
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                        SizedBox(width: 25),
+                        MaterialButton(
+                          elevation: 0,
+                          height: 50,
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[iconWhite(Icons.check)],
+                          ),
+                          color: BLUE,
+                          onPressed: () {
+                            int fromHours;
+                            int fromMinutes;
+                            int toHours;
+                            int toMinutes;
+                            try {
+                              fromHours = int.parse(_fromHoursController.text);
+                              fromMinutes = int.parse(_fromMinutesController.text);
+                              toHours = int.parse(_toHoursController.text);
+                              toMinutes = int.parse(_toMinutesController.text);
+                            } catch (FormatException) {
+                              ToastUtil.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
+                              return;
+                            }
+                            String validationMsg = ValidatorUtil.validateSettingManuallyWorkTimes(fromHours, fromMinutes, toHours, toMinutes, context);
+                            if (validationMsg != null) {
+                              ToastUtil.showErrorToast(validationMsg);
+                              return;
+                            }
+                            String startTime = fromHours.toString() + ':' + fromMinutes.toString() + ':' + '00';
+                            String endTime = toHours.toString() + ':' + toMinutes.toString() + ':' + '00';
+                            _showChooseWorkplaceDialog(
+                              getTranslated(this.context, 'chooseWorkplace'),
+                              () => _handleSaveWorkTimesManually(year, month, dateFrom, dateTo, startTime, endTime),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
+  }
+
+  void _showChooseWorkplaceDialog(String title, Function() fun) {
+    showGeneralDialog(
+      context: context,
+      barrierColor: WHITE.withOpacity(0.95),
+      barrierDismissible: false,
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SafeArea(
+          child: SizedBox.expand(
+            child: StatefulBuilder(builder: (context, setState) {
+              return Scaffold(
+                backgroundColor: Colors.black12,
+                body: Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10, right: 10),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: 50, bottom: 10),
+                          child: Column(
+                            children: [
+                              textCenter20BlueBold(title),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 7.5),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    for (int i = 0; i < _workplaces.length; i++)
+                                      RadioButton.buildRadioBtn(
+                                        color: BLUE,
+                                        title: utf8.decode(_workplaces[i].name.runes.toList()),
+                                        value: 0,
+                                        groupValue: _workplacesRadioValues[i],
+                                        onChanged: (newValue) => setState(
+                                          () {
+                                            if (_chosenIndex != -1) {
+                                              _workplacesRadioValues[_chosenIndex] = -1;
+                                            }
+                                            _workplacesRadioValues[i] = newValue;
+                                            _chosenIndex = i;
+                                            _isChoseWorkplaceBtnDisabled = false;
+                                          },
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              MaterialButton(
+                                elevation: 0,
+                                height: 50,
+                                minWidth: 40,
+                                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[iconWhite(Icons.close)],
+                                ),
+                                color: Colors.red,
+                                onPressed: () {
+                                  if (_chosenIndex != -1) {
+                                    _workplacesRadioValues[_chosenIndex] = -1;
+                                  }
+                                  _chosenIndex = -1;
+                                  _isChoseWorkplaceBtnDisabled = true;
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              SizedBox(width: 25),
+                              MaterialButton(
+                                elevation: 0,
+                                height: 50,
+                                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[iconWhite(Icons.check)],
+                                ),
+                                color: !_isChoseWorkplaceBtnDisabled ? BLUE : Colors.grey,
+                                onPressed: () {
+                                  if (_isChoseWorkplaceBtnDisabled) {
+                                    return;
+                                  }
+                                  fun();
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }),
+          ),
+        );
+      },
+    );
+  }
+
+  void _handleSaveWorkTimesManually(int year, int month, String dateFrom, String dateTo, String startTime, String endTime) {
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _workTimeService.saveForEmployees(_selectedIds.map((el) => el.toString()).toList(), _workplaces[_chosenIndex].id, year, month, dateFrom, dateTo, startTime, endTime).then((value) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        _refresh();
+        Navigator.pop(context);
+        Navigator.pop(context);
+        ToastUtil.showSuccessToast(getTranslated(context, 'workingTimeHasBeenSuccessfullySetForSelectedDaysAndEmployees'));
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+      });
+    });
+  }
+
+  void _showDeleteWorkTimeDialog(LinkedHashSet<int> selectedIds) async {
+    int year = _timesheet.year;
+    int month = MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
+    int days = DateUtil().daysInMonth(month, year);
+    final List<DateTime> picked = await DateRagePicker.showDatePicker(
+      context: context,
+      initialFirstDate: new DateTime(year, month, 1),
+      initialLastDate: new DateTime(year, month, days),
+      firstDate: new DateTime(year, month, 1),
+      lastDate: new DateTime(year, month, days),
+    );
+    if (picked != null && picked.length == 1) {
+      picked.add(picked[0]);
+    }
+    if (picked != null && picked.length == 2) {
+      String dateFrom = DateFormat('yyyy-MM-dd').format(picked[0]);
+      String dateTo = DateFormat('yyyy-MM-dd').format(picked[1]);
+      DialogUtil.showConfirmationDialog(
+        context: this.context,
+        title: getTranslated(this.context, 'confirmation'),
+        content: getTranslated(this.context, 'deleteWorkConfirmation') + ' $dateFrom - $dateTo)',
+        isBtnTapped: _isDeleteWorkTimeButtonTapped,
+        fun: () => _isDeleteWorkTimeButtonTapped ? null : _handleDeleteWorkTime(dateFrom, dateTo),
+      );
+    }
+  }
+
+  _handleDeleteWorkTime(String dateFrom, String dateTo) {
+    setState(() => _isDeleteWorkTimeButtonTapped = true);
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _workTimeService.deleteByEmployeeIdsAndFromDateToDate(_selectedIds.map((el) => el.toString()).toList(), dateFrom, dateTo).then((value) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        _refresh();
+        Navigator.of(context).pop();
+        ToastUtil.showSuccessToast(getTranslated(context, 'workHasBeenSuccessfullyDeleted'));
+        setState(() => _isDeleteWorkTimeButtonTapped = false);
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        DialogUtil.showErrorDialog(this.context, getTranslated(this.context, 'somethingWentWrong'));
+        setState(() => _isDeleteWorkTimeButtonTapped = false);
+      });
+    });
+  }
+
+  void _showUpdatePiecework(LinkedHashSet<int> selectedIds) async {
+    int year = _timesheet.year;
+    int month = MonthUtil.findMonthNumberByMonthName(context, _timesheet.month);
+    int days = DateUtil().daysInMonth(month, year);
+    final List<DateTime> picked = await DateRagePicker.showDatePicker(
+      context: context,
+      initialFirstDate: new DateTime(year, month, 1),
+      initialLastDate: new DateTime(year, month, days),
+      firstDate: new DateTime(year, month, 1),
+      lastDate: new DateTime(year, month, days),
     );
     if (picked != null && picked.length == 1) {
       picked.add(picked[0]);
@@ -366,16 +825,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
       String dateTo = DateFormat('yyyy-MM-dd').format(picked[1]);
       NavigatorUtil.navigate(
         context,
-        AddPieceworkForSelectedEmployeesPage(
-          _model,
-          _timesheet,
-          dateFrom,
-          dateTo,
-          _selectedIds.map((el) => el.toString()).toList(),
-          year,
-          monthNum,
-          STATUS_IN_PROGRESS,
-        ),
+        AddPieceworkForSelectedEmployeesPage(_model, _timesheet, dateFrom, dateTo, _selectedIds.map((el) => el.toString()).toList(), year, month, STATUS_IN_PROGRESS),
       );
     }
   }
@@ -428,14 +878,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
   }
 
   Future<Null> _refresh() {
-    return _employeeService
-        .findAllByGroupIdAndTsYearAndMonthAndStatusForStatisticsView(
-      _model.groupId,
-      _timesheet.year,
-      MonthUtil.findMonthNumberByMonthName(context, _timesheet.month),
-      STATUS_IN_PROGRESS,
-    )
-        .then((res) {
+    return _employeeService.findAllByGroupIdAndTsYearAndMonthAndStatusForStatisticsView(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_IN_PROGRESS).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
