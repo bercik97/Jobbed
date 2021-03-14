@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
+import 'package:http/http.dart' as http;
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/token/service/token_service.dart';
 import 'package:jobbed/employee/employee_profile_page.dart';
@@ -20,7 +21,6 @@ import 'package:jobbed/shared/widget/texts.dart';
 import 'package:jobbed/unauthenticated/get_started_page.dart';
 import 'package:jobbed/unauthenticated/register/employee_register_page.dart';
 import 'package:jobbed/unauthenticated/register/manager_register_page.dart';
-import 'package:http/http.dart' as http;
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 
 import '../internationalization/localization/localization_constants.dart';
