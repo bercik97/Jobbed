@@ -11,7 +11,7 @@ import 'package:jobbed/api/work_time/service/work_time_service.dart';
 import 'package:jobbed/api/workday/dto/workday_dto.dart';
 import 'package:jobbed/api/workday/service/workday_service.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
-import 'package:jobbed/manager/groups/group/piecework/add_piecework_for_selected_workdays.dart';
+import 'package:jobbed/manager/groups/group/piecework/manage/add_piecework_for_selected_workdays.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/data_table_util.dart';

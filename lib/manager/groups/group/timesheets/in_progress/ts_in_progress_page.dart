@@ -17,7 +17,7 @@ import 'package:jobbed/api/workday/service/workday_service.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/manager/groups/group/employee/employee_profile_page.dart';
 import 'package:jobbed/manager/groups/group/employee/employee_ts_in_progress_page.dart';
-import 'package:jobbed/manager/groups/group/piecework/add_piecework_for_selected_employees_page.dart';
+import 'package:jobbed/manager/groups/group/piecework/manage/add_piecework_for_selected_employees_page.dart';
 import 'package:jobbed/manager/groups/group/timesheets/ts_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/shared/libraries/colors.dart';

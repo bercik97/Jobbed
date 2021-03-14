@@ -19,8 +19,8 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
-import 'package:jobbed/shared/widget/loader.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
@@ -91,9 +91,6 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      return loader(managerAppBar(context, _user, getTranslated(context, 'loading'), () => Navigator.pop(context)));
-    }
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -109,7 +106,15 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
               key: formKey,
               child: Column(
                 children: [
-                  _buildPriceList(),
+                  Padding(
+                    padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: text20Black(getTranslated(context, 'pieceworkForSelectedWorkdays')),
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  _loading ? circularProgressIndicator() : _buildPriceList(),
                 ],
               ),
             ),
@@ -130,14 +135,6 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
             child: Center(
               child: Column(
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: text20Black(getTranslated(context, 'pieceworkForSelectedWorkdays')),
-                    ),
-                  ),
-                  SizedBox(height: 5),
                   Column(
                     children: [
                       for (var priceList in _priceLists)
