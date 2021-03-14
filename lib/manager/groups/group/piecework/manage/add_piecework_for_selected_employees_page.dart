@@ -97,6 +97,20 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
+              Padding(
+                padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: text20Black(getTranslated(context, 'pieceworkForSelectedWorkdaysAndEmployees')),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 5, left: 15, bottom: 10),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: text20BlueBold(_dateFrom + ' - ' + _dateTo),
+                ),
+              ),
               _loading ? circularProgressIndicator() : _buildPriceList(),
             ],
           ),
@@ -115,20 +129,6 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
           child: Center(
             child: Column(
               children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: text20Black(getTranslated(context, 'pieceworkForSelectedWorkdaysAndEmployees')),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 5, left: 15, bottom: 10),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: text20BlueBold(_dateFrom + ' - ' + _dateTo),
-                  ),
-                ),
                 Column(
                   children: [
                     for (var priceList in _priceLists)
