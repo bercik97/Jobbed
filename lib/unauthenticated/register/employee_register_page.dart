@@ -188,7 +188,46 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
           getTranslated(context, 'surnameIsRequired'),
           Icons.person_outline,
         ),
-        _buildNationalityDropdown(),
+        Column(
+          children: <Widget>[
+            DropDownFormField(
+              titleText: getTranslated(context, 'nationality'),
+              hintText: getTranslated(context, 'chooseYourNationality'),
+              validator: (value) {
+                if (_isErrorMsgOfNationalityShouldBeShow || (_isRegisterButtonTapped && value == null)) {
+                  return getTranslated(context, 'nationalityIsRequired');
+                }
+                return null;
+              },
+              value: _nationality,
+              onSaved: (value) {
+                setState(() {
+                  _nationality = value;
+                  FocusScope.of(context).unfocus();
+                });
+              },
+              onChanged: (value) {
+                setState(() {
+                  _nationality = value;
+                  FocusScope.of(context).unfocus();
+                  _isErrorMsgOfNationalityShouldBeShow = false;
+                });
+              },
+              dataSource: [
+                {'display': 'English ' + LanguageUtil.findFlagByNationality('EN'), 'value': 'EN'},
+                {'display': 'ქართული ' + LanguageUtil.findFlagByNationality('GE'), 'value': 'GE'},
+                {'display': 'Polska ' + LanguageUtil.findFlagByNationality('PL'), 'value': 'PL'},
+                {'display': 'русский ' + LanguageUtil.findFlagByNationality('RU'), 'value': 'RU'},
+                {'display': 'Українська ' + LanguageUtil.findFlagByNationality('UK'), 'value': 'UK'},
+              ],
+              textField: 'display',
+              valueField: 'value',
+              required: true,
+              autovalidate: true,
+            ),
+            SizedBox(height: 20),
+          ],
+        ),
       ],
     );
   }
@@ -256,6 +295,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
             value: _regulationsCheckbox,
             onChanged: (value) {
               setState(() {
+                FocusScope.of(context).unfocus();
                 _regulationsCheckbox = value;
               });
             },
@@ -292,6 +332,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
             value: _privacyPolicyCheckbox,
             onChanged: (value) {
               setState(() {
+                FocusScope.of(context).unfocus();
                 _privacyPolicyCheckbox = value;
               });
             },
@@ -468,7 +509,10 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
                   title: getTranslated(context, 'male'),
                   value: 0,
                   groupValue: _genderRadioValue,
-                  onChanged: (newValue) => setState(() => _genderRadioValue = newValue),
+                  onChanged: (newValue) => setState(() {
+                    _genderRadioValue = newValue;
+                    FocusScope.of(context).unfocus();
+                  }),
                 ),
               ),
               Flexible(
@@ -478,55 +522,16 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
                   title: getTranslated(context, 'female'),
                   value: 1,
                   groupValue: _genderRadioValue,
-                  onChanged: (newValue) => setState(() => _genderRadioValue = newValue),
+                  onChanged: (newValue) => setState(() {
+                    _genderRadioValue = newValue;
+                    FocusScope.of(context).unfocus();
+                  }),
                 ),
               ),
             ],
           )
         ],
       ),
-    );
-  }
-
-  Widget _buildNationalityDropdown() {
-    return Column(
-      children: <Widget>[
-        DropDownFormField(
-          titleText: getTranslated(context, 'nationality'),
-          hintText: getTranslated(context, 'chooseYourNationality'),
-          validator: (value) {
-            if (_isErrorMsgOfNationalityShouldBeShow || (_isRegisterButtonTapped && value == null)) {
-              return getTranslated(context, 'nationalityIsRequired');
-            }
-            return null;
-          },
-          value: _nationality,
-          onSaved: (value) {
-            setState(() {
-              _nationality = value;
-            });
-          },
-          onChanged: (value) {
-            setState(() {
-              _nationality = value;
-              FocusScope.of(context).unfocus();
-              _isErrorMsgOfNationalityShouldBeShow = false;
-            });
-          },
-          dataSource: [
-            {'display': 'English ' + LanguageUtil.findFlagByNationality('EN'), 'value': 'EN'},
-            {'display': 'ქართული ' + LanguageUtil.findFlagByNationality('GE'), 'value': 'GE'},
-            {'display': 'Polska ' + LanguageUtil.findFlagByNationality('PL'), 'value': 'PL'},
-            {'display': 'русский ' + LanguageUtil.findFlagByNationality('RU'), 'value': 'RU'},
-            {'display': 'Українська ' + LanguageUtil.findFlagByNationality('UK'), 'value': 'UK'},
-          ],
-          textField: 'display',
-          valueField: 'value',
-          required: true,
-          autovalidate: true,
-        ),
-        SizedBox(height: 20),
-      ],
     );
   }
 
