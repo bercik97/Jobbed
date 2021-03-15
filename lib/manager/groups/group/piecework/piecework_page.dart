@@ -97,8 +97,12 @@ class _PieceworkPageState extends State<PieceworkPage> {
         appBar: managerAppBar(context, _user, getTranslated(context, 'piecework'), () => NavigatorUtil.navigateReplacement(context, GroupPage(_model))),
         body: Column(
           children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 10),
+              child: text18Black(getTranslated(context, 'pieceworkPageTitle')),
+            ),
             Container(
-              padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
+              padding: EdgeInsets.all(10),
               child: TextFormField(
                 autofocus: false,
                 autocorrect: true,

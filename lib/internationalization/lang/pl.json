@@ -690,5 +690,6 @@
   "itemPlacePageTitle": "Tutaj możesz dodać miejsca, w których znajdują się przedmioty wydane z magazynu",
   "setWorkTimeForEmployee": "Ustaw czas pracy dla pracownika",
   "deleteWorkForSingleEmployeeConfirmation": "Czy na pewno chcesz usunąć czasy pracy dla wybranych dni?",
-  "workingTimeHasBeenSuccessfullySetForSelectedDays": "Czas pracy został pomyślnie ustawiony dla wybranych dni"
+  "workingTimeHasBeenSuccessfullySetForSelectedDays": "Czas pracy został pomyślnie ustawiony dla wybranych dni",
+  "pieceworkPageTitle": "W tym miejscu, możesz dodawać akordy pracowników na podstawie cennika"
 }
