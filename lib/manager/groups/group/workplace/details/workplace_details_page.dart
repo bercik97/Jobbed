@@ -148,17 +148,17 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                         alignment: Alignment.topLeft,
                         child: _workplaceDto.location != null
                             ? Row(
-                          children: [
-                            text16Black(getTranslated(this.context, 'radius') + ': '),
-                            text17BlackBold(_workplaceDto.radiusLength.toString() + ' KM'),
-                          ],
-                        )
+                                children: [
+                                  text16Black(getTranslated(context, 'radius') + ': '),
+                                  text17BlackBold(_workplaceDto.radiusLength.toString() + ' KM'),
+                                ],
+                              )
                             : Row(
-                          children: [
-                            text16Black(getTranslated(this.context, 'radius') + ': '),
-                            text16BlueGrey(getTranslated(this.context, 'empty')),
-                          ],
-                        ),
+                                children: [
+                                  text16Black(getTranslated(context, 'radius') + ': '),
+                                  text16BlueGrey(getTranslated(context, 'empty')),
+                                ],
+                              ),
                       ),
                       Align(
                         child: Row(
@@ -635,140 +635,164 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
 
   _buildEditGoogleMapButton(double latitude, double longitude, String location, double radiusLength) {
     this._radiusController.text = radiusLength.toString();
+    this._locationController.text = utf8.decode(location.runes.toList());
     return Padding(
-      padding: const EdgeInsets.only(top: 10, bottom: 20),
-      child: MaterialButton(
-        child: textWhiteBold(getTranslated(context, 'editWorkplaceArea')),
-        color: BLUE,
-        onPressed: () {
-          showGeneralDialog(
-            context: context,
-            barrierColor: WHITE.withOpacity(0.95),
-            barrierDismissible: false,
-            transitionDuration: Duration(milliseconds: 400),
-            pageBuilder: (_, __, ___) {
-              return SizedBox.expand(
-                child: StatefulBuilder(
-                  builder: (context, setState) {
-                    return Scaffold(
-                      appBar: AppBar(
-                        iconTheme: IconThemeData(color: WHITE),
-                        backgroundColor: BRIGHTER_BLUE,
-                        elevation: 0.0,
-                        bottomOpacity: 0.0,
-                        title: textBlack(getTranslated(context, 'editWorkplaceArea')),
-                        leading: IconButton(
-                          icon: iconBlack(Icons.arrow_back),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                      body: GoogleMap(
-                        myLocationButtonEnabled: false,
-                        initialCameraPosition: new CameraPosition(target: new LatLng(latitude, longitude), zoom: 16),
-                        markers: _markersList.toSet(),
-                        onMapCreated: (controller) {
-                          this._controller = controller;
-                          LatLng currentLatLng = new LatLng(latitude, longitude);
-                          _controller.animateCamera(CameraUpdate.newLatLng(currentLatLng));
-                          _markersList.clear();
-                          _markersList.add(
-                            new Marker(
-                              position: currentLatLng,
-                              markerId: MarkerId('$latitude-$longitude'),
-                            ),
-                          );
-                          _circles.clear();
-                          _circles.add(
-                            new Circle(
-                              circleId: CircleId('$latitude-$longitude'),
-                              center: LatLng(latitude, longitude),
-                              radius: radiusLength * 1000,
-                            ),
-                          );
-                          setState(() {});
-                        },
-                        circles: _circles,
-                        onTap: (coordinates) {
-                          _controller.animateCamera(CameraUpdate.newLatLng(coordinates));
-                          _markersList.clear();
-                          _markersList.add(
-                            new Marker(
-                              position: coordinates,
-                              markerId: MarkerId('${coordinates.latitude}-${coordinates.longitude}'),
-                            ),
-                          );
-                          _circles.clear();
-                          _circles.add(
-                            new Circle(
-                              circleId: CircleId('${coordinates.latitude}-${coordinates.longitude}'),
-                              center: LatLng(coordinates.latitude, coordinates.longitude),
-                              radius: double.parse(_radiusController.text) * 1000,
-                            ),
-                          );
-                          setState(() {});
-                        },
-                      ),
-                      bottomNavigationBar: SafeArea(
-                        child: Row(
-                          children: [
-                            Container(
-                              height: MediaQuery.of(context).size.height * 0.10,
-                              width: MediaQuery.of(context).size.width * 0.70,
-                              child: SfSlider(
-                                min: 0.01,
-                                max: 0.25,
-                                value: double.parse(_radiusController.text),
-                                interval: 0.08,
-                                showTicks: true,
-                                showLabels: true,
-                                minorTicksPerInterval: 1,
-                                inactiveColor: BRIGHTER_BLUE,
-                                activeColor: BLUE,
-                                onChanged: (dynamic value) {
-                                  Circle circle = _circles.elementAt(0);
-                                  _circles.clear();
-                                  _circles.add(
-                                    new Circle(
-                                      circleId: CircleId('${circle.circleId}'),
-                                      center: circle.center,
-                                      radius: double.parse(_radiusController.text) * 1000,
-                                      strokeColor: BLUE,
-                                      fillColor: Colors.grey.withOpacity(0.5),
-                                      strokeWidth: 5,
-                                    ),
-                                  );
-                                  setState(() => _radiusController.text = value.toString());
-                                },
-                              ),
-                            ),
-                            MaterialButton(
-                              elevation: 0,
-                              height: 50,
-                              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[iconWhite(Icons.check)],
-                              ),
-                              color: BLUE,
+      padding: EdgeInsets.only(left: 30, right: 30, bottom: 30),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width * 0.70,
+            child: TextFormField(
+              controller: _locationController,
+              maxLines: 2,
+              cursorColor: BLACK,
+              enabled: false,
+              textAlignVertical: TextAlignVertical.center,
+              style: TextStyle(color: BLACK),
+              decoration: InputDecoration(
+                hintText: getTranslated(context, 'workplaceLocationIsNotSet'),
+                hintStyle: _locationController.text.isEmpty ? TextStyle(color: Colors.blueGrey) : TextStyle(color: BLUE),
+              ),
+            ),
+          ),
+          IconButton(
+            icon: icon50Green(Icons.add),
+            onPressed: () {
+              showGeneralDialog(
+                context: context,
+                barrierColor: WHITE.withOpacity(0.95),
+                barrierDismissible: false,
+                transitionDuration: Duration(milliseconds: 400),
+                pageBuilder: (_, __, ___) {
+                  return SizedBox.expand(
+                    child: StatefulBuilder(
+                      builder: (context, setState) {
+                        return Scaffold(
+                          appBar: AppBar(
+                            iconTheme: IconThemeData(color: WHITE),
+                            backgroundColor: Colors.white,
+                            title: text16Black(location != null ? utf8.decode(location.runes.toList()) : getTranslated(context, 'empty')),
+                            leading: IconButton(
+                              icon: iconBlack(Icons.arrow_back),
                               onPressed: () {
-                                Navigator.pop(this.context);
-                                setState(() => _locationController.text = location);
+                                Navigator.pop(context);
                               },
                             ),
-                          ],
-                        ),
-                      ),
-                      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-                      floatingActionButton: warnHint(this.context, getTranslated(this.context, 'rememberSetLocationHint')),
-                    );
-                  },
-                ),
+                          ),
+                          body: GoogleMap(
+                            myLocationButtonEnabled: false,
+                            initialCameraPosition: new CameraPosition(target: new LatLng(latitude, longitude), zoom: 16),
+                            markers: _markersList.toSet(),
+                            onMapCreated: (controller) {
+                              this._controller = controller;
+                              LatLng currentLatLng = new LatLng(latitude, longitude);
+                              _controller.animateCamera(CameraUpdate.newLatLng(currentLatLng));
+                              _markersList.clear();
+                              _markersList.add(
+                                new Marker(
+                                  position: currentLatLng,
+                                  markerId: MarkerId('$latitude-$longitude'),
+                                ),
+                              );
+                              _circles.clear();
+                              _circles.add(
+                                new Circle(
+                                  circleId: CircleId('$latitude-$longitude'),
+                                  center: LatLng(latitude, longitude),
+                                  radius: double.parse(_radiusController.text) * 1000,
+                                  strokeColor: BLUE,
+                                  fillColor: Colors.grey.withOpacity(0.5),
+                                  strokeWidth: 5,
+                                ),
+                              );
+                              setState(() {});
+                            },
+                            circles: _circles,
+                            onTap: (coordinates) {
+                              _controller.animateCamera(CameraUpdate.newLatLng(coordinates));
+                              _markersList.clear();
+                              _markersList.add(
+                                new Marker(
+                                  position: coordinates,
+                                  markerId: MarkerId('${coordinates.latitude}-${coordinates.longitude}'),
+                                ),
+                              );
+                              _circles.clear();
+                              _circles.add(
+                                new Circle(
+                                  circleId: CircleId('${coordinates.latitude}-${coordinates.longitude}'),
+                                  center: LatLng(coordinates.latitude, coordinates.longitude),
+                                  radius: double.parse(_radiusController.text) * 1000,
+                                  strokeColor: BLUE,
+                                  fillColor: Colors.grey.withOpacity(0.5),
+                                  strokeWidth: 5,
+                                ),
+                              );
+                              setState(() {});
+                            },
+                          ),
+                          bottomNavigationBar: SafeArea(
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: MediaQuery.of(context).size.height * 0.10,
+                                  width: MediaQuery.of(context).size.width * 0.70,
+                                  child: SfSlider(
+                                    min: 0.01,
+                                    max: 0.25,
+                                    value: double.parse(_radiusController.text),
+                                    interval: 0.08,
+                                    showTicks: true,
+                                    showLabels: true,
+                                    minorTicksPerInterval: 1,
+                                    inactiveColor: BRIGHTER_BLUE,
+                                    activeColor: BLUE,
+                                    onChanged: (dynamic value) {
+                                      Circle circle = _circles.elementAt(0);
+                                      _circles.clear();
+                                      _circles.add(
+                                        new Circle(
+                                          circleId: CircleId('${circle.circleId}'),
+                                          center: circle.center,
+                                          radius: double.parse(_radiusController.text) * 1000,
+                                          strokeColor: BLUE,
+                                          fillColor: Colors.grey.withOpacity(0.5),
+                                          strokeWidth: 5,
+                                        ),
+                                      );
+                                      setState(() => _radiusController.text = value.toString());
+                                    },
+                                  ),
+                                ),
+                                MaterialButton(
+                                  elevation: 0,
+                                  height: 50,
+                                  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[iconWhite(Icons.check)],
+                                  ),
+                                  color: BLUE,
+                                  onPressed: () {
+                                    Navigator.pop(this.context);
+                                    setState(() => _locationController.text = utf8.decode(location.runes.toList()));
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+                          floatingActionButton: warnHint(this.context, getTranslated(this.context, 'rememberSetLocationHint')),
+                        );
+                      },
+                    ),
+                  );
+                },
               );
             },
-          );
-        },
+          ),
+        ],
       ),
     );
   }
