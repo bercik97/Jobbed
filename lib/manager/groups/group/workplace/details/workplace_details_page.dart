@@ -136,8 +136,8 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                             ? text16Black(utf8.decode(_workplaceDto.location.runes.toList()))
                             : Row(
                                 children: [
-                                  text16Black(getTranslated(context, 'description') + ': '),
-                                  textRed(getTranslated(context, 'empty')),
+                                  text16Black(getTranslated(context, 'location') + ': '),
+                                  text16BlueGrey(getTranslated(context, 'empty')),
                                 ],
                               ),
                         alignment: Alignment.topLeft,
@@ -226,32 +226,34 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                     child: text20Black(getTranslated(context, 'subWorkplaces')),
                   ),
                 ),
-                Column(
-                  children: [
-                    ListTileTheme(
-                      contentPadding: EdgeInsets.only(left: 3),
-                      child: CheckboxListTile(
-                        title: textBlack(getTranslated(this.context, 'selectUnselectAll')),
-                        value: _isChecked,
-                        activeColor: BLUE,
-                        checkColor: WHITE,
-                        onChanged: (bool value) {
-                          setState(() {
-                            _isChecked = value;
-                            List<bool> l = new List();
-                            _checked.forEach((b) => l.add(value));
-                            _checked = l;
-                            if (value) {
-                              _selectedIds.addAll(_subWorkplaces.map((e) => e.id));
-                            } else
-                              _selectedIds.clear();
-                          });
-                        },
-                        controlAffinity: ListTileControlAffinity.leading,
+                _subWorkplaces == null || _subWorkplaces.isEmpty
+                    ? SizedBox(height: 0)
+                    : Column(
+                        children: [
+                          ListTileTheme(
+                            contentPadding: EdgeInsets.only(left: 3),
+                            child: CheckboxListTile(
+                              title: textBlack(getTranslated(this.context, 'selectUnselectAll')),
+                              value: _isChecked,
+                              activeColor: BLUE,
+                              checkColor: WHITE,
+                              onChanged: (bool value) {
+                                setState(() {
+                                  _isChecked = value;
+                                  List<bool> l = new List();
+                                  _checked.forEach((b) => l.add(value));
+                                  _checked = l;
+                                  if (value) {
+                                    _selectedIds.addAll(_subWorkplaces.map((e) => e.id));
+                                  } else
+                                    _selectedIds.clear();
+                                });
+                              },
+                              controlAffinity: ListTileControlAffinity.leading,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
                 _loading
                     ? circularProgressIndicator()
                     : _subWorkplaces == null || _subWorkplaces.isEmpty
@@ -1051,7 +1053,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
       padding: EdgeInsets.only(left: 20),
       child: Align(
         alignment: Alignment.topLeft,
-        child: text15RedBold(getTranslated(context, 'noWorkingTime')),
+        child: text16BlueGrey(getTranslated(context, 'noWorkingTime')),
       ),
     );
   }
@@ -1061,7 +1063,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
       padding: EdgeInsets.only(left: 20),
       child: Align(
         alignment: Alignment.topLeft,
-        child: text15RedBold(getTranslated(context, 'noSubWorkplaces')),
+        child: text16BlueGrey(getTranslated(context, 'noSubWorkplaces')),
       ),
     );
   }

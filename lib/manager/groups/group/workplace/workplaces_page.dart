@@ -212,7 +212,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                                         : Row(
                                                             children: [
                                                               text16Black(getTranslated(this.context, 'location') + ': '),
-                                                              textRed(getTranslated(this.context, 'empty')),
+                                                              text16BlueGrey(getTranslated(this.context, 'empty')),
                                                             ],
                                                           ),
                                                   ),
