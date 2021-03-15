@@ -145,6 +145,22 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                         alignment: Alignment.topLeft,
                       ),
                       Align(
+                        alignment: Alignment.topLeft,
+                        child: _workplaceDto.location != null
+                            ? Row(
+                          children: [
+                            text16Black(getTranslated(this.context, 'radius') + ': '),
+                            text17BlackBold(_workplaceDto.radiusLength.toString() + ' KM'),
+                          ],
+                        )
+                            : Row(
+                          children: [
+                            text16Black(getTranslated(this.context, 'radius') + ': '),
+                            text16BlueGrey(getTranslated(this.context, 'empty')),
+                          ],
+                        ),
+                      ),
+                      Align(
                         child: Row(
                           children: [
                             text16Black(getTranslated(context, 'workplaceCode') + ': '),

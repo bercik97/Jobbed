@@ -178,6 +178,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                     name = name.substring(0, 30) + ' ...';
                                   }
                                   String location = workplace.location;
+                                  String radiusLength = workplace.radiusLength.toString();
                                   return Card(
                                     color: WHITE,
                                     child: Column(
@@ -212,6 +213,22 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                                         : Row(
                                                             children: [
                                                               text16Black(getTranslated(this.context, 'location') + ': '),
+                                                              text16BlueGrey(getTranslated(this.context, 'empty')),
+                                                            ],
+                                                          ),
+                                                  ),
+                                                  Align(
+                                                    alignment: Alignment.topLeft,
+                                                    child: location != null
+                                                        ? Row(
+                                                            children: [
+                                                              text16Black(getTranslated(this.context, 'radius') + ': '),
+                                                              text17BlackBold(radiusLength + ' KM'),
+                                                            ],
+                                                          )
+                                                        : Row(
+                                                            children: [
+                                                              text16Black(getTranslated(this.context, 'radius') + ': '),
                                                               text16BlueGrey(getTranslated(this.context, 'empty')),
                                                             ],
                                                           ),
