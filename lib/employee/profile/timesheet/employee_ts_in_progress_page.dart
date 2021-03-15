@@ -158,37 +158,37 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
             [
               IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_circle_up), getTranslated(context, 'tsInProgress')),
               IconsLegendUtil.buildIconRow(iconBlack(Icons.search), getTranslated(context, 'checkDetails')),
-              IconsLegendUtil.buildImageRow('images/hours.png', getTranslated(context, 'settingHours')),
+              //IconsLegendUtil.buildImageRow('images/hours.png', getTranslated(context, 'settingHours')),
             ],
           ),
-          bottomNavigationBar: SafeArea(
-            child: Container(
-              height: 40,
-              child: Row(
-                children: <Widget>[
-                  SizedBox(width: 1),
-                  _canFillHours
-                      ? Expanded(
-                          child: MaterialButton(
-                            color: BLUE,
-                            child: Image(image: AssetImage('images/white-hours.png')),
-                            onPressed: () {
-                              if (selectedIds.isNotEmpty) {
-                                _hoursController.clear();
-                                _minutesController.clear();
-                                _showUpdateHoursDialog(selectedIds);
-                              } else {
-                                showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                              }
-                            },
-                          ),
-                        )
-                      : SizedBox(width: 0),
-                  SizedBox(width: 1),
-                ],
-              ),
-            ),
-          ),
+          // bottomNavigationBar: SafeArea(
+          //   child: Container(
+          //     height: 40,
+          //     child: Row(
+          //       children: <Widget>[
+          //         SizedBox(width: 1),
+          //         _canFillHours
+          //             ? Expanded(
+          //                 child: MaterialButton(
+          //                   color: BLUE,
+          //                   child: Image(image: AssetImage('images/white-hours.png')),
+          //                   onPressed: () {
+          //                     if (selectedIds.isNotEmpty) {
+          //                       _hoursController.clear();
+          //                       _minutesController.clear();
+          //                       _showUpdateHoursDialog(selectedIds);
+          //                     } else {
+          //                       showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+          //                     }
+          //                   },
+          //                 ),
+          //               )
+          //             : SizedBox(width: 0),
+          //         SizedBox(width: 1),
+          //       ],
+          //     ),
+          //   ),
+          // ),
         ),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilePage(_user)),

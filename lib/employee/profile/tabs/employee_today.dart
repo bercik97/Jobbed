@@ -35,7 +35,7 @@ Widget employeeToday(BuildContext context, User user, EmployeeProfileDto dto, Fu
   return Column(
     children: [
       dto.todayNote != null ? _buildNoteContainer(context, user, dto.todayDate, dto.todayNote) : Container(),
-      //_buildStatisticsContainer(context, dto, fillHoursFun),
+      _buildStatisticsContainer(context, dto, fillHoursFun),
     ],
   );
 }
@@ -149,19 +149,19 @@ Widget _buildStatisticsContainer(BuildContext context, EmployeeProfileDto dto, F
                 onTap: () => WorkdayUtil.showScrollableWorkTimes(context, todayDate, todayPiecework, todayWorkTimes),
               ),
             ),
-            canFillHours
-                ? Column(
-                    children: [
-                      SizedBox(height: 10),
-                      Buttons.standardButton(
-                        minWidth: 200.0,
-                        color: BLUE,
-                        title: getTranslated(context, 'fillHours'),
-                        fun: () => fillHoursFun(),
-                      ),
-                    ],
-                  )
-                : SizedBox(height: 10),
+            // canFillHours
+            //     ? Column(
+            //         children: [
+            //           SizedBox(height: 10),
+            //           Buttons.standardButton(
+            //             minWidth: 200.0,
+            //             color: BLUE,
+            //             title: getTranslated(context, 'fillHours'),
+            //             fun: () => fillHoursFun(),
+            //           ),
+            //         ],
+            //       )
+            //     : SizedBox(height: 10),
           ],
         ),
       ),
