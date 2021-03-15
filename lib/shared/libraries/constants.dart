@@ -32,3 +32,5 @@ const String SEPTEMBER = "September";
 const String OCTOBER = "October";
 const String NOVEMBER = "November";
 const String DECEMBER = "December";
+
+const String GOOGLE_MAP_API_KEY = 'AIzaSyCrRENePPPb2DEztbvO67H-sowEaPXUXAU';

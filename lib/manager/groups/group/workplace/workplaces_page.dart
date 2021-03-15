@@ -5,6 +5,7 @@ import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
+import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/workplace/dto/create_workplace_dto.dart';
@@ -27,7 +28,6 @@ import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
-import 'package:place_picker/place_picker.dart';
 import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
@@ -344,6 +344,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                     ),
                   ),
                   _buildAddGoogleMapButton(),
+                  textBlack(_workplaceLocation != null ? _workplaceLocation : getTranslated(context, 'empty')),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -395,131 +396,152 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
       child: MaterialButton(
         child: textWhiteBold(getTranslated(context, 'setWorkplaceArea')),
         color: BLUE,
-        onPressed: () async {
-          LocationResult result = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => PlacePicker("AIzaSyCrRENePPPb2DEztbvO67H-sowEaPXUXAU")));
-          if (result != null) {
-            showGeneralDialog(
-              context: context,
-              barrierColor: WHITE.withOpacity(0.95),
-              barrierDismissible: false,
-              barrierLabel: getTranslated(context, 'contact'),
-              transitionDuration: Duration(milliseconds: 400),
-              pageBuilder: (_, __, ___) {
-                return SizedBox.expand(
-                  child: StatefulBuilder(
-                    builder: (context, setState) {
-                      return WillPopScope(
-                        child: Scaffold(
-                          appBar: AppBar(
-                            iconTheme: IconThemeData(color: WHITE),
-                            backgroundColor: BRIGHTER_BLUE,
-                            elevation: 0.0,
-                            bottomOpacity: 0.0,
-                            title: textBlack(getTranslated(context, 'setWorkplaceArea')),
-                            leading: IconButton(
-                              icon: iconBlack(Icons.arrow_back),
-                              onPressed: () {
-                                onWillPop();
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ),
-                          body: GoogleMap(
-                            initialCameraPosition: new CameraPosition(target: result.latLng, zoom: 16),
-                            markers: _markersList.toSet(),
-                            onMapCreated: (controller) {
-                              this._controller = controller;
-                              LatLng currentLatLng = result.latLng;
-                              double latitude = result.latLng.latitude;
-                              double longitude = result.latLng.longitude;
-                              this._workplaceLocation = result.name + ', ' + result.locality;
-                              _controller.animateCamera(CameraUpdate.newLatLng(currentLatLng));
-                              _markersList.clear();
-                              _markersList.add(
-                                new Marker(
-                                  position: currentLatLng,
-                                  markerId: MarkerId('$latitude-$longitude'),
-                                ),
-                              );
-                              _circles.clear();
-                              _circles.add(
-                                new Circle(
-                                  circleId: CircleId('$latitude-$longitude'),
-                                  center: LatLng(latitude, longitude),
-                                  radius: _radius * 1000,
-                                ),
-                              );
-                              setState(() {});
-                            },
-                            circles: _circles,
-                            onTap: (coordinates) {
-                              _controller.animateCamera(CameraUpdate.newLatLng(coordinates));
-                              _markersList.clear();
-                              _markersList.add(
-                                new Marker(
-                                  position: coordinates,
-                                  markerId: MarkerId('${coordinates.latitude}-${coordinates.longitude}'),
-                                ),
-                              );
-                              _circles.clear();
-                              _circles.add(
-                                new Circle(
-                                  circleId: CircleId('${51.9189046}-${19.1343786}'),
-                                  center: LatLng(coordinates.latitude, coordinates.longitude),
-                                  radius: _radius * 1000,
-                                ),
-                              );
-                              setState(() {});
-                            },
-                          ),
-                          bottomNavigationBar: SafeArea(
-                            child: Container(
-                              height: 100,
-                              child: SfSlider(
-                                min: 0.01,
-                                max: 0.25,
-                                value: _radius,
-                                interval: 0.03,
-                                showTicks: true,
-                                showLabels: true,
-                                minorTicksPerInterval: 1,
-                                onChanged: (dynamic value) {
-                                  Circle circle = _circles.elementAt(0);
-                                  _circles.clear();
-                                  _circles.add(
-                                    new Circle(
-                                      circleId: CircleId('${circle.circleId}'),
-                                      center: circle.center,
-                                      radius: _radius * 1000,
-                                    ),
-                                  );
-                                  setState(() => _radius = value);
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                        onWillPop: onWillPop,
-                      );
-                    },
-                  ),
-                );
-              },
-            );
-          }
-        },
+        onPressed: () async => _handleOpenGoogleMap(),
       ),
     );
   }
 
-  Future<bool> onWillPop() async {
-    if (_markersList.isEmpty) {
-      ToastUtil.showErrorToast(getTranslated(context, 'workplaceAreaIsNotSet'));
-    } else {
-      String km = _radius.toString().substring(0, 4);
-      ToastUtil.showSuccessToast(getTranslated(context, 'workplaceAreaIsSetTo') + ' $km KM ✓');
+  _handleOpenGoogleMap() async {
+    LocationResult result = await showLocationPicker(
+      context,
+      GOOGLE_MAP_API_KEY,
+      layersButtonEnabled: true,
+      myLocationButtonEnabled: true,
+      automaticallyAnimateToCurrentLocation: true,
+    );
+    if (result != null) {
+      showGeneralDialog(
+        context: context,
+        barrierColor: WHITE.withOpacity(0.95),
+        barrierDismissible: false,
+        transitionDuration: Duration(milliseconds: 400),
+        pageBuilder: (_, __, ___) {
+          return SizedBox.expand(
+            child: StatefulBuilder(
+              builder: (context, setState) {
+                return Scaffold(
+                  appBar: AppBar(
+                    iconTheme: IconThemeData(color: WHITE),
+                    backgroundColor: Colors.white,
+                    title: text16Black(result.address),
+                    leading: IconButton(
+                      icon: iconBlack(Icons.arrow_back),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        _handleOpenGoogleMap();
+                        result = null;
+                      },
+                    ),
+                  ),
+                  body: GoogleMap(
+                    initialCameraPosition: new CameraPosition(target: result.latLng, zoom: 16),
+                    markers: _markersList.toSet(),
+                    onMapCreated: (controller) {
+                      this._controller = controller;
+                      LatLng currentLatLng = result.latLng;
+                      double latitude = result.latLng.latitude;
+                      double longitude = result.latLng.longitude;
+                      _controller.animateCamera(CameraUpdate.newLatLng(currentLatLng));
+                      _markersList.clear();
+                      _markersList.add(
+                        new Marker(
+                          position: currentLatLng,
+                          markerId: MarkerId('$latitude-$longitude'),
+                        ),
+                      );
+                      _circles.clear();
+                      _circles.add(
+                        new Circle(
+                          circleId: CircleId('$latitude-$longitude'),
+                          center: LatLng(latitude, longitude),
+                          radius: _radius * 1000,
+                          strokeColor: BLUE,
+                          fillColor: Colors.grey.withOpacity(0.5),
+                          strokeWidth: 5,
+                        ),
+                      );
+                      setState(() {});
+                    },
+                    circles: _circles,
+                    onTap: (coordinates) {
+                      _controller.animateCamera(CameraUpdate.newLatLng(coordinates));
+                      _markersList.clear();
+                      _markersList.add(
+                        new Marker(
+                          position: coordinates,
+                          markerId: MarkerId('${coordinates.latitude}-${coordinates.longitude}'),
+                        ),
+                      );
+                      _circles.clear();
+                      _circles.add(
+                        new Circle(
+                          circleId: CircleId('${51.9189046}-${19.1343786}'),
+                          center: LatLng(coordinates.latitude, coordinates.longitude),
+                          radius: _radius * 1000,
+                          strokeColor: BLUE,
+                          fillColor: Colors.grey.withOpacity(0.5),
+                          strokeWidth: 5,
+                        ),
+                      );
+                      setState(() {});
+                    },
+                  ),
+                  bottomNavigationBar: SafeArea(
+                    child: Row(
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.10,
+                          width: MediaQuery.of(context).size.width * 0.70,
+                          child: SfSlider(
+                            min: 0.01,
+                            max: 0.25,
+                            value: _radius,
+                            interval: 0.03,
+                            showTicks: true,
+                            showLabels: true,
+                            minorTicksPerInterval: 1,
+                            inactiveColor: BRIGHTER_BLUE,
+                            activeColor: BLUE,
+                            onChanged: (dynamic value) {
+                              Circle circle = _circles.elementAt(0);
+                              _circles.clear();
+                              _circles.add(
+                                new Circle(
+                                  circleId: CircleId('${circle.circleId}'),
+                                  center: circle.center,
+                                  radius: _radius * 1000,
+                                  strokeColor: BLUE,
+                                  fillColor: Colors.grey.withOpacity(0.5),
+                                  strokeWidth: 5,
+                                ),
+                              );
+                              setState(() => _radius = value);
+                            },
+                          ),
+                        ),
+                        MaterialButton(
+                          elevation: 0,
+                          height: 50,
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[iconWhite(Icons.check)],
+                          ),
+                          color: BLUE,
+                          onPressed: () {
+                            Navigator.pop(this.context);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        },
+      );
     }
-    return true;
   }
 
   _handleAddWorkplace(String workplaceName) {
