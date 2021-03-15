@@ -9,7 +9,7 @@ class RadioButton {
       value: value,
       groupValue: groupValue,
       onChanged: onChanged,
-      title: textBlack(title),
+      title: text18Black(title),
     );
   }
 }

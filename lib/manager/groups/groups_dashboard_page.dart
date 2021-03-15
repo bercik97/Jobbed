@@ -302,6 +302,21 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
             child: textCenter19Black(getTranslated(context, 'loggedSuccessButNoGroups')),
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.only(right: 30, left: 30, top: 40),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              icon50Orange(Icons.assignment_late_outlined),
+              SizedBox(width: 5),
+              text50Orange(getTranslated(context, 'remember')),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(right: 30, left: 30, top: 10),
+          child: textCenter18Blue(getTranslated(context, 'employeesCanCreateTheirAccountsByToken')),
+        ),
       ],
     );
   }

@@ -118,8 +118,12 @@ class _WorkTimePageState extends State<WorkTimePage> {
         appBar: managerAppBar(context, _user, getTranslated(context, 'workTimes'), () => NavigatorUtil.navigateReplacement(context, GroupPage(_model))),
         body: Column(
           children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 10),
+              child: text18Black(getTranslated(context, 'workTimePageTitle')),
+            ),
             Container(
-              padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
+              padding: EdgeInsets.all(10),
               child: TextFormField(
                 autofocus: false,
                 autocorrect: true,
@@ -637,7 +641,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                           padding: EdgeInsets.only(top: 50, bottom: 10),
                           child: Column(
                             children: [
-                              textCenter20BlueBold(title),
+                              textCenter25BlueBold(title),
                             ],
                           ),
                         ),

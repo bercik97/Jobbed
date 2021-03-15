@@ -96,6 +96,8 @@ Text text16BlueGrey(String text) { return Text(text, style: GoogleFonts.lato(col
 /*    TEXT BLUE   */
 /////////////////////
 Text textBlue(String text) { return Text(text, style: GoogleFonts.lato(color: BLUE)); }
+Text text20Blue(String text) { return Text(text, style: GoogleFonts.lato(color: BLUE, fontSize: 20)); }
+Text text30Blue(String text) { return Text(text, style: GoogleFonts.lato(color: BLUE, fontSize: 30)); }
 
 
 /////////////////////////////////
@@ -107,7 +109,7 @@ Text text20BlueUnderline(String text) { return Text(text, style: GoogleFonts.lat
 ////////////////////////////
 /*    TEXT CENTER BLUE   */
 ////////////////////////////
-Text textCenter18Blue(String text) { return Text(text, textAlign: TextAlign.center, style: GoogleFonts.lato(fontSize: 18, color: BLUE)); }
+Text textCenter18Blue(String text) { return Text(text, textAlign: TextAlign.center, style: GoogleFonts.lato(fontSize: 19, color: Colors.black)); }
 
 
 ////////////////////////////
@@ -118,6 +120,7 @@ Text textCenter15BlueBold(String text) { return Text(text, textAlign: TextAlign.
 Text textCenter16BlueBold(String text) { return Text(text, textAlign: TextAlign.center, style: GoogleFonts.lato(fontSize: 16, color: BLUE, fontWeight: FontWeight.bold)); }
 Text textCenter17BlueBold(String text) { return Text(text, textAlign: TextAlign.center, style: GoogleFonts.lato(fontSize: 17, color: BLUE, fontWeight: FontWeight.bold)); }
 Text textCenter20BlueBold(String text) { return Text(text, textAlign: TextAlign.center, style: GoogleFonts.lato(fontSize: 20, color: BLUE, fontWeight: FontWeight.bold)); }
+Text textCenter25BlueBold(String text) { return Text(text, textAlign: TextAlign.center, style: GoogleFonts.lato(fontSize: 25, color: BLUE, fontWeight: FontWeight.bold)); }
 
 
 /////////////////////
@@ -148,6 +151,12 @@ Text text20RedBold(String text) { return Text(text, style: GoogleFonts.lato(font
 /* TEXT CENTER RED */
 /////////////////////
 Text textCenter15Red(String text) { return Text(text, textAlign: TextAlign.center, style: GoogleFonts.lato(fontSize: 15, color: Colors.red)); }
+
+
+/////////////////////
+/*   TEXT ORANGE   */
+/////////////////////
+Text text50Orange(String text) { return Text(text, style: GoogleFonts.lato(color: BLUE, fontSize: 25, fontWeight: FontWeight.bold)); }
 
 
 /////////////////////

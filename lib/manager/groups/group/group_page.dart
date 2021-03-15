@@ -97,7 +97,7 @@ class _GroupPageState extends State<GroupPage> {
                             color: BRIGHTER_BLUE,
                             child: InkWell(
                               onTap: () => NavigatorUtil.navigate(context, EmployeesSettingsPage(_model)),
-                              child: _buildScrollableContainer('images/employees-settings.png', 'settings', 'employeesSettingsDescription'),
+                              child: _buildScrollableContainer('images/employees-settings.png', 'permissions', 'permissionsDescription'),
                             ),
                           ),
                         ),
@@ -154,7 +154,7 @@ class _GroupPageState extends State<GroupPage> {
                             color: BRIGHTER_BLUE,
                             child: InkWell(
                               onTap: () => NavigatorUtil.navigate(context, PieceworkPage(_model)),
-                              child: _buildScrollableContainer('images/piecework.png', 'pieceworks', 'pieceworks'),
+                              child: _buildScrollableContainer('images/piecework.png', 'pieceworks', 'pieceworksDescription'),
                             ),
                           ),
                         ),

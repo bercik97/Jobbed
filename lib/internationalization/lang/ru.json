@@ -676,5 +676,16 @@
   "successfullyUpdatedNote": "Successfully updated note",
   "allEmployeesOfTheCompanyAreCurrentlyInThisGroup": "All employees of the company are currently in this group",
   "disk": "Disk",
-  "moneyForPieceworkToday": "Today money for accord"
+  "moneyForPieceworkToday": "Today money for accord",
+  "remember": "Remember",
+  "employeesCanCreateTheirAccountsByToken": "Employees can create their accounts using token that bas been shared",
+  "permissions": "Permissions",
+  "permissionsDescription": "Przydzielaj uprawnienia oraz ustalaj stawki",
+  "pieceworksDescription": "Zarządzaj pracami na akord",
+  "permissionPageTitle": "W tym miejscu możesz ustalać stawki pracowników oraz przydzielać im uprawnienia do samodzielnego korzystania z wybranych funkcji",
+  "workTimePageTitle": "W tym miejscu, możesz wykonywać wszystkie operacje związane z czasem pracy pracowników",
+  "day": "Day",
+  "workplacePageTitle": "W tym miejscu, możesz dodawać obiekty oraz ich poszczególne części wraz z lokalizacją GPS w celu monitorowania czasu pracy",
+  "warehousePageTitle": "W tym miejscu możesz dodać magazyn, w którym składowane są przedmioty",
+  "itemPlacePageTitle": "Tutaj możesz dodać miejsca, w których znajdują się przedmioty wydane z magazynu"
 }

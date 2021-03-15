@@ -390,7 +390,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
             context,
             getTranslated(context, 'iconsLegend'),
             [
-              IconsLegendUtil.buildImageRow('images/letters/male/unknown_letter.png', getTranslated(context, 'employeeProfile')),
+              IconsLegendUtil.buildImageRow('images/letters/male/A.png', getTranslated(context, 'employeeProfile')),
               IconsLegendUtil.buildImageRow('images/hours.png', getTranslated(context, 'manualSettingOfWorkingTimes')),
               IconsLegendUtil.buildImageWithIconRow('images/hours.png', iconRed(Icons.close), getTranslated(context, 'deletingWork')),
               IconsLegendUtil.buildImageRow('images/piecework.png', getTranslated(context, 'settingPiecework')),

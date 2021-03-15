@@ -8,7 +8,7 @@ class IconsLegendUtil {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image(height: 25, image: AssetImage(imagePath)),
+          Image(height: 30, image: AssetImage(imagePath)),
           SizedBox(width: 5),
           text18Black(text),
         ],

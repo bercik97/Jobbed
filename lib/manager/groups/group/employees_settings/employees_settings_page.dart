@@ -97,6 +97,10 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
             onRefresh: _refresh,
             child: Column(
               children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 10),
+                  child: text18Black(getTranslated(context, 'permissionPageTitle')),
+                ),
                 Container(
                   padding: EdgeInsets.all(10),
                   child: TextFormField(

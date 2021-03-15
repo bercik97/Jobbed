@@ -135,7 +135,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                     : Expanded(
                         child: Container(
                           child: HorizontalDataTable(
-                            leftHandSideColumnWidth: 90,
+                            leftHandSideColumnWidth: 100,
                             rightHandSideColumnWidth: 305,
                             isFixedHeader: true,
                             headerWidgets: _buildTitleWidget(),
@@ -199,25 +199,29 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     return [
       Container(
         height: 50,
-        child: CheckboxListTile(
-          contentPadding: EdgeInsets.only(left: 1),
-          controlAffinity: ListTileControlAffinity.leading,
-          title: textBlackBold('No'),
-          activeColor: BLUE,
-          checkColor: WHITE,
-          value: selectedIds.length == workdays.length,
-          onChanged: (bool value) {
-            setState(() {
-              _checked.clear();
-              if (value) {
-                selectedIds.addAll(workdays.map((e) => e.id));
-                workdays.forEach((e) => _checked.add(true));
-              } else {
-                selectedIds.clear();
-                workdays.forEach((e) => _checked.add(false));
-              }
-            });
-          },
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 28),
+          child: CheckboxListTile(
+            contentPadding: EdgeInsets.only(left: 1),
+            controlAffinity: ListTileControlAffinity.leading,
+            title: textBlackBold(getTranslated(context, 'day')),
+            subtitle: textBlackBold(' '),
+            activeColor: BLUE,
+            checkColor: WHITE,
+            value: selectedIds.length == workdays.length,
+            onChanged: (bool value) {
+              setState(() {
+                _checked.clear();
+                if (value) {
+                  selectedIds.addAll(workdays.map((e) => e.id));
+                  workdays.forEach((e) => _checked.add(true));
+                } else {
+                  selectedIds.clear();
+                  workdays.forEach((e) => _checked.add(false));
+                }
+              });
+            },
+          ),
         ),
       ),
       DataTableUtil.buildTitleItemWidget(getTranslated(context, 'hours'), 75),
