@@ -102,12 +102,21 @@ class _GroupPageState extends State<GroupPage> {
                           ),
                         ),
                         SizedBox(width: 10),
+                        // Expanded(
+                        //   child: Material(
+                        //     color: BRIGHTER_BLUE,
+                        //     child: InkWell(
+                        //       onTap: () => NavigatorUtil.navigate(context, SchedulePage(_model)),
+                        //       child: _buildScrollableContainer('images/calendar.png', 'schedule', 'checkSchedule'),
+                        //     ),
+                        //   ),
+                        // ),
                         Expanded(
                           child: Material(
                             color: BRIGHTER_BLUE,
                             child: InkWell(
-                              onTap: () => NavigatorUtil.navigate(context, SchedulePage(_model)),
-                              child: _buildScrollableContainer('images/calendar.png', 'schedule', 'checkSchedule'),
+                              onTap: () => NavigatorUtil.navigate(context, TsPage(_model)),
+                              child: _buildScrollableContainer('images/timesheet.png', 'timesheets', 'fillHoursPieceworks'),
                             ),
                           ),
                         ),
@@ -161,30 +170,30 @@ class _GroupPageState extends State<GroupPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Material(
-                            color: BRIGHTER_BLUE,
-                            child: InkWell(
-                              onTap: () => NavigatorUtil.navigate(context, TsPage(_model)),
-                              child: _buildScrollableContainer('images/timesheet.png', 'timesheets', 'fillHoursPieceworks'),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: Material(
-                            color: BRIGHTER_BLUE,
-                            child: InkWell(
-                              onTap: () {},
-                              child: _buildScrollableContainer('images/plumko.png', 'disk', 'disk'),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    // SizedBox(height: 10),
+                    // Row(
+                    //   children: <Widget>[
+                    //     Expanded(
+                    //       child: Material(
+                    //         color: BRIGHTER_BLUE,
+                    //         child: InkWell(
+                    //           onTap: () => NavigatorUtil.navigate(context, TsPage(_model)),
+                    //           child: _buildScrollableContainer('images/timesheet.png', 'timesheets', 'fillHoursPieceworks'),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     SizedBox(width: 10),
+                    //     Expanded(
+                    //       child: Material(
+                    //         color: BRIGHTER_BLUE,
+                    //         child: InkWell(
+                    //           onTap: () {},
+                    //           child: _buildScrollableContainer('images/plumko.png', 'disk', 'disk'),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                     SizedBox(height: 10),
                     Row(
                       children: <Widget>[
