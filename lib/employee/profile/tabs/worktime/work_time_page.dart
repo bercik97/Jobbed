@@ -582,8 +582,8 @@ class _WorkTimePageState extends State<WorkTimePage> {
       double longitude = _locationData.longitude;
       _workTimeService.canFinishByIdAndLocationParams(workTime.id, latitude, longitude).then((res) {
         Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-          _showPauseWorkByGPSConfirmDialog(res);
           setState(() => _isPauseWorkButtonTapped = false);
+          _showPauseWorkByGPSConfirmDialog(res);
         });
       }).catchError((onError) {
         Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
