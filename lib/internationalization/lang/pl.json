@@ -696,5 +696,6 @@
   "loggedInButNoGroupsHint": "Jeżeli zarządzasz tylko jedną grupą pracowników, możesz stworzyć grupę o takiej samej nazwie jak Twoja firma. Obiekty oraz miejsca prac i wykonywanych usług dodawane są później, oraz nie są zależne od grupy.",
   "noPriceListsInPieceworkPageHint": "Wygląda na to, że nie posiadasz dodanego cennika. Przejdź do modułu cennika aby dodać usługi.",
   "workplaceLocationIsNotSet": "Lokalizacja miejsca pracy nie została ustawiona",
-  "areYouSureYouWantToAddNewWorkplace": "Czy na pewno chcesz dodać nowe miejsce pracy?"
+  "areYouSureYouWantToAddNewWorkplace": "Czy na pewno chcesz dodać nowe miejsce pracy?",
+  "rememberSetLocationHint": "Pamiętaj, że GPS w telefonach komórkowych może działać z różną dokładnością, dlatego zalecene jest, aby ustawić większy promień zasięgu GPS"
 }

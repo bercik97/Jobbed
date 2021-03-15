@@ -28,6 +28,7 @@ import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
+import 'package:jobbed/shared/widget/warn_hint.dart';
 import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
@@ -440,7 +441,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                   appBar: AppBar(
                     iconTheme: IconThemeData(color: WHITE),
                     backgroundColor: Colors.white,
-                    title: text16Black(result.address),
+                    title: text16Black(result.address != null ? result.address : getTranslated(context, 'empty')),
                     leading: IconButton(
                       icon: iconBlack(Icons.arrow_back),
                       onPressed: () {
@@ -451,6 +452,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                     ),
                   ),
                   body: GoogleMap(
+                    myLocationButtonEnabled: false,
                     initialCameraPosition: new CameraPosition(target: result.latLng, zoom: 16),
                     markers: _markersList.toSet(),
                     onMapCreated: (controller) {
@@ -553,6 +555,8 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                       ],
                     ),
                   ),
+                  floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+                  floatingActionButton: warnHint(this.context, getTranslated(this.context, 'rememberSetLocationHint')),
                 );
               },
             ),
