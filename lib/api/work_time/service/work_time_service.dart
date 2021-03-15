@@ -22,8 +22,8 @@ class WorkTimeService {
     return res.statusCode == 200 ? res : Future.error(res.body);
   }
 
-  Future<dynamic> saveForEmployees(List<String> employeeIds, String workplaceId, int year, int month, String dateFrom, String dateTo, String startTime, String endTime) async {
-    Map<String, dynamic> map = {'workplaceId': workplaceId, 'year': year, 'month': month, 'dateFrom': dateFrom, 'dateTo': dateTo, 'startTime': startTime, 'endTime': endTime};
+  Future<dynamic> saveForEmployees(List<String> employeeIds, String workplaceId, String dateFrom, String dateTo, String startTime, String endTime) async {
+    Map<String, dynamic> map = {'workplaceId': workplaceId, 'dateFrom': dateFrom, 'dateTo': dateTo, 'startTime': startTime, 'endTime': endTime};
     Response res = await post('$_url/employees/$employeeIds', body: jsonEncode(map), headers: _headers);
     if (res.statusCode == 200) {
       return res;

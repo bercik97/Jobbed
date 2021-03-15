@@ -731,7 +731,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
 
   void _handleSaveWorkTimesManually(int year, int month, String dateFrom, String dateTo, String startTime, String endTime) {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workTimeService.saveForEmployees(_selectedIds.map((el) => el.toString()).toList(), _workplaces[_chosenIndex].id, year, month, dateFrom, dateTo, startTime, endTime).then((value) {
+    _workTimeService.saveForEmployees(_selectedIds.map((el) => el.toString()).toList(), _workplaces[_chosenIndex].id, dateFrom, dateTo, startTime, endTime).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _uncheckAll();
         _refresh();
