@@ -62,10 +62,11 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
   List<Marker> _markersList = new List();
   Set<Circle> _circles = new Set();
 
-  double _radius = 0.01;
-  String _workplaceLocation;
-
   ScrollController _scrollController = new ScrollController();
+
+  TextEditingController _nameController = new TextEditingController();
+  TextEditingController _locationController = new TextEditingController();
+  TextEditingController _radiusController = new TextEditingController(text: '0.01');
 
   @override
   void initState() {
@@ -308,7 +309,6 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
   }
 
   void _addWorkplace(BuildContext context) {
-    TextEditingController _workplaceController = new TextEditingController();
     showGeneralDialog(
       context: context,
       barrierColor: WHITE.withOpacity(0.95),
@@ -326,25 +326,49 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                   Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'createWorkplace'))),
                   SizedBox(height: 20),
                   Padding(
-                    padding: EdgeInsets.only(left: 25, right: 25),
+                    padding: const EdgeInsets.only(left: 30, right: 30),
                     child: TextFormField(
                       autofocus: true,
-                      controller: _workplaceController,
+                      controller: _nameController,
                       keyboardType: TextInputType.text,
-                      maxLength: 200,
-                      maxLines: 5,
+                      maxLength: 50,
+                      maxLines: 1,
                       cursorColor: BLACK,
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: BLACK),
                       decoration: InputDecoration(
                         counterStyle: TextStyle(color: BLACK),
+                        hintText: getTranslated(context, 'workplaceName'),
+                        hintStyle: TextStyle(color: Colors.blueGrey),
                         focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
                       ),
                     ),
                   ),
-                  _buildAddGoogleMapButton(),
-                  textBlack(_workplaceLocation != null ? _workplaceLocation : getTranslated(context, 'empty')),
+                  Padding(
+                    padding: EdgeInsets.only(left: 30, right: 30, bottom: 30),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.70,
+                          child: TextFormField(
+                            controller: _locationController,
+                            maxLines: 2,
+                            cursorColor: BLACK,
+                            enabled: false,
+                            textAlignVertical: TextAlignVertical.center,
+                            style: TextStyle(color: BLACK),
+                            decoration: InputDecoration(
+                              hintText: getTranslated(context, 'workplaceLocationIsNotSet'),
+                              hintStyle: _locationController.text.isEmpty ? TextStyle(color: Colors.blueGrey) : TextStyle(color: BLUE),
+                            ),
+                          ),
+                        ),
+                        IconButton(icon: icon50Green(Icons.add), onPressed: () => _handleOpenGoogleMap()),
+                      ],
+                    ),
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -362,9 +386,13 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                         color: Colors.red,
                         onPressed: () {
                           Navigator.pop(context);
-                          _markersList.clear();
-                          _circles.clear();
-                          _radius = 0;
+                          setState(() {
+                            _markersList.clear();
+                            _circles.clear();
+                            _nameController.clear();
+                            _locationController.clear();
+                            _radiusController.text = '0.00';
+                          });
                         },
                       ),
                       SizedBox(width: 25),
@@ -377,7 +405,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                           children: <Widget>[iconWhite(Icons.check)],
                         ),
                         color: BLUE,
-                        onPressed: () => _isAddButtonTapped ? null : _handleAddWorkplace(_workplaceController.text),
+                        onPressed: () => _handleAddWorkplace(_nameController.text),
                       ),
                     ],
                   ),
@@ -387,17 +415,6 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
           ),
         );
       },
-    );
-  }
-
-  _buildAddGoogleMapButton() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10, bottom: 20),
-      child: MaterialButton(
-        child: textWhiteBold(getTranslated(context, 'setWorkplaceArea')),
-        color: BLUE,
-        onPressed: () async => _handleOpenGoogleMap(),
-      ),
     );
   }
 
@@ -454,7 +471,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                         new Circle(
                           circleId: CircleId('$latitude-$longitude'),
                           center: LatLng(latitude, longitude),
-                          radius: _radius * 1000,
+                          radius: double.parse(_radiusController.text) * 1000,
                           strokeColor: BLUE,
                           fillColor: Colors.grey.withOpacity(0.5),
                           strokeWidth: 5,
@@ -477,7 +494,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                         new Circle(
                           circleId: CircleId('${51.9189046}-${19.1343786}'),
                           center: LatLng(coordinates.latitude, coordinates.longitude),
-                          radius: _radius * 1000,
+                          radius: double.parse(_radiusController.text) * 1000,
                           strokeColor: BLUE,
                           fillColor: Colors.grey.withOpacity(0.5),
                           strokeWidth: 5,
@@ -495,7 +512,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                           child: SfSlider(
                             min: 0.01,
                             max: 0.25,
-                            value: _radius,
+                            value: double.parse(_radiusController.text),
                             interval: 0.03,
                             showTicks: true,
                             showLabels: true,
@@ -509,13 +526,13 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                 new Circle(
                                   circleId: CircleId('${circle.circleId}'),
                                   center: circle.center,
-                                  radius: _radius * 1000,
+                                  radius: double.parse(_radiusController.text) * 1000,
                                   strokeColor: BLUE,
                                   fillColor: Colors.grey.withOpacity(0.5),
                                   strokeWidth: 5,
                                 ),
                               );
-                              setState(() => _radius = value);
+                              setState(() => _radiusController.text = value.toString());
                             },
                           ),
                         ),
@@ -530,6 +547,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                           color: BLUE,
                           onPressed: () {
                             Navigator.pop(this.context);
+                            setState(() => _locationController.text = result.address);
                           },
                         ),
                       ],
@@ -545,83 +563,53 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
   }
 
   _handleAddWorkplace(String workplaceName) {
-    setState(() => _isAddButtonTapped = true);
     String invalidMessage = ValidatorUtil.validateWorkplace(workplaceName, context);
     if (invalidMessage != null) {
-      setState(() => _isAddButtonTapped = false);
       ToastUtil.showErrorToast(invalidMessage);
       return;
     }
-    CreateWorkplaceDto dto;
-    showDialog(
+    DialogUtil.showConfirmationDialog(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: WHITE,
-          title: textCenter16BlueBold(getTranslated(this.context, 'informationAboutNewWorkplace')),
-          content: SingleChildScrollView(
-            child: Column(
-              children: [
-                textCenterBlack(getTranslated(this.context, 'workplaceName') + ': '),
-                textCenter16BlueBold(workplaceName),
-                SizedBox(height: 5),
-                textCenterBlack(getTranslated(this.context, 'location') + ': '),
-                textCenter16BlueBold(_workplaceLocation != null ? _workplaceLocation : getTranslated(context, 'empty')),
-                SizedBox(height: 5),
-                textCenterBlack(getTranslated(this.context, 'workplaceAreaRadius') + ': '),
-                textCenter16BlueBold(_workplaceLocation != null && _radius != 0 ? _radius.toString().substring(0, 4) + ' KM' : getTranslated(context, 'empty')),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: textBlue(getTranslated(this.context, 'add')),
-              onPressed: () {
-                showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                Circle circle;
-                if (_circles != null && _circles.isNotEmpty) {
-                  circle = _circles.elementAt(0);
-                }
-                dto = new CreateWorkplaceDto(
-                  companyId: _user.companyId,
-                  name: workplaceName,
-                  location: _workplaceLocation,
-                  radiusLength: _workplaceLocation != null && _radius != 0 ? double.parse(_radius.toString()) : 0,
-                  latitude: circle != null ? circle.center.latitude : 0,
-                  longitude: circle != null ? circle.center.longitude : 0,
-                );
-                _workplaceService.create(dto).then((res) {
-                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    _refresh();
-                    setState(() => _isAddButtonTapped = false);
-                    ToastUtil.showSuccessToast(getTranslated(this.context, 'successfullyAddedNewWorkplace'));
-                  });
-                }).catchError((onError) {
-                  Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                    setState(() => _isAddButtonTapped = false);
-                    String errorMsg = onError.toString();
-                    if (errorMsg.contains("WORKPLACE_NAME_EXISTS")) {
-                      ToastUtil.showErrorToast(getTranslated(this.context, 'workplaceNameExists'));
-                    } else {
-                      ToastUtil.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
-                    }
-                  });
-                });
-              },
-            ),
-            FlatButton(
-              child: textRed(getTranslated(this.context, 'doNotAdd')),
-              onPressed: () {
-                Navigator.of(context).pop();
-                setState(() => _isAddButtonTapped = false);
-              },
-            ),
-          ],
-        );
-      },
+      title: getTranslated(context, 'confirmation'),
+      content: getTranslated(context, 'areYouSureYouWantToAddNewWorkplace'),
+      isBtnTapped: _isAddButtonTapped,
+      fun: () => _isAddButtonTapped ? null : _handleCreateWorkplace(),
     );
+  }
+
+  _handleCreateWorkplace() {
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    Circle circle;
+    if (_circles != null && _circles.isNotEmpty) {
+      circle = _circles.elementAt(0);
+    }
+    CreateWorkplaceDto dto = new CreateWorkplaceDto(
+      companyId: _user.companyId,
+      name: _nameController.text,
+      location: _locationController.text,
+      radiusLength: _locationController.text != null && double.parse(_radiusController.text.toString()) != 0 ? double.parse(_radiusController.text.toString()) : 0,
+      latitude: circle != null ? circle.center.latitude : 0,
+      longitude: circle != null ? circle.center.longitude : 0,
+    );
+    _workplaceService.create(dto).then((res) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        Navigator.pop(context);
+        Navigator.pop(context);
+        _refresh();
+        setState(() => _isAddButtonTapped = false);
+        ToastUtil.showSuccessToast(getTranslated(this.context, 'successfullyAddedNewWorkplace'));
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        setState(() => _isAddButtonTapped = false);
+        String errorMsg = onError.toString();
+        if (errorMsg.contains("WORKPLACE_NAME_EXISTS")) {
+          ToastUtil.showErrorToast(getTranslated(this.context, 'workplaceNameExists'));
+        } else {
+          ToastUtil.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
+        }
+      });
+    });
   }
 
   _handleDeleteByIdIn(LinkedHashSet<String> ids) {
@@ -688,8 +676,9 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
         _filteredWorkplaces = _workplaces;
         _markersList.clear();
         _circles.clear();
-        _radius = 0;
-        _workplaceLocation = null;
+        _nameController.clear();
+        _locationController.clear();
+        _radiusController.text = '0.00';
         _isChecked = false;
         _loading = false;
       });
