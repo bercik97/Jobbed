@@ -314,7 +314,6 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
       context: context,
       barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'workplace'),
       transitionDuration: Duration(milliseconds: 400),
       pageBuilder: (_, __, ___) {
         return SizedBox.expand(
@@ -327,20 +326,18 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                   Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'createWorkplace'))),
                   SizedBox(height: 20),
                   Padding(
-                    padding: const EdgeInsets.only(left: 30, right: 30),
+                    padding: EdgeInsets.only(left: 25, right: 25),
                     child: TextFormField(
                       autofocus: true,
                       controller: _nameController,
                       keyboardType: TextInputType.text,
-                      maxLength: 50,
-                      maxLines: 1,
+                      maxLength: 200,
+                      maxLines: 5,
                       cursorColor: BLACK,
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: BLACK),
                       decoration: InputDecoration(
                         counterStyle: TextStyle(color: BLACK),
-                        hintText: getTranslated(context, 'workplaceName'),
-                        hintStyle: TextStyle(color: Colors.blueGrey),
                         focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
                       ),
