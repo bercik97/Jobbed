@@ -22,6 +22,18 @@ class WorkTimeService {
     return res.statusCode == 200 ? res : Future.error(res.body);
   }
 
+  Future<dynamic> saveForWorkdays(List<String> workdayIds, String workplaceId, String startTime, String endTime) async {
+    Map<String, dynamic> map = {'workplaceId': workplaceId, 'startTime': startTime, 'endTime': endTime};
+    Response res = await post('$_url/workdays/$workdayIds', body: jsonEncode(map), headers: _headers);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return LogoutUtil.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
   Future<dynamic> saveForEmployees(List<String> employeeIds, String workplaceId, String dateFrom, String dateTo, String startTime, String endTime) async {
     Map<String, dynamic> map = {'workplaceId': workplaceId, 'dateFrom': dateFrom, 'dateTo': dateTo, 'startTime': startTime, 'endTime': endTime};
     Response res = await post('$_url/employees/$employeeIds', body: jsonEncode(map), headers: _headers);
@@ -123,6 +135,17 @@ class WorkTimeService {
 
   Future<dynamic> deleteByEmployeeIdsAndFromDateToDate(List<String> employeeIds, String dateFrom, String dateTo) async {
     Response res = await delete('$_url/employees/$employeeIds?date_from=$dateFrom&date_to=$dateTo', headers: _headers);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return LogoutUtil.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> deleteByWorkdayIds(List<String> workdayIds) async {
+    Response res = await delete('$_url/workdays/$workdayIds', headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {

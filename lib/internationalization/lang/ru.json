@@ -687,5 +687,8 @@
   "day": "Day",
   "workplacePageTitle": "W tym miejscu, możesz dodawać obiekty oraz ich poszczególne części wraz z lokalizacją GPS w celu monitorowania czasu pracy",
   "warehousePageTitle": "W tym miejscu możesz dodać magazyn, w którym składowane są przedmioty",
-  "itemPlacePageTitle": "Tutaj możesz dodać miejsca, w których znajdują się przedmioty wydane z magazynu"
+  "itemPlacePageTitle": "Tutaj możesz dodać miejsca, w których znajdują się przedmioty wydane z magazynu",
+  "setWorkTimeForEmployee": "Ustaw czas pracy dla pracownika",
+  "deleteWorkForSingleEmployeeConfirmation": "Are you sure you want to delete work times of selected days?",
+  "workingTimeHasBeenSuccessfullySetForSelectedDays": "Working time has been successfully set for selected days"
 }
