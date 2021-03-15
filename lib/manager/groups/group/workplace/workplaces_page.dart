@@ -513,7 +513,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                             min: 0.01,
                             max: 0.25,
                             value: double.parse(_radiusController.text),
-                            interval: 0.03,
+                            interval: 0.08,
                             showTicks: true,
                             showLabels: true,
                             minorTicksPerInterval: 1,
