@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:jobbed/api/company/service/company_service.dart';
 import 'package:jobbed/api/employee/dto/create_basic_employee_dto.dart';
 import 'package:jobbed/api/employee/service/employee_service.dart';
 import 'package:jobbed/api/group/dto/group_dashboard_dto.dart';
@@ -46,6 +47,7 @@ class GroupsDashboardPage extends StatefulWidget {
 
 class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
   User _user;
+  CompanyService _companyService;
   GroupService _groupService;
   EmployeeService _employeeService;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -69,18 +71,31 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
   CreateBasicEmployeeDto dto;
 
   bool _loading = false;
+  bool _areEmployeesExists = true;
 
   @override
   void initState() {
     super.initState();
     this._user = widget._user;
+    this._companyService = ServiceInitializer.initialize(context, _user.authHeader, CompanyService);
     this._groupService = ServiceInitializer.initialize(context, _user.authHeader, GroupService);
     this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
     this._loading = true;
     _groupService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
         _groups = res;
-        _loading = false;
+        if (_groups.isNotEmpty) {
+          _loading = false;
+        } else {
+          _companyService.exitsEmployeeInCompany(_user.companyId).then((res) {
+            setState(() {
+              if (res) {
+                _areEmployeesExists = false;
+              }
+              _loading = false;
+            });
+          });
+        }
       });
     });
   }
@@ -139,7 +154,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                     ? circularProgressIndicator()
                     : _groups != null && _groups.isNotEmpty
                         ? _handleGroups()
-                        : _handleNoGroups(),
+                        : _handleNoData(),
               ],
             ),
           ),
@@ -285,7 +300,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
     );
   }
 
-  Widget _handleNoGroups() {
+  Widget _handleNoData() {
     return Column(
       children: <Widget>[
         Padding(
@@ -299,7 +314,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
           padding: EdgeInsets.only(right: 30, left: 30, top: 10),
           child: Align(
             alignment: Alignment.center,
-            child: textCenter19Black(getTranslated(context, 'loggedSuccessButNoGroups')),
+            child: textCenter19Black(_areEmployeesExists ? getTranslated(context, 'loggedSuccessButNoEmployees') : getTranslated(context, 'loggedSuccessButNoGroup')),
           ),
         ),
         Padding(
@@ -315,7 +330,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
         ),
         Padding(
           padding: EdgeInsets.only(right: 30, left: 30, top: 10),
-          child: textCenter18Blue(getTranslated(context, 'employeesCanCreateTheirAccountsByToken')),
+          child: textCenter18Blue(_areEmployeesExists ? getTranslated(context, 'employeesCanCreateTheirAccountsByToken') : getTranslated(context, 'loggedInButNoGroupsHint')),
         ),
       ],
     );
@@ -667,6 +682,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
         _passwordController.clear();
         _nameController.clear();
         _surnameController.clear();
+        _refresh();
         setState(() {
           _nationality = '';
           _genderRadioValue = -1;
@@ -692,7 +708,18 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
     return _groupService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
         _groups = res;
-        _loading = false;
+        if (_groups.isNotEmpty) {
+          _loading = false;
+        } else {
+          _companyService.exitsEmployeeInCompany(_user.companyId).then((res) {
+            setState(() {
+              if (res) {
+                _areEmployeesExists = false;
+              }
+              _loading = false;
+            });
+          });
+        }
       });
     });
   }

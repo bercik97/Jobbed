@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:jobbed/api/company/service/company_service.dart';
 import 'package:jobbed/api/employee/service/employee_service.dart';
 import 'package:jobbed/api/employee/service/employee_unauthenticated_service.dart';
 import 'package:jobbed/api/excel/service/excel_service.dart';
@@ -30,6 +31,7 @@ class ServiceInitializer {
       "content-type": "application/json"
     };
     switch (obj.toString()) {
+      case 'CompanyService': return new CompanyService(context, header, headers);
       case 'EmployeeService': return new EmployeeService(context, header, headers);
       case 'EmployeeUnauthenticatedService': return new EmployeeUnauthenticatedService();
       case 'ExcelService': return new ExcelService(context, header);

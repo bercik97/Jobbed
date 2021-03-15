@@ -152,7 +152,7 @@
   "privacyPolicy": "კონფიდენციალურობის პოლიტიკა",
   "profile": "პროფილი",
   "welcome": "მოგესალმებით",
-  "loggedSuccessButNoGroups": "თქვენ წარმატებით შეხვედით, მაგრამ, როგორც ჩანს, ჯგუფები არ შეგიქმნით. ჯგუფის შესაქმნელად, გთხოვთ, აირჩიოთ ეკრანის ქვედა ღილაკი.",
+  "loggedSuccessButNoEmployees": "თქვენ წარმატებით შეხვედით, მაგრამ, როგორც ჩანს, ჯგუფები არ შეგიქმნით. ჯგუფის შესაქმნელად, გთხოვთ, აირჩიოთ ეკრანის ქვედა ღილაკი.",
   "manageEmployeesWorkTime": "თანამშრომლების სამუშაო დროის მართვა",
   "fillHoursPieceworks": "შეავსეთ საათები, ნაჭერი და ა.შ.",
   "inProgressTimesheets": "მიმდინარე ფურცლები",
@@ -691,5 +691,7 @@
   "setWorkTimeForEmployee": "Ustaw czas pracy dla pracownika",
   "deleteWorkForSingleEmployeeConfirmation": "Are you sure you want to delete work times of selected days?",
   "workingTimeHasBeenSuccessfullySetForSelectedDays": "Working time has been successfully set for selected days",
-  "pieceworkPageTitle": "W tym miejscu, możesz dodawać akordy pracowników na podstawie cennika"
+  "pieceworkPageTitle": "W tym miejscu, możesz dodawać akordy pracowników na podstawie cennika",
+  "loggedSuccessButNoGroup": "Wygląda na to, że w twojej firmie widnieją już konta pracownicze. Aby rozpocząć zarządzanie, należy ich dodać do odpowiednich grup. Grupa, jest to zbiór pracowników, którymi możesz dowolnie zarządzać. Tworzenie grupy następuje poprzez kliknięcie przycisku na dole ekranu",
+  "loggedInButNoGroupsHint": "Jeżeli zarządzasz tylko jedną grupą pracowników, możesz stworzyć grupę o takiej samej nazwie jak Twoja firma. Obiekty oraz miejsca prac i wykonywanych usług dodawane są później, oraz nie są zależne od grupy."
 }

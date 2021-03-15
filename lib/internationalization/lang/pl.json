@@ -152,7 +152,7 @@
   "privacyPolicy": "Polityka prywatności",
   "profile": "Profil",
   "welcome": "Witaj",
-  "loggedSuccessButNoGroups": "Udało Ci się zalogować, jednak wygląda na to że konta pracowników nie zostały jeszcze utworzone. Aby stworzyć konto pracownika, wybierz proszę przycisk znajdujacy się na dole ekranu",
+  "loggedSuccessButNoEmployees": "Udało Ci się zalogować, jednak wygląda na to że konta pracowników nie zostały jeszcze utworzone. Aby stworzyć konto pracownika, wybierz proszę przycisk znajdujacy się na dole ekranu",
   "manageEmployeesWorkTime": "Zarządzaj czasem pracy pracowników",
   "fillHoursPieceworks": "Dokonuj poprawek w danym arkuszu i generuj plik excel",
   "inProgressTimesheets": "Arkusze czasu pracy w toku",
@@ -691,5 +691,7 @@
   "setWorkTimeForEmployee": "Ustaw czas pracy dla pracownika",
   "deleteWorkForSingleEmployeeConfirmation": "Czy na pewno chcesz usunąć czasy pracy dla wybranych dni?",
   "workingTimeHasBeenSuccessfullySetForSelectedDays": "Czas pracy został pomyślnie ustawiony dla wybranych dni",
-  "pieceworkPageTitle": "W tym miejscu, możesz dodawać akordy pracowników na podstawie cennika"
+  "pieceworkPageTitle": "W tym miejscu, możesz dodawać akordy pracowników na podstawie cennika",
+  "loggedSuccessButNoGroup": "Wygląda na to, że w twojej firmie widnieją już konta pracownicze. Aby rozpocząć zarządzanie, należy ich dodać do odpowiednich grup. Grupa, jest to zbiór pracowników, którymi możesz dowolnie zarządzać. Tworzenie grupy następuje poprzez kliknięcie przycisku na dole ekranu",
+  "loggedInButNoGroupsHint": "Jeżeli zarządzasz tylko jedną grupą pracowników, możesz stworzyć grupę o takiej samej nazwie jak Twoja firma. Obiekty oraz miejsca prac i wykonywanych usług dodawane są później, oraz nie są zależne od grupy."
 }
