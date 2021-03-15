@@ -693,5 +693,6 @@
   "workingTimeHasBeenSuccessfullySetForSelectedDays": "Working time has been successfully set for selected days",
   "pieceworkPageTitle": "W tym miejscu, możesz dodawać akordy pracowników na podstawie cennika",
   "loggedSuccessButNoGroup": "Wygląda na to, że w twojej firmie widnieją już konta pracownicze. Aby rozpocząć zarządzanie, należy ich dodać do odpowiednich grup. Grupa, jest to zbiór pracowników, którymi możesz dowolnie zarządzać. Tworzenie grupy następuje poprzez kliknięcie przycisku na dole ekranu",
-  "loggedInButNoGroupsHint": "Jeżeli zarządzasz tylko jedną grupą pracowników, możesz stworzyć grupę o takiej samej nazwie jak Twoja firma. Obiekty oraz miejsca prac i wykonywanych usług dodawane są później, oraz nie są zależne od grupy."
+  "loggedInButNoGroupsHint": "Jeżeli zarządzasz tylko jedną grupą pracowników, możesz stworzyć grupę o takiej samej nazwie jak Twoja firma. Obiekty oraz miejsca prac i wykonywanych usług dodawane są później, oraz nie są zależne od grupy.",
+  "noPriceListsInPieceworkPageHint": "You seem to have no price list services added.\nGo to price list module and add some services."
 }

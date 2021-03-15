@@ -81,7 +81,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
         _priceLists.forEach((i) => _textEditingItemControllers[utf8.decode(i.name.runes.toList())] = new TextEditingController());
         _loading = false;
       });
-    }).catchError((onError) => DialogUtil.showFailureDialogWithWillPopScope(context, getTranslated(context, 'noPriceList'), _timeSheet != null ? TsInProgressPage(_model, _timeSheet) : PieceworkPage(_model)));
+    });
   }
 
   @override
@@ -93,27 +93,28 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
       home: Scaffold(
         backgroundColor: WHITE,
         appBar: managerAppBar(context, _user, getTranslated(context, 'piecework'), () => Navigator.pop(context)),
-        body: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: text20Black(getTranslated(context, 'pieceworkForSelectedWorkdaysAndEmployees')),
-                ),
+        body: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 10),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: text20Black(getTranslated(context, 'pieceworkForSelectedWorkdaysAndEmployees')),
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 5, left: 15, bottom: 10),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: text20BlueBold(_dateFrom + ' - ' + _dateTo),
-                ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 5, left: 15, bottom: 10),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: text20BlueBold(_dateFrom + ' - ' + _dateTo),
               ),
-              _loading ? circularProgressIndicator() : _buildPriceList(),
-            ],
-          ),
+            ),
+            _loading
+                ? circularProgressIndicator()
+                : _priceLists != null && _priceLists.isNotEmpty
+                    ? _buildPriceList()
+                    : _handleNoPriceList()
+          ],
         ),
         bottomNavigationBar: _buildBottomNavigationBar(),
       ),
@@ -203,7 +204,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
                 children: <Widget>[iconWhite(Icons.close)],
               ),
               color: Colors.red,
-              onPressed: () => NavigatorUtil.navigateReplacement(context, TsInProgressPage(_model, _timeSheet)),
+              onPressed: () => NavigatorUtil.navigateReplacement(context, _timeSheet != null ? TsInProgressPage(_model, _timeSheet) : PieceworkPage(_model)),
             ),
             SizedBox(width: 25),
             MaterialButton(
@@ -248,5 +249,20 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
         setState(() => _isAddButtonTapped = false);
       });
     });
+  }
+
+  _handleNoPriceList() {
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(top: 20),
+          child: Align(alignment: Alignment.center, child: text20BlueBold(getTranslated(this.context, 'noPriceLists'))),
+        ),
+        Padding(
+          padding: EdgeInsets.only(right: 30, left: 30, top: 10),
+          child: Align(alignment: Alignment.center, child: textCenter19Black(getTranslated(this.context, 'noPriceListsInPieceworkPageHint'))),
+        ),
+      ],
+    );
   }
 }

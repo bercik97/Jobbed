@@ -16,7 +16,6 @@ import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
-import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
@@ -86,7 +85,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
         _priceLists.forEach((i) => _textEditingItemControllers[utf8.decode(i.name.runes.toList())] = new TextEditingController());
         _loading = false;
       });
-    }).catchError((onError) => DialogUtil.showFailureDialogWithWillPopScope(context, getTranslated(context, 'noPriceList'), EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _timesheet, _avatarPath)));
+    });
   }
 
   @override
@@ -99,24 +98,25 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
         home: Scaffold(
           backgroundColor: WHITE,
           appBar: managerAppBar(context, _user, getTranslated(context, 'piecework'), () => Navigator.pop(context)),
-          body: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Form(
-              autovalidateMode: AutovalidateMode.always,
-              key: formKey,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: text20Black(getTranslated(context, 'pieceworkForSelectedWorkdays')),
-                    ),
+          body: Form(
+            autovalidateMode: AutovalidateMode.always,
+            key: formKey,
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 10),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: text20Black(getTranslated(context, 'pieceworkForSelectedWorkdays')),
                   ),
-                  SizedBox(height: 5),
-                  _loading ? circularProgressIndicator() : _buildPriceList(),
-                ],
-              ),
+                ),
+                SizedBox(height: 5),
+                _loading
+                    ? circularProgressIndicator()
+                    : _priceLists != null && _priceLists.isNotEmpty
+                        ? _buildPriceList()
+                        : _handleNoPriceList()
+              ],
             ),
           ),
           bottomNavigationBar: _buildBottomNavigationBar(),
@@ -252,5 +252,20 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
 
   void navigateIntoEmployeeTsInProgressPage() {
     NavigatorUtil.navigateReplacement(this.context, EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _timesheet, _avatarPath));
+  }
+
+  _handleNoPriceList() {
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(top: 20),
+          child: Align(alignment: Alignment.center, child: text20BlueBold(getTranslated(this.context, 'noPriceLists'))),
+        ),
+        Padding(
+          padding: EdgeInsets.only(right: 30, left: 30, top: 10),
+          child: Align(alignment: Alignment.center, child: textCenter19Black(getTranslated(this.context, 'noPriceListsInPieceworkPageHint'))),
+        ),
+      ],
+    );
   }
 }
