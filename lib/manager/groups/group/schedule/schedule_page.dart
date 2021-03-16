@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:jobbed/api/employee/dto/employee_for_manager_schedule_dto.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
@@ -120,6 +121,24 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
       availableCalendarFormats: const {
         CalendarFormat.month: '',
         CalendarFormat.week: '',
+      },
+      onVisibleDaysChanged: (first, last, format) {
+        if (!_events.containsKey(DateTime.parse(first.toString().substring(0, 10)))) {
+          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+          _tsService.findByIdForManagerScheduleView(_model.groupId, first.year, first.month).then((res) {
+            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+              if (res.isEmpty) {
+                return;
+              }
+              setState(() {
+                res.forEach((key, value) => _events[key] = value);
+                _selectedEvents = _events[first] ?? [];
+                _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
+                _animationController.forward();
+              });
+            });
+          });
+        }
       },
       calendarStyle: CalendarStyle(
         outsideDaysVisible: false,
