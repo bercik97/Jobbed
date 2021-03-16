@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:jobbed/api/employee/dto/employee_for_manager_schedule_dto.dart';
+import 'package:jobbed/api/note/dto/note_dto.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
@@ -254,22 +255,24 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
     String name = utf8.decode(employee.name.runes.toList());
     String surname = utf8.decode(employee.surname.runes.toList());
     String nationality = employee.nationality;
+    String employeeInfo = name + ' ' + surname + ' ' + LanguageUtil.findFlagByNationality(nationality);
     String moneyForTime = employee.moneyForTime;
     String moneyForPiecework = employee.moneyForPiecework;
     List workTimes = employee.workTimes;
     List pieceworks = employee.pieceworks;
+    NoteDto noteDto = employee.note;
     return Column(
       children: [
         ListTile(
-          title: text18Black(name + ' ' + surname + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+          title: text20BlackBold(employeeInfo),
           trailing: moneyForTime != '0.000' || moneyForPiecework != '0.000' ? icon50Green(Icons.check) : icon50Red(Icons.close),
           subtitle: Column(
             children: <Widget>[
               Align(
                   child: Row(
                     children: <Widget>[
-                      textBlack(getTranslated(context, 'workTime') + ': '),
-                      textGreenBold(moneyForTime.toString() + ' PLN'),
+                      text17Black(getTranslated(context, 'workTime') + ': '),
+                      text17GreenBold(moneyForTime.toString() + ' PLN'),
                       workTimes != null && workTimes.isNotEmpty
                           ? IconButton(
                               padding: EdgeInsets.zero,
@@ -284,8 +287,8 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
               Align(
                   child: Row(
                     children: <Widget>[
-                      textBlack(getTranslated(context, 'accord') + ': '),
-                      textGreenBold(moneyForPiecework.toString() + ' PLN'),
+                      text17Black(getTranslated(context, 'accord') + ': '),
+                      text17GreenBold(moneyForPiecework.toString() + ' PLN'),
                       pieceworks != null && pieceworks.isNotEmpty
                           ? IconButton(
                               padding: EdgeInsets.zero,
@@ -300,8 +303,23 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
               Align(
                   child: Row(
                     children: <Widget>[
-                      textBlack(getTranslated(context, 'sum') + ': '),
-                      textGreenBold((double.parse(moneyForTime) + double.parse(moneyForPiecework)).toString() + ' PLN'),
+                      text17Black(getTranslated(context, 'sum') + ': '),
+                      text17GreenBold((double.parse(moneyForTime) + double.parse(moneyForPiecework)).toString() + ' PLN'),
+                    ],
+                  ),
+                  alignment: Alignment.topLeft),
+              Align(
+                  child: Row(
+                    children: <Widget>[
+                      text17Black(getTranslated(context, 'note') + ': '),
+                      noteDto != null
+                          ? IconButton(
+                              padding: EdgeInsets.zero,
+                              constraints: BoxConstraints(),
+                              icon: icon30Blue(Icons.search),
+                              onPressed: () {},
+                            )
+                          : text17BlueGrey(getTranslated(context, 'empty')),
                     ],
                   ),
                   alignment: Alignment.topLeft),
