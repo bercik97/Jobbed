@@ -700,5 +700,7 @@
   "workTimeHasBegun": "Zaczęto czas pracy!",
   "workTimeEnded": "Zakończono czas pracy!",
   "successfullyDeletedNotesForSelectedEmployeesAndDates": "Pomyślnie usunięto notatki dla wybranych pracowników i dat",
-  "areYouSureYouWantToDeleteNotesForSelectedEmployeesAndDates": "Czy na pewno chcesz usunąć notatki dla wybranych pracowników oraz dat?"
+  "areYouSureYouWantToDeleteNotesForSelectedEmployeesAndDates": "Czy na pewno chcesz usunąć notatki dla wybranych pracowników oraz dat?",
+  "tapToSeeNoteDetails": "Naciśnij, aby sprawdzić szczegóły notatki",
+  "tapToAddNewNote": "Naciśnij, aby dodać notatkę"
 }

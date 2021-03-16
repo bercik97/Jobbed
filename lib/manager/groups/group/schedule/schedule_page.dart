@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/manager/groups/group/group_page.dart';
+import 'package:jobbed/manager/groups/group/note/add_note_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
@@ -268,10 +270,11 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
           trailing: moneyForTime != '0.000' || moneyForPiecework != '0.000' ? icon50Green(Icons.check) : icon50Red(Icons.close),
           subtitle: Column(
             children: <Widget>[
+              SizedBox(height: 7.5),
               Align(
                   child: Row(
                     children: <Widget>[
-                      text17Black(getTranslated(context, 'workTime') + ': '),
+                      text20Black(getTranslated(context, 'workTime') + ': '),
                       text17GreenBold(moneyForTime.toString() + ' PLN'),
                       workTimes != null && workTimes.isNotEmpty
                           ? IconButton(
@@ -284,10 +287,11 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
                     ],
                   ),
                   alignment: Alignment.topLeft),
+              SizedBox(height: 5),
               Align(
                   child: Row(
                     children: <Widget>[
-                      text17Black(getTranslated(context, 'accord') + ': '),
+                      text20Black(getTranslated(context, 'accord') + ': '),
                       text17GreenBold(moneyForPiecework.toString() + ' PLN'),
                       pieceworks != null && pieceworks.isNotEmpty
                           ? IconButton(
@@ -300,29 +304,42 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
                     ],
                   ),
                   alignment: Alignment.topLeft),
+              SizedBox(height: 5),
               Align(
                   child: Row(
                     children: <Widget>[
-                      text17Black(getTranslated(context, 'sum') + ': '),
+                      text20Black(getTranslated(context, 'sum') + ': '),
                       text17GreenBold((double.parse(moneyForTime) + double.parse(moneyForPiecework)).toString() + ' PLN'),
                     ],
                   ),
                   alignment: Alignment.topLeft),
-              Align(
-                  child: Row(
-                    children: <Widget>[
-                      text17Black(getTranslated(context, 'note') + ': '),
-                      noteDto != null
-                          ? IconButton(
-                              padding: EdgeInsets.zero,
-                              constraints: BoxConstraints(),
-                              icon: icon30Blue(Icons.search),
-                              onPressed: () {},
-                            )
-                          : text17BlueGrey(getTranslated(context, 'empty')),
-                    ],
-                  ),
-                  alignment: Alignment.topLeft),
+              SizedBox(height: 5),
+              noteDto != null
+                  ? ListTile(
+                      dense: true,
+                      contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+                      title: text20Black(getTranslated(context, 'note') + ': ' + employee.doneTasks.toString() + ' / ' + employee.allNoteTasks.toString()),
+                      subtitle: text16BlueGrey(getTranslated(context, 'tapToSeeNoteDetails')),
+                      onTap: () {
+                        // to be implemented
+                      },
+                    )
+                  : ListTile(
+                      dense: true,
+                      contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+                      title: text20Black(getTranslated(context, 'note') + ': ' + getTranslated(context, 'empty')),
+                      subtitle: text16BlueGrey(getTranslated(context, 'tapToAddNewNote')),
+                      onTap: () {
+                        NavigatorUtil.navigate(
+                            context,
+                            AddNotePage(
+                              _model,
+                              LinkedHashSet.from([employee.id]),
+                              [_selectedDay.year.toString() + '-' + _selectedDay.month.toString()].toSet(),
+                              [_selectedDay],
+                            ));
+                      },
+                    ),
             ],
           ),
         ),

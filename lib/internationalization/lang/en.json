@@ -700,5 +700,7 @@
   "workTimeHasBegun": "Working time has begun!",
   "workTimeEnded": "Working time ended!",
   "successfullyDeletedNotesForSelectedEmployeesAndDates": "Successfully deleted notes for selected employees and dates",
-  "areYouSureYouWantToDeleteNotesForSelectedEmployeesAndDates": "Are you sure you want to delete notes for selected employees and dates?"
+  "areYouSureYouWantToDeleteNotesForSelectedEmployeesAndDates": "Are you sure you want to delete notes for selected employees and dates?",
+  "tapToSeeNoteDetails": "Tap to see note details",
+  "tapToAddNewNote": "Tap to add new note"
 }
