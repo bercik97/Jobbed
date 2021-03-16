@@ -168,30 +168,6 @@ class _GroupPageState extends State<GroupPage> {
                           child: Material(
                             color: BRIGHTER_BLUE,
                             child: InkWell(
-                              onTap: () => NavigatorUtil.navigate(context, TsPage(_model)),
-                              child: _buildScrollableContainer('images/timesheet.png', 'timesheets', 'fillHoursPieceworks'),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: Material(
-                            color: BRIGHTER_BLUE,
-                            child: InkWell(
-                              onTap: () {},
-                              child: _buildScrollableContainer('images/plumko.png', 'disk', 'disk'),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Material(
-                            color: BRIGHTER_BLUE,
-                            child: InkWell(
                               onTap: () => NavigatorUtil.navigate(context, WarehousePage(_model)),
                               child: _buildScrollableContainer('images/warehouse.png', 'warehouses', 'manageCompanyWarehouses'),
                             ),
@@ -207,6 +183,22 @@ class _GroupPageState extends State<GroupPage> {
                             ),
                           ),
                         ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Material(
+                            color: BRIGHTER_BLUE,
+                            child: InkWell(
+                              onTap: () => NavigatorUtil.navigate(context, TsPage(_model)),
+                              child: _buildScrollableContainer('images/timesheet.png', 'timesheets', 'fillHoursPieceworks'),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(child: Material(color: BRIGHTER_BLUE)),
                       ],
                     ),
                   ],
