@@ -696,5 +696,7 @@
   "youDoNotHaveInProgressTimesheets": "Brak arkuszy czasu pracy w toku",
   "youDoNotHaveCompletedTimesheets": "Brak zaakceptowanych arkuszy czasu pracy",
   "timesheetsDescription": "Timesheets description",
-  "enterWorkplaceCodeToPausePopupTitle": "Wpisz kod miejsca pracy aby zakończyć pracę"
+  "enterWorkplaceCodeToPausePopupTitle": "Wpisz kod miejsca pracy aby zakończyć pracę",
+  "workTimeHasBegun": "Zaczęto czas pracy!",
+  "workTimeEnded": "Zakończono czas pracy!"
 }

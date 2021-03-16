@@ -696,5 +696,7 @@
   "youDoNotHaveInProgressTimesheets": "Табелей рабочего времени нет",
   "youDoNotHaveCompletedTimesheets": "Нет заполненных табелей",
   "timesheetsDescription": "Timesheets description",
-  "enterWorkplaceCodeToPausePopupTitle": "Enter workplace code to end work"
+  "enterWorkplaceCodeToPausePopupTitle": "Enter workplace code to end work",
+  "workTimeHasBegun": "Working time has begun",
+  "workTimeEnded": "Working time ended!"
 }

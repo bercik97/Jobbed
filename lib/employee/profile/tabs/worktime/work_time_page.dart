@@ -376,6 +376,10 @@ class _WorkTimePageState extends State<WorkTimePage> {
   }
 
   _showStartWorkByGPSConfirmDialog(List<WorkplaceIdNameDto> workplaces) {
+    if (workplaces.length > 1 && !_isStartWorkButtonTapped) {
+      _startWorkByGPS(workplaces.first.id);
+      return;
+    }
     showGeneralDialog(
       context: context,
       barrierColor: WHITE.withOpacity(0.95),
@@ -420,42 +424,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                           MaterialButton(
                                             child: Text(getTranslated(context, 'startUpperCase')),
                                             color: BLUE,
-                                            onPressed: () {
-                                              showDialog(
-                                                context: context,
-                                                builder: (BuildContext context) {
-                                                  return AlertDialog(
-                                                    backgroundColor: WHITE,
-                                                    title: textBlueBold(getTranslated(this.context, 'confirmation')),
-                                                    content: SingleChildScrollView(
-                                                      child: Column(
-                                                        children: [
-                                                          textCenterBlack(getTranslated(this.context, 'areYouSureYouWantToStartYourWork')),
-                                                          SizedBox(height: 10),
-                                                          textCenterBlueBold(getTranslated(this.context, 'workplaceName')),
-                                                          SizedBox(height: 2),
-                                                          textCenterBlack(utf8.decode(workplaces[i].name.runes.toList())),
-                                                          SizedBox(height: 10),
-                                                          textCenterBlueBold(getTranslated(this.context, 'location')),
-                                                          SizedBox(height: 2),
-                                                          textCenterBlack(utf8.decode(workplaces[i].location.runes.toList())),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    actions: <Widget>[
-                                                      FlatButton(
-                                                        child: textBlue(getTranslated(this.context, 'yesIWantToStart')),
-                                                        onPressed: () => _isStartWorkButtonTapped ? null : _startWorkByGPS(workplaces[i].id),
-                                                      ),
-                                                      FlatButton(
-                                                        child: textBlack(getTranslated(this.context, 'no')),
-                                                        onPressed: () => Navigator.of(context).pop(),
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
-                                            },
+                                            onPressed: () => !_isStartWorkButtonTapped ? _startWorkByGPS(workplaces[i].id) : null,
                                           ),
                                         )
                                       ],
@@ -497,7 +466,10 @@ class _WorkTimePageState extends State<WorkTimePage> {
     setState(() => _isStartWorkButtonTapped = true);
     CreateWorkTimeDto dto = new CreateWorkTimeDto(workplaceId: workplaceId, workdayId: _todayWorkdayId);
     _workTimeService.create(dto).then((res) {
-      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => _refresh());
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastUtil.showSuccessToast(getTranslated(context, 'workTimeHasBegun'));
+        _refresh();
+      });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
@@ -516,8 +488,12 @@ class _WorkTimePageState extends State<WorkTimePage> {
       double longitude = _locationData.longitude;
       _workTimeService.canFinishByIdAndLocationParams(workTime.id, latitude, longitude).then((res) {
         Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-          setState(() => _isPauseWorkButtonTapped = false);
-          _showPauseWorkByGPSConfirmDialog(res);
+          if (!res) {
+            ToastUtil.showErrorToast(getTranslated(context, 'cannotFindWorkplaceWhereYouStarted'));
+            setState(() => _isPauseWorkButtonTapped = false);
+            return;
+          }
+          _finishWorkByGPS();
         });
       }).catchError((onError) {
         Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
@@ -533,21 +509,13 @@ class _WorkTimePageState extends State<WorkTimePage> {
     }
   }
 
-  _showPauseWorkByGPSConfirmDialog(res) {
-    DialogUtil.showConfirmationDialog(
-      context: context,
-      title: getTranslated(context, 'confirmation'),
-      content: getTranslated(context, 'pauseWorkConfirmation'),
-      isBtnTapped: _isPauseWorkButtonTapped,
-      fun: () => _isPauseWorkButtonTapped ? null : _finishWorkByGPS(),
-    );
-  }
-
   _finishWorkByGPS() {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    setState(() => _isPauseWorkButtonTapped = true);
     _workTimeService.finish(_dto.notFinishedWorkTimeId).then((res) {
-      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => _refresh());
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastUtil.showSuccessToast(getTranslated(context, 'workTimeEnded'));
+        _refresh();
+      });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
@@ -656,6 +624,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _workTimeService.create(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastUtil.showSuccessToast(getTranslated(context, 'workTimeHasBegun'));
         _refresh();
       });
     }).catchError((onError) {
@@ -683,21 +652,21 @@ class _WorkTimePageState extends State<WorkTimePage> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: textCenter20BlackBold(getTranslated(context, 'enterWorkplaceCodePopupTitle')),
+                    child: textCenter20BlackBold(getTranslated(context, 'enterWorkplaceCodeToPausePopupTitle')),
                   ),
                   SizedBox(height: 30),
                   PinCodeTextField(
                     autofocus: true,
                     highlight: true,
                     controller: _workplaceCodeController,
-                    highlightColor: WHITE,
+                    highlightColor: BLACK,
                     defaultBorderColor: BLUE,
                     hasTextBorderColor: BLUE,
                     maxLength: 4,
                     pinBoxWidth: 50,
                     pinBoxHeight: 64,
                     pinBoxDecoration: ProvidedPinBoxDecoration.defaultPinBoxDecoration,
-                    pinTextStyle: TextStyle(fontSize: 22, color: WHITE),
+                    pinTextStyle: TextStyle(fontSize: 22, color: BLACK),
                     pinTextAnimatedSwitcherTransition: ProvidedPinBoxTextAnimation.scalingTransition,
                     pinTextAnimatedSwitcherDuration: Duration(milliseconds: 300),
                     keyboardType: TextInputType.number,
@@ -732,25 +701,24 @@ class _WorkTimePageState extends State<WorkTimePage> {
                         ),
                         color: BLUE,
                         onPressed: () {
+                          if (_isPauseWorkButtonTapped) {
+                            return;
+                          }
+                          setState(() => _isPauseWorkButtonTapped = true);
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _workplaceService.isCorrectByIdAndCompanyId(_workplaceCodeController.text, _user.companyId).then((isCorrect) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              Navigator.pop(context);
                               if (isCorrect) {
-                                DialogUtil.showConfirmationDialog(
-                                  context: context,
-                                  title: getTranslated(context, 'confirmation'),
-                                  content: getTranslated(context, 'pauseWorkConfirmation'),
-                                  isBtnTapped: _isPauseWorkButtonTapped,
-                                  fun: () => _isPauseWorkButtonTapped ? null : _pauseWorkByWorkplaceCode(_workplaceCodeController.text, _todayWorkdayId),
-                                );
+                                _pauseWorkByWorkplaceCode(_workplaceCodeController.text, _todayWorkdayId);
                               } else {
+                                setState(() => _isPauseWorkButtonTapped = false);
                                 DialogUtil.showErrorDialog(context, getTranslated(context, 'workplaceCodeIsIncorrect'));
                               }
                             });
                           }).catchError((onError) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.pop(context);
+                              setState(() => _isPauseWorkButtonTapped = false);
                               DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
                             });
                           });
@@ -769,9 +737,9 @@ class _WorkTimePageState extends State<WorkTimePage> {
 
   _pauseWorkByWorkplaceCode(String workplaceId, num workdayId) {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    setState(() => _isPauseWorkButtonTapped = true);
     _workTimeService.finish(_dto.notFinishedWorkTimeId).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastUtil.showSuccessToast(getTranslated(context, 'workTimeEnded'));
         _refresh();
       });
     }).catchError((onError) {
@@ -783,6 +751,6 @@ class _WorkTimePageState extends State<WorkTimePage> {
   }
 
   void _refresh() {
-    NavigatorUtil.navigate(this.context, WorkTimePage(_user, _todayWorkdayId));
+    NavigatorUtil.navigateReplacement(this.context, WorkTimePage(_user, _todayWorkdayId));
   }
 }
