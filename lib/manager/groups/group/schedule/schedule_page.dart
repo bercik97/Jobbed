@@ -16,13 +16,14 @@ import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/workday_util.dart';
-import 'package:jobbed/shared/widget/buttons.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
+import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 import 'package:table_calendar/table_calendar.dart';
 
 import 'edit/edit_schedule_page.dart';
@@ -96,14 +97,44 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
           body: Column(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              Buttons.standardButton(
-                minWidth: 200.0,
-                color: BLUE,
-                title: getTranslated(context, 'scheduleEditMode'),
-                fun: () => NavigatorUtil.navigate(context, EditSchedulePage(_model)),
-              ),
               _loading ? circularProgressIndicator() : _buildTableCalendarWithBuilders(),
               _loading ? SizedBox(height: 0) : Expanded(child: _buildEventList()),
+            ],
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          floatingActionButton: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FloatingActionButton(
+                heroTag: "hintBtn",
+                tooltip: getTranslated(context, 'hint'),
+                backgroundColor: BLUE,
+                onPressed: () {
+                  slideDialog.showSlideDialog(
+                    context: context,
+                    backgroundColor: WHITE,
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Column(
+                        children: <Widget>[
+                          text20GreenBold(getTranslated(context, 'iconsLegend')),
+                          SizedBox(height: 10),
+                          IconsLegendUtil.buildIconRow(Icon(Icons.note_add), getTranslated(context, 'addDeleteManyNotes')),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+                child: text35WhiteBold('?'),
+              ),
+              SizedBox(height: 15),
+              FloatingActionButton(
+                heroTag: "manageNotes",
+                tooltip: getTranslated(context, 'addDeleteManyNotes'),
+                backgroundColor: BLUE,
+                onPressed: () => NavigatorUtil.navigate(context, EditSchedulePage(_model)),
+                child: Icon(Icons.note_add),
+              ),
             ],
           ),
         ),
