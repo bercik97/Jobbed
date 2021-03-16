@@ -6,14 +6,12 @@ import 'package:jobbed/internationalization/localization/localization_constants.
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
-import 'package:jobbed/shared/util/workday_util.dart';
-import 'package:jobbed/shared/widget/buttons.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
 import 'note/edit_note_page.dart';
 
-Widget employeeToday(BuildContext context, User user, EmployeeProfileDto dto, Function() fillHoursFun) {
+Widget employeeToday(BuildContext context, User user, EmployeeProfileDto dto) {
   bool isTsNotCreated = dto.todayWorkdayId == 0;
   if (isTsNotCreated) {
     return Container(
@@ -34,8 +32,8 @@ Widget employeeToday(BuildContext context, User user, EmployeeProfileDto dto, Fu
   }
   return Column(
     children: [
-      dto.todayNote != null ? _buildNoteContainer(context, user, dto.todayDate, dto.todayNote) : Container(),
-      _buildStatisticsContainer(context, dto, fillHoursFun),
+      _buildStatisticsContainer(context, dto),
+      dto.todayNote != null ? _buildNoteContainer(context, user, dto.todayDate, dto.todayNote) : _buildEmptyNoteContainer(context),
     ],
   );
 }
@@ -43,22 +41,23 @@ Widget employeeToday(BuildContext context, User user, EmployeeProfileDto dto, Fu
 Widget _buildNoteContainer(BuildContext context, User user, String todayDate, NoteDto noteDto) {
   List noteSubWorkplaces = noteDto.noteSubWorkplaceDto;
   List doneTasks = noteSubWorkplaces.where((e) => e.done).toList();
-  return Container(
-    child: SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: <Widget>[
-            Ink(
-              color: BRIGHTER_BLUE,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Container(
+      color: BRIGHTER_BLUE,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: <Widget>[
+              Ink(
                 child: ListTile(
-                  title: text22Black(getTranslated(context, 'note')),
+                  dense: true,
+                  contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+                  title: text20Black(getTranslated(context, 'note') + ' ' + doneTasks.length.toString() + ' / ' + noteSubWorkplaces.length.toString()),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      text20Black(doneTasks.length.toString() + ' / ' + noteSubWorkplaces.length.toString()),
                       text16BlueGrey(getTranslated(context, 'tapToSeeDetails')),
                     ],
                   ),
@@ -66,15 +65,37 @@ Widget _buildNoteContainer(BuildContext context, User user, String todayDate, No
                   onTap: () => NavigatorUtil.navigate(context, EditNotePage(user, todayDate, noteDto)),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     ),
   );
 }
 
-Widget _buildStatisticsContainer(BuildContext context, EmployeeProfileDto dto, Function() fillHoursFun) {
+Widget _buildEmptyNoteContainer(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Container(
+      color: BRIGHTER_BLUE,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Ink(
+            child: ListTile(
+              dense: true,
+              contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+              title: text20Black(getTranslated(context, 'note') + ': ' + getTranslated(context, 'empty')),
+              subtitle: text16BlueGrey(getTranslated(context, 'todayNoteIsEmpty')),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget _buildStatisticsContainer(BuildContext context, EmployeeProfileDto dto) {
   String todayMoney = dto.todayMoney.toString();
   String todayHours = dto.todayHours.toString();
   List todayPiecework = dto.todayPiecework;

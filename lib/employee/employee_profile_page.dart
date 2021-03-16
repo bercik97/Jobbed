@@ -4,11 +4,9 @@ import 'package:countup/countup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:jobbed/api/employee/dto/employee_profile_dto.dart';
 import 'package:jobbed/api/employee/service/employee_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
-import 'package:jobbed/api/workday/service/workday_service.dart';
 import 'package:jobbed/employee/profile/tabs/employee_panel.dart';
 import 'package:jobbed/employee/profile/tabs/employee_today.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
@@ -20,12 +18,9 @@ import 'package:jobbed/shared/util/avatars_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/logout_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
-import 'package:jobbed/shared/util/toast_util.dart';
-import 'package:jobbed/shared/util/validator_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/silver_app_bar_delegate.dart';
 import 'package:jobbed/shared/widget/texts.dart';
-import 'package:number_inc_dec/number_inc_dec.dart';
 
 import '../shared/widget/loader.dart';
 
@@ -40,7 +35,6 @@ class EmployeeProfilePage extends StatefulWidget {
 
 class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
   EmployeeService _employeeService;
-  WorkdayService _workdayService;
 
   User _user;
   EmployeeProfileDto _employeePageDto;
@@ -53,7 +47,6 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
     super.initState();
     this._user = widget._user;
     this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
-    this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     this._loading = true;
     _employeeService.findByIdForProfileView(_user.id).then((res) {
       setState(() {
@@ -197,12 +190,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                 child: TabBarView(
                   children: <Widget>[
                     _buildTab(employeePanel(this.context, _user, _employeePageDto)),
-                    _buildTab(employeeToday(
-                      this.context,
-                      _user,
-                      _employeePageDto,
-                      () => _fillHoursFun(_employeePageDto.todayWorkdayId),
-                    )),
+                    _buildTab(employeeToday(this.context, _user, _employeePageDto)),
                   ],
                 ),
               ),
@@ -237,159 +225,6 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
         _loading = false;
       });
     });
-  }
-
-  _fillHoursFun(int workdayId) {
-    TextEditingController _hoursController = new TextEditingController();
-    TextEditingController _minutesController = new TextEditingController();
-    showGeneralDialog(
-      context: context,
-      barrierColor: WHITE.withOpacity(0.95),
-      barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'hours'),
-      transitionDuration: Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return SizedBox.expand(
-          child: Scaffold(
-            backgroundColor: Colors.black12,
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'hoursUpperCase'))),
-                  SizedBox(height: 2.5),
-                  text16Black(getTranslated(context, 'settingHoursForToday')),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            children: [
-                              textBlack(getTranslated(context, 'hoursNumber')),
-                              SizedBox(height: 2.5),
-                              NumberInputWithIncrementDecrement(
-                                controller: _hoursController,
-                                min: 0,
-                                max: 24,
-                                onIncrement: (value) {
-                                  if (value > 24) {
-                                    setState(() => value = 24);
-                                  }
-                                },
-                                onSubmitted: (value) {
-                                  if (value >= 24) {
-                                    setState(() => _hoursController.text = 24.toString());
-                                  }
-                                },
-                                style: TextStyle(color: BLUE),
-                                widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            children: [
-                              textBlack(getTranslated(context, 'minutesNumber')),
-                              SizedBox(height: 2.5),
-                              NumberInputWithIncrementDecrement(
-                                controller: _minutesController,
-                                min: 0,
-                                max: 59,
-                                onIncrement: (value) {
-                                  if (value > 59) {
-                                    setState(() => value = 59);
-                                  }
-                                },
-                                onSubmitted: (value) {
-                                  if (value >= 59) {
-                                    setState(() => _minutesController.text = 59.toString());
-                                  }
-                                },
-                                style: TextStyle(color: BLUE),
-                                widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        minWidth: 40,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.close)],
-                        ),
-                        color: Colors.red,
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      SizedBox(width: 25),
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.check)],
-                        ),
-                        color: BLUE,
-                        onPressed: () {
-                          double hours;
-                          double minutes;
-                          try {
-                            hours = double.parse(_hoursController.text);
-                            minutes = double.parse(_minutesController.text) * 0.01;
-                          } catch (FormatException) {
-                            ToastUtil.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
-                            return;
-                          }
-                          String invalidMessage = ValidatorUtil.validateUpdatingHoursWithMinutes(hours, minutes, context);
-                          if (invalidMessage != null) {
-                            ToastUtil.showErrorToast(invalidMessage);
-                            return;
-                          }
-                          FocusScope.of(context).unfocus();
-                          hours += minutes;
-                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                          _workdayService.updateHoursByIds([workdayId].map((e) => e.toString()).toList(), hours).then(
-                            (res) {
-                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                Navigator.of(context).pop();
-                                ToastUtil.showSuccessToast(getTranslated(context, 'hoursUpdatedSuccessfully'));
-                                _refresh();
-                              }).catchError(() {
-                                Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                  Navigator.of(context).pop();
-                                  ToastUtil.showSuccessToast(getTranslated(context, 'somethingWentWrong'));
-                                });
-                              });
-                            },
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
   }
 
   Future<bool> _onWillPop() async {

@@ -703,5 +703,6 @@
   "areYouSureYouWantToDeleteNotesForSelectedEmployeesAndDates": "Are you sure you want to delete notes for selected employees and dates?",
   "tapToSeeNoteDetails": "Tap to see note details",
   "tapToAddNewNote": "Tap to add new note",
-  "addDeleteManyNotes": "Add / Delete many notes"
+  "addDeleteManyNotes": "Add / Delete many notes",
+  "todayNoteIsEmpty": "Today note is empty"
 }
