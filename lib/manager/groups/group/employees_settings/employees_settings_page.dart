@@ -88,7 +88,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: WHITE,
-          appBar: managerAppBar(context, _model.user, utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'), () => Navigator.pop(context)),
+          appBar: managerAppBar(context, _model.user, getTranslated(context, 'permissions'), () => Navigator.pop(context)),
           body: RefreshIndicator(
             color: WHITE,
             backgroundColor: BLUE,

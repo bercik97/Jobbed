@@ -114,7 +114,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
             backgroundColor: WHITE,
             elevation: 0.0,
             bottomOpacity: 0.0,
-            title: text16Black(getTranslated(context, 'companyGroups')),
+            title: text20Black(getTranslated(context, 'companyGroups')),
             leading: IconButton(icon: iconBlack(Icons.power_settings_new), onPressed: () => LogoutUtil.logout(context)),
             actions: <Widget>[
               Padding(

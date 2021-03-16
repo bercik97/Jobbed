@@ -79,7 +79,7 @@ class _SettingsPageState extends State<SettingsPage> {
           backgroundColor: WHITE,
           elevation: 0.0,
           bottomOpacity: 0.0,
-          title: text13Black(getTranslated(context, 'settings')),
+          title: text20Black(getTranslated(context, 'settings')),
           centerTitle: false,
           automaticallyImplyLeading: true,
           leading: IconButton(icon: iconBlack(Icons.arrow_back), onPressed: () => Navigator.pop(context)),

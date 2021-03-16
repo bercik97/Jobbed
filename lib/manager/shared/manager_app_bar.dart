@@ -14,7 +14,7 @@ AppBar managerAppBar(BuildContext context, User user, String title, Function() f
     backgroundColor: WHITE,
     elevation: 0.0,
     bottomOpacity: 0.0,
-    title: text15Black(title),
+    title: text20Black(title),
     centerTitle: false,
     automaticallyImplyLeading: true,
     leading: IconButton(icon: iconBlack(Icons.arrow_back), onPressed: () => fun()),
