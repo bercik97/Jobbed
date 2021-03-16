@@ -3,8 +3,10 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:jobbed/api/employee/dto/employee_basic_dto.dart';
 import 'package:jobbed/api/employee/service/employee_service.dart';
+import 'package:jobbed/api/note/api/note_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/manager/groups/group/note/add_note_page.dart';
@@ -17,10 +19,13 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
+
+import '../../schedule_page.dart';
 
 class EditScheduleEmployeesPage extends StatefulWidget {
   final GroupModel _model;
@@ -42,6 +47,7 @@ class _EditScheduleEmployeesPageState extends State<EditScheduleEmployeesPage> {
   bool _isAddAction;
 
   EmployeeService _employeeService;
+  NoteService _noteService;
 
   List<EmployeeBasicDto> _employees = new List();
   List<EmployeeBasicDto> _filteredEmployees = new List();
@@ -52,6 +58,7 @@ class _EditScheduleEmployeesPageState extends State<EditScheduleEmployeesPage> {
   final ScrollController _scrollController = new ScrollController();
 
   bool _isFillNoteButtonTapped = false;
+  bool _isDeleteButtonTapped = false;
 
   @override
   void initState() {
@@ -61,6 +68,7 @@ class _EditScheduleEmployeesPageState extends State<EditScheduleEmployeesPage> {
     this._selectedDates = widget._selectedDates;
     this._isAddAction = widget._isAddAction;
     this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
+    this._noteService = ServiceInitializer.initialize(context, _user.authHeader, NoteService);
     super.initState();
     _loading = true;
     _employeeService.findAllByGroupIdAndTsInYearsAndMonthsForScheduleView(_model.groupId, _yearsWithMonths).then((res) {
@@ -248,11 +256,45 @@ class _EditScheduleEmployeesPageState extends State<EditScheduleEmployeesPage> {
       setState(() => _isFillNoteButtonTapped = false);
       return;
     }
+    setState(() => _isFillNoteButtonTapped = false);
     if (_isAddAction) {
-      setState(() => _isFillNoteButtonTapped = false);
       NavigatorUtil.navigate(context, AddNotePage(_model, _selectedIds, _yearsWithMonths, _selectedDates));
     } else {
-      // TODO
+      DialogUtil.showConfirmationDialog(
+        context: context,
+        title: getTranslated(context, 'confirmation'),
+        content: getTranslated(context, 'areYouSureYouWantToDeleteNotesForSelectedEmployeesAndDates'),
+        isBtnTapped: _isDeleteButtonTapped,
+        fun: () => _isDeleteButtonTapped ? null : _handleDeleteNote(),
+      );
     }
+  }
+
+  void _handleDeleteNote() {
+    setState(() => _isDeleteButtonTapped = true);
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _noteService
+        .deleteByEmployeeIdsAndDatesIn(
+            _selectedIds.map((e) => e.toString()).toList(),
+            _yearsWithMonths.toList(),
+            _selectedDates
+                .map((e) => {
+                      (e.year.toString() + '-' + (e.month < 10 ? ('0' + e.month.toString()) : e.month.toString()) + '-' + (e.day < 10 ? ('0' + e.day.toString()) : e.day.toString())).toString(),
+                    })
+                .toList()
+                .map((e) => e.toString())
+                .toList())
+        .then((value) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyDeletedNotesForSelectedEmployeesAndDates'));
+        NavigatorUtil.navigatePushAndRemoveUntil(context, SchedulePage(_model));
+        setState(() => _isDeleteButtonTapped = false);
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+        setState(() => _isDeleteButtonTapped = false);
+      });
+    });
   }
 }

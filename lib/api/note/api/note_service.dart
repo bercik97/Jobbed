@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:jobbed/api/note/dto/create_note_dto.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/util/logout_util.dart';
 
 class NoteService {
   final BuildContext _context;
@@ -17,5 +18,16 @@ class NoteService {
   Future<dynamic> create(CreateNoteDto dto) async {
     Response res = await post(_url, body: jsonEncode(CreateNoteDto.jsonEncode(dto)), headers: _headers);
     return res.statusCode == 200 ? res : Future.error(res.body);
+  }
+
+  Future<dynamic> deleteByEmployeeIdsAndDatesIn(List<String> employeeIds, List<String> yearsWithMonths, List<String> dates) async {
+    Response res = await delete(_url + '?employee_ids=$employeeIds&years_with_months=$yearsWithMonths&dates=$dates', headers: _headers);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return LogoutUtil.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
   }
 }

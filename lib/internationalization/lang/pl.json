@@ -698,5 +698,7 @@
   "timesheetsDescription": "Timesheets description",
   "enterWorkplaceCodeToPausePopupTitle": "Wpisz kod miejsca pracy aby zakończyć pracę",
   "workTimeHasBegun": "Zaczęto czas pracy!",
-  "workTimeEnded": "Zakończono czas pracy!"
+  "workTimeEnded": "Zakończono czas pracy!",
+  "successfullyDeletedNotesForSelectedEmployeesAndDates": "Pomyślnie usunięto notatki dla wybranych pracowników i dat",
+  "areYouSureYouWantToDeleteNotesForSelectedEmployeesAndDates": "Czy na pewno chcesz usunąć notatki dla wybranych pracowników oraz dat?"
 }

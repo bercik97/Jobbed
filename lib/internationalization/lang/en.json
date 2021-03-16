@@ -698,5 +698,7 @@
   "timesheetsDescription": "Timesheets description",
   "enterWorkplaceCodeToPausePopupTitle": "Enter workplace code to end work",
   "workTimeHasBegun": "Working time has begun!",
-  "workTimeEnded": "Working time ended!"
+  "workTimeEnded": "Working time ended!",
+  "successfullyDeletedNotesForSelectedEmployeesAndDates": "Successfully deleted notes for selected employees and dates",
+  "areYouSureYouWantToDeleteNotesForSelectedEmployeesAndDates": "Are you sure you want to delete notes for selected employees and dates?"
 }
