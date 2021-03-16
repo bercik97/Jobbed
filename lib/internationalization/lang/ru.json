@@ -697,5 +697,8 @@
   "noPriceListsInPieceworkPageHint": "Похоже, вы не добавили прайс-лист на услуги. Перейдите в модуль прайс-листа и добавьте несколько услуг.",
   "workplaceLocationIsNotSet": "Местоположение рабочего места не указано",
   "areYouSureYouWantToAddNewWorkplace": "Вы уверены, что хотите добавить новое рабочее место?",
-  "rememberSetLocationHint": "Помните, что GPS в мобильных телефонах может работать с разной точностью, поэтому рекомендуется установить больший радиус действия GPS."
+  "rememberSetLocationHint": "Помните, что GPS в мобильных телефонах может работать с разной точностью, поэтому рекомендуется установить больший радиус действия GPS.",
+  "youDoNotHaveInProgressTimesheets": "Табелей рабочего времени нет",
+  "youDoNotHaveCompletedTimesheets": "Нет заполненных табелей",
+  "timesheetsDescription": "Timesheets description"
 }

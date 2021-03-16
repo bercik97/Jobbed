@@ -697,5 +697,8 @@
   "noPriceListsInPieceworkPageHint": "როგორც ჩანს, ფასების ჩამონათვალის სერვისები არ დამატებულა. გადადით ფასების სიის მოდულში და დაამატეთ რამდენიმე სერვისი.",
   "workplaceLocationIsNotSet": "სამუშაო ადგილის ადგილმდებარეობა დაყენებული არ არის",
   "areYouSureYouWantToAddNewWorkplace": "დარწმუნებული ხართ, რომ გსურთ ახალი სამუშაო ადგილის დამატება?",
-  "rememberSetLocationHint": "გახსოვდეთ, რომ GPS ტელეფონებში შეიძლება განსხვავებული სიზუსტით იმუშაოს, ამიტომ რეკომენდებულია GPS დიაპაზონის უფრო დიდი რადიუსის დაყენება"
+  "rememberSetLocationHint": "გახსოვდეთ, რომ GPS ტელეფონებში შეიძლება განსხვავებული სიზუსტით იმუშაოს, ამიტომ რეკომენდებულია GPS დიაპაზონის უფრო დიდი რადიუსის დაყენება",
+  "youDoNotHaveInProgressTimesheets": "მიმდინარე ფურცლები არ არის",
+  "youDoNotHaveCompletedTimesheets": "დასრულებული ცხრილი არ არის",
+  "timesheetsDescription": "Timesheets description"
 }

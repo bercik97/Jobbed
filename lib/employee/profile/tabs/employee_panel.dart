@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:jobbed/api/employee/dto/employee_profile_dto.dart';
 import 'package:jobbed/employee/profile/tabs/piecework/piecework_page.dart';
 import 'package:jobbed/employee/profile/tabs/schedule/employee_schedule_page.dart';
+import 'package:jobbed/employee/profile/tabs/timesheet/employee_timesheet_page.dart';
 import 'package:jobbed/employee/profile/tabs/worktime/work_time_page.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
@@ -77,7 +78,15 @@ Container employeePanel(BuildContext context, User user, EmployeeProfileDto empl
                   ),
                 ),
                 SizedBox(width: 10),
-                Expanded(child: Material(color: BRIGHTER_BLUE)),
+                Expanded(
+                  child: Material(
+                    color: BRIGHTER_BLUE,
+                    child: InkWell(
+                      onTap: () async => NavigatorUtil.navigate(context, EmployeeTimesheetPage(user, employee.timeSheets)),
+                      child: _buildScrollableContainer(context, 'images/timesheet.png', 'timesheets', 'timesheetsDescription'),
+                    ),
+                  ),
+                ),
               ],
             )
           ],

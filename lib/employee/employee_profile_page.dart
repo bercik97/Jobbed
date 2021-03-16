@@ -10,7 +10,6 @@ import 'package:jobbed/api/employee/service/employee_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/workday/service/workday_service.dart';
 import 'package:jobbed/employee/profile/tabs/employee_panel.dart';
-import 'package:jobbed/employee/profile/tabs/employee_timesheets.tab.dart';
 import 'package:jobbed/employee/profile/tabs/employee_today.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
@@ -96,7 +95,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
         home: Scaffold(
           backgroundColor: WHITE,
           body: DefaultTabController(
-            length: 3,
+            length: 2,
             child: NestedScrollView(
               headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
                 return <Widget>[
@@ -184,9 +183,8 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                         indicatorColor: BLUE,
                         unselectedLabelColor: Colors.grey,
                         tabs: <Widget>[
-                          Tab(icon: iconBlack(Icons.assignment), text: getTranslated(this.context, 'timesheets')),
-                          Tab(icon: iconBlack(Icons.timelapse), text: getTranslated(this.context, 'today')),
                           Tab(icon: iconBlack(Icons.sort), text: getTranslated(this.context, 'panel')),
+                          Tab(icon: iconBlack(Icons.timelapse), text: getTranslated(this.context, 'today')),
                         ],
                       ),
                     ),
@@ -198,14 +196,13 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                 padding: EdgeInsets.all(5),
                 child: TabBarView(
                   children: <Widget>[
-                    _buildTab(employeeTimesheetsTab(this.context, _employeePageDto.canFillHours, _user, _employeePageDto.timeSheets)),
+                    _buildTab(employeePanel(this.context, _user, _employeePageDto)),
                     _buildTab(employeeToday(
                       this.context,
                       _user,
                       _employeePageDto,
                       () => _fillHoursFun(_employeePageDto.todayWorkdayId),
                     )),
-                    _buildTab(employeePanel(this.context, _user, _employeePageDto)),
                   ],
                 ),
               ),

@@ -697,5 +697,8 @@
   "noPriceListsInPieceworkPageHint": "You seem to have no price list services added. Go to price list module and add some services.",
   "workplaceLocationIsNotSet": "Workplace location is not set",
   "areYouSureYouWantToAddNewWorkplace": "Are you sure you want to add new workplace?",
-  "rememberSetLocationHint": "Remember that GPS in mobile phones can work with different accuracy, so it is recommended to set a larger GPS range radius"
+  "rememberSetLocationHint": "Remember that GPS in mobile phones can work with different accuracy, so it is recommended to set a larger GPS range radius",
+  "youDoNotHaveInProgressTimesheets": "No in progress timesheets",
+  "youDoNotHaveCompletedTimesheets": "No completed timesheets",
+  "timesheetsDescription": "Timesheets description"
 }

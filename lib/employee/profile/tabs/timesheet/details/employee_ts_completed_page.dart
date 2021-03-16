@@ -23,7 +23,7 @@ import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
-import '../../employee_profile_page.dart';
+import '../../../../employee_profile_page.dart';
 
 class EmployeeTsCompletedPage extends StatefulWidget {
   final User _user;
