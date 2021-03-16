@@ -3,24 +3,24 @@ import 'package:jobbed/api/piecework/dto/piecework_details_dto.dart';
 import 'package:jobbed/api/work_time/dto/work_time_dto.dart';
 
 class EmployeeCalendarDto {
-  final String hours;
-  final List pieceworks;
+  final String moneyForTime;
+  final String moneyForPiecework;
   final List workTimes;
-  final String money;
+  final List pieceworks;
 
   EmployeeCalendarDto({
-    @required this.hours,
+    @required this.moneyForTime,
+    @required this.moneyForPiecework,
     @required this.workTimes,
     @required this.pieceworks,
-    @required this.money,
   });
 
   factory EmployeeCalendarDto.fromJson(Map<String, dynamic> json) {
     return EmployeeCalendarDto(
-      hours: json['hours'] as String,
-      pieceworks: json['pieceworks'].map((data) => PieceworkDetailsDto.fromJson(data)).toList(),
+      moneyForTime: json['moneyForTime'] as String,
+      moneyForPiecework: json['moneyForPiecework'] as String,
       workTimes: json['workTimes'].map((data) => WorkTimeDto.fromJson(data)).toList(),
-      money: json['money'] as String,
+      pieceworks: json['pieceworks'].map((data) => PieceworkDetailsDto.fromJson(data)).toList(),
     );
   }
 }

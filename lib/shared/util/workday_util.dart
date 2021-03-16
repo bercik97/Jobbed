@@ -8,8 +8,8 @@ import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
 class WorkdayUtil {
-  static void showScrollableWorkTimes(BuildContext context, String date, List pieceworks, List workTimes) {
-    if ((pieceworks == null || pieceworks.isEmpty) && (workTimes == null || workTimes.isEmpty)) {
+  static void showScrollableWorkTimes(BuildContext context, String date, List workTimes) {
+    if (workTimes == null || workTimes.isEmpty) {
       return;
     }
     showGeneralDialog(
@@ -34,7 +34,56 @@ class WorkdayUtil {
                         text20BlueBold(getTranslated(context, 'workTimes')),
                         SizedBox(height: 5),
                         _buildWorkTimesDataTable(context, workTimes),
-                        SizedBox(height: 5),
+                        SizedBox(height: 20),
+                        Container(
+                          width: 60,
+                          child: MaterialButton(
+                            elevation: 0,
+                            height: 50,
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[iconWhite(Icons.close)],
+                            ),
+                            color: Colors.red,
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  static void showScrollablePieceworks(BuildContext context, String date, List pieceworks) {
+    if (pieceworks == null || pieceworks.isEmpty) {
+      return;
+    }
+    showGeneralDialog(
+      context: context,
+      barrierColor: WHITE.withOpacity(0.95),
+      barrierDismissible: false,
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: Scaffold(
+            backgroundColor: Colors.black12,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: <Widget>[
+                        text20BlueBold(date.substring(0, 10)),
+                        SizedBox(height: 20),
                         text20BlueBold(getTranslated(context, 'pieceworks')),
                         SizedBox(height: 5),
                         _buildPieceworksDataTable(context, pieceworks, false),

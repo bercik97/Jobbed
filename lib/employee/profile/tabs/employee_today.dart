@@ -146,7 +146,6 @@ Widget _buildStatisticsContainer(BuildContext context, EmployeeProfileDto dto, F
                     SizedBox(height: 5),
                   ],
                 ),
-                onTap: () => WorkdayUtil.showScrollableWorkTimes(context, todayDate, todayPiecework, todayWorkTimes),
               ),
             ),
             // canFillHours

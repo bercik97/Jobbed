@@ -19,17 +19,17 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../../../employee_profile_page.dart';
 
-class EmployeeCalendarPage extends StatefulWidget {
+class EmployeeSchedulePage extends StatefulWidget {
   final User _user;
   final int _employeeId;
 
-  EmployeeCalendarPage(this._user, this._employeeId);
+  EmployeeSchedulePage(this._user, this._employeeId);
 
   @override
-  _EmployeeCalendarPageState createState() => _EmployeeCalendarPageState();
+  _EmployeeSchedulePageState createState() => _EmployeeSchedulePageState();
 }
 
-class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with TickerProviderStateMixin {
+class _EmployeeSchedulePageState extends State<EmployeeSchedulePage> with TickerProviderStateMixin {
   User _user;
   int _employeeId;
   TimesheetService _tsService;
@@ -50,7 +50,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
     this._tsService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
     super.initState();
     _loading = true;
-    _tsService.findByIdForEmployeeCalendarView(_employeeId).then((res) {
+    _tsService.findByIdForEmployeeScheduleView(_employeeId).then((res) {
       setState(() {
         _loading = false;
         res.forEach((key, value) => _events[key] = value);
@@ -185,11 +185,7 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
 
   Widget _buildEventsMarker(DateTime date, List events) {
     EmployeeCalendarDto workday = events[0];
-    if (workday.money != '0.000') {
-      return workday.money != '0.000' ? icon30Green(Icons.check) : icon30Orange(Icons.arrow_circle_up);
-    } else {
-      return Container();
-    }
+    return workday.moneyForTime != '0.000' || workday.moneyForPiecework != '0.000' ? icon30Green(Icons.check) : SizedBox(width: 0);
   }
 
   Widget _buildEventList() {
@@ -202,97 +198,63 @@ class _EmployeeCalendarPageState extends State<EmployeeCalendarPage> with Ticker
                 borderRadius: BorderRadius.circular(12.0),
               ),
               margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-              child: ListTile(title: _buildDay(workday)),
+              child: ListTile(title: _buildWorkday(workday)),
             ),
           )
           .toList(),
     );
   }
 
-  Widget _buildDay(EmployeeCalendarDto workday) {
-    if (workday.money != '0.000') {
-      return _buildWorkday(workday);
-    } else {
-      return _handleEmptyDay();
-    }
-  }
-
   Widget _buildWorkday(EmployeeCalendarDto workday) {
-    List pieceworks = workday.pieceworks;
+    String moneyForTime = workday.moneyForTime;
+    String moneyForPiecework = workday.moneyForPiecework;
     List workTimes = workday.workTimes;
-    double hours = double.parse(workday.hours);
-    String money = workday.money;
+    List pieceworks = workday.pieceworks;
     return Column(
       children: [
-        money != '0.000'
-            ? textCenter16BlueBold(getTranslated(context, 'workedDay') + ' ' + _selectedDay.toString().substring(0, 10))
-            : textCenter16OrangeBold(
-                getTranslated(context, 'workInProgress') + ' ' + _selectedDay.toString().substring(0, 10),
-              ),
         ListTile(
-          trailing: money != '0.000' ? icon50Green(Icons.check) : icon50Orange(Icons.arrow_circle_up),
+          trailing: moneyForTime != '0.000' || moneyForPiecework != '0.000' ? icon50Green(Icons.check) : icon50Red(Icons.close),
           subtitle: Column(
             children: <Widget>[
               Align(
                   child: Row(
                     children: <Widget>[
-                      text15Black(getTranslated(context, 'hours') + ': '),
-                      text15BlueBold(hours.toString()),
+                      text18Black(getTranslated(context, 'workTime') + ': '),
+                      text17GreenBold(moneyForTime.toString() + ' PLN'),
+                      workTimes.isNotEmpty
+                          ? IconButton(
+                              icon: icon30Blue(Icons.search),
+                              onPressed: () => WorkdayUtil.showScrollableWorkTimes(context, _selectedDay.toString(), workTimes),
+                            )
+                          : SizedBox(width: 0),
                     ],
                   ),
                   alignment: Alignment.topLeft),
               Align(
                   child: Row(
                     children: <Widget>[
-                      text15Black(getTranslated(context, 'accord') + ': '),
-                      pieceworks != null && pieceworks.isNotEmpty
-                          ? Row(
-                              children: [
-                                text15BlueBold(getTranslated(context, 'yes') + ' '),
-                                iconBlue(Icons.search),
-                                textBlue('(' + getTranslated(context, 'checkingDetails') + ')'),
-                              ],
+                      text18Black(getTranslated(context, 'accord') + ': '),
+                      text17GreenBold(moneyForPiecework.toString() + ' PLN'),
+                      pieceworks.isNotEmpty
+                          ? IconButton(
+                              icon: icon30Blue(Icons.search),
+                              onPressed: () => WorkdayUtil.showScrollablePieceworks(context, _selectedDay.toString(), pieceworks),
                             )
-                          : text15RedBold(getTranslated(context, 'empty')),
+                          : SizedBox(width: 0),
                     ],
                   ),
                   alignment: Alignment.topLeft),
               Align(
                   child: Row(
                     children: <Widget>[
-                      text15Black(getTranslated(context, 'time') + ': '),
-                      workTimes != null && workTimes.isNotEmpty
-                          ? Row(
-                              children: [
-                                text15BlueBold(getTranslated(context, 'yes') + ' '),
-                                iconBlue(Icons.search),
-                                textBlue('(' + getTranslated(context, 'checkingDetails') + ')'),
-                              ],
-                            )
-                          : text15RedBold(getTranslated(context, 'empty')),
+                      text18Black(getTranslated(context, 'sum') + ': '),
+                      text17GreenBold((double.parse(moneyForTime) + double.parse(moneyForPiecework)).toString() + ' PLN'),
                     ],
                   ),
                   alignment: Alignment.topLeft),
-              Row(
-                children: [
-                  text15Black(getTranslated(context, 'money') + ' (' + getTranslated(context, 'sum') + '): '),
-                  text15BlueBold(workday.money),
-                ],
-              ),
             ],
           ),
-          onTap: () => WorkdayUtil.showScrollableWorkTimes(context, _selectedDay.toString(), pieceworks, workTimes),
         ),
-      ],
-    );
-  }
-
-  Widget _handleEmptyDay() {
-    return Column(
-      children: [
-        text15BlueBold(_selectedDay.toString().substring(0, 10)),
-        SizedBox(height: 5),
-        textBlack('-'),
       ],
     );
   }

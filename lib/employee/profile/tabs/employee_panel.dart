@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jobbed/api/employee/dto/employee_profile_dto.dart';
-import 'package:jobbed/employee/profile/tabs/calendar/employee_calendar_page.dart';
 import 'package:jobbed/employee/profile/tabs/piecework/piecework_page.dart';
+import 'package:jobbed/employee/profile/tabs/schedule/employee_schedule_page.dart';
 import 'package:jobbed/employee/profile/tabs/worktime/work_time_page.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
@@ -71,8 +71,8 @@ Container employeePanel(BuildContext context, User user, EmployeeProfileDto empl
                   child: Material(
                     color: BRIGHTER_BLUE,
                     child: InkWell(
-                      onTap: () async => NavigatorUtil.navigate(context, EmployeeCalendarPage(user, employee.id)),
-                      child: _buildScrollableContainer(context, 'images/calendar.png', 'calendar', 'checkYourCalendar'),
+                      onTap: () async => NavigatorUtil.navigate(context, EmployeeSchedulePage(user, employee.id)),
+                      child: _buildScrollableContainer(context, 'images/calendar.png', 'schedule', 'checkYourCalendar'),
                     ),
                   ),
                 ),

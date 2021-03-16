@@ -83,6 +83,7 @@ Text textGreen(String text) { return Text(text, style: GoogleFonts.lato(color: G
 /* TEXT GREEN BOLD */
 /////////////////////
 Text textGreenBold(String text) { return Text(text, style: GoogleFonts.lato(color: GREEN, fontWeight: FontWeight.bold)); }
+Text text17GreenBold(String text) { return Text(text, style: GoogleFonts.lato(color: GREEN, fontSize: 17, fontWeight: FontWeight.bold)); }
 Text text20GreenBold(String text) { return Text(text, style: GoogleFonts.lato(color: GREEN, fontSize: 20, fontWeight: FontWeight.bold)); }
 
 

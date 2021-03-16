@@ -29,8 +29,8 @@ class TimesheetService {
     }
   }
 
-  Future<Map<DateTime, List<EmployeeCalendarDto>>> findByIdForEmployeeCalendarView(int employeeId) async {
-    Response res = await get('$_url/view/employee-calendar?employee_id=$employeeId', headers: _header);
+  Future<Map<DateTime, List<EmployeeCalendarDto>>> findByIdForEmployeeScheduleView(int employeeId) async {
+    Response res = await get('$_url/view/employee-schedule?employee_id=$employeeId', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as Map).map(
         (key, value) => MapEntry(
