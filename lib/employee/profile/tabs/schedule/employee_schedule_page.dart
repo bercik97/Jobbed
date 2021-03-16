@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:jobbed/api/employee/dto/employee_calendar_dto.dart';
+import 'package:jobbed/api/employee/dto/employee_schedule_dto.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
 import 'package:jobbed/employee/shared/employee_app_bar.dart';
@@ -34,7 +34,7 @@ class _EmployeeSchedulePageState extends State<EmployeeSchedulePage> with Ticker
   int _employeeId;
   TimesheetService _tsService;
 
-  Map<DateTime, List<EmployeeCalendarDto>> _events = new Map();
+  Map<DateTime, List<EmployeeScheduleDto>> _events = new Map();
   List _selectedEvents;
   DateTime _selectedDay = DateTime.now();
   AnimationController _animationController;
@@ -184,7 +184,7 @@ class _EmployeeSchedulePageState extends State<EmployeeSchedulePage> with Ticker
   }
 
   Widget _buildEventsMarker(DateTime date, List events) {
-    EmployeeCalendarDto workday = events[0];
+    EmployeeScheduleDto workday = events[0];
     return workday.moneyForTime != '0.000' || workday.moneyForPiecework != '0.000' ? icon30Green(Icons.check) : SizedBox(width: 0);
   }
 
@@ -205,7 +205,7 @@ class _EmployeeSchedulePageState extends State<EmployeeSchedulePage> with Ticker
     );
   }
 
-  Widget _buildWorkday(EmployeeCalendarDto workday) {
+  Widget _buildWorkday(EmployeeScheduleDto workday) {
     String moneyForTime = workday.moneyForTime;
     String moneyForPiecework = workday.moneyForPiecework;
     List workTimes = workday.workTimes;
@@ -223,6 +223,8 @@ class _EmployeeSchedulePageState extends State<EmployeeSchedulePage> with Ticker
                       text17GreenBold(moneyForTime.toString() + ' PLN'),
                       workTimes.isNotEmpty
                           ? IconButton(
+                              padding: EdgeInsets.zero,
+                              constraints: BoxConstraints(),
                               icon: icon30Blue(Icons.search),
                               onPressed: () => WorkdayUtil.showScrollableWorkTimes(context, _selectedDay.toString(), workTimes),
                             )
@@ -237,6 +239,8 @@ class _EmployeeSchedulePageState extends State<EmployeeSchedulePage> with Ticker
                       text17GreenBold(moneyForPiecework.toString() + ' PLN'),
                       pieceworks.isNotEmpty
                           ? IconButton(
+                              padding: EdgeInsets.zero,
+                              constraints: BoxConstraints(),
                               icon: icon30Blue(Icons.search),
                               onPressed: () => WorkdayUtil.showScrollablePieceworks(context, _selectedDay.toString(), pieceworks),
                             )

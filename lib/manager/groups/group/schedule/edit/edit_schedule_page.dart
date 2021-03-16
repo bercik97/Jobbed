@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:jobbed/api/employee/dto/employee_calendar_dto.dart';
+import 'package:jobbed/api/employee/dto/employee_schedule_dto.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/manager/groups/group/schedule/schedule_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
@@ -31,7 +31,7 @@ class _EditSchedulePageState extends State<EditSchedulePage> with TickerProvider
   GroupModel _model;
   User _user;
 
-  Map<DateTime, List<EmployeeCalendarDto>> _events = new Map();
+  Map<DateTime, List<EmployeeScheduleDto>> _events = new Map();
   List _selectedEvents;
   DateTime _selectedDay = DateTime.now();
   AnimationController _animationController;
@@ -268,7 +268,7 @@ class _EditSchedulePageState extends State<EditSchedulePage> with TickerProvider
     );
   }
 
-  Widget _buildDay(EmployeeCalendarDto workday) {
+  Widget _buildDay(EmployeeScheduleDto workday) {
     return _handleEmptyDay();
   }
 

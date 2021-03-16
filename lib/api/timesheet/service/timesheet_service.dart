@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
-import 'package:jobbed/api/employee/dto/employee_calendar_dto.dart';
+import 'package:jobbed/api/employee/dto/employee_for_manager_schedule_dto.dart';
+import 'package:jobbed/api/employee/dto/employee_schedule_dto.dart';
 import 'package:jobbed/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:jobbed/api/timesheet/dto/timesheet_with_status_dto.dart';
 import 'package:jobbed/api/timesheet/dto/timesheet_without_status_dto.dart';
@@ -29,13 +30,29 @@ class TimesheetService {
     }
   }
 
-  Future<Map<DateTime, List<EmployeeCalendarDto>>> findByIdForEmployeeScheduleView(int employeeId) async {
+  Future<Map<DateTime, List<EmployeeScheduleDto>>> findByIdForEmployeeScheduleView(int employeeId) async {
     Response res = await get('$_url/view/employee-schedule?employee_id=$employeeId', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as Map).map(
         (key, value) => MapEntry(
           DateTime.parse(key),
-          List.from([EmployeeCalendarDto.fromJson(value)]),
+          List.from([EmployeeScheduleDto.fromJson(value)]),
+        ),
+      );
+    } else if (res.statusCode == 401) {
+      return LogoutUtil.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<Map<DateTime, List>> findByIdForManagerScheduleView(num groupId, int tsYear, int tsMonth) async {
+    Response res = await get('$_url/view/manager-schedule?group_id=$groupId&ts_year=$tsYear&ts_month=$tsMonth', headers: _header);
+    if (res.statusCode == 200) {
+      return (json.decode(res.body) as Map).map(
+        (key, value) => MapEntry(
+          DateTime.parse(key),
+          value.map((data) => EmployeeForManagerScheduleDto.fromJson(data)).toList(),
         ),
       );
     } else if (res.statusCode == 401) {
