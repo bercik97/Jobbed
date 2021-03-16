@@ -19,7 +19,6 @@ class EmployeeProfileDto {
   final List todayPiecework;
   final List todayWorkTimes;
   final NoteDto todayNote;
-  final bool canFillHours;
   final bool workTimeByLocation;
   final bool piecework;
 
@@ -38,7 +37,6 @@ class EmployeeProfileDto {
     @required this.todayPiecework,
     @required this.todayWorkTimes,
     @required this.todayNote,
-    @required this.canFillHours,
     @required this.workTimeByLocation,
     @required this.piecework,
   });
@@ -60,7 +58,6 @@ class EmployeeProfileDto {
       todayPiecework: json['todayPiecework'].map((data) => PieceworkDetailsDto.fromJson(data)).toList(),
       todayWorkTimes: json['todayWorkTimes'].map((data) => WorkTimeDto.fromJson(data)).toList(),
       todayNote: todayNoteJson != null ? NoteDto.fromJson(todayNoteJson) : null,
-      canFillHours: json['canFillHours'] as bool,
       workTimeByLocation: json['workTimeByLocation'] as bool,
       piecework: json['piecework'] as bool,
     );

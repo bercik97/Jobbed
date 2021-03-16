@@ -255,7 +255,6 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
       future: _employeeService.findEmployeeAndUserAndCompanyFieldsValuesById(_employeeId, [
         'moneyPerHour',
         'moneyPerHourForCompany',
-        'canFillHours',
         'workTimeByLocation',
         'piecework',
       ]),
@@ -266,7 +265,6 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
         } else {
           double moneyPerHour = res['moneyPerHour'];
           double moneyPerHourForCompany = res['moneyPerHourForCompany'];
-          bool canFillHours = res['canFillHours'];
           bool workTimeByLocation = res['workTimeByLocation'];
           bool piecework = res['piecework'];
           return SingleChildScrollView(
@@ -274,7 +272,6 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
               children: <Widget>[
                 _buildListTile(this.context, 'moneyPerHour', moneyPerHour.toString()),
                 _buildListTile(this.context, 'moneyPerHourForCompany', moneyPerHourForCompany.toString()),
-                _buildListTile(this.context, 'selfUpdatingHours', canFillHours ? getTranslated(this.context, 'yes') : getTranslated(this.context, 'no')),
                 _buildListTile(this.context, 'workTimeByLocation', workTimeByLocation ? getTranslated(this.context, 'yes') : getTranslated(this.context, 'no')),
                 _buildListTile(this.context, 'piecework', piecework ? getTranslated(this.context, 'yes') : getTranslated(this.context, 'no')),
               ],

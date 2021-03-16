@@ -55,12 +55,10 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
   LinkedHashSet<int> _selectedIds = new LinkedHashSet();
 
   bool _isMoneyBtnTapped = false;
-  bool _isSelfFillingHoursBtnTapped = false;
   bool _isWorkTimeByLocationBtnTapped = false;
   bool _isPieceworkBtnTapped = false;
 
   int _moneyRadioValue = -1;
-  int _selfFillingHoursRadioValue = -1;
   int _workTimeByLocationRadioValue = -1;
   int _pieceworkRadioValue = -1;
 
@@ -215,14 +213,6 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                             Align(
                                                 child: Row(
                                                   children: <Widget>[
-                                                    text13Black(getTranslated(this.context, 'selfUpdatingHours') + ': '),
-                                                    employee.canFillHours ? textBlueBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
-                                                  ],
-                                                ),
-                                                alignment: Alignment.topLeft),
-                                            Align(
-                                                child: Row(
-                                                  children: <Widget>[
                                                     text13Black(getTranslated(this.context, 'workTimeByLocation') + ': '),
                                                     employee.workTimeByLocation ? textBlueBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
                                                   ],
@@ -283,20 +273,6 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                         if (_selectedIds.isNotEmpty && !_isMoneyBtnTapped) {
                           _moneyPerHourController.clear();
                           _changeCurrentMoneyPerHour();
-                        } else {
-                          showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                        }
-                      },
-                    ),
-                  ),
-                  SizedBox(width: 1),
-                  Expanded(
-                    child: MaterialButton(
-                      color: BLUE,
-                      child: textCenter12White(getTranslated(context, 'fillingHours')),
-                      onPressed: () {
-                        if (_selectedIds.isNotEmpty && !_isSelfFillingHoursBtnTapped) {
-                          _changePermissionToSelfFillHours();
                         } else {
                           showHint(context, getTranslated(context, 'needToSelectEmployees') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
                         }
@@ -480,119 +456,6 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                   DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
                                   setState(() => _isMoneyBtnTapped = false);
-                                });
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          }),
-        );
-      },
-    );
-  }
-
-  void _changePermissionToSelfFillHours() {
-    showGeneralDialog(
-      context: context,
-      barrierColor: WHITE.withOpacity(0.95),
-      barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'selfUpdatingHours'),
-      transitionDuration: Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return SizedBox.expand(
-          child: StatefulBuilder(builder: (context, setState) {
-            return Scaffold(
-              backgroundColor: Colors.black12,
-              body: Center(
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10, right: 10),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(top: 50),
-                        child: Column(
-                          children: [
-                            textCenter20Black(getTranslated(context, 'permissionToSelfUpdatingHoursUpperCase')),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 7.5),
-                      Column(
-                        children: <Widget>[
-                          RadioButton.buildRadioBtn(
-                            color: BLUE,
-                            title: getTranslated(context, 'yesEmployeeCanFillHoursOnHisOwn'),
-                            value: 0,
-                            groupValue: _selfFillingHoursRadioValue,
-                            onChanged: (newValue) => setState(() => _selfFillingHoursRadioValue = newValue),
-                          ),
-                          RadioButton.buildRadioBtn(
-                            color: Colors.red,
-                            title: getTranslated(context, 'noEmployeeCannotFillHoursOnHisOwn'),
-                            value: 1,
-                            groupValue: _selfFillingHoursRadioValue,
-                            onChanged: (newValue) => setState(() => _selfFillingHoursRadioValue = newValue),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          MaterialButton(
-                            elevation: 0,
-                            height: 50,
-                            minWidth: 40,
-                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[iconWhite(Icons.close)],
-                            ),
-                            color: Colors.red,
-                            onPressed: () {
-                              _selfFillingHoursRadioValue = -1;
-                              Navigator.pop(context);
-                            },
-                          ),
-                          SizedBox(width: 25),
-                          MaterialButton(
-                            elevation: 0,
-                            height: 50,
-                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[iconWhite(Icons.check)],
-                            ),
-                            color: BLUE,
-                            onPressed: () {
-                              if (_isSelfFillingHoursBtnTapped) {
-                                return;
-                              }
-                              if (_selfFillingHoursRadioValue == -1) {
-                                ToastUtil.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
-                                return;
-                              }
-                              setState(() => _isSelfFillingHoursBtnTapped = true);
-                              showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                              _employeeService.updateFieldsValuesByIds(_selectedIds.toList(), {"canFillHours": _selfFillingHoursRadioValue == 0 ? true : false}).then((res) {
-                                Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                  _refresh();
-                                  Navigator.pop(context);
-                                  ToastUtil.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToSelfFillHoursForSelectedEmployees'));
-                                  _selfFillingHoursRadioValue = -1;
-                                  setState(() => _isSelfFillingHoursBtnTapped = false);
-                                });
-                              }).catchError((onError) {
-                                Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                  DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
-                                  setState(() => _isSelfFillingHoursBtnTapped = false);
                                 });
                               });
                             },

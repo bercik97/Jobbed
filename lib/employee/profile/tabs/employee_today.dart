@@ -75,12 +75,10 @@ Widget _buildNoteContainer(BuildContext context, User user, String todayDate, No
 }
 
 Widget _buildStatisticsContainer(BuildContext context, EmployeeProfileDto dto, Function() fillHoursFun) {
-  String todayDate = dto.todayDate;
   String todayMoney = dto.todayMoney.toString();
   String todayHours = dto.todayHours.toString();
   List todayPiecework = dto.todayPiecework;
   List todayWorkTimes = dto.todayWorkTimes;
-  bool canFillHours = dto.canFillHours;
   return Container(
     child: SingleChildScrollView(
       child: Padding(
@@ -148,19 +146,6 @@ Widget _buildStatisticsContainer(BuildContext context, EmployeeProfileDto dto, F
                 ),
               ),
             ),
-            // canFillHours
-            //     ? Column(
-            //         children: [
-            //           SizedBox(height: 10),
-            //           Buttons.standardButton(
-            //             minWidth: 200.0,
-            //             color: BLUE,
-            //             title: getTranslated(context, 'fillHours'),
-            //             fun: () => fillHoursFun(),
-            //           ),
-            //         ],
-            //       )
-            //     : SizedBox(height: 10),
           ],
         ),
       ),

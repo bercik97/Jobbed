@@ -7,7 +7,6 @@ class EmployeeSettingsDto {
   final String employeeNationality;
   final double moneyPerHour;
   final double moneyPerHourForCompany;
-  final bool canFillHours;
   final bool workTimeByLocation;
   final bool piecework;
 
@@ -18,7 +17,6 @@ class EmployeeSettingsDto {
     @required this.employeeNationality,
     @required this.moneyPerHour,
     @required this.moneyPerHourForCompany,
-    @required this.canFillHours,
     @required this.workTimeByLocation,
     @required this.piecework,
   });
@@ -31,7 +29,6 @@ class EmployeeSettingsDto {
       employeeNationality: json['employeeNationality'] as String,
       moneyPerHour: json['moneyPerHour'] as double,
       moneyPerHourForCompany: json['moneyPerHourForCompany'] as double,
-      canFillHours: json['canFillHours'] as bool,
       workTimeByLocation: json['workTimeByLocation'] as bool,
       piecework: json['piecework'] as bool,
     );
