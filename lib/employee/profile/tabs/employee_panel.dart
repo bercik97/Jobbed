@@ -38,7 +38,7 @@ Container employeePanel(BuildContext context, User user, EmployeeProfileDto empl
                         }
                         NavigatorUtil.navigate(context, WorkTimePage(user, employee.todayWorkdayId));
                       },
-                      child: _buildScrollableContainer(context, 'images/employee-work.png', 'workTime', 'startFinishWork'),
+                      child: _buildScrollableContainer(context, 'images/work-time.png', 'workTime', 'startFinishWork'),
                     ),
                   ),
                 ),
