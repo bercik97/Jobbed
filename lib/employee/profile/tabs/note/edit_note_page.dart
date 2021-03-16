@@ -96,7 +96,7 @@ class _EditNotePageState extends State<EditNotePage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: WHITE,
-          appBar: employeeAppBar(context, _user, '', () => NavigatorUtil.navigateReplacement(context, EmployeeProfilePage(_user))),
+          appBar: employeeAppBar(context, _user, getTranslated(context, 'note'), () => NavigatorUtil.navigateReplacement(context, EmployeeProfilePage(_user))),
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -340,6 +340,7 @@ class _EditNotePageState extends State<EditNotePage> {
     _noteSubWorkplaceService.update(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessToast(getTranslated(context, 'successfullyUpdatedNote'));
+        Navigator.pop(context);
         setState(() {
           _noteDto.employeeNote = _employeeNoteController.text;
           _noteDto.noteSubWorkplaceDto.forEach((element) {
