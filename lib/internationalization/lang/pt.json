@@ -695,5 +695,6 @@
   "rememberSetLocationHint": "გახსოვდეთ, რომ GPS ტელეფონებში შეიძლება განსხვავებული სიზუსტით იმუშაოს, ამიტომ რეკომენდებულია GPS დიაპაზონის უფრო დიდი რადიუსის დაყენება",
   "youDoNotHaveInProgressTimesheets": "მიმდინარე ფურცლები არ არის",
   "youDoNotHaveCompletedTimesheets": "დასრულებული ცხრილი არ არის",
-  "timesheetsDescription": "Timesheets description"
+  "timesheetsDescription": "Timesheets description",
+  "enterWorkplaceCodeToPausePopupTitle": "Enter workplace code to end work"
 }

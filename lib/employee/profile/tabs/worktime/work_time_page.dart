@@ -23,9 +23,9 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/widget/buttons.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
-import 'package:jobbed/shared/widget/radio_button.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 import 'package:location/location.dart' as locc;
 import 'package:permission_handler/permission_handler.dart';
@@ -63,9 +63,6 @@ class _WorkTimePageState extends State<WorkTimePage> {
   bool _isPauseWorkButtonTapped = false;
 
   AsyncMemoizer _memoizer;
-
-  int _gpsTypeRadioValue = -1;
-  int _workplaceCodeTypeRadioValue = -1;
 
   @override
   void initState() {
@@ -301,114 +298,51 @@ class _WorkTimePageState extends State<WorkTimePage> {
       barrierDismissible: false,
       transitionDuration: Duration(milliseconds: 400),
       pageBuilder: (_, __, ___) {
-        return SafeArea(
-          child: SizedBox.expand(
-            child: StatefulBuilder(builder: (context, setState) {
-              return Scaffold(
-                backgroundColor: Colors.black12,
-                body: Center(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 10, right: 10),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 50, bottom: 10),
-                          child: Column(
-                            children: [
-                              textCenter20BlueBold(getTranslated(context, 'selectTypeOfWorkingTime')),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 7.5),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    RadioButton.buildRadioBtn(
-                                      color: BLUE,
-                                      title: getTranslated(context, 'gps'),
-                                      value: 0,
-                                      groupValue: _gpsTypeRadioValue,
-                                      onChanged: (newValue) => setState(() {
-                                        _gpsTypeRadioValue = newValue;
-                                        _workplaceCodeTypeRadioValue = -1;
-                                        _isChoseWorkTimeTypeBtnDisabled = false;
-                                      }),
-                                    ),
-                                    RadioButton.buildRadioBtn(
-                                      color: BLUE,
-                                      title: getTranslated(context, 'workplaceCode'),
-                                      value: 0,
-                                      groupValue: _workplaceCodeTypeRadioValue,
-                                      onChanged: (newValue) => setState(() {
-                                        _workplaceCodeTypeRadioValue = newValue;
-                                        _gpsTypeRadioValue = -1;
-                                        _isChoseWorkTimeTypeBtnDisabled = false;
-                                      }),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              MaterialButton(
-                                elevation: 0,
-                                height: 50,
-                                minWidth: 40,
-                                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[iconWhite(Icons.close)],
-                                ),
-                                color: Colors.red,
-                                onPressed: () {
-                                  _gpsTypeRadioValue = -1;
-                                  _workplaceCodeTypeRadioValue = -1;
-                                  _isChoseWorkTimeTypeBtnDisabled = true;
-                                  Navigator.pop(context);
-                                },
-                              ),
-                              SizedBox(width: 25),
-                              MaterialButton(
-                                elevation: 0,
-                                height: 50,
-                                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[iconWhite(Icons.check)],
-                                ),
-                                color: !_isChoseWorkTimeTypeBtnDisabled ? BLUE : Colors.grey,
-                                onPressed: () {
-                                  if (_isChoseWorkTimeTypeBtnDisabled) {
-                                    return;
-                                  }
-                                  if (_gpsTypeRadioValue == 0) {
-                                    gpsFun();
-                                  } else {
-                                    workplaceCodeFun();
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+        return SizedBox.expand(
+          child: StatefulBuilder(builder: (context, setState) {
+            return Scaffold(
+              backgroundColor: Colors.black12,
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    text20Black(getTranslated(context, 'selectTypeOfWorkingTime')),
+                    SizedBox(height: 20),
+                    Buttons.standardButton(
+                      minWidth: 200.0,
+                      color: BLUE,
+                      title: getTranslated(context, 'gps'),
+                      fun: () => gpsFun(),
                     ),
-                  ),
+                    Buttons.standardButton(
+                      minWidth: 200.0,
+                      color: BLUE,
+                      title: getTranslated(context, 'workplaceCode'),
+                      fun: () => workplaceCodeFun(),
+                    ),
+                    SizedBox(height: 30),
+                    Container(
+                      width: 60,
+                      child: MaterialButton(
+                        elevation: 0,
+                        height: 50,
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[iconWhite(Icons.close)],
+                        ),
+                        color: Colors.red,
+                        onPressed: () {
+                          _isChoseWorkTimeTypeBtnDisabled = true;
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              );
-            }),
-          ),
+              ),
+            );
+          }),
         );
       },
     );
@@ -637,20 +571,23 @@ class _WorkTimePageState extends State<WorkTimePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  textCenter20BlueBold(getTranslated(context, 'enterWorkplaceCodePopupTitle')),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: textCenter20BlackBold(getTranslated(context, 'enterWorkplaceCodePopupTitle')),
+                  ),
                   SizedBox(height: 30),
                   PinCodeTextField(
                     autofocus: true,
                     highlight: true,
                     controller: _workplaceCodeController,
-                    highlightColor: WHITE,
+                    highlightColor: BLACK,
                     defaultBorderColor: BLUE,
                     hasTextBorderColor: BLUE,
                     maxLength: 4,
                     pinBoxWidth: 50,
                     pinBoxHeight: 64,
                     pinBoxDecoration: ProvidedPinBoxDecoration.defaultPinBoxDecoration,
-                    pinTextStyle: TextStyle(fontSize: 22, color: WHITE),
+                    pinTextStyle: TextStyle(fontSize: 22, color: BLACK),
                     pinTextAnimatedSwitcherTransition: ProvidedPinBoxTextAnimation.scalingTransition,
                     pinTextAnimatedSwitcherDuration: Duration(milliseconds: 300),
                     keyboardType: TextInputType.number,
@@ -690,14 +627,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.pop(context);
                               if (isCorrect) {
-                                String workplaceCode = _workplaceCodeController.text;
-                                DialogUtil.showConfirmationDialog(
-                                  context: context,
-                                  title: getTranslated(context, 'confirmation'),
-                                  content: getTranslated(context, 'startTimeConfirmation') + ': $workplaceCode?',
-                                  isBtnTapped: _isStartWorkButtonTapped,
-                                  fun: () => _isStartWorkButtonTapped ? null : _startWorkByWorkplaceCode(workplaceCode, _todayWorkdayId),
-                                );
+                                _startWorkByWorkplaceCode(_workplaceCodeController.text, _todayWorkdayId);
                               } else {
                                 DialogUtil.showErrorDialog(context, getTranslated(context, 'workplaceCodeIsIncorrect'));
                               }
@@ -751,7 +681,10 @@ class _WorkTimePageState extends State<WorkTimePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  textCenter20BlueBold(getTranslated(context, 'enterWorkplaceCodePopupTitle')),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: textCenter20BlackBold(getTranslated(context, 'enterWorkplaceCodePopupTitle')),
+                  ),
                   SizedBox(height: 30),
                   PinCodeTextField(
                     autofocus: true,

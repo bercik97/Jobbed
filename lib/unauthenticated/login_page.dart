@@ -258,7 +258,7 @@ class _LoginPageState extends State<LoginPage> {
                     autofocus: true,
                     highlight: true,
                     controller: _tokenController,
-                    highlightColor: WHITE,
+                    highlightColor: BLACK,
                     defaultBorderColor: BLUE,
                     hasTextBorderColor: BLUE,
                     maxLength: 6,

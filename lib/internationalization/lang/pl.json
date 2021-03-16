@@ -695,5 +695,6 @@
   "rememberSetLocationHint": "Pamiętaj, że GPS w telefonach komórkowych może działać z różną dokładnością, dlatego zalecene jest, aby ustawić większy promień zasięgu GPS",
   "youDoNotHaveInProgressTimesheets": "Brak arkuszy czasu pracy w toku",
   "youDoNotHaveCompletedTimesheets": "Brak zaakceptowanych arkuszy czasu pracy",
-  "timesheetsDescription": "Timesheets description"
+  "timesheetsDescription": "Timesheets description",
+  "enterWorkplaceCodeToPausePopupTitle": "Wpisz kod miejsca pracy aby zakończyć pracę"
 }

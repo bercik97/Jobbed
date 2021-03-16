@@ -695,5 +695,6 @@
   "rememberSetLocationHint": "Remember that GPS in mobile phones can work with different accuracy, so it is recommended to set a larger GPS range radius",
   "youDoNotHaveInProgressTimesheets": "No in progress timesheets",
   "youDoNotHaveCompletedTimesheets": "No completed timesheets",
-  "timesheetsDescription": "Timesheets description"
+  "timesheetsDescription": "Timesheets description",
+  "enterWorkplaceCodeToPausePopupTitle": "Enter workplace code to end work"
 }

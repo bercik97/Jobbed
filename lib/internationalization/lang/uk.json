@@ -695,5 +695,6 @@
   "rememberSetLocationHint": "Пам'ятайте, що GPS у мобільних телефонах може працювати з різною точністю, тому рекомендується встановити більший радіус радіусу дії GPS",
   "youDoNotHaveInProgressTimesheets": "Таблиць обліку робочого часу не виконується",
   "youDoNotHaveCompletedTimesheets": "Немає заповнених табелів обліку робочого часу",
-  "timesheetsDescription": "Timesheets description"
+  "timesheetsDescription": "Timesheets description",
+  "enterWorkplaceCodeToPausePopupTitle": "Enter workplace code to end work"
 }
