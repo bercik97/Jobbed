@@ -466,6 +466,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                     ),
                   ),
                   body: GoogleMap(
+                    zoomControlsEnabled: false,
                     myLocationButtonEnabled: false,
                     initialCameraPosition: new CameraPosition(target: result.latLng, zoom: 16),
                     markers: _markersList.toSet(),
