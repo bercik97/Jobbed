@@ -704,5 +704,7 @@
   "tapToSeeNoteDetails": "Tap to see note details",
   "tapToAddNewNote": "Tap to add new note",
   "addDeleteManyNotes": "Add / Delete many notes",
-  "todayNoteIsEmpty": "Today note is empty"
+  "todayNoteIsEmpty": "Today note is empty",
+  "yourNoteIsEmpty": "Your note is empty",
+  "managerNote": "Manager note"
 }
