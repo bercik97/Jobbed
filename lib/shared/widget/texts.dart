@@ -91,6 +91,7 @@ Text text20GreenBold(String text) { return Text(text, style: GoogleFonts.lato(co
 /////////////////////
 /*  TEXT BLUE GREY */
 /////////////////////
+Text text14BlueGrey(String text) { return Text(text, style: GoogleFonts.lato(color: Colors.blueGrey, fontSize: 14)); }
 Text text16BlueGrey(String text) { return Text(text, style: GoogleFonts.lato(color: Colors.blueGrey, fontSize: 16)); }
 Text text17BlueGrey(String text) { return Text(text, style: GoogleFonts.lato(color: Colors.blueGrey, fontSize: 17)); }
 

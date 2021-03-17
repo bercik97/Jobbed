@@ -14,10 +14,11 @@ class EmployeeProfileDto {
   final List timeSheets;
   final int todayWorkdayId;
   final String todayDate;
+  final String todayMoneyForTime;
+  final String todayMoneyForPiecework;
   final String todayMoney;
-  final String todayHours;
-  final List todayPiecework;
   final List todayWorkTimes;
+  final List todayPiecework;
   final NoteDto todayNote;
   final bool workTimeByLocation;
   final bool piecework;
@@ -32,10 +33,11 @@ class EmployeeProfileDto {
     @required this.timeSheets,
     @required this.todayWorkdayId,
     @required this.todayDate,
+    @required this.todayMoneyForTime,
+    @required this.todayMoneyForPiecework,
     @required this.todayMoney,
-    @required this.todayHours,
-    @required this.todayPiecework,
     @required this.todayWorkTimes,
+    @required this.todayPiecework,
     @required this.todayNote,
     @required this.workTimeByLocation,
     @required this.piecework,
@@ -53,10 +55,11 @@ class EmployeeProfileDto {
       timeSheets: json['timeSheets'].map((data) => TimesheetForEmployeeDto.fromJson(data)).toList(),
       todayWorkdayId: json['todayWorkdayId'] as int,
       todayDate: json['todayDate'] as String,
+      todayMoneyForTime: json['todayMoneyForTime'] as String,
+      todayMoneyForPiecework: json['todayMoneyForPiecework'] as String,
       todayMoney: json['todayMoney'] as String,
-      todayHours: json['todayHours'] as String,
-      todayPiecework: json['todayPiecework'].map((data) => PieceworkDetailsDto.fromJson(data)).toList(),
       todayWorkTimes: json['todayWorkTimes'].map((data) => WorkTimeDto.fromJson(data)).toList(),
+      todayPiecework: json['todayPiecework'].map((data) => PieceworkDetailsDto.fromJson(data)).toList(),
       todayNote: todayNoteJson != null ? NoteDto.fromJson(todayNoteJson) : null,
       workTimeByLocation: json['workTimeByLocation'] as bool,
       piecework: json['piecework'] as bool,

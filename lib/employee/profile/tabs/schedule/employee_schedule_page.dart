@@ -187,7 +187,7 @@ class _EmployeeSchedulePageState extends State<EmployeeSchedulePage> with Ticker
 
   Widget _buildEventsMarker(DateTime date, List events) {
     EmployeeScheduleDto workday = events[0];
-    return workday.moneyForTime != '0.000' || workday.moneyForPiecework != '0.000' ? icon30Green(Icons.check) : icon30Red(Icons.close);
+    return workday.moneyForTime != '0.000' || workday.moneyForPiecework != '0.000' || (workday.note != null && workday.doneTasks == workday.allNoteTasks) ? icon30Green(Icons.check) : icon30Red(Icons.close);
   }
 
   Widget _buildEventList() {
@@ -218,7 +218,7 @@ class _EmployeeSchedulePageState extends State<EmployeeSchedulePage> with Ticker
     return Column(
       children: [
         ListTile(
-          trailing: moneyForTime != '0.000' || moneyForPiecework != '0.000' ? icon50Green(Icons.check) : icon50Red(Icons.close),
+          trailing: moneyForTime != '0.000' || moneyForPiecework != '0.000' || (noteDto != null && doneTasks == allTasks) ? icon50Green(Icons.check) : icon50Red(Icons.close),
           subtitle: Column(
             children: <Widget>[
               Align(

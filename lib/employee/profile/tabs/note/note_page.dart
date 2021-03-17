@@ -153,18 +153,15 @@ class _NotePageState extends State<NotePage> {
                       return Padding(
                         padding: EdgeInsets.symmetric(horizontal: 25),
                         child: Card(
-                          color: WHITE,
+                          color: BRIGHTER_BLUE,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Container(
-                                color: BRIGHTER_BLUE,
-                                child: ListTile(
-                                  title: text20BlackBold(utf8.decode(name.runes.toList())),
-                                  subtitle: text16BlueGrey(getTranslated(this.context, 'workplaceHasNoSubWorkplaces')),
-                                  leading: _checkedNoteWorkplaces[foundIndex] ? icon50Green(Icons.check) : icon50Red(Icons.close),
-                                ),
+                              ListTile(
+                                title: text20BlackBold(utf8.decode(name.runes.toList())),
+                                subtitle: text14BlueGrey(getTranslated(this.context, 'workplaceHasNoSubWorkplaces')),
+                                leading: _checkedNoteWorkplaces[foundIndex] ? icon50Green(Icons.check) : icon50Red(Icons.close),
                               )
                             ],
                           ),
@@ -214,7 +211,6 @@ class _NotePageState extends State<NotePage> {
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: <Widget>[
                                                 ListTile(
-                                                  contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
                                                   title: text17BlueBold(utf8.decode(name.runes.toList())),
                                                   subtitle: textBlack(utf8.decode(description.runes.toList())),
                                                   leading: noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].done ? icon50Green(Icons.check) : icon50Red(Icons.close),
