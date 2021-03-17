@@ -600,5 +600,7 @@
   "managerNote": "Notatka menadżera",
   "employeeNote": "Notatka pracownika",
   "noteEmployeeEmpty": "Brak notatki od pracownika",
-  "diskSectionWillBeAvailableSoon": "Moduł przechowywania plików będzie wkrótce dostępny"
+  "diskSectionWillBeAvailableSoon": "Moduł przechowywania plików będzie wkrótce dostępny",
+  "timeOfStartAndTimeOfEndCannotBeTheSame": "Czas zaczęcia pracy oraz zakończenia nie może być taki sam",
+  "hoursCannotBeEqualTo24": "Godziny nie mogą być równe 24"
 }

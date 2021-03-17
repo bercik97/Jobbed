@@ -600,5 +600,7 @@
   "managerNote": "Manager note",
   "employeeNote": "Employee note",
   "noteEmployeeEmpty": "No note from employee",
-  "diskSectionWillBeAvailableSoon": "File storage module will be available soon"
+  "diskSectionWillBeAvailableSoon": "File storage module will be available soon",
+  "timeOfStartAndTimeOfEndCannotBeTheSame": "Time of start and time of end cannot be the same",
+  "hoursCannotBeEqualTo24": "Hours cannot be equal to 24"
 }

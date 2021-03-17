@@ -108,6 +108,10 @@ class ValidatorUtil {
       return getTranslated(context, 'hoursFromCannotBeHigherThanHoursTo');
     } else if (fromHours == toHours && fromMinutes > toMinutes) {
       return getTranslated(context, 'timeOfStartCannotStartLaterThanFinish');
+    } else if (fromHours == toHours && fromMinutes == toMinutes) {
+      return getTranslated(context, 'timeOfStartAndTimeOfEndCannotBeTheSame');
+    } else if (fromHours == 24 || toHours == 24) {
+      return getTranslated(context, 'hoursCannotBeEqualTo24');
     }
     return null;
   }

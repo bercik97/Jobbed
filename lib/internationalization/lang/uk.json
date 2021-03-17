@@ -600,5 +600,7 @@
   "managerNote": "Примітка менеджера",
   "employeeNote": "Примітка працівника",
   "noteEmployeeEmpty": "Немає примітки від працівника",
-  "diskSectionWillBeAvailableSoon": "Модуль зберігання файлів буде доступний найближчим часом"
+  "diskSectionWillBeAvailableSoon": "Модуль зберігання файлів буде доступний найближчим часом",
+  "timeOfStartAndTimeOfEndCannotBeTheSame": "Час початку та час закінчення не можуть бути однаковими",
+  "hoursCannotBeEqualTo24": "Години не можуть дорівнювати 24"
 }

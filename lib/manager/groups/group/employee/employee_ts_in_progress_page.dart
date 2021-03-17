@@ -427,15 +427,15 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                               NumberInputWithIncrementDecrement(
                                 controller: _fromHoursController,
                                 min: 0,
-                                max: 24,
+                                max: 23,
                                 onIncrement: (value) {
-                                  if (value > 24) {
-                                    setState(() => value = 24);
+                                  if (value > 23) {
+                                    setState(() => value = 23);
                                   }
                                 },
                                 onSubmitted: (value) {
-                                  if (value >= 24) {
-                                    setState(() => _fromHoursController.text = 24.toString());
+                                  if (value >= 23) {
+                                    setState(() => _fromHoursController.text = 23.toString());
                                   }
                                 },
                                 style: TextStyle(color: BLUE),
@@ -491,15 +491,15 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                               NumberInputWithIncrementDecrement(
                                 controller: _toHoursController,
                                 min: 0,
-                                max: 24,
+                                max: 23,
                                 onIncrement: (value) {
-                                  if (value > 24) {
-                                    setState(() => value = 24);
+                                  if (value > 23) {
+                                    setState(() => value = 23);
                                   }
                                 },
                                 onSubmitted: (value) {
-                                  if (value >= 24) {
-                                    setState(() => _toHoursController.text = 24.toString());
+                                  if (value >= 23) {
+                                    setState(() => _toHoursController.text = 23.toString());
                                   }
                                 },
                                 style: TextStyle(color: BLUE),

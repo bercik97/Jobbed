@@ -600,5 +600,7 @@
   "managerNote": "მენეჯერის შენიშვნა",
   "employeeNote": "თანამშრომლის შენიშვნა",
   "noteEmployeeEmpty": "თანამშრომლის შენიშვნა არ არის",
-  "diskSectionWillBeAvailableSoon": "ფაილების შენახვის მოდული მალე იქნება ხელმისაწვდომი"
+  "diskSectionWillBeAvailableSoon": "ფაილების შენახვის მოდული მალე იქნება ხელმისაწვდომი",
+  "timeOfStartAndTimeOfEndCannotBeTheSame": "დაწყების დრო და დასრულების დრო არ შეიძლება იყოს იგივე",
+  "hoursCannotBeEqualTo24": "საათები არ შეიძლება იყოს 24-ის ტოლი"
 }
