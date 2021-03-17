@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
@@ -13,6 +11,7 @@ import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
@@ -57,12 +56,12 @@ class _WorkplaceWorkTimePageState extends State<WorkplaceWorkTimePage> {
           child: Column(
             children: [
               ListTile(
-                title: text17BlueBold(utf8.decode(_workplaceDto.name.runes.toList())),
+                title: text17BlueBold(UTFDecoderUtil.decode(context, _workplaceDto.name)),
                 subtitle: Column(
                   children: <Widget>[
                     Align(
                       child: _workplaceDto.location != null
-                          ? text16Black(utf8.decode(_workplaceDto.location.runes.toList()))
+                          ? text16Black(UTFDecoderUtil.decode(context, _workplaceDto.location))
                           : Row(
                               children: [
                                 text16Black(getTranslated(context, 'location') + ': '),
@@ -107,7 +106,7 @@ class _WorkplaceWorkTimePageState extends State<WorkplaceWorkTimePage> {
                                     DataCell(textBlack(workTime.startTime)),
                                     DataCell(textBlack(workTime.endTime != null ? workTime.endTime : '-')),
                                     DataCell(textBlack(workTime.totalTime != null ? workTime.totalTime : '-')),
-                                    DataCell(textBlack(workTime.employeeInfo != null ? utf8.decode(workTime.employeeInfo.runes.toList()) : '-')),
+                                    DataCell(textBlack(UTFDecoderUtil.decode(this.context, workTime.employeeInfo))),
                                   ],
                                 ),
                             ],

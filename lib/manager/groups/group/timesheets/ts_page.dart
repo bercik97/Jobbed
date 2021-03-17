@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
@@ -21,6 +19,7 @@ import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/month_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
@@ -90,7 +89,7 @@ class _TsPageState extends State<TsPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: WHITE,
-          appBar: managerAppBar(context, _model.user, utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'), () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model))),
+          appBar: managerAppBar(context, _model.user, UTFDecoderUtil.decode(context, _model.groupName), () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model))),
           body: SingleChildScrollView(
             child: Column(
               children: <Widget>[

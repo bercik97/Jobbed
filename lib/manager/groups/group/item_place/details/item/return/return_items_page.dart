@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
@@ -15,8 +13,9 @@ import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
-import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
@@ -91,7 +90,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
                                       Card(
                                         color: BRIGHTER_BLUE,
                                         child: ListTile(
-                                          title: text17BlueBold(utf8.decode(_itemPlaces[i].name.runes.toList())),
+                                          title: text17BlueBold(UTFDecoderUtil.decode(context, _itemPlaces[i].name)),
                                           subtitle: Column(
                                             children: [
                                               Row(
@@ -108,7 +107,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
                                                     alignment: Alignment.topLeft,
                                                   ),
                                                   Align(
-                                                    child: text17BlackBold(utf8.decode(_itemPlaces[i].warehouseName.toString().runes.toList())),
+                                                    child: text17BlackBold(UTFDecoderUtil.decode(context, _itemPlaces[i].warehouseName.toString())),
                                                     alignment: Alignment.topLeft,
                                                   ),
                                                 ],
@@ -205,13 +204,13 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
         Map<String, int> itemsWithQuantities = warehouseIdsAndItemsWithQuantities[warehouseId];
         int quantity = int.parse(_textEditingItemControllers[i].text);
         if (quantity != 0) {
-          itemsWithQuantities[utf8.decode(_itemPlaces[i].name.runes.toList())] = quantity;
+          itemsWithQuantities[UTFDecoderUtil.decode(context, _itemPlaces[i].name)] = quantity;
         }
       } else {
         Map<String, int> itemsWithQuantities = new Map();
         int quantity = int.parse(_textEditingItemControllers[i].text);
         if (quantity != 0) {
-          itemsWithQuantities[utf8.decode(_itemPlaces[i].name.runes.toList())] = quantity;
+          itemsWithQuantities[UTFDecoderUtil.decode(context, _itemPlaces[i].name)] = quantity;
           warehouseIdsAndItemsWithQuantities[warehouseId.toString()] = itemsWithQuantities;
         }
       }

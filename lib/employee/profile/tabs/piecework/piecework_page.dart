@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
@@ -14,6 +12,7 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
@@ -172,7 +171,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
                       DataRow(
                         cells: [
                           DataCell(textBlack((i + 1).toString())),
-                          DataCell(textBlack(utf8.decode(_pieceworks[i].service.runes.toList()))),
+                          DataCell(textBlack(UTFDecoderUtil.decode(context, _pieceworks[i].service))),
                           DataCell(textBlack(_pieceworks[i].quantity.toString())),
                           DataCell(textBlack(_pieceworks[i].priceForEmployee.toString())),
                           DataCell(

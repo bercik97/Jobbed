@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
@@ -23,6 +21,7 @@ import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/month_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
@@ -144,7 +143,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                       children: <Widget>[
                         Align(
                           alignment: Alignment.topLeft,
-                          child: text17BlackBold(_employeeInfo != null ? utf8.decode(_employeeInfo.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality) : getTranslated(context, 'empty')),
+                          child: text17BlackBold(UTFDecoderUtil.decode(context, _employeeInfo) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality)),
                         ),
                         Row(
                           children: <Widget>[
@@ -639,7 +638,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                     for (int i = 0; i < _workplaces.length; i++)
                                       RadioButton.buildRadioBtn(
                                         color: BLUE,
-                                        title: utf8.decode(_workplaces[i].name.runes.toList()),
+                                        title: UTFDecoderUtil.decode(this.context, _workplaces[i].name),
                                         value: 0,
                                         groupValue: _workplacesRadioValues[i],
                                         onChanged: (newValue) => setState(
@@ -847,7 +846,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                     DataRow(
                                       cells: [
                                         DataCell(text16Black((i + 1).toString())),
-                                        DataCell(text16Black(utf8.decode(pieceworks[i].service.runes.toList()))),
+                                        DataCell(text16Black(UTFDecoderUtil.decode(this.context, pieceworks[i].service))),
                                         DataCell(Align(alignment: Alignment.center, child: text16Black(pieceworks[i].quantity.toString()))),
                                         DataCell(Align(alignment: Alignment.center, child: text16Black(pieceworks[i].priceForEmployee.toString()))),
                                         DataCell(Align(alignment: Alignment.center, child: text16Black(pieceworks[i].priceForCompany.toString()))),
@@ -965,7 +964,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                         DataCell(text16Black(workTimes[i].startTime.toString())),
                                         DataCell(text16Black(workTimes[i].endTime != null ? workTimes[i].endTime.toString() : '-')),
                                         DataCell(text16Black(workTimes[i].totalTime != null ? workTimes[i].totalTime.toString() : '-')),
-                                        DataCell(text16Black(utf8.decode(workTimes[i].workplaceName.toString().runes.toList()))),
+                                        DataCell(text16Black(UTFDecoderUtil.decode(this.context, workTimes[i].workplaceName.toString()))),
                                         DataCell(
                                           IconButton(
                                             icon: iconRed(Icons.delete),

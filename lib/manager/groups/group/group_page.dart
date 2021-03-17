@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
@@ -17,6 +15,7 @@ import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
@@ -73,15 +72,8 @@ class _GroupPageState extends State<GroupPage> {
                           ),
                         ),
                       ),
-                      title: text17BlueBold(
-                        utf8.decode(
-                          _model.groupName != null ? _model.groupName.runes.toList() : getTranslated(context, 'empty'),
-                        ),
-                      ),
-                      subtitle: Align(
-                        child: text16Black(utf8.decode(_model.groupDescription != null ? _model.groupDescription.runes.toList() : getTranslated(context, 'empty'))),
-                        alignment: Alignment.topLeft,
-                      ),
+                      title: text17BlueBold(UTFDecoderUtil.decode(context, _model.groupName)),
+                      subtitle: Align(child: text16Black(UTFDecoderUtil.decode(context, _model.groupDescription)), alignment: Alignment.topLeft),
                       trailing: Ink(
                         decoration: ShapeDecoration(color: BLUE, shape: CircleBorder()),
                         child: IconButton(

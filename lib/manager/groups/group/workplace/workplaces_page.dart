@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:convert';
 
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,6 +22,7 @@ import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
@@ -179,6 +179,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                   }
                                   String location = workplace.location;
                                   String radiusLength = workplace.radiusLength.toString();
+
                                   return Card(
                                     color: WHITE,
                                     child: Column(
@@ -204,12 +205,12 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                                 children: [
                                                   Align(
                                                     alignment: Alignment.topLeft,
-                                                    child: text17BlueBold(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
+                                                    child: text17BlueBold(UTFDecoderUtil.decode(context, name)),
                                                   ),
                                                   Align(
                                                     alignment: Alignment.topLeft,
                                                     child: location != null
-                                                        ? text16Black(utf8.decode(location.runes.toList()))
+                                                        ? text16Black(UTFDecoderUtil.decode(context, location))
                                                         : Row(
                                                             children: [
                                                               text16Black(getTranslated(this.context, 'location') + ': '),

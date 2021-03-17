@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:convert';
 
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:date_util/date_util.dart';
@@ -25,6 +24,7 @@ import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
@@ -222,7 +222,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            text20BlackBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                            text20BlackBold(UTFDecoderUtil.decode(context, info) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                             Row(
                                               children: <Widget>[
                                                 textBlack(getTranslated(this.context, 'moneyForPieceworkToday') + ': '),

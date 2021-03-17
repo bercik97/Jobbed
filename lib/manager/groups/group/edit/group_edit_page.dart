@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
@@ -14,6 +12,7 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
@@ -64,23 +63,23 @@ class _GroupEditPageState extends State<GroupEditPage> {
                         SizedBox(height: 10),
                         ListTile(
                           title: text17BlackBold(getTranslated(context, 'groupName')),
-                          subtitle: text16Black(utf8.decode(_model.groupName.runes.toList())),
+                          subtitle: text16Black(UTFDecoderUtil.decode(context, _model.groupName)),
                           trailing: Ink(
                             decoration: ShapeDecoration(color: BLUE, shape: CircleBorder()),
                             child: IconButton(
                               icon: iconWhite(Icons.border_color),
-                              onPressed: () => _updateGroupName(context, utf8.decode(_model.groupName.runes.toList())),
+                              onPressed: () => _updateGroupName(context, UTFDecoderUtil.decode(context, _model.groupName)),
                             ),
                           ),
                         ),
                         ListTile(
                           title: text17BlackBold(getTranslated(context, 'groupDescription')),
-                          subtitle: text16Black(utf8.decode(_model.groupDescription.runes.toList())),
+                          subtitle: text16Black(UTFDecoderUtil.decode(context, _model.groupDescription)),
                           trailing: Ink(
                             decoration: ShapeDecoration(color: BLUE, shape: CircleBorder()),
                             child: IconButton(
                               icon: iconWhite(Icons.border_color),
-                              onPressed: () => _updateGroupDescription(context, utf8.decode(_model.groupDescription.runes.toList())),
+                              onPressed: () => _updateGroupDescription(context, UTFDecoderUtil.decode(context, _model.groupDescription)),
                             ),
                           ),
                         ),

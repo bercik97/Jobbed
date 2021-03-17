@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:convert';
 
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,6 +17,7 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
@@ -192,7 +192,7 @@ class _EditNotePageState extends State<EditNotePage> {
                                     contentPadding: EdgeInsets.only(right: 10),
                                     child: CheckboxListTile(
                                       controlAffinity: ListTileControlAffinity.leading,
-                                      title: text20BlackBold(utf8.decode(name.runes.toList())),
+                                      title: text20BlackBold(UTFDecoderUtil.decode(context, name)),
                                       subtitle: text16BlueGrey(getTranslated(this.context, 'workplaceHasNoSubWorkplaces')),
                                       activeColor: BLUE,
                                       checkColor: WHITE,
@@ -239,7 +239,7 @@ class _EditNotePageState extends State<EditNotePage> {
                                   color: BRIGHTER_BLUE,
                                   child: ListTileTheme(
                                     child: ListTile(
-                                      title: text20BlackBold(utf8.decode(noteSubWorkplaces.keys.toList()[i].runes.toList())),
+                                      title: text20BlackBold(UTFDecoderUtil.decode(context, noteSubWorkplaces.keys.toList()[i])),
                                       subtitle: SizedBox(
                                         height: noteSubWorkplaces.values.elementAt(i).length * 80.0,
                                         child: ListView.builder(
@@ -267,8 +267,8 @@ class _EditNotePageState extends State<EditNotePage> {
                                                       contentPadding: EdgeInsets.only(right: 10),
                                                       child: CheckboxListTile(
                                                         controlAffinity: ListTileControlAffinity.leading,
-                                                        title: text17BlueBold(utf8.decode(name.runes.toList())),
-                                                        subtitle: textBlack(utf8.decode(description.runes.toList())),
+                                                        title: text17BlueBold(UTFDecoderUtil.decode(context, name)),
+                                                        subtitle: textBlack(UTFDecoderUtil.decode(context, description)),
                                                         activeColor: BLUE,
                                                         checkColor: WHITE,
                                                         value: noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].done,

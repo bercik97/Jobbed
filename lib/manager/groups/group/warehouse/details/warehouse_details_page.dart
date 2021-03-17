@@ -20,6 +20,7 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
@@ -99,11 +100,11 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  title: text17BlueBold(utf8.decode(_warehouseDto.name.runes.toList())),
+                  title: text17BlueBold(UTFDecoderUtil.decode(context, _warehouseDto.name)),
                   subtitle: Column(
                     children: <Widget>[
                       Align(
-                        child: text16Black(utf8.decode(_warehouseDto.description.runes.toList())),
+                        child: text16Black(UTFDecoderUtil.decode(context, _warehouseDto.description)),
                         alignment: Alignment.topLeft,
                       ),
                     ],
@@ -148,7 +149,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                         _checked.forEach((b) => l.add(value));
                         _checked = l;
                         if (value) {
-                          _selectedNames.addAll(_filteredItems.map((e) => utf8.decode(e.name.runes.toList())));
+                          _selectedNames.addAll(_filteredItems.map((e) => UTFDecoderUtil.decode(context, e.name)));
                           _selectedItems.addAll(_filteredItems);
                         } else {
                           _selectedNames.clear();
@@ -206,7 +207,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                                                 children: [
                                                   Align(
                                                     alignment: Alignment.topLeft,
-                                                    child: text17BlueBold(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
+                                                    child: text17BlueBold(UTFDecoderUtil.decode(this.context, name)),
                                                   ),
                                                   Align(
                                                     alignment: Alignment.topLeft,
@@ -227,11 +228,11 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                                                       children: [
                                                         Align(
                                                           alignment: Alignment.topLeft,
-                                                          child: text15Black(utf8.decode(item.locationInfoAboutItems[i].name.runes.toList()) + ' x ' + item.locationInfoAboutItems[i].quantity),
+                                                          child: text15Black(UTFDecoderUtil.decode(context, item.locationInfoAboutItems[i].name) + ' x ' + item.locationInfoAboutItems[i].quantity),
                                                         ),
                                                         Align(
                                                           alignment: Alignment.topLeft,
-                                                          child: text15Black(utf8.decode(item.locationInfoAboutItems[i].itemplace.runes.toList())),
+                                                          child: text15Black(UTFDecoderUtil.decode(context, item.locationInfoAboutItems[i].itemplace)),
                                                         ),
                                                         SizedBox(height: 5),
                                                       ],
@@ -245,7 +246,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                                                 setState(() {
                                                   _checked[foundIndex] = value;
                                                   if (value) {
-                                                    _selectedNames.add(utf8.decode(_items[foundIndex].name.runes.toList()));
+                                                    _selectedNames.add(UTFDecoderUtil.decode(this.context, _items[foundIndex].name));
                                                     _selectedItems.add(_items[foundIndex]);
                                                   } else {
                                                     _selectedNames.remove(_items[foundIndex].name);
@@ -339,7 +340,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  text20BlackBold(utf8.decode(item.name.runes.toList())),
+                  text20BlackBold(UTFDecoderUtil.decode(this.context, item.name)),
                   SizedBox(height: 10),
                   Padding(
                     padding: EdgeInsets.only(left: 25, right: 25),

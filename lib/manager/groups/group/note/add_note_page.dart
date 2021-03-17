@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +21,7 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
@@ -147,7 +147,7 @@ class _AddNotePageState extends State<AddNotePage> {
                                       color: BRIGHTER_BLUE,
                                       child: ListTileTheme(
                                         child: ListTile(
-                                          title: text20BlueBold(utf8.decode(workplace.name.runes.toList())),
+                                          title: text20BlueBold(UTFDecoderUtil.decode(context, workplace.name)),
                                           trailing: IconButton(
                                             icon: iconRed(Icons.remove),
                                             onPressed: () => setState(() => _selectedWorkplacesWithChecked.remove(workplace)),
@@ -181,8 +181,8 @@ class _AddNotePageState extends State<AddNotePage> {
                                                                 contentPadding: EdgeInsets.only(right: 10),
                                                                 child: CheckboxListTile(
                                                                   controlAffinity: ListTileControlAffinity.leading,
-                                                                  title: text17BlueBold(utf8.decode(name.runes.toList())),
-                                                                  subtitle: textBlack(utf8.decode(description.runes.toList())),
+                                                                  title: text17BlueBold(UTFDecoderUtil.decode(context, name)),
+                                                                  subtitle: textBlack(UTFDecoderUtil.decode(context, description)),
                                                                   activeColor: BLUE,
                                                                   checkColor: WHITE,
                                                                   value: _selectedWorkplacesWithChecked[workplace][foundIndex],
@@ -239,20 +239,20 @@ class _AddNotePageState extends State<AddNotePage> {
         isExpanded: true,
         hint: text16BlueGrey(getTranslated(context, 'tapToAdd')),
         items: [
-          for (var workplace in workplaces) utf8.decode(workplace.name.runes.toList()),
+          for (var workplace in workplaces) UTFDecoderUtil.decode(context, workplace.name),
         ],
         customWidgets: [
           for (var workplace in workplaces)
             Row(
               children: [
-                textBlack(utf8.decode(workplace.name.runes.toList()) + ' '),
+                textBlack(UTFDecoderUtil.decode(context, workplace.name) + ' '),
                 _selectedWorkplacesWithChecked.containsKey(workplace) ? iconGreen(Icons.check) : textBlack(' '),
               ],
             ),
         ],
         onChanged: (value) {
           setState(() {
-            WorkplaceForAddNoteDto workplace = workplaces.firstWhere((element) => utf8.decode(element.name.runes.toList()) == value);
+            WorkplaceForAddNoteDto workplace = workplaces.firstWhere((element) => UTFDecoderUtil.decode(context, element.name) == value);
             value = workplaces.first;
             if (workplace.name != '' && !_selectedWorkplacesWithChecked.containsKey(workplace)) {
               List<bool> _checked = new List();

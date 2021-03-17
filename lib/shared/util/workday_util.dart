@@ -1,9 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
@@ -258,7 +257,7 @@ class WorkdayUtil {
                 DataRow(
                   cells: [
                     DataCell(textBlack((i + 1).toString())),
-                    DataCell(textBlack(utf8.decode(pieceworks[i].service.runes.toList()))),
+                    DataCell(textBlack(UTFDecoderUtil.decode(context, pieceworks[i].service))),
                     DataCell(Align(alignment: Alignment.center, child: textBlack(pieceworks[i].quantity.toString()))),
                     DataCell(Align(alignment: Alignment.center, child: textBlack(pieceworks[i].priceForEmployee.toString()))),
                     displayCompanyPrice ? DataCell(Align(alignment: Alignment.center, child: textBlack(pieceworks[i].priceForCompany.toString()))) : DataCell(SizedBox(height: 0)),
@@ -295,7 +294,7 @@ class WorkdayUtil {
                     DataCell(textBlack(workTimes[i].startTime.toString())),
                     DataCell(textBlack(workTimes[i].endTime != null ? workTimes[i].endTime.toString() : '-')),
                     DataCell(textBlack(workTimes[i].totalTime != null ? workTimes[i].totalTime.toString() : '-')),
-                    DataCell(textBlack(utf8.decode(workTimes[i].workplaceName.toString().runes.toList()))),
+                    DataCell(textBlack(UTFDecoderUtil.decode(context, workTimes[i].workplaceName.toString()))),
                   ],
                 ),
             ],

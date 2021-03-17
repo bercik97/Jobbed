@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +24,7 @@ import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/logout_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/buttons.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
@@ -145,7 +144,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                         ),
                       ),
                     ),
-                    title: text17BlueBold(_user.companyName != null ? utf8.decode(_user.companyName.runes.toList()) : getTranslated(context, 'empty')),
+                    title: text17BlueBold(UTFDecoderUtil.decode(context, _user.companyName)),
                     subtitle: text16Black(_user.companyId != null ? _user.companyId : getTranslated(context, 'empty')),
                   ),
                 ),
@@ -221,11 +220,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                           ),
                         );
                       },
-                      title: text17BlueBold(
-                        utf8.decode(
-                          _groups[index].name != null ? _groups[index].name.runes.toList() : getTranslated(this.context, 'empty'),
-                        ),
-                      ),
+                      title: text17BlueBold(UTFDecoderUtil.decode(this.context, _groups[index].name)),
                       subtitle: Column(
                         children: <Widget>[
                           SizedBox(height: 5),
@@ -234,7 +229,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                             alignment: Alignment.topLeft,
                           ),
                           Align(
-                            child: text16Black(getTranslated(this.context, 'groupCreator') + ': ' + utf8.decode(_groups[index].groupCreator.runes.toList())),
+                            child: text16Black(getTranslated(this.context, 'groupCreator') + ': ' + UTFDecoderUtil.decode(this.context, _groups[index].groupCreator)),
                             alignment: Alignment.topLeft,
                           ),
                           SizedBox(height: 5),
@@ -251,7 +246,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                           IconButton(
                             icon: icon30Red(Icons.delete),
                             onPressed: () {
-                              String groupName = utf8.decode(_groups[index].name.runes.toList());
+                              String groupName = UTFDecoderUtil.decode(this.context, _groups[index].name);
                               DialogUtil.showConfirmationDialog(
                                 context: this.context,
                                 title: getTranslated(this.context, 'confirmation'),
@@ -307,7 +302,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
           padding: EdgeInsets.only(top: 20),
           child: Align(
             alignment: Alignment.center,
-            child: text20BlueBold(getTranslated(context, 'welcome') + ' ' + utf8.decode(_user.info.runes.toList())),
+            child: text20BlueBold(getTranslated(context, 'welcome') + ' ' + UTFDecoderUtil.decode(context, _user.info)),
           ),
         ),
         Padding(
@@ -353,7 +348,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    text20Black(utf8.decode(groupName.runes.toList())),
+                    text20Black(UTFDecoderUtil.decode(this.context, groupName)),
                     SizedBox(height: 20),
                     Buttons.standardButton(
                       minWidth: 200.0,

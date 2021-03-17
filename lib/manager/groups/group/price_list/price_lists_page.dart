@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +17,7 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
@@ -192,7 +192,7 @@ class _PriceListsPageState extends State<PriceListsPage> {
                                                   children: [
                                                     Align(
                                                       alignment: Alignment.topLeft,
-                                                      child: text17BlueBold(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
+                                                      child: text17BlueBold(UTFDecoderUtil.decode(this.context, name)),
                                                     ),
                                                     Align(
                                                       alignment: Alignment.topLeft,

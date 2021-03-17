@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +13,7 @@ import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/texts.dart';
@@ -89,7 +89,7 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  title: text17BlueBold(utf8.decode(_itemPlaceDto.location.runes.toList())),
+                  title: text17BlueBold(UTFDecoderUtil.decode(this.context, _itemPlaceDto.location)),
                 ),
                 ListTileTheme(
                   contentPadding: EdgeInsets.only(left: 3),
@@ -105,7 +105,7 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
                         _checked.forEach((b) => l.add(value));
                         _checked = l;
                         if (value) {
-                          _selectedNames.addAll(_filteredItems.map((e) => utf8.decode(e.name.runes.toList())));
+                          _selectedNames.addAll(_filteredItems.map((e) => UTFDecoderUtil.decode(context, e.name)));
                           _selectedItems.addAll(_filteredItems);
                         } else {
                           _selectedNames.clear();
@@ -132,12 +132,12 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
                                   ItemPlaceDetailsDto item = _filteredItems[index];
                                   int foundIndex = 0;
                                   for (int i = 0; i < _items.length; i++) {
-                                    if (utf8.decode(_items[i].name.runes.toList()) == utf8.decode(item.name.runes.toList())) {
+                                    if (UTFDecoderUtil.decode(context, _items[i].name) == UTFDecoderUtil.decode(context, item.name)) {
                                       foundIndex = i;
                                     }
                                   }
-                                  String warehouseName = utf8.decode(item.warehouseName.runes.toList());
-                                  String name = utf8.decode(item.name.runes.toList());
+                                  String warehouseName = UTFDecoderUtil.decode(context, item.warehouseName);
+                                  String name = UTFDecoderUtil.decode(context, item.name);
                                   String quantity = item.quantity;
                                   return Card(
                                     color: WHITE,
@@ -192,10 +192,10 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
                                                 setState(() {
                                                   _checked[foundIndex] = value;
                                                   if (value) {
-                                                    _selectedNames.add(utf8.decode(_items[foundIndex].name.runes.toList()));
+                                                    _selectedNames.add(UTFDecoderUtil.decode(context, _items[foundIndex].name));
                                                     _selectedItems.add(_items[foundIndex]);
                                                   } else {
-                                                    _selectedNames.remove(utf8.decode(_items[foundIndex].name.runes.toList()));
+                                                    _selectedNames.remove(UTFDecoderUtil.decode(context, _items[foundIndex].name));
                                                     _selectedItems.remove(_items[foundIndex]);
                                                   }
                                                   int selectedIdsLength = _selectedNames.length;

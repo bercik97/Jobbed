@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +10,7 @@ import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 
@@ -84,7 +84,7 @@ class _AddTsPageState extends State<AddTsPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: WHITE,
-          appBar: managerAppBar(context, _user, utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'), () => Navigator.pop(context)),
+          appBar: managerAppBar(context, _user, UTFDecoderUtil.decode(context, _model.groupName), () => Navigator.pop(context)),
           body: RefreshIndicator(
             color: WHITE,
             backgroundColor: BLUE,
@@ -99,9 +99,7 @@ class _AddTsPageState extends State<AddTsPage> {
                       SizedBox(height: 5),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: text20OrangeBold(
-                          _year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month),
-                        ),
+                        child: text20OrangeBold(_year.toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, _month)),
                       ),
                     ],
                   ),
@@ -180,7 +178,7 @@ class _AddTsPageState extends State<AddTsPage> {
                                       contentPadding: EdgeInsets.only(right: 10),
                                       child: CheckboxListTile(
                                         controlAffinity: ListTileControlAffinity.leading,
-                                        title: text20BlackBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                        title: text20BlackBold(UTFDecoderUtil.decode(context, info) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                         activeColor: BLUE,
                                         checkColor: WHITE,
                                         value: _checked[foundIndex],

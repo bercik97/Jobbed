@@ -18,6 +18,7 @@ import 'package:jobbed/shared/util/avatars_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/logout_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/silver_app_bar_delegate.dart';
 import 'package:jobbed/shared/widget/texts.dart';
@@ -123,7 +124,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                             ),
                           ),
                           SizedBox(height: 5),
-                          text25BlackBold(utf8.decode(_user.info != null ? _user.info.runes.toList() : '-') + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
+                          text25BlackBold(UTFDecoderUtil.decode(context, _user.info) + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
                           SizedBox(height: 10),
                           text18Black(getTranslated(this.context, 'statisticsForThe') + _employeePageDto.tsCurrentYear + ' ' + getTranslated(this.context, _employeePageDto.tsCurrentMonth)),
                           SizedBox(height: 5),

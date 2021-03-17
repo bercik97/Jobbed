@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -16,6 +14,7 @@ import 'package:jobbed/shared/settings/settings_page.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/month_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/contact_section.dart';
 import 'package:jobbed/shared/widget/icons.dart';
@@ -112,7 +111,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                           ),
                         ),
                         SizedBox(height: 5),
-                        text25BlackBold(utf8.decode(_employeeInfo != null ? _employeeInfo.runes.toList() : '-')),
+                        text25BlackBold(UTFDecoderUtil.decode(this.context, _employeeInfo)),
                         SizedBox(height: 2.5),
                         text20Black(LanguageUtil.convertShortNameToFullName(this.context, _employeeNationality) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality)),
                         SizedBox(height: 2.5),

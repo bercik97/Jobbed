@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
@@ -19,6 +17,7 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/radio_button.dart';
 import 'package:jobbed/shared/widget/texts.dart';
@@ -106,7 +105,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
                                     Card(
                                       color: BRIGHTER_BLUE,
                                       child: ListTile(
-                                        title: text17BlueBold(utf8.decode(_items[i].name.runes.toList())),
+                                        title: text17BlueBold(UTFDecoderUtil.decode(this.context, _items[i].name)),
                                         subtitle: Row(
                                           children: [
                                             text16Black(getTranslated(this.context, 'quantity') + ': '),
@@ -227,7 +226,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
                           for (int i = 0; i < _itemPlaces.length; i++)
                             RadioButton.buildRadioBtn(
                               color: BLUE,
-                              title: utf8.decode(_itemPlaces[i].location.runes.toList()),
+                              title: UTFDecoderUtil.decode(this.context, _itemPlaces[i].location),
                               value: 0,
                               groupValue: _itemPlacesRadioValues[i],
                               onChanged: (newValue) => setState(
@@ -296,7 +295,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
     for (int i = 0; i < _items.length; i++) {
       int quantity = int.parse(_textEditingItemControllers[i].text);
       if (quantity != 0) {
-        itemsWithQuantities[utf8.decode(_items[i].name.runes.toList())] = quantity;
+        itemsWithQuantities[UTFDecoderUtil.decode(this.context, _items[i].name)] = quantity;
       }
     }
     if (itemsWithQuantities.isEmpty) {

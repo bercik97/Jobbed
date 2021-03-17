@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:convert';
 
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,6 +26,7 @@ import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/month_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
@@ -130,12 +130,12 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                       ),
                     ),
                   ),
-                  title: text17BlueBold(utf8.decode(_workplaceDto.name.runes.toList())),
+                  title: text17BlueBold(UTFDecoderUtil.decode(context, _workplaceDto.name)),
                   subtitle: Column(
                     children: <Widget>[
                       Align(
                         child: _workplaceDto.location != null
-                            ? text16Black(utf8.decode(_workplaceDto.location.runes.toList()))
+                            ? text16Black(UTFDecoderUtil.decode(context, _workplaceDto.location))
                             : Row(
                                 children: [
                                   text16Black(getTranslated(context, 'location') + ': '),
@@ -318,12 +318,12 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                                                 children: [
                                                   Align(
                                                     alignment: Alignment.topLeft,
-                                                    child: text17BlueBold(name != null ? utf8.decode(name.runes.toList()) : getTranslated(this.context, 'empty')),
+                                                    child: text17BlueBold(UTFDecoderUtil.decode(this.context, name)),
                                                   ),
                                                   Align(
                                                     alignment: Alignment.topLeft,
                                                     child: description != null
-                                                        ? text16Black(utf8.decode(description.runes.toList()))
+                                                        ? text16Black(UTFDecoderUtil.decode(this.context, description))
                                                         : Row(
                                                             children: [
                                                               text16Black(getTranslated(this.context, 'description') + ': '),
@@ -395,8 +395,8 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
   void _editSubWorkplace(SubWorkplaceDto subWorkplaceDto) {
     TextEditingController _nameController = new TextEditingController();
     TextEditingController _descriptionController = new TextEditingController();
-    _nameController.text = utf8.decode(subWorkplaceDto.name.runes.toList());
-    _descriptionController.text = utf8.decode(subWorkplaceDto.description.runes.toList());
+    _nameController.text = UTFDecoderUtil.decode(this.context, subWorkplaceDto.name);
+    _descriptionController.text = UTFDecoderUtil.decode(this.context, subWorkplaceDto.description);
     showGeneralDialog(
       context: context,
       barrierColor: WHITE.withOpacity(0.95),
@@ -518,7 +518,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
   }
 
   void _editWorkplace(WorkplaceDto workplace) {
-    _nameController.text = utf8.decode(workplace.name.runes.toList());
+    _nameController.text = UTFDecoderUtil.decode(this.context, workplace.name);
     _locationController.text = workplace.location;
     double latitude = workplace.latitude;
     double longitude = workplace.longitude;
@@ -635,7 +635,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
 
   _buildEditGoogleMapButton(double latitude, double longitude, String location, double radiusLength) {
     this._radiusController.text = radiusLength.toString();
-    this._locationController.text = utf8.decode(location.runes.toList());
+    this._locationController.text = UTFDecoderUtil.decode(this.context, location);
     return Padding(
       padding: EdgeInsets.only(left: 30, right: 30, bottom: 30),
       child: Row(
@@ -672,7 +672,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                           appBar: AppBar(
                             iconTheme: IconThemeData(color: WHITE),
                             backgroundColor: Colors.white,
-                            title: text16Black(location != null ? utf8.decode(location.runes.toList()) : getTranslated(context, 'empty')),
+                            title: text16Black(UTFDecoderUtil.decode(this.context, location)),
                             leading: IconButton(
                               icon: iconBlack(Icons.arrow_back),
                               onPressed: () {
@@ -777,7 +777,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                                   color: BLUE,
                                   onPressed: () {
                                     Navigator.pop(this.context);
-                                    setState(() => _locationController.text = utf8.decode(location.runes.toList()));
+                                    setState(() => _locationController.text = UTFDecoderUtil.decode(this.context, location));
                                   },
                                 ),
                               ],

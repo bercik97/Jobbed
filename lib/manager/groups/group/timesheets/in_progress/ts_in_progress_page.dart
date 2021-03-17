@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:convert';
 
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
@@ -33,6 +32,7 @@ import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/month_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
@@ -120,7 +120,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: WHITE,
-          appBar: managerAppBar(context, _model.user, utf8.decode(_model.groupName != null ? _model.groupName.runes.toList() : '-'), () => NavigatorUtil.onWillPopNavigate(context, TsPage(_model))),
+          appBar: managerAppBar(context, _model.user, UTFDecoderUtil.decode(context, _model.groupName), () => NavigatorUtil.onWillPopNavigate(context, TsPage(_model))),
           body: RefreshIndicator(
             color: WHITE,
             backgroundColor: BLUE,
@@ -257,7 +257,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            text17BlackBold(utf8.decode(info.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                            text17BlackBold(UTFDecoderUtil.decode(this.context, info) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                             Row(
                                               children: <Widget>[
                                                 textBlackBold(getTranslated(this.context, 'accord') + ': '),
@@ -669,7 +669,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                     for (int i = 0; i < _workplaces.length; i++)
                                       RadioButton.buildRadioBtn(
                                         color: BLUE,
-                                        title: utf8.decode(_workplaces[i].name.runes.toList()),
+                                        title: UTFDecoderUtil.decode(this.context, _workplaces[i].name),
                                         value: 0,
                                         groupValue: _workplacesRadioValues[i],
                                         onChanged: (newValue) => setState(

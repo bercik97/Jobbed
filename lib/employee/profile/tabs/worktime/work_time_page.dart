@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:android_intent/android_intent.dart';
 import 'package:async/async.dart';
@@ -23,6 +22,7 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/buttons.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
@@ -281,7 +281,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                     DataCell(textBlack(workTimes[i].startTime)),
                     DataCell(textBlack(workTimes[i].endTime != null ? workTimes[i].endTime : '-')),
                     DataCell(textBlack(workTimes[i].totalTime != null ? workTimes[i].totalTime : '-')),
-                    DataCell(textBlack(workTimes[i].workplaceName != null ? utf8.decode(workTimes[i].workplaceName.runes.toList()) : '-')),
+                    DataCell(textBlack(UTFDecoderUtil.decode(this.context, workTimes[i].workplaceName))),
                   ],
                 ),
             ],
@@ -419,7 +419,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                     DataRow(
                                       cells: [
                                         DataCell(textBlack((i + 1).toString())),
-                                        DataCell(textBlack(utf8.decode(workplaces[i].name.runes.toList()))),
+                                        DataCell(textBlack(UTFDecoderUtil.decode(context, workplaces[i].name))),
                                         DataCell(
                                           MaterialButton(
                                             child: Text(getTranslated(context, 'startUpperCase')),

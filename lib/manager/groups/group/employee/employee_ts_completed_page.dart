@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
@@ -14,6 +12,7 @@ import 'package:jobbed/shared/util/data_table_util.dart';
 import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/month_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/util/workday_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
@@ -94,7 +93,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                       children: <Widget>[
                         Align(
                           alignment: Alignment.topLeft,
-                          child: text17BlackBold(_employeeInfo != null ? utf8.decode(_employeeInfo.runes.toList()) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality) : getTranslated(context, 'empty')),
+                          child: text17BlackBold(_employeeInfo != null ? UTFDecoderUtil.decode(this.context, _employeeInfo) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality) : getTranslated(context, 'empty')),
                         ),
                         Row(
                           children: <Widget>[

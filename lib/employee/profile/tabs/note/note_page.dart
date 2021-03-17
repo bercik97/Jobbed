@@ -10,6 +10,7 @@ import 'package:jobbed/internationalization/localization/localization_constants.
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
@@ -159,7 +160,7 @@ class _NotePageState extends State<NotePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               ListTile(
-                                title: text20BlackBold(utf8.decode(name.runes.toList())),
+                                title: text20BlackBold(UTFDecoderUtil.decode(this.context, name)),
                                 subtitle: text14BlueGrey(getTranslated(this.context, 'workplaceHasNoSubWorkplaces')),
                                 leading: _checkedNoteWorkplaces[foundIndex] ? icon50Green(Icons.check) : icon50Red(Icons.close),
                               )
@@ -188,7 +189,7 @@ class _NotePageState extends State<NotePage> {
                                 color: BRIGHTER_BLUE,
                                 child: ListTileTheme(
                                   child: ListTile(
-                                    title: text20BlackBold(utf8.decode(noteSubWorkplaces.keys.toList()[i].runes.toList())),
+                                    title: text20BlackBold(UTFDecoderUtil.decode(context, noteSubWorkplaces.keys.toList()[i])),
                                     subtitle: SizedBox(
                                       height: noteSubWorkplaces.values.elementAt(i).length * 80.0,
                                       child: ListView.builder(
@@ -211,8 +212,8 @@ class _NotePageState extends State<NotePage> {
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: <Widget>[
                                                 ListTile(
-                                                  title: text17BlueBold(utf8.decode(name.runes.toList())),
-                                                  subtitle: textBlack(utf8.decode(description.runes.toList())),
+                                                  title: text17BlueBold(UTFDecoderUtil.decode(context, name)),
+                                                  subtitle: textBlack(UTFDecoderUtil.decode(context, description)),
                                                   leading: noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].done ? icon50Green(Icons.check) : icon50Red(Icons.close),
                                                 )
                                               ],

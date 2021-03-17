@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +17,7 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
@@ -69,7 +69,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
     _priceListService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
         _priceLists = res;
-        _priceLists.forEach((i) => _textEditingItemControllers[utf8.decode(i.name.runes.toList())] = new TextEditingController());
+        _priceLists.forEach((i) => _textEditingItemControllers[UTFDecoderUtil.decode(context, i.name)] = new TextEditingController());
         _loading = false;
       });
     }).catchError((onError) {
@@ -166,7 +166,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
                           Card(
                             color: BRIGHTER_BLUE,
                             child: ListTile(
-                              title: text17BlueBold(utf8.decode(priceList.name.runes.toList())),
+                              title: text17BlueBold(UTFDecoderUtil.decode(context, priceList.name)),
                               subtitle: Row(
                                 children: [
                                   text17BlackBold(getTranslated(this.context, 'price') + ': '),
@@ -175,7 +175,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
                               ),
                               trailing: Container(
                                 width: 100,
-                                child: _buildNumberField(_textEditingItemControllers[utf8.decode(priceList.name.runes.toList())]),
+                                child: _buildNumberField(_textEditingItemControllers[UTFDecoderUtil.decode(context, priceList.name)]),
                               ),
                             ),
                           ),
