@@ -203,6 +203,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
         child: ListView.builder(
           itemCount: _groups.length,
           itemBuilder: (BuildContext context, int index) {
+            GroupDashboardDto group = _groups[index];
             return Card(
               color: WHITE,
               child: Column(
@@ -213,7 +214,6 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                     color: BRIGHTER_BLUE,
                     child: ListTile(
                       onTap: () {
-                        GroupDashboardDto group = _groups[index];
                         NavigatorUtil.navigate(
                           this.context,
                           GroupPage(
@@ -257,7 +257,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                                 title: getTranslated(this.context, 'confirmation'),
                                 content: getTranslated(this.context, 'deleteGroupConfirmation') + ' ($groupName)',
                                 isBtnTapped: _isDeleteGroupButtonTapped,
-                                fun: () => _isDeleteGroupButtonTapped ? null : _handleDeleteGroup(groupName),
+                                fun: () => _isDeleteGroupButtonTapped ? null : _handleDeleteGroup(group.id),
                               );
                             },
                           ),
@@ -274,9 +274,9 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
     );
   }
 
-  _handleDeleteGroup(String groupName) {
+  _handleDeleteGroup(num groupId) {
     setState(() => _isDeleteGroupButtonTapped = true);
-    _groupService.deleteByName(groupName).then((value) {
+    _groupService.deleteById(groupId).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(this.context, 'successfullyDeletedGroup'));
         Navigator.pop(this.context);

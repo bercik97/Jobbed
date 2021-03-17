@@ -44,8 +44,8 @@ class GroupService {
     }
   }
 
-  Future<dynamic> deleteByName(String name) async {
-    Response res = await delete(_url + '/$name', headers: _headers);
+  Future<dynamic> deleteById(num id) async {
+    Response res = await delete(_url + '/$id', headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
