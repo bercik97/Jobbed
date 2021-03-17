@@ -126,39 +126,7 @@ class _AddNotePageState extends State<AddNotePage> {
                         alignment: Alignment.centerLeft,
                         child: text20OrangeBold(getTranslated(context, 'noteBasedOnWorkplace')),
                       ),
-                      _loading
-                          ? circularProgressIndicator()
-                          : Align(
-                              alignment: Alignment.centerLeft,
-                              child: DropDown<String>(
-                                isCleared: true,
-                                isExpanded: true,
-                                hint: text16BlueGrey(getTranslated(context, 'tapToAdd')),
-                                items: [
-                                  for (var workplace in workplaces) utf8.decode(workplace.name.runes.toList()),
-                                ],
-                                customWidgets: [
-                                  for (var workplace in workplaces)
-                                    Row(
-                                      children: [
-                                        textBlack(utf8.decode(workplace.name.runes.toList()) + ' '),
-                                        _selectedWorkplacesWithChecked.containsKey(workplace) ? iconGreen(Icons.check) : textBlack(' '),
-                                      ],
-                                    ),
-                                ],
-                                onChanged: (value) {
-                                  setState(() {
-                                    WorkplaceForAddNoteDto workplace = workplaces.firstWhere((element) => utf8.decode(element.name.runes.toList()) == value);
-                                    value = workplaces.first;
-                                    if (workplace.name != '' && !_selectedWorkplacesWithChecked.containsKey(workplace)) {
-                                      List<bool> _checked = new List();
-                                      workplace.subWorkplacesDto.forEach((element) => _checked.add(false));
-                                      _selectedWorkplacesWithChecked[workplace] = _checked;
-                                    }
-                                  });
-                                },
-                              ),
-                            ),
+                      _loading ? circularProgressIndicator() : (workplaces.length > 1 ? _buildWorkplacesDropDown() : _handleNoWorkplaces())
                     ],
                   ),
                 ),
@@ -253,6 +221,47 @@ class _AddNotePageState extends State<AddNotePage> {
         ),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EditSchedulePage(_model)),
+    );
+  }
+
+  Widget _handleNoWorkplaces() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: text16BlueGrey(getTranslated(context, 'noWorkplaces')),
+    );
+  }
+
+  Widget _buildWorkplacesDropDown() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: DropDown<String>(
+        isCleared: true,
+        isExpanded: true,
+        hint: text16BlueGrey(getTranslated(context, 'tapToAdd')),
+        items: [
+          for (var workplace in workplaces) utf8.decode(workplace.name.runes.toList()),
+        ],
+        customWidgets: [
+          for (var workplace in workplaces)
+            Row(
+              children: [
+                textBlack(utf8.decode(workplace.name.runes.toList()) + ' '),
+                _selectedWorkplacesWithChecked.containsKey(workplace) ? iconGreen(Icons.check) : textBlack(' '),
+              ],
+            ),
+        ],
+        onChanged: (value) {
+          setState(() {
+            WorkplaceForAddNoteDto workplace = workplaces.firstWhere((element) => utf8.decode(element.name.runes.toList()) == value);
+            value = workplaces.first;
+            if (workplace.name != '' && !_selectedWorkplacesWithChecked.containsKey(workplace)) {
+              List<bool> _checked = new List();
+              workplace.subWorkplacesDto.forEach((element) => _checked.add(false));
+              _selectedWorkplacesWithChecked[workplace] = _checked;
+            }
+          });
+        },
+      ),
     );
   }
 
