@@ -298,7 +298,7 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
       children: [
         ListTile(
           title: text20BlackBold(employeeInfo),
-          trailing: moneyForTime != '0.000' || moneyForPiecework != '0.000' ? icon50Green(Icons.check) : icon50Red(Icons.close),
+          trailing: employee.isWorkTouched ? icon50Green(Icons.check) : icon50Red(Icons.close),
           subtitle: Column(
             children: <Widget>[
               SizedBox(height: 7.5),
