@@ -15,6 +15,7 @@ import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
@@ -168,6 +169,33 @@ class _GroupPageState extends State<GroupPage> {
                           child: Material(
                             color: BRIGHTER_BLUE,
                             child: InkWell(
+                              onTap: () => NavigatorUtil.navigate(context, TsPage(_model)),
+                              child: _buildScrollableContainer('images/timesheet.png', 'timesheets', 'fillHoursPieceworks'),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Material(
+                            color: BRIGHTER_BLUE,
+                            child: InkWell(
+                              onTap: () {
+                                // TODO disk
+                                DialogUtil.showInformationDialog(context, getTranslated(context, 'diskSectionWillBeAvailableSoon'));
+                              },
+                              child: _buildScrollableContainer('images/disk.png', 'disk', 'diskDescription'),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Material(
+                            color: BRIGHTER_BLUE,
+                            child: InkWell(
                               onTap: () => NavigatorUtil.navigate(context, WarehousePage(_model)),
                               child: _buildScrollableContainer('images/warehouse.png', 'warehouses', 'manageCompanyWarehouses'),
                             ),
@@ -183,22 +211,6 @@ class _GroupPageState extends State<GroupPage> {
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Material(
-                            color: BRIGHTER_BLUE,
-                            child: InkWell(
-                              onTap: () => NavigatorUtil.navigate(context, TsPage(_model)),
-                              child: _buildScrollableContainer('images/timesheet.png', 'timesheets', 'fillHoursPieceworks'),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(child: Material(color: BRIGHTER_BLUE)),
                       ],
                     ),
                   ],

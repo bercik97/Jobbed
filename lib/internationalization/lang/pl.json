@@ -38,7 +38,7 @@
   "groupManager": "Menadżer grupy",
   "empty": "Brak",
   "home": "Strona główna",
-  "information": "Informacje",
+  "information": "Informacja",
   "contact": "Kontakt",
   "group": "Grupa",
   "timesheets": "Arkusze",
@@ -599,5 +599,6 @@
   "yourNoteIsEmpty": "Twoja notatka jest pusta",
   "managerNote": "Notatka menadżera",
   "employeeNote": "Notatka pracownika",
-  "noteEmployeeEmpty": "Brak notatki od pracownika"
+  "noteEmployeeEmpty": "Brak notatki od pracownika",
+  "diskSectionWillBeAvailableSoon": "Moduł przechowywania plików będzie wkrótce dostępny"
 }

@@ -599,5 +599,6 @@
   "yourNoteIsEmpty": "Your note is empty",
   "managerNote": "Manager note",
   "employeeNote": "Employee note",
-  "noteEmployeeEmpty": "No note from employee"
+  "noteEmployeeEmpty": "No note from employee",
+  "diskSectionWillBeAvailableSoon": "File storage module will be available soon"
 }

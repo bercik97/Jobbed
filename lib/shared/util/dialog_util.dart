@@ -139,6 +139,32 @@ class DialogUtil {
     );
   }
 
+  static showInformationDialog(BuildContext context, String content) {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: WHITE,
+          title: textGreenBold(getTranslated(context, 'information')),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                textBlack(content),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: textBlack(getTranslated(context, 'close')),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   static showConfirmationDialog({BuildContext context, String title, String content, bool isBtnTapped, Function() fun}) {
     showDialog(
       context: context,
