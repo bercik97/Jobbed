@@ -263,7 +263,7 @@ class _AddTsPageState extends State<AddTsPage> {
     _timesheetService.create(_selectedIds.map((el) => el.toString()).toList(), _year, _month).then(
       (res) {
         Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-          ToastUtil.showSuccessToast(getTranslated(context, 'timesheetsSuccessfullyCreated'));
+          ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'timesheetsSuccessfullyCreated'));
           NavigatorUtil.navigateReplacement(context, TsPage(_model));
         });
       },

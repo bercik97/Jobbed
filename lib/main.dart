@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -96,6 +97,8 @@ class _MyAppState extends State<MyApp> {
         title: APP_NAME,
         theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
         locale: _locale,
+        builder: BotToastInit(),
+        navigatorObservers: [BotToastNavigatorObserver()],
         supportedLocales: [
           Locale('en', 'EN'),
           Locale('pt', 'PT'), // GEORGIA

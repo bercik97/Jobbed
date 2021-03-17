@@ -296,7 +296,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
     );
     _groupService.create(dto).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyAddedNewGroup'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyAddedNewGroup'));
         NavigatorUtil.navigatePushAndRemoveUntil(context, GroupsDashboardPage(_user));
       });
     }).catchError((onError) {

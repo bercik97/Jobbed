@@ -314,7 +314,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
     );
     _itemPlaceService.assignNewItems(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyReleaseItemsToSelectedItemPlace'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyReleaseItemsToSelectedItemPlace'));
         NavigatorUtil.navigateReplacement(context, WarehouseDetailsPage(_model, _warehouseDto));
       });
     }).catchError((onError) {

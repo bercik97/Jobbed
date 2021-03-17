@@ -365,7 +365,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _refresh();
         Navigator.of(context).pop();
-        ToastUtil.showSuccessToast(getTranslated(context, 'pieceworkForSelectedDaysAndEmployeesDeleted'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'pieceworkForSelectedDaysAndEmployeesDeleted'));
         setState(() => _isDeletePieceworkButtonTapped = false);
       });
     }).catchError((onError) {

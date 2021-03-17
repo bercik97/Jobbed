@@ -339,7 +339,7 @@ class _EditNotePageState extends State<EditNotePage> {
     );
     _noteSubWorkplaceService.update(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyUpdatedNote'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyUpdatedNote'));
         Navigator.pop(context);
         setState(() {
           _noteDto.employeeNote = _employeeNoteController.text;

@@ -741,7 +741,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
         _refresh();
         Navigator.pop(context);
         Navigator.pop(context);
-        ToastUtil.showSuccessToast(getTranslated(context, 'workingTimeHasBeenSuccessfullySetForSelectedDaysAndEmployees'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workingTimeHasBeenSuccessfullySetForSelectedDaysAndEmployees'));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
@@ -757,7 +757,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
         _uncheckAll();
         _refresh();
         Navigator.pop(context);
-        ToastUtil.showSuccessToast(getTranslated(context, 'workHasBeenStartedSuccessfullyForSelectedEmployees'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workHasBeenStartedSuccessfullyForSelectedEmployees'));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
@@ -784,7 +784,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
         _uncheckAll();
         _refresh();
         Navigator.pop(context);
-        ToastUtil.showSuccessToast(getTranslated(context, 'workHasBeenStoppedSuccessfullyForSelectedEmployees'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workHasBeenStoppedSuccessfullyForSelectedEmployees'));
         setState(() => _isPauseButtonTapped = false);
       });
     }).catchError((onError) {
@@ -835,7 +835,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
         _refresh();
         Navigator.pop(context);
         setState(() => _isDeleteWorkButtonTapped = false);
-        ToastUtil.showSuccessToast(getTranslated(context, 'workHasBeenSuccessfullyDeleted'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workHasBeenSuccessfullyDeleted'));
       });
     }).catchError(
       (onError) {

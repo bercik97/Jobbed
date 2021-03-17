@@ -206,7 +206,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _pieceworkService.deleteByWorkdayIdAndServiceName(_todayWorkdayId, serviceName).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyDeletedPieceworkService'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyDeletedPieceworkService'));
         NavigatorUtil.navigate(this.context, PieceworkPage(_user, _todayDate, _todayWorkdayId));
         setState(() => _isDeletePieceworkServiceButtonTapped = false);
       });
@@ -223,7 +223,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _pieceworkService.deleteByWorkdayId(_todayWorkdayId).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyDeletedPieceworkReport'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyDeletedPieceworkReport'));
         NavigatorUtil.navigate(this.context, PieceworkPage(_user, _todayDate, _todayWorkdayId));
         setState(() => _isDeletePieceworkButtonTapped = false);
       });

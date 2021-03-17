@@ -309,7 +309,7 @@ class _WarehousePageState extends State<WarehousePage> {
                     _refresh();
                     Navigator.pop(this.context);
                     setState(() => _isDeleteButtonTapped = false);
-                    ToastUtil.showSuccessToast(getTranslated(this.context, 'selectedWarehousesRemoved'));
+                    ToastUtil.showSuccessNotification(this.context, getTranslated(this.context, 'selectedWarehousesRemoved'));
                   });
                 }).catchError((onError) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

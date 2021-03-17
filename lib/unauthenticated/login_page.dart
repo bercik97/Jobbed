@@ -213,7 +213,7 @@ class _LoginPageState extends State<LoginPage> {
           } else if (role == ROLE_MANAGER) {
             NavigatorUtil.navigate(context, GroupsDashboardPage(user));
           }
-          ToastUtil.showSuccessToast(getTranslated(context, 'loginSuccessfully'));
+          ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'loginSuccessfully'));
         });
       } else {
         Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => ToastUtil.showErrorToast(getTranslated(context, 'wrongUsernameOrPassword')));

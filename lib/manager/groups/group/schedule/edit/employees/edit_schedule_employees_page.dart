@@ -286,7 +286,7 @@ class _EditScheduleEmployeesPageState extends State<EditScheduleEmployeesPage> {
                 .toList())
         .then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyDeletedNotesForSelectedEmployeesAndDates'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyDeletedNotesForSelectedEmployeesAndDates'));
         NavigatorUtil.navigatePushAndRemoveUntil(context, SchedulePage(_model));
         setState(() => _isDeleteButtonTapped = false);
       });

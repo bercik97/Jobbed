@@ -177,7 +177,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _groupService.update(_model.groupId, {'name': name}).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              ToastUtil.showSuccessToast(getTranslated(context, 'groupNameUpdatedSuccessfully'));
+                              ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'groupNameUpdatedSuccessfully'));
                               NavigatorUtil.navigatePushAndRemoveUntil(context, GroupsDashboardPage(_user));
                             });
                           }).catchError((onError) {
@@ -281,7 +281,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _groupService.update(_model.groupId, {'description': description}).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              ToastUtil.showSuccessToast(getTranslated(context, 'groupDescriptionUpdatedSuccessfully'));
+                              ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'groupDescriptionUpdatedSuccessfully'));
                               NavigatorUtil.navigatePushAndRemoveUntil(context, GroupsDashboardPage(_user));
                             });
                           }).catchError((onError) {

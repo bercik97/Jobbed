@@ -278,7 +278,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
     setState(() => _isDeleteGroupButtonTapped = true);
     _groupService.deleteByName(groupName).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(this.context, 'successfullyDeletedGroup'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(this.context, 'successfullyDeletedGroup'));
         Navigator.pop(this.context);
         _refresh();
         setState(() => _isDeleteGroupButtonTapped = false);
@@ -676,7 +676,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
     );
     _employeeService.createBasicEmployee(dto).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'employeeAccountAdded'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'employeeAccountAdded'));
         Navigator.pop(context);
         _usernameController.clear();
         _passwordController.clear();

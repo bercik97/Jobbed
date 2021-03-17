@@ -164,7 +164,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
                       _quantityController.text = "0";
                     });
                     FocusScope.of(context).unfocus();
-                    ToastUtil.showSuccessToast(getTranslated(context, 'addedNewItem'));
+                    ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'addedNewItem'));
                   },
                 ),
                 _buildAddItems(),
@@ -217,7 +217,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
                             _itemNames.remove(_itemsToAdd[index].name);
                             _itemsToAdd.remove(_itemsToAdd[index]);
                           });
-                          ToastUtil.showSuccessToast(getTranslated(this.context, 'selectedItemHasBeenRemoved'));
+                          ToastUtil.showSuccessNotification(this.context, getTranslated(this.context, 'selectedItemHasBeenRemoved'));
                         },
                       ),
                     ),
@@ -279,7 +279,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _itemService.create(_itemsToAdd).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyAddedNewItems'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyAddedNewItems'));
         NavigatorUtil.navigateReplacement(context, WarehouseDetailsPage(_model, _warehouseDto));
       });
     }).catchError((onError) {

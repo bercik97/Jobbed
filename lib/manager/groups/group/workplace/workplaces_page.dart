@@ -616,7 +616,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
         Navigator.pop(context);
         _refresh();
         setState(() => _isAddButtonTapped = false);
-        ToastUtil.showSuccessToast(getTranslated(this.context, 'successfullyAddedNewWorkplace'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(this.context, 'successfullyAddedNewWorkplace'));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
@@ -652,7 +652,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
         Navigator.pop(context);
         _refresh();
         setState(() => _isDeleteButtonTapped = false);
-        ToastUtil.showSuccessToast(getTranslated(this.context, 'selectedWorkplacesRemoved'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(this.context, 'selectedWorkplacesRemoved'));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

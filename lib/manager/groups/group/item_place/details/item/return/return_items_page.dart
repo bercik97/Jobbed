@@ -228,7 +228,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _itemPlaceService.returnItems(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyReturnItemsToWarehouses'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyReturnItemsToWarehouses'));
         NavigatorUtil.navigate(this.context, ItemPlaceDetailsPage(_model, _itemPlaceDto));
       });
     }).catchError((onError) {

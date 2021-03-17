@@ -285,7 +285,7 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _timesheetService.updateTsStatusByGroupIdAndYearAndMonthAndStatusAndEmployeesIdIn(_selectedIds.map((el) => el.toString()).toList(), newStatusId, _year, _month, status, _model.groupId).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'timesheetStatusSuccessfullyUpdated'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'timesheetStatusSuccessfullyUpdated'));
         NavigatorUtil.navigateReplacement(context, TsPage(_model));
       });
     }).catchError((onError) {

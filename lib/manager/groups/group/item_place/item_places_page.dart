@@ -383,7 +383,7 @@ class _ItemPlacesPageState extends State<ItemPlacesPage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _itemPlaceService.create(_user.companyId, location).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(this.context, 'successfullyAddedNewItemPlace'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(this.context, 'successfullyAddedNewItemPlace'));
         NavigatorUtil.navigateReplacement(this.context, ItemPlacesPage(_model));
       });
     }).catchError((onError) {
@@ -425,7 +425,7 @@ class _ItemPlacesPageState extends State<ItemPlacesPage> {
                     _refresh();
                     Navigator.pop(context);
                     setState(() => _isDeleteButtonTapped = false);
-                    ToastUtil.showSuccessToast(getTranslated(this.context, 'selectedItemPlacesRemoved'));
+                    ToastUtil.showSuccessNotification(this.context, getTranslated(this.context, 'selectedItemPlacesRemoved'));
                   });
                 }).catchError((onError) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

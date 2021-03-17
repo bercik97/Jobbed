@@ -157,7 +157,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
                             },
                           ).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              ToastUtil.showSuccessToast(getTranslated(context, 'successfullyUpdatedInformationAboutYou'));
+                              ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyUpdatedInformationAboutYou'));
                               _user.nationality = _nationality;
                               _user.info = _nameController.text + ' ' + _surnameController.text;
                               _user.username = _usernameController.text;

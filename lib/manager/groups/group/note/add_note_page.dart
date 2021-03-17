@@ -332,7 +332,7 @@ class _AddNotePageState extends State<AddNotePage> {
     );
     _noteService.create(dto).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'noteHasBeenCreated'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'noteHasBeenCreated'));
         NavigatorUtil.navigatePushAndRemoveUntil(context, SchedulePage(_model));
       });
     }).catchError((onError) {

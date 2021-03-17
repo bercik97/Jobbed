@@ -21,7 +21,6 @@ import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
-import 'package:jobbed/shared/widget/loader.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
 class AddGroupEmployeesPage extends StatefulWidget {
@@ -263,7 +262,7 @@ class _AddGroupEmployeesPageState extends State<AddGroupEmployeesPage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _groupService.addGroupEmployees(_groupId, _selectedIds.map((e) => e.toInt()).toList()).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyAddedGroupEmployees'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyAddedGroupEmployees'));
         NavigatorUtil.navigate(context, GroupsDashboardPage(_user));
       });
     }).catchError((onError) {

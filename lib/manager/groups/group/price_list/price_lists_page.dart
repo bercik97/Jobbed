@@ -383,7 +383,7 @@ class _PriceListsPageState extends State<PriceListsPage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _excelService.generatePriceListExcel(_model.user.companyId, _excelType == 0 || _excelType == 2, _excelType == 1 || _excelType == 2, _model.user.username).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyGeneratedExcelAndSendEmail') + '!');
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyGeneratedExcelAndSendEmail') + '!');
         setState(() => _isGenerateExcelBtnTapped = false);
         _excelType = -1;
         Navigator.pop(context);
@@ -426,7 +426,7 @@ class _PriceListsPageState extends State<PriceListsPage> {
                     setState(() => _isDeleteButtonTapped = false);
                     _uncheckAll();
                     Navigator.of(this.context).pop();
-                    ToastUtil.showSuccessToast(getTranslated(this.context, 'selectedPriceListsRemoved'));
+                    ToastUtil.showSuccessNotification(this.context, getTranslated(this.context, 'selectedPriceListsRemoved'));
                   });
                 }).catchError((onError) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

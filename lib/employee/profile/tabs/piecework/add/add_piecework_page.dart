@@ -255,7 +255,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
     );
     _pieceworkService.create(dto).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyAddedNewReportAboutPiecework'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyAddedNewReportAboutPiecework'));
         NavigatorUtil.navigate(context, PieceworkPage(_user, _todayDate, _todayWorkdayId));
       });
     }).catchError((onError) {

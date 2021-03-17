@@ -244,7 +244,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _workdayService.updatePieceworkByIds(_selectedWorkdayIds, serviceWithQuantity).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyAddedNewReportsAboutPiecework'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyAddedNewReportsAboutPiecework'));
         navigateIntoEmployeeTsInProgressPage();
       });
     });

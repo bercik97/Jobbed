@@ -406,7 +406,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _itemService.updateQuantity(item.id, quantity).then((value) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              ToastUtil.showSuccessToast(getTranslated(context, 'itemQuantityUpdatedSuccessfully'));
+                              ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'itemQuantityUpdatedSuccessfully'));
                               NavigatorUtil.navigate(context, WarehouseDetailsPage(_model, _warehouseDto));
                             });
                           }).catchError((onError) {
@@ -452,7 +452,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                       MaterialPageRoute(builder: (BuildContext context) => WarehouseDetailsPage(_model, _warehouseDto)),
                       ModalRoute.withName('/'),
                     );
-                    ToastUtil.showSuccessToast(getTranslated(this.context, 'selectedItemsRemoved'));
+                    ToastUtil.showSuccessNotification(this.context, getTranslated(this.context, 'selectedItemsRemoved'));
                   });
                 }).catchError((onError) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

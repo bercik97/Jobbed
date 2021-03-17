@@ -722,7 +722,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
         _refresh();
         Navigator.pop(context);
         Navigator.pop(context);
-        ToastUtil.showSuccessToast(getTranslated(context, 'workingTimeHasBeenSuccessfullySetForSelectedDays'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workingTimeHasBeenSuccessfullySetForSelectedDays'));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
@@ -748,7 +748,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _refresh();
         Navigator.of(context).pop();
-        ToastUtil.showSuccessToast(getTranslated(context, 'workHasBeenSuccessfullyDeleted'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workHasBeenSuccessfullyDeleted'));
         setState(() => _isDeleteWorkTimeButtonTapped = false);
       });
     }).catchError((onError) {
@@ -776,7 +776,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _refresh();
         Navigator.of(context).pop();
-        ToastUtil.showSuccessToast(getTranslated(context, 'pieceworkForSelectedDaysDeleted'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'pieceworkForSelectedDaysDeleted'));
         setState(() => _isDeletePieceworkButtonTapped = false);
       });
     }).catchError((onError) {
@@ -904,7 +904,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _pieceworkService.deleteByWorkdayIdAndServiceName(workdayId, serviceName).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyDeletedPieceworkService'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyDeletedPieceworkService'));
         Navigator.of(context).pop();
         Navigator.of(context).pop();
         _refresh();
@@ -1019,7 +1019,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _workTimeService.deleteById(workTimeId).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyDeletedWorkTime'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyDeletedWorkTime'));
         Navigator.of(context).pop();
         Navigator.of(context).pop();
         _refresh();

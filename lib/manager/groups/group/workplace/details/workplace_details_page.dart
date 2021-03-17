@@ -490,7 +490,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                           _subWorkplaceService.updateFieldsValuesById(subWorkplaceDto.id, {'name': name, 'description': description}).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              ToastUtil.showSuccessToast(getTranslated(context, 'subWorkplaceUpdatedSuccessfully'));
+                              ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'subWorkplaceUpdatedSuccessfully'));
                               Navigator.pop(context);
                               _refreshSubWorkplaces();
                             });
@@ -607,7 +607,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                             },
                           ).then((res) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              ToastUtil.showSuccessToast(getTranslated(context, 'workplaceUpdatedSuccessfully'));
+                              ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workplaceUpdatedSuccessfully'));
                               NavigatorUtil.navigateReplacement(context, WorkplacesPage(_model));
                             });
                           }).catchError((onError) {
@@ -976,7 +976,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _excelService.generateWorkTimesExcel(workplaceId, workplaceName, date, _user.username).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyGeneratedExcelAndSendEmail') + '!');
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyGeneratedExcelAndSendEmail') + '!');
         setState(() => _isGenerateExcelButtonTapped = false);
         Navigator.pop(context);
       });
@@ -1108,7 +1108,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
         Navigator.pop(context);
         _refreshSubWorkplaces();
         setState(() => _isAddButtonTapped = false);
-        ToastUtil.showSuccessToast(getTranslated(this.context, 'successfullyAddedNewSubWorkplace'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(this.context, 'successfullyAddedNewSubWorkplace'));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
@@ -1143,7 +1143,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _refreshSubWorkplaces();
         setState(() => _isDeleteButtonTapped = false);
-        ToastUtil.showSuccessToast(getTranslated(this.context, 'selectedSubWorkplacesRemoved'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(this.context, 'selectedSubWorkplacesRemoved'));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

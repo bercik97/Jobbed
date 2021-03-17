@@ -128,7 +128,7 @@ class _AddPriceListPageState extends State<AddPriceListPage> {
                           _priceListPriceForCompanyController.clear();
                         });
                         FocusScope.of(context).unfocus();
-                        ToastUtil.showSuccessToast(getTranslated(context, 'addedNewPriceService'));
+                        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'addedNewPriceService'));
                       },
                     ),
                     _buildAddItems(),
@@ -212,7 +212,7 @@ class _AddPriceListPageState extends State<AddPriceListPage> {
                             _priceListNames.remove(_priceListsToAdd[index].name);
                             _priceListsToAdd.remove(_priceListsToAdd[index]);
                           });
-                          ToastUtil.showSuccessToast(getTranslated(this.context, 'selectedPriceServiceHasBeenRemoved'));
+                          ToastUtil.showSuccessNotification(this.context, getTranslated(this.context, 'selectedPriceServiceHasBeenRemoved'));
                         },
                       ),
                     ),
@@ -273,7 +273,7 @@ class _AddPriceListPageState extends State<AddPriceListPage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _priceListService.create(_priceListsToAdd).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyAddedNewPriceListServices'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyAddedNewPriceListServices'));
         NavigatorUtil.navigateReplacement(this.context, PriceListsPage(_model));
       });
     }).catchError((onError) {

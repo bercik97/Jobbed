@@ -448,7 +448,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                   _refresh();
                                   Navigator.pop(context);
                                   String msgKey = _moneyRadioValue == 0 ? 'successfullyUpdatedMoneyPerHourForSelectedEmployees' : 'successfullyUpdatedMoneyPerHourForCompanyForSelectedEmployees';
-                                  ToastUtil.showSuccessToast(getTranslated(context, msgKey));
+                                  ToastUtil.showSuccessNotification(this.context, getTranslated(context, msgKey));
                                   _moneyRadioValue = -1;
                                   setState(() => _isMoneyBtnTapped = false);
                                 });
@@ -561,7 +561,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                   _refresh();
                                   Navigator.pop(context);
-                                  ToastUtil.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToWorkTimeByLocationForSelectedEmployees'));
+                                  ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyUpdatedPermissionToWorkTimeByLocationForSelectedEmployees'));
                                   _workTimeByLocationRadioValue = -1;
                                   setState(() => _isWorkTimeByLocationBtnTapped = false);
                                 });
@@ -674,7 +674,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                   _refresh();
                                   Navigator.pop(context);
-                                  ToastUtil.showSuccessToast(getTranslated(context, 'successfullyUpdatedPermissionToPieceworkForSelectedEmployees'));
+                                  ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyUpdatedPermissionToPieceworkForSelectedEmployees'));
                                   _pieceworkRadioValue = -1;
                                   setState(() => _isPieceworkBtnTapped = false);
                                 });

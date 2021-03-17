@@ -467,7 +467,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     CreateWorkTimeDto dto = new CreateWorkTimeDto(workplaceId: workplaceId, workdayId: _todayWorkdayId);
     _workTimeService.create(dto).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'workTimeHasBegun'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workTimeHasBegun'));
         _refresh();
       });
     }).catchError((onError) {
@@ -504,7 +504,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     } else {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         Navigator.of(context).pop();
-        ToastUtil.showSuccessToast(getTranslated(context, 'cannotGetCurrentLocation'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'cannotGetCurrentLocation'));
       });
     }
   }
@@ -513,7 +513,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _workTimeService.finish(_dto.notFinishedWorkTimeId).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'workTimeEnded'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workTimeEnded'));
         _refresh();
       });
     }).catchError((onError) {
@@ -624,7 +624,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _workTimeService.create(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'workTimeHasBegun'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workTimeHasBegun'));
         _refresh();
       });
     }).catchError((onError) {
@@ -739,7 +739,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _workTimeService.finish(_dto.notFinishedWorkTimeId).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'workTimeEnded'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workTimeEnded'));
         _refresh();
       });
     }).catchError((onError) {

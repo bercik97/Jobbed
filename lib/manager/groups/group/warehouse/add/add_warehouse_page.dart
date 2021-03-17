@@ -13,9 +13,9 @@ import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
-import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/widget/buttons.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
@@ -166,7 +166,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
                       _quantityController.text = "0";
                     });
                     FocusScope.of(context).unfocus();
-                    ToastUtil.showSuccessToast(getTranslated(context, 'addedNewItem'));
+                    ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'addedNewItem'));
                   },
                 ),
                 _buildAddItems(),
@@ -239,7 +239,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
                         icon: iconRed(Icons.remove),
                         onPressed: () {
                           setState(() => _itemNamesWithQuantities.remove(itemName));
-                          ToastUtil.showSuccessToast(getTranslated(this.context, 'selectedItemHasBeenRemoved'));
+                          ToastUtil.showSuccessNotification(this.context, getTranslated(this.context, 'selectedItemHasBeenRemoved'));
                         },
                       ),
                     ),
@@ -306,7 +306,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
     );
     _warehouseService.create(dto).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessToast(getTranslated(context, 'successfullyAddedNewWarehouse'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyAddedNewWarehouse'));
         NavigatorUtil.navigateReplacement(this.context, WarehousePage(_model));
       });
     }).catchError((onError) {

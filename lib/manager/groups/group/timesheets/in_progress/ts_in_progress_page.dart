@@ -752,7 +752,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
         _refresh();
         Navigator.pop(context);
         Navigator.pop(context);
-        ToastUtil.showSuccessToast(getTranslated(context, 'workingTimeHasBeenSuccessfullySetForSelectedDaysAndEmployees'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workingTimeHasBeenSuccessfullySetForSelectedDaysAndEmployees'));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
@@ -795,7 +795,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _refresh();
         Navigator.of(context).pop();
-        ToastUtil.showSuccessToast(getTranslated(context, 'workHasBeenSuccessfullyDeleted'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workHasBeenSuccessfullyDeleted'));
         setState(() => _isDeleteWorkTimeButtonTapped = false);
       });
     }).catchError((onError) {
@@ -863,7 +863,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _refresh();
         Navigator.of(context).pop();
-        ToastUtil.showSuccessToast(getTranslated(context, 'pieceworkForSelectedDaysAndEmployeesDeleted'));
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'pieceworkForSelectedDaysAndEmployeesDeleted'));
         setState(() => _isDeletePieceworkButtonTapped = false);
       });
     }).catchError((onError) {
