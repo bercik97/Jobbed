@@ -561,7 +561,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                   _refresh();
                                   Navigator.pop(context);
-                                  ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyUpdatedPermissionToWorkTimeByLocationForSelectedEmployees'));
+                                  ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'updatedPermission'));
                                   _workTimeByLocationRadioValue = -1;
                                   setState(() => _isWorkTimeByLocationBtnTapped = false);
                                 });
@@ -674,7 +674,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                   _refresh();
                                   Navigator.pop(context);
-                                  ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyUpdatedPermissionToPieceworkForSelectedEmployees'));
+                                  ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'updatedPermission'));
                                   _pieceworkRadioValue = -1;
                                   setState(() => _isPieceworkBtnTapped = false);
                                 });

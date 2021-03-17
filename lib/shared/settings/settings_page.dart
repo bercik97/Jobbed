@@ -163,7 +163,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                                       children: <Widget>[
                                                         text20BlueBold(getTranslated(context, 'warning')),
                                                         SizedBox(height: 10),
-                                                        textCenter20Black(getTranslated(context, 'changingLanguageWarning')),
+                                                        textCenter20Black(getTranslated(context, 'changingPasswordWarning')),
                                                         SizedBox(height: 10),
                                                         FlatButton(
                                                           child: textBlack(getTranslated(context, 'changeMyPassword')),
@@ -259,7 +259,7 @@ class _SettingsPageState extends State<SettingsPage> {
               margin: EdgeInsets.only(left: 15, top: 10),
               child: InkWell(
                 onTap: () => OpenAppstore.launch(androidAppId: ANDROID_APP_ID, iOSAppId: IOS_APP_ID),
-                child: _subtitleInkWellContainer(getTranslated(context, 'rate')),
+                child: _subtitleInkWellContainer(getTranslated(context, 'rateApplication')),
               ),
             ),
             Container(

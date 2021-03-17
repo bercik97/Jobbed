@@ -87,7 +87,7 @@ class _EmployeeSchedulePageState extends State<EmployeeSchedulePage> with Ticker
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: WHITE,
-          appBar: employeeAppBar(context, _user, getTranslated(context, 'calendar'), () => Navigator.pop(context)),
+          appBar: employeeAppBar(context, _user, getTranslated(context, 'schedule'), () => Navigator.pop(context)),
           body: _loading
               ? circularProgressIndicator()
               : Column(
