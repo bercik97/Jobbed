@@ -198,7 +198,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                                 child: Row(
                                                   children: <Widget>[
                                                     textBlack(getTranslated(this.context, 'moneyPerHour') + ': '),
-                                                    textBlackBold(employee.moneyPerHour.toString() + ' PLN'),
+                                                    textBlackBold(employee.moneyPerHour.toString()),
                                                   ],
                                                 ),
                                                 alignment: Alignment.topLeft),
@@ -206,7 +206,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                                 child: Row(
                                                   children: <Widget>[
                                                     textBlack(getTranslated(this.context, 'moneyPerHourForCompany') + ': '),
-                                                    textBlackBold(employee.moneyPerHourForCompany.toString() + ' PLN'),
+                                                    textBlackBold(employee.moneyPerHourForCompany.toString()),
                                                   ],
                                                 ),
                                                 alignment: Alignment.topLeft),
