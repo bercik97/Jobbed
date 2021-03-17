@@ -10,8 +10,10 @@ import 'package:jobbed/api/note_sub_workplace/dto/note_sub_workplace_dto.dart';
 import 'package:jobbed/api/note_sub_workplace/dto/update_note_sub_workplace_dto.dart';
 import 'package:jobbed/api/note_sub_workplace/service/note_sub_workplace_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
-import 'package:jobbed/employee/shared/employee_app_bar.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/manager/groups/group/schedule/schedule_page.dart';
+import 'package:jobbed/manager/shared/group_model.dart';
+import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
@@ -21,29 +23,28 @@ import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
-import '../../../employee_profile_page.dart';
-
 class EditNotePage extends StatefulWidget {
-  final User _user;
-  final String _todayDate;
+  final GroupModel _model;
+  final String _date;
   final NoteDto _noteDto;
 
-  EditNotePage(this._user, this._todayDate, this._noteDto);
+  EditNotePage(this._model, this._date, this._noteDto);
 
   @override
   _EditNotePageState createState() => _EditNotePageState();
 }
 
 class _EditNotePageState extends State<EditNotePage> {
+  GroupModel _model;
   User _user;
-  String _todayDate;
+  String _date;
   NoteDto _noteDto;
 
   List<NoteSubWorkplaceDto> noteWorkplaces = new List();
   Map<String, List<NoteSubWorkplaceDto>> noteSubWorkplaces = new Map();
   int doneTasks = 0;
   int allTasks = 0;
-  final TextEditingController _employeeNoteController = new TextEditingController();
+  final TextEditingController _managerNoteController = new TextEditingController();
 
   final ScrollController scrollController = new ScrollController();
 
@@ -60,8 +61,9 @@ class _EditNotePageState extends State<EditNotePage> {
 
   @override
   void initState() {
-    this._user = widget._user;
-    this._todayDate = widget._todayDate;
+    this._model = widget._model;
+    this._user = _model.user;
+    this._date = widget._date;
     this._noteDto = widget._noteDto;
     this._noteSubWorkplaceService = ServiceInitializer.initialize(context, _user.authHeader, NoteSubWorkplaceService);
     super.initState();
@@ -88,7 +90,8 @@ class _EditNotePageState extends State<EditNotePage> {
   Widget build(BuildContext context) {
     doneTasks = doneWorkplaceNoteIds.length;
     allTasks = doneTasks + undoneWorkplaceNoteIds.length;
-    String managerNote = _noteDto.managerNote;
+    _managerNoteController.text = _noteDto.managerNote;
+    String employeeNote = _noteDto.employeeNote;
     return WillPopScope(
       child: MaterialApp(
         title: APP_NAME,
@@ -96,12 +99,12 @@ class _EditNotePageState extends State<EditNotePage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: WHITE,
-          appBar: employeeAppBar(context, _user, getTranslated(context, 'note'), () => NavigatorUtil.navigateReplacement(context, EmployeeProfilePage(_user))),
+          appBar: managerAppBar(context, _model.user, getTranslated(context, 'noteDetails'), () => NavigatorUtil.onWillPopNavigate(context, SchedulePage(_model))),
           body: SingleChildScrollView(
             child: Column(
               children: [
                 ListTile(
-                  title: text20BlackBold(getTranslated(this.context, 'todo') + ' ($_todayDate)'),
+                  title: text20BlackBold(getTranslated(this.context, 'todo') + ' ($_date)'),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -112,31 +115,9 @@ class _EditNotePageState extends State<EditNotePage> {
                   leading: doneTasks == allTasks ? icon50Green(Icons.check) : icon50Red(Icons.close),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 30, top: 10),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: text20OrangeBold(getTranslated(context, 'note')),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 30, top: 5, right: 30),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: managerNote != null && managerNote != ''
-                        ? ExpandableText(
-                            managerNote,
-                            expandText: getTranslated(context, 'showMore'),
-                            collapseText: getTranslated(context, 'showLess'),
-                            maxLines: 2,
-                            linkColor: Colors.blue,
-                            style: TextStyle(fontSize: 17),
-                          )
-                        : text16BlueGrey(getTranslated(context, 'noteManagerEmpty')),
-                  ),
-                ),
-                Padding(
                   padding: EdgeInsets.only(left: 15, top: 5, right: 15),
                   child: ExpansionTile(
+                    initiallyExpanded: _managerNoteController.text.isNotEmpty ? true : false,
                     title: text20OrangeBold(getTranslated(context, 'yourNote')),
                     subtitle: text16BlueGrey(getTranslated(context, 'tapToAdd')),
                     children: [
@@ -144,7 +125,7 @@ class _EditNotePageState extends State<EditNotePage> {
                         padding: const EdgeInsets.only(left: 15, right: 15),
                         child: TextFormField(
                           autofocus: false,
-                          controller: _employeeNoteController,
+                          controller: _managerNoteController,
                           keyboardType: TextInputType.text,
                           maxLength: 510,
                           maxLines: 5,
@@ -159,6 +140,29 @@ class _EditNotePageState extends State<EditNotePage> {
                         ),
                       ),
                     ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 30, top: 10),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: text20OrangeBold(getTranslated(context, 'employeeNote')),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 30, top: 5, right: 30),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: employeeNote != null && employeeNote != ''
+                        ? ExpandableText(
+                            employeeNote,
+                            expandText: getTranslated(context, 'showMore'),
+                            collapseText: getTranslated(context, 'showLess'),
+                            maxLines: 2,
+                            linkColor: Colors.blue,
+                            style: TextStyle(fontSize: 17),
+                          )
+                        : text16BlueGrey(getTranslated(context, 'noteEmployeeEmpty')),
                   ),
                 ),
                 Scrollbar(
@@ -325,7 +329,7 @@ class _EditNotePageState extends State<EditNotePage> {
           ),
         ),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilePage(_user)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, SchedulePage(_model)),
     );
   }
 
@@ -333,8 +337,8 @@ class _EditNotePageState extends State<EditNotePage> {
     setState(() => _isUpdateButtonTapped = true);
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     UpdateNoteSubWorkplaceDto dto = new UpdateNoteSubWorkplaceDto(
-      managerNote: _noteDto.managerNote,
-      employeeNote: _employeeNoteController.text,
+      managerNote: _managerNoteController.text,
+      employeeNote: _noteDto.employeeNote,
       undoneWorkplaceNoteIds: undoneWorkplaceNoteIds,
       doneWorkplaceNoteIds: doneWorkplaceNoteIds,
     );
@@ -343,7 +347,7 @@ class _EditNotePageState extends State<EditNotePage> {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyUpdatedNote'));
         Navigator.pop(context);
         setState(() {
-          _noteDto.employeeNote = _employeeNoteController.text;
+          _noteDto.employeeNote = _managerNoteController.text;
           _noteDto.noteSubWorkplaceDto.forEach((element) {
             if (doneWorkplaceNoteIds.contains(element.id)) {
               element = true;

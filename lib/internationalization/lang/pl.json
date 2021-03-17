@@ -706,5 +706,7 @@
   "addDeleteManyNotes": "Dodawanie / Usuwanie wielu notatek",
   "todayNoteIsEmpty": "Dzisiejsza notatka jest pusta",
   "yourNoteIsEmpty": "Twoja notatka jest pusta",
-  "managerNote": "Notatka menadżera"
+  "managerNote": "Notatka menadżera",
+  "employeeNote": "Notatka pracownika",
+  "noteEmployeeEmpty": "Brak notatki od pracownika"
 }

@@ -706,5 +706,7 @@
   "addDeleteManyNotes": "Add / Delete many notes",
   "todayNoteIsEmpty": "Today note is empty",
   "yourNoteIsEmpty": "Your note is empty",
-  "managerNote": "Manager note"
+  "managerNote": "Manager note",
+  "employeeNote": "Employee note",
+  "noteEmployeeEmpty": "No note from employee"
 }

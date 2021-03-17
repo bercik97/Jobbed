@@ -11,6 +11,7 @@ import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/manager/groups/group/group_page.dart';
 import 'package:jobbed/manager/groups/group/note/add_note_page.dart';
+import 'package:jobbed/manager/groups/group/note/edit_note_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
@@ -351,9 +352,7 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
                       contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
                       title: text20Black(getTranslated(context, 'note') + ': ' + employee.doneTasks.toString() + ' / ' + employee.allNoteTasks.toString()),
                       subtitle: text16BlueGrey(getTranslated(context, 'tapToSeeNoteDetails')),
-                      onTap: () {
-                        // to be implemented
-                      },
+                      onTap: () => NavigatorUtil.navigate(context, EditNotePage(_model, _selectedDay.toString().substring(0, 10), noteDto)),
                     )
                   : ListTile(
                       dense: true,
