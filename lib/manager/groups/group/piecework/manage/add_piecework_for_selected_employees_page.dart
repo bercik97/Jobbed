@@ -234,7 +234,7 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
     });
     if (serviceWithQuantity.isEmpty) {
       setState(() => _isAddButtonTapped = false);
-      ToastUtil.showErrorToast(getTranslated(context, 'pieceworkCannotBeEmpty'));
+      ToastUtil.showErrorToast(this.context, getTranslated(context, 'pieceworkCannotBeEmpty'));
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));

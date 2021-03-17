@@ -372,11 +372,11 @@ class _PriceListsPageState extends State<PriceListsPage> {
 
   _handleGenerateExcel() {
     if (_priceLists.isEmpty) {
-      ToastUtil.showErrorToast(getTranslated(context, 'priceListIsEmpty'));
+      ToastUtil.showErrorToast(this.context, getTranslated(context, 'priceListIsEmpty'));
       return;
     }
     if (_excelType == -1) {
-      ToastUtil.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
+      ToastUtil.showErrorToast(this.context, getTranslated(context, 'pleaseSelectValue'));
       return;
     }
     setState(() => _isGenerateExcelBtnTapped = true);
@@ -431,7 +431,7 @@ class _PriceListsPageState extends State<PriceListsPage> {
                 }).catchError((onError) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     setState(() => _isDeleteButtonTapped = false);
-                    ToastUtil.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
+                    ToastUtil.showErrorToast(this.context, getTranslated(this.context, 'somethingWentWrong'));
                   });
                 });
               },

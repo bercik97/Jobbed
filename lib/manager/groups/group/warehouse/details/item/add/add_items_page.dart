@@ -133,23 +133,23 @@ class _AddItemsPageState extends State<AddItemsPage> {
                   title: getTranslated(context, 'add'),
                   fun: () {
                     if (!_isValid()) {
-                      ToastUtil.showErrorToast(getTranslated(context, 'correctInvalidFields'));
+                      ToastUtil.showErrorToast(this.context, getTranslated(context, 'correctInvalidFields'));
                       return;
                     }
                     if (_itemNames.contains(_itemNameController.text)) {
-                      ToastUtil.showErrorToast(getTranslated(context, 'itemNameExists'));
+                      ToastUtil.showErrorToast(this.context, getTranslated(context, 'itemNameExists'));
                       return;
                     }
                     int quantity;
                     try {
                       quantity = int.parse(_quantityController.text);
                     } catch (FormatException) {
-                      ToastUtil.showErrorToast(getTranslated(context, 'itemQuantityIsRequired'));
+                      ToastUtil.showErrorToast(this.context, getTranslated(context, 'itemQuantityIsRequired'));
                       return;
                     }
                     String invalidMessage = ValidatorUtil.validateItemQuantity(quantity, context);
                     if (invalidMessage != null) {
-                      ToastUtil.showErrorToast(invalidMessage);
+                      ToastUtil.showErrorToast(context, invalidMessage);
                       return;
                     }
                     CreateItemDto dto = new CreateItemDto(
@@ -271,7 +271,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
   _createItems() {
     setState(() => _isAddButtonTapped = true);
     if (_itemsToAdd.isEmpty) {
-      ToastUtil.showErrorToast(getTranslated(context, 'itemsToAddEmpty'));
+      ToastUtil.showErrorToast(this.context, getTranslated(context, 'itemsToAddEmpty'));
       setState(() => _isAddButtonTapped = false);
       return;
     }

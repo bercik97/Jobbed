@@ -483,7 +483,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                           String description = _descriptionController.text;
                           String invalidMessage = ValidatorUtil.validateSubWorkplace(name, description, context);
                           if (invalidMessage != null) {
-                            ToastUtil.showErrorToast(invalidMessage);
+                            ToastUtil.showErrorToast(context, invalidMessage);
                             return;
                           }
                           FocusScope.of(context).unfocus();
@@ -498,7 +498,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               String errorMsg = onError.toString();
                               if (errorMsg.contains("SUB_WORKPLACE_NAME_EXISTS")) {
-                                ToastUtil.showErrorToast(getTranslated(context, 'subWorkplaceNameExists'));
+                                ToastUtil.showErrorToast(this.context, getTranslated(context, 'subWorkplaceNameExists'));
                               } else {
                                 DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
                               }
@@ -587,7 +587,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                           String name = _nameController.text;
                           String invalidMessage = ValidatorUtil.validateWorkplace(name, context);
                           if (invalidMessage != null) {
-                            ToastUtil.showErrorToast(invalidMessage);
+                            ToastUtil.showErrorToast(context, invalidMessage);
                             return;
                           }
                           FocusScope.of(context).unfocus();
@@ -614,7 +614,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               String errorMsg = onError.toString();
                               if (errorMsg.contains("WORKPLACE_NAME_EXISTS")) {
-                                ToastUtil.showErrorToast(getTranslated(context, 'workplaceNameExists'));
+                                ToastUtil.showErrorToast(this.context, getTranslated(context, 'workplaceNameExists'));
                               } else {
                                 DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
                               }
@@ -1094,7 +1094,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
     String invalidMessage = ValidatorUtil.validateSubWorkplace(name, description, context);
     if (invalidMessage != null) {
       setState(() => _isAddButtonTapped = false);
-      ToastUtil.showErrorToast(invalidMessage);
+      ToastUtil.showErrorToast(context, invalidMessage);
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
@@ -1115,9 +1115,9 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
         setState(() => _isAddButtonTapped = false);
         String errorMsg = onError.toString();
         if (errorMsg.contains("SUB_WORKPLACE_NAME_EXISTS")) {
-          ToastUtil.showErrorToast(getTranslated(this.context, 'subWorkplaceNameExists'));
+          ToastUtil.showErrorToast(this.context, getTranslated(this.context, 'subWorkplaceNameExists'));
         } else {
-          ToastUtil.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
+          ToastUtil.showErrorToast(this.context, getTranslated(this.context, 'somethingWentWrong'));
         }
       });
     });
@@ -1148,7 +1148,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         setState(() => _isDeleteButtonTapped = false);
-        ToastUtil.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
+        ToastUtil.showErrorToast(this.context, getTranslated(this.context, 'somethingWentWrong'));
       });
     });
   }

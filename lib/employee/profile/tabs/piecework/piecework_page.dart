@@ -97,7 +97,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
                 backgroundColor: Colors.red,
                 onPressed: () {
                   if (_pieceworks.isEmpty) {
-                    ToastUtil.showErrorToast(getTranslated(context, 'todayPieceworkIsEmpty'));
+                    ToastUtil.showErrorToast(this.context, getTranslated(context, 'todayPieceworkIsEmpty'));
                     return;
                   }
                   DialogUtil.showConfirmationDialog(

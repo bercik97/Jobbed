@@ -8,6 +8,6 @@ class UrlUtil {
   static void launchURL(BuildContext context, String url) async {
     await canLaunch(url)
         ? await launch(url)
-        : ToastUtil.showErrorToast(getTranslated(context, 'couldNotLaunch'));
+        : ToastUtil.showErrorToast(context, getTranslated(context, 'couldNotLaunch'));
   }
 }

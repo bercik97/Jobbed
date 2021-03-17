@@ -314,7 +314,7 @@ class _WarehousePageState extends State<WarehousePage> {
                 }).catchError((onError) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     setState(() => _isDeleteButtonTapped = false);
-                    ToastUtil.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
+                    ToastUtil.showErrorToast(this.context, getTranslated(this.context, 'somethingWentWrong'));
                   });
                 });
               },

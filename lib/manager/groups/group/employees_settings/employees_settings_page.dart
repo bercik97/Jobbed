@@ -424,7 +424,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 return;
                               }
                               if (_moneyRadioValue == -1) {
-                                ToastUtil.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
+                                ToastUtil.showErrorToast(this.context, getTranslated(context, 'pleaseSelectValue'));
                                 return;
                               }
                               FocusScope.of(context).unfocus();
@@ -432,12 +432,12 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                               try {
                                 money = double.parse(_moneyPerHourController.text);
                               } catch (FormatException) {
-                                ToastUtil.showErrorToast(getTranslated(context, 'newHourlyRateIsRequired'));
+                                ToastUtil.showErrorToast(this.context, getTranslated(context, 'newHourlyRateIsRequired'));
                                 return;
                               }
                               String invalidMessage = ValidatorUtil.validateMoneyPerHour(money, context);
                               if (invalidMessage != null) {
-                                ToastUtil.showErrorToast(invalidMessage);
+                                ToastUtil.showErrorToast(context, invalidMessage);
                                 return;
                               }
                               setState(() => _isMoneyBtnTapped = true);
@@ -552,7 +552,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 return;
                               }
                               if (_workTimeByLocationRadioValue == -1) {
-                                ToastUtil.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
+                                ToastUtil.showErrorToast(this.context, getTranslated(context, 'pleaseSelectValue'));
                                 return;
                               }
                               setState(() => _isWorkTimeByLocationBtnTapped = true);
@@ -665,7 +665,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                 return;
                               }
                               if (_pieceworkRadioValue == -1) {
-                                ToastUtil.showErrorToast(getTranslated(context, 'pleaseSelectValue'));
+                                ToastUtil.showErrorToast(this.context, getTranslated(context, 'pleaseSelectValue'));
                                 return;
                               }
                               setState(() => _isPieceworkBtnTapped = true);

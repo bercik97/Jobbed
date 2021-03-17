@@ -107,11 +107,11 @@ class _AddPriceListPageState extends State<AddPriceListPage> {
                       title: getTranslated(context, 'add'),
                       fun: () {
                         if (!_isValid()) {
-                          ToastUtil.showErrorToast(getTranslated(context, 'correctInvalidFields'));
+                          ToastUtil.showErrorToast(this.context, getTranslated(context, 'correctInvalidFields'));
                           return;
                         }
                         if (_priceListNames.contains(_priceListNameController.text)) {
-                          ToastUtil.showErrorToast(getTranslated(context, 'priceListServiceNameExists'));
+                          ToastUtil.showErrorToast(this.context, getTranslated(context, 'priceListServiceNameExists'));
                           return;
                         }
                         CreatePriceListDto dto = new CreatePriceListDto(
@@ -266,7 +266,7 @@ class _AddPriceListPageState extends State<AddPriceListPage> {
   _createPriceListServices() {
     setState(() => _isAddButtonTapped = true);
     if (_priceListsToAdd.isEmpty) {
-      ToastUtil.showErrorToast(getTranslated(context, 'priceListsToAddEmpty'));
+      ToastUtil.showErrorToast(this.context, getTranslated(context, 'priceListsToAddEmpty'));
       setState(() => _isAddButtonTapped = false);
       return;
     }

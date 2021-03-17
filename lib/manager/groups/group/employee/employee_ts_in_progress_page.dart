@@ -578,12 +578,12 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                             toHours = int.parse(_toHoursController.text);
                             toMinutes = int.parse(_toMinutesController.text);
                           } catch (FormatException) {
-                            ToastUtil.showErrorToast(getTranslated(context, 'givenValueIsNotANumber'));
+                            ToastUtil.showErrorToast(this.context, getTranslated(context, 'givenValueIsNotANumber'));
                             return;
                           }
                           String validationMsg = ValidatorUtil.validateSettingManuallyWorkTimes(fromHours, fromMinutes, toHours, toMinutes, context);
                           if (validationMsg != null) {
-                            ToastUtil.showErrorToast(validationMsg);
+                            ToastUtil.showErrorToast(context, validationMsg);
                             return;
                           }
                           String startTime = fromHours.toString() + ':' + fromMinutes.toString() + ':' + '00';

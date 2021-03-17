@@ -307,7 +307,7 @@ class _AddNotePageState extends State<AddNotePage> {
     String invalidMessage = ValidatorUtil.validateAddNote(managerNote, _selectedWorkplacesWithChecked, context);
     if (invalidMessage != null) {
       setState(() => _isAddNoteButtonTapped = false);
-      ToastUtil.showErrorToast(invalidMessage);
+      ToastUtil.showErrorToast(context, invalidMessage);
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));

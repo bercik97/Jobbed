@@ -301,7 +301,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
     }
     if (itemsWithQuantities.isEmpty) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showErrorToast(getTranslated(context, 'noQuantitySetForRelease'));
+        ToastUtil.showErrorToast(this.context, getTranslated(context, 'noQuantitySetForRelease'));
       });
       return;
     }

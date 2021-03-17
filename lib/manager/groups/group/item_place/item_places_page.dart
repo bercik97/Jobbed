@@ -377,7 +377,7 @@ class _ItemPlacesPageState extends State<ItemPlacesPage> {
     setState(() => _isAddButtonTapped = true);
     if (location == null || location.isEmpty) {
       setState(() => _isAddButtonTapped = false);
-      ToastUtil.showErrorToast(getTranslated(this.context, 'itemPlaceLocationIsRequired'));
+      ToastUtil.showErrorToast(this.context, getTranslated(this.context, 'itemPlaceLocationIsRequired'));
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
@@ -391,9 +391,9 @@ class _ItemPlacesPageState extends State<ItemPlacesPage> {
         setState(() => _isAddButtonTapped = false);
         String errorMsg = onError.toString();
         if (errorMsg.contains("ITEM_PLACE_LOCATION_EXISTS")) {
-          ToastUtil.showErrorToast(getTranslated(this.context, 'itemPlaceLocationExists'));
+          ToastUtil.showErrorToast(this.context, getTranslated(this.context, 'itemPlaceLocationExists'));
         } else {
-          ToastUtil.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
+          ToastUtil.showErrorToast(this.context, getTranslated(this.context, 'somethingWentWrong'));
         }
       });
     });
@@ -430,7 +430,7 @@ class _ItemPlacesPageState extends State<ItemPlacesPage> {
                 }).catchError((onError) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     setState(() => _isDeleteButtonTapped = false);
-                    ToastUtil.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
+                    ToastUtil.showErrorToast(this.context, getTranslated(this.context, 'somethingWentWrong'));
                   });
                 });
               },

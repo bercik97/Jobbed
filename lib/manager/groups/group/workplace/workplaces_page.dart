@@ -584,7 +584,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
   _handleAddWorkplace(String workplaceName) {
     String invalidMessage = ValidatorUtil.validateWorkplace(workplaceName, context);
     if (invalidMessage != null) {
-      ToastUtil.showErrorToast(invalidMessage);
+      ToastUtil.showErrorToast(context, invalidMessage);
       return;
     }
     DialogUtil.showConfirmationDialog(
@@ -623,9 +623,9 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
         setState(() => _isAddButtonTapped = false);
         String errorMsg = onError.toString();
         if (errorMsg.contains("WORKPLACE_NAME_EXISTS")) {
-          ToastUtil.showErrorToast(getTranslated(this.context, 'workplaceNameExists'));
+          ToastUtil.showErrorToast(this.context, getTranslated(this.context, 'workplaceNameExists'));
         } else {
-          ToastUtil.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
+          ToastUtil.showErrorToast(this.context, getTranslated(this.context, 'somethingWentWrong'));
         }
       });
     });
@@ -664,7 +664,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
           return;
         }
         setState(() => _isDeleteButtonTapped = false);
-        ToastUtil.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
+        ToastUtil.showErrorToast(this.context, getTranslated(this.context, 'somethingWentWrong'));
       });
     });
   }

@@ -363,14 +363,14 @@ class _WorkTimePageState extends State<WorkTimePage> {
         });
       }).catchError((onError) {
         Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-          ToastUtil.showErrorToast(getTranslated(context, 'cannotFindWorkplaceByLocation'));
+          ToastUtil.showErrorToast(this.context, getTranslated(context, 'cannotFindWorkplaceByLocation'));
           setState(() => _isStartDialogButtonTapped = false);
         });
       });
     } else {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         Navigator.of(context).pop();
-        ToastUtil.showErrorToast(getTranslated(context, 'cannotGetCurrentLocation'));
+        ToastUtil.showErrorToast(this.context, getTranslated(context, 'cannotGetCurrentLocation'));
       });
     }
   }
@@ -489,7 +489,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
       _workTimeService.canFinishByIdAndLocationParams(workTime.id, latitude, longitude).then((res) {
         Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
           if (!res) {
-            ToastUtil.showErrorToast(getTranslated(context, 'cannotFindWorkplaceWhereYouStarted'));
+            ToastUtil.showErrorToast(this.context, getTranslated(context, 'cannotFindWorkplaceWhereYouStarted'));
             setState(() => _isPauseWorkButtonTapped = false);
             return;
           }
@@ -497,7 +497,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
         });
       }).catchError((onError) {
         Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-          ToastUtil.showErrorToast(getTranslated(context, 'cannotFindWorkplaceWhereYouStarted'));
+          ToastUtil.showErrorToast(this.context, getTranslated(context, 'cannotFindWorkplaceWhereYouStarted'));
           setState(() => _isPauseWorkButtonTapped = false);
         });
       });

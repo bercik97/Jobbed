@@ -1,6 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 
@@ -16,15 +15,14 @@ class ToastUtil {
     );
   }
 
-  static showErrorToast(String msg) {
-    Fluttertoast.showToast(
-      msg: msg,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
-      timeInSecForIosWeb: 2,
+  static showErrorToast(BuildContext context, String msg) {
+    BotToast.showSimpleNotification(
+      title: getTranslated(context, 'failure'),
+      subTitle: msg,
+      duration: Duration(seconds: 3),
       backgroundColor: Colors.red,
-      textColor: Colors.white,
-      fontSize: 16,
+      titleStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+      subTitleStyle: TextStyle(fontSize: 15),
     );
   }
 }

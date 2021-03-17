@@ -173,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
     String password = _passwordController.text;
     String invalidMessage = ValidatorUtil.validateLoginCredentials(username, password, context);
     if (invalidMessage != null) {
-      ToastUtil.showErrorToast(invalidMessage);
+      ToastUtil.showErrorToast(context, invalidMessage);
       setState(() => _isLoginButtonTapped = false);
       return;
     }
@@ -216,10 +216,10 @@ class _LoginPageState extends State<LoginPage> {
           ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'loginSuccessfully'));
         });
       } else {
-        Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => ToastUtil.showErrorToast(getTranslated(context, 'wrongUsernameOrPassword')));
+        Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => ToastUtil.showErrorToast(this.context, getTranslated(context, 'wrongUsernameOrPassword')));
       }
     }, onError: (e) {
-      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => ToastUtil.showErrorToast(getTranslated(context, 'cannotConnectToServer')));
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => ToastUtil.showErrorToast(this.context, getTranslated(context, 'cannotConnectToServer')));
     });
     setState(() => _isLoginButtonTapped = false);
   }

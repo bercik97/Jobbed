@@ -395,11 +395,11 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                           try {
                             quantity = int.parse(_quantityController.text);
                           } catch (FormatException) {
-                            ToastUtil.showErrorToast(getTranslated(context, 'itemQuantityIsRequired'));
+                            ToastUtil.showErrorToast(this.context, getTranslated(context, 'itemQuantityIsRequired'));
                             return;
                           }
                           if (quantity < 0) {
-                            ToastUtil.showErrorToast(getTranslated(context, 'itemQuantityCannotBeLowerThan0'));
+                            ToastUtil.showErrorToast(this.context, getTranslated(context, 'itemQuantityCannotBeLowerThan0'));
                             return;
                           }
                           FocusScope.of(context).unfocus();
@@ -457,7 +457,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                 }).catchError((onError) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                     setState(() => _isDeleteButtonTapped = false);
-                    ToastUtil.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
+                    ToastUtil.showErrorToast(this.context, getTranslated(this.context, 'somethingWentWrong'));
                   });
                 });
               },

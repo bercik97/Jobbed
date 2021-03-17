@@ -16,7 +16,6 @@ dependencies:
   cupertino_icons: ^0.1.2
   http: ^0.12.1
   flutter_secure_storage: ^3.3.3
-  fluttertoast: ^4.0.0
   countup: ^0.1.0
   open_appstore: ^1.0.2
   url_launcher: ^5.4.2

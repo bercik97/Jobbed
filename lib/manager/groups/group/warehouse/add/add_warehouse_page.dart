@@ -141,23 +141,23 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
                   fun: () {
                     String itemName = _itemNameController.text;
                     if (itemName == null || itemName.isEmpty) {
-                      ToastUtil.showErrorToast(getTranslated(context, 'itemNameIsRequired'));
+                      ToastUtil.showErrorToast(this.context, getTranslated(context, 'itemNameIsRequired'));
                       return;
                     }
                     if (_itemNamesWithQuantities.containsKey(itemName)) {
-                      ToastUtil.showErrorToast(getTranslated(context, 'givenItemNameAlreadyExists'));
+                      ToastUtil.showErrorToast(this.context, getTranslated(context, 'givenItemNameAlreadyExists'));
                       return;
                     }
                     int quantity;
                     try {
                       quantity = int.parse(_quantityController.text);
                     } catch (FormatException) {
-                      ToastUtil.showErrorToast(getTranslated(context, 'itemQuantityIsRequired'));
+                      ToastUtil.showErrorToast(this.context, getTranslated(context, 'itemQuantityIsRequired'));
                       return;
                     }
                     String invalidMessage = ValidatorUtil.validateItemQuantity(quantity, context);
                     if (invalidMessage != null) {
-                      ToastUtil.showErrorToast(invalidMessage);
+                      ToastUtil.showErrorToast(context, invalidMessage);
                       return;
                     }
                     setState(() {
@@ -293,7 +293,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
   _createWarehouse() {
     setState(() => _isAddButtonTapped = true);
     if (!_isValid()) {
-      ToastUtil.showErrorToast(getTranslated(context, 'correctInvalidFields'));
+      ToastUtil.showErrorToast(this.context, getTranslated(context, 'correctInvalidFields'));
       setState(() => _isAddButtonTapped = false);
       return;
     }

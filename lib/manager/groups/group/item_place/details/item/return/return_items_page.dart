@@ -217,7 +217,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
       }
     }
     if (warehouseIdsAndItemsWithQuantities.isEmpty) {
-      ToastUtil.showErrorToast(getTranslated(context, 'noQuantitySetForReturn'));
+      ToastUtil.showErrorToast(this.context, getTranslated(context, 'noQuantitySetForReturn'));
       setState(() => _isAddButtonTapped = false);
       return;
     }

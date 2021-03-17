@@ -171,7 +171,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
                           String name = _groupNameController.text;
                           String invalidMessage = ValidatorUtil.validateUpdatingGroupName(name, context);
                           if (invalidMessage != null) {
-                            ToastUtil.showErrorToast(invalidMessage);
+                            ToastUtil.showErrorToast(context, invalidMessage);
                             return;
                           }
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
@@ -275,7 +275,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
                           String description = _groupDescriptionController.text;
                           String invalidMessage = ValidatorUtil.validateUpdatingGroupDescription(description, context);
                           if (invalidMessage != null) {
-                            ToastUtil.showErrorToast(invalidMessage);
+                            ToastUtil.showErrorToast(context, invalidMessage);
                             return;
                           }
                           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
@@ -286,7 +286,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
                             });
                           }).catchError((onError) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              ToastUtil.showErrorToast(getTranslated(this.context, 'somethingWentWrong'));
+                              ToastUtil.showErrorToast(this.context, getTranslated(this.context, 'somethingWentWrong'));
                             });
                           });
                         },
