@@ -166,7 +166,7 @@ class _AddGroupEmployeesPageState extends State<AddGroupEmployeesPage> {
                 foundIndex = i;
               }
             }
-            String info = employee.name + ' ' + employee.surname;
+            String info = UTFDecoderUtil.decode(context, employee.name + ' ' + employee.surname);
             String nationality = employee.nationality;
             return Card(
               color: WHITE,
@@ -180,7 +180,7 @@ class _AddGroupEmployeesPageState extends State<AddGroupEmployeesPage> {
                       contentPadding: EdgeInsets.only(right: 10),
                       child: CheckboxListTile(
                         controlAffinity: ListTileControlAffinity.leading,
-                        title: text20BlackBold(UTFDecoderUtil.decode(context, info + ' ' + LanguageUtil.findFlagByNationality(nationality))),
+                        title: text20BlackBold(info + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                         activeColor: BLUE,
                         checkColor: WHITE,
                         value: _checked[foundIndex],
