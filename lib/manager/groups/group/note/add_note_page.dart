@@ -295,6 +295,12 @@ class _AddNotePageState extends State<AddNotePage> {
               ),
               color: BLUE,
               onPressed: () {
+                String invalidMessage = ValidatorUtil.validateAddNote(_managerNoteController.text, _selectedWorkplacesWithChecked, context);
+                if (invalidMessage != null) {
+                  setState(() => _isAddNoteButtonTapped = false);
+                  ToastUtil.showErrorToast(context, invalidMessage);
+                  return;
+                }
                 DialogUtil.showConfirmationDialog(
                   context: context,
                   title: getTranslated(context, 'confirmation'),
@@ -312,13 +318,6 @@ class _AddNotePageState extends State<AddNotePage> {
 
   void _handleAddNote() {
     setState(() => _isAddNoteButtonTapped = true);
-    String managerNote = _managerNoteController.text;
-    String invalidMessage = ValidatorUtil.validateAddNote(managerNote, _selectedWorkplacesWithChecked, context);
-    if (invalidMessage != null) {
-      setState(() => _isAddNoteButtonTapped = false);
-      ToastUtil.showErrorToast(context, invalidMessage);
-      return;
-    }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _selectedWorkplacesWithChecked.forEach((key, value) {
       if (value.isEmpty || !value.contains(true)) {
@@ -326,7 +325,7 @@ class _AddNotePageState extends State<AddNotePage> {
       }
     });
     CreateNoteDto dto = new CreateNoteDto(
-      managerNote: managerNote,
+      managerNote: _managerNoteController.text,
       workplaceIds: _selectedWorkplacesIds.map((e) => e.toString()).toList(),
       subWorkplaceIds: _selectedSubWorkplacesIds.map((el) => el.toString()).toList(),
       employeeIds: _employeeIds.toList(),
