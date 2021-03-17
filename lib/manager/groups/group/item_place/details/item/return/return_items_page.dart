@@ -74,7 +74,6 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
                 Expanded(
                   flex: 2,
                   child: Scrollbar(
-                      isAlwaysShown: false,
                       controller: _scrollController,
                       child: SingleChildScrollView(
                         child: Center(

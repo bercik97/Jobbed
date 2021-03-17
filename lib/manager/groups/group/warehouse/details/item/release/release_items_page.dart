@@ -89,7 +89,6 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
                 Expanded(
                   flex: 2,
                   child: Scrollbar(
-                    isAlwaysShown: true,
                     controller: _scrollController,
                     child: SingleChildScrollView(
                       child: Center(

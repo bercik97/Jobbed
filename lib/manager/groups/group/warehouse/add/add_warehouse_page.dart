@@ -211,7 +211,6 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
     return Expanded(
       flex: 2,
       child: Scrollbar(
-        isAlwaysShown: false,
         controller: _scrollController,
         child: ListView.builder(
           controller: _scrollController,

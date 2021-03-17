@@ -152,7 +152,6 @@ class _ItemPlacesPageState extends State<ItemPlacesPage> {
                             backgroundColor: BLUE,
                             onRefresh: _refresh,
                             child: Scrollbar(
-                              isAlwaysShown: true,
                               controller: _scrollController,
                               child: ListView.builder(
                                 controller: _scrollController,

@@ -153,7 +153,6 @@ class _DeleteGroupEmployeesPageState extends State<DeleteGroupEmployeesPage> {
     return Expanded(
       flex: 2,
       child: Scrollbar(
-        isAlwaysShown: true,
         controller: _scrollController,
         child: ListView.builder(
           controller: _scrollController,

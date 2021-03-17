@@ -197,7 +197,6 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
   Widget _handleGroups() {
     return Expanded(
       child: Scrollbar(
-        isAlwaysShown: true,
         controller: _scrollController,
         child: ListView.builder(
           itemCount: _groups.length,

@@ -123,7 +123,6 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
                         : Expanded(
                             flex: 2,
                             child: Scrollbar(
-                              isAlwaysShown: true,
                               controller: _scrollController,
                               child: ListView.builder(
                                 controller: _scrollController,

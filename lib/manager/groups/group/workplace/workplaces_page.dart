@@ -160,7 +160,6 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                             backgroundColor: BLUE,
                             onRefresh: _refresh,
                             child: Scrollbar(
-                              isAlwaysShown: true,
                               controller: _scrollController,
                               child: ListView.builder(
                                 controller: _scrollController,

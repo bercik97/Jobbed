@@ -154,7 +154,6 @@ class _AddGroupEmployeesPageState extends State<AddGroupEmployeesPage> {
     return Expanded(
       flex: 2,
       child: Scrollbar(
-        isAlwaysShown: true,
         controller: _scrollController,
         child: ListView.builder(
           controller: _scrollController,

@@ -173,7 +173,6 @@ class _AddPriceListPageState extends State<AddPriceListPage> {
     return Expanded(
       flex: 2,
       child: Scrollbar(
-        isAlwaysShown: false,
         controller: _scrollController,
         child: ListView.builder(
           controller: _scrollController,
