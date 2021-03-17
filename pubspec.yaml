@@ -135,7 +135,6 @@ flutter:
     - images/letters/male/Z.png
     - images/letters/male/Ł.png
     - images/letters/male/Ż.png
-    - images/letters/male/unknown_letter.png
 
     - images/letters/female/A.png
     - images/letters/female/B.png
@@ -165,7 +164,6 @@ flutter:
     - images/letters/female/Z.png
     - images/letters/female/Ł.png
     - images/letters/female/Ż.png
-    - images/letters/female/unknown_letter.png
 
     - docs/regulations.pdf
     - docs/privacy_policy.pdf
