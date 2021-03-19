@@ -16,7 +16,6 @@ import 'package:jobbed/internationalization/localization/localization_constants.
 import 'package:jobbed/manager/groups/manage/add_group_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
-import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/settings/settings_page.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
@@ -102,87 +101,82 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
+      child: Scaffold(
+        backgroundColor: WHITE,
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: WHITE),
           backgroundColor: WHITE,
-          appBar: AppBar(
-            iconTheme: IconThemeData(color: WHITE),
-            backgroundColor: WHITE,
-            elevation: 0.0,
-            bottomOpacity: 0.0,
-            title: text20Black(getTranslated(context, 'companyGroups')),
-            leading: IconButton(icon: iconBlack(Icons.power_settings_new), onPressed: () => LogoutUtil.logout(context)),
-            actions: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(right: 15.0),
-                child: IconButton(
-                  icon: iconBlack(Icons.settings),
-                  onPressed: () => NavigatorUtil.navigate(context, SettingsPage(_user)),
-                ),
+          elevation: 0.0,
+          bottomOpacity: 0.0,
+          title: text20Black(getTranslated(context, 'companyGroups')),
+          leading: IconButton(icon: iconBlack(Icons.power_settings_new), onPressed: () => LogoutUtil.logout(context)),
+          actions: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(right: 15.0),
+              child: IconButton(
+                icon: iconBlack(Icons.settings),
+                onPressed: () => NavigatorUtil.navigate(context, SettingsPage(_user)),
               ),
-            ],
-          ),
-          body: RefreshIndicator(
-            color: WHITE,
-            backgroundColor: BLUE,
-            onRefresh: _refresh,
-            child: Column(
-              children: [
-                Container(
-                  child: ListTile(
-                    leading: Tab(
-                      icon: Container(
-                        child: Container(
-                          child: Image(
-                            width: 75,
-                            image: AssetImage('images/company.png'),
-                            fit: BoxFit.cover,
-                          ),
+            ),
+          ],
+        ),
+        body: RefreshIndicator(
+          color: WHITE,
+          backgroundColor: BLUE,
+          onRefresh: _refresh,
+          child: Column(
+            children: [
+              Container(
+                child: ListTile(
+                  leading: Tab(
+                    icon: Container(
+                      child: Container(
+                        child: Image(
+                          width: 75,
+                          image: AssetImage('images/company.png'),
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
-                    title: text17BlueBold(UTFDecoderUtil.decode(context, _user.companyName)),
-                    subtitle: text16Black(_user.companyId != null ? _user.companyId : getTranslated(context, 'empty')),
                   ),
+                  title: text17BlueBold(UTFDecoderUtil.decode(context, _user.companyName)),
+                  subtitle: text16Black(_user.companyId != null ? _user.companyId : getTranslated(context, 'empty')),
                 ),
-                SizedBox(height: 10),
-                _loading
-                    ? circularProgressIndicator()
-                    : _groups != null && _groups.isNotEmpty
-                        ? _handleGroups()
-                        : _handleNoData(),
-              ],
-            ),
+              ),
+              SizedBox(height: 10),
+              _loading
+                  ? circularProgressIndicator()
+                  : _groups != null && _groups.isNotEmpty
+                      ? _handleGroups()
+                      : _handleNoData(),
+            ],
           ),
-          floatingActionButton: SafeArea(
-            child: SpeedDial(
-              animatedIcon: AnimatedIcons.menu_close,
-              backgroundColor: BLUE,
-              foregroundColor: WHITE,
-              animatedIconTheme: IconThemeData(size: 22.0),
-              curve: Curves.bounceIn,
-              children: [
-                SpeedDialChild(
-                  child: Icon(Icons.group_add_outlined, color: BLACK),
-                  backgroundColor: BRIGHTER_BLUE,
-                  onTap: () => NavigatorUtil.navigate(this.context, AddGroupPage(_user)),
-                  label: getTranslated(context, 'createGroup'),
-                  labelStyle: TextStyle(fontWeight: FontWeight.w500, color: BLACK),
-                  labelBackgroundColor: BRIGHTER_BLUE,
-                ),
-                SpeedDialChild(
-                  child: Icon(Icons.person_add, color: BLACK),
-                  backgroundColor: BRIGHTER_BLUE,
-                  onTap: () => _createNewEmployeeAccount(),
-                  label: getTranslated(context, 'createNewEmployeeAccount'),
-                  labelStyle: TextStyle(fontWeight: FontWeight.w500, color: BLACK),
-                  labelBackgroundColor: BRIGHTER_BLUE,
-                ),
-              ],
-            ),
+        ),
+        floatingActionButton: SafeArea(
+          child: SpeedDial(
+            animatedIcon: AnimatedIcons.menu_close,
+            backgroundColor: BLUE,
+            foregroundColor: WHITE,
+            animatedIconTheme: IconThemeData(size: 22.0),
+            curve: Curves.bounceIn,
+            children: [
+              SpeedDialChild(
+                child: Icon(Icons.group_add_outlined, color: BLACK),
+                backgroundColor: BRIGHTER_BLUE,
+                onTap: () => NavigatorUtil.navigate(this.context, AddGroupPage(_user)),
+                label: getTranslated(context, 'createGroup'),
+                labelStyle: TextStyle(fontWeight: FontWeight.w500, color: BLACK),
+                labelBackgroundColor: BRIGHTER_BLUE,
+              ),
+              SpeedDialChild(
+                child: Icon(Icons.person_add, color: BLACK),
+                backgroundColor: BRIGHTER_BLUE,
+                onTap: () => _createNewEmployeeAccount(),
+                label: getTranslated(context, 'createNewEmployeeAccount'),
+                labelStyle: TextStyle(fontWeight: FontWeight.w500, color: BLACK),
+                labelBackgroundColor: BRIGHTER_BLUE,
+              ),
+            ],
           ),
         ),
       ),

@@ -13,7 +13,6 @@ import 'package:jobbed/manager/groups/group/employee/employee_ts_in_progress_pag
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
-import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
@@ -91,36 +90,31 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: WHITE,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'piecework'), () => Navigator.pop(context)),
-          body: Form(
-            autovalidateMode: AutovalidateMode.always,
-            key: formKey,
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 10),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: text20Black(getTranslated(context, 'pieceworkForSelectedWorkdays')),
-                  ),
+      child: Scaffold(
+        backgroundColor: WHITE,
+        appBar: managerAppBar(context, _user, getTranslated(context, 'piecework'), () => Navigator.pop(context)),
+        body: Form(
+          autovalidateMode: AutovalidateMode.always,
+          key: formKey,
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 10),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: text20Black(getTranslated(context, 'pieceworkForSelectedWorkdays')),
                 ),
-                SizedBox(height: 5),
-                _loading
-                    ? circularProgressIndicator()
-                    : _priceLists != null && _priceLists.isNotEmpty
-                        ? _buildPriceList()
-                        : _handleNoPriceList()
-              ],
-            ),
+              ),
+              SizedBox(height: 5),
+              _loading
+                  ? circularProgressIndicator()
+                  : _priceLists != null && _priceLists.isNotEmpty
+                      ? _buildPriceList()
+                      : _handleNoPriceList()
+            ],
           ),
-          bottomNavigationBar: _buildBottomNavigationBar(),
         ),
+        bottomNavigationBar: _buildBottomNavigationBar(),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _timesheet, _avatarPath)),
     );

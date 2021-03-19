@@ -11,7 +11,6 @@ import 'package:jobbed/internationalization/localization/localization_constants.
 import 'package:jobbed/manager/groups/groups_dashboard_page.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
-import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
@@ -71,26 +70,21 @@ class _AddGroupEmployeesPageState extends State<AddGroupEmployeesPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: WHITE,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'addingEmployeesToGroup'), () => NavigatorUtil.navigate(context, GroupsDashboardPage(_user))),
-          body: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              children: [
-                SizedBox(height: 5),
-                _buildLoupe(),
-                _buildSelectUnselectAllCheckbox(),
-                _loading ? circularProgressIndicator() : _buildEmployees(),
-              ],
-            ),
+      child: Scaffold(
+        backgroundColor: WHITE,
+        appBar: managerAppBar(context, _user, getTranslated(context, 'addingEmployeesToGroup'), () => NavigatorUtil.navigate(context, GroupsDashboardPage(_user))),
+        body: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            children: [
+              SizedBox(height: 5),
+              _buildLoupe(),
+              _buildSelectUnselectAllCheckbox(),
+              _loading ? circularProgressIndicator() : _buildEmployees(),
+            ],
           ),
-          bottomNavigationBar: _buildBottomNavigationBar(),
         ),
+        bottomNavigationBar: _buildBottomNavigationBar(),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupsDashboardPage(_user)),
     );

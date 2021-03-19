@@ -17,7 +17,6 @@ import 'package:jobbed/api/workplace/service/workplace_service.dart';
 import 'package:jobbed/employee/shared/employee_app_bar.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
-import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
@@ -57,7 +56,6 @@ class _WorkTimePageState extends State<WorkTimePage> {
 
   final _workplaceCodeController = TextEditingController();
 
-  bool _isChoseWorkTimeTypeBtnDisabled = false;
   bool _isStartDialogButtonTapped = false;
   bool _isStartWorkButtonTapped = false;
   bool _isPauseWorkButtonTapped = false;
@@ -79,33 +77,28 @@ class _WorkTimePageState extends State<WorkTimePage> {
     this._workTimeService = ServiceInitializer.initialize(context, _user.authHeader, WorkTimeService);
     this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
     return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: WHITE,
-          appBar: employeeAppBar(context, _user, getTranslated(context, 'workTimeForToday'), () => NavigatorUtil.navigateReplacement(context, EmployeeProfilePage(_user))),
-          body: SingleChildScrollView(
-            child: FutureBuilder(
-              future: _fetchData(),
-              builder: (context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
-                  return Padding(
-                    padding: EdgeInsets.only(top: 50),
-                    child: Center(child: circularProgressIndicator()),
-                  );
+      child: Scaffold(
+        backgroundColor: WHITE,
+        appBar: employeeAppBar(context, _user, getTranslated(context, 'workTimeForToday'), () => NavigatorUtil.navigateReplacement(context, EmployeeProfilePage(_user))),
+        body: SingleChildScrollView(
+          child: FutureBuilder(
+            future: _fetchData(),
+            builder: (context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
+                return Padding(
+                  padding: EdgeInsets.only(top: 50),
+                  child: Center(child: circularProgressIndicator()),
+                );
+              } else {
+                _dto = snapshot.data[0];
+                List workTimes = _dto.workTimes;
+                if (_dto.currentlyAtWork) {
+                  return _handleEmployeeInWork(workTimes);
                 } else {
-                  _dto = snapshot.data[0];
-                  List workTimes = _dto.workTimes;
-                  if (_dto.currentlyAtWork) {
-                    return _handleEmployeeInWork(workTimes);
-                  } else {
-                    return _handleEmployeeNotInWork(workTimes);
-                  }
+                  return _handleEmployeeNotInWork(workTimes);
                 }
-              },
-            ),
+              }
+            },
           ),
         ),
       ),
@@ -332,10 +325,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                           children: <Widget>[iconWhite(Icons.close)],
                         ),
                         color: Colors.red,
-                        onPressed: () {
-                          _isChoseWorkTimeTypeBtnDisabled = true;
-                          Navigator.pop(context);
-                        },
+                        onPressed: () => Navigator.pop(context),
                       ),
                     ),
                   ],

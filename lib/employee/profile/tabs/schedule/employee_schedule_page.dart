@@ -8,7 +8,6 @@ import 'package:jobbed/employee/profile/tabs/note/note_page.dart';
 import 'package:jobbed/employee/shared/employee_app_bar.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
-import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
@@ -81,31 +80,26 @@ class _EmployeeSchedulePageState extends State<EmployeeSchedulePage> with Ticker
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: WHITE,
-          appBar: employeeAppBar(context, _user, getTranslated(context, 'schedule'), () => Navigator.pop(context)),
-          body: _loading
-              ? circularProgressIndicator()
-              : Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    _buildTableCalendarWithBuilders(),
-                    Expanded(child: _buildEventList()),
-                  ],
-                ),
-          floatingActionButton: iconsLegendDialog(
-            this.context,
-            getTranslated(context, 'iconsLegend'),
-            [
-              IconsLegendUtil.buildIconRow(iconOrange(Icons.error_outline), getTranslated(context, 'dayWithNote')),
-              IconsLegendUtil.buildIconRow(iconGreen(Icons.check), getTranslated(context, 'workedDay')),
-              IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_circle_up), getTranslated(context, 'workInProgress')),
-            ],
-          ),
+      child: Scaffold(
+        backgroundColor: WHITE,
+        appBar: employeeAppBar(context, _user, getTranslated(context, 'schedule'), () => Navigator.pop(context)),
+        body: _loading
+            ? circularProgressIndicator()
+            : Column(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  _buildTableCalendarWithBuilders(),
+                  Expanded(child: _buildEventList()),
+                ],
+              ),
+        floatingActionButton: iconsLegendDialog(
+          this.context,
+          getTranslated(context, 'iconsLegend'),
+          [
+            IconsLegendUtil.buildIconRow(iconOrange(Icons.error_outline), getTranslated(context, 'dayWithNote')),
+            IconsLegendUtil.buildIconRow(iconGreen(Icons.check), getTranslated(context, 'workedDay')),
+            IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_circle_up), getTranslated(context, 'workInProgress')),
+          ],
         ),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilePage(_user)),

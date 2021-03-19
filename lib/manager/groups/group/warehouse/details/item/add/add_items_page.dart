@@ -10,7 +10,6 @@ import 'package:jobbed/internationalization/localization/localization_constants.
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
-import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
@@ -62,118 +61,113 @@ class _AddItemsPageState extends State<AddItemsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: APP_NAME,
-      theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: WHITE,
-        appBar: managerAppBar(context, _user, getTranslated(context, 'createItem'), () => Navigator.pop(context)),
-        body: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Form(
-            autovalidateMode: AutovalidateMode.always,
-            key: formKey,
-            child: Column(
-              children: [
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Flexible(
-                      child: TextFormField(
-                        autofocus: false,
-                        controller: _itemNameController,
-                        autocorrect: true,
-                        keyboardType: TextInputType.text,
-                        inputFormatters: [LengthLimitingTextInputFormatter(26)],
-                        maxLines: 1,
-                        cursorColor: BLACK,
-                        textAlignVertical: TextAlignVertical.center,
-                        style: TextStyle(color: BLACK),
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
-                          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2)),
-                          counterStyle: TextStyle(color: BLACK),
-                          border: OutlineInputBorder(),
-                          hintText: getTranslated(context, 'textSomeItemName'),
-                          labelText: getTranslated(context, 'itemName'),
-                          labelStyle: TextStyle(color: BLACK),
-                        ),
+    return Scaffold(
+      backgroundColor: WHITE,
+      appBar: managerAppBar(context, _user, getTranslated(context, 'createItem'), () => Navigator.pop(context)),
+      body: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Form(
+          autovalidateMode: AutovalidateMode.always,
+          key: formKey,
+          child: Column(
+            children: [
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  Flexible(
+                    child: TextFormField(
+                      autofocus: false,
+                      controller: _itemNameController,
+                      autocorrect: true,
+                      keyboardType: TextInputType.text,
+                      inputFormatters: [LengthLimitingTextInputFormatter(26)],
+                      maxLines: 1,
+                      cursorColor: BLACK,
+                      textAlignVertical: TextAlignVertical.center,
+                      style: TextStyle(color: BLACK),
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2)),
+                        counterStyle: TextStyle(color: BLACK),
+                        border: OutlineInputBorder(),
+                        hintText: getTranslated(context, 'textSomeItemName'),
+                        labelText: getTranslated(context, 'itemName'),
+                        labelStyle: TextStyle(color: BLACK),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Container(
-                        width: 100,
-                        child: NumberInputWithIncrementDecrement(
-                          controller: _quantityController,
-                          min: 0,
-                          max: 999,
-                          onIncrement: (value) {
-                            if (value > 999) {
-                              setState(() => value = 999);
-                            }
-                          },
-                          onSubmitted: (value) {
-                            if (value >= 999) {
-                              setState(() => _quantityController.text = 999.toString());
-                            }
-                          },
-                          style: TextStyle(color: BLUE),
-                          widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
-                        ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: Container(
+                      width: 100,
+                      child: NumberInputWithIncrementDecrement(
+                        controller: _quantityController,
+                        min: 0,
+                        max: 999,
+                        onIncrement: (value) {
+                          if (value > 999) {
+                            setState(() => value = 999);
+                          }
+                        },
+                        onSubmitted: (value) {
+                          if (value >= 999) {
+                            setState(() => _quantityController.text = 999.toString());
+                          }
+                        },
+                        style: TextStyle(color: BLUE),
+                        widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
                       ),
                     ),
-                  ],
-                ),
-                SizedBox(height: 10),
-                Buttons.standardButton(
-                  minWidth: double.infinity,
-                  color: BLUE,
-                  title: getTranslated(context, 'add'),
-                  fun: () {
-                    if (!_isValid()) {
-                      ToastUtil.showErrorToast(this.context, getTranslated(context, 'correctInvalidFields'));
-                      return;
-                    }
-                    if (_itemNames.contains(_itemNameController.text)) {
-                      ToastUtil.showErrorToast(this.context, getTranslated(context, 'itemNameExists'));
-                      return;
-                    }
-                    int quantity;
-                    try {
-                      quantity = int.parse(_quantityController.text);
-                    } catch (FormatException) {
-                      ToastUtil.showErrorToast(this.context, getTranslated(context, 'itemQuantityIsRequired'));
-                      return;
-                    }
-                    String invalidMessage = ValidatorUtil.validateItemQuantity(quantity, context);
-                    if (invalidMessage != null) {
-                      ToastUtil.showErrorToast(context, invalidMessage);
-                      return;
-                    }
-                    CreateItemDto dto = new CreateItemDto(
-                      warehouseId: _warehouseDto.id,
-                      name: _itemNameController.text,
-                      quantity: quantity,
-                    );
-                    setState(() {
-                      _itemsToAdd.add(dto);
-                      _itemNames.add(dto.name);
-                      _itemNameController.clear();
-                      _quantityController.text = "0";
-                    });
-                    FocusScope.of(context).unfocus();
-                    ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'addedNewItem'));
-                  },
-                ),
-                _buildAddItems(),
-              ],
-            ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Buttons.standardButton(
+                minWidth: double.infinity,
+                color: BLUE,
+                title: getTranslated(context, 'add'),
+                fun: () {
+                  if (!_isValid()) {
+                    ToastUtil.showErrorToast(this.context, getTranslated(context, 'correctInvalidFields'));
+                    return;
+                  }
+                  if (_itemNames.contains(_itemNameController.text)) {
+                    ToastUtil.showErrorToast(this.context, getTranslated(context, 'itemNameExists'));
+                    return;
+                  }
+                  int quantity;
+                  try {
+                    quantity = int.parse(_quantityController.text);
+                  } catch (FormatException) {
+                    ToastUtil.showErrorToast(this.context, getTranslated(context, 'itemQuantityIsRequired'));
+                    return;
+                  }
+                  String invalidMessage = ValidatorUtil.validateItemQuantity(quantity, context);
+                  if (invalidMessage != null) {
+                    ToastUtil.showErrorToast(context, invalidMessage);
+                    return;
+                  }
+                  CreateItemDto dto = new CreateItemDto(
+                    warehouseId: _warehouseDto.id,
+                    name: _itemNameController.text,
+                    quantity: quantity,
+                  );
+                  setState(() {
+                    _itemsToAdd.add(dto);
+                    _itemNames.add(dto.name);
+                    _itemNameController.clear();
+                    _quantityController.text = "0";
+                  });
+                  FocusScope.of(context).unfocus();
+                  ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'addedNewItem'));
+                },
+              ),
+              _buildAddItems(),
+            ],
           ),
         ),
-        bottomNavigationBar: _buildBottomNavigationBar(),
       ),
+      bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
@@ -274,7 +268,9 @@ class _AddItemsPageState extends State<AddItemsPage> {
       setState(() => _isAddButtonTapped = false);
       return;
     }
-    _itemsToAdd.forEach((element) { element.warehouseId = _warehouseDto.id; });
+    _itemsToAdd.forEach((element) {
+      element.warehouseId = _warehouseDto.id;
+    });
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _itemService.create(_itemsToAdd).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

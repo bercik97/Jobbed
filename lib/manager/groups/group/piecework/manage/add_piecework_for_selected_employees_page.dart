@@ -14,7 +14,6 @@ import 'package:jobbed/manager/groups/group/timesheets/in_progress/ts_in_progres
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
-import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
@@ -86,38 +85,33 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: APP_NAME,
-      theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: WHITE,
-        appBar: managerAppBar(context, _user, getTranslated(context, 'piecework'), () => Navigator.pop(context)),
-        body: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 10),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: text20Black(getTranslated(context, 'pieceworkForSelectedWorkdaysAndEmployees')),
-              ),
+    return Scaffold(
+      backgroundColor: WHITE,
+      appBar: managerAppBar(context, _user, getTranslated(context, 'piecework'), () => Navigator.pop(context)),
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 10),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: text20Black(getTranslated(context, 'pieceworkForSelectedWorkdaysAndEmployees')),
             ),
-            Padding(
-              padding: EdgeInsets.only(top: 5, left: 15, bottom: 10),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: text20BlueBold(_dateFrom + ' - ' + _dateTo),
-              ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 5, left: 15, bottom: 10),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: text20BlueBold(_dateFrom + ' - ' + _dateTo),
             ),
-            _loading
-                ? circularProgressIndicator()
-                : _priceLists != null && _priceLists.isNotEmpty
-                    ? _buildPriceList()
-                    : _handleNoPriceList()
-          ],
-        ),
-        bottomNavigationBar: _buildBottomNavigationBar(),
+          ),
+          _loading
+              ? circularProgressIndicator()
+              : _priceLists != null && _priceLists.isNotEmpty
+                  ? _buildPriceList()
+                  : _handleNoPriceList()
+        ],
       ),
+      bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 

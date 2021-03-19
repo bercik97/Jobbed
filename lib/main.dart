@@ -95,7 +95,7 @@ class _MyAppState extends State<MyApp> {
       final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ['android']);
       return MaterialApp(
         title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
+        theme: ThemeData(primarySwatch: MaterialColor(BLUE.value, BLUE_RGBO)),
         locale: _locale,
         builder: BotToastInit(),
         navigatorObservers: [BotToastNavigatorObserver()],

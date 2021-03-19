@@ -7,7 +7,6 @@ import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/employee/shared/employee_app_bar.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
-import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
@@ -63,54 +62,49 @@ class _PieceworkPageState extends State<PieceworkPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: WHITE,
-          appBar: employeeAppBar(context, _user, getTranslated(context, 'piecework') + ' / ' + _todayDate, () => NavigatorUtil.navigateReplacement(context, EmployeeProfilePage(_user))),
-          body: Padding(
-            padding: EdgeInsets.all(12),
-            child: _loading
-                ? circularProgressIndicator()
-                : _pieceworks == null || _pieceworks.isEmpty
-                    ? _handleEmptyData(context)
-                    : _handleData(context),
-          ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-          floatingActionButton: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              FloatingActionButton(
-                heroTag: "plusBtn",
-                tooltip: getTranslated(context, 'createNote'),
-                backgroundColor: BLUE,
-                onPressed: () => NavigatorUtil.navigate(context, AddPieceworkPage(_user, _todayDate, _todayWorkdayId)),
-                child: text25White('+'),
-              ),
-              SizedBox(height: 15),
-              FloatingActionButton(
-                heroTag: "deleteBtn",
-                tooltip: getTranslated(context, 'deletePiecework'),
-                backgroundColor: Colors.red,
-                onPressed: () {
-                  if (_pieceworks.isEmpty) {
-                    ToastUtil.showErrorToast(this.context, getTranslated(context, 'todayPieceworkIsEmpty'));
-                    return;
-                  }
-                  DialogUtil.showConfirmationDialog(
-                    context: context,
-                    title: getTranslated(context, 'confirmation'),
-                    content: getTranslated(context, 'deletingPieceworkForTodayConfirmation'),
-                    isBtnTapped: _isDeletePieceworkButtonTapped,
-                    fun: () => _isDeletePieceworkButtonTapped ? null : _handleDeletePiecework(),
-                  );
-                },
-                child: Icon(Icons.delete),
-              ),
-            ],
-          ),
+      child: Scaffold(
+        backgroundColor: WHITE,
+        appBar: employeeAppBar(context, _user, getTranslated(context, 'piecework') + ' / ' + _todayDate, () => NavigatorUtil.navigateReplacement(context, EmployeeProfilePage(_user))),
+        body: Padding(
+          padding: EdgeInsets.all(12),
+          child: _loading
+              ? circularProgressIndicator()
+              : _pieceworks == null || _pieceworks.isEmpty
+                  ? _handleEmptyData(context)
+                  : _handleData(context),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              heroTag: "plusBtn",
+              tooltip: getTranslated(context, 'createNote'),
+              backgroundColor: BLUE,
+              onPressed: () => NavigatorUtil.navigate(context, AddPieceworkPage(_user, _todayDate, _todayWorkdayId)),
+              child: text25White('+'),
+            ),
+            SizedBox(height: 15),
+            FloatingActionButton(
+              heroTag: "deleteBtn",
+              tooltip: getTranslated(context, 'deletePiecework'),
+              backgroundColor: Colors.red,
+              onPressed: () {
+                if (_pieceworks.isEmpty) {
+                  ToastUtil.showErrorToast(this.context, getTranslated(context, 'todayPieceworkIsEmpty'));
+                  return;
+                }
+                DialogUtil.showConfirmationDialog(
+                  context: context,
+                  title: getTranslated(context, 'confirmation'),
+                  content: getTranslated(context, 'deletingPieceworkForTodayConfirmation'),
+                  isBtnTapped: _isDeletePieceworkButtonTapped,
+                  fun: () => _isDeletePieceworkButtonTapped ? null : _handleDeletePiecework(),
+                );
+              },
+              child: Icon(Icons.delete),
+            ),
+          ],
         ),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilePage(_user)),

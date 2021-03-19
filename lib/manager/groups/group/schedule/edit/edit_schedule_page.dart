@@ -5,7 +5,6 @@ import 'package:jobbed/internationalization/localization/localization_constants.
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
-import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
@@ -69,93 +68,88 @@ class _EditSchedulePageState extends State<EditSchedulePage> with TickerProvider
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: APP_NAME,
-      theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: WHITE,
-        appBar: managerAppBar(context, _user, getTranslated(context, 'editMode'), () => Navigator.pop(context)),
-        body: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Row(
-                      children: [
-                        text20OrangeBold(getTranslated(context, 'scheduleEditMode')),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5, right: 15),
-                    child: textGreen(getTranslated(context, 'scheduleEditModeHint')),
-                  ),
-                ],
-              ),
-            ),
-            _buildTableCalendarWithBuilders(),
-            Expanded(child: _buildEventList()),
-          ],
-        ),
-        bottomNavigationBar: SafeArea(
-          child: Container(
-            height: 40,
-            child: Row(
-              children: <Widget>[
-                SizedBox(width: 1),
-                Expanded(
-                  child: MaterialButton(
-                    color: BLUE,
-                    child: Image(image: AssetImage('images/white-note.png')),
-                    onPressed: () {
-                      if (_selectedDates.isNotEmpty) {
-                        Set<String> yearsWithMonths = _buildYearsWithMonthsFromSelectedDays();
-                        NavigatorUtil.navigate(context, EditScheduleEmployeesPage(_model, yearsWithMonths, _selectedDates.toList(), true));
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
+    return Scaffold(
+      backgroundColor: WHITE,
+      appBar: managerAppBar(context, _user, getTranslated(context, 'editMode'), () => Navigator.pop(context)),
+      body: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    children: [
+                      text20OrangeBold(getTranslated(context, 'scheduleEditMode')),
+                    ],
                   ),
                 ),
-                SizedBox(width: 1),
-                Expanded(
-                  child: MaterialButton(
-                    color: BLUE,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image(image: AssetImage('images/white-note.png')),
-                        iconRed(Icons.close),
-                      ],
-                    ),
-                    onPressed: () {
-                      if (_selectedDates.isNotEmpty) {
-                        Set<String> yearsWithMonths = _buildYearsWithMonthsFromSelectedDays();
-                        NavigatorUtil.navigate(context, EditScheduleEmployeesPage(_model, yearsWithMonths, _selectedDates.toList(), false));
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
-                  ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5, right: 15),
+                  child: textGreen(getTranslated(context, 'scheduleEditModeHint')),
                 ),
-                SizedBox(width: 1),
               ],
             ),
           ),
+          _buildTableCalendarWithBuilders(),
+          Expanded(child: _buildEventList()),
+        ],
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          height: 40,
+          child: Row(
+            children: <Widget>[
+              SizedBox(width: 1),
+              Expanded(
+                child: MaterialButton(
+                  color: BLUE,
+                  child: Image(image: AssetImage('images/white-note.png')),
+                  onPressed: () {
+                    if (_selectedDates.isNotEmpty) {
+                      Set<String> yearsWithMonths = _buildYearsWithMonthsFromSelectedDays();
+                      NavigatorUtil.navigate(context, EditScheduleEmployeesPage(_model, yearsWithMonths, _selectedDates.toList(), true));
+                    } else {
+                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                    }
+                  },
+                ),
+              ),
+              SizedBox(width: 1),
+              Expanded(
+                child: MaterialButton(
+                  color: BLUE,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image(image: AssetImage('images/white-note.png')),
+                      iconRed(Icons.close),
+                    ],
+                  ),
+                  onPressed: () {
+                    if (_selectedDates.isNotEmpty) {
+                      Set<String> yearsWithMonths = _buildYearsWithMonthsFromSelectedDays();
+                      NavigatorUtil.navigate(context, EditScheduleEmployeesPage(_model, yearsWithMonths, _selectedDates.toList(), false));
+                    } else {
+                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                    }
+                  },
+                ),
+              ),
+              SizedBox(width: 1),
+            ],
+          ),
         ),
-        floatingActionButton: iconsLegendDialog(
-          context,
-          getTranslated(context, 'iconsLegend'),
-          [
-            IconsLegendUtil.buildImageRow('images/note.png', getTranslated(context, 'settingNote')),
-            IconsLegendUtil.buildImageWithIconRow('images/note.png', iconRed(Icons.close), getTranslated(context, 'deletingNote')),
-          ],
-        ),
+      ),
+      floatingActionButton: iconsLegendDialog(
+        context,
+        getTranslated(context, 'iconsLegend'),
+        [
+          IconsLegendUtil.buildImageRow('images/note.png', getTranslated(context, 'settingNote')),
+          IconsLegendUtil.buildImageWithIconRow('images/note.png', iconRed(Icons.close), getTranslated(context, 'deletingNote')),
+        ],
       ),
     );
   }

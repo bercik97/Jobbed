@@ -7,7 +7,6 @@ import 'package:jobbed/internationalization/localization/localization_constants.
 import 'package:jobbed/manager/groups/groups_dashboard_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
-import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
@@ -40,54 +39,44 @@ class _GroupEditPageState extends State<GroupEditPage> {
     this._user = _model.user;
     this._groupService = ServiceInitializer.initialize(context, _user.authHeader, GroupService);
     return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: WHITE,
-          appBar: managerAppBar(
-            context,
-            _model.user,
-            getTranslated(context, 'editGroup'),
-            () => NavigatorUtil.navigateReplacement(context, GroupPage(_model)),
-          ),
-          body: SingleChildScrollView(
-            child: Center(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 20, right: 20),
-                    child: Column(
-                      children: <Widget>[
-                        SizedBox(height: 10),
-                        ListTile(
-                          title: text17BlackBold(getTranslated(context, 'groupName')),
-                          subtitle: text16Black(UTFDecoderUtil.decode(context, _model.groupName)),
-                          trailing: Ink(
-                            decoration: ShapeDecoration(color: BLUE, shape: CircleBorder()),
-                            child: IconButton(
-                              icon: iconWhite(Icons.border_color),
-                              onPressed: () => _updateGroupName(context, UTFDecoderUtil.decode(context, _model.groupName)),
-                            ),
+      child: Scaffold(
+        backgroundColor: WHITE,
+        appBar: managerAppBar(context, _model.user, getTranslated(context, 'editGroup'), () => NavigatorUtil.navigateReplacement(context, GroupPage(_model))),
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(height: 10),
+                      ListTile(
+                        title: text17BlackBold(getTranslated(context, 'groupName')),
+                        subtitle: text16Black(UTFDecoderUtil.decode(context, _model.groupName)),
+                        trailing: Ink(
+                          decoration: ShapeDecoration(color: BLUE, shape: CircleBorder()),
+                          child: IconButton(
+                            icon: iconWhite(Icons.border_color),
+                            onPressed: () => _updateGroupName(context, UTFDecoderUtil.decode(context, _model.groupName)),
                           ),
                         ),
-                        ListTile(
-                          title: text17BlackBold(getTranslated(context, 'groupDescription')),
-                          subtitle: text16Black(UTFDecoderUtil.decode(context, _model.groupDescription)),
-                          trailing: Ink(
-                            decoration: ShapeDecoration(color: BLUE, shape: CircleBorder()),
-                            child: IconButton(
-                              icon: iconWhite(Icons.border_color),
-                              onPressed: () => _updateGroupDescription(context, UTFDecoderUtil.decode(context, _model.groupDescription)),
-                            ),
+                      ),
+                      ListTile(
+                        title: text17BlackBold(getTranslated(context, 'groupDescription')),
+                        subtitle: text16Black(UTFDecoderUtil.decode(context, _model.groupDescription)),
+                        trailing: Ink(
+                          decoration: ShapeDecoration(color: BLUE, shape: CircleBorder()),
+                          child: IconButton(
+                            icon: iconWhite(Icons.border_color),
+                            onPressed: () => _updateGroupDescription(context, UTFDecoderUtil.decode(context, _model.groupDescription)),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

@@ -69,85 +69,80 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: APP_NAME,
-      theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: WHITE,
-        appBar: managerAppBar(context, _user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, STATUS_COMPLETED), () => Navigator.pop(context)),
-        body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              Container(
-                color: BRIGHTER_BLUE,
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 5),
-                  child: ListTile(
-                    leading: Padding(
-                      padding: EdgeInsets.only(top: 30),
-                      child: icon30Green(Icons.check_circle_outline),
-                    ),
-                    title: text17BlackBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
-                    subtitle: Column(
-                      children: <Widget>[
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: text17BlackBold(_employeeInfo != null ? UTFDecoderUtil.decode(this.context, _employeeInfo) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality) : getTranslated(context, 'empty')),
-                        ),
-                        Row(
-                          children: <Widget>[
-                            text17BlackBold(getTranslated(this.context, 'accord') + ': '),
-                            text16Black(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            text17BlackBold(getTranslated(this.context, 'time') + ': '),
-                            text16Black(_timesheet.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + _timesheet.totalTime + ')'),
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            text17BlackBold(getTranslated(this.context, 'sum') + ': '),
-                            text16Black(_timesheet.totalMoneyEarned.toString() + ' PLN'),
-                          ],
-                        ),
-                      ],
-                    ),
+    return Scaffold(
+      backgroundColor: WHITE,
+      appBar: managerAppBar(context, _user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, STATUS_COMPLETED), () => Navigator.pop(context)),
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            Container(
+              color: BRIGHTER_BLUE,
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 5),
+                child: ListTile(
+                  leading: Padding(
+                    padding: EdgeInsets.only(top: 30),
+                    child: icon30Green(Icons.check_circle_outline),
+                  ),
+                  title: text17BlackBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
+                  subtitle: Column(
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: text17BlackBold(_employeeInfo != null ? UTFDecoderUtil.decode(this.context, _employeeInfo) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality) : getTranslated(context, 'empty')),
+                      ),
+                      Row(
+                        children: <Widget>[
+                          text17BlackBold(getTranslated(this.context, 'accord') + ': '),
+                          text16Black(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          text17BlackBold(getTranslated(this.context, 'time') + ': '),
+                          text16Black(_timesheet.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + _timesheet.totalTime + ')'),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          text17BlackBold(getTranslated(this.context, 'sum') + ': '),
+                          text16Black(_timesheet.totalMoneyEarned.toString() + ' PLN'),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
-              _loading
-                  ? circularProgressIndicator()
-                  : Expanded(
-                      child: Container(
-                        child: HorizontalDataTable(
-                          leftHandSideColumnWidth: 50,
-                          rightHandSideColumnWidth: 385,
-                          isFixedHeader: true,
-                          headerWidgets: _buildTitleWidget(),
-                          leftSideItemBuilder: _buildFirstColumnRow,
-                          rightSideItemBuilder: _buildRightHandSideColumnRow,
-                          itemCount: workdays.length,
-                          rowSeparatorWidget: Divider(color: BLUE, height: 1.0, thickness: 0.0),
-                          leftHandSideColBackgroundColor: WHITE,
-                          rightHandSideColBackgroundColor: WHITE,
-                        ),
-                        height: MediaQuery.of(context).size.height,
+            ),
+            _loading
+                ? circularProgressIndicator()
+                : Expanded(
+                    child: Container(
+                      child: HorizontalDataTable(
+                        leftHandSideColumnWidth: 50,
+                        rightHandSideColumnWidth: 385,
+                        isFixedHeader: true,
+                        headerWidgets: _buildTitleWidget(),
+                        leftSideItemBuilder: _buildFirstColumnRow,
+                        rightSideItemBuilder: _buildRightHandSideColumnRow,
+                        itemCount: workdays.length,
+                        rowSeparatorWidget: Divider(color: BLUE, height: 1.0, thickness: 0.0),
+                        leftHandSideColBackgroundColor: WHITE,
+                        rightHandSideColBackgroundColor: WHITE,
                       ),
+                      height: MediaQuery.of(context).size.height,
                     ),
-            ],
-          ),
-        ),
-        floatingActionButton: iconsLegendDialog(
-          this.context,
-          getTranslated(context, 'iconsLegend'),
-          [
-            IconsLegendUtil.buildIconRow(iconGreen(Icons.check_circle_outline), getTranslated(context, 'tsCompleted')),
-            IconsLegendUtil.buildIconRow(iconBlack(Icons.search), getTranslated(context, 'checkDetails')),
+                  ),
           ],
         ),
+      ),
+      floatingActionButton: iconsLegendDialog(
+        this.context,
+        getTranslated(context, 'iconsLegend'),
+        [
+          IconsLegendUtil.buildIconRow(iconGreen(Icons.check_circle_outline), getTranslated(context, 'tsCompleted')),
+          IconsLegendUtil.buildIconRow(iconBlack(Icons.search), getTranslated(context, 'checkDetails')),
+        ],
       ),
     );
   }

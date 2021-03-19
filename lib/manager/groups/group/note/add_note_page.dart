@@ -16,7 +16,6 @@ import 'package:jobbed/manager/groups/group/schedule/schedule_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
-import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
@@ -84,141 +83,136 @@ class _AddNotePageState extends State<AddNotePage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: WHITE,
-          appBar: managerAppBar(context, _model.user, getTranslated(context, 'scheduleEditMode'), () => Navigator.pop(context)),
-          body: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                ExpansionTile(
-                  title: text20OrangeBold(getTranslated(context, 'note')),
-                  subtitle: text16BlueGrey(getTranslated(context, 'tapToAdd')),
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15, right: 15),
-                      child: TextFormField(
-                        autofocus: false,
-                        controller: _managerNoteController,
-                        keyboardType: TextInputType.text,
-                        maxLength: 510,
-                        maxLines: 5,
-                        cursorColor: BLACK,
-                        textAlignVertical: TextAlignVertical.center,
-                        style: TextStyle(color: BLACK),
-                        decoration: InputDecoration(
-                          counterStyle: TextStyle(color: BLACK),
-                          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
-                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
-                        ),
+      child: Scaffold(
+        backgroundColor: WHITE,
+        appBar: managerAppBar(context, _model.user, getTranslated(context, 'scheduleEditMode'), () => Navigator.pop(context)),
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              ExpansionTile(
+                title: text20OrangeBold(getTranslated(context, 'note')),
+                subtitle: text16BlueGrey(getTranslated(context, 'tapToAdd')),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 15),
+                    child: TextFormField(
+                      autofocus: false,
+                      controller: _managerNoteController,
+                      keyboardType: TextInputType.text,
+                      maxLength: 510,
+                      maxLines: 5,
+                      cursorColor: BLACK,
+                      textAlignVertical: TextAlignVertical.center,
+                      style: TextStyle(color: BLACK),
+                      decoration: InputDecoration(
+                        counterStyle: TextStyle(color: BLACK),
+                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
+                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
                       ),
                     ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: text20OrangeBold(getTranslated(context, 'noteBasedOnWorkplace')),
+                    ),
+                    _loading ? circularProgressIndicator() : (workplaces.length > 1 ? _buildWorkplacesDropDown() : _handleNoWorkplaces())
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10),
-                  child: Column(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: text20OrangeBold(getTranslated(context, 'noteBasedOnWorkplace')),
-                      ),
-                      _loading ? circularProgressIndicator() : (workplaces.length > 1 ? _buildWorkplacesDropDown() : _handleNoWorkplaces())
-                    ],
-                  ),
-                ),
-                _selectedWorkplacesWithChecked == null
-                    ? Container()
-                    : Column(
-                        children: [
-                          for (WorkplaceForAddNoteDto workplace in _selectedWorkplacesWithChecked.keys.toList())
-                            Padding(
-                              padding: const EdgeInsets.only(left: 15, right: 15),
-                              child: Card(
-                                color: WHITE,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      color: BRIGHTER_BLUE,
-                                      child: ListTileTheme(
-                                        child: ListTile(
-                                          title: text20BlueBold(UTFDecoderUtil.decode(context, workplace.name)),
-                                          trailing: IconButton(
-                                            icon: iconRed(Icons.remove),
-                                            onPressed: () => setState(() => _selectedWorkplacesWithChecked.remove(workplace)),
-                                          ),
-                                          subtitle: workplace.subWorkplacesDto.isEmpty
-                                              ? text16BlueGrey(getTranslated(context, 'workplaceHasNoSubWorkplaces'))
-                                              : SizedBox(
-                                                  height: workplace.subWorkplacesDto.length * 80.0,
-                                                  child: ListView.builder(
-                                                    controller: scrollController,
-                                                    itemCount: workplace.subWorkplacesDto.length,
-                                                    itemBuilder: (BuildContext context, int index) {
-                                                      SubWorkplaceDto subWorkplace = workplace.subWorkplacesDto[index];
-                                                      int foundIndex = 0;
-                                                      for (int i = 0; i < workplace.subWorkplacesDto.length; i++) {
-                                                        if (workplace.subWorkplacesDto[i].id == subWorkplace.id) {
-                                                          foundIndex = i;
-                                                        }
-                                                      }
-                                                      String name = subWorkplace.name;
-                                                      String description = subWorkplace.description;
-                                                      return Card(
-                                                        color: WHITE,
-                                                        child: Column(
-                                                          mainAxisAlignment: MainAxisAlignment.start,
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          children: <Widget>[
-                                                            Container(
-                                                              color: BRIGHTER_BLUE,
-                                                              child: ListTileTheme(
-                                                                contentPadding: EdgeInsets.only(right: 10),
-                                                                child: CheckboxListTile(
-                                                                  controlAffinity: ListTileControlAffinity.leading,
-                                                                  title: text17BlueBold(UTFDecoderUtil.decode(context, name)),
-                                                                  subtitle: textBlack(UTFDecoderUtil.decode(context, description)),
-                                                                  activeColor: BLUE,
-                                                                  checkColor: WHITE,
-                                                                  value: _selectedWorkplacesWithChecked[workplace][foundIndex],
-                                                                  onChanged: (bool value) {
-                                                                    setState(() {
-                                                                      _selectedWorkplacesWithChecked[workplace][foundIndex] = value;
-                                                                      if (value) {
-                                                                        _selectedSubWorkplacesIds.add(workplace.subWorkplacesDto[foundIndex].id);
-                                                                      } else {
-                                                                        _selectedSubWorkplacesIds.remove(workplace.subWorkplacesDto[foundIndex].id);
-                                                                      }
-                                                                    });
-                                                                  },
-                                                                ),
-                                                              ),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
+              ),
+              _selectedWorkplacesWithChecked == null
+                  ? Container()
+                  : Column(
+                      children: [
+                        for (WorkplaceForAddNoteDto workplace in _selectedWorkplacesWithChecked.keys.toList())
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15, right: 15),
+                            child: Card(
+                              color: WHITE,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    color: BRIGHTER_BLUE,
+                                    child: ListTileTheme(
+                                      child: ListTile(
+                                        title: text20BlueBold(UTFDecoderUtil.decode(context, workplace.name)),
+                                        trailing: IconButton(
+                                          icon: iconRed(Icons.remove),
+                                          onPressed: () => setState(() => _selectedWorkplacesWithChecked.remove(workplace)),
                                         ),
+                                        subtitle: workplace.subWorkplacesDto.isEmpty
+                                            ? text16BlueGrey(getTranslated(context, 'workplaceHasNoSubWorkplaces'))
+                                            : SizedBox(
+                                                height: workplace.subWorkplacesDto.length * 80.0,
+                                                child: ListView.builder(
+                                                  controller: scrollController,
+                                                  itemCount: workplace.subWorkplacesDto.length,
+                                                  itemBuilder: (BuildContext context, int index) {
+                                                    SubWorkplaceDto subWorkplace = workplace.subWorkplacesDto[index];
+                                                    int foundIndex = 0;
+                                                    for (int i = 0; i < workplace.subWorkplacesDto.length; i++) {
+                                                      if (workplace.subWorkplacesDto[i].id == subWorkplace.id) {
+                                                        foundIndex = i;
+                                                      }
+                                                    }
+                                                    String name = subWorkplace.name;
+                                                    String description = subWorkplace.description;
+                                                    return Card(
+                                                      color: WHITE,
+                                                      child: Column(
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: <Widget>[
+                                                          Container(
+                                                            color: BRIGHTER_BLUE,
+                                                            child: ListTileTheme(
+                                                              contentPadding: EdgeInsets.only(right: 10),
+                                                              child: CheckboxListTile(
+                                                                controlAffinity: ListTileControlAffinity.leading,
+                                                                title: text17BlueBold(UTFDecoderUtil.decode(context, name)),
+                                                                subtitle: textBlack(UTFDecoderUtil.decode(context, description)),
+                                                                activeColor: BLUE,
+                                                                checkColor: WHITE,
+                                                                value: _selectedWorkplacesWithChecked[workplace][foundIndex],
+                                                                onChanged: (bool value) {
+                                                                  setState(() {
+                                                                    _selectedWorkplacesWithChecked[workplace][foundIndex] = value;
+                                                                    if (value) {
+                                                                      _selectedSubWorkplacesIds.add(workplace.subWorkplacesDto[foundIndex].id);
+                                                                    } else {
+                                                                      _selectedSubWorkplacesIds.remove(workplace.subWorkplacesDto[foundIndex].id);
+                                                                    }
+                                                                  });
+                                                                },
+                                                              ),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ),
                                       ),
-                                    )
-                                  ],
-                                ),
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
-                        ],
-                      ),
-              ],
-            ),
+                          ),
+                      ],
+                    ),
+            ],
           ),
-          bottomNavigationBar: _buildBottomNavigationBar(),
         ),
+        bottomNavigationBar: _buildBottomNavigationBar(),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EditSchedulePage(_model)),
     );

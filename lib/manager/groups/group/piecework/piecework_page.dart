@@ -88,214 +88,209 @@ class _PieceworkPageState extends State<PieceworkPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: APP_NAME,
-      theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: WHITE,
-        appBar: managerAppBar(context, _user, getTranslated(context, 'piecework'), () => NavigatorUtil.navigateReplacement(context, GroupPage(_model))),
-        body: Column(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 10),
-              child: text18Black(getTranslated(context, 'pieceworkPageTitle')),
-            ),
-            Container(
-              padding: EdgeInsets.all(10),
-              child: TextFormField(
-                autofocus: false,
-                autocorrect: true,
-                cursorColor: BLACK,
-                style: TextStyle(color: BLACK),
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
-                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2)),
-                  counterStyle: TextStyle(color: WHITE),
-                  border: OutlineInputBorder(),
-                  labelText: getTranslated(context, 'search'),
-                  prefixIcon: iconBlack(Icons.search),
-                  labelStyle: TextStyle(color: BLACK),
-                ),
-                onChanged: (string) {
-                  setState(
-                    () {
-                      _filteredEmployees = _employees.where((u) => ((u.name + ' ' + u.surname).toLowerCase().contains(string.toLowerCase()))).toList();
-                    },
-                  );
-                },
+    return Scaffold(
+      backgroundColor: WHITE,
+      appBar: managerAppBar(context, _user, getTranslated(context, 'piecework'), () => NavigatorUtil.navigateReplacement(context, GroupPage(_model))),
+      body: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 10),
+            child: text18Black(getTranslated(context, 'pieceworkPageTitle')),
+          ),
+          Container(
+            padding: EdgeInsets.all(10),
+            child: TextFormField(
+              autofocus: false,
+              autocorrect: true,
+              cursorColor: BLACK,
+              style: TextStyle(color: BLACK),
+              decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2)),
+                counterStyle: TextStyle(color: WHITE),
+                border: OutlineInputBorder(),
+                labelText: getTranslated(context, 'search'),
+                prefixIcon: iconBlack(Icons.search),
+                labelStyle: TextStyle(color: BLACK),
               ),
+              onChanged: (string) {
+                setState(
+                  () {
+                    _filteredEmployees = _employees.where((u) => ((u.name + ' ' + u.surname).toLowerCase().contains(string.toLowerCase()))).toList();
+                  },
+                );
+              },
             ),
-            ListTileTheme(
-              contentPadding: EdgeInsets.only(left: 3),
-              child: CheckboxListTile(
-                title: textBlack(getTranslated(this.context, 'selectUnselectAll')),
-                value: _isChecked,
-                activeColor: BLUE,
-                checkColor: WHITE,
-                onChanged: (bool value) {
-                  setState(() {
-                    _isChecked = value;
-                    List<bool> l = new List();
-                    _checked.forEach((b) => l.add(value));
-                    _checked = l;
-                    if (value) {
-                      _selectedIds.addAll(_filteredEmployees.map((e) => e.id));
-                      _selectedEmployees.addAll(_filteredEmployees);
-                    } else {
-                      _selectedIds.clear();
-                      _selectedEmployees.clear();
-                    }
-                  });
-                },
-                controlAffinity: ListTileControlAffinity.leading,
-              ),
+          ),
+          ListTileTheme(
+            contentPadding: EdgeInsets.only(left: 3),
+            child: CheckboxListTile(
+              title: textBlack(getTranslated(this.context, 'selectUnselectAll')),
+              value: _isChecked,
+              activeColor: BLUE,
+              checkColor: WHITE,
+              onChanged: (bool value) {
+                setState(() {
+                  _isChecked = value;
+                  List<bool> l = new List();
+                  _checked.forEach((b) => l.add(value));
+                  _checked = l;
+                  if (value) {
+                    _selectedIds.addAll(_filteredEmployees.map((e) => e.id));
+                    _selectedEmployees.addAll(_filteredEmployees);
+                  } else {
+                    _selectedIds.clear();
+                    _selectedEmployees.clear();
+                  }
+                });
+              },
+              controlAffinity: ListTileControlAffinity.leading,
             ),
-            _loading
-                ? circularProgressIndicator()
-                : Expanded(
-                    child: RefreshIndicator(
-                      color: WHITE,
-                      backgroundColor: BLUE,
-                      onRefresh: _refresh,
-                      child: ListView.builder(
-                        itemCount: _filteredEmployees.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          EmployeePieceworkDto employee = _filteredEmployees[index];
-                          String info = employee.name + ' ' + employee.surname;
-                          String nationality = employee.nationality;
-                          int foundIndex = 0;
-                          for (int i = 0; i < _employees.length; i++) {
-                            if (_employees[i].id == employee.id) {
-                              foundIndex = i;
-                            }
+          ),
+          _loading
+              ? circularProgressIndicator()
+              : Expanded(
+                  child: RefreshIndicator(
+                    color: WHITE,
+                    backgroundColor: BLUE,
+                    onRefresh: _refresh,
+                    child: ListView.builder(
+                      itemCount: _filteredEmployees.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        EmployeePieceworkDto employee = _filteredEmployees[index];
+                        String info = employee.name + ' ' + employee.surname;
+                        String nationality = employee.nationality;
+                        int foundIndex = 0;
+                        for (int i = 0; i < _employees.length; i++) {
+                          if (_employees[i].id == employee.id) {
+                            foundIndex = i;
                           }
-                          return Card(
-                            color: WHITE,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Ink(
-                                  width: MediaQuery.of(context).size.width * 0.15,
-                                  height: 59,
-                                  color: BRIGHTER_BLUE,
-                                  child: ListTileTheme(
-                                    contentPadding: EdgeInsets.only(right: 10),
-                                    child: CheckboxListTile(
-                                      controlAffinity: ListTileControlAffinity.leading,
-                                      activeColor: BLUE,
-                                      checkColor: WHITE,
-                                      value: _checked[foundIndex],
-                                      onChanged: (bool value) {
-                                        setState(() {
-                                          _checked[foundIndex] = value;
-                                          if (value) {
-                                            _selectedIds.add(_employees[foundIndex].id);
-                                            _selectedEmployees.add(_employees[foundIndex]);
-                                          } else {
-                                            _selectedIds.remove(_employees[foundIndex].id);
-                                            _selectedEmployees.removeWhere((e) => e.id == _employees[foundIndex].id);
-                                          }
-                                          int selectedIdsLength = _selectedIds.length;
-                                          if (selectedIdsLength == _employees.length) {
-                                            _isChecked = true;
-                                          } else if (selectedIdsLength == 0) {
-                                            _isChecked = false;
-                                          }
-                                        });
-                                      },
-                                    ),
+                        }
+                        return Card(
+                          color: WHITE,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Ink(
+                                width: MediaQuery.of(context).size.width * 0.15,
+                                height: 59,
+                                color: BRIGHTER_BLUE,
+                                child: ListTileTheme(
+                                  contentPadding: EdgeInsets.only(right: 10),
+                                  child: CheckboxListTile(
+                                    controlAffinity: ListTileControlAffinity.leading,
+                                    activeColor: BLUE,
+                                    checkColor: WHITE,
+                                    value: _checked[foundIndex],
+                                    onChanged: (bool value) {
+                                      setState(() {
+                                        _checked[foundIndex] = value;
+                                        if (value) {
+                                          _selectedIds.add(_employees[foundIndex].id);
+                                          _selectedEmployees.add(_employees[foundIndex]);
+                                        } else {
+                                          _selectedIds.remove(_employees[foundIndex].id);
+                                          _selectedEmployees.removeWhere((e) => e.id == _employees[foundIndex].id);
+                                        }
+                                        int selectedIdsLength = _selectedIds.length;
+                                        if (selectedIdsLength == _employees.length) {
+                                          _isChecked = true;
+                                        } else if (selectedIdsLength == 0) {
+                                          _isChecked = false;
+                                        }
+                                      });
+                                    },
                                   ),
                                 ),
-                                SizedBox(width: 5),
-                                Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.gender, info.substring(0, 1));
-                                      NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, employee.id, info, avatarPath));
-                                    },
-                                    child: Ink(
-                                      color: BRIGHTER_BLUE,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(6),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            text20BlackBold(UTFDecoderUtil.decode(context, info) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
-                                            Row(
-                                              children: <Widget>[
-                                                textBlack(getTranslated(this.context, 'moneyForPieceworkToday') + ': '),
-                                                textBlackBold(employee.moneyForPieceworkToday.toString() + ' PLN'),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
+                              ),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.gender, info.substring(0, 1));
+                                    NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, employee.id, info, avatarPath));
+                                  },
+                                  child: Ink(
+                                    color: BRIGHTER_BLUE,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(6),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          text20BlackBold(UTFDecoderUtil.decode(context, info) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                          Row(
+                                            children: <Widget>[
+                                              textBlack(getTranslated(this.context, 'moneyForPieceworkToday') + ': '),
+                                              textBlackBold(employee.moneyForPieceworkToday.toString() + ' PLN'),
+                                            ],
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
-                  )
-          ],
-        ),
-        bottomNavigationBar: SafeArea(
-          child: Container(
-            height: 40,
-            child: Row(
-              children: <Widget>[
-                SizedBox(width: 1),
-                Expanded(
-                  child: MaterialButton(
-                    color: BLUE,
-                    child: Image(image: AssetImage('images/white-piecework.png')),
-                    onPressed: () {
-                      if (_selectedIds.isNotEmpty) {
-                        _showUpdatePiecework(_selectedIds);
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
                   ),
+                )
+        ],
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          height: 40,
+          child: Row(
+            children: <Widget>[
+              SizedBox(width: 1),
+              Expanded(
+                child: MaterialButton(
+                  color: BLUE,
+                  child: Image(image: AssetImage('images/white-piecework.png')),
+                  onPressed: () {
+                    if (_selectedIds.isNotEmpty) {
+                      _showUpdatePiecework(_selectedIds);
+                    } else {
+                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                    }
+                  },
                 ),
-                SizedBox(width: 1),
-                Expanded(
-                  child: MaterialButton(
-                    color: BLUE,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image(image: AssetImage('images/white-piecework.png')),
-                        iconRed(Icons.close),
-                      ],
-                    ),
-                    onPressed: () {
-                      if (_selectedIds.isNotEmpty) {
-                        _showDeletePiecework(_selectedIds);
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
+              ),
+              SizedBox(width: 1),
+              Expanded(
+                child: MaterialButton(
+                  color: BLUE,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image(image: AssetImage('images/white-piecework.png')),
+                      iconRed(Icons.close),
+                    ],
                   ),
+                  onPressed: () {
+                    if (_selectedIds.isNotEmpty) {
+                      _showDeletePiecework(_selectedIds);
+                    } else {
+                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                    }
+                  },
                 ),
-                SizedBox(width: 1),
-              ],
-            ),
+              ),
+              SizedBox(width: 1),
+            ],
           ),
         ),
-        floatingActionButton: iconsLegendDialog(
-          context,
-          getTranslated(context, 'iconsLegend'),
-          [
-            IconsLegendUtil.buildImageRow('images/piecework.png', getTranslated(context, 'settingPiecework')),
-            IconsLegendUtil.buildImageWithIconRow('images/piecework.png', iconRed(Icons.close), getTranslated(context, 'deletingPiecework')),
-          ],
-        ),
+      ),
+      floatingActionButton: iconsLegendDialog(
+        context,
+        getTranslated(context, 'iconsLegend'),
+        [
+          IconsLegendUtil.buildImageRow('images/piecework.png', getTranslated(context, 'settingPiecework')),
+          IconsLegendUtil.buildImageWithIconRow('images/piecework.png', iconRed(Icons.close), getTranslated(context, 'deletingPiecework')),
+        ],
       ),
     );
   }

@@ -10,7 +10,6 @@ import 'package:jobbed/employee/employee_profile_page.dart';
 import 'package:jobbed/employee/shared/employee_app_bar.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
-import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
@@ -91,91 +90,86 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: WHITE,
-          appBar: employeeAppBar(context, _user, getTranslated(context, 'informationAboutYou'), () => Navigator.pop(context)),
-          body: Padding(
-            padding: EdgeInsets.fromLTRB(25, 0, 25, 25),
-            child: Center(
-              child: Form(
-                autovalidateMode: AutovalidateMode.always,
-                key: formKey,
-                child: Column(
-                  children: <Widget>[
-                    _loading
-                        ? circularProgressIndicator()
-                        : Expanded(
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: <Widget>[
-                                  _buildReadOnlySection(),
-                                  SizedBox(height: 20),
-                                  Align(alignment: Alignment.topLeft, child: text20BlueUnderline(getTranslated(context, 'editableSection'))),
-                                  SizedBox(height: 20),
-                                  _buildBasicSection(),
-                                  _buildContactSection(),
-                                ],
-                              ),
+      child: Scaffold(
+        backgroundColor: WHITE,
+        appBar: employeeAppBar(context, _user, getTranslated(context, 'informationAboutYou'), () => Navigator.pop(context)),
+        body: Padding(
+          padding: EdgeInsets.fromLTRB(25, 0, 25, 25),
+          child: Center(
+            child: Form(
+              autovalidateMode: AutovalidateMode.always,
+              key: formKey,
+              child: Column(
+                children: <Widget>[
+                  _loading
+                      ? circularProgressIndicator()
+                      : Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: <Widget>[
+                                _buildReadOnlySection(),
+                                SizedBox(height: 20),
+                                Align(alignment: Alignment.topLeft, child: text20BlueUnderline(getTranslated(context, 'editableSection'))),
+                                SizedBox(height: 20),
+                                _buildBasicSection(),
+                                _buildContactSection(),
+                              ],
                             ),
                           ),
-                  ],
-                ),
+                        ),
+                ],
               ),
             ),
           ),
-          bottomNavigationBar: SafeArea(
-            child: Container(
-              height: 40,
-              child: Row(
-                children: <Widget>[
-                  SizedBox(width: 1),
-                  Expanded(
-                    child: MaterialButton(
-                      color: BLUE,
-                      child: text18White(getTranslated(context, 'update')),
-                      onPressed: () {
-                        if (!_isValid()) {
-                          DialogUtil.showErrorDialog(context, getTranslated(context, 'correctInvalidFields'));
-                          return;
-                        } else {
-                          FocusScope.of(context).unfocus();
-                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                          _employeeService.updateEmployeeAndUserFieldsValuesById(
-                            widget._employeeId,
-                            {
-                              "username": _usernameController.text,
-                              "name": _nameController.text,
-                              "surname": _surnameController.text,
-                              "nationality": _nationality,
-                              "phone": _phoneController.text,
-                              "viber": _viberController.text,
-                              "whatsApp": _whatsAppController.text,
-                            },
-                          ).then((res) {
+        ),
+        bottomNavigationBar: SafeArea(
+          child: Container(
+            height: 40,
+            child: Row(
+              children: <Widget>[
+                SizedBox(width: 1),
+                Expanded(
+                  child: MaterialButton(
+                    color: BLUE,
+                    child: text18White(getTranslated(context, 'update')),
+                    onPressed: () {
+                      if (!_isValid()) {
+                        DialogUtil.showErrorDialog(context, getTranslated(context, 'correctInvalidFields'));
+                        return;
+                      } else {
+                        FocusScope.of(context).unfocus();
+                        showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+                        _employeeService.updateEmployeeAndUserFieldsValuesById(
+                          widget._employeeId,
+                          {
+                            "username": _usernameController.text,
+                            "name": _nameController.text,
+                            "surname": _surnameController.text,
+                            "nationality": _nationality,
+                            "phone": _phoneController.text,
+                            "viber": _viberController.text,
+                            "whatsApp": _whatsAppController.text,
+                          },
+                        ).then((res) {
+                          Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+                            ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyUpdatedInformationAboutYou'));
+                            _user.nationality = _nationality;
+                            _user.info = _nameController.text + ' ' + _surnameController.text;
+                            _user.username = _usernameController.text;
+                          });
+                        }).catchError(
+                          (onError) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyUpdatedInformationAboutYou'));
-                              _user.nationality = _nationality;
-                              _user.info = _nameController.text + ' ' + _surnameController.text;
-                              _user.username = _usernameController.text;
+                              DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
                             });
-                          }).catchError(
-                            (onError) {
-                              Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                                DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
-                              });
-                            },
-                          );
-                        }
-                      },
-                    ),
+                          },
+                        );
+                      }
+                    },
                   ),
-                  SizedBox(width: 1),
-                ],
-              ),
+                ),
+                SizedBox(width: 1),
+              ],
             ),
           ),
         ),

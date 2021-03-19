@@ -10,7 +10,6 @@ import 'package:jobbed/internationalization/localization/localization_constants.
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
-import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/utf_decoder_util.dart';
@@ -70,176 +69,171 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: WHITE,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'itemPlaceDetails'), () => NavigatorUtil.navigateReplacement(context, ItemPlacesPage(_model))),
-          body: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              children: <Widget>[
-                ListTile(
-                  leading: Tab(
-                    icon: Image(
-                      width: 75,
-                      image: AssetImage('images/items.png'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  title: text17BlueBold(UTFDecoderUtil.decode(this.context, _itemPlaceDto.location)),
-                ),
-                ListTileTheme(
-                  contentPadding: EdgeInsets.only(left: 3),
-                  child: CheckboxListTile(
-                    title: textBlack(getTranslated(this.context, 'selectUnselectAll')),
-                    value: _isChecked,
-                    activeColor: BLUE,
-                    checkColor: WHITE,
-                    onChanged: (bool value) {
-                      setState(() {
-                        _isChecked = value;
-                        List<bool> l = new List();
-                        _checked.forEach((b) => l.add(value));
-                        _checked = l;
-                        if (value) {
-                          _selectedNames.addAll(_filteredItems.map((e) => UTFDecoderUtil.decode(context, e.name)));
-                          _selectedItems.addAll(_filteredItems);
-                        } else {
-                          _selectedNames.clear();
-                          _selectedItems.clear();
-                        }
-                      });
-                    },
-                    controlAffinity: ListTileControlAffinity.leading,
+      child: Scaffold(
+        backgroundColor: WHITE,
+        appBar: managerAppBar(context, _user, getTranslated(context, 'itemPlaceDetails'), () => NavigatorUtil.navigateReplacement(context, ItemPlacesPage(_model))),
+        body: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                leading: Tab(
+                  icon: Image(
+                    width: 75,
+                    image: AssetImage('images/items.png'),
+                    fit: BoxFit.cover,
                   ),
                 ),
-                _loading
-                    ? circularProgressIndicator()
-                    : _items.isEmpty
-                        ? _handleNoItems()
-                        : Expanded(
-                            flex: 2,
-                            child: Scrollbar(
+                title: text17BlueBold(UTFDecoderUtil.decode(this.context, _itemPlaceDto.location)),
+              ),
+              ListTileTheme(
+                contentPadding: EdgeInsets.only(left: 3),
+                child: CheckboxListTile(
+                  title: textBlack(getTranslated(this.context, 'selectUnselectAll')),
+                  value: _isChecked,
+                  activeColor: BLUE,
+                  checkColor: WHITE,
+                  onChanged: (bool value) {
+                    setState(() {
+                      _isChecked = value;
+                      List<bool> l = new List();
+                      _checked.forEach((b) => l.add(value));
+                      _checked = l;
+                      if (value) {
+                        _selectedNames.addAll(_filteredItems.map((e) => UTFDecoderUtil.decode(context, e.name)));
+                        _selectedItems.addAll(_filteredItems);
+                      } else {
+                        _selectedNames.clear();
+                        _selectedItems.clear();
+                      }
+                    });
+                  },
+                  controlAffinity: ListTileControlAffinity.leading,
+                ),
+              ),
+              _loading
+                  ? circularProgressIndicator()
+                  : _items.isEmpty
+                      ? _handleNoItems()
+                      : Expanded(
+                          flex: 2,
+                          child: Scrollbar(
+                            controller: _scrollController,
+                            child: ListView.builder(
                               controller: _scrollController,
-                              child: ListView.builder(
-                                controller: _scrollController,
-                                itemCount: _filteredItems.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  ItemPlaceDetailsDto item = _filteredItems[index];
-                                  int foundIndex = 0;
-                                  for (int i = 0; i < _items.length; i++) {
-                                    if (UTFDecoderUtil.decode(context, _items[i].name) == UTFDecoderUtil.decode(context, item.name)) {
-                                      foundIndex = i;
-                                    }
+                              itemCount: _filteredItems.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                ItemPlaceDetailsDto item = _filteredItems[index];
+                                int foundIndex = 0;
+                                for (int i = 0; i < _items.length; i++) {
+                                  if (UTFDecoderUtil.decode(context, _items[i].name) == UTFDecoderUtil.decode(context, item.name)) {
+                                    foundIndex = i;
                                   }
-                                  String warehouseName = UTFDecoderUtil.decode(context, item.warehouseName);
-                                  String name = UTFDecoderUtil.decode(context, item.name);
-                                  String quantity = item.quantity;
-                                  return Card(
-                                    color: WHITE,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Container(
-                                          color: BRIGHTER_BLUE,
-                                          child: ListTileTheme(
-                                            contentPadding: EdgeInsets.all(10),
-                                            child: CheckboxListTile(
-                                              title: Column(
-                                                children: [
-                                                  Align(
-                                                    alignment: Alignment.topLeft,
-                                                    child: Row(
-                                                      children: [
-                                                        text17BlueBold(getTranslated(this.context, 'warehouse') + ': '),
-                                                        text16Black(warehouseName),
-                                                      ],
-                                                    ),
+                                }
+                                String warehouseName = UTFDecoderUtil.decode(context, item.warehouseName);
+                                String name = UTFDecoderUtil.decode(context, item.name);
+                                String quantity = item.quantity;
+                                return Card(
+                                  color: WHITE,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                        color: BRIGHTER_BLUE,
+                                        child: ListTileTheme(
+                                          contentPadding: EdgeInsets.all(10),
+                                          child: CheckboxListTile(
+                                            title: Column(
+                                              children: [
+                                                Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: Row(
+                                                    children: [
+                                                      text17BlueBold(getTranslated(this.context, 'warehouse') + ': '),
+                                                      text16Black(warehouseName),
+                                                    ],
                                                   ),
-                                                ],
-                                              ),
-                                              subtitle: Column(
-                                                children: [
-                                                  Align(
-                                                    alignment: Alignment.topLeft,
-                                                    child: Row(
-                                                      children: [
-                                                        text16Black(getTranslated(this.context, 'itemName') + ': '),
-                                                        text17BlackBold(name),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Align(
-                                                    alignment: Alignment.topLeft,
-                                                    child: Row(
-                                                      children: [
-                                                        text16Black(getTranslated(this.context, 'quantity') + ': '),
-                                                        text17BlackBold(quantity),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              activeColor: BLUE,
-                                              checkColor: WHITE,
-                                              value: _checked[foundIndex],
-                                              onChanged: (bool value) {
-                                                setState(() {
-                                                  _checked[foundIndex] = value;
-                                                  if (value) {
-                                                    _selectedNames.add(UTFDecoderUtil.decode(context, _items[foundIndex].name));
-                                                    _selectedItems.add(_items[foundIndex]);
-                                                  } else {
-                                                    _selectedNames.remove(UTFDecoderUtil.decode(context, _items[foundIndex].name));
-                                                    _selectedItems.remove(_items[foundIndex]);
-                                                  }
-                                                  int selectedIdsLength = _selectedNames.length;
-                                                  if (selectedIdsLength == _items.length) {
-                                                    _isChecked = true;
-                                                  } else if (selectedIdsLength == 0) {
-                                                    _isChecked = false;
-                                                  }
-                                                });
-                                              },
+                                                ),
+                                              ],
                                             ),
+                                            subtitle: Column(
+                                              children: [
+                                                Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: Row(
+                                                    children: [
+                                                      text16Black(getTranslated(this.context, 'itemName') + ': '),
+                                                      text17BlackBold(name),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: Row(
+                                                    children: [
+                                                      text16Black(getTranslated(this.context, 'quantity') + ': '),
+                                                      text17BlackBold(quantity),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            activeColor: BLUE,
+                                            checkColor: WHITE,
+                                            value: _checked[foundIndex],
+                                            onChanged: (bool value) {
+                                              setState(() {
+                                                _checked[foundIndex] = value;
+                                                if (value) {
+                                                  _selectedNames.add(UTFDecoderUtil.decode(context, _items[foundIndex].name));
+                                                  _selectedItems.add(_items[foundIndex]);
+                                                } else {
+                                                  _selectedNames.remove(UTFDecoderUtil.decode(context, _items[foundIndex].name));
+                                                  _selectedItems.remove(_items[foundIndex]);
+                                                }
+                                                int selectedIdsLength = _selectedNames.length;
+                                                if (selectedIdsLength == _items.length) {
+                                                  _isChecked = true;
+                                                } else if (selectedIdsLength == 0) {
+                                                  _isChecked = false;
+                                                }
+                                              });
+                                            },
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
                             ),
                           ),
-              ],
-            ),
+                        ),
+            ],
           ),
-          bottomNavigationBar: SafeArea(
-            child: Container(
-              height: 40,
-              child: Row(
-                children: <Widget>[
-                  SizedBox(width: 1),
-                  Expanded(
-                    child: MaterialButton(
-                      color: BLUE,
-                      child: textWhiteBold(getTranslated(context, 'returnToWarehouse')),
-                      onPressed: () {
-                        if (_selectedItems.isEmpty) {
-                          showHint(context, getTranslated(context, 'needToSelectItems') + ' ', getTranslated(context, 'whichYouWantToReturnToWarehouse'));
-                          return;
-                        }
-                        NavigatorUtil.navigate(this.context, ReturnItemsPage(_model, _itemPlaceDto, _selectedItems.toList()));
-                      },
-                    ),
+        ),
+        bottomNavigationBar: SafeArea(
+          child: Container(
+            height: 40,
+            child: Row(
+              children: <Widget>[
+                SizedBox(width: 1),
+                Expanded(
+                  child: MaterialButton(
+                    color: BLUE,
+                    child: textWhiteBold(getTranslated(context, 'returnToWarehouse')),
+                    onPressed: () {
+                      if (_selectedItems.isEmpty) {
+                        showHint(context, getTranslated(context, 'needToSelectItems') + ' ', getTranslated(context, 'whichYouWantToReturnToWarehouse'));
+                        return;
+                      }
+                      NavigatorUtil.navigate(this.context, ReturnItemsPage(_model, _itemPlaceDto, _selectedItems.toList()));
+                    },
                   ),
-                  SizedBox(width: 1),
-                ],
-              ),
+                ),
+                SizedBox(width: 1),
+              ],
             ),
           ),
         ),

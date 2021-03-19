@@ -10,7 +10,6 @@ import 'package:jobbed/internationalization/localization/localization_constants.
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
-import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
@@ -59,87 +58,83 @@ class _AddPriceListPageState extends State<AddPriceListPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        child: MaterialApp(
-          title: APP_NAME,
-          theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-          debugShowCheckedModeBanner: false,
-          home: Scaffold(
-            backgroundColor: WHITE,
-            appBar: managerAppBar(context, _user, getTranslated(context, 'createPriceList'), () => NavigatorUtil.navigateReplacement(context, PriceListsPage(_model))),
-            body: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Form(
-                key: formKey,
-                child: Column(
+      child: Scaffold(
+        backgroundColor: WHITE,
+        appBar: managerAppBar(context, _user, getTranslated(context, 'createPriceList'), () => NavigatorUtil.navigateReplacement(context, PriceListsPage(_model))),
+        body: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Form(
+            key: formKey,
+            child: Column(
+              children: [
+                SizedBox(height: 5),
+                TextFormField(
+                  autofocus: false,
+                  controller: _priceListNameController,
+                  autocorrect: true,
+                  keyboardType: TextInputType.text,
+                  inputFormatters: [LengthLimitingTextInputFormatter(100)],
+                  maxLines: 2,
+                  cursorColor: BLACK,
+                  textAlignVertical: TextAlignVertical.center,
+                  style: TextStyle(color: BLACK),
+                  validator: RequiredValidator(errorText: getTranslated(context, 'thisFieldIsRequired')),
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2)),
+                    counterStyle: TextStyle(color: BLACK),
+                    border: OutlineInputBorder(),
+                    labelText: getTranslated(context, 'priceListName'),
+                    labelStyle: TextStyle(color: BLACK),
+                  ),
+                ),
+                Row(
                   children: [
-                    SizedBox(height: 5),
-                    TextFormField(
-                      autofocus: false,
-                      controller: _priceListNameController,
-                      autocorrect: true,
-                      keyboardType: TextInputType.text,
-                      inputFormatters: [LengthLimitingTextInputFormatter(100)],
-                      maxLines: 2,
-                      cursorColor: BLACK,
-                      textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: BLACK),
-                      validator: RequiredValidator(errorText: getTranslated(context, 'thisFieldIsRequired')),
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
-                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2)),
-                        counterStyle: TextStyle(color: BLACK),
-                        border: OutlineInputBorder(),
-                        labelText: getTranslated(context, 'priceListName'),
-                        labelStyle: TextStyle(color: BLACK),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Flexible(child: _buildDecimalField(_priceListPriceForEmployeeController, getTranslated(context, 'priceForEmployee'))),
-                        SizedBox(width: 10),
-                        Flexible(child: _buildDecimalField(_priceListPriceForCompanyController, getTranslated(context, 'priceForCompany'))),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Buttons.standardButton(
-                      minWidth: double.infinity,
-                      color: BLUE,
-                      title: getTranslated(context, 'add'),
-                      fun: () {
-                        if (!_isValid()) {
-                          ToastUtil.showErrorToast(this.context, getTranslated(context, 'correctInvalidFields'));
-                          return;
-                        }
-                        if (_priceListNames.contains(_priceListNameController.text)) {
-                          ToastUtil.showErrorToast(this.context, getTranslated(context, 'priceListServiceNameExists'));
-                          return;
-                        }
-                        CreatePriceListDto dto = new CreatePriceListDto(
-                          companyId: _user.companyId,
-                          name: _priceListNameController.text,
-                          priceForEmployee: double.parse(_priceListPriceForEmployeeController.text),
-                          priceForCompany: double.parse(_priceListPriceForCompanyController.text),
-                        );
-                        setState(() {
-                          _priceListsToAdd.add(dto);
-                          _priceListNames.add(dto.name);
-                          _priceListNameController.clear();
-                          _priceListPriceForEmployeeController.clear();
-                          _priceListPriceForCompanyController.clear();
-                        });
-                        FocusScope.of(context).unfocus();
-                        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'addedNewPriceService'));
-                      },
-                    ),
-                    _buildAddItems(),
+                    Flexible(child: _buildDecimalField(_priceListPriceForEmployeeController, getTranslated(context, 'priceForEmployee'))),
+                    SizedBox(width: 10),
+                    Flexible(child: _buildDecimalField(_priceListPriceForCompanyController, getTranslated(context, 'priceForCompany'))),
                   ],
                 ),
-              ),
+                SizedBox(height: 10),
+                Buttons.standardButton(
+                  minWidth: double.infinity,
+                  color: BLUE,
+                  title: getTranslated(context, 'add'),
+                  fun: () {
+                    if (!_isValid()) {
+                      ToastUtil.showErrorToast(this.context, getTranslated(context, 'correctInvalidFields'));
+                      return;
+                    }
+                    if (_priceListNames.contains(_priceListNameController.text)) {
+                      ToastUtil.showErrorToast(this.context, getTranslated(context, 'priceListServiceNameExists'));
+                      return;
+                    }
+                    CreatePriceListDto dto = new CreatePriceListDto(
+                      companyId: _user.companyId,
+                      name: _priceListNameController.text,
+                      priceForEmployee: double.parse(_priceListPriceForEmployeeController.text),
+                      priceForCompany: double.parse(_priceListPriceForCompanyController.text),
+                    );
+                    setState(() {
+                      _priceListsToAdd.add(dto);
+                      _priceListNames.add(dto.name);
+                      _priceListNameController.clear();
+                      _priceListPriceForEmployeeController.clear();
+                      _priceListPriceForCompanyController.clear();
+                    });
+                    FocusScope.of(context).unfocus();
+                    ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'addedNewPriceService'));
+                  },
+                ),
+                _buildAddItems(),
+              ],
             ),
-            bottomNavigationBar: _buildBottomNavigationBar(),
           ),
         ),
-        onWillPop: () => NavigatorUtil.onWillPopNavigate(context, PriceListsPage(_model)));
+        bottomNavigationBar: _buildBottomNavigationBar(),
+      ),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, PriceListsPage(_model)),
+    );
   }
 
   bool _isValid() {

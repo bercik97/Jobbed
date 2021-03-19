@@ -61,90 +61,86 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-            backgroundColor: WHITE,
-            appBar: employeeAppBar(context, _user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, _timesheet.status), () => Navigator.pop(context)),
-            body: RefreshIndicator(
-              color: WHITE,
-              backgroundColor: BLUE,
-              onRefresh: _refresh,
-              child: SafeArea(
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      color: BRIGHTER_BLUE,
-                      child: Padding(
-                        padding: EdgeInsets.only(bottom: 5),
-                        child: ListTile(
-                          leading: Padding(
-                            padding: EdgeInsets.only(top: 30),
-                            child: _timesheet.status == STATUS_IN_PROGRESS ? icon30Orange(Icons.arrow_circle_up) : icon30Green(Icons.check_circle_outline),
+      child: Scaffold(
+        backgroundColor: WHITE,
+        appBar: employeeAppBar(context, _user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, _timesheet.status), () => Navigator.pop(context)),
+        body: RefreshIndicator(
+          color: WHITE,
+          backgroundColor: BLUE,
+          onRefresh: _refresh,
+          child: SafeArea(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  color: BRIGHTER_BLUE,
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 5),
+                    child: ListTile(
+                      leading: Padding(
+                        padding: EdgeInsets.only(top: 30),
+                        child: _timesheet.status == STATUS_IN_PROGRESS ? icon30Orange(Icons.arrow_circle_up) : icon30Green(Icons.check_circle_outline),
+                      ),
+                      title: text17BlackBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
+                      subtitle: Column(
+                        children: <Widget>[
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: text17BlackBold(_user.info != null ? UTFDecoderUtil.decode(context, _user.info) + ' ' + LanguageUtil.findFlagByNationality(_user.nationality) : getTranslated(context, 'empty')),
                           ),
-                          title: text17BlackBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
-                          subtitle: Column(
+                          Row(
                             children: <Widget>[
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: text17BlackBold(_user.info != null ? UTFDecoderUtil.decode(context, _user.info) + ' ' + LanguageUtil.findFlagByNationality(_user.nationality) : getTranslated(context, 'empty')),
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  text17BlackBold(getTranslated(this.context, 'accord') + ': '),
-                                  text16Black(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
-                                ],
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  text17BlackBold(getTranslated(this.context, 'time') + ': '),
-                                  text16Black(_timesheet.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + _timesheet.totalTime + ')'),
-                                ],
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  text17BlackBold(getTranslated(this.context, 'sum') + ': '),
-                                  text16Black(_timesheet.totalMoneyEarned.toString() + ' PLN'),
-                                ],
-                              ),
+                              text17BlackBold(getTranslated(this.context, 'accord') + ': '),
+                              text16Black(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
                             ],
                           ),
-                        ),
+                          Row(
+                            children: <Widget>[
+                              text17BlackBold(getTranslated(this.context, 'time') + ': '),
+                              text16Black(_timesheet.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + _timesheet.totalTime + ')'),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              text17BlackBold(getTranslated(this.context, 'sum') + ': '),
+                              text16Black(_timesheet.totalMoneyEarned.toString() + ' PLN'),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                    _loading
-                        ? circularProgressIndicator()
-                        : Expanded(
-                            child: Container(
-                              child: HorizontalDataTable(
-                                leftHandSideColumnWidth: 50,
-                                rightHandSideColumnWidth: 305,
-                                isFixedHeader: true,
-                                headerWidgets: _buildTitleWidget(),
-                                leftSideItemBuilder: _buildFirstColumnRow,
-                                rightSideItemBuilder: _buildRightHandSideColumnRow,
-                                itemCount: workdays.length,
-                                rowSeparatorWidget: Divider(color: BLUE, height: 1.0, thickness: 0.0),
-                                leftHandSideColBackgroundColor: WHITE,
-                                rightHandSideColBackgroundColor: WHITE,
-                              ),
-                              height: MediaQuery.of(context).size.height,
-                            ),
-                          ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            floatingActionButton: iconsLegendDialog(
-              this.context,
-              getTranslated(context, 'iconsLegend'),
-              [
-                IconsLegendUtil.buildIconRow(iconGreen(Icons.check_circle_outline), getTranslated(context, 'tsCompleted')),
-                IconsLegendUtil.buildIconRow(iconBlack(Icons.search), getTranslated(context, 'checkDetails')),
+                _loading
+                    ? circularProgressIndicator()
+                    : Expanded(
+                        child: Container(
+                          child: HorizontalDataTable(
+                            leftHandSideColumnWidth: 50,
+                            rightHandSideColumnWidth: 305,
+                            isFixedHeader: true,
+                            headerWidgets: _buildTitleWidget(),
+                            leftSideItemBuilder: _buildFirstColumnRow,
+                            rightSideItemBuilder: _buildRightHandSideColumnRow,
+                            itemCount: workdays.length,
+                            rowSeparatorWidget: Divider(color: BLUE, height: 1.0, thickness: 0.0),
+                            leftHandSideColBackgroundColor: WHITE,
+                            rightHandSideColBackgroundColor: WHITE,
+                          ),
+                          height: MediaQuery.of(context).size.height,
+                        ),
+                      ),
               ],
-            )),
+            ),
+          ),
+        ),
+        floatingActionButton: iconsLegendDialog(
+          this.context,
+          getTranslated(context, 'iconsLegend'),
+          [
+            IconsLegendUtil.buildIconRow(iconGreen(Icons.check_circle_outline), getTranslated(context, 'tsCompleted')),
+            IconsLegendUtil.buildIconRow(iconBlack(Icons.search), getTranslated(context, 'checkDetails')),
+          ],
+        ),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeProfilePage(_user)),
     );

@@ -12,7 +12,6 @@ import 'package:jobbed/employee/employee_profile_page.dart';
 import 'package:jobbed/employee/shared/employee_app_bar.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
-import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
@@ -121,27 +120,22 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: WHITE,
-          appBar: employeeAppBar(context, _user, getTranslated(context, 'createReport') + ' / ' + _todayDate, () => Navigator.pop(context)),
-          body: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Form(
-              autovalidateMode: AutovalidateMode.always,
-              key: formKey,
-              child: Column(
-                children: [
-                  _loading ? circularProgressIndicator() : _buildPriceList(),
-                ],
-              ),
+      child: Scaffold(
+        backgroundColor: WHITE,
+        appBar: employeeAppBar(context, _user, getTranslated(context, 'createReport') + ' / ' + _todayDate, () => Navigator.pop(context)),
+        body: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Form(
+            autovalidateMode: AutovalidateMode.always,
+            key: formKey,
+            child: Column(
+              children: [
+                _loading ? circularProgressIndicator() : _buildPriceList(),
+              ],
             ),
           ),
-          bottomNavigationBar: _buildBottomNavigationBar(),
         ),
+        bottomNavigationBar: _buildBottomNavigationBar(),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, PieceworkPage(_user, _todayDate, _todayWorkdayId)),
     );

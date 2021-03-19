@@ -10,7 +10,6 @@ import 'package:jobbed/internationalization/localization/localization_constants.
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
-import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
@@ -60,78 +59,73 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: WHITE,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'returnItems'), () => Navigator.pop(context)),
-          body: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  flex: 2,
-                  child: Scrollbar(
-                      controller: _scrollController,
-                      child: SingleChildScrollView(
-                        child: Center(
-                          child: Column(
-                            children: [
-                              for (var i = 0; i < _itemPlaces.length; i++)
-                                Card(
-                                  color: WHITE,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Card(
-                                        color: BRIGHTER_BLUE,
-                                        child: ListTile(
-                                          title: text17BlueBold(UTFDecoderUtil.decode(context, _itemPlaces[i].name)),
-                                          subtitle: Column(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  text16Black(getTranslated(this.context, 'quantity') + ': '),
-                                                  text17BlackBold(_itemPlaces[i].quantity.toString()),
-                                                ],
-                                              ),
-                                              SizedBox(height: 7.5),
-                                              Column(
-                                                children: [
-                                                  Align(
-                                                    child: text17BlueBold(getTranslated(this.context, 'warehouse')),
-                                                    alignment: Alignment.topLeft,
-                                                  ),
-                                                  Align(
-                                                    child: text17BlackBold(UTFDecoderUtil.decode(context, _itemPlaces[i].warehouseName.toString())),
-                                                    alignment: Alignment.topLeft,
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          trailing: Container(
-                                            width: 100,
-                                            child: _buildNumberField(_textEditingItemControllers[i], int.parse(_itemPlaces[i].quantity)),
-                                          ),
+      child: Scaffold(
+        backgroundColor: WHITE,
+        appBar: managerAppBar(context, _user, getTranslated(context, 'returnItems'), () => Navigator.pop(context)),
+        body: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                flex: 2,
+                child: Scrollbar(
+                    controller: _scrollController,
+                    child: SingleChildScrollView(
+                      child: Center(
+                        child: Column(
+                          children: [
+                            for (var i = 0; i < _itemPlaces.length; i++)
+                              Card(
+                                color: WHITE,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Card(
+                                      color: BRIGHTER_BLUE,
+                                      child: ListTile(
+                                        title: text17BlueBold(UTFDecoderUtil.decode(context, _itemPlaces[i].name)),
+                                        subtitle: Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                text16Black(getTranslated(this.context, 'quantity') + ': '),
+                                                text17BlackBold(_itemPlaces[i].quantity.toString()),
+                                              ],
+                                            ),
+                                            SizedBox(height: 7.5),
+                                            Column(
+                                              children: [
+                                                Align(
+                                                  child: text17BlueBold(getTranslated(this.context, 'warehouse')),
+                                                  alignment: Alignment.topLeft,
+                                                ),
+                                                Align(
+                                                  child: text17BlackBold(UTFDecoderUtil.decode(context, _itemPlaces[i].warehouseName.toString())),
+                                                  alignment: Alignment.topLeft,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        trailing: Container(
+                                          width: 100,
+                                          child: _buildNumberField(_textEditingItemControllers[i], int.parse(_itemPlaces[i].quantity)),
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                            ],
-                          ),
+                              ),
+                          ],
                         ),
-                      )),
-                ),
-              ],
-            ),
+                      ),
+                    )),
+              ),
+            ],
           ),
-          bottomNavigationBar: _buildBottomNavigationBar(),
         ),
+        bottomNavigationBar: _buildBottomNavigationBar(),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, ItemPlaceDetailsPage(_model, _itemPlaceDto)),
     );

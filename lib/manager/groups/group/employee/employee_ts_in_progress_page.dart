@@ -116,180 +116,175 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: APP_NAME,
-      theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: WHITE,
-        appBar: managerAppBar(context, _user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, STATUS_IN_PROGRESS), () => Navigator.pop(context)),
-        body: RefreshIndicator(
-          color: WHITE,
-          backgroundColor: BLUE,
-          onRefresh: _refresh,
-          child: Column(
-            children: <Widget>[
-              Container(
-                color: BRIGHTER_BLUE,
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 5),
-                  child: ListTile(
-                    leading: Padding(
-                      padding: EdgeInsets.only(top: 30),
-                      child: icon30Orange(Icons.arrow_circle_up),
-                    ),
-                    title: text17BlackBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
-                    subtitle: Column(
-                      children: <Widget>[
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: text17BlackBold(UTFDecoderUtil.decode(context, _employeeInfo) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality)),
-                        ),
-                        Row(
-                          children: <Widget>[
-                            text17BlackBold(getTranslated(this.context, 'accord') + ': '),
-                            text16Black(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            text17BlackBold(getTranslated(this.context, 'time') + ': '),
-                            text16Black(_timesheet.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + _timesheet.totalTime + ')'),
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            text17BlackBold(getTranslated(this.context, 'sum') + ': '),
-                            text16Black(_timesheet.totalMoneyEarned.toString() + ' PLN'),
-                          ],
-                        ),
-                      ],
-                    ),
+    return Scaffold(
+      backgroundColor: WHITE,
+      appBar: managerAppBar(context, _user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, STATUS_IN_PROGRESS), () => Navigator.pop(context)),
+      body: RefreshIndicator(
+        color: WHITE,
+        backgroundColor: BLUE,
+        onRefresh: _refresh,
+        child: Column(
+          children: <Widget>[
+            Container(
+              color: BRIGHTER_BLUE,
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 5),
+                child: ListTile(
+                  leading: Padding(
+                    padding: EdgeInsets.only(top: 30),
+                    child: icon30Orange(Icons.arrow_circle_up),
+                  ),
+                  title: text17BlackBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
+                  subtitle: Column(
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: text17BlackBold(UTFDecoderUtil.decode(context, _employeeInfo) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality)),
+                      ),
+                      Row(
+                        children: <Widget>[
+                          text17BlackBold(getTranslated(this.context, 'accord') + ': '),
+                          text16Black(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          text17BlackBold(getTranslated(this.context, 'time') + ': '),
+                          text16Black(_timesheet.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + _timesheet.totalTime + ')'),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          text17BlackBold(getTranslated(this.context, 'sum') + ': '),
+                          text16Black(_timesheet.totalMoneyEarned.toString() + ' PLN'),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
-              _loading
-                  ? circularProgressIndicator()
-                  : Expanded(
-                      child: Container(
-                        child: HorizontalDataTable(
-                          leftHandSideColumnWidth: 100,
-                          rightHandSideColumnWidth: 385,
-                          isFixedHeader: true,
-                          headerWidgets: _buildTitleWidget(),
-                          leftSideItemBuilder: _buildFirstColumnRow,
-                          rightSideItemBuilder: _buildRightHandSideColumnRow,
-                          itemCount: workdays.length,
-                          rowSeparatorWidget: Divider(color: BLUE, height: 1.0, thickness: 0.0),
-                          leftHandSideColBackgroundColor: WHITE,
-                          rightHandSideColBackgroundColor: WHITE,
-                        ),
-                        height: MediaQuery.of(context).size.height,
+            ),
+            _loading
+                ? circularProgressIndicator()
+                : Expanded(
+                    child: Container(
+                      child: HorizontalDataTable(
+                        leftHandSideColumnWidth: 100,
+                        rightHandSideColumnWidth: 385,
+                        isFixedHeader: true,
+                        headerWidgets: _buildTitleWidget(),
+                        leftSideItemBuilder: _buildFirstColumnRow,
+                        rightSideItemBuilder: _buildRightHandSideColumnRow,
+                        itemCount: workdays.length,
+                        rowSeparatorWidget: Divider(color: BLUE, height: 1.0, thickness: 0.0),
+                        leftHandSideColBackgroundColor: WHITE,
+                        rightHandSideColBackgroundColor: WHITE,
                       ),
+                      height: MediaQuery.of(context).size.height,
                     ),
+                  ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          height: 40,
+          child: Row(
+            children: <Widget>[
+              SizedBox(width: 1),
+              Expanded(
+                child: MaterialButton(
+                  color: BLUE,
+                  child: Image(image: AssetImage('images/white-hours.png')),
+                  onPressed: () {
+                    if (selectedIds.isNotEmpty) {
+                      _showUpdateWorkTimeDialog();
+                    } else {
+                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                    }
+                  },
+                ),
+              ),
+              SizedBox(width: 1),
+              Expanded(
+                child: MaterialButton(
+                  color: BLUE,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image(image: AssetImage('images/white-hours.png')),
+                      iconRed(Icons.close),
+                    ],
+                  ),
+                  onPressed: () {
+                    if (selectedIds.isNotEmpty) {
+                      _showDeleteWorkTimeDialog();
+                    } else {
+                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                    }
+                  },
+                ),
+              ),
+              SizedBox(width: 1),
+              Expanded(
+                child: MaterialButton(
+                  color: BLUE,
+                  child: Image(image: AssetImage('images/white-piecework.png')),
+                  onPressed: () {
+                    if (selectedIds.isNotEmpty) {
+                      NavigatorUtil.navigate(
+                          context,
+                          AddPieceworkForSelectedWorkdays(
+                            _model,
+                            selectedIds.map((el) => el.toString()).toList(),
+                            _employeeInfo,
+                            _employeeId,
+                            _employeeNationality,
+                            _timesheet,
+                            _avatarPath,
+                          ));
+                    } else {
+                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                    }
+                  },
+                ),
+              ),
+              SizedBox(width: 1),
+              Expanded(
+                child: MaterialButton(
+                  color: BLUE,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image(image: AssetImage('images/white-piecework.png')),
+                      iconRed(Icons.close),
+                    ],
+                  ),
+                  onPressed: () {
+                    if (selectedIds.isNotEmpty) {
+                      _showDeletePiecework();
+                    } else {
+                      showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                    }
+                  },
+                ),
+              ),
+              SizedBox(width: 1),
             ],
           ),
         ),
-        bottomNavigationBar: SafeArea(
-          child: Container(
-            height: 40,
-            child: Row(
-              children: <Widget>[
-                SizedBox(width: 1),
-                Expanded(
-                  child: MaterialButton(
-                    color: BLUE,
-                    child: Image(image: AssetImage('images/white-hours.png')),
-                    onPressed: () {
-                      if (selectedIds.isNotEmpty) {
-                        _showUpdateWorkTimeDialog();
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
-                  ),
-                ),
-                SizedBox(width: 1),
-                Expanded(
-                  child: MaterialButton(
-                    color: BLUE,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image(image: AssetImage('images/white-hours.png')),
-                        iconRed(Icons.close),
-                      ],
-                    ),
-                    onPressed: () {
-                      if (selectedIds.isNotEmpty) {
-                        _showDeleteWorkTimeDialog();
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
-                  ),
-                ),
-                SizedBox(width: 1),
-                Expanded(
-                  child: MaterialButton(
-                    color: BLUE,
-                    child: Image(image: AssetImage('images/white-piecework.png')),
-                    onPressed: () {
-                      if (selectedIds.isNotEmpty) {
-                        NavigatorUtil.navigate(
-                            context,
-                            AddPieceworkForSelectedWorkdays(
-                              _model,
-                              selectedIds.map((el) => el.toString()).toList(),
-                              _employeeInfo,
-                              _employeeId,
-                              _employeeNationality,
-                              _timesheet,
-                              _avatarPath,
-                            ));
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
-                  ),
-                ),
-                SizedBox(width: 1),
-                Expanded(
-                  child: MaterialButton(
-                    color: BLUE,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image(image: AssetImage('images/white-piecework.png')),
-                        iconRed(Icons.close),
-                      ],
-                    ),
-                    onPressed: () {
-                      if (selectedIds.isNotEmpty) {
-                        _showDeletePiecework();
-                      } else {
-                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                      }
-                    },
-                  ),
-                ),
-                SizedBox(width: 1),
-              ],
-            ),
-          ),
-        ),
-        floatingActionButton: iconsLegendDialog(
-          this.context,
-          getTranslated(context, 'iconsLegend'),
-          [
-            IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_circle_up), getTranslated(context, 'tsInProgress')),
-            IconsLegendUtil.buildIconRow(iconBlack(Icons.search), getTranslated(context, 'checkDetails')),
-            IconsLegendUtil.buildImageRow('images/hours.png', getTranslated(context, 'settingHours')),
-            IconsLegendUtil.buildImageWithIconRow('images/hours.png', iconRed(Icons.close), getTranslated(context, 'deletingWork')),
-            IconsLegendUtil.buildImageRow('images/piecework.png', getTranslated(context, 'settingPiecework')),
-            IconsLegendUtil.buildImageWithIconRow('images/piecework.png', iconRed(Icons.close), getTranslated(context, 'deletingPiecework')),
-          ],
-        ),
+      ),
+      floatingActionButton: iconsLegendDialog(
+        this.context,
+        getTranslated(context, 'iconsLegend'),
+        [
+          IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_circle_up), getTranslated(context, 'tsInProgress')),
+          IconsLegendUtil.buildIconRow(iconBlack(Icons.search), getTranslated(context, 'checkDetails')),
+          IconsLegendUtil.buildImageRow('images/hours.png', getTranslated(context, 'settingHours')),
+          IconsLegendUtil.buildImageWithIconRow('images/hours.png', iconRed(Icons.close), getTranslated(context, 'deletingWork')),
+          IconsLegendUtil.buildImageRow('images/piecework.png', getTranslated(context, 'settingPiecework')),
+          IconsLegendUtil.buildImageWithIconRow('images/piecework.png', iconRed(Icons.close), getTranslated(context, 'deletingPiecework')),
+        ],
       ),
     );
   }

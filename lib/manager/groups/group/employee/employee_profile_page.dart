@@ -60,93 +60,88 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
     this._employeeId = widget._employeeId;
     this._employeeInfo = widget._employeeInfo;
     this._avatarPath = widget._avatarPath;
-    return MaterialApp(
-      title: APP_NAME,
-      theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: WHITE,
-        body: DefaultTabController(
-          length: 3,
-          child: NestedScrollView(
-            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                SliverAppBar(
-                  elevation: 0.0,
-                  actions: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: IconButton(
-                        icon: iconBlack(Icons.arrow_back_ios),
-                        onPressed: () => NavigatorUtil.navigate(this.context, GroupsDashboardPage(_user)),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 15.0),
-                      child: IconButton(
-                        icon: iconBlack(Icons.settings),
-                        onPressed: () => NavigatorUtil.navigate(this.context, SettingsPage(_user)),
-                      ),
-                    ),
-                  ],
-                  iconTheme: IconThemeData(color: WHITE),
-                  expandedHeight: 250.0,
-                  pinned: true,
-                  backgroundColor: WHITE,
-                  automaticallyImplyLeading: true,
-                  leading: IconButton(
-                    icon: iconBlack(Icons.arrow_back),
-                    onPressed: () => Navigator.pop(this.context),
-                  ),
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: Column(
-                      children: <Widget>[
-                        Container(
-                          width: 100,
-                          height: 100,
-                          margin: EdgeInsets.only(top: 70, bottom: 10),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(image: AssetImage(_avatarPath), fit: BoxFit.fill),
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        text25BlackBold(UTFDecoderUtil.decode(this.context, _employeeInfo)),
-                        SizedBox(height: 2.5),
-                        text20Black(LanguageUtil.convertShortNameToFullName(this.context, _employeeNationality) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality)),
-                        SizedBox(height: 2.5),
-                        text18Black(getTranslated(this.context, 'employee') + ' #' + _employeeId.toString()),
-                        SizedBox(height: 10),
-                      ],
+    return Scaffold(
+      backgroundColor: WHITE,
+      body: DefaultTabController(
+        length: 3,
+        child: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                elevation: 0.0,
+                actions: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: IconButton(
+                      icon: iconBlack(Icons.arrow_back_ios),
+                      onPressed: () => NavigatorUtil.navigate(this.context, GroupsDashboardPage(_user)),
                     ),
                   ),
-                ),
-                SliverPersistentHeader(
-                  delegate: SliverAppBarDelegate(
-                    TabBar(
-                      labelColor: BLUE,
-                      indicatorColor: BLUE,
-                      unselectedLabelColor: Colors.grey,
-                      tabs: [
-                        Tab(icon: iconBlack(Icons.event_note), text: getTranslated(this.context, 'timesheets')),
-                        Tab(icon: iconBlack(Icons.import_contacts), text: getTranslated(this.context, 'contact')),
-                        Tab(icon: iconBlack(Icons.info), text: getTranslated(this.context, 'information')),
-                      ],
+                  Padding(
+                    padding: EdgeInsets.only(right: 15.0),
+                    child: IconButton(
+                      icon: iconBlack(Icons.settings),
+                      onPressed: () => NavigatorUtil.navigate(this.context, SettingsPage(_user)),
                     ),
                   ),
-                  pinned: true,
-                ),
-              ];
-            },
-            body: Padding(
-              padding: EdgeInsets.all(5),
-              child: TabBarView(
-                children: <Widget>[
-                  _buildSheetsSection(),
-                  _buildContactSection(),
-                  _buildInformationSection(),
                 ],
+                iconTheme: IconThemeData(color: WHITE),
+                expandedHeight: 250.0,
+                pinned: true,
+                backgroundColor: WHITE,
+                automaticallyImplyLeading: true,
+                leading: IconButton(
+                  icon: iconBlack(Icons.arrow_back),
+                  onPressed: () => Navigator.pop(this.context),
+                ),
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Column(
+                    children: <Widget>[
+                      Container(
+                        width: 100,
+                        height: 100,
+                        margin: EdgeInsets.only(top: 70, bottom: 10),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(image: AssetImage(_avatarPath), fit: BoxFit.fill),
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      text25BlackBold(UTFDecoderUtil.decode(this.context, _employeeInfo)),
+                      SizedBox(height: 2.5),
+                      text20Black(LanguageUtil.convertShortNameToFullName(this.context, _employeeNationality) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality)),
+                      SizedBox(height: 2.5),
+                      text18Black(getTranslated(this.context, 'employee') + ' #' + _employeeId.toString()),
+                      SizedBox(height: 10),
+                    ],
+                  ),
+                ),
               ),
+              SliverPersistentHeader(
+                delegate: SliverAppBarDelegate(
+                  TabBar(
+                    labelColor: BLUE,
+                    indicatorColor: BLUE,
+                    unselectedLabelColor: Colors.grey,
+                    tabs: [
+                      Tab(icon: iconBlack(Icons.event_note), text: getTranslated(this.context, 'timesheets')),
+                      Tab(icon: iconBlack(Icons.import_contacts), text: getTranslated(this.context, 'contact')),
+                      Tab(icon: iconBlack(Icons.info), text: getTranslated(this.context, 'information')),
+                    ],
+                  ),
+                ),
+                pinned: true,
+              ),
+            ];
+          },
+          body: Padding(
+            padding: EdgeInsets.all(5),
+            child: TabBarView(
+              children: <Widget>[
+                _buildSheetsSection(),
+                _buildContactSection(),
+                _buildInformationSection(),
+              ],
             ),
           ),
         ),

@@ -12,7 +12,6 @@ import 'package:jobbed/manager/groups/group/warehouse/details/warehouse_details_
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
-import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
@@ -75,62 +74,57 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: WHITE,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'releaseItems'), () => Navigator.pop(context)),
-          body: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  flex: 2,
-                  child: Scrollbar(
-                    controller: _scrollController,
-                    child: SingleChildScrollView(
-                      child: Center(
-                        child: Column(
-                          children: [
-                            for (var i = 0; i < _items.length; i++)
-                              Card(
-                                color: WHITE,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Card(
-                                      color: BRIGHTER_BLUE,
-                                      child: ListTile(
-                                        title: text17BlueBold(UTFDecoderUtil.decode(this.context, _items[i].name)),
-                                        subtitle: Row(
-                                          children: [
-                                            text16Black(getTranslated(this.context, 'quantity') + ': '),
-                                            text17BlackBold(_items[i].quantity.toString()),
-                                          ],
-                                        ),
-                                        trailing: Container(
-                                          width: 100,
-                                          child: _buildNumberField(_textEditingItemControllers[i], _items[i].quantity),
-                                        ),
+      child: Scaffold(
+        backgroundColor: WHITE,
+        appBar: managerAppBar(context, _user, getTranslated(context, 'releaseItems'), () => Navigator.pop(context)),
+        body: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                flex: 2,
+                child: Scrollbar(
+                  controller: _scrollController,
+                  child: SingleChildScrollView(
+                    child: Center(
+                      child: Column(
+                        children: [
+                          for (var i = 0; i < _items.length; i++)
+                            Card(
+                              color: WHITE,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Card(
+                                    color: BRIGHTER_BLUE,
+                                    child: ListTile(
+                                      title: text17BlueBold(UTFDecoderUtil.decode(this.context, _items[i].name)),
+                                      subtitle: Row(
+                                        children: [
+                                          text16Black(getTranslated(this.context, 'quantity') + ': '),
+                                          text17BlackBold(_items[i].quantity.toString()),
+                                        ],
+                                      ),
+                                      trailing: Container(
+                                        width: 100,
+                                        child: _buildNumberField(_textEditingItemControllers[i], _items[i].quantity),
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                          ],
-                        ),
+                            ),
+                        ],
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          bottomNavigationBar: _buildBottomNavigationBar(),
         ),
+        bottomNavigationBar: _buildBottomNavigationBar(),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, WarehouseDetailsPage(_model, _warehouseDto)),
     );

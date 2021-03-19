@@ -114,289 +114,284 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: WHITE,
-          appBar: managerAppBar(context, _model.user, UTFDecoderUtil.decode(context, _model.groupName), () => NavigatorUtil.onWillPopNavigate(context, TsPage(_model))),
-          body: RefreshIndicator(
-            color: WHITE,
-            backgroundColor: BLUE,
-            onRefresh: _refresh,
-            child: Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
-                    child: text20OrangeBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' → ' + getTranslated(context, STATUS_IN_PROGRESS)),
-                  ),
+      child: Scaffold(
+        backgroundColor: WHITE,
+        appBar: managerAppBar(context, _model.user, UTFDecoderUtil.decode(context, _model.groupName), () => NavigatorUtil.onWillPopNavigate(context, TsPage(_model))),
+        body: RefreshIndicator(
+          color: WHITE,
+          backgroundColor: BLUE,
+          onRefresh: _refresh,
+          child: Column(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
+                  child: text20OrangeBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' → ' + getTranslated(context, STATUS_IN_PROGRESS)),
                 ),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: TextFormField(
-                    autofocus: false,
-                    autocorrect: true,
-                    cursorColor: BLACK,
-                    style: TextStyle(color: BLACK),
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
-                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2)),
-                      counterStyle: TextStyle(color: BLACK),
-                      border: OutlineInputBorder(),
-                      labelText: getTranslated(this.context, 'search'),
-                      prefixIcon: iconBlack(Icons.search),
-                      labelStyle: TextStyle(color: BLACK),
-                    ),
-                    onChanged: (string) {
-                      setState(
-                        () {
-                          _filteredEmployees = _employees.where((u) => (u.info.toLowerCase().contains(string.toLowerCase()))).toList();
-                        },
-                      );
-                    },
+              ),
+              Container(
+                padding: EdgeInsets.all(10),
+                child: TextFormField(
+                  autofocus: false,
+                  autocorrect: true,
+                  cursorColor: BLACK,
+                  style: TextStyle(color: BLACK),
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2)),
+                    counterStyle: TextStyle(color: BLACK),
+                    border: OutlineInputBorder(),
+                    labelText: getTranslated(this.context, 'search'),
+                    prefixIcon: iconBlack(Icons.search),
+                    labelStyle: TextStyle(color: BLACK),
                   ),
+                  onChanged: (string) {
+                    setState(
+                      () {
+                        _filteredEmployees = _employees.where((u) => (u.info.toLowerCase().contains(string.toLowerCase()))).toList();
+                      },
+                    );
+                  },
                 ),
-                ListTileTheme(
-                  contentPadding: EdgeInsets.only(left: 3),
-                  child: CheckboxListTile(
-                    title: textBlack(getTranslated(this.context, 'selectUnselectAll')),
-                    value: _isChecked,
-                    activeColor: BLUE,
-                    checkColor: WHITE,
-                    onChanged: (bool value) {
-                      setState(() {
-                        _isChecked = value;
-                        List<bool> l = new List();
-                        _checked.forEach((b) => l.add(value));
-                        _checked = l;
-                        if (value) {
-                          _selectedIds.addAll(_filteredEmployees.map((e) => e.id));
-                        } else
-                          _selectedIds.clear();
-                      });
-                    },
-                    controlAffinity: ListTileControlAffinity.leading,
-                  ),
+              ),
+              ListTileTheme(
+                contentPadding: EdgeInsets.only(left: 3),
+                child: CheckboxListTile(
+                  title: textBlack(getTranslated(this.context, 'selectUnselectAll')),
+                  value: _isChecked,
+                  activeColor: BLUE,
+                  checkColor: WHITE,
+                  onChanged: (bool value) {
+                    setState(() {
+                      _isChecked = value;
+                      List<bool> l = new List();
+                      _checked.forEach((b) => l.add(value));
+                      _checked = l;
+                      if (value) {
+                        _selectedIds.addAll(_filteredEmployees.map((e) => e.id));
+                      } else
+                        _selectedIds.clear();
+                    });
+                  },
+                  controlAffinity: ListTileControlAffinity.leading,
                 ),
-                _loading
-                    ? circularProgressIndicator()
-                    : Expanded(
-                        child: ListView.builder(
-                          itemCount: _filteredEmployees.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            EmployeeStatisticsDto employee = _filteredEmployees[index];
-                            int foundIndex = 0;
-                            for (int i = 0; i < _employees.length; i++) {
-                              if (_employees[i].id == employee.id) {
-                                foundIndex = i;
-                              }
+              ),
+              _loading
+                  ? circularProgressIndicator()
+                  : Expanded(
+                      child: ListView.builder(
+                        itemCount: _filteredEmployees.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          EmployeeStatisticsDto employee = _filteredEmployees[index];
+                          int foundIndex = 0;
+                          for (int i = 0; i < _employees.length; i++) {
+                            if (_employees[i].id == employee.id) {
+                              foundIndex = i;
                             }
-                            String info = employee.info;
-                            String nationality = employee.nationality;
-                            String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.gender, info.substring(0, 1));
-                            return Card(
-                              color: BRIGHTER_BLUE,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Ink(
-                                    width: MediaQuery.of(context).size.width * 0.15,
-                                    height: 75,
+                          }
+                          String info = employee.info;
+                          String nationality = employee.nationality;
+                          String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.gender, info.substring(0, 1));
+                          return Card(
+                            color: BRIGHTER_BLUE,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Ink(
+                                  width: MediaQuery.of(context).size.width * 0.15,
+                                  height: 75,
+                                  color: BRIGHTER_BLUE,
+                                  child: ListTileTheme(
+                                    contentPadding: EdgeInsets.only(right: 10),
+                                    child: CheckboxListTile(
+                                      controlAffinity: ListTileControlAffinity.leading,
+                                      activeColor: BLUE,
+                                      checkColor: WHITE,
+                                      value: _checked[foundIndex],
+                                      onChanged: (bool value) {
+                                        setState(() {
+                                          _checked[foundIndex] = value;
+                                          if (value) {
+                                            _selectedIds.add(_employees[foundIndex].id);
+                                          } else {
+                                            _selectedIds.remove(_employees[foundIndex].id);
+                                          }
+                                          int selectedIdsLength = _selectedIds.length;
+                                          if (selectedIdsLength == _employees.length) {
+                                            _isChecked = true;
+                                          } else if (selectedIdsLength == 0) {
+                                            _isChecked = false;
+                                          }
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    TimesheetForEmployeeDto _inProgressTs = new TimesheetForEmployeeDto(
+                                      id: employee.timesheetId,
+                                      year: _timesheet.year,
+                                      month: _timesheet.month,
+                                      status: _timesheet.status,
+                                      totalHours: _filteredEmployees[index].totalHours,
+                                      totalTime: _filteredEmployees[index].totalTime,
+                                      totalMoneyForPieceworkForEmployee: _filteredEmployees[index].totalMoneyForPieceworkForEmployee,
+                                      totalMoneyForTimeForEmployee: _filteredEmployees[index].totalMoneyForTimeForEmployee,
+                                      totalMoneyEarned: _filteredEmployees[index].totalMoneyEarned,
+                                      employeeBasicDto: null,
+                                    );
+                                    NavigatorUtil.navigate(this.context, EmployeeTsInProgressPage(_model, info, employee.id, nationality, _inProgressTs, avatarPath));
+                                  },
+                                  child: Ink(
+                                    width: MediaQuery.of(context).size.width * 0.60,
                                     color: BRIGHTER_BLUE,
-                                    child: ListTileTheme(
-                                      contentPadding: EdgeInsets.only(right: 10),
-                                      child: CheckboxListTile(
-                                        controlAffinity: ListTileControlAffinity.leading,
-                                        activeColor: BLUE,
-                                        checkColor: WHITE,
-                                        value: _checked[foundIndex],
-                                        onChanged: (bool value) {
-                                          setState(() {
-                                            _checked[foundIndex] = value;
-                                            if (value) {
-                                              _selectedIds.add(_employees[foundIndex].id);
-                                            } else {
-                                              _selectedIds.remove(_employees[foundIndex].id);
-                                            }
-                                            int selectedIdsLength = _selectedIds.length;
-                                            if (selectedIdsLength == _employees.length) {
-                                              _isChecked = true;
-                                            } else if (selectedIdsLength == 0) {
-                                              _isChecked = false;
-                                            }
-                                          });
-                                        },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(6),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          text17BlackBold(UTFDecoderUtil.decode(this.context, info) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                          Row(
+                                            children: <Widget>[
+                                              textBlackBold(getTranslated(this.context, 'accord') + ': '),
+                                              textBlack(employee.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: <Widget>[
+                                              textBlackBold(getTranslated(this.context, 'time') + ': '),
+                                              textBlack(employee.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + employee.totalTime + ')'),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: <Widget>[
+                                              textBlackBold(getTranslated(this.context, 'sum') + ': '),
+                                              textBlack(employee.totalMoneyEarned.toString() + ' PLN'),
+                                            ],
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
-                                  InkWell(
-                                    onTap: () {
-                                      TimesheetForEmployeeDto _inProgressTs = new TimesheetForEmployeeDto(
-                                        id: employee.timesheetId,
-                                        year: _timesheet.year,
-                                        month: _timesheet.month,
-                                        status: _timesheet.status,
-                                        totalHours: _filteredEmployees[index].totalHours,
-                                        totalTime: _filteredEmployees[index].totalTime,
-                                        totalMoneyForPieceworkForEmployee: _filteredEmployees[index].totalMoneyForPieceworkForEmployee,
-                                        totalMoneyForTimeForEmployee: _filteredEmployees[index].totalMoneyForTimeForEmployee,
-                                        totalMoneyEarned: _filteredEmployees[index].totalMoneyEarned,
-                                        employeeBasicDto: null,
-                                      );
-                                      NavigatorUtil.navigate(this.context, EmployeeTsInProgressPage(_model, info, employee.id, nationality, _inProgressTs, avatarPath));
-                                    },
-                                    child: Ink(
-                                      width: MediaQuery.of(context).size.width * 0.60,
-                                      color: BRIGHTER_BLUE,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(6),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 25, left: 25),
+                                  child: Container(
+                                    child: Transform.scale(
+                                      scale: 1.2,
+                                      child: BouncingWidget(
+                                        duration: Duration(milliseconds: 100),
+                                        scaleFactor: 2,
+                                        onPressed: () => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, employee.id, info, avatarPath)),
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
-                                            text17BlackBold(UTFDecoderUtil.decode(this.context, info) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
-                                            Row(
-                                              children: <Widget>[
-                                                textBlackBold(getTranslated(this.context, 'accord') + ': '),
-                                                textBlack(employee.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: <Widget>[
-                                                textBlackBold(getTranslated(this.context, 'time') + ': '),
-                                                textBlack(employee.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + employee.totalTime + ')'),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: <Widget>[
-                                                textBlackBold(getTranslated(this.context, 'sum') + ': '),
-                                                textBlack(employee.totalMoneyEarned.toString() + ' PLN'),
-                                              ],
-                                            ),
+                                            Image(image: AssetImage(avatarPath), height: 40),
                                           ],
                                         ),
                                       ),
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 25, left: 25),
-                                    child: Container(
-                                      child: Transform.scale(
-                                        scale: 1.2,
-                                        child: BouncingWidget(
-                                          duration: Duration(milliseconds: 100),
-                                          scaleFactor: 2,
-                                          onPressed: () => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, employee.id, info, avatarPath)),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              Image(image: AssetImage(avatarPath), height: 40),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            );
-                          },
-                        ),
+                                )
+                              ],
+                            ),
+                          );
+                        },
                       ),
+                    ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: SafeArea(
+          child: Container(
+            height: 40,
+            child: Row(
+              children: <Widget>[
+                SizedBox(width: 1),
+                Expanded(
+                  child: MaterialButton(
+                    color: BLUE,
+                    child: Image(image: AssetImage('images/white-hours.png')),
+                    onPressed: () {
+                      if (_selectedIds.isEmpty) {
+                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                        return;
+                      }
+                      _showUpdateWorkTimeDialog(_selectedIds);
+                    },
+                  ),
+                ),
+                SizedBox(width: 1),
+                Expanded(
+                  child: MaterialButton(
+                    color: BLUE,
+                    child: Row(
+                      children: [
+                        Image(image: AssetImage('images/white-hours.png')),
+                        iconRed(Icons.close),
+                      ],
+                    ),
+                    onPressed: () {
+                      if (_selectedIds.isEmpty) {
+                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                        return;
+                      }
+                      _showDeleteWorkTimeDialog(_selectedIds);
+                    },
+                  ),
+                ),
+                SizedBox(width: 1),
+                Expanded(
+                  child: MaterialButton(
+                    color: BLUE,
+                    child: Image(image: AssetImage('images/white-piecework.png')),
+                    onPressed: () {
+                      if (_selectedIds.isNotEmpty) {
+                        _showUpdatePiecework(_selectedIds);
+                      } else {
+                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                      }
+                    },
+                  ),
+                ),
+                SizedBox(width: 1),
+                Expanded(
+                  child: MaterialButton(
+                    color: BLUE,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image(image: AssetImage('images/white-piecework.png')),
+                        iconRed(Icons.close),
+                      ],
+                    ),
+                    onPressed: () {
+                      if (_selectedIds.isNotEmpty) {
+                        _showDeletePiecework(_selectedIds);
+                      } else {
+                        showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                      }
+                    },
+                  ),
+                ),
+                SizedBox(width: 1),
               ],
             ),
           ),
-          bottomNavigationBar: SafeArea(
-            child: Container(
-              height: 40,
-              child: Row(
-                children: <Widget>[
-                  SizedBox(width: 1),
-                  Expanded(
-                    child: MaterialButton(
-                      color: BLUE,
-                      child: Image(image: AssetImage('images/white-hours.png')),
-                      onPressed: () {
-                        if (_selectedIds.isEmpty) {
-                          showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                          return;
-                        }
-                        _showUpdateWorkTimeDialog(_selectedIds);
-                      },
-                    ),
-                  ),
-                  SizedBox(width: 1),
-                  Expanded(
-                    child: MaterialButton(
-                      color: BLUE,
-                      child: Row(
-                        children: [
-                          Image(image: AssetImage('images/white-hours.png')),
-                          iconRed(Icons.close),
-                        ],
-                      ),
-                      onPressed: () {
-                        if (_selectedIds.isEmpty) {
-                          showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                          return;
-                        }
-                        _showDeleteWorkTimeDialog(_selectedIds);
-                      },
-                    ),
-                  ),
-                  SizedBox(width: 1),
-                  Expanded(
-                    child: MaterialButton(
-                      color: BLUE,
-                      child: Image(image: AssetImage('images/white-piecework.png')),
-                      onPressed: () {
-                        if (_selectedIds.isNotEmpty) {
-                          _showUpdatePiecework(_selectedIds);
-                        } else {
-                          showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                        }
-                      },
-                    ),
-                  ),
-                  SizedBox(width: 1),
-                  Expanded(
-                    child: MaterialButton(
-                      color: BLUE,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image(image: AssetImage('images/white-piecework.png')),
-                          iconRed(Icons.close),
-                        ],
-                      ),
-                      onPressed: () {
-                        if (_selectedIds.isNotEmpty) {
-                          _showDeletePiecework(_selectedIds);
-                        } else {
-                          showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
-                        }
-                      },
-                    ),
-                  ),
-                  SizedBox(width: 1),
-                ],
-              ),
-            ),
-          ),
-          floatingActionButton: iconsLegendDialog(
-            context,
-            getTranslated(context, 'iconsLegend'),
-            [
-              IconsLegendUtil.buildImageRow('images/letters/male/A.png', getTranslated(context, 'employeeProfile')),
-              IconsLegendUtil.buildImageRow('images/hours.png', getTranslated(context, 'manualSettingOfWorkingTimes')),
-              IconsLegendUtil.buildImageWithIconRow('images/hours.png', iconRed(Icons.close), getTranslated(context, 'deletingWork')),
-              IconsLegendUtil.buildImageRow('images/piecework.png', getTranslated(context, 'settingPiecework')),
-              IconsLegendUtil.buildImageWithIconRow('images/piecework.png', iconRed(Icons.close), getTranslated(context, 'deletingPiecework')),
-            ],
-          ),
+        ),
+        floatingActionButton: iconsLegendDialog(
+          context,
+          getTranslated(context, 'iconsLegend'),
+          [
+            IconsLegendUtil.buildImageRow('images/letters/male/A.png', getTranslated(context, 'employeeProfile')),
+            IconsLegendUtil.buildImageRow('images/hours.png', getTranslated(context, 'manualSettingOfWorkingTimes')),
+            IconsLegendUtil.buildImageWithIconRow('images/hours.png', iconRed(Icons.close), getTranslated(context, 'deletingWork')),
+            IconsLegendUtil.buildImageRow('images/piecework.png', getTranslated(context, 'settingPiecework')),
+            IconsLegendUtil.buildImageWithIconRow('images/piecework.png', iconRed(Icons.close), getTranslated(context, 'deletingPiecework')),
+          ],
         ),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, TsPage(_model)),

@@ -14,7 +14,6 @@ import 'package:jobbed/manager/groups/group/note/edit_note_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
-import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
@@ -88,56 +87,51 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: WHITE,
-          appBar: managerAppBar(context, _user, getTranslated(context, 'schedule'), () => NavigatorUtil.navigateReplacement(context, GroupPage(_model))),
-          body: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              _loading ? circularProgressIndicator() : _buildTableCalendarWithBuilders(),
-              _loading ? SizedBox(height: 0) : Expanded(child: _buildEventList()),
-            ],
-          ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-          floatingActionButton: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              FloatingActionButton(
-                heroTag: "hintBtn",
-                tooltip: getTranslated(context, 'hint'),
-                backgroundColor: BLUE,
-                onPressed: () {
-                  slideDialog.showSlideDialog(
-                    context: context,
-                    backgroundColor: WHITE,
-                    child: Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Column(
-                        children: <Widget>[
-                          text20GreenBold(getTranslated(context, 'iconsLegend')),
-                          SizedBox(height: 10),
-                          IconsLegendUtil.buildIconRow(Icon(Icons.note_add), getTranslated(context, 'addDeleteManyNotes')),
-                        ],
-                      ),
+      child: Scaffold(
+        backgroundColor: WHITE,
+        appBar: managerAppBar(context, _user, getTranslated(context, 'schedule'), () => NavigatorUtil.navigateReplacement(context, GroupPage(_model))),
+        body: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            _loading ? circularProgressIndicator() : _buildTableCalendarWithBuilders(),
+            _loading ? SizedBox(height: 0) : Expanded(child: _buildEventList()),
+          ],
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              heroTag: "hintBtn",
+              tooltip: getTranslated(context, 'hint'),
+              backgroundColor: BLUE,
+              onPressed: () {
+                slideDialog.showSlideDialog(
+                  context: context,
+                  backgroundColor: WHITE,
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: <Widget>[
+                        text20GreenBold(getTranslated(context, 'iconsLegend')),
+                        SizedBox(height: 10),
+                        IconsLegendUtil.buildIconRow(Icon(Icons.note_add), getTranslated(context, 'addDeleteManyNotes')),
+                      ],
                     ),
-                  );
-                },
-                child: text35WhiteBold('?'),
-              ),
-              SizedBox(height: 15),
-              FloatingActionButton(
-                heroTag: "manageNotes",
-                tooltip: getTranslated(context, 'addDeleteManyNotes'),
-                backgroundColor: BLUE,
-                onPressed: () => NavigatorUtil.navigate(context, EditSchedulePage(_model)),
-                child: Icon(Icons.note_add),
-              ),
-            ],
-          ),
+                  ),
+                );
+              },
+              child: text35WhiteBold('?'),
+            ),
+            SizedBox(height: 15),
+            FloatingActionButton(
+              heroTag: "manageNotes",
+              tooltip: getTranslated(context, 'addDeleteManyNotes'),
+              backgroundColor: BLUE,
+              onPressed: () => NavigatorUtil.navigate(context, EditSchedulePage(_model)),
+              child: Icon(Icons.note_add),
+            ),
+          ],
         ),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model)),

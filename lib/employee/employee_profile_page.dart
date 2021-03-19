@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:countup/countup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +9,6 @@ import 'package:jobbed/employee/profile/tabs/employee_panel.dart';
 import 'package:jobbed/employee/profile/tabs/employee_today.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
-import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/settings/settings_page.dart';
 import 'package:jobbed/shared/util/avatars_util.dart';
@@ -82,118 +79,113 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
     }
     this._calculateExpandedHeight();
     return WillPopScope(
-      child: MaterialApp(
-        title: APP_NAME,
-        theme: ThemeData(primarySwatch: MaterialColor(0xff2BADFF, BLUE_RGBO)),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: WHITE,
-          body: DefaultTabController(
-            length: 2,
-            child: NestedScrollView(
-              headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                return <Widget>[
-                  SliverAppBar(
-                    elevation: 0.0,
-                    actions: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(right: 15.0),
-                        child: IconButton(
-                          icon: iconBlack(Icons.settings),
-                          onPressed: () => NavigatorUtil.navigate(this.context, SettingsPage(_user)),
-                        ),
-                      ),
-                    ],
-                    iconTheme: IconThemeData(color: WHITE),
-                    expandedHeight: expandedHeight,
-                    pinned: true,
-                    automaticallyImplyLeading: true,
-                    leading: IconButton(icon: iconBlack(Icons.power_settings_new), onPressed: () => LogoutUtil.logout(this.context)),
-                    backgroundColor: WHITE,
-                    flexibleSpace: FlexibleSpaceBar(
-                      background: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          SizedBox(height: MediaQuery.of(context).size.height * 0.08),
-                          Container(
-                            width: 100,
-                            height: 75,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(image: AssetImage(AvatarsUtil.getAvatarPathByLetter(_employeePageDto.gender, _user.info.substring(0, 1)))),
-                            ),
-                          ),
-                          SizedBox(height: 5),
-                          text25BlackBold(UTFDecoderUtil.decode(context, _user.info) + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
-                          SizedBox(height: 10),
-                          text18Black(getTranslated(this.context, 'statisticsForThe') + _employeePageDto.tsCurrentYear + ' ' + getTranslated(this.context, _employeePageDto.tsCurrentMonth)),
-                          SizedBox(height: 5),
-                          Row(
-                            children: <Widget>[
-                              Spacer(),
-                              Expanded(
-                                flex: 2,
-                                child: Column(
-                                  children: <Widget>[
-                                    textCenter15BlueBold(getTranslated(this.context, 'daysWorked')),
-                                    SizedBox(height: 5.0),
-                                    Countup(
-                                      begin: 0,
-                                      end: _employeePageDto.tsDaysWorked.toDouble(),
-                                      duration: Duration(seconds: 2),
-                                      style: TextStyle(fontSize: 18.0, color: BLACK),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Spacer(),
-                              Expanded(
-                                flex: 2,
-                                child: Column(
-                                  children: <Widget>[
-                                    textCenter15BlueBold(getTranslated(this.context, 'money')),
-                                    textCenter15BlueBold('(PLN)'),
-                                    Countup(
-                                      begin: 0,
-                                      end: _employeePageDto.tsEarnedMoney,
-                                      duration: Duration(seconds: 2),
-                                      separator: ',',
-                                      style: TextStyle(fontSize: 18, color: BLACK),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Spacer(),
-                            ],
-                          ),
-                        ],
+      child: Scaffold(
+        backgroundColor: WHITE,
+        body: DefaultTabController(
+          length: 2,
+          child: NestedScrollView(
+            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+              return <Widget>[
+                SliverAppBar(
+                  elevation: 0.0,
+                  actions: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(right: 15.0),
+                      child: IconButton(
+                        icon: iconBlack(Icons.settings),
+                        onPressed: () => NavigatorUtil.navigate(this.context, SettingsPage(_user)),
                       ),
                     ),
-                  ),
-                  SliverPersistentHeader(
-                    delegate: SliverAppBarDelegate(
-                      TabBar(
-                        labelColor: BLUE,
-                        indicatorColor: BLUE,
-                        unselectedLabelColor: Colors.grey,
-                        tabs: <Widget>[
-                          Tab(icon: iconBlack(Icons.sort), text: getTranslated(this.context, 'panel')),
-                          Tab(icon: iconBlack(Icons.timelapse), text: getTranslated(this.context, 'today')),
-                        ],
-                      ),
-                    ),
-                    pinned: true,
-                  ),
-                ];
-              },
-              body: Padding(
-                padding: EdgeInsets.all(5),
-                child: TabBarView(
-                  children: <Widget>[
-                    _buildTab(employeePanel(this.context, _user, _employeePageDto)),
-                    _buildTab(employeeToday(this.context, _user, _employeePageDto)),
                   ],
+                  iconTheme: IconThemeData(color: WHITE),
+                  expandedHeight: expandedHeight,
+                  pinned: true,
+                  automaticallyImplyLeading: true,
+                  leading: IconButton(icon: iconBlack(Icons.power_settings_new), onPressed: () => LogoutUtil.logout(this.context)),
+                  backgroundColor: WHITE,
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(height: MediaQuery.of(context).size.height * 0.08),
+                        Container(
+                          width: 100,
+                          height: 75,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(image: AssetImage(AvatarsUtil.getAvatarPathByLetter(_employeePageDto.gender, _user.info.substring(0, 1)))),
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        text25BlackBold(UTFDecoderUtil.decode(context, _user.info) + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
+                        SizedBox(height: 10),
+                        text18Black(getTranslated(this.context, 'statisticsForThe') + _employeePageDto.tsCurrentYear + ' ' + getTranslated(this.context, _employeePageDto.tsCurrentMonth)),
+                        SizedBox(height: 5),
+                        Row(
+                          children: <Widget>[
+                            Spacer(),
+                            Expanded(
+                              flex: 2,
+                              child: Column(
+                                children: <Widget>[
+                                  textCenter15BlueBold(getTranslated(this.context, 'daysWorked')),
+                                  SizedBox(height: 5.0),
+                                  Countup(
+                                    begin: 0,
+                                    end: _employeePageDto.tsDaysWorked.toDouble(),
+                                    duration: Duration(seconds: 2),
+                                    style: TextStyle(fontSize: 18.0, color: BLACK),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Spacer(),
+                            Expanded(
+                              flex: 2,
+                              child: Column(
+                                children: <Widget>[
+                                  textCenter15BlueBold(getTranslated(this.context, 'money')),
+                                  textCenter15BlueBold('(PLN)'),
+                                  Countup(
+                                    begin: 0,
+                                    end: _employeePageDto.tsEarnedMoney,
+                                    duration: Duration(seconds: 2),
+                                    separator: ',',
+                                    style: TextStyle(fontSize: 18, color: BLACK),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Spacer(),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
+                SliverPersistentHeader(
+                  delegate: SliverAppBarDelegate(
+                    TabBar(
+                      labelColor: BLUE,
+                      indicatorColor: BLUE,
+                      unselectedLabelColor: Colors.grey,
+                      tabs: <Widget>[
+                        Tab(icon: iconBlack(Icons.sort), text: getTranslated(this.context, 'panel')),
+                        Tab(icon: iconBlack(Icons.timelapse), text: getTranslated(this.context, 'today')),
+                      ],
+                    ),
+                  ),
+                  pinned: true,
+                ),
+              ];
+            },
+            body: Padding(
+              padding: EdgeInsets.all(5),
+              child: TabBarView(
+                children: <Widget>[
+                  _buildTab(employeePanel(this.context, _user, _employeePageDto)),
+                  _buildTab(employeeToday(this.context, _user, _employeePageDto)),
+                ],
               ),
             ),
           ),
