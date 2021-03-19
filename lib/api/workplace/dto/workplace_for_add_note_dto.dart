@@ -4,11 +4,13 @@ import 'package:jobbed/api/sub_workplace/dto/sub_workplace_dto.dart';
 class WorkplaceForAddNoteDto {
   String id;
   String name;
+  String description;
   List subWorkplacesDto;
 
   WorkplaceForAddNoteDto({
     @required this.id,
     @required this.name,
+    @required this.description,
     @required this.subWorkplacesDto,
   });
 
@@ -17,6 +19,7 @@ class WorkplaceForAddNoteDto {
     return WorkplaceForAddNoteDto(
       id: json['id'] as String,
       name: json['name'] as String,
+      description: json['description'] as String,
       subWorkplacesDto: subWorkplacesDtoAsJson != null ? subWorkplacesDtoAsJson.map((data) => SubWorkplaceDto.fromJson(data)).toList() : null,
     );
   }

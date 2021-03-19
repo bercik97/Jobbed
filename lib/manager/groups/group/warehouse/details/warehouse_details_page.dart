@@ -482,17 +482,4 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
       ],
     );
   }
-
-  Future<Null> _refresh() {
-    _loading = true;
-    return _itemService.findAllByWarehouseId(_warehouseDto.id).then((res) {
-      setState(() {
-        _isDeleteButtonTapped = false;
-        _items = res;
-        _items.forEach((e) => _checked.add(false));
-        _filteredItems = _items;
-        _loading = false;
-      });
-    });
-  }
 }

@@ -8,10 +8,9 @@ import 'package:jobbed/shared/util/logout_util.dart';
 
 class NoteService {
   final BuildContext _context;
-  final Map<String, String> _header;
   final Map<String, String> _headers;
 
-  NoteService(this._context, this._header, this._headers);
+  NoteService(this._context, this._headers);
 
   static const String _url = '$SERVER_IP/notes';
 

@@ -7,10 +7,9 @@ import 'package:jobbed/shared/util/logout_util.dart';
 
 class CompanyService {
   final BuildContext _context;
-  final Map<String, String> _header;
   final Map<String, String> _headers;
 
-  CompanyService(this._context, this._header, this._headers);
+  CompanyService(this._context, this._headers);
 
   static const String _url = '$SERVER_IP/companies';
 

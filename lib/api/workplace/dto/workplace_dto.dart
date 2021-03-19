@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 class WorkplaceDto {
   String id;
   String name;
+  String description;
   String location;
   double radiusLength;
   double latitude;
@@ -11,6 +12,7 @@ class WorkplaceDto {
   WorkplaceDto({
     @required this.id,
     @required this.name,
+    @required this.description,
     @required this.location,
     @required this.radiusLength,
     @required this.latitude,
@@ -21,6 +23,7 @@ class WorkplaceDto {
     return WorkplaceDto(
       id: json['id'] as String,
       name: json['name'] as String,
+      description: json['description'] as String,
       location: json['location'] as String,
       radiusLength: json['radiusLength'] as double,
       latitude: json['latitude'] as double,

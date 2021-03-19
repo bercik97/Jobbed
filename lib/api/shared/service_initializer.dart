@@ -31,7 +31,7 @@ class ServiceInitializer {
       "content-type": "application/json"
     };
     switch (obj.toString()) {
-      case 'CompanyService': return new CompanyService(context, header, headers);
+      case 'CompanyService': return new CompanyService(context, headers);
       case 'EmployeeService': return new EmployeeService(context, header, headers);
       case 'EmployeeUnauthenticatedService': return new EmployeeUnauthenticatedService();
       case 'ExcelService': return new ExcelService(context, header);
@@ -40,8 +40,8 @@ class ServiceInitializer {
       case 'ItemPlaceService': return new ItemPlaceService(context, header, headers);
       case 'ManagerService': return new ManagerService(context, header, headers);
       case 'ManagerUnauthenticatedService': return new ManagerUnauthenticatedService();
-      case 'NoteService': return new NoteService(context, header, headers);
-      case 'NoteSubWorkplaceService': return new NoteSubWorkplaceService(context, header, headers);
+      case 'NoteService': return new NoteService(context, headers);
+      case 'NoteSubWorkplaceService': return new NoteSubWorkplaceService(headers);
       case 'PieceworkService': return new PieceworkService(context, header, headers);
       case 'PriceListService': return new PriceListService(context, header, headers);
       case 'SubWorkplaceService': return new SubWorkplaceService(context, header, headers);

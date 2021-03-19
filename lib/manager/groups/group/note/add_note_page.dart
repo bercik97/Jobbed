@@ -74,7 +74,7 @@ class _AddNotePageState extends State<AddNotePage> {
     _workplaceService.findAllByCompanyIdForAddNoteView(_user.companyId).then((res) {
       setState(() {
         workplaces = res;
-        workplaces.insert(0, new WorkplaceForAddNoteDto(id: '', name: '', subWorkplacesDto: new List()));
+        workplaces.insert(0, new WorkplaceForAddNoteDto(id: '', name: '', description: '', subWorkplacesDto: new List()));
         _loading = false;
       });
     });
