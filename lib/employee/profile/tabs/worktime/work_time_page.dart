@@ -366,7 +366,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
   }
 
   _showStartWorkByGPSConfirmDialog(List<WorkplaceIdNameDto> workplaces) {
-    if (workplaces.length > 1 && !_isStartWorkButtonTapped) {
+    if (workplaces.length > 1) {
       _startWorkByGPS(workplaces.first.id);
       return;
     }
