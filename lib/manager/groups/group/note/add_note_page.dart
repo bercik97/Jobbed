@@ -6,6 +6,7 @@ import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:jobbed/api/note/api/note_service.dart';
 import 'package:jobbed/api/note/dto/create_note_dto.dart';
+import 'package:jobbed/api/piecework_service_quantity/dto/piecework_service_quantity_dto.dart';
 import 'package:jobbed/api/price_list/dto/price_list_dto.dart';
 import 'package:jobbed/api/price_list/service/price_list_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
@@ -419,7 +420,7 @@ class _AddNotePageState extends State<AddNotePage> {
               ),
               color: BLUE,
               onPressed: () {
-                String invalidMessage = ValidatorUtil.validateAddNote(_managerNoteController.text, _selectedWorkplacesWithChecked, context);
+                String invalidMessage = ValidatorUtil.validateAddNote(_managerNoteController.text, _selectedWorkplacesWithChecked, _selectedPriceLists, context);
                 if (invalidMessage != null) {
                   setState(() => _isAddNoteButtonTapped = false);
                   ToastUtil.showErrorToast(context, invalidMessage);
@@ -441,17 +442,35 @@ class _AddNotePageState extends State<AddNotePage> {
   }
 
   void _handleAddNote() {
-    setState(() => _isAddNoteButtonTapped = true);
-    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _selectedWorkplacesWithChecked.forEach((key, value) {
       if (value.isEmpty || !value.contains(true)) {
         _selectedWorkplacesIds.add(key.id);
       }
     });
+    List pieceworkServicesQuantities = [];
+    _selectedTextEditingPriceListControllers.forEach((name, quantityController) {
+      String quantity = quantityController.text;
+      if (quantity != '0') {
+        pieceworkServicesQuantities.add(new PieceworkServiceQuantityDto(
+          service: name,
+          toBeDoneQuantity: int.parse(quantity),
+          doneQuantity: 0,
+          done: false,
+        ));
+      }
+    });
+    if (pieceworkServicesQuantities.isEmpty) {
+      ToastUtil.showErrorToast(this.context, getTranslated(context, 'pieceworkCannotBeEmpty'));
+      Navigator.pop(context);
+      return;
+    }
+    setState(() => _isAddNoteButtonTapped = true);
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     CreateNoteDto dto = new CreateNoteDto(
       managerNote: _managerNoteController.text,
       workplaceIds: _selectedWorkplacesIds.map((e) => e.toString()).toList(),
       subWorkplaceIds: _selectedSubWorkplacesIds.map((el) => el.toString()).toList(),
+      pieceworkServicesQuantities: pieceworkServicesQuantities.map((e) => PieceworkServiceQuantityDto.jsonEncode(e)).toList(),
       employeeIds: _employeeIds.toList(),
       yearsWithMonths: _yearsWithMonths.toList(),
       dates: _selectedDates
