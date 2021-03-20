@@ -599,5 +599,6 @@
   "subWorkplaceDescription": "Sub workplace description",
   "workplaceDescription": "Workplace description",
   "workplaceDescriptionWrongLength": "Workplace description length cannot be higher than 500 characters",
-  "addingNote": "Adding note"
+  "addingNote": "Adding note",
+  "noteBasedOnPiecework": "Note based on piecework"
 }

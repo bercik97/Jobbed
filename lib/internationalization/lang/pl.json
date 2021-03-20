@@ -599,5 +599,6 @@
   "subWorkplaceDescription": "Opis podobiektu",
   "workplaceDescription": "Opis miejsca pracy",
   "workplaceDescriptionWrongLength": "Opis miejsca pracy nie może być większy niż 500 znaków",
-  "addingNote": "Dodawanie notatki"
+  "addingNote": "Dodawanie notatki",
+  "noteBasedOnPiecework": "Notatka na podstawie pracy akordowej"
 }

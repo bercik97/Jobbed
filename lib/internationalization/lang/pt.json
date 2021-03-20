@@ -599,5 +599,6 @@
   "subWorkplaceDescription": "ქვე სამუშაო ადგილის აღწერა",
   "workplaceDescription": "სამუშაო ადგილის აღწერა",
   "workplaceDescriptionWrongLength": "სამუშაო ადგილის აღწერილობის სიგრძე არ შეიძლება აღემატებოდეს 500 სიმბოლოს",
-  "addingNote": "ნოტის დამატება"
+  "addingNote": "ნოტის დამატება",
+  "noteBasedOnPiecework": "Note based on piecework"
 }

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 class PriceListDto {
   final int id;
-  final String name;
+  String name;
   final double priceForEmployee;
   final double priceForCompany;
 

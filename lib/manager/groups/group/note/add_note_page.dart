@@ -6,6 +6,8 @@ import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:jobbed/api/note/api/note_service.dart';
 import 'package:jobbed/api/note/dto/create_note_dto.dart';
+import 'package:jobbed/api/price_list/dto/price_list_dto.dart';
+import 'package:jobbed/api/price_list/service/price_list_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/sub_workplace/dto/sub_workplace_dto.dart';
 import 'package:jobbed/api/workplace/dto/workplace_for_add_note_dto.dart';
@@ -27,6 +29,7 @@ import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/expandable_text.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
+import 'package:number_inc_dec/number_inc_dec.dart';
 
 class AddNotePage extends StatefulWidget {
   final GroupModel _model;
@@ -48,10 +51,15 @@ class _AddNotePageState extends State<AddNotePage> {
   List<DateTime> _selectedDates;
 
   WorkplaceService _workplaceService;
+  PriceListService _priceListService;
   NoteService _noteService;
 
   List<WorkplaceForAddNoteDto> workplaces = new List();
   Map<WorkplaceForAddNoteDto, List<bool>> _selectedWorkplacesWithChecked = new Map();
+
+  List<PriceListDto> _priceLists = new List();
+  List<PriceListDto> _selectedPriceLists = new List();
+  Map<String, TextEditingController> _selectedTextEditingPriceListControllers = new Map();
 
   final ScrollController scrollController = new ScrollController();
   final TextEditingController _managerNoteController = new TextEditingController();
@@ -59,6 +67,8 @@ class _AddNotePageState extends State<AddNotePage> {
   bool _loading = false;
   LinkedHashSet<String> _selectedWorkplacesIds = new LinkedHashSet();
   LinkedHashSet<int> _selectedSubWorkplacesIds = new LinkedHashSet();
+
+  final ScrollController _scrollController = new ScrollController();
 
   bool _isAddNoteButtonTapped = false;
 
@@ -70,6 +80,7 @@ class _AddNotePageState extends State<AddNotePage> {
     this._yearsWithMonths = widget._yearsWithMonths;
     this._selectedDates = widget._selectedDates;
     this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
+    this._priceListService = ServiceInitializer.initialize(context, _user.authHeader, PriceListService);
     this._noteService = ServiceInitializer.initialize(context, _user.authHeader, NoteService);
     super.initState();
     _loading = true;
@@ -77,7 +88,13 @@ class _AddNotePageState extends State<AddNotePage> {
       setState(() {
         workplaces = res;
         workplaces.insert(0, new WorkplaceForAddNoteDto(id: '', name: '', description: '', subWorkplacesDto: new List()));
-        _loading = false;
+        _priceListService.findAllByCompanyId(_user.companyId).then((res) {
+          setState(() {
+            _priceLists = res;
+            _priceLists.insert(0, new PriceListDto(id: 0, name: '', priceForCompany: 0.0, priceForEmployee: 0.0));
+            _loading = false;
+          });
+        });
       });
     });
   }
@@ -133,7 +150,7 @@ class _AddNotePageState extends State<AddNotePage> {
                       children: [
                         for (WorkplaceForAddNoteDto workplace in _selectedWorkplacesWithChecked.keys.toList())
                           Padding(
-                            padding: const EdgeInsets.only(left: 15, right: 15),
+                            padding: const EdgeInsets.only(left: 5, right: 5),
                             child: Card(
                               color: WHITE,
                               child: Column(
@@ -145,7 +162,7 @@ class _AddNotePageState extends State<AddNotePage> {
                                     child: ListTileTheme(
                                       child: ListTile(
                                         title: text20BlueBold(UTFDecoderUtil.decode(context, workplace.name)),
-                                        trailing: IconButton(
+                                        leading: IconButton(
                                           icon: iconRed(Icons.remove),
                                           onPressed: () => setState(() => _selectedWorkplacesWithChecked.remove(workplace)),
                                         ),
@@ -211,12 +228,84 @@ class _AddNotePageState extends State<AddNotePage> {
                           ),
                       ],
                     ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: text20OrangeBold(getTranslated(context, 'noteBasedOnPiecework')),
+                    ),
+                    _loading ? circularProgressIndicator() : (_priceLists.length > 1 ? _buildPriceListsDropDown() : _handleNoPriceLists())
+                  ],
+                ),
+              ),
+              Column(
+                children: [
+                  for (var priceList in _selectedPriceLists)
+                    Card(
+                      color: WHITE,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(
+                            height: 80.0,
+                            child: Card(
+                              color: BRIGHTER_BLUE,
+                              child: ListTile(
+                                title: text17BlueBold(UTFDecoderUtil.decode(this.context, priceList.name)),
+                                subtitle: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        text17BlackBold(getTranslated(this.context, 'priceForEmployee') + ': '),
+                                        text16Black(priceList.priceForEmployee.toString()),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        text17BlackBold(getTranslated(this.context, 'priceForCompany') + ': '),
+                                        text16Black(priceList.priceForCompany.toString()),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                leading: IconButton(
+                                    icon: iconRed(Icons.remove),
+                                    onPressed: () {
+                                      setState(() {
+                                        _selectedPriceLists.remove(priceList);
+                                        _selectedTextEditingPriceListControllers.remove(UTFDecoderUtil.decode(this.context, priceList.name));
+                                      });
+                                    }),
+                                trailing: Container(
+                                  width: 100,
+                                  child: _buildNumberField(_selectedTextEditingPriceListControllers[UTFDecoderUtil.decode(this.context, priceList.name)]),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
             ],
           ),
         ),
         bottomNavigationBar: _buildBottomNavigationBar(),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EditSchedulePage(_model)),
+    );
+  }
+
+  _buildNumberField(TextEditingController controller) {
+    return NumberInputWithIncrementDecrement(
+      controller: controller,
+      min: 0,
+      style: TextStyle(color: BLUE),
+      widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
     );
   }
 
@@ -256,6 +345,45 @@ class _AddNotePageState extends State<AddNotePage> {
               _selectedWorkplacesWithChecked[workplace] = _checked;
             }
           });
+        },
+      ),
+    );
+  }
+
+  Widget _handleNoPriceLists() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: text16BlueGrey(getTranslated(context, 'noPriceLists')),
+    );
+  }
+
+  Widget _buildPriceListsDropDown() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: DropDown<String>(
+        isCleared: true,
+        isExpanded: true,
+        hint: text16BlueGrey(getTranslated(context, 'tapToAdd')),
+        items: [
+          for (var priceList in _priceLists) UTFDecoderUtil.decode(context, priceList.name),
+        ],
+        customWidgets: [
+          for (var priceList in _priceLists)
+            Row(
+              children: [
+                textBlack(UTFDecoderUtil.decode(context, priceList.name) + ' '),
+                _selectedPriceLists.contains(priceList) ? iconGreen(Icons.check) : textBlack(' '),
+              ],
+            ),
+        ],
+        onChanged: (value) {
+          PriceListDto priceList = _priceLists.where((element) => UTFDecoderUtil.decode(context, element.name) == value).first;
+          if (priceList.name != '' && !_selectedPriceLists.contains(priceList)) {
+            setState(() {
+              _selectedTextEditingPriceListControllers[UTFDecoderUtil.decode(this.context, value)] = new TextEditingController();
+              _selectedPriceLists.add(priceList);
+            });
+          }
         },
       ),
     );
