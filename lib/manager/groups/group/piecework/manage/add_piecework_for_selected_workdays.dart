@@ -1,8 +1,7 @@
-import 'dart:collection';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
+import 'package:jobbed/api/piecework_service_quantity/dto/piecework_service_quantity_dto.dart';
 import 'package:jobbed/api/price_list/dto/price_list_dto.dart';
 import 'package:jobbed/api/price_list/service/price_list_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
@@ -58,8 +57,6 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
   final Map<String, TextEditingController> _textEditingItemControllers = new Map();
 
   List<PriceListDto> _priceLists = new List();
-
-  Map<String, int> serviceWithQuantity = new LinkedHashMap();
 
   bool _loading = false;
   bool _isAddButtonTapped = false;
@@ -224,19 +221,25 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
 
   void _handleAdd() {
     setState(() => _isAddButtonTapped = true);
+    List pieceworkServicesQuantities = [];
     _textEditingItemControllers.forEach((name, quantityController) {
       String quantity = quantityController.text;
       if (quantity != '0') {
-        serviceWithQuantity[name] = int.parse(quantity);
+        pieceworkServicesQuantities.add(new PieceworkServiceQuantityDto(
+          service: name,
+          toBeDoneQuantity: int.parse(quantity),
+          doneQuantity: int.parse(quantity),
+          done: true,
+        ));
       }
     });
-    if (serviceWithQuantity.isEmpty) {
+    if (pieceworkServicesQuantities.isEmpty) {
       setState(() => _isAddButtonTapped = false);
       ToastUtil.showErrorToast(this.context, getTranslated(context, 'pieceworkCannotBeEmpty'));
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workdayService.updatePieceworkByIds(_selectedWorkdayIds, serviceWithQuantity).then((res) {
+    _workdayService.updatePieceworkByIds(_selectedWorkdayIds, pieceworkServicesQuantities).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyAddedNewReportsAboutPiecework'));
         navigateIntoEmployeeTsInProgressPage();
