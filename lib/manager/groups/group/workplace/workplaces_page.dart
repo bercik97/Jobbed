@@ -220,7 +220,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                                       ? Row(
                                                           children: [
                                                             text16Black(getTranslated(this.context, 'radius') + ': '),
-                                                            text17BlackBold(radiusLength + ' KM'),
+                                                            text17BlackBold(radiusLength.substring(0, 4) + ' KM'),
                                                           ],
                                                         )
                                                       : Row(
