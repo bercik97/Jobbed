@@ -24,6 +24,7 @@ import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
+import 'package:jobbed/shared/widget/expandable_text.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
@@ -86,7 +87,7 @@ class _AddNotePageState extends State<AddNotePage> {
     return WillPopScope(
       child: Scaffold(
         backgroundColor: WHITE,
-        appBar: managerAppBar(context, _model.user, getTranslated(context, 'scheduleEditMode'), () => Navigator.pop(context)),
+        appBar: managerAppBar(context, _model.user, getTranslated(context, 'addingNote'), () => Navigator.pop(context)),
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
@@ -163,8 +164,8 @@ class _AddNotePageState extends State<AddNotePage> {
                                                         foundIndex = i;
                                                       }
                                                     }
-                                                    String name = subWorkplace.name;
-                                                    String description = subWorkplace.description;
+                                                    String name = UTFDecoderUtil.decode(context, subWorkplace.name);
+                                                    String description = UTFDecoderUtil.decode(context, subWorkplace.description);
                                                     return Card(
                                                       color: WHITE,
                                                       child: Column(
@@ -178,7 +179,7 @@ class _AddNotePageState extends State<AddNotePage> {
                                                               child: CheckboxListTile(
                                                                 controlAffinity: ListTileControlAffinity.leading,
                                                                 title: text17BlueBold(UTFDecoderUtil.decode(context, name)),
-                                                                subtitle: textBlack(UTFDecoderUtil.decode(context, description)),
+                                                                subtitle: buildExpandableText(context, UTFDecoderUtil.decode(context, description), 2, 15),
                                                                 activeColor: BLUE,
                                                                 checkColor: WHITE,
                                                                 value: _selectedWorkplacesWithChecked[workplace][foundIndex],

@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:bouncing_widget/bouncing_widget.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
@@ -186,7 +187,14 @@ class _ItemPlacesPageState extends State<ItemPlacesPage> {
                                               children: [
                                                 Align(
                                                   alignment: Alignment.topLeft,
-                                                  child: text17BlueBold(location),
+                                                  child: ExpandableText(
+                                                    location,
+                                                    expandText: getTranslated(context, 'showMore'),
+                                                    collapseText: getTranslated(context, 'showLess'),
+                                                    maxLines: 2,
+                                                    linkColor: Colors.blue,
+                                                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: BLUE),
+                                                  ),
                                                 ),
                                                 Align(
                                                   alignment: Alignment.topLeft,

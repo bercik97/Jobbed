@@ -7,6 +7,7 @@ import 'package:jobbed/employee/shared/employee_app_bar.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
@@ -112,7 +113,7 @@ class _NotePageState extends State<NotePage> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 30, top: 5, right: 30),
+              padding: EdgeInsets.only(left: 30, top: 5, right: 30, bottom: 10),
               child: Align(
                 alignment: Alignment.topLeft,
                 child: employeeNote != null && employeeNote != ''
@@ -196,8 +197,8 @@ class _NotePageState extends State<NotePage> {
                                             foundIndex = j;
                                           }
                                         }
-                                        String name = subWorkplace.subWorkplaceName;
-                                        String description = subWorkplace.subWorkplaceDescription;
+                                        String name = UTFDecoderUtil.decode(context, subWorkplace.subWorkplaceName);
+                                        String description = UTFDecoderUtil.decode(context, subWorkplace.subWorkplaceDescription);
                                         return Card(
                                           color: BRIGHTER_BLUE,
                                           child: Column(
@@ -205,8 +206,15 @@ class _NotePageState extends State<NotePage> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: <Widget>[
                                               ListTile(
-                                                title: text17BlueBold(UTFDecoderUtil.decode(context, name)),
-                                                subtitle: textBlack(UTFDecoderUtil.decode(context, description)),
+                                                title: text17BlueBold(name),
+                                                subtitle: description.length < 20
+                                                    ? text15Black(description)
+                                                    : Row(
+                                                        children: [
+                                                          text15Black(description.substring(0, 20) + ' ...'),
+                                                          IconButton(icon: iconBlue(Icons.search), onPressed: () => DialogUtil.showScrollableDialog(context, name, description)),
+                                                        ],
+                                                      ),
                                                 leading: noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].done ? icon50Green(Icons.check) : icon50Red(Icons.close),
                                               )
                                             ],

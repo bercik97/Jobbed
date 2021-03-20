@@ -598,5 +598,6 @@
   "subWorkplaceName": "Название дополнительного рабочего места",
   "subWorkplaceDescription": "Дополнительное описание рабочего места",
   "workplaceDescription": "Описание рабочего места",
-  "workplaceDescriptionWrongLength": "Workplace description length cannot be higher than 500 characters"
+  "workplaceDescriptionWrongLength": "Длина описания рабочего места не может превышать 500 символов.",
+  "addingNote": "Добавление примечания"
 }

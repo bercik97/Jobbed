@@ -598,5 +598,6 @@
   "subWorkplaceName": "Nazwa podobiektu",
   "subWorkplaceDescription": "Opis podobiektu",
   "workplaceDescription": "Opis miejsca pracy",
-  "workplaceDescriptionWrongLength": "Opis miejsca pracy nie może być większy niż 500 znaków"
+  "workplaceDescriptionWrongLength": "Opis miejsca pracy nie może być większy niż 500 znaków",
+  "addingNote": "Dodawanie notatki"
 }

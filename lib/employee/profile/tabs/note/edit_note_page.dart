@@ -11,6 +11,7 @@ import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/employee/shared/employee_app_bar.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants_length.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
@@ -132,7 +133,7 @@ class _EditNotePageState extends State<EditNotePage> {
                         autofocus: false,
                         controller: _employeeNoteController,
                         keyboardType: TextInputType.text,
-                        maxLength: 510,
+                        maxLength: LENGTH_DESCRIPTION,
                         maxLines: 5,
                         cursorColor: BLACK,
                         textAlignVertical: TextAlignVertical.center,
@@ -208,88 +209,92 @@ class _EditNotePageState extends State<EditNotePage> {
                   ),
                 ),
               ),
-              Scrollbar(
-                controller: scrollController,
-                child: Column(
-                  children: [
-                    for (int i = 0; i < noteSubWorkplaces.keys.toList().length; i++)
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 25),
-                        child: Card(
-                          color: WHITE,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                color: BRIGHTER_BLUE,
-                                child: ListTileTheme(
-                                  child: ListTile(
-                                    title: text20BlackBold(UTFDecoderUtil.decode(context, noteSubWorkplaces.keys.toList()[i])),
-                                    subtitle: SizedBox(
-                                      height: noteSubWorkplaces.values.elementAt(i).length * 80.0,
-                                      child: ListView.builder(
-                                        physics: const NeverScrollableScrollPhysics(),
-                                        itemCount: noteSubWorkplaces.values.elementAt(i).length,
-                                        itemBuilder: (BuildContext context, int index) {
-                                          NoteSubWorkplaceDto subWorkplace = noteSubWorkplaces.values.elementAt(i)[index];
-                                          int foundIndex = 0;
-                                          for (int j = 0; j < noteSubWorkplaces.values.elementAt(i).length; j++) {
-                                            if (noteSubWorkplaces.values.elementAt(i)[j].id == subWorkplace.id) {
-                                              foundIndex = j;
-                                            }
+              Column(
+                children: [
+                  for (int i = 0; i < noteSubWorkplaces.keys.toList().length; i++)
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 25),
+                      child: Card(
+                        color: WHITE,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              color: BRIGHTER_BLUE,
+                              child: ListTileTheme(
+                                child: ListTile(
+                                  title: text20BlackBold(UTFDecoderUtil.decode(context, noteSubWorkplaces.keys.toList()[i])),
+                                  subtitle: SizedBox(
+                                    height: noteSubWorkplaces.values.elementAt(i).length * 80.0,
+                                    child: ListView.builder(
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      itemCount: noteSubWorkplaces.values.elementAt(i).length,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        NoteSubWorkplaceDto subWorkplace = noteSubWorkplaces.values.elementAt(i)[index];
+                                        int foundIndex = 0;
+                                        for (int j = 0; j < noteSubWorkplaces.values.elementAt(i).length; j++) {
+                                          if (noteSubWorkplaces.values.elementAt(i)[j].id == subWorkplace.id) {
+                                            foundIndex = j;
                                           }
-                                          String name = subWorkplace.subWorkplaceName;
-                                          String description = subWorkplace.subWorkplaceDescription;
-                                          return Card(
-                                            color: WHITE,
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                Container(
-                                                  color: BRIGHTER_BLUE,
-                                                  child: ListTileTheme(
-                                                    contentPadding: EdgeInsets.only(right: 10),
-                                                    child: CheckboxListTile(
-                                                      controlAffinity: ListTileControlAffinity.leading,
-                                                      title: text17BlueBold(UTFDecoderUtil.decode(context, name)),
-                                                      subtitle: textBlack(UTFDecoderUtil.decode(context, description)),
-                                                      activeColor: BLUE,
-                                                      checkColor: WHITE,
-                                                      value: noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].done,
-                                                      onChanged: (bool value) {
-                                                        setState(() {
-                                                          noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].done = value;
-                                                          if (value) {
-                                                            doneWorkplaceNoteIds.add(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
-                                                            undoneWorkplaceNoteIds.remove(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
-                                                            _selectedNoteSubWorkplacesIds.add(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
-                                                          } else {
-                                                            doneWorkplaceNoteIds.remove(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
-                                                            undoneWorkplaceNoteIds.add(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
-                                                            _selectedNoteSubWorkplacesIds.remove(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
-                                                          }
-                                                        });
-                                                      },
-                                                    ),
+                                        }
+                                        String name = UTFDecoderUtil.decode(context, subWorkplace.subWorkplaceName);
+                                        String description = UTFDecoderUtil.decode(context, subWorkplace.subWorkplaceDescription);
+                                        return Card(
+                                          color: WHITE,
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Container(
+                                                color: BRIGHTER_BLUE,
+                                                child: ListTileTheme(
+                                                  contentPadding: EdgeInsets.only(right: 10),
+                                                  child: CheckboxListTile(
+                                                    controlAffinity: ListTileControlAffinity.leading,
+                                                    title: text17BlueBold(name),
+                                                    subtitle: description.length < 20
+                                                        ? text15Black(description)
+                                                        : Row(
+                                                            children: [
+                                                              text15Black(description.substring(0, 20) + ' ...'),
+                                                              IconButton(icon: iconBlue(Icons.search), onPressed: () => DialogUtil.showScrollableDialog(context, name, description)),
+                                                            ],
+                                                          ),
+                                                    activeColor: BLUE,
+                                                    checkColor: WHITE,
+                                                    value: noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].done,
+                                                    onChanged: (bool value) {
+                                                      setState(() {
+                                                        noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].done = value;
+                                                        if (value) {
+                                                          doneWorkplaceNoteIds.add(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
+                                                          undoneWorkplaceNoteIds.remove(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
+                                                          _selectedNoteSubWorkplacesIds.add(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
+                                                        } else {
+                                                          doneWorkplaceNoteIds.remove(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
+                                                          undoneWorkplaceNoteIds.add(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
+                                                          _selectedNoteSubWorkplacesIds.remove(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
+                                                        }
+                                                      });
+                                                    },
                                                   ),
-                                                )
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      },
                                     ),
                                   ),
                                 ),
-                              )
-                            ],
-                          ),
+                              ),
+                            )
+                          ],
                         ),
                       ),
-                  ],
-                ),
+                    ),
+                ],
               ),
             ],
           ),

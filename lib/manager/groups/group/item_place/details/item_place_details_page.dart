@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jobbed/api/item_place/dto/item_place_dashboard_dto.dart';
@@ -84,7 +85,14 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                title: text17BlueBold(UTFDecoderUtil.decode(this.context, _itemPlaceDto.location)),
+                title: ExpandableText(
+                  UTFDecoderUtil.decode(this.context, _itemPlaceDto.location),
+                  expandText: getTranslated(context, 'showMore'),
+                  collapseText: getTranslated(context, 'showLess'),
+                  maxLines: 2,
+                  linkColor: Colors.blue,
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: BLUE),
+                ),
               ),
               ListTileTheme(
                 contentPadding: EdgeInsets.only(left: 3),

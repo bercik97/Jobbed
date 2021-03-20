@@ -598,5 +598,6 @@
   "subWorkplaceName": "Назва робочого місця",
   "subWorkplaceDescription": "Опис робочого місця",
   "workplaceDescription": "Опис робочого місця",
-  "workplaceDescriptionWrongLength": "Workplace description length cannot be higher than 500 characters"
+  "workplaceDescriptionWrongLength": "Довжина опису робочого місця не може перевищувати 500 символів",
+  "addingNote": "Додавання примітки"
 }

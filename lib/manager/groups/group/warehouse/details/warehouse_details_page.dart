@@ -20,6 +20,7 @@ import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
+import 'package:jobbed/shared/widget/expandable_text.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
@@ -98,7 +99,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                 subtitle: Column(
                   children: <Widget>[
                     Align(
-                      child: text16Black(UTFDecoderUtil.decode(context, _warehouseDto.description)),
+                      child: buildExpandableText(context, UTFDecoderUtil.decode(context, _warehouseDto.description), 2, 16),
                       alignment: Alignment.topLeft,
                     ),
                   ],
@@ -225,7 +226,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                                                       ),
                                                       Align(
                                                         alignment: Alignment.topLeft,
-                                                        child: text15Black(UTFDecoderUtil.decode(context, item.locationInfoAboutItems[i].itemplace)),
+                                                        child: buildExpandableText(context, UTFDecoderUtil.decode(context, item.locationInfoAboutItems[i].itemplace), 2, 15),
                                                       ),
                                                       SizedBox(height: 5),
                                                     ],

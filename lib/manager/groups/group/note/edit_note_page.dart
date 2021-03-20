@@ -145,7 +145,7 @@ class _EditNotePageState extends State<EditNotePage> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 30, top: 5, right: 30),
+                padding: EdgeInsets.only(left: 30, top: 5, right: 30, bottom: 10),
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: employeeNote != null && employeeNote != ''
@@ -252,8 +252,8 @@ class _EditNotePageState extends State<EditNotePage> {
                                               foundIndex = j;
                                             }
                                           }
-                                          String name = subWorkplace.subWorkplaceName;
-                                          String description = subWorkplace.subWorkplaceDescription;
+                                          String name = UTFDecoderUtil.decode(this.context, subWorkplace.subWorkplaceName);
+                                          String description = UTFDecoderUtil.decode(this.context, subWorkplace.subWorkplaceDescription);
                                           return Card(
                                             color: WHITE,
                                             child: Column(
@@ -266,8 +266,15 @@ class _EditNotePageState extends State<EditNotePage> {
                                                     contentPadding: EdgeInsets.only(right: 10),
                                                     child: CheckboxListTile(
                                                       controlAffinity: ListTileControlAffinity.leading,
-                                                      title: text17BlueBold(UTFDecoderUtil.decode(this.context, name)),
-                                                      subtitle: textBlack(UTFDecoderUtil.decode(this.context, description)),
+                                                      title: text17BlueBold(name),
+                                                      subtitle: description.length < 20
+                                                          ? text15Black(description)
+                                                          : Row(
+                                                              children: [
+                                                                text15Black(description.substring(0, 20) + ' ...'),
+                                                                IconButton(icon: iconBlue(Icons.search), onPressed: () => DialogUtil.showScrollableDialog(context, name, description)),
+                                                              ],
+                                                            ),
                                                       activeColor: BLUE,
                                                       checkColor: WHITE,
                                                       value: noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].done,
