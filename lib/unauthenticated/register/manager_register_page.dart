@@ -9,6 +9,7 @@ import 'package:jobbed/api/manager/service/manager_unauthenticated_service.dart'
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants_length.dart';
 import 'package:jobbed/shared/pdf_viewer_from_asset.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
@@ -153,7 +154,7 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
         ),
         _buildRequiredTextField(
           _usernameController,
-          26,
+          LENGTH_NAME,
           getTranslated(context, 'username'),
           getTranslated(context, 'usernameIsRequired'),
           Icons.person,
@@ -173,14 +174,14 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
         ),
         _buildRequiredTextField(
           _nameController,
-          26,
+          LENGTH_NAME,
           getTranslated(context, 'name'),
           getTranslated(context, 'nameIsRequired'),
           Icons.person_outline,
         ),
         _buildRequiredTextField(
           _surnameController,
-          26,
+          LENGTH_NAME,
           getTranslated(context, 'surname'),
           getTranslated(context, 'surnameIsRequired'),
           Icons.person_outline,

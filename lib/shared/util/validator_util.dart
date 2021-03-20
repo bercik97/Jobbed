@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jobbed/api/workplace/dto/workplace_for_add_note_dto.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
+import 'package:jobbed/shared/libraries/constants_length.dart';
 
 class ValidatorUtil {
   static String validateLoginCredentials(String username, String password, BuildContext context) {
@@ -31,7 +32,7 @@ class ValidatorUtil {
   static String validateUpdatingGroupName(String groupName, BuildContext context) {
     if (groupName.isEmpty) {
       return getTranslated(context, 'groupNameCannotBeEmpty');
-    } else if (groupName.length > 26) {
+    } else if (groupName.length > LENGTH_NAME) {
       return getTranslated(context, 'groupNameWrongLength');
     }
     return null;
@@ -40,7 +41,7 @@ class ValidatorUtil {
   static String validateUpdatingGroupDescription(String groupDescription, BuildContext context) {
     if (groupDescription.isEmpty) {
       return getTranslated(context, 'groupDescriptionCannotBeEmpty');
-    } else if (groupDescription.length > 100) {
+    } else if (groupDescription.length > LENGTH_DESCRIPTION) {
       return getTranslated(context, 'groupDescriptionWrongLength');
     }
     return null;
@@ -55,11 +56,13 @@ class ValidatorUtil {
     return null;
   }
 
-  static String validateWorkplace(String name, BuildContext context) {
+  static String validateWorkplace(String name, String description, BuildContext context) {
     if (name.isEmpty) {
       return getTranslated(context, 'workplaceNameIsRequired');
-    } else if (name.length > 200) {
+    } else if (name.length > LENGTH_NAME) {
       return getTranslated(context, 'workplaceNameWrongLength');
+    } else if (description.length > LENGTH_DESCRIPTION) {
+      return getTranslated(context, 'workplaceDescriptionWrongLength');
     }
     return null;
   }
@@ -67,9 +70,9 @@ class ValidatorUtil {
   static String validateSubWorkplace(String name, String description, BuildContext context) {
     if (name.isEmpty) {
       return getTranslated(context, 'subWorkplaceNameIsRequired');
-    } else if (name.length > 200) {
+    } else if (name.length > LENGTH_NAME) {
       return getTranslated(context, 'subWorkplaceNameWrongLength');
-    } else if (description.length > 510) {
+    } else if (description.length > LENGTH_DESCRIPTION) {
       return getTranslated(context, 'subWorkplaceDescriptionWrongLength');
     }
     return null;
@@ -78,7 +81,7 @@ class ValidatorUtil {
   static String validateAddNote(String note, Map<WorkplaceForAddNoteDto, List<bool>> _selectedWorkplacesWithChecked, BuildContext context) {
     if (note.isEmpty && _selectedWorkplacesWithChecked.isEmpty) {
       return getTranslated(context, 'noteAddFailure');
-    } else if (note.length > 510) {
+    } else if (note.length > LENGTH_DESCRIPTION) {
       return getTranslated(context, 'noteWrongLength');
     }
     return null;

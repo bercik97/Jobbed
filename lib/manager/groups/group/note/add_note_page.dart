@@ -16,6 +16,7 @@ import 'package:jobbed/manager/groups/group/schedule/schedule_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants_length.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
@@ -99,7 +100,7 @@ class _AddNotePageState extends State<AddNotePage> {
                       autofocus: false,
                       controller: _managerNoteController,
                       keyboardType: TextInputType.text,
-                      maxLength: 510,
+                      maxLength: LENGTH_DESCRIPTION,
                       maxLines: 5,
                       cursorColor: BLACK,
                       textAlignVertical: TextAlignVertical.center,

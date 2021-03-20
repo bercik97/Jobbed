@@ -10,6 +10,7 @@ import 'package:jobbed/internationalization/localization/localization_constants.
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants_length.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
@@ -74,7 +75,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
                 _warehouseNameController,
                 getTranslated(context, 'textSomeWarehouseName'),
                 getTranslated(context, 'warehouseName'),
-                26,
+                LENGTH_NAME,
                 1,
                 true,
                 getTranslated(context, 'warehouseNameIsRequired'),
@@ -84,7 +85,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
                 _warehouseDescriptionController,
                 getTranslated(context, 'textSomeWarehouseDescription'),
                 getTranslated(context, 'warehouseDescription'),
-                100,
+                LENGTH_DESCRIPTION,
                 2,
                 true,
                 getTranslated(context, 'warehouseDescriptionIsRequired'),
@@ -97,7 +98,7 @@ class _AddWarehousePageState extends State<AddWarehousePage> {
                       _itemNameController,
                       getTranslated(context, 'textSomeItemName'),
                       getTranslated(context, 'itemName'),
-                      26,
+                      LENGTH_NAME,
                       1,
                       false,
                       null,

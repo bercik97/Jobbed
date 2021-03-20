@@ -1,6 +1,5 @@
 import 'dart:collection';
 
-import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
@@ -17,6 +16,7 @@ import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/utf_decoder_util.dart';
+import 'package:jobbed/shared/widget/expandable_text.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
@@ -117,16 +117,7 @@ class _EditNotePageState extends State<EditNotePage> {
                 padding: EdgeInsets.only(left: 30, top: 5, right: 30),
                 child: Align(
                   alignment: Alignment.topLeft,
-                  child: managerNote != null && managerNote != ''
-                      ? ExpandableText(
-                          managerNote,
-                          expandText: getTranslated(context, 'showMore'),
-                          collapseText: getTranslated(context, 'showLess'),
-                          maxLines: 2,
-                          linkColor: Colors.blue,
-                          style: TextStyle(fontSize: 17),
-                        )
-                      : text16BlueGrey(getTranslated(context, 'noteManagerEmpty')),
+                  child: managerNote != null && managerNote != '' ? buildExpandableText(context, managerNote, 2, 17) : text16BlueGrey(getTranslated(context, 'noteManagerEmpty')),
                 ),
               ),
               Padding(

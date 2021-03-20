@@ -17,6 +17,7 @@ import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/libraries/constants_length.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/icons_legend_util.dart';
@@ -66,6 +67,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
   ScrollController _scrollController = new ScrollController();
 
   TextEditingController _nameController = new TextEditingController();
+  TextEditingController _descriptionController = new TextEditingController();
   TextEditingController _locationController = new TextEditingController();
   TextEditingController _radiusController = new TextEditingController(text: '0.01');
 
@@ -174,7 +176,6 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                 }
                                 String location = workplace.location;
                                 String radiusLength = workplace.radiusLength.toString();
-
                                 return Card(
                                   color: WHITE,
                                   child: Column(
@@ -204,7 +205,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                                 ),
                                                 Align(
                                                   alignment: Alignment.topLeft,
-                                                  child: location != null
+                                                  child: location != null && location != ''
                                                       ? text16Black(UTFDecoderUtil.decode(context, location))
                                                       : Row(
                                                           children: [
@@ -336,19 +337,38 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'createWorkplace'))),
-                  SizedBox(height: 20),
                   Padding(
-                    padding: EdgeInsets.only(left: 25, right: 25),
+                    padding: EdgeInsets.only(top: 20, left: 25, right: 25),
                     child: TextFormField(
                       autofocus: true,
                       controller: _nameController,
                       keyboardType: TextInputType.text,
-                      maxLength: 200,
+                      maxLength: LENGTH_NAME,
+                      maxLines: 1,
+                      cursorColor: BLACK,
+                      textAlignVertical: TextAlignVertical.center,
+                      style: TextStyle(color: BLACK),
+                      decoration: InputDecoration(
+                        hintText: getTranslated(context, 'workplaceName'),
+                        counterStyle: TextStyle(color: BLACK),
+                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
+                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10, left: 25, right: 25, bottom: 10),
+                    child: TextFormField(
+                      autofocus: true,
+                      controller: _descriptionController,
+                      keyboardType: TextInputType.text,
+                      maxLength: LENGTH_DESCRIPTION,
                       maxLines: 5,
                       cursorColor: BLACK,
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: BLACK),
                       decoration: InputDecoration(
+                        hintText: getTranslated(context, 'workplaceDescription'),
                         counterStyle: TextStyle(color: BLACK),
                         focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
@@ -415,7 +435,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                           children: <Widget>[iconWhite(Icons.check)],
                         ),
                         color: BLUE,
-                        onPressed: () => _handleAddWorkplace(_nameController.text),
+                        onPressed: () => _handleAddWorkplace(_nameController.text, _descriptionController.text),
                       ),
                     ],
                   ),
@@ -576,8 +596,8 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
     }
   }
 
-  _handleAddWorkplace(String workplaceName) {
-    String invalidMessage = ValidatorUtil.validateWorkplace(workplaceName, context);
+  _handleAddWorkplace(String name, String description) {
+    String invalidMessage = ValidatorUtil.validateWorkplace(name, description, context);
     if (invalidMessage != null) {
       ToastUtil.showErrorToast(context, invalidMessage);
       return;
@@ -600,6 +620,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
     CreateWorkplaceDto dto = new CreateWorkplaceDto(
       companyId: _user.companyId,
       name: _nameController.text,
+      description: _descriptionController.text,
       location: _locationController.text,
       radiusLength: _locationController.text != null && double.parse(_radiusController.text.toString()) != 0 ? double.parse(_radiusController.text.toString()) : 0,
       latitude: circle != null ? circle.center.latitude : 0,

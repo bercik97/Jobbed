@@ -13,6 +13,7 @@ import 'package:jobbed/internationalization/localization/localization_constants.
 import 'package:jobbed/manager/groups/groups_dashboard_page.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants_length.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
@@ -86,7 +87,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
                   _groupNameController,
                   getTranslated(context, 'nameYourGroup'),
                   getTranslated(context, 'groupName'),
-                  26,
+                  LENGTH_NAME,
                   1,
                   getTranslated(context, 'groupNameIsRequired'),
                 ),
@@ -95,7 +96,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
                   _groupDescriptionController,
                   getTranslated(context, 'textSomeGroupDescription'),
                   getTranslated(context, 'groupDescription'),
-                  100,
+                  LENGTH_DESCRIPTION,
                   2,
                   getTranslated(context, 'groupDescriptionIsRequired'),
                 ),

@@ -7,6 +7,7 @@ import 'package:jobbed/internationalization/localization/localization_constants.
 import 'package:jobbed/manager/groups/groups_dashboard_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants_length.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
@@ -103,8 +104,6 @@ class _GroupEditPageState extends State<GroupEditPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'groupNameUpperCase'))),
-                  SizedBox(height: 2.5),
-                  textBlack(getTranslated(context, 'setNewNameForGroup')),
                   SizedBox(height: 20),
                   Padding(
                     padding: EdgeInsets.only(left: 25, right: 25),
@@ -112,21 +111,15 @@ class _GroupEditPageState extends State<GroupEditPage> {
                       autofocus: false,
                       controller: _groupNameController,
                       keyboardType: TextInputType.text,
-                      maxLength: 26,
+                      maxLength: LENGTH_NAME,
                       maxLines: 1,
                       cursorColor: BLACK,
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: BLACK),
                       decoration: InputDecoration(
-                        hintText: getTranslated(context, 'textSomeGroupName'),
-                        hintStyle: TextStyle(color: BLUE),
                         counterStyle: TextStyle(color: BLACK),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: BLACK, width: 2.5),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: BLACK, width: 2.5),
-                        ),
+                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2.5)),
+                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2.5)),
                       ),
                     ),
                   ),
@@ -207,8 +200,6 @@ class _GroupEditPageState extends State<GroupEditPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'groupDescriptionUpperCase'))),
-                  SizedBox(height: 2.5),
-                  textBlack(getTranslated(context, 'setNewDescriptionForGroup')),
                   SizedBox(height: 20),
                   Padding(
                     padding: EdgeInsets.only(left: 25, right: 25),
@@ -216,21 +207,15 @@ class _GroupEditPageState extends State<GroupEditPage> {
                       autofocus: false,
                       controller: _groupDescriptionController,
                       keyboardType: TextInputType.text,
-                      maxLength: 100,
-                      maxLines: 3,
+                      maxLength: LENGTH_DESCRIPTION,
+                      maxLines: 5,
                       cursorColor: BLACK,
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: BLACK),
                       decoration: InputDecoration(
-                        hintText: getTranslated(context, 'textSomeGroupDescription'),
-                        hintStyle: TextStyle(color: BLUE),
                         counterStyle: TextStyle(color: BLACK),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: BLACK, width: 2.5),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: BLACK, width: 2.5),
-                        ),
+                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2.5)),
+                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2.5)),
                       ),
                     ),
                   ),

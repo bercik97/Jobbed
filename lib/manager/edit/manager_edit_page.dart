@@ -9,6 +9,7 @@ import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/libraries/constants_length.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
@@ -217,7 +218,7 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
         _buildRequiredTextField(
           false,
           _nameController,
-          26,
+          LENGTH_NAME,
           getTranslated(context, 'name'),
           getTranslated(context, 'nameIsRequired'),
           Icons.person_outline,
@@ -225,7 +226,7 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
         _buildRequiredTextField(
           false,
           _surnameController,
-          26,
+          LENGTH_NAME,
           getTranslated(context, 'surname'),
           getTranslated(context, 'surnameIsRequired'),
           Icons.person_outline,

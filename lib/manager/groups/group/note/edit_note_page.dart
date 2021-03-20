@@ -122,7 +122,7 @@ class _EditNotePageState extends State<EditNotePage> {
                         autofocus: false,
                         controller: _managerNoteController,
                         keyboardType: TextInputType.text,
-                        maxLength: 510,
+                        maxLength: 500,
                         maxLines: 5,
                         cursorColor: BLACK,
                         textAlignVertical: TextAlignVertical.center,

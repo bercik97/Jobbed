@@ -21,6 +21,7 @@ import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
+import 'package:jobbed/shared/libraries/constants_length.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/month_util.dart';
@@ -29,6 +30,7 @@ import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
+import 'package:jobbed/shared/widget/expandable_text.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
@@ -76,6 +78,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
   ScrollController _scrollController = new ScrollController();
 
   TextEditingController _nameController = new TextEditingController();
+  TextEditingController _descriptionController = new TextEditingController();
   TextEditingController _locationController = new TextEditingController();
   TextEditingController _radiusController = new TextEditingController(text: '0.01');
 
@@ -130,7 +133,18 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                 subtitle: Column(
                   children: <Widget>[
                     Align(
-                      child: _workplaceDto.location != null
+                      child: _workplaceDto.description != null
+                          ? buildExpandableText(context, _workplaceDto.description, 2, 16)
+                          : Row(
+                              children: [
+                                text16Black(getTranslated(context, 'description') + ': '),
+                                text16BlueGrey(getTranslated(context, 'empty')),
+                              ],
+                            ),
+                      alignment: Alignment.topLeft,
+                    ),
+                    Align(
+                      child: _workplaceDto.location != null && _workplaceDto.location != ''
                           ? text16Black(UTFDecoderUtil.decode(context, _workplaceDto.location))
                           : Row(
                               children: [
@@ -318,7 +332,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                                                 Align(
                                                   alignment: Alignment.topLeft,
                                                   child: description != null
-                                                      ? text16Black(UTFDecoderUtil.decode(this.context, description))
+                                                      ? buildExpandableText(context, description, 2, 16)
                                                       : Row(
                                                           children: [
                                                             text16Black(getTranslated(this.context, 'description') + ': '),
@@ -416,12 +430,13 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                       autofocus: true,
                       controller: _nameController,
                       keyboardType: TextInputType.text,
-                      maxLength: 200,
-                      maxLines: 2,
+                      maxLength: LENGTH_NAME,
+                      maxLines: 1,
                       cursorColor: BLACK,
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: BLACK),
                       decoration: InputDecoration(
+                        hintText: getTranslated(context, 'subWorkplaceName'),
                         counterStyle: TextStyle(color: BLACK),
                         focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
@@ -435,12 +450,13 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                       autofocus: false,
                       controller: _descriptionController,
                       keyboardType: TextInputType.text,
-                      maxLength: 510,
+                      maxLength: LENGTH_DESCRIPTION,
                       maxLines: 5,
                       cursorColor: BLACK,
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: BLACK),
                       decoration: InputDecoration(
+                        hintText: getTranslated(context, 'subWorkplaceDescription'),
                         counterStyle: TextStyle(color: BLACK),
                         focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
@@ -513,7 +529,8 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
 
   void _editWorkplace(WorkplaceDto workplace) {
     _nameController.text = UTFDecoderUtil.decode(this.context, workplace.name);
-    _locationController.text = workplace.location;
+    _descriptionController.text = UTFDecoderUtil.decode(this.context, workplace.description);
+    _locationController.text = UTFDecoderUtil.decode(this.context, workplace.location);
     double latitude = workplace.latitude;
     double longitude = workplace.longitude;
     String location = workplace.location;
@@ -532,15 +549,14 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'editWorkplace'))),
-                  SizedBox(height: 20),
                   Padding(
-                    padding: EdgeInsets.only(left: 25, right: 25),
+                    padding: EdgeInsets.only(top: 20, left: 25, right: 25),
                     child: TextFormField(
                       autofocus: true,
                       controller: _nameController,
                       keyboardType: TextInputType.text,
-                      maxLength: 200,
-                      maxLines: 5,
+                      maxLength: LENGTH_NAME,
+                      maxLines: 1,
                       cursorColor: BLACK,
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: BLACK),
@@ -551,7 +567,26 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                       ),
                     ),
                   ),
-                  radiusLength == 0 ? _buildAddGoogleMapButton() : _buildEditGoogleMapButton(latitude, longitude, location, radiusLength),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10, left: 25, right: 25, bottom: 10),
+                    child: TextFormField(
+                      autofocus: true,
+                      controller: _descriptionController,
+                      keyboardType: TextInputType.text,
+                      maxLength: LENGTH_DESCRIPTION,
+                      maxLines: 5,
+                      cursorColor: BLACK,
+                      textAlignVertical: TextAlignVertical.center,
+                      style: TextStyle(color: BLACK),
+                      decoration: InputDecoration(
+                        hintText: getTranslated(context, 'workplaceDescription'),
+                        counterStyle: TextStyle(color: BLACK),
+                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
+                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
+                      ),
+                    ),
+                  ),
+                  _buildGoogleMapButton(latitude, longitude, location, radiusLength),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -579,7 +614,8 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                         color: BLUE,
                         onPressed: () {
                           String name = _nameController.text;
-                          String invalidMessage = ValidatorUtil.validateWorkplace(name, context);
+                          String description = _descriptionController.text;
+                          String invalidMessage = ValidatorUtil.validateWorkplace(name, description, context);
                           if (invalidMessage != null) {
                             ToastUtil.showErrorToast(context, invalidMessage);
                             return;
@@ -594,6 +630,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                             workplace.id,
                             {
                               'name': name,
+                              'description': description,
                               'location': _locationController.text,
                               'radiusLength': _locationController.text != null && double.parse(_radiusController.text.toString()) != 0 ? double.parse(_radiusController.text.toString()) : 0,
                               'latitude': circle != null ? circle.center.latitude : 0,
@@ -627,9 +664,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
     );
   }
 
-  _buildEditGoogleMapButton(double latitude, double longitude, String location, double radiusLength) {
-    this._radiusController.text = radiusLength.toString();
-    this._locationController.text = UTFDecoderUtil.decode(this.context, location);
+  _buildGoogleMapButton(double latitude, double longitude, String location, double radiusLength) {
     return Padding(
       padding: EdgeInsets.only(left: 30, right: 30, bottom: 30),
       child: Row(
@@ -650,319 +685,168 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
               ),
             ),
           ),
-          IconButton(
-            icon: icon50Green(Icons.add),
-            onPressed: () {
-              showGeneralDialog(
-                context: context,
-                barrierColor: WHITE.withOpacity(0.95),
-                barrierDismissible: false,
-                transitionDuration: Duration(milliseconds: 400),
-                pageBuilder: (_, __, ___) {
-                  return SizedBox.expand(
-                    child: StatefulBuilder(
-                      builder: (context, setState) {
-                        return Scaffold(
-                          appBar: AppBar(
-                            iconTheme: IconThemeData(color: WHITE),
-                            backgroundColor: Colors.white,
-                            title: text16Black(UTFDecoderUtil.decode(this.context, location)),
-                            leading: IconButton(
-                              icon: iconBlack(Icons.arrow_back),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ),
-                          body: GoogleMap(
-                            zoomControlsEnabled: false,
-                            myLocationButtonEnabled: false,
-                            initialCameraPosition: new CameraPosition(target: new LatLng(latitude, longitude), zoom: 16),
-                            markers: _markersList.toSet(),
-                            onMapCreated: (controller) {
-                              this._controller = controller;
-                              LatLng currentLatLng = new LatLng(latitude, longitude);
-                              _controller.animateCamera(CameraUpdate.newLatLng(currentLatLng));
-                              _markersList.clear();
-                              _markersList.add(
-                                new Marker(
-                                  position: currentLatLng,
-                                  markerId: MarkerId('$latitude-$longitude'),
-                                ),
-                              );
-                              _circles.clear();
-                              _circles.add(
-                                new Circle(
-                                  circleId: CircleId('$latitude-$longitude'),
-                                  center: LatLng(latitude, longitude),
-                                  radius: double.parse(_radiusController.text) * 1000,
-                                  strokeColor: BLUE,
-                                  fillColor: Colors.grey.withOpacity(0.5),
-                                  strokeWidth: 5,
-                                ),
-                              );
-                              setState(() {});
-                            },
-                            circles: _circles,
-                            onTap: (coordinates) {
-                              _controller.animateCamera(CameraUpdate.newLatLng(coordinates));
-                              _markersList.clear();
-                              _markersList.add(
-                                new Marker(
-                                  position: coordinates,
-                                  markerId: MarkerId('${coordinates.latitude}-${coordinates.longitude}'),
-                                ),
-                              );
-                              _circles.clear();
-                              _circles.add(
-                                new Circle(
-                                  circleId: CircleId('${coordinates.latitude}-${coordinates.longitude}'),
-                                  center: LatLng(coordinates.latitude, coordinates.longitude),
-                                  radius: double.parse(_radiusController.text) * 1000,
-                                  strokeColor: BLUE,
-                                  fillColor: Colors.grey.withOpacity(0.5),
-                                  strokeWidth: 5,
-                                ),
-                              );
-                              setState(() {});
-                            },
-                          ),
-                          bottomNavigationBar: SafeArea(
-                            child: Row(
-                              children: [
-                                Container(
-                                  height: MediaQuery.of(context).size.height * 0.10,
-                                  width: MediaQuery.of(context).size.width * 0.70,
-                                  child: SfSlider(
-                                    min: 0.01,
-                                    max: 0.25,
-                                    value: double.parse(_radiusController.text),
-                                    interval: 0.08,
-                                    showTicks: true,
-                                    showLabels: true,
-                                    minorTicksPerInterval: 1,
-                                    inactiveColor: BRIGHTER_BLUE,
-                                    activeColor: BLUE,
-                                    onChanged: (dynamic value) {
-                                      Circle circle = _circles.elementAt(0);
-                                      _circles.clear();
-                                      _circles.add(
-                                        new Circle(
-                                          circleId: CircleId('${circle.circleId}'),
-                                          center: circle.center,
-                                          radius: double.parse(_radiusController.text) * 1000,
-                                          strokeColor: BLUE,
-                                          fillColor: Colors.grey.withOpacity(0.5),
-                                          strokeWidth: 5,
-                                        ),
-                                      );
-                                      setState(() => _radiusController.text = value.toString());
-                                    },
-                                  ),
-                                ),
-                                MaterialButton(
-                                  elevation: 0,
-                                  height: 50,
-                                  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[iconWhite(Icons.check)],
-                                  ),
-                                  color: BLUE,
-                                  onPressed: () {
-                                    Navigator.pop(this.context);
-                                    setState(() => _locationController.text = UTFDecoderUtil.decode(this.context, location));
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-                          floatingActionButton: warnHint(this.context, getTranslated(this.context, 'rememberSetLocationHint')),
-                        );
-                      },
-                    ),
-                  );
-                },
+          IconButton(icon: icon50Green(Icons.add), onPressed: () => _handleGoogleMapLocation(LatLng(latitude, longitude), location, radiusLength)),
+        ],
+      ),
+    );
+  }
+
+  _handleGoogleMapLocation(LatLng latLng, String location, double radiusLength) async {
+    LocationResult result;
+    if (location != null && location != '') {
+      result = await showLocationPicker(
+        context,
+        GOOGLE_MAP_API_KEY,
+        layersButtonEnabled: true,
+        myLocationButtonEnabled: true,
+        automaticallyAnimateToCurrentLocation: true,
+        initialCenter: latLng,
+      );
+    } else {
+      result = await showLocationPicker(
+        context,
+        GOOGLE_MAP_API_KEY,
+        layersButtonEnabled: true,
+        myLocationButtonEnabled: true,
+        automaticallyAnimateToCurrentLocation: true,
+      );
+    }
+    showGoogleMapDialog(result.latLng, result.address, radiusLength);
+  }
+
+  void showGoogleMapDialog(LatLng latLng, String location, double radiusLength) {
+    _radiusController.text = radiusLength.toString();
+    showGeneralDialog(
+      context: context,
+      barrierColor: WHITE.withOpacity(0.95),
+      barrierDismissible: false,
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return SizedBox.expand(
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              return Scaffold(
+                appBar: AppBar(
+                  iconTheme: IconThemeData(color: WHITE),
+                  backgroundColor: Colors.white,
+                  title: text16Black(location),
+                  leading: IconButton(
+                    icon: iconBlack(Icons.arrow_back),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ),
+                body: GoogleMap(
+                  myLocationButtonEnabled: false,
+                  initialCameraPosition: new CameraPosition(target: latLng, zoom: 16),
+                  markers: _markersList.toSet(),
+                  onMapCreated: (controller) {
+                    this._controller = controller;
+                    LatLng currentLatLng = latLng;
+                    double latitude = latLng.latitude;
+                    double longitude = latLng.longitude;
+                    _controller.animateCamera(CameraUpdate.newLatLng(currentLatLng));
+                    _markersList.clear();
+                    _markersList.add(
+                      new Marker(
+                        position: currentLatLng,
+                        markerId: MarkerId('$latitude-$longitude'),
+                      ),
+                    );
+                    _circles.clear();
+                    _circles.add(
+                      new Circle(
+                        circleId: CircleId('$latitude-$longitude'),
+                        center: LatLng(latitude, longitude),
+                        radius: double.parse(_radiusController.text) * 1000,
+                        strokeColor: BLUE,
+                        fillColor: Colors.grey.withOpacity(0.5),
+                        strokeWidth: 5,
+                      ),
+                    );
+                    setState(() {});
+                  },
+                  circles: _circles,
+                  onTap: (coordinates) {
+                    _controller.animateCamera(CameraUpdate.newLatLng(coordinates));
+                    _markersList.clear();
+                    _markersList.add(
+                      new Marker(
+                        position: coordinates,
+                        markerId: MarkerId('${coordinates.latitude}-${coordinates.longitude}'),
+                      ),
+                    );
+                    _circles.clear();
+                    _circles.add(
+                      new Circle(
+                        circleId: CircleId('${51.9189046}-${19.1343786}'),
+                        center: LatLng(coordinates.latitude, coordinates.longitude),
+                        radius: double.parse(_radiusController.text) * 1000,
+                        strokeColor: BLUE,
+                        fillColor: Colors.grey.withOpacity(0.5),
+                        strokeWidth: 5,
+                      ),
+                    );
+                    setState(() {});
+                  },
+                ),
+                bottomNavigationBar: SafeArea(
+                  child: Row(
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.10,
+                        width: MediaQuery.of(context).size.width * 0.70,
+                        child: SfSlider(
+                          min: 0.01,
+                          max: 0.25,
+                          value: double.parse(_radiusController.text),
+                          interval: 0.08,
+                          showTicks: true,
+                          showLabels: true,
+                          minorTicksPerInterval: 1,
+                          inactiveColor: BRIGHTER_BLUE,
+                          activeColor: BLUE,
+                          onChanged: (dynamic value) {
+                            Circle circle = _circles.elementAt(0);
+                            _circles.clear();
+                            _circles.add(
+                              new Circle(
+                                circleId: CircleId('${circle.circleId}'),
+                                center: circle.center,
+                                radius: double.parse(_radiusController.text) * 1000,
+                                strokeColor: BLUE,
+                                fillColor: Colors.grey.withOpacity(0.5),
+                                strokeWidth: 5,
+                              ),
+                            );
+                            setState(() => _radiusController.text = value.toString());
+                          },
+                        ),
+                      ),
+                      MaterialButton(
+                        elevation: 0,
+                        height: 50,
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[iconWhite(Icons.check)],
+                        ),
+                        color: BLUE,
+                        onPressed: () {
+                          Navigator.pop(this.context);
+                          setState(() => _locationController.text = location);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+                floatingActionButton: warnHint(this.context, getTranslated(this.context, 'rememberSetLocationHint')),
               );
             },
           ),
-        ],
-      ),
+        );
+      },
     );
-  }
-
-  _buildAddGoogleMapButton() {
-    return Padding(
-      padding: EdgeInsets.only(left: 30, right: 30, bottom: 30),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width * 0.70,
-            child: TextFormField(
-              controller: _locationController,
-              maxLines: 2,
-              cursorColor: BLACK,
-              enabled: false,
-              textAlignVertical: TextAlignVertical.center,
-              style: TextStyle(color: BLACK),
-              decoration: InputDecoration(
-                hintText: getTranslated(context, 'workplaceLocationIsNotSet'),
-                hintStyle: _locationController.text.isEmpty ? TextStyle(color: Colors.blueGrey) : TextStyle(color: BLUE),
-              ),
-            ),
-          ),
-          IconButton(icon: icon50Green(Icons.add), onPressed: () => _handleOpenGoogleMap()),
-        ],
-      ),
-    );
-  }
-
-  _handleOpenGoogleMap() async {
-    LocationResult result = await showLocationPicker(
-      context,
-      GOOGLE_MAP_API_KEY,
-      layersButtonEnabled: true,
-      myLocationButtonEnabled: true,
-      automaticallyAnimateToCurrentLocation: true,
-    );
-    if (result != null) {
-      showGeneralDialog(
-        context: context,
-        barrierColor: WHITE.withOpacity(0.95),
-        barrierDismissible: false,
-        transitionDuration: Duration(milliseconds: 400),
-        pageBuilder: (_, __, ___) {
-          return SizedBox.expand(
-            child: StatefulBuilder(
-              builder: (context, setState) {
-                return Scaffold(
-                  appBar: AppBar(
-                    iconTheme: IconThemeData(color: WHITE),
-                    backgroundColor: Colors.white,
-                    title: text16Black(result.address),
-                    leading: IconButton(
-                      icon: iconBlack(Icons.arrow_back),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        _handleOpenGoogleMap();
-                      },
-                    ),
-                  ),
-                  body: GoogleMap(
-                    myLocationButtonEnabled: false,
-                    initialCameraPosition: new CameraPosition(target: result.latLng, zoom: 16),
-                    markers: _markersList.toSet(),
-                    onMapCreated: (controller) {
-                      this._controller = controller;
-                      LatLng currentLatLng = result.latLng;
-                      double latitude = result.latLng.latitude;
-                      double longitude = result.latLng.longitude;
-                      _controller.animateCamera(CameraUpdate.newLatLng(currentLatLng));
-                      _markersList.clear();
-                      _markersList.add(
-                        new Marker(
-                          position: currentLatLng,
-                          markerId: MarkerId('$latitude-$longitude'),
-                        ),
-                      );
-                      _circles.clear();
-                      _circles.add(
-                        new Circle(
-                          circleId: CircleId('$latitude-$longitude'),
-                          center: LatLng(latitude, longitude),
-                          radius: double.parse(_radiusController.text) * 1000,
-                          strokeColor: BLUE,
-                          fillColor: Colors.grey.withOpacity(0.5),
-                          strokeWidth: 5,
-                        ),
-                      );
-                      setState(() {});
-                    },
-                    circles: _circles,
-                    onTap: (coordinates) {
-                      _controller.animateCamera(CameraUpdate.newLatLng(coordinates));
-                      _markersList.clear();
-                      _markersList.add(
-                        new Marker(
-                          position: coordinates,
-                          markerId: MarkerId('${coordinates.latitude}-${coordinates.longitude}'),
-                        ),
-                      );
-                      _circles.clear();
-                      _circles.add(
-                        new Circle(
-                          circleId: CircleId('${51.9189046}-${19.1343786}'),
-                          center: LatLng(coordinates.latitude, coordinates.longitude),
-                          radius: double.parse(_radiusController.text) * 1000,
-                          strokeColor: BLUE,
-                          fillColor: Colors.grey.withOpacity(0.5),
-                          strokeWidth: 5,
-                        ),
-                      );
-                      setState(() {});
-                    },
-                  ),
-                  bottomNavigationBar: SafeArea(
-                    child: Row(
-                      children: [
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.10,
-                          width: MediaQuery.of(context).size.width * 0.70,
-                          child: SfSlider(
-                            min: 0.01,
-                            max: 0.25,
-                            value: double.parse(_radiusController.text),
-                            interval: 0.08,
-                            showTicks: true,
-                            showLabels: true,
-                            minorTicksPerInterval: 1,
-                            inactiveColor: BRIGHTER_BLUE,
-                            activeColor: BLUE,
-                            onChanged: (dynamic value) {
-                              Circle circle = _circles.elementAt(0);
-                              _circles.clear();
-                              _circles.add(
-                                new Circle(
-                                  circleId: CircleId('${circle.circleId}'),
-                                  center: circle.center,
-                                  radius: double.parse(_radiusController.text) * 1000,
-                                  strokeColor: BLUE,
-                                  fillColor: Colors.grey.withOpacity(0.5),
-                                  strokeWidth: 5,
-                                ),
-                              );
-                              setState(() => _radiusController.text = value.toString());
-                            },
-                          ),
-                        ),
-                        MaterialButton(
-                          elevation: 0,
-                          height: 50,
-                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[iconWhite(Icons.check)],
-                          ),
-                          color: BLUE,
-                          onPressed: () {
-                            Navigator.pop(this.context);
-                            setState(() => _locationController.text = result.address);
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-                  floatingActionButton: warnHint(this.context, getTranslated(this.context, 'rememberSetLocationHint')),
-                );
-              },
-            ),
-          );
-        },
-      );
-    }
   }
 
   _handleGenerateExcel(String workplaceId, String workplaceName, String date) {
@@ -1012,12 +896,13 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                       autofocus: true,
                       controller: _nameController,
                       keyboardType: TextInputType.text,
-                      maxLength: 200,
-                      maxLines: 2,
+                      maxLength: LENGTH_NAME,
+                      maxLines: 1,
                       cursorColor: BLACK,
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: BLACK),
                       decoration: InputDecoration(
+                        hintText: getTranslated(context, 'subWorkplaceName'),
                         counterStyle: TextStyle(color: BLACK),
                         focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
@@ -1031,12 +916,13 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                       autofocus: false,
                       controller: _descriptionController,
                       keyboardType: TextInputType.text,
-                      maxLength: 510,
+                      maxLength: LENGTH_DESCRIPTION,
                       maxLines: 5,
                       cursorColor: BLACK,
                       textAlignVertical: TextAlignVertical.center,
                       style: TextStyle(color: BLACK),
                       decoration: InputDecoration(
+                        hintText: getTranslated(context, 'subWorkplaceDescription'),
                         counterStyle: TextStyle(color: BLACK),
                         focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
