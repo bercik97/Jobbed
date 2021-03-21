@@ -8,6 +8,7 @@ class EmployeeScheduleDto {
   final String moneyForPiecework;
   final List workTimes;
   final List pieceworks;
+  final bool isWorkTouched;
   final NoteDto note;
   final int allNoteTasks;
   final int doneTasks;
@@ -17,6 +18,7 @@ class EmployeeScheduleDto {
     @required this.moneyForPiecework,
     @required this.workTimes,
     @required this.pieceworks,
+    @required this.isWorkTouched,
     @required this.note,
     @required this.allNoteTasks,
     @required this.doneTasks,
@@ -29,6 +31,7 @@ class EmployeeScheduleDto {
       moneyForPiecework: json['moneyForPiecework'] as String,
       workTimes: json['workTimes'].map((data) => WorkTimeDto.fromJson(data)).toList(),
       pieceworks: json['pieceworks'].map((data) => PieceworkDetailsDto.fromJson(data)).toList(),
+      isWorkTouched: json['workTouched'] as bool,
       note: noteJson != null ? NoteDto.fromJson(noteJson) : null,
       allNoteTasks: json['allNoteTasks'] as int,
       doneTasks: json['doneTasks'] as int,

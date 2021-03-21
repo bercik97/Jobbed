@@ -21,6 +21,7 @@ import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/expandable_text.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
+import 'package:number_inc_dec/number_inc_dec.dart';
 
 import '../../../employee_profile_page.dart';
 
@@ -44,6 +45,8 @@ class _EditNotePageState extends State<EditNotePage> {
   Map<String, List<NoteSubWorkplaceDto>> noteSubWorkplaces = new Map();
   int doneTasks = 0;
   int allTasks = 0;
+  int donePieceworkTasks = 0;
+  int allPieceworkTasks = 0;
   final TextEditingController _employeeNoteController = new TextEditingController();
 
   final ScrollController scrollController = new ScrollController();
@@ -51,6 +54,9 @@ class _EditNotePageState extends State<EditNotePage> {
   List<bool> _checkedNoteWorkplaces = new List();
   LinkedHashSet<int> _selectedNoteWorkplacesIds = new LinkedHashSet();
   LinkedHashSet<int> _selectedNoteSubWorkplacesIds = new LinkedHashSet();
+
+  List _pieceworksDetails = new List();
+  final Map<String, TextEditingController> _textEditingItemControllers = new Map();
 
   List doneWorkplaceNoteIds = new List();
   List undoneWorkplaceNoteIds = new List();
@@ -64,6 +70,7 @@ class _EditNotePageState extends State<EditNotePage> {
     this._user = widget._user;
     this._todayDate = widget._todayDate;
     this._noteDto = widget._noteDto;
+    this._pieceworksDetails = _noteDto.pieceworksDetails;
     this._noteService = ServiceInitializer.initialize(context, _user.authHeader, NoteService);
     super.initState();
     _noteDto.noteSubWorkplaceDto.forEach((element) {
@@ -83,12 +90,19 @@ class _EditNotePageState extends State<EditNotePage> {
         undoneWorkplaceNoteIds.add(element.id);
       }
     });
+    _pieceworksDetails.forEach((element) {
+      setState(() => _textEditingItemControllers[UTFDecoderUtil.decode(this.context, element.service)] = new TextEditingController());
+      if (element.done) {
+        donePieceworkTasks++;
+      }
+      allPieceworkTasks++;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    doneTasks = doneWorkplaceNoteIds.length;
-    allTasks = doneTasks + undoneWorkplaceNoteIds.length;
+    doneTasks = doneWorkplaceNoteIds.length + donePieceworkTasks;
+    allTasks = undoneWorkplaceNoteIds.length + doneWorkplaceNoteIds.length + allPieceworkTasks;
     String managerNote = _noteDto.managerNote;
     return WillPopScope(
       child: Scaffold(
@@ -149,6 +163,22 @@ class _EditNotePageState extends State<EditNotePage> {
                   ],
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.only(left: 30),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: text20OrangeBold(getTranslated(context, 'noteBasedOnWorkplace')),
+                ),
+              ),
+              noteWorkplaces.isEmpty && noteSubWorkplaces.isEmpty
+                  ? Padding(
+                      padding: EdgeInsets.only(left: 30),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: text16BlueGrey(getTranslated(context, 'noNoteBasedOnWorkplace')),
+                      ),
+                    )
+                  : SizedBox(height: 0),
               Scrollbar(
                 controller: scrollController,
                 child: SizedBox(
@@ -297,6 +327,82 @@ class _EditNotePageState extends State<EditNotePage> {
                     ),
                 ],
               ),
+              Padding(
+                padding: EdgeInsets.only(left: 30, top: 10),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: text20OrangeBold(getTranslated(context, 'noteBasedOnPiecework')),
+                ),
+              ),
+              _pieceworksDetails.isEmpty
+                  ? Padding(
+                      padding: EdgeInsets.only(left: 30),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: text16BlueGrey(getTranslated(context, 'noNoteBasedOnPiecework')),
+                      ),
+                    )
+                  : SizedBox(height: 0),
+              Scrollbar(
+                controller: scrollController,
+                child: Column(
+                  children: [
+                    for (var piecework in _pieceworksDetails)
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 25),
+                        child: Card(
+                          color: WHITE,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(
+                                height: 80.0,
+                                child: Card(
+                                  color: BRIGHTER_BLUE,
+                                  child: ListTile(
+                                    title: text17BlueBold(UTFDecoderUtil.decode(this.context, piecework.service)),
+                                    subtitle: text20Black(piecework.doneQuantity.toString() + ' / ' + piecework.toBeDoneQuantity.toString()),
+                                    leading: piecework.doneQuantity == piecework.toBeDoneQuantity ? icon50Green(Icons.check) : icon50Red(Icons.close),
+                                    trailing: Container(
+                                      width: 100,
+                                      child: NumberInputWithIncrementDecrement(
+                                        controller: _textEditingItemControllers[UTFDecoderUtil.decode(this.context, piecework.service)],
+                                        initialValue: piecework.doneQuantity,
+                                        style: TextStyle(color: BLUE),
+                                        max: piecework.toBeDoneQuantity,
+                                        widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
+                                        onIncrement: (value) {
+                                          if (piecework.doneQuantity == piecework.toBeDoneQuantity) {
+                                            return;
+                                          }
+                                          setState(() {
+                                            piecework.doneQuantity = value;
+                                            if (piecework.doneQuantity == piecework.toBeDoneQuantity) {
+                                              donePieceworkTasks++;
+                                            }
+                                          });
+                                        },
+                                        onDecrement: (value) {
+                                          setState(() {
+                                            if (piecework.doneQuantity == piecework.toBeDoneQuantity) {
+                                              donePieceworkTasks--;
+                                            }
+                                            piecework.doneQuantity = value;
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -332,7 +438,7 @@ class _EditNotePageState extends State<EditNotePage> {
     UpdateNoteDto dto = new UpdateNoteDto(
       workdayId: _noteDto.workdayId,
       noteSubWorkplaceDto: noteSubWorkplaceDto,
-      pieceworksDetailsDto: null,
+      pieceworksDetailsDto: _pieceworksDetails,
     );
     _noteService.update(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

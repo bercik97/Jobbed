@@ -32,10 +32,15 @@ Widget employeeToday(BuildContext context, User user, EmployeeProfileDto dto) {
   List todayPiecework = dto.todayPiecework;
   NoteDto todayNote = dto.todayNote;
   List noteSubWorkplaces;
-  List doneTasks;
+  List doneWorkplacesTasks;
+  int doneTasksNum = 0;
+  int allTasksNum = 0;
   if (todayNote != null) {
     noteSubWorkplaces = todayNote.noteSubWorkplaceDto;
-    doneTasks = noteSubWorkplaces.where((e) => e.done).toList();
+    doneWorkplacesTasks = noteSubWorkplaces.where((e) => e.done).toList();
+    List donePieceworkTasks = todayNote.pieceworksDetails.where((e) => e.done).toList();
+    doneTasksNum += doneWorkplacesTasks.length + donePieceworkTasks.length;
+    allTasksNum += noteSubWorkplaces.length + todayNote.pieceworksDetails.length;
   }
   return SingleChildScrollView(
     child: Padding(
@@ -43,7 +48,7 @@ Widget employeeToday(BuildContext context, User user, EmployeeProfileDto dto) {
       child: Column(
         children: [
           ListTile(
-            trailing: todayMoney != '0.000' || (dto.todayNote != null && noteSubWorkplaces.length == doneTasks.length) ? icon50Green(Icons.check) : icon50Red(Icons.close),
+            trailing: todayMoney != '0.000' || (dto.todayNote != null && doneTasksNum == allTasksNum) ? icon50Green(Icons.check) : icon50Red(Icons.close),
             subtitle: Column(
               children: <Widget>[
                 SizedBox(height: 7.5),
@@ -90,7 +95,7 @@ Widget employeeToday(BuildContext context, User user, EmployeeProfileDto dto) {
                     ),
                     alignment: Alignment.topLeft),
                 SizedBox(height: 5),
-                dto.todayNote != null ? _buildNoteContainer(context, user, dto.todayDate, dto.todayNote, noteSubWorkplaces, doneTasks) : _buildEmptyNoteContainer(context),
+                dto.todayNote != null ? _buildNoteContainer(context, user, dto.todayDate, dto.todayNote, doneTasksNum, allTasksNum) : _buildEmptyNoteContainer(context),
               ],
             ),
           ),
@@ -100,11 +105,11 @@ Widget employeeToday(BuildContext context, User user, EmployeeProfileDto dto) {
   );
 }
 
-Widget _buildNoteContainer(BuildContext context, User user, String todayDate, NoteDto noteDto, List noteSubWorkplaces, List doneTasks) {
+Widget _buildNoteContainer(BuildContext context, User user, String todayDate, NoteDto noteDto, int doneTasks, int allTasks) {
   return ListTile(
     dense: true,
     contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-    title: text20Black(getTranslated(context, 'note') + ' ' + doneTasks.length.toString() + ' / ' + noteSubWorkplaces.length.toString()),
+    title: text20Black(getTranslated(context, 'note') + ' ' + doneTasks.toString() + ' / ' + allTasks.toString()),
     subtitle: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

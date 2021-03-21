@@ -35,6 +35,8 @@ class _NotePageState extends State<NotePage> {
   List<NoteSubWorkplaceDto> noteWorkplaces = new List();
   Map<String, List<NoteSubWorkplaceDto>> noteSubWorkplaces = new Map();
 
+  List _pieceworksDetails = new List();
+
   final ScrollController scrollController = new ScrollController();
 
   List<bool> _checkedNoteWorkplaces = new List();
@@ -44,6 +46,7 @@ class _NotePageState extends State<NotePage> {
     this._user = widget._user;
     this._todayDate = widget._todayDate;
     this._noteDto = widget._noteDto;
+    this._pieceworksDetails = _noteDto.pieceworksDetails;
     this._doneTasks = widget.doneTasks;
     this._allTasks = widget.allTasks;
     super.initState();
@@ -128,6 +131,22 @@ class _NotePageState extends State<NotePage> {
                     : text16BlueGrey(getTranslated(context, 'yourNoteIsEmpty')),
               ),
             ),
+            Padding(
+              padding: EdgeInsets.only(left: 30),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: text20OrangeBold(getTranslated(context, 'noteBasedOnWorkplace')),
+              ),
+            ),
+            noteWorkplaces.isEmpty && noteSubWorkplaces.isEmpty
+                ? Padding(
+                    padding: EdgeInsets.only(left: 30),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: text16BlueGrey(getTranslated(context, 'noNoteBasedOnWorkplace')),
+                    ),
+                  )
+                : SizedBox(height: 0),
             Scrollbar(
               controller: scrollController,
               child: SizedBox(
@@ -226,6 +245,53 @@ class _NotePageState extends State<NotePage> {
                                 ),
                               ),
                             )
+                          ],
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 30, top: 10),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: text20OrangeBold(getTranslated(context, 'noteBasedOnPiecework')),
+              ),
+            ),
+            _pieceworksDetails.isEmpty
+                ? Padding(
+                    padding: EdgeInsets.only(left: 30),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: text16BlueGrey(getTranslated(context, 'noNoteBasedOnPiecework')),
+                    ),
+                  )
+                : SizedBox(height: 0),
+            Scrollbar(
+              controller: scrollController,
+              child: Column(
+                children: [
+                  for (var piecework in _pieceworksDetails)
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 25),
+                      child: Card(
+                        color: WHITE,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            SizedBox(
+                              height: 80.0,
+                              child: Card(
+                                color: BRIGHTER_BLUE,
+                                child: ListTile(
+                                  title: text17BlueBold(UTFDecoderUtil.decode(this.context, piecework.service)),
+                                  subtitle: text20Black(piecework.doneQuantity.toString() + ' / ' + piecework.toBeDoneQuantity.toString()),
+                                  leading: piecework.doneQuantity == piecework.toBeDoneQuantity ? icon50Green(Icons.check) : icon50Red(Icons.close),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),

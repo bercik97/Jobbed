@@ -212,7 +212,7 @@ class _EmployeeSchedulePageState extends State<EmployeeSchedulePage> with Ticker
     return Column(
       children: [
         ListTile(
-          trailing: moneyForTime != '0.000' || moneyForPiecework != '0.000' || (noteDto != null && doneTasks == allTasks) ? icon50Green(Icons.check) : icon50Red(Icons.close),
+          trailing: employee.isWorkTouched ? icon50Green(Icons.check) : icon50Red(Icons.close),
           subtitle: Column(
             children: <Widget>[
               Align(
