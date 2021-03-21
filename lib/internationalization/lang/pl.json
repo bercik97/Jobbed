@@ -600,5 +600,7 @@
   "workplaceDescription": "Opis miejsca pracy",
   "workplaceDescriptionWrongLength": "Opis miejsca pracy nie może być większy niż 500 znaków",
   "addingNote": "Dodawanie notatki",
-  "noteBasedOnPiecework": "Notatka na podstawie pracy akordowej"
+  "noteBasedOnPiecework": "Notatka na podstawie pracy akordowej",
+  "noNoteBasedOnWorkplace": "Brak notatki na podstawie miejsca pracy",
+  "noNoteBasedOnPiecework": "Brak notatki na podstawie pracy akordowej"
 }

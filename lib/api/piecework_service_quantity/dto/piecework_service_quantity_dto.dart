@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 
 class PieceworkServiceQuantityDto {
   num id;
-  final String service;
-  final num toBeDoneQuantity;
-  final num doneQuantity;
+  String service;
+  num toBeDoneQuantity;
+  num doneQuantity;
   bool done;
 
   PieceworkServiceQuantityDto({

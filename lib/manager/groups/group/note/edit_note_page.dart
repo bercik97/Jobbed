@@ -22,6 +22,7 @@ import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
+import 'package:number_inc_dec/number_inc_dec.dart';
 
 class EditNotePage extends StatefulWidget {
   final GroupModel _model;
@@ -44,6 +45,8 @@ class _EditNotePageState extends State<EditNotePage> {
   Map<String, List<NoteSubWorkplaceDto>> noteSubWorkplaces = new Map();
   int doneTasks = 0;
   int allTasks = 0;
+  int donePieceworkTasks = 0;
+  int allPieceworkTasks = 0;
   final TextEditingController _managerNoteController = new TextEditingController();
 
   final ScrollController scrollController = new ScrollController();
@@ -57,9 +60,6 @@ class _EditNotePageState extends State<EditNotePage> {
 
   List doneWorkplaceNoteIds = new List();
   List undoneWorkplaceNoteIds = new List();
-
-  List donePieceworkIds = new List();
-  List undonePieceworkIds = new List();
 
   NoteSubWorkplaceService _noteSubWorkplaceService;
   PieceworkService _pieceworkService;
@@ -96,17 +96,16 @@ class _EditNotePageState extends State<EditNotePage> {
     _pieceworkServicesQuantities.forEach((element) {
       setState(() => _textEditingItemControllers[UTFDecoderUtil.decode(this.context, element.service)] = new TextEditingController());
       if (element.done) {
-        donePieceworkIds.add(element);
-      } else {
-        undonePieceworkIds.add(element);
+        donePieceworkTasks++;
       }
+      allPieceworkTasks++;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    doneTasks = doneWorkplaceNoteIds.length + donePieceworkIds.length;
-    allTasks = doneTasks + undoneWorkplaceNoteIds.length + undonePieceworkIds.length;
+    doneTasks = doneWorkplaceNoteIds.length + donePieceworkTasks;
+    allTasks = undoneWorkplaceNoteIds.length + doneWorkplaceNoteIds.length + allPieceworkTasks;
     _managerNoteController.text = _noteDto.managerNote;
     String employeeNote = _noteDto.employeeNote;
     return WillPopScope(
@@ -156,14 +155,14 @@ class _EditNotePageState extends State<EditNotePage> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 30, top: 10),
+                padding: EdgeInsets.only(left: 30),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: text20OrangeBold(getTranslated(context, 'employeeNote')),
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 30, top: 5, right: 30, bottom: 10),
+                padding: EdgeInsets.only(left: 30, right: 30, bottom: 10),
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: employeeNote != null && employeeNote != ''
@@ -178,6 +177,22 @@ class _EditNotePageState extends State<EditNotePage> {
                       : text16BlueGrey(getTranslated(context, 'noteEmployeeEmpty')),
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.only(left: 30),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: text20OrangeBold(getTranslated(context, 'noteBasedOnWorkplace')),
+                ),
+              ),
+              noteWorkplaces.isEmpty && noteSubWorkplaces.isEmpty
+                  ? Padding(
+                      padding: EdgeInsets.only(left: 30),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: text16BlueGrey(getTranslated(context, 'noNoteBasedOnWorkplace')),
+                      ),
+                    )
+                  : SizedBox(height: 0),
               Scrollbar(
                 controller: scrollController,
                 child: SizedBox(
@@ -322,6 +337,82 @@ class _EditNotePageState extends State<EditNotePage> {
                                   ),
                                 ),
                               )
+                            ],
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 30, top: 10),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: text20OrangeBold(getTranslated(context, 'noteBasedOnPiecework')),
+                ),
+              ),
+              _pieceworkServicesQuantities.isEmpty
+                  ? Padding(
+                      padding: EdgeInsets.only(left: 30),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: text16BlueGrey(getTranslated(context, 'noNoteBasedOnPiecework')),
+                      ),
+                    )
+                  : SizedBox(height: 0),
+              Scrollbar(
+                controller: scrollController,
+                child: Column(
+                  children: [
+                    for (var piecework in _pieceworkServicesQuantities)
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 25),
+                        child: Card(
+                          color: WHITE,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(
+                                height: 80.0,
+                                child: Card(
+                                  color: BRIGHTER_BLUE,
+                                  child: ListTile(
+                                    title: text17BlueBold(UTFDecoderUtil.decode(this.context, piecework.service)),
+                                    subtitle: text20Black(piecework.doneQuantity.toString() + ' / ' + piecework.toBeDoneQuantity.toString()),
+                                    leading: piecework.doneQuantity == piecework.toBeDoneQuantity ? icon50Green(Icons.check) : icon50Red(Icons.close),
+                                    trailing: Container(
+                                      width: 100,
+                                      child: NumberInputWithIncrementDecrement(
+                                        controller: _textEditingItemControllers[UTFDecoderUtil.decode(this.context, piecework.service)],
+                                        initialValue: piecework.doneQuantity,
+                                        style: TextStyle(color: BLUE),
+                                        max: piecework.toBeDoneQuantity,
+                                        widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
+                                        onIncrement: (value) {
+                                          if (piecework.doneQuantity == piecework.toBeDoneQuantity) {
+                                            return;
+                                          }
+                                          setState(() {
+                                            piecework.doneQuantity = value;
+                                            if (piecework.doneQuantity == piecework.toBeDoneQuantity) {
+                                              donePieceworkTasks++;
+                                            }
+                                          });
+                                        },
+                                        onDecrement: (value) {
+                                          setState(() {
+                                            if (piecework.doneQuantity == piecework.toBeDoneQuantity) {
+                                              donePieceworkTasks--;
+                                            }
+                                            piecework.doneQuantity = value;
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
