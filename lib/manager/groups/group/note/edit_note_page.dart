@@ -8,7 +8,7 @@ import 'package:jobbed/api/note/dto/note_dto.dart';
 import 'package:jobbed/api/note_sub_workplace/dto/note_sub_workplace_dto.dart';
 import 'package:jobbed/api/note_sub_workplace/dto/update_note_sub_workplace_dto.dart';
 import 'package:jobbed/api/note_sub_workplace/service/note_sub_workplace_service.dart';
-import 'package:jobbed/api/piecework/service/piecework_service.dart';
+import 'package:jobbed/api/piecework_details/service/piecework_details_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/manager/groups/group/schedule/schedule_page.dart';
@@ -55,14 +55,14 @@ class _EditNotePageState extends State<EditNotePage> {
   LinkedHashSet<int> _selectedNoteWorkplacesIds = new LinkedHashSet();
   LinkedHashSet<int> _selectedNoteSubWorkplacesIds = new LinkedHashSet();
 
-  List _pieceworkServicesQuantities = new List();
+  List _pieceworksDetails = new List();
   final Map<String, TextEditingController> _textEditingItemControllers = new Map();
 
   List doneWorkplaceNoteIds = new List();
   List undoneWorkplaceNoteIds = new List();
 
   NoteSubWorkplaceService _noteSubWorkplaceService;
-  PieceworkService _pieceworkService;
+  PieceworkDetailsService _pieceworkDetailsService;
 
   bool _isUpdateButtonTapped = false;
 
@@ -72,9 +72,9 @@ class _EditNotePageState extends State<EditNotePage> {
     this._user = _model.user;
     this._date = widget._date;
     this._noteDto = widget._noteDto;
-    this._pieceworkServicesQuantities = _noteDto.pieceworkServicesQuantities;
+    this._pieceworksDetails = _noteDto.pieceworksDetails;
     this._noteSubWorkplaceService = ServiceInitializer.initialize(context, _user.authHeader, NoteSubWorkplaceService);
-    this._pieceworkService = ServiceInitializer.initialize(context, _user.authHeader, PieceworkService);
+    this._pieceworkDetailsService = ServiceInitializer.initialize(context, _user.authHeader, PieceworkDetailsService);
     super.initState();
     _noteDto.noteSubWorkplaceDto.forEach((element) {
       if (element.subWorkplaceName == null) {
@@ -93,7 +93,7 @@ class _EditNotePageState extends State<EditNotePage> {
         undoneWorkplaceNoteIds.add(element.id);
       }
     });
-    _pieceworkServicesQuantities.forEach((element) {
+    _pieceworksDetails.forEach((element) {
       setState(() => _textEditingItemControllers[UTFDecoderUtil.decode(this.context, element.service)] = new TextEditingController());
       if (element.done) {
         donePieceworkTasks++;
@@ -351,7 +351,7 @@ class _EditNotePageState extends State<EditNotePage> {
                   child: text20OrangeBold(getTranslated(context, 'noteBasedOnPiecework')),
                 ),
               ),
-              _pieceworkServicesQuantities.isEmpty
+              _pieceworksDetails.isEmpty
                   ? Padding(
                       padding: EdgeInsets.only(left: 30),
                       child: Align(
@@ -364,7 +364,7 @@ class _EditNotePageState extends State<EditNotePage> {
                 controller: scrollController,
                 child: Column(
                   children: [
-                    for (var piecework in _pieceworkServicesQuantities)
+                    for (var piecework in _pieceworksDetails)
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 25),
                         child: Card(

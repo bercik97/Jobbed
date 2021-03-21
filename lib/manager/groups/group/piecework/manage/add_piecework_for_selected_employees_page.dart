@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:jobbed/api/piecework_service_quantity/dto/piecework_service_quantity_dto.dart';
+import 'package:jobbed/api/piecework_details/dto/piecework_details_dto.dart';
 import 'package:jobbed/api/price_list/dto/price_list_dto.dart';
 import 'package:jobbed/api/price_list/service/price_list_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
@@ -217,24 +217,24 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
 
   void _handleAdd() {
     setState(() => _isAddButtonTapped = true);
-    List pieceworkServicesQuantities = [];
+    List pieceworksDetails = [];
     _textEditingItemControllers.forEach((name, quantityController) {
       String quantity = quantityController.text;
       if (quantity != '0') {
-        pieceworkServicesQuantities.add(new PieceworkServiceQuantityDto(
+        pieceworksDetails.add(new PieceworkDetails(
           service: name,
           toBeDoneQuantity: int.parse(quantity),
           doneQuantity: int.parse(quantity),
         ));
       }
     });
-    if (pieceworkServicesQuantities.isEmpty) {
+    if (pieceworksDetails.isEmpty) {
       setState(() => _isAddButtonTapped = false);
       ToastUtil.showErrorToast(this.context, getTranslated(context, 'pieceworkCannotBeEmpty'));
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workdayService.updatePieceworkByEmployeeIds(pieceworkServicesQuantities, _dateFrom, _dateTo, _employeeIds).then((res) {
+    _workdayService.updatePieceworkByEmployeeIds(pieceworksDetails, _dateFrom, _dateTo, _employeeIds).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyAddedNewReportsAboutPiecework'));
         NavigatorUtil.navigateReplacement(context, _timeSheet != null ? TsInProgressPage(_model, _timeSheet) : PieceworkPage(_model));

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
-import 'package:jobbed/api/piecework_service_quantity/dto/piecework_service_quantity_dto.dart';
+import 'package:jobbed/api/piecework_details/dto/piecework_details_dto.dart';
 import 'package:jobbed/api/workday/dto/workday_dto.dart';
 import 'package:jobbed/api/workday/dto/workday_for_timesheet_dto.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
@@ -72,9 +72,9 @@ class WorkdayService {
     }
   }
 
-  Future<dynamic> updatePieceworkByIds(List<String> ids, List pieceworkServicesQuantities) async {
-    List encodedPieceworkServicesQuantities = pieceworkServicesQuantities.map((e) => PieceworkServiceQuantityDto.jsonEncode(e)).toList();
-    Response res = await put('$_url/piecework?ids=$ids', body: jsonEncode(encodedPieceworkServicesQuantities), headers: _headers);
+  Future<dynamic> updatePieceworkByIds(List<String> ids, List pieceworksDetails) async {
+    List encodedPieceworksDetails = pieceworksDetails.map((e) => PieceworkDetails.jsonEncode(e)).toList();
+    Response res = await put('$_url/piecework?ids=$ids', body: jsonEncode(encodedPieceworksDetails), headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
@@ -84,9 +84,9 @@ class WorkdayService {
     }
   }
 
-  Future<dynamic> updatePieceworkByEmployeeIds(List pieceworkServicesQuantities, String dateFrom, String dateTo, List<String> employeeIds) async {
-    List encodedPieceworkServicesQuantities = pieceworkServicesQuantities.map((e) => PieceworkServiceQuantityDto.jsonEncode(e)).toList();
-    Map<String, dynamic> map = {'pieceworkServicesQuantities': encodedPieceworkServicesQuantities, 'dateFrom': dateFrom, 'dateTo': dateTo};
+  Future<dynamic> updatePieceworkByEmployeeIds(List pieceworksDetails, String dateFrom, String dateTo, List<String> employeeIds) async {
+    List encodedPieceworksDetails = pieceworksDetails.map((e) => PieceworkDetails.jsonEncode(e)).toList();
+    Map<String, dynamic> map = {'pieceworksDetails': encodedPieceworksDetails, 'dateFrom': dateFrom, 'dateTo': dateTo};
     Response res = await put('$_url/employees/$employeeIds/piecework', body: jsonEncode(map), headers: _headers);
     if (res.statusCode == 200) {
       return res;

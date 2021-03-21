@@ -6,7 +6,7 @@ import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:jobbed/api/note/api/note_service.dart';
 import 'package:jobbed/api/note/dto/create_note_dto.dart';
-import 'package:jobbed/api/piecework_service_quantity/dto/piecework_service_quantity_dto.dart';
+import 'package:jobbed/api/piecework_details/dto/piecework_details_dto.dart';
 import 'package:jobbed/api/price_list/dto/price_list_dto.dart';
 import 'package:jobbed/api/price_list/service/price_list_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
@@ -445,18 +445,18 @@ class _AddNotePageState extends State<AddNotePage> {
         _selectedWorkplacesIds.add(key.id);
       }
     });
-    List pieceworkServicesQuantities = [];
+    List pieceworksDetails = [];
     _selectedTextEditingPriceListControllers.forEach((name, quantityController) {
       String quantity = quantityController.text;
       if (quantity != '0') {
-        pieceworkServicesQuantities.add(new PieceworkServiceQuantityDto(
+        pieceworksDetails.add(new PieceworkDetails(
           service: name,
           toBeDoneQuantity: int.parse(quantity),
           doneQuantity: 0,
         ));
       }
     });
-    if (pieceworkServicesQuantities.isEmpty) {
+    if (pieceworksDetails.isEmpty) {
       ToastUtil.showErrorToast(this.context, getTranslated(context, 'pieceworkCannotBeEmpty'));
       Navigator.pop(context);
       return;
@@ -467,7 +467,7 @@ class _AddNotePageState extends State<AddNotePage> {
       managerNote: _managerNoteController.text,
       workplaceIds: _selectedWorkplacesIds.map((e) => e.toString()).toList(),
       subWorkplaceIds: _selectedSubWorkplacesIds.map((el) => el.toString()).toList(),
-      pieceworkServicesQuantities: pieceworkServicesQuantities.map((e) => PieceworkServiceQuantityDto.jsonEncode(e)).toList(),
+      pieceworksDetails: pieceworksDetails.map((e) => PieceworkDetails.jsonEncode(e)).toList(),
       employeeIds: _employeeIds.toList(),
       yearsWithMonths: _yearsWithMonths.toList(),
       dates: _selectedDates

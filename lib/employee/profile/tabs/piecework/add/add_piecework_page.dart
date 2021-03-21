@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:jobbed/api/piecework/dto/create_piecework_dto.dart';
 import 'package:jobbed/api/piecework/service/piecework_service.dart';
-import 'package:jobbed/api/piecework_service_quantity/dto/piecework_service_quantity_dto.dart';
+import 'package:jobbed/api/piecework_details/dto/piecework_details_dto.dart';
 import 'package:jobbed/api/price_list/dto/price_list_dto.dart';
 import 'package:jobbed/api/price_list/service/price_list_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
@@ -228,18 +228,18 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
 
   void _handleAdd() {
     setState(() => _isAddButtonTapped = true);
-    List pieceworkServicesQuantities = [];
+    List pieceworksDetails = [];
     _textEditingItemControllers.forEach((name, quantityController) {
       String quantity = quantityController.text;
       if (quantity != '0') {
-        pieceworkServicesQuantities.add(new PieceworkServiceQuantityDto(
+        pieceworksDetails.add(new PieceworkDetails(
           service: name,
           toBeDoneQuantity: int.parse(quantity),
           doneQuantity: int.parse(quantity),
         ));
       }
     });
-    if (pieceworkServicesQuantities.isEmpty) {
+    if (pieceworksDetails.isEmpty) {
       setState(() => _isAddButtonTapped = false);
       ToastUtil.showErrorToast(this.context, getTranslated(context, 'pieceworkCannotBeEmpty'));
       return;
@@ -247,7 +247,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     CreatePieceworkDto dto = new CreatePieceworkDto(
       workdayId: _todayWorkdayId,
-      pieceworkServicesQuantities: pieceworkServicesQuantities,
+      pieceworksDetails: pieceworksDetails,
     );
     _pieceworkService.create(dto).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
