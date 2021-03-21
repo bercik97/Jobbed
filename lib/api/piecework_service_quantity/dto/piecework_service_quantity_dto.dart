@@ -1,16 +1,18 @@
 import 'package:flutter/cupertino.dart';
 
 class PieceworkServiceQuantityDto {
+  num id;
   final String service;
   final num toBeDoneQuantity;
   final num doneQuantity;
-  final bool done;
+  bool done;
 
   PieceworkServiceQuantityDto({
+    this.id,
     @required this.service,
     @required this.toBeDoneQuantity,
     @required this.doneQuantity,
-    @required this.done,
+    this.done,
   });
 
   static Map<String, dynamic> jsonEncode(PieceworkServiceQuantityDto dto) {
@@ -18,7 +20,16 @@ class PieceworkServiceQuantityDto {
     map['service'] = dto.service;
     map['toBeDoneQuantity'] = dto.toBeDoneQuantity;
     map['doneQuantity'] = dto.doneQuantity;
-    map['done'] = dto.done;
     return map;
+  }
+
+  factory PieceworkServiceQuantityDto.fromJson(Map<String, dynamic> json) {
+    return PieceworkServiceQuantityDto(
+      id: json['id'] as num,
+      service: json['service'] as String,
+      toBeDoneQuantity: json['toBeDoneQuantity'] as num,
+      doneQuantity: json['doneQuantity'] as num,
+      done: json['done'] as bool,
+    );
   }
 }

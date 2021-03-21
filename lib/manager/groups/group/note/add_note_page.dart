@@ -69,8 +69,6 @@ class _AddNotePageState extends State<AddNotePage> {
   LinkedHashSet<String> _selectedWorkplacesIds = new LinkedHashSet();
   LinkedHashSet<int> _selectedSubWorkplacesIds = new LinkedHashSet();
 
-  final ScrollController _scrollController = new ScrollController();
-
   bool _isAddNoteButtonTapped = false;
 
   @override
@@ -455,7 +453,6 @@ class _AddNotePageState extends State<AddNotePage> {
           service: name,
           toBeDoneQuantity: int.parse(quantity),
           doneQuantity: 0,
-          done: false,
         ));
       }
     });

@@ -229,7 +229,6 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
           service: name,
           toBeDoneQuantity: int.parse(quantity),
           doneQuantity: int.parse(quantity),
-          done: true,
         ));
       }
     });

@@ -236,7 +236,6 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
           service: name,
           toBeDoneQuantity: int.parse(quantity),
           doneQuantity: int.parse(quantity),
-          done: true,
         ));
       }
     });

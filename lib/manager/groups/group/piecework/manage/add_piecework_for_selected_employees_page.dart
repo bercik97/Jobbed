@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
@@ -227,7 +225,6 @@ class _AddPieceworkForSelectedEmployeesPageState extends State<AddPieceworkForSe
           service: name,
           toBeDoneQuantity: int.parse(quantity),
           doneQuantity: int.parse(quantity),
-          done: true,
         ));
       }
     });

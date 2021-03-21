@@ -8,6 +8,7 @@ import 'package:jobbed/api/note/dto/note_dto.dart';
 import 'package:jobbed/api/note_sub_workplace/dto/note_sub_workplace_dto.dart';
 import 'package:jobbed/api/note_sub_workplace/dto/update_note_sub_workplace_dto.dart';
 import 'package:jobbed/api/note_sub_workplace/service/note_sub_workplace_service.dart';
+import 'package:jobbed/api/piecework/service/piecework_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/manager/groups/group/schedule/schedule_page.dart';
@@ -51,10 +52,17 @@ class _EditNotePageState extends State<EditNotePage> {
   LinkedHashSet<int> _selectedNoteWorkplacesIds = new LinkedHashSet();
   LinkedHashSet<int> _selectedNoteSubWorkplacesIds = new LinkedHashSet();
 
+  List _pieceworkServicesQuantities = new List();
+  final Map<String, TextEditingController> _textEditingItemControllers = new Map();
+
   List doneWorkplaceNoteIds = new List();
   List undoneWorkplaceNoteIds = new List();
 
+  List donePieceworkIds = new List();
+  List undonePieceworkIds = new List();
+
   NoteSubWorkplaceService _noteSubWorkplaceService;
+  PieceworkService _pieceworkService;
 
   bool _isUpdateButtonTapped = false;
 
@@ -64,7 +72,9 @@ class _EditNotePageState extends State<EditNotePage> {
     this._user = _model.user;
     this._date = widget._date;
     this._noteDto = widget._noteDto;
+    this._pieceworkServicesQuantities = _noteDto.pieceworkServicesQuantities;
     this._noteSubWorkplaceService = ServiceInitializer.initialize(context, _user.authHeader, NoteSubWorkplaceService);
+    this._pieceworkService = ServiceInitializer.initialize(context, _user.authHeader, PieceworkService);
     super.initState();
     _noteDto.noteSubWorkplaceDto.forEach((element) {
       if (element.subWorkplaceName == null) {
@@ -83,12 +93,20 @@ class _EditNotePageState extends State<EditNotePage> {
         undoneWorkplaceNoteIds.add(element.id);
       }
     });
+    _pieceworkServicesQuantities.forEach((element) {
+      setState(() => _textEditingItemControllers[UTFDecoderUtil.decode(this.context, element.service)] = new TextEditingController());
+      if (element.done) {
+        donePieceworkIds.add(element);
+      } else {
+        undonePieceworkIds.add(element);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    doneTasks = doneWorkplaceNoteIds.length;
-    allTasks = doneTasks + undoneWorkplaceNoteIds.length;
+    doneTasks = doneWorkplaceNoteIds.length + donePieceworkIds.length;
+    allTasks = doneTasks + undoneWorkplaceNoteIds.length + undonePieceworkIds.length;
     _managerNoteController.text = _noteDto.managerNote;
     String employeeNote = _noteDto.employeeNote;
     return WillPopScope(
