@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:jobbed/api/note/dto/create_note_dto.dart';
+import 'package:jobbed/api/note/dto/update_note_dto.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/util/logout_util.dart';
 
@@ -16,6 +17,11 @@ class NoteService {
 
   Future<dynamic> create(CreateNoteDto dto) async {
     Response res = await post(_url, body: jsonEncode(CreateNoteDto.jsonEncode(dto)), headers: _headers);
+    return res.statusCode == 200 ? res : Future.error(res.body);
+  }
+
+  Future<dynamic> update(UpdateNoteDto dto) async {
+    Response res = await put(_url, body: jsonEncode(UpdateNoteDto.jsonEncode(dto)), headers: _headers);
     return res.statusCode == 200 ? res : Future.error(res.body);
   }
 

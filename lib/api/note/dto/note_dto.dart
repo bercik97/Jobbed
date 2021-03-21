@@ -4,6 +4,7 @@ import 'package:jobbed/api/piecework_details/dto/piecework_details_dto.dart';
 
 class NoteDto {
   final int id;
+  final int workdayId;
   final String managerNote;
   String employeeNote;
   final List noteSubWorkplaceDto;
@@ -11,6 +12,7 @@ class NoteDto {
 
   NoteDto({
     @required this.id,
+    @required this.workdayId,
     @required this.managerNote,
     @required this.employeeNote,
     @required this.noteSubWorkplaceDto,
@@ -20,6 +22,7 @@ class NoteDto {
   factory NoteDto.fromJson(Map<String, dynamic> json) {
     return NoteDto(
       id: json['id'] as int,
+      workdayId: json['workdayId'] as int,
       managerNote: json['managerNote'] as String,
       employeeNote: json['employeeNote'] as String,
       noteSubWorkplaceDto: json['noteSubWorkplaceDto'].map((data) => NoteSubWorkplaceDto.fromJson(data)).toList(),

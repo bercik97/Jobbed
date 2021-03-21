@@ -4,9 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:jobbed/api/note/dto/note_dto.dart';
+import 'package:jobbed/api/note/dto/update_note_dto.dart';
+import 'package:jobbed/api/note/service/note_service.dart';
 import 'package:jobbed/api/note_sub_workplace/dto/note_sub_workplace_dto.dart';
 import 'package:jobbed/api/note_sub_workplace/dto/update_note_sub_workplace_dto.dart';
-import 'package:jobbed/api/note_sub_workplace/service/note_sub_workplace_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/employee/shared/employee_app_bar.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
@@ -54,7 +55,7 @@ class _EditNotePageState extends State<EditNotePage> {
   List doneWorkplaceNoteIds = new List();
   List undoneWorkplaceNoteIds = new List();
 
-  NoteSubWorkplaceService _noteSubWorkplaceService;
+  NoteService _noteService;
 
   bool _isUpdateButtonTapped = false;
 
@@ -63,7 +64,7 @@ class _EditNotePageState extends State<EditNotePage> {
     this._user = widget._user;
     this._todayDate = widget._todayDate;
     this._noteDto = widget._noteDto;
-    this._noteSubWorkplaceService = ServiceInitializer.initialize(context, _user.authHeader, NoteSubWorkplaceService);
+    this._noteService = ServiceInitializer.initialize(context, _user.authHeader, NoteService);
     super.initState();
     _noteDto.noteSubWorkplaceDto.forEach((element) {
       if (element.subWorkplaceName == null) {
@@ -322,13 +323,18 @@ class _EditNotePageState extends State<EditNotePage> {
   void _handleUpdateNote() {
     setState(() => _isUpdateButtonTapped = true);
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    UpdateNoteSubWorkplaceDto dto = new UpdateNoteSubWorkplaceDto(
+    UpdateNoteSubWorkplaceDto noteSubWorkplaceDto = new UpdateNoteSubWorkplaceDto(
       managerNote: _noteDto.managerNote,
       employeeNote: _employeeNoteController.text,
       undoneWorkplaceNoteIds: undoneWorkplaceNoteIds,
       doneWorkplaceNoteIds: doneWorkplaceNoteIds,
     );
-    _noteSubWorkplaceService.update(dto).then((value) {
+    UpdateNoteDto dto = new UpdateNoteDto(
+      workdayId: _noteDto.workdayId,
+      noteSubWorkplaceDto: noteSubWorkplaceDto,
+      pieceworksDetailsDto: null,
+    );
+    _noteService.update(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyUpdatedNote'));
         Navigator.pop(context);
