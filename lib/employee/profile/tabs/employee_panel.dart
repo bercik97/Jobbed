@@ -27,7 +27,7 @@ Container employeePanel(BuildContext context, User user, EmployeeProfileDto empl
                     color: BRIGHTER_BLUE,
                     child: InkWell(
                       onTap: () async {
-                        int todayWorkdayId = employee.todayWorkdayId;
+                        num todayWorkdayId = employee.todayWorkdayId;
                         if (todayWorkdayId == 0) {
                           DialogUtil.showErrorDialog(context, getTranslated(context, 'cannotStartWorkWithoutTS'));
                           return;
@@ -36,7 +36,7 @@ Container employeePanel(BuildContext context, User user, EmployeeProfileDto empl
                           DialogUtil.showErrorDialog(context, getTranslated(context, 'noPermissionForWorkTimeByLocation'));
                           return;
                         }
-                        NavigatorUtil.navigate(context, WorkTimePage(user, employee.todayWorkdayId));
+                        NavigatorUtil.navigate(context, WorkTimePage(user, employee.id));
                       },
                       child: _buildScrollableContainer(context, 'images/work-time.png', 'workTime', 'startFinishWork'),
                     ),

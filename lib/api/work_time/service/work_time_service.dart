@@ -80,8 +80,8 @@ class WorkTimeService {
     }
   }
 
-  Future<IsCurrentlyAtWorkWithWorkTimesDto> checkIfCurrentDateWorkTimeIsStartedAndNotFinished(int workdayId) async {
-    String url = _url + '/workdays/$workdayId/currently-at-work';
+  Future<IsCurrentlyAtWorkWithWorkTimesDto> checkIfWorkTimeIsStartedAndNotFinished(num employeeId, num workdayId) async {
+    String url = _url + '/employees/$employeeId/currently-at-work';
     Response res = await get(url, headers: _header);
     if (res.statusCode == 200) {
       return IsCurrentlyAtWorkWithWorkTimesDto.fromJson(jsonDecode(res.body));

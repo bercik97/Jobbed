@@ -34,9 +34,9 @@ import '../../../employee_profile_page.dart';
 
 class WorkTimePage extends StatefulWidget {
   final User _user;
-  final int _todayWorkdayId;
+  final num _employeeId;
 
-  WorkTimePage(this._user, this._todayWorkdayId);
+  WorkTimePage(this._user, this._employeeId);
 
   @override
   _WorkTimePageState createState() => _WorkTimePageState();
@@ -47,7 +47,8 @@ class _WorkTimePageState extends State<WorkTimePage> {
   Map<PermissionGroup, PermissionStatus> permissions;
 
   User _user;
-  int _todayWorkdayId;
+  num _employeeId;
+  num _todayWorkdayId;
 
   WorkTimeService _workTimeService;
   WorkplaceService _workplaceService;
@@ -73,13 +74,13 @@ class _WorkTimePageState extends State<WorkTimePage> {
   @override
   Widget build(BuildContext context) {
     this._user = widget._user;
-    this._todayWorkdayId = widget._todayWorkdayId;
+    this._employeeId = widget._employeeId;
     this._workTimeService = ServiceInitializer.initialize(context, _user.authHeader, WorkTimeService);
     this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
     return WillPopScope(
       child: Scaffold(
         backgroundColor: WHITE,
-        appBar: employeeAppBar(context, _user, getTranslated(context, 'workTimeForToday'), () => NavigatorUtil.navigateReplacement(context, EmployeeProfilePage(_user))),
+        appBar: employeeAppBar(context, _user, getTranslated(context, 'workingTime'), () => NavigatorUtil.navigateReplacement(context, EmployeeProfilePage(_user))),
         body: SingleChildScrollView(
           child: FutureBuilder(
             future: _fetchData(),
@@ -92,7 +93,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
               } else {
                 _dto = snapshot.data[0];
                 List workTimes = _dto.workTimes;
-                if (_dto.currentlyAtWork) {
+                if (_dto.notFinishedWorkTimeId != null) {
                   return _handleEmployeeInWork(workTimes);
                 } else {
                   return _handleEmployeeNotInWork(workTimes);
@@ -110,7 +111,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     return this._memoizer.runOnce(() async {
       await Future.delayed(Duration(microseconds: 1));
       return Future.wait(
-        [_workTimeService.checkIfCurrentDateWorkTimeIsStartedAndNotFinished(_todayWorkdayId)],
+        [_workTimeService.checkIfWorkTimeIsStartedAndNotFinished(_employeeId, _todayWorkdayId)],
       );
     });
   }
@@ -261,6 +262,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
             columnSpacing: 20,
             columns: [
               DataColumn(label: textBlackBold('No.')),
+              DataColumn(label: textBlackBold(getTranslated(this.context, 'date'))),
               DataColumn(label: textBlackBold(getTranslated(this.context, 'from'))),
               DataColumn(label: textBlackBold(getTranslated(this.context, 'to'))),
               DataColumn(label: textBlackBold(getTranslated(this.context, 'sum'))),
@@ -271,6 +273,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                 DataRow(
                   cells: [
                     DataCell(textBlack((i + 1).toString())),
+                    DataCell(textBlack(workTimes[i].date)),
                     DataCell(textBlack(workTimes[i].startTime)),
                     DataCell(textBlack(workTimes[i].endTime != null ? workTimes[i].endTime : '-')),
                     DataCell(textBlack(workTimes[i].totalTime != null ? workTimes[i].totalTime : '-')),
@@ -585,7 +588,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               Navigator.pop(context);
                               if (isCorrect) {
-                                _startWorkByWorkplaceCode(_workplaceCodeController.text, _todayWorkdayId);
+                                _startWorkByWorkplaceCode(_workplaceCodeController.text);
                               } else {
                                 DialogUtil.showErrorDialog(context, getTranslated(context, 'workplaceCodeIsIncorrect'));
                               }
@@ -608,9 +611,9 @@ class _WorkTimePageState extends State<WorkTimePage> {
     );
   }
 
-  _startWorkByWorkplaceCode(String workplaceId, num workdayId) {
+  _startWorkByWorkplaceCode(String workplaceId) {
     setState(() => _isStartWorkButtonTapped = true);
-    CreateWorkTimeDto dto = new CreateWorkTimeDto(workplaceId: workplaceId, workdayId: workdayId);
+    CreateWorkTimeDto dto = new CreateWorkTimeDto(workplaceId: workplaceId, workdayId: _todayWorkdayId);
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _workTimeService.create(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
@@ -699,7 +702,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                           _workplaceService.isCorrectByIdAndCompanyId(_workplaceCodeController.text, _user.companyId).then((isCorrect) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               if (isCorrect) {
-                                _pauseWorkByWorkplaceCode(_workplaceCodeController.text, _todayWorkdayId);
+                                _pauseWorkByWorkplaceCode(_workplaceCodeController.text);
                               } else {
                                 setState(() => _isPauseWorkButtonTapped = false);
                                 DialogUtil.showErrorDialog(context, getTranslated(context, 'workplaceCodeIsIncorrect'));
@@ -725,7 +728,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     );
   }
 
-  _pauseWorkByWorkplaceCode(String workplaceId, num workdayId) {
+  _pauseWorkByWorkplaceCode(String workplaceId) {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _workTimeService.finish(_dto.notFinishedWorkTimeId).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
@@ -741,6 +744,6 @@ class _WorkTimePageState extends State<WorkTimePage> {
   }
 
   void _refresh() {
-    NavigatorUtil.navigateReplacement(this.context, WorkTimePage(_user, _todayWorkdayId));
+    NavigatorUtil.navigateReplacement(this.context, WorkTimePage(_user, _employeeId));
   }
 }
