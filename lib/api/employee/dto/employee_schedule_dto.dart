@@ -30,7 +30,7 @@ class EmployeeScheduleDto {
       moneyForTime: json['moneyForTime'] as String,
       moneyForPiecework: json['moneyForPiecework'] as String,
       workTimes: json['workTimes'].map((data) => WorkTimeDto.fromJson(data)).toList(),
-      pieceworks: json['pieceworks'].map((data) => PieceworkDetailsDto.fromJson(data)).toList(),
+      pieceworks: json['pieceworks'].map((data) => PieceworkDto.fromJson(data)).toList(),
       isWorkTouched: json['workTouched'] as bool,
       note: noteJson != null ? NoteDto.fromJson(noteJson) : null,
       allNoteTasks: json['allNoteTasks'] as int,

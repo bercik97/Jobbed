@@ -24,7 +24,7 @@ class WorkdayForTimesheetDto {
       id: json['id'] as int,
       number: json['number'] as int,
       hours: json['hours'] as String,
-      pieceworks: json['pieceworks'].map((data) => PieceworkDetailsDto.fromJson(data)).toList(),
+      pieceworks: json['pieceworks'].map((data) => PieceworkDto.fromJson(data)).toList(),
       workTimes: json['workTimes'].map((data) => WorkTimeDto.fromJson(data)).toList(),
       money: json['money'] as String,
     );

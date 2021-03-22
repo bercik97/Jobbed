@@ -30,7 +30,7 @@ class WorkdayDto {
       hours: json['hours'] as String,
       totalMoneyForEmployee: json['totalMoneyForEmployee'] as String,
       totalMoneyForCompany: json['totalMoneyForCompany'] as String,
-      pieceworks: pieceworksAsJson != null ? pieceworksAsJson.map((data) => PieceworkDetailsDto.fromJson(data)).toList() : null,
+      pieceworks: pieceworksAsJson != null ? pieceworksAsJson.map((data) => PieceworkDto.fromJson(data)).toList() : null,
       workTimes: workTimesAsJson != null ? workTimesAsJson.map((data) => WorkTimeDto.fromJson(data)).toList() : null,
     );
   }

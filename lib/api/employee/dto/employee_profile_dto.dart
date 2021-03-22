@@ -59,7 +59,7 @@ class EmployeeProfileDto {
       todayMoneyForPiecework: json['todayMoneyForPiecework'] as String,
       todayMoney: json['todayMoney'] as String,
       todayWorkTimes: json['todayWorkTimes'].map((data) => WorkTimeDto.fromJson(data)).toList(),
-      todayPiecework: json['todayPiecework'].map((data) => PieceworkDetailsDto.fromJson(data)).toList(),
+      todayPiecework: json['todayPiecework'].map((data) => PieceworkDto.fromJson(data)).toList(),
       todayNote: todayNoteJson != null ? NoteDto.fromJson(todayNoteJson) : null,
       workTimeByLocation: json['workTimeByLocation'] as bool,
       piecework: json['piecework'] as bool,
