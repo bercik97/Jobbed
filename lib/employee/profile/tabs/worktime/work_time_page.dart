@@ -768,8 +768,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
           NavigatorUtil.navigateReplacement(context, WorkTimePage(_user, _employeeId, _todayWorkdayId));
           DialogUtil.showErrorDialog(context, getTranslated(context, 'timeWorkedIsGreaterThan16Hours'));
         } else {
-          DateTime parsedDateTime = DateTime.parse("2000-01-01 $res");
-          String contentMsg = getTranslated(context, 'areYouSureYouWorked') + ' ${parsedDateTime.toString().substring(11, 19)}?(HH:MM:SS)\n' + getTranslated(context, 'ifYouChooseNoYourTimeWillSetToZero');
+          String contentMsg = getTranslated(context, 'areYouSureYouWorkedFrom') + ' $res ' + getTranslated(context, 'workedToNow') + '?\n' + getTranslated(context, 'ifYouChooseNoYourTimeWillSetToZero');
           DialogUtil.showConfirmationWithThreeButtons(
             context: context,
             title: getTranslated(context, 'confirmation'),

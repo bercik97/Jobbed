@@ -219,7 +219,7 @@ class DialogUtil {
                   Navigator.pop(context);
                   return;
                 }
-                if (isBtnTapped) {
+                if (!isBtnTapped) {
                   declineFun();
                 }
               },
