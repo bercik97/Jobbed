@@ -498,11 +498,17 @@ class _WorkTimePageState extends State<WorkTimePage> {
       _workTimeService.canFinishByIdAndLocationParams(_dto.notFinishedWorkTime.id, latitude, longitude).then((res) {
         Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
           if (!res) {
-            ToastUtil.showErrorToast(this.context, getTranslated(context, 'cannotFindWorkplaceWhereYouStarted'));
             setState(() => _isPauseWorkButtonTapped = false);
+            DialogUtil.showConfirmationDialog(
+              context: context,
+              title: getTranslated(context, 'confirmation'),
+              content: getTranslated(context, 'cannotFindWorkplaceWhereYouStartedConfirmation'),
+              isBtnTapped: _isPauseWorkButtonTapped,
+              agreeFun: () => _isPauseWorkButtonTapped ? null : _finishWorkByGPS(false),
+            );
             return;
           }
-          _finishWorkByGPS();
+          _finishWorkByGPS(true);
         });
       }).catchError((onError) {
         Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
@@ -518,9 +524,10 @@ class _WorkTimePageState extends State<WorkTimePage> {
     }
   }
 
-  _finishWorkByGPS() {
+  _finishWorkByGPS(bool isCorrectLocation) {
+    setState(() => _isPauseWorkButtonTapped = true);
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workTimeService.finish(_dto.notFinishedWorkTime.id).then((res) {
+    _workTimeService.finishGPSWork(_dto.notFinishedWorkTime.id, isCorrectLocation).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workTimeEnded'));
         _refresh();
@@ -789,7 +796,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
 
   _pauseWorkByWorkplaceCode(String workplaceId) {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workTimeService.finish(_dto.notFinishedWorkTime.id).then((res) {
+    _workTimeService.finishWorkplaceCode(_dto.notFinishedWorkTime.id).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workTimeEnded'));
         _refresh();

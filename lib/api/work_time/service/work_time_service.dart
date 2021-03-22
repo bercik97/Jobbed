@@ -122,8 +122,14 @@ class WorkTimeService {
     return res.statusCode == 200 ? res : Future.error(res.body);
   }
 
-  Future<dynamic> finish(int id) async {
-    String url = _url + '/$id/finish';
+  Future<dynamic> finishGPSWork(int id, bool isCorrectLocation) async {
+    String url = _url + '/$id/finish-gps?is_correct_location=$isCorrectLocation';
+    Response res = await put(url, headers: _headers);
+    return res.statusCode == 200 ? res : Future.error(res.body);
+  }
+
+  Future<dynamic> finishWorkplaceCode(int id) async {
+    String url = _url + '/$id/finish-workplace-code';
     Response res = await put(url, headers: _headers);
     return res.statusCode == 200 ? res : Future.error(res.body);
   }

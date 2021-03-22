@@ -612,5 +612,6 @@
   "totalTimeSetToZero": "Całkowity czas pracy został ustawiony na 0",
   "additionalInfo": "Dodatkowa informacja",
   "workTimeWithAdditionalInformation": "Czas pracy z dodatkową informacją",
-  "cancel": "Anuluj"
+  "cancel": "Anuluj",
+  "cannotFindWorkplaceWhereYouStartedConfirmation": "Nie znaleziono miejsca pracy, w którym zacząłęs swoją pracę na podstawie Twojej lokalizacji! Czy na pewno chcesz zakończyć pracę?"
 }
