@@ -34,8 +34,9 @@ import '../../../employee_profile_page.dart';
 class WorkTimePage extends StatefulWidget {
   final User _user;
   final num _employeeId;
+  final num _todayWorkdayId;
 
-  WorkTimePage(this._user, this._employeeId);
+  WorkTimePage(this._user, this._employeeId, this._todayWorkdayId);
 
   @override
   _WorkTimePageState createState() => _WorkTimePageState();
@@ -74,6 +75,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
   Widget build(BuildContext context) {
     this._user = widget._user;
     this._employeeId = widget._employeeId;
+    this._todayWorkdayId = widget._todayWorkdayId;
     this._workTimeService = ServiceInitializer.initialize(context, _user.authHeader, WorkTimeService);
     this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
     return WillPopScope(
@@ -475,7 +477,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String errorMsg = onError.toString();
         if (errorMsg.contains("EMPLOYEE_DO_NOT_HAVE_FINISHED_WORK_TIME")) {
-          NavigatorUtil.navigateReplacement(context, WorkTimePage(_user, _employeeId));
+          NavigatorUtil.navigateReplacement(context, WorkTimePage(_user, _employeeId, _todayWorkdayId));
           DialogUtil.showErrorDialog(context, getTranslated(context, 'youDoNotHaveFinishedWorkTime'));
         } else {
           DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
@@ -642,7 +644,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String errorMsg = onError.toString();
         if (errorMsg.contains("EMPLOYEE_DO_NOT_HAVE_FINISHED_WORK_TIME")) {
-          NavigatorUtil.navigateReplacement(context, WorkTimePage(_user, _employeeId));
+          NavigatorUtil.navigateReplacement(context, WorkTimePage(_user, _employeeId, _todayWorkdayId));
           DialogUtil.showErrorDialog(context, getTranslated(context, 'youDoNotHaveFinishedWorkTime'));
         } else {
           DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
@@ -760,10 +762,10 @@ class _WorkTimePageState extends State<WorkTimePage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         String res = response.toString();
         if (res.contains("EMPLOYEE_HAVE_FINISHED_WORK_TIME")) {
-          NavigatorUtil.navigateReplacement(context, WorkTimePage(_user, _employeeId));
+          NavigatorUtil.navigateReplacement(context, WorkTimePage(_user, _employeeId, _todayWorkdayId));
           DialogUtil.showErrorDialog(context, getTranslated(context, 'youHaveFinishedWorkTime'));
         } else if (res.contains("TIME_WORKED_IS_GREATER_THAN_16_HOURS")) {
-          NavigatorUtil.navigateReplacement(context, WorkTimePage(_user, _employeeId));
+          NavigatorUtil.navigateReplacement(context, WorkTimePage(_user, _employeeId, _todayWorkdayId));
           DialogUtil.showErrorDialog(context, getTranslated(context, 'timeWorkedIsGreaterThan16Hours'));
         } else {
           DateTime parsedDateTime = DateTime.parse("2000-01-01 $res");
@@ -817,6 +819,6 @@ class _WorkTimePageState extends State<WorkTimePage> {
   }
 
   void _refresh() {
-    NavigatorUtil.navigateReplacement(this.context, WorkTimePage(_user, _employeeId));
+    NavigatorUtil.navigateReplacement(this.context, WorkTimePage(_user, _employeeId, _todayWorkdayId));
   }
 }

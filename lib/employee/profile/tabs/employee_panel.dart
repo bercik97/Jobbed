@@ -36,7 +36,7 @@ Container employeePanel(BuildContext context, User user, EmployeeProfileDto empl
                           DialogUtil.showErrorDialog(context, getTranslated(context, 'noPermissionForWorkTimeByLocation'));
                           return;
                         }
-                        NavigatorUtil.navigate(context, WorkTimePage(user, employee.id));
+                        NavigatorUtil.navigate(context, WorkTimePage(user, employee.id, todayWorkdayId));
                       },
                       child: _buildScrollableContainer(context, 'images/work-time.png', 'workTime', 'startFinishWork'),
                     ),
