@@ -770,7 +770,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
         } else {
           DateTime parsedDateTime = DateTime.parse("2000-01-01 $res");
           String contentMsg = getTranslated(context, 'areYouSureYouWorked') + ' ${parsedDateTime.toString().substring(11, 19)}?(HH:MM:SS)\n' + getTranslated(context, 'ifYouChooseNoYourTimeWillSetToZero');
-          DialogUtil.showConfirmationDialog(
+          DialogUtil.showConfirmationWithThreeButtons(
             context: context,
             title: getTranslated(context, 'confirmation'),
             content: contentMsg,

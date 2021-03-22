@@ -610,5 +610,6 @@
   "ifYouChooseNoYourTimeWillSetToZero": "Jeśli wybierzesz 'nie' to przepracowany czas zostanie wyzerowany.",
   "totalTimeSetToZero": "Całkowity czas pracy został ustawiony na 0",
   "additionalInfo": "Dodatkowa informacja",
-  "workTimeWithAdditionalInformation": "Czas pracy z dodatkową informacją"
+  "workTimeWithAdditionalInformation": "Czas pracy z dodatkową informacją",
+  "cancel": "Anuluj"
 }

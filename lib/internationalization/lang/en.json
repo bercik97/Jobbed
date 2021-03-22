@@ -610,5 +610,6 @@
   "ifYouChooseNoYourTimeWillSetToZero": "If you choose 'no' then your total worked time will be set to 0.",
   "totalTimeSetToZero": "Total worked time has been set to 0.",
   "additionalInfo": "Additional information",
-  "workTimeWithAdditionalInformation": "Work time with additional information"
+  "workTimeWithAdditionalInformation": "Work time with additional information",
+  "cancel": "Cancel"
 }

@@ -164,7 +164,36 @@ class DialogUtil {
     );
   }
 
-  static showConfirmationDialog({BuildContext context, String title, String content, bool isBtnTapped, Function() agreeFun, Function() declineFun}) {
+  static showConfirmationDialog({BuildContext context, String title, String content, bool isBtnTapped, Function() agreeFun}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: WHITE,
+          title: textGreenBold(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                textBlack(content),
+              ],
+            ),
+          ),
+          actions: [
+            FlatButton(
+              child: textBlack(getTranslated(context, 'yes')),
+              onPressed: () => isBtnTapped ? null : agreeFun(),
+            ),
+            FlatButton(
+              child: textBlack(getTranslated(context, 'no')),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  static showConfirmationWithThreeButtons({BuildContext context, String title, String content, bool isBtnTapped, Function() agreeFun, Function() declineFun}) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -194,6 +223,10 @@ class DialogUtil {
                   declineFun();
                 }
               },
+            ),
+            FlatButton(
+              child: textBlack(getTranslated(context, 'cancel')),
+              onPressed: () => Navigator.pop(context),
             ),
           ],
         );
