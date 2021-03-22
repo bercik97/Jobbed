@@ -608,5 +608,7 @@
   "timeWorkedIsGreaterThan16Hours": "Time worked is greater than 16 hours. Your work time has been reset.",
   "areYouSureYouWorked": "Are you sure you worked",
   "ifYouChooseNoYourTimeWillSetToZero": "If you choose 'no' then your total worked time will be set to 0.",
-  "totalTimeSetToZero": "Total worked time has been set to 0."
+  "totalTimeSetToZero": "Total worked time has been set to 0.",
+  "additionalInfo": "Additional information",
+  "workTimeWithAdditionalInformation": "Work time with additional information"
 }

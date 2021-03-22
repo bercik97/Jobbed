@@ -139,6 +139,14 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
           [
             IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_circle_up), getTranslated(context, 'tsInProgress')),
             IconsLegendUtil.buildIconRow(iconBlack(Icons.search), getTranslated(context, 'checkDetails')),
+            IconsLegendUtil.buildIconRow(
+                Row(
+                  children: [
+                    iconBlack(Icons.search),
+                    iconOrange(Icons.warning_amber_outlined),
+                  ],
+                ),
+                getTranslated(context, 'workTimeWithAdditionalInformation')),
           ],
         ),
       ),
@@ -165,6 +173,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   }
 
   Widget _buildRightHandSideColumnRow(BuildContext context, int index) {
+    var additionalInfo = workdays[index].workTimes.firstWhere((element) => element.additionalInfo != null, orElse: () => null);
     return Row(
       children: <Widget>[
         Container(
@@ -183,7 +192,14 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
         InkWell(
           onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workdays[index].workTimes),
           child: Ink(
-            child: workdays[index].workTimes != null && workdays[index].workTimes.isNotEmpty ? iconBlack(Icons.zoom_in) : Align(alignment: Alignment.center, child: text16Black('-')),
+            child: workdays[index].workTimes != null && workdays[index].workTimes.isNotEmpty
+                ? Row(
+                    children: [
+                      iconBlack(Icons.zoom_in),
+                      additionalInfo != null ? iconOrange(Icons.warning_amber_outlined) : SizedBox(width: 0),
+                    ],
+                  )
+                : Align(alignment: Alignment.center, child: text16Black('-')),
             width: 50,
             height: 50,
           ),

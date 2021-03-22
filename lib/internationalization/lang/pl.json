@@ -608,5 +608,7 @@
   "timeWorkedIsGreaterThan16Hours": "Przepracowany czas jest większy niż 16 godzin. Czas pracy został wyzerowany.",
   "areYouSureYouWorked": "Czy na pewno pracowałeś",
   "ifYouChooseNoYourTimeWillSetToZero": "Jeśli wybierzesz 'nie' to przepracowany czas zostanie wyzerowany.",
-  "totalTimeSetToZero": "Całkowity czas pracy został ustawiony na 0"
+  "totalTimeSetToZero": "Całkowity czas pracy został ustawiony na 0",
+  "additionalInfo": "Dodatkowa informacja",
+  "workTimeWithAdditionalInformation": "Czas pracy z dodatkową informacją"
 }

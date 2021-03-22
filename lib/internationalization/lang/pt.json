@@ -607,5 +607,7 @@
   "youHaveFinishedWorkTime": "You have finished work time which you started. Screen was refreshed with valid data.",
   "areYouSureYouWorked": "Are you sure you worked",
   "ifYouChooseNoYourTimeWillSetToZero": "If you choose 'no' then your total worked time will be set to 0.",
-  "totalTimeSetToZero": "Total worked time has been set to 0."
+  "totalTimeSetToZero": "Total worked time has been set to 0.",
+  "additionalInfo": "Additional information",
+  "workTimeWithAdditionalInformation": "Work time with additional information"
 }

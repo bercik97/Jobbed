@@ -6,6 +6,7 @@ class WorkTimeDto {
   final String startTime;
   final String endTime;
   final String totalTime;
+  final String additionalInfo;
   final String workplaceName;
 
   WorkTimeDto({
@@ -14,6 +15,7 @@ class WorkTimeDto {
     @required this.startTime,
     @required this.endTime,
     @required this.totalTime,
+    @required this.additionalInfo,
     @required this.workplaceName,
   });
 
@@ -24,6 +26,7 @@ class WorkTimeDto {
       startTime: json['startTime'] as String,
       endTime: json['endTime'] as String,
       totalTime: json['totalTime'] as String,
+      additionalInfo: json['additionalInfo'] as String,
       workplaceName: json['workplaceName'] as String,
     );
   }

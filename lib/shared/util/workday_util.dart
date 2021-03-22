@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
+import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
@@ -284,6 +285,7 @@ class WorkdayUtil {
               DataColumn(label: textBlackBold(getTranslated(context, 'from'))),
               DataColumn(label: textBlackBold(getTranslated(context, 'to'))),
               DataColumn(label: textBlackBold(getTranslated(context, 'sum'))),
+              DataColumn(label: textBlackBold(getTranslated(context, 'information'))),
               DataColumn(label: textBlackBold(getTranslated(context, 'workplace'))),
             ],
             rows: [
@@ -294,6 +296,21 @@ class WorkdayUtil {
                     DataCell(textBlack(workTimes[i].startTime.toString())),
                     DataCell(textBlack(workTimes[i].endTime != null ? workTimes[i].endTime.toString() : '-')),
                     DataCell(textBlack(workTimes[i].totalTime != null ? workTimes[i].totalTime.toString() : '-')),
+                    workTimes[i].additionalInfo != null
+                        ? DataCell(
+                            Row(
+                              children: [
+                                iconBlack(Icons.search),
+                                iconOrange(Icons.warning_amber_outlined),
+                              ],
+                            ),
+                            onTap: () => DialogUtil.showScrollableDialog(
+                              context,
+                              getTranslated(context, 'additionalInfo'),
+                              UTFDecoderUtil.decode(context, workTimes[i].additionalInfo.toString()),
+                            ),
+                          )
+                        : DataCell(textBlack(getTranslated(context, 'empty'))),
                     DataCell(textBlack(UTFDecoderUtil.decode(context, workTimes[i].workplaceName.toString()))),
                   ],
                 ),
