@@ -603,5 +603,10 @@
   "noteBasedOnPiecework": "Notatka na podstawie pracy akordowej",
   "noNoteBasedOnWorkplace": "Brak notatki na podstawie miejsca pracy",
   "noNoteBasedOnPiecework": "Brak notatki na podstawie pracy akordowej",
-  "youDoNotHaveFinishedWorkTime": "Nie zakończyłeś rozpoczętej pracy. Ekran został odświeżony z prawidłowymi danymi."
+  "youDoNotHaveFinishedWorkTime": "Nie zakończyłeś rozpoczętej pracy. Ekran został odświeżony z prawidłowymi danymi.",
+  "youHaveFinishedWorkTime": "Zakończyłeś rozpoczętą pracę. Ekran został odświeżony z prawidłowymi danymi.",
+  "timeWorkedIsGreaterThan16Hours": "Przepracowany czas jest większy niż 16 godzin. Czas pracy został wyzerowany.",
+  "areYouSureYouWorked": "Czy na pewno pracowałeś",
+  "ifYouChooseNoYourTimeWillSetToZero": "Jeśli wybierzesz 'nie' to przepracowany czas zostanie wyzerowany.",
+  "totalTimeSetToZero": "Całkowity czas pracy został ustawiony na 0"
 }

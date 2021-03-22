@@ -429,7 +429,7 @@ class _AddNotePageState extends State<AddNotePage> {
                   title: getTranslated(context, 'confirmation'),
                   content: getTranslated(context, 'areYouSureYouWantToAddNote'),
                   isBtnTapped: _isAddNoteButtonTapped,
-                  fun: () => _isAddNoteButtonTapped ? null : _handleAddNote(),
+                  agreeFun: () => _isAddNoteButtonTapped ? null : _handleAddNote(),
                 );
               },
             ),

@@ -246,7 +246,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                                 title: getTranslated(this.context, 'confirmation'),
                                 content: getTranslated(this.context, 'deleteGroupConfirmation') + ' ($groupName)',
                                 isBtnTapped: _isDeleteGroupButtonTapped,
-                                fun: () => _isDeleteGroupButtonTapped ? null : _handleDeleteGroup(group.id),
+                                agreeFun: () => _isDeleteGroupButtonTapped ? null : _handleDeleteGroup(group.id),
                               );
                             },
                           ),

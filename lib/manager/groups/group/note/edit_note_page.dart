@@ -431,7 +431,7 @@ class _EditNotePageState extends State<EditNotePage> {
                 title: getTranslated(context, 'confirmation'),
                 content: getTranslated(context, 'areYouSureYouWantToUpdateNoteByGivenData'),
                 isBtnTapped: _isUpdateButtonTapped,
-                fun: () => _isUpdateButtonTapped ? null : _handleUpdateNote(),
+                agreeFun: () => _isUpdateButtonTapped ? null : _handleUpdateNote(),
               );
             },
           ),

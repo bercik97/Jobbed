@@ -104,6 +104,24 @@ class WorkTimeService {
     }
   }
 
+  Future<String> calculateTotalTimeById(int id) async {
+    String url = _url + '/$id/calculate-total-time';
+    Response res = await get(url, headers: _header);
+    if (res.statusCode == 200) {
+      return res.body;
+    } else if (res.statusCode == 401) {
+      return LogoutUtil.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> setTotalTimeToZero(int id) async {
+    String url = _url + '/$id/total-time-to-zero';
+    Response res = await put(url, headers: _headers);
+    return res.statusCode == 200 ? res : Future.error(res.body);
+  }
+
   Future<dynamic> finish(int id) async {
     String url = _url + '/$id/finish';
     Response res = await put(url, headers: _headers);

@@ -164,7 +164,7 @@ class DialogUtil {
     );
   }
 
-  static showConfirmationDialog({BuildContext context, String title, String content, bool isBtnTapped, Function() fun}) {
+  static showConfirmationDialog({BuildContext context, String title, String content, bool isBtnTapped, Function() agreeFun, Function() declineFun}) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -181,11 +181,19 @@ class DialogUtil {
           actions: [
             FlatButton(
               child: textBlack(getTranslated(context, 'yes')),
-              onPressed: () => isBtnTapped ? null : fun(),
+              onPressed: () => isBtnTapped ? null : agreeFun(),
             ),
             FlatButton(
               child: textBlack(getTranslated(context, 'no')),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                if (declineFun == null) {
+                  Navigator.pop(context);
+                  return;
+                }
+                if (isBtnTapped) {
+                  declineFun();
+                }
+              },
             ),
           ],
         );

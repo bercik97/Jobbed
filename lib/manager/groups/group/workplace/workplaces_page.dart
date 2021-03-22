@@ -607,7 +607,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
       title: getTranslated(context, 'confirmation'),
       content: getTranslated(context, 'areYouSureYouWantToAddNewWorkplace'),
       isBtnTapped: _isAddButtonTapped,
-      fun: () => _isAddButtonTapped ? null : _handleCreateWorkplace(),
+      agreeFun: () => _isAddButtonTapped ? null : _handleCreateWorkplace(),
     );
   }
 
@@ -657,7 +657,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
       title: getTranslated(context, 'confirmation'),
       content: getTranslated(context, 'areYouSureYouWantToDeleteSelectedWorkplaces'),
       isBtnTapped: _isDeleteButtonTapped,
-      fun: () => _isDeleteButtonTapped ? null : _handleDeleteWorkplaces(ids),
+      agreeFun: () => _isDeleteButtonTapped ? null : _handleDeleteWorkplaces(ids),
     );
   }
 

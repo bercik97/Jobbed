@@ -10,7 +10,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/work_time/dto/create_work_time_dto.dart';
 import 'package:jobbed/api/work_time/dto/is_currently_at_work_with_work_times_dto.dart';
-import 'package:jobbed/api/work_time/dto/work_time_dto.dart';
 import 'package:jobbed/api/work_time/service/work_time_service.dart';
 import 'package:jobbed/api/workplace/dto/workplace_id_name_dto.dart';
 import 'package:jobbed/api/workplace/service/workplace_service.dart';
@@ -184,7 +183,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
               'images/stop.png',
               _isPauseWorkButtonTapped,
               () => _showChooseWorkTimeType(
-                () => _showPauseWorkByGPSDialog(_dto.notFinishedWorkTime),
+                () => _validateWorkedTime(() => _showPauseWorkByGPSDialog()),
                 () => _showEnterWorkplaceCodeForPause(),
               ),
             ),
@@ -307,13 +306,19 @@ class _WorkTimePageState extends State<WorkTimePage> {
                       minWidth: 200.0,
                       color: BLUE,
                       title: getTranslated(context, 'gps'),
-                      fun: () => gpsFun(),
+                      fun: () {
+                        Navigator.pop(context);
+                        gpsFun();
+                      },
                     ),
                     Buttons.standardButton(
                       minWidth: 200.0,
                       color: BLUE,
                       title: getTranslated(context, 'workplaceCode'),
-                      fun: () => workplaceCodeFun(),
+                      fun: () {
+                        Navigator.pop(context);
+                        workplaceCodeFun();
+                      },
                     ),
                     SizedBox(height: 30),
                     Container(
@@ -480,7 +485,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     });
   }
 
-  _showPauseWorkByGPSDialog(WorkTimeDto workTime) async {
+  _showPauseWorkByGPSDialog() async {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'lookingForWorkplacesInYourLocation'));
     setState(() => _isPauseWorkButtonTapped = true);
     locc.Location location = new locc.Location();
@@ -488,7 +493,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     if (_locationData != null) {
       double latitude = _locationData.latitude;
       double longitude = _locationData.longitude;
-      _workTimeService.canFinishByIdAndLocationParams(workTime.id, latitude, longitude).then((res) {
+      _workTimeService.canFinishByIdAndLocationParams(_dto.notFinishedWorkTime.id, latitude, longitude).then((res) {
         Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
           if (!res) {
             ToastUtil.showErrorToast(this.context, getTranslated(context, 'cannotFindWorkplaceWhereYouStarted'));
@@ -721,7 +726,8 @@ class _WorkTimePageState extends State<WorkTimePage> {
                           _workplaceService.isCorrectByIdAndCompanyId(_workplaceCodeController.text, _user.companyId).then((isCorrect) {
                             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                               if (isCorrect) {
-                                _pauseWorkByWorkplaceCode(_workplaceCodeController.text);
+                                Navigator.pop(context);
+                                _validateWorkedTime(() => _pauseWorkByWorkplaceCode(_workplaceCodeController.text));
                               } else {
                                 setState(() => _isPauseWorkButtonTapped = false);
                                 DialogUtil.showErrorDialog(context, getTranslated(context, 'workplaceCodeIsIncorrect'));
@@ -747,11 +753,59 @@ class _WorkTimePageState extends State<WorkTimePage> {
     );
   }
 
+  void _validateWorkedTime(Function() fun) {
+    setState(() => _isPauseWorkButtonTapped = false);
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _workTimeService.calculateTotalTimeById(_dto.notFinishedWorkTime.id).then((response) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        String res = response.toString();
+        if (res.contains("EMPLOYEE_HAVE_FINISHED_WORK_TIME")) {
+          NavigatorUtil.navigateReplacement(context, WorkTimePage(_user, _employeeId));
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'youHaveFinishedWorkTime'));
+        } else if (res.contains("TIME_WORKED_IS_GREATER_THAN_16_HOURS")) {
+          NavigatorUtil.navigateReplacement(context, WorkTimePage(_user, _employeeId));
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'timeWorkedIsGreaterThan16Hours'));
+        } else {
+          DateTime parsedDateTime = DateTime.parse("2000-01-01 $res");
+          String contentMsg = getTranslated(context, 'areYouSureYouWorked') + ' ${parsedDateTime.toString().substring(11, 19)}?(HH:MM:SS)\n' + getTranslated(context, 'ifYouChooseNoYourTimeWillSetToZero');
+          DialogUtil.showConfirmationDialog(
+            context: context,
+            title: getTranslated(context, 'confirmation'),
+            content: contentMsg,
+            isBtnTapped: _isPauseWorkButtonTapped,
+            agreeFun: () => _isPauseWorkButtonTapped ? null : fun(),
+            declineFun: () => _isPauseWorkButtonTapped ? null : _setWorkTimeTotalTimeToZero(),
+          );
+        }
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+        setState(() => _isPauseWorkButtonTapped = false);
+      });
+    });
+  }
+
   _pauseWorkByWorkplaceCode(String workplaceId) {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _workTimeService.finish(_dto.notFinishedWorkTime.id).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workTimeEnded'));
+        _refresh();
+      });
+    }).catchError((onError) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+        setState(() => _isPauseWorkButtonTapped = false);
+      });
+    });
+  }
+
+  _setWorkTimeTotalTimeToZero() {
+    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
+    _workTimeService.setTotalTimeToZero(_dto.notFinishedWorkTime.id).then((res) {
+      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'totalTimeSetToZero'));
         _refresh();
       });
     }).catchError((onError) {

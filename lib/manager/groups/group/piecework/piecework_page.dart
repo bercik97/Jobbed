@@ -349,7 +349,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
       title: getTranslated(context, 'confirmation'),
       content: getTranslated(context, 'deletingPieceworkConfirmation'),
       isBtnTapped: _isDeletePieceworkButtonTapped,
-      fun: () => _isDeletePieceworkButtonTapped ? null : _handleDeletePiecework(dateFrom, dateTo, selectedIds.map((el) => el.toString()).toList(), year, month, STATUS_IN_PROGRESS),
+      agreeFun: () => _isDeletePieceworkButtonTapped ? null : _handleDeletePiecework(dateFrom, dateTo, selectedIds.map((el) => el.toString()).toList(), year, month, STATUS_IN_PROGRESS),
     );
   }
 

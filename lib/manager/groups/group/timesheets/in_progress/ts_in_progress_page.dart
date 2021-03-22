@@ -778,7 +778,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
         title: getTranslated(this.context, 'confirmation'),
         content: getTranslated(this.context, 'deleteWorkConfirmation') + ' $dateFrom - $dateTo)',
         isBtnTapped: _isDeleteWorkTimeButtonTapped,
-        fun: () => _isDeleteWorkTimeButtonTapped ? null : _handleDeleteWorkTime(dateFrom, dateTo),
+        agreeFun: () => _isDeleteWorkTimeButtonTapped ? null : _handleDeleteWorkTime(dateFrom, dateTo),
       );
     }
   }
@@ -847,7 +847,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
       title: getTranslated(context, 'confirmation'),
       content: getTranslated(context, 'deletingPieceworkConfirmation'),
       isBtnTapped: _isDeletePieceworkButtonTapped,
-      fun: () => _isDeletePieceworkButtonTapped ? null : _handleDeletePiecework(dateFrom, dateTo, selectedIds.map((el) => el.toString()).toList(), year, monthNum, STATUS_IN_PROGRESS),
+      agreeFun: () => _isDeletePieceworkButtonTapped ? null : _handleDeletePiecework(dateFrom, dateTo, selectedIds.map((el) => el.toString()).toList(), year, monthNum, STATUS_IN_PROGRESS),
     );
   }
 

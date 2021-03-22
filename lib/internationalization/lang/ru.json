@@ -603,5 +603,9 @@
   "noteBasedOnPiecework": "Note based on piecework",
   "noNoteBasedOnWorkplace": "No note based on workplace",
   "noNoteBasedOnPiecework": "No note based on piecework",
-  "youDoNotHaveFinishedWorkTime": "You haven't finished work time which you started. Screen was refreshed with valid data."
+  "youDoNotHaveFinishedWorkTime": "You haven't finished work time which you started. Screen was refreshed with valid data.",
+  "youHaveFinishedWorkTime": "You have finished work time which you started. Screen was refreshed with valid data.",
+  "areYouSureYouWorked": "Are you sure you worked",
+  "ifYouChooseNoYourTimeWillSetToZero": "If you choose 'no' then your total worked time will be set to 0.",
+  "totalTimeSetToZero": "Total worked time has been set to 0."
 }

@@ -766,7 +766,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
       title: getTranslated(context, 'confirmation'),
       content: getTranslated(context, 'pauseWorkForSelectedEmployeesConfirmation'),
       isBtnTapped: _isPauseButtonTapped,
-      fun: () => _isPauseButtonTapped ? null : _pauseSelectedEmployeesWork(),
+      agreeFun: () => _isPauseButtonTapped ? null : _pauseSelectedEmployeesWork(),
     );
   }
 
@@ -815,7 +815,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
         title: getTranslated(this.context, 'confirmation'),
         content: getTranslated(this.context, 'deleteWorkConfirmation') + ' $dateFrom - $dateTo)',
         isBtnTapped: _isDeleteWorkButtonTapped,
-        fun: () => _isDeleteWorkButtonTapped ? null : _handleDeleteWork(dateFrom, dateTo),
+        agreeFun: () => _isDeleteWorkButtonTapped ? null : _handleDeleteWork(dateFrom, dateTo),
       );
     }
   }

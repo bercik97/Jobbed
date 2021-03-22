@@ -99,7 +99,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
                   title: getTranslated(context, 'confirmation'),
                   content: getTranslated(context, 'deletingPieceworkForTodayConfirmation'),
                   isBtnTapped: _isDeletePieceworkButtonTapped,
-                  fun: () => _isDeletePieceworkButtonTapped ? null : _handleDeletePiecework(),
+                  agreeFun: () => _isDeletePieceworkButtonTapped ? null : _handleDeletePiecework(),
                 );
               },
               child: Icon(Icons.delete),
@@ -177,7 +177,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
                                   title: getTranslated(context, 'confirmation'),
                                   content: getTranslated(context, 'deletingSelectedPieceworkServiceConfirmation'),
                                   isBtnTapped: _isDeletePieceworkServiceButtonTapped,
-                                  fun: () => _isDeletePieceworkServiceButtonTapped ? null : _handleDeletePieceworkService(_pieceworks[i].service),
+                                  agreeFun: () => _isDeletePieceworkServiceButtonTapped ? null : _handleDeletePieceworkService(_pieceworks[i].service),
                                 );
                               },
                             ),

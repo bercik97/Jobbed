@@ -258,7 +258,7 @@ class _EditScheduleEmployeesPageState extends State<EditScheduleEmployeesPage> {
         title: getTranslated(context, 'confirmation'),
         content: getTranslated(context, 'areYouSureYouWantToDeleteNotesForSelectedEmployeesAndDates'),
         isBtnTapped: _isDeleteButtonTapped,
-        fun: () => _isDeleteButtonTapped ? null : _handleDeleteNote(),
+        agreeFun: () => _isDeleteButtonTapped ? null : _handleDeleteNote(),
       );
     }
   }

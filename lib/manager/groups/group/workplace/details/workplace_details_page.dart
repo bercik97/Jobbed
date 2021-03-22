@@ -224,7 +224,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                                                         title: getTranslated(context, 'confirmation'),
                                                         content: getTranslated(context, 'generateExcelForWorkTimesConfirmation') + ' ($date)',
                                                         isBtnTapped: _isGenerateExcelButtonTapped,
-                                                        fun: () => _isGenerateExcelButtonTapped ? null : _handleGenerateExcel(_workplaceDto.id, _workplaceDto.name, date),
+                                                        agreeFun: () => _isGenerateExcelButtonTapped ? null : _handleGenerateExcel(_workplaceDto.id, _workplaceDto.name, date),
                                                       );
                                                     },
                                                     child: Image(
@@ -1013,7 +1013,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
       title: getTranslated(context, 'confirmation'),
       content: getTranslated(context, 'areYouSureYouWantToDeleteSelectedSubWorkplaces'),
       isBtnTapped: _isDeleteButtonTapped,
-      fun: () => _isDeleteButtonTapped ? null : _handleDeleteSubWorkplaces(ids),
+      agreeFun: () => _isDeleteButtonTapped ? null : _handleDeleteSubWorkplaces(ids),
     );
   }
 

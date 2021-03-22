@@ -731,7 +731,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
       title: getTranslated(this.context, 'confirmation'),
       content: getTranslated(this.context, 'deleteWorkForSingleEmployeeConfirmation'),
       isBtnTapped: _isDeleteWorkTimeButtonTapped,
-      fun: () => _isDeleteWorkTimeButtonTapped ? null : _handleDeleteWorkTimes(),
+      agreeFun: () => _isDeleteWorkTimeButtonTapped ? null : _handleDeleteWorkTimes(),
     );
   }
 
@@ -759,7 +759,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
       title: getTranslated(context, 'confirmation'),
       content: getTranslated(context, 'deletingPieceworkForSelectedDaysConfirmation'),
       isBtnTapped: _isDeletePieceworkButtonTapped,
-      fun: () => _isDeletePieceworkButtonTapped ? null : _handleDeletePiecework(selectedIds.map((el) => el.toString()).toList()),
+      agreeFun: () => _isDeletePieceworkButtonTapped ? null : _handleDeletePiecework(selectedIds.map((el) => el.toString()).toList()),
     );
   }
 
@@ -854,7 +854,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                                 title: getTranslated(context, 'confirmation'),
                                                 content: getTranslated(context, 'deletingSelectedPieceworkServiceConfirmation'),
                                                 isBtnTapped: _isDeletePieceworkServiceButtonTapped,
-                                                fun: () => _isDeletePieceworkServiceButtonTapped ? null : _handleDeletePieceworkService(workdayId, pieceworks[i].service),
+                                                agreeFun: () => _isDeletePieceworkServiceButtonTapped ? null : _handleDeletePieceworkService(workdayId, pieceworks[i].service),
                                               );
                                             },
                                           ),
@@ -969,7 +969,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                                 title: getTranslated(context, 'confirmation'),
                                                 content: getTranslated(context, 'deletingSelectedWorkTimeConfirmation'),
                                                 isBtnTapped: _isDeleteWorkTimeButtonTapped,
-                                                fun: () => _isDeleteWorkTimeButtonTapped ? null : _handleDeleteWorkTime(workTimes[i].id),
+                                                agreeFun: () => _isDeleteWorkTimeButtonTapped ? null : _handleDeleteWorkTime(workTimes[i].id),
                                               );
                                             },
                                           ),
