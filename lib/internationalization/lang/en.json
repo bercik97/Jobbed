@@ -602,5 +602,6 @@
   "addingNote": "Adding note",
   "noteBasedOnPiecework": "Note based on piecework",
   "noNoteBasedOnWorkplace": "No note based on workplace",
-  "noNoteBasedOnPiecework": "No note based on piecework"
+  "noNoteBasedOnPiecework": "No note based on piecework",
+  "youDoNotHaveFinishedWorkTime": "You haven't finished work time which you started. Screen was refreshed with valid data."
 }

@@ -602,5 +602,6 @@
   "addingNote": "Dodawanie notatki",
   "noteBasedOnPiecework": "Notatka na podstawie pracy akordowej",
   "noNoteBasedOnWorkplace": "Brak notatki na podstawie miejsca pracy",
-  "noNoteBasedOnPiecework": "Brak notatki na podstawie pracy akordowej"
+  "noNoteBasedOnPiecework": "Brak notatki na podstawie pracy akordowej",
+  "youDoNotHaveFinishedWorkTime": "Nie zakończyłeś rozpoczętej pracy. Ekran został odświeżony z prawidłowymi danymi."
 }

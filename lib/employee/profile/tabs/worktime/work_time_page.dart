@@ -91,12 +91,11 @@ class _WorkTimePageState extends State<WorkTimePage> {
                   child: Center(child: circularProgressIndicator()),
                 );
               } else {
-                _dto = snapshot.data[0];
-                List workTimes = _dto.workTimes;
-                if (_dto.notFinishedWorkTimeId != null) {
-                  return _handleEmployeeInWork(workTimes);
+                this._dto = snapshot.data[0];
+                if (_dto.notFinishedWorkTime != null) {
+                  return _handleEmployeeInWork();
                 } else {
-                  return _handleEmployeeNotInWork(workTimes);
+                  return _handleEmployeeNotInWork();
                 }
               }
             },
@@ -176,7 +175,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     }
   }
 
-  Widget _handleEmployeeInWork(List workTimes) {
+  Widget _handleEmployeeInWork() {
     return WillPopScope(
       child: Center(
         child: Column(
@@ -185,12 +184,12 @@ class _WorkTimePageState extends State<WorkTimePage> {
               'images/stop.png',
               _isPauseWorkButtonTapped,
               () => _showChooseWorkTimeType(
-                () => _showPauseWorkByGPSDialog(workTimes.last),
+                () => _showPauseWorkByGPSDialog(_dto.notFinishedWorkTime),
                 () => _showEnterWorkplaceCodeForPause(),
               ),
             ),
             _buildPauseHint(),
-            _displayWorkTimes(workTimes),
+            _displayWorkTimes(_dto.workTimes),
           ],
         ),
       ),
@@ -198,7 +197,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
     );
   }
 
-  Widget _handleEmployeeNotInWork(List workTimes) {
+  Widget _handleEmployeeNotInWork() {
     return Center(
       child: Column(
         children: [
@@ -211,7 +210,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
             ),
           ),
           _buildStartHint(),
-          _displayWorkTimes(workTimes),
+          _displayWorkTimes(_dto.workTimes),
         ],
       ),
     );
@@ -457,7 +456,11 @@ class _WorkTimePageState extends State<WorkTimePage> {
   void _startWorkByGPS(String workplaceId) {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     setState(() => _isStartWorkButtonTapped = true);
-    CreateWorkTimeDto dto = new CreateWorkTimeDto(workplaceId: workplaceId, workdayId: _todayWorkdayId);
+    CreateWorkTimeDto dto = new CreateWorkTimeDto(
+      workplaceId: workplaceId,
+      employeeId: _employeeId,
+      workdayId: _todayWorkdayId,
+    );
     _workTimeService.create(dto).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workTimeHasBegun'));
@@ -465,7 +468,13 @@ class _WorkTimePageState extends State<WorkTimePage> {
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+        String errorMsg = onError.toString();
+        if (errorMsg.contains("EMPLOYEE_DO_NOT_HAVE_FINISHED_WORK_TIME")) {
+          NavigatorUtil.navigateReplacement(context, WorkTimePage(_user, _employeeId));
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'youDoNotHaveFinishedWorkTime'));
+        } else {
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+        }
         setState(() => _isStartWorkButtonTapped = false);
       });
     });
@@ -504,7 +513,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
 
   _finishWorkByGPS() {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workTimeService.finish(_dto.notFinishedWorkTimeId).then((res) {
+    _workTimeService.finish(_dto.notFinishedWorkTime.id).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workTimeEnded'));
         _refresh();
@@ -613,7 +622,11 @@ class _WorkTimePageState extends State<WorkTimePage> {
 
   _startWorkByWorkplaceCode(String workplaceId) {
     setState(() => _isStartWorkButtonTapped = true);
-    CreateWorkTimeDto dto = new CreateWorkTimeDto(workplaceId: workplaceId, workdayId: _todayWorkdayId);
+    CreateWorkTimeDto dto = new CreateWorkTimeDto(
+      workplaceId: workplaceId,
+      employeeId: _employeeId,
+      workdayId: _todayWorkdayId,
+    );
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _workTimeService.create(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
@@ -622,7 +635,13 @@ class _WorkTimePageState extends State<WorkTimePage> {
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+        String errorMsg = onError.toString();
+        if (errorMsg.contains("EMPLOYEE_DO_NOT_HAVE_FINISHED_WORK_TIME")) {
+          NavigatorUtil.navigateReplacement(context, WorkTimePage(_user, _employeeId));
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'youDoNotHaveFinishedWorkTime'));
+        } else {
+          DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
+        }
         setState(() => _isStartWorkButtonTapped = false);
       });
     });
@@ -730,7 +749,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
 
   _pauseWorkByWorkplaceCode(String workplaceId) {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workTimeService.finish(_dto.notFinishedWorkTimeId).then((res) {
+    _workTimeService.finish(_dto.notFinishedWorkTime.id).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workTimeEnded'));
         _refresh();
