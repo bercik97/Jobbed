@@ -282,6 +282,10 @@ class _WorkTimePageState extends State<WorkTimePage> {
                       showHint(context, getTranslated(context, 'someOfSelectedEmployeesAreInWork') + ' ', getTranslated(context, 'ifYouWantToFillTimeManuallyPleaseFirstStopTheirWork'));
                       return;
                     }
+                    if (_workplaces.isEmpty) {
+                      showHint(context, getTranslated(context, 'noWorkplaces') + ' ', getTranslated(context, 'goToWorkplacesSectionAndAddSomeWorkplaces'));
+                      return;
+                    }
                     _showUpdateHoursDialog(_selectedIds);
                   },
                 ),
@@ -339,6 +343,10 @@ class _WorkTimePageState extends State<WorkTimePage> {
                   onPressed: () {
                     if (_selectedIds.isEmpty) {
                       showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                      return;
+                    }
+                    if (_workplaces.isEmpty) {
+                      showHint(context, getTranslated(context, 'noWorkplaces') + ' ', getTranslated(context, 'goToWorkplacesSectionAndAddSomeWorkplaces'));
                       return;
                     }
                     _showDeleteWorkDialog(_selectedIds);
