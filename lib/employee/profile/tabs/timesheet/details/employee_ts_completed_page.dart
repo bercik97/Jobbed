@@ -199,7 +199,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                       additionalInfo != null ? iconOrange(Icons.warning_amber_outlined) : SizedBox(width: 0),
                     ],
                   )
-                : Align(alignment: Alignment.center, child: text16Black(getTranslated(context, 'empty'))),
+                : Align(alignment: Alignment.center, child: text16Black('-')),
             width: 50,
             height: 50,
           ),
