@@ -613,5 +613,7 @@
   "additionalInfo": "Additional information",
   "workTimeWithAdditionalInformation": "Work time with additional information",
   "cancel": "Cancel",
-  "cannotFindWorkplaceWhereYouStartedConfirmation": "Cannot find workplace where you started by your current location! Are you sure you want to stop work?"
+  "cannotFindWorkplaceWhereYouStartedConfirmation": "Cannot find workplace where you started by your current location! Are you sure you want to stop work?",
+  "groupName": "Group name",
+  "groupDescription": "Group description"
 }

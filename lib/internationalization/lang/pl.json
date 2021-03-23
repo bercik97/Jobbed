@@ -613,5 +613,7 @@
   "additionalInfo": "Dodatkowa informacja",
   "workTimeWithAdditionalInformation": "Czas pracy z dodatkową informacją",
   "cancel": "Anuluj",
-  "cannotFindWorkplaceWhereYouStartedConfirmation": "Nie znaleziono miejsca pracy, w którym zacząłęs swoją pracę na podstawie Twojej lokalizacji! Czy na pewno chcesz zakończyć pracę?"
+  "cannotFindWorkplaceWhereYouStartedConfirmation": "Nie znaleziono miejsca pracy, w którym zacząłęs swoją pracę na podstawie Twojej lokalizacji! Czy na pewno chcesz zakończyć pracę?",
+  "groupName": "Nazwa grupy",
+  "groupDescription": "Opis grupy"
 }
