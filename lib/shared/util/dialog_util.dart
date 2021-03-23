@@ -209,11 +209,7 @@ class DialogUtil {
           ),
           actions: [
             FlatButton(
-              child: textBlack(getTranslated(context, 'yes')),
-              onPressed: () => isBtnTapped ? null : agreeFun(),
-            ),
-            FlatButton(
-              child: textBlack(getTranslated(context, 'no')),
+              child: textRedBold(getTranslated(context, 'no')),
               onPressed: () {
                 if (declineFun == null) {
                   Navigator.pop(context);
@@ -223,6 +219,11 @@ class DialogUtil {
                   declineFun();
                 }
               },
+            ),
+            SizedBox(width: MediaQuery.of(context).size.width * 0.20),
+            FlatButton(
+              child: textGreenBold(getTranslated(context, 'yes')),
+              onPressed: () => isBtnTapped ? null : agreeFun(),
             ),
             FlatButton(
               child: textBlack(getTranslated(context, 'cancel')),
