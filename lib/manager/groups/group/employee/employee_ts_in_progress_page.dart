@@ -964,6 +964,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                   DataColumn(label: textBlackBold(getTranslated(context, 'from'))),
                                   DataColumn(label: textBlackBold(getTranslated(context, 'to'))),
                                   DataColumn(label: textBlackBold(getTranslated(context, 'sum'))),
+                                  DataColumn(label: textBlackBold(getTranslated(context, 'information'))),
                                   DataColumn(label: textBlackBold(getTranslated(context, 'workplace'))),
                                   DataColumn(label: textBlackBold('')),
                                 ],
@@ -975,6 +976,21 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                         DataCell(text16Black(workTimes[i].startTime.toString())),
                                         DataCell(text16Black(workTimes[i].endTime != null ? workTimes[i].endTime.toString() : '-')),
                                         DataCell(text16Black(workTimes[i].totalTime != null ? workTimes[i].totalTime.toString() : '-')),
+                                        workTimes[i].additionalInfo != null
+                                            ? DataCell(
+                                                Row(
+                                                  children: [
+                                                    iconBlack(Icons.search),
+                                                    iconOrange(Icons.warning_amber_outlined),
+                                                  ],
+                                                ),
+                                                onTap: () => DialogUtil.showScrollableDialog(
+                                                  context,
+                                                  getTranslated(context, 'additionalInfo'),
+                                                  UTFDecoderUtil.decode(context, workTimes[i].additionalInfo.toString()),
+                                                ),
+                                              )
+                                            : DataCell(textBlack(getTranslated(context, 'empty'))),
                                         DataCell(text16Black(UTFDecoderUtil.decode(this.context, workTimes[i].workplaceName.toString()))),
                                         DataCell(
                                           IconButton(
