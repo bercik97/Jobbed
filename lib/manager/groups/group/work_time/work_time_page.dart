@@ -187,6 +187,9 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                 foundIndex = i;
                               }
                             }
+                            String additionalInformation = UTFDecoderUtil.decode(context, employee.additionalInformation);
+                            String yesterdayAdditionalInformation = UTFDecoderUtil.decode(context, employee.yesterdayAdditionalInformation);
+                            String empty = getTranslated(context, 'empty');
                             return Card(
                               color: WHITE,
                               child: Row(
@@ -195,7 +198,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                 children: <Widget>[
                                   Ink(
                                     width: MediaQuery.of(context).size.width * 0.15,
-                                    height: 116,
+                                    height: additionalInformation != empty || yesterdayAdditionalInformation != empty ? 140 : 116,
                                     color: BRIGHTER_BLUE,
                                     child: ListTileTheme(
                                       contentPadding: EdgeInsets.only(right: 10),
@@ -246,7 +249,8 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                                   textBlackBold(employee.timeWorkedToday != null ? employee.timeWorkedToday : getTranslated(this.context, 'empty')),
                                                 ],
                                               ),
-                                              _handleWorkStatus(MainAxisAlignment.start, employee.workStatus, employee.workplace, employee.workplaceCode)
+                                              _handleWorkStatus(MainAxisAlignment.start, employee.workStatus, employee.workplace, employee.workplaceCode),
+                                              additionalInformation != empty || yesterdayAdditionalInformation != empty ? _handleAdditionalInfo(MainAxisAlignment.start, empty, additionalInformation, yesterdayAdditionalInformation) : SizedBox(height: 0),
                                             ],
                                           ),
                                         ),
@@ -894,6 +898,50 @@ class _WorkTimePageState extends State<WorkTimePage> {
             mainAxisAlignment: alignment,
             children: <Widget>[textBlack(getTranslated(context, 'workplaceId') + ': '), workplaceCodeWidget],
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _handleAdditionalInfo(MainAxisAlignment alignment, String empty, String additionalInfo, String yesterdayAdditionalInfo) {
+    return Align(
+      child: Column(
+        children: [
+          additionalInfo != empty
+              ? Row(
+                  mainAxisAlignment: alignment,
+                  children: <Widget>[
+                    textRedBold(getTranslated(context, 'additionalInfo') + ': '),
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(),
+                      icon: iconBlack(Icons.search),
+                      onPressed: () => DialogUtil.showScrollableDialog(
+                        context,
+                        getTranslated(context, 'additionalInfo'),
+                        UTFDecoderUtil.decode(context, additionalInfo),
+                      ),
+                    ),
+                    iconOrange(Icons.warning_amber_outlined),
+                  ],
+                )
+              : Row(
+                  mainAxisAlignment: alignment,
+                  children: <Widget>[
+                    textRedBold(getTranslated(context, 'yesterdayAdditionalInfo') + ': '),
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(),
+                      icon: iconBlack(Icons.search),
+                      onPressed: () => DialogUtil.showScrollableDialog(
+                        context,
+                        getTranslated(context, 'yesterdayAdditionalInfo'),
+                        UTFDecoderUtil.decode(context, yesterdayAdditionalInfo),
+                      ),
+                    ),
+                    iconOrange(Icons.warning_amber_outlined),
+                  ],
+                ),
         ],
       ),
     );

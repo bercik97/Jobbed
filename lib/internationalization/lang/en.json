@@ -615,5 +615,6 @@
   "cancel": "Cancel",
   "cannotFindWorkplaceWhereYouStartedConfirmation": "Cannot find workplace where you started by your current location! Are you sure you want to stop work?",
   "groupName": "Group name",
-  "groupDescription": "Group description"
+  "groupDescription": "Group description",
+  "yesterdayAdditionalInfo": "Yesterday additional information"
 }

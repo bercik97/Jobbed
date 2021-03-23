@@ -11,6 +11,7 @@ class EmployeeWorkTimeDto {
   final String workplace;
   final String workplaceCode;
   final String additionalInformation;
+  final String yesterdayAdditionalInformation;
 
   EmployeeWorkTimeDto({
     @required this.id,
@@ -23,6 +24,7 @@ class EmployeeWorkTimeDto {
     @required this.workplace,
     @required this.workplaceCode,
     @required this.additionalInformation,
+    @required this.yesterdayAdditionalInformation,
   });
 
   factory EmployeeWorkTimeDto.fromJson(Map<String, dynamic> json) {
@@ -37,6 +39,7 @@ class EmployeeWorkTimeDto {
       workplace: json['workplace'] as String,
       workplaceCode: json['workplaceCode'] as String,
       additionalInformation: json['additionalInformation'] as String,
+      yesterdayAdditionalInformation: json['yesterdayAdditionalInformation'] as String,
     );
   }
 }
