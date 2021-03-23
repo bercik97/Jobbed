@@ -248,7 +248,7 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
         shape: BoxShape.rectangle,
         color: color,
       ),
-      width: 32.0,
+      width: 40.0,
       height: 16.0,
       child: Center(
         child: Text(
