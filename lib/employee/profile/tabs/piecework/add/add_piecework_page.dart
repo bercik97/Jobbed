@@ -119,7 +119,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
     return WillPopScope(
       child: Scaffold(
         backgroundColor: WHITE,
-        appBar: employeeAppBar(context, _user, getTranslated(context, 'createReport') + ' / ' + _todayDate, () => Navigator.pop(context)),
+        appBar: employeeAppBar(context, _user, getTranslated(context, 'createReport'), () => Navigator.pop(context)),
         body: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Form(

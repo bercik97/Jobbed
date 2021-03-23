@@ -64,7 +64,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
     return WillPopScope(
       child: Scaffold(
         backgroundColor: WHITE,
-        appBar: employeeAppBar(context, _user, getTranslated(context, 'piecework') + ' / ' + _todayDate, () => NavigatorUtil.navigateReplacement(context, EmployeeProfilePage(_user))),
+        appBar: employeeAppBar(context, _user, getTranslated(context, 'piecework'), () => NavigatorUtil.navigateReplacement(context, EmployeeProfilePage(_user))),
         body: Padding(
           padding: EdgeInsets.all(12),
           child: _loading
