@@ -458,7 +458,7 @@ class _AddNotePageState extends State<AddNotePage> {
         ));
       }
     });
-    if (pieceworksDetails.isEmpty) {
+    if (_selectedTextEditingPriceListControllers.isNotEmpty && pieceworksDetails.isEmpty) {
       ToastUtil.showErrorToast(this.context, getTranslated(context, 'pieceworkCannotBeEmpty'));
       Navigator.pop(context);
       return;
