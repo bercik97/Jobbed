@@ -63,7 +63,7 @@ class _PriceListsPageState extends State<PriceListsPage> {
     this._excelService = ServiceInitializer.initialize(context, _user.authHeader, ExcelService);
     super.initState();
     _loading = true;
-    _priceListService.findAllByCompanyId(_user.companyId).then((res) {
+    _priceListService.findAllByCompanyIdAndIsNotDeleted(_user.companyId).then((res) {
       setState(() {
         _priceLists = res;
         _priceLists.forEach((e) => _checked.add(false));
@@ -467,7 +467,7 @@ class _PriceListsPageState extends State<PriceListsPage> {
 
   Future<Null> _refresh() {
     _loading = true;
-    return _priceListService.findAllByCompanyId(_user.companyId).then((res) {
+    return _priceListService.findAllByCompanyIdAndIsNotDeleted(_user.companyId).then((res) {
       setState(() {
         _isDeleteButtonTapped = false;
         _priceLists = res;

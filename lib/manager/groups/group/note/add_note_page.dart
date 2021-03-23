@@ -87,7 +87,7 @@ class _AddNotePageState extends State<AddNotePage> {
       setState(() {
         workplaces = res;
         workplaces.insert(0, new WorkplaceForAddNoteDto(id: '', name: '', description: '', subWorkplacesDto: new List()));
-        _priceListService.findAllByCompanyId(_user.companyId).then((res) {
+        _priceListService.findAllByCompanyIdAndIsNotDeleted(_user.companyId).then((res) {
           setState(() {
             _priceLists = res;
             _priceLists.insert(0, new PriceListDto(id: 0, name: '', priceForCompany: 0.0, priceForEmployee: 0.0));

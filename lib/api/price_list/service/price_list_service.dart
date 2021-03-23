@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart';
 import 'package:jobbed/api/price_list/dto/create_price_list_dto.dart';
 import 'package:jobbed/api/price_list/dto/price_list_dto.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/util/logout_util.dart';
-import 'package:http/http.dart';
 
 class PriceListService {
   final BuildContext _context;
@@ -27,8 +27,8 @@ class PriceListService {
     }
   }
 
-  Future<List<PriceListDto>> findAllByCompanyId(String companyId) async {
-    Response res = await get(_url + '/companies/$companyId', headers: _header);
+  Future<List<PriceListDto>> findAllByCompanyIdAndIsNotDeleted(String companyId) async {
+    Response res = await get(_url + '/companies/$companyId?is_deleted=${false}', headers: _header);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => PriceListDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
