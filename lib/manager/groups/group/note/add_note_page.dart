@@ -336,6 +336,7 @@ class _AddNotePageState extends State<AddNotePage> {
         ],
         onChanged: (value) {
           setState(() {
+            FocusScope.of(context).requestFocus(new FocusNode());
             WorkplaceForAddNoteDto workplace = workplaces.firstWhere((element) => UTFDecoderUtil.decode(context, element.name) == value);
             value = workplaces.first;
             if (workplace.name != '' && !_selectedWorkplacesWithChecked.containsKey(workplace)) {
@@ -376,6 +377,7 @@ class _AddNotePageState extends State<AddNotePage> {
             ),
         ],
         onChanged: (value) {
+          setState(() => FocusScope.of(context).requestFocus(new FocusNode()));
           PriceListDto priceList = _priceLists.where((element) => UTFDecoderUtil.decode(context, element.name) == value).first;
           if (priceList.name != '' && !_selectedPriceLists.contains(priceList)) {
             setState(() {

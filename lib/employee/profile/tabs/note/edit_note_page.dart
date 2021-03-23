@@ -217,6 +217,7 @@ class _EditNotePageState extends State<EditNotePage> {
                                     value: _checkedNoteWorkplaces[foundIndex],
                                     onChanged: (bool value) {
                                       setState(() {
+                                        FocusScope.of(context).requestFocus(new FocusNode());
                                         _checkedNoteWorkplaces[foundIndex] = value;
                                         if (value) {
                                           doneWorkplaceNoteIds.add(noteWorkplaces[foundIndex].id);
@@ -297,6 +298,7 @@ class _EditNotePageState extends State<EditNotePage> {
                                                     value: noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].done,
                                                     onChanged: (bool value) {
                                                       setState(() {
+                                                        FocusScope.of(context).requestFocus(new FocusNode());
                                                         noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].done = value;
                                                         if (value) {
                                                           doneWorkplaceNoteIds.add(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
@@ -373,6 +375,7 @@ class _EditNotePageState extends State<EditNotePage> {
                                         max: piecework.toBeDoneQuantity,
                                         widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
                                         onIncrement: (value) {
+                                          setState(() => FocusScope.of(context).requestFocus(new FocusNode()));
                                           if (piecework.doneQuantity == piecework.toBeDoneQuantity) {
                                             return;
                                           }

@@ -72,6 +72,7 @@ class _EditNotePageState extends State<EditNotePage> {
     this._date = widget._date;
     this._noteDto = widget._noteDto;
     this._pieceworksDetails = _noteDto.pieceworksDetails;
+    this._managerNoteController.text = _noteDto.managerNote;
     this._noteService = ServiceInitializer.initialize(context, _user.authHeader, NoteService);
     super.initState();
     _noteDto.noteSubWorkplaceDto.forEach((element) {
@@ -104,7 +105,6 @@ class _EditNotePageState extends State<EditNotePage> {
   Widget build(BuildContext context) {
     doneTasks = doneWorkplaceNoteIds.length + donePieceworkTasks;
     allTasks = undoneWorkplaceNoteIds.length + doneWorkplaceNoteIds.length + allPieceworkTasks;
-    _managerNoteController.text = _noteDto.managerNote;
     String employeeNote = _noteDto.employeeNote;
     return WillPopScope(
       child: Scaffold(
@@ -229,6 +229,7 @@ class _EditNotePageState extends State<EditNotePage> {
                                     value: _checkedNoteWorkplaces[foundIndex],
                                     onChanged: (bool value) {
                                       setState(() {
+                                        FocusScope.of(context).requestFocus(new FocusNode());
                                         _checkedNoteWorkplaces[foundIndex] = value;
                                         if (value) {
                                           doneWorkplaceNoteIds.add(noteWorkplaces[foundIndex].id);
@@ -311,6 +312,7 @@ class _EditNotePageState extends State<EditNotePage> {
                                                       value: noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].done,
                                                       onChanged: (bool value) {
                                                         setState(() {
+                                                          FocusScope.of(context).requestFocus(new FocusNode());
                                                           noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].done = value;
                                                           if (value) {
                                                             doneWorkplaceNoteIds.add(noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].id);
@@ -388,6 +390,7 @@ class _EditNotePageState extends State<EditNotePage> {
                                         max: piecework.toBeDoneQuantity,
                                         widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
                                         onIncrement: (value) {
+                                          setState(() => FocusScope.of(context).requestFocus(new FocusNode()));
                                           if (piecework.doneQuantity == piecework.toBeDoneQuantity) {
                                             return;
                                           }
