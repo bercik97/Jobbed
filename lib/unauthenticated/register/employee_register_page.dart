@@ -101,8 +101,8 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
                         children: <Widget>[
                           _buildReadOnlySection(),
                           _buildLoginSection(),
-                          _buildContactSection(),
                           _buildBasicSection(),
+                          _buildContactSection(),
                           _buildDocumentsSection(),
                           _buildRegisterButton(),
                         ],
