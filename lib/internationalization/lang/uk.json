@@ -188,7 +188,7 @@
   "workplaces": "робочі місця",
   "workplaceNameIsRequired": "Потрібне ім'я робочого місця",
   "workplaceNameWrongLength": "Довжина робочого місця не може перевищувати 50 символів",
-  "areYouSureYouWantToDeleteSelectedWorkplaces": "Ви впевнені, що хочете видалити вибрані робочі місця?",
+  "areYouSureYouWantToDeleteSelectedWorkplaces": "Ви впевнені, що хочете видалити вибрані робочі місця? Відповідний робочий час, підпроекти та примітки також буде видалено.",
   "yesDeleteThem": "Так, видалити їх",
   "noWorkplaces": "Немає робочих місць",
   "noWorkplacesHint": "Ви, здається, не додали робочих місць.\nВиберіть кнопку внизу екрана, щоб додати кілька робочих місць.",

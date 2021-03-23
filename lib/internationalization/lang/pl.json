@@ -188,7 +188,7 @@
   "workplaces": "Miejsca pracy",
   "workplaceNameIsRequired": "Proszę wprowadź nazwę miejsca pracy",
   "workplaceNameWrongLength": "Nazwa miejsca pracy nie może posiadać więcej niż 50 znaków",
-  "areYouSureYouWantToDeleteSelectedWorkplaces": "Czy na pewno chcesz usunąć wybrane miejsca pracy",
+  "areYouSureYouWantToDeleteSelectedWorkplaces": "Czy na pewno chcesz usunąć wybrane miejsca pracy? Powiązane czasy pracy, podobiekty oraz notatki zostaną również usunięte.",
   "yesDeleteThem": "Tak, usuń je",
   "noWorkplaces": "Brak miejsc pracy",
   "noWorkplacesHint": "Wygląda na to, że nie posiadasz dodanych miejsc pracy.\nWybierz przycisk znajdujący się na dole aby dodać miejsce pracy",

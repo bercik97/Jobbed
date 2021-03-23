@@ -188,7 +188,7 @@
   "workplaces": "Workplaces",
   "workplaceNameIsRequired": "Workplace name is required",
   "workplaceNameWrongLength": "Workplace length cannot be higher than 50 characters",
-  "areYouSureYouWantToDeleteSelectedWorkplaces": "Are you sure you want to delete selected workplaces?",
+  "areYouSureYouWantToDeleteSelectedWorkplaces": "Are you sure you want to delete selected workplaces? Related working times, sub workplaces and notes will also be deleted.",
   "yesDeleteThem": "Yes, delete them",
   "noWorkplaces": "No workplaces",
   "noWorkplacesHint": "You seem to have no workplaces added.\nSelect the button at the bottom of the screen to add some workplaces.",
