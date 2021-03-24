@@ -20,13 +20,15 @@ class NoteDto {
   });
 
   factory NoteDto.fromJson(Map<String, dynamic> json) {
+    var noteSubWorkplaceDtoJson = json['noteSubWorkplaceDto'];
+    var pieceworksDetailsJson = json['pieceworksDetails'];
     return NoteDto(
       id: json['id'] as int,
       workdayId: json['workdayId'] as int,
       managerNote: json['managerNote'],
       employeeNote: json['employeeNote'],
-      noteSubWorkplaceDto: json['noteSubWorkplaceDto'].map((data) => NoteSubWorkplaceDto.fromJson(data)).toList(),
-      pieceworksDetails: json['pieceworksDetails'].map((data) => PieceworkDetails.fromJson(data)).toList(),
+      noteSubWorkplaceDto: noteSubWorkplaceDtoJson != null ? noteSubWorkplaceDtoJson.map((data) => NoteSubWorkplaceDto.fromJson(data)).toList() : null,
+      pieceworksDetails: pieceworksDetailsJson != null ? pieceworksDetailsJson.map((data) => PieceworkDetails.fromJson(data)).toList() : null,
     );
   }
 }

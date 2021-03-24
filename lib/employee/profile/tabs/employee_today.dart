@@ -37,10 +37,10 @@ Widget employeeToday(BuildContext context, User user, EmployeeProfileDto dto) {
   int allTasksNum = 0;
   if (todayNote != null) {
     noteSubWorkplaces = todayNote.noteSubWorkplaceDto;
-    doneWorkplacesTasks = noteSubWorkplaces.where((e) => e.done).toList();
-    List donePieceworkTasks = todayNote.pieceworksDetails.where((e) => e.done).toList();
+    doneWorkplacesTasks = noteSubWorkplaces != null ? noteSubWorkplaces.where((e) => e.done).toList() : [];
+    List donePieceworkTasks = todayNote.pieceworksDetails != null ? todayNote.pieceworksDetails.where((e) => e.done).toList() : [];
     doneTasksNum += doneWorkplacesTasks.length + donePieceworkTasks.length;
-    allTasksNum += noteSubWorkplaces.length + todayNote.pieceworksDetails.length;
+    allTasksNum += noteSubWorkplaces.length + (todayNote.pieceworksDetails != null ? todayNote.pieceworksDetails.length : 0);
   }
   return SingleChildScrollView(
     child: Padding(
