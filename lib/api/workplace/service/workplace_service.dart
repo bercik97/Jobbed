@@ -11,10 +11,9 @@ import 'package:jobbed/shared/util/logout_util.dart';
 
 class WorkplaceService {
   final BuildContext _context;
-  final Map<String, String> _header;
   final Map<String, String> _headers;
 
-  WorkplaceService(this._context, this._header, this._headers);
+  WorkplaceService(this._context, this._headers);
 
   static const String _url = '$SERVER_IP/workplaces';
 
@@ -30,7 +29,7 @@ class WorkplaceService {
   }
 
   Future<List<WorkplaceDto>> findAllByCompanyId(String companyId) async {
-    Response res = await get(_url + '/companies/$companyId', headers: _header);
+    Response res = await get(_url + '/companies/$companyId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => WorkplaceDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -41,7 +40,7 @@ class WorkplaceService {
   }
 
   Future<List<WorkplaceForAddNoteDto>> findAllByCompanyIdForAddNoteView(String companyId) async {
-    Response res = await get(_url + '/view/add-note/companies/$companyId', headers: _header);
+    Response res = await get(_url + '/view/add-note/companies/$companyId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => WorkplaceForAddNoteDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -52,7 +51,7 @@ class WorkplaceService {
   }
 
   Future<List<WorkplaceIdNameDto>> findAllWorkplacesByCompanyIdAndLocationParams(String companyId, double latitude, double longitude) async {
-    Response res = await get(_url + '/companies/$companyId/location?latitude=$latitude&longitude=$longitude', headers: _header);
+    Response res = await get(_url + '/companies/$companyId/location?latitude=$latitude&longitude=$longitude', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => WorkplaceIdNameDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -63,7 +62,7 @@ class WorkplaceService {
   }
 
   Future<bool> isCorrectByIdAndCompanyId(String id, String companyId) async {
-    Response res = await get(_url + '/exists?id=$id&company_id=$companyId', headers: _header);
+    Response res = await get(_url + '/exists?id=$id&company_id=$companyId', headers: _headers);
     if (res.statusCode == 200) {
       return res.body == 'true';
     } else if (res.statusCode == 401) {

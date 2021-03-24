@@ -12,10 +12,9 @@ import 'package:jobbed/shared/util/logout_util.dart';
 
 class TimesheetService {
   final BuildContext _context;
-  final Map<String, String> _header;
   final Map<String, String> _headers;
 
-  TimesheetService(this._context, this._header, this._headers);
+  TimesheetService(this._context, this._headers);
 
   static const String _url = '$SERVER_IP/timesheets';
 
@@ -31,7 +30,7 @@ class TimesheetService {
   }
 
   Future<Map<DateTime, List<EmployeeScheduleDto>>> findByIdForEmployeeScheduleView(int employeeId) async {
-    Response res = await get('$_url/view/employee-schedule?employee_id=$employeeId', headers: _header);
+    Response res = await get('$_url/view/employee-schedule?employee_id=$employeeId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as Map).map(
         (key, value) => MapEntry(
@@ -47,7 +46,7 @@ class TimesheetService {
   }
 
   Future<Map<DateTime, List>> findByIdForManagerScheduleView(num groupId, int tsYear, int tsMonth) async {
-    Response res = await get('$_url/view/manager-schedule?group_id=$groupId&ts_year=$tsYear&ts_month=$tsMonth', headers: _header);
+    Response res = await get('$_url/view/manager-schedule?group_id=$groupId&ts_year=$tsYear&ts_month=$tsMonth', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as Map).map(
         (key, value) => MapEntry(
@@ -63,7 +62,7 @@ class TimesheetService {
   }
 
   Future<List<TimesheetForEmployeeDto>> findAllByEmployeeIdOrderByYearDescMonthDesc(int employeeId) async {
-    Response res = await get('$_url/employees?employee_id=$employeeId', headers: _header);
+    Response res = await get('$_url/employees?employee_id=$employeeId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => TimesheetForEmployeeDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -74,7 +73,7 @@ class TimesheetService {
   }
 
   Future<List<TimesheetWithStatusDto>> findAllByGroupId(int groupId) async {
-    Response res = await get('$_url/groups?group_id=$groupId', headers: _header);
+    Response res = await get('$_url/groups?group_id=$groupId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => TimesheetWithStatusDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -85,7 +84,7 @@ class TimesheetService {
   }
 
   Future<List<TimesheetWithoutStatusDto>> findAllByGroupIdAndStatus(int groupId, String tsStatus) async {
-    Response res = await get(_url + '/groups/$groupId/status?ts_status=$tsStatus', headers: _header);
+    Response res = await get(_url + '/groups/$groupId/status?ts_status=$tsStatus', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => TimesheetWithoutStatusDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {

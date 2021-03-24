@@ -1,20 +1,19 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart';
 import 'package:jobbed/api/item_place/dto/assign_items_dto.dart';
 import 'package:jobbed/api/item_place/dto/item_place_dashboard_dto.dart';
 import 'package:jobbed/api/item_place/dto/item_place_details_dto.dart';
 import 'package:jobbed/api/item_place/dto/return_items_dto.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/util/logout_util.dart';
-import 'package:http/http.dart';
 
 class ItemPlaceService {
   final BuildContext _context;
-  final Map<String, String> _header;
   final Map<String, String> _headers;
 
-  ItemPlaceService(this._context, this._header, this._headers);
+  ItemPlaceService(this._context, this._headers);
 
   static const String _url = '$SERVER_IP/item-places';
 
@@ -52,7 +51,7 @@ class ItemPlaceService {
   }
 
   Future<List<ItemPlaceDetailsDto>> findAllItemsById(int id) async {
-    Response res = await get(_url + '/$id/items', headers: _header);
+    Response res = await get(_url + '/$id/items', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => ItemPlaceDetailsDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -63,7 +62,7 @@ class ItemPlaceService {
   }
 
   Future<List<ItemPlaceDashboardDto>> findAllByCompanyId(String companyId) async {
-    Response res = await get(_url + '/companies/$companyId', headers: _header);
+    Response res = await get(_url + '/companies/$companyId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => ItemPlaceDashboardDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {

@@ -24,32 +24,28 @@ import 'package:jobbed/api/workplace/service/workplace_service.dart';
 
 class ServiceInitializer {
   static initialize(BuildContext context, String authHeader, Object obj) {
-    Map<String, String> header = {HttpHeaders.authorizationHeader: authHeader};
-    Map<String, String> headers = {
-      HttpHeaders.authorizationHeader: authHeader,
-      "content-type": "application/json"
-    };
+    Map<String, String> headers = {HttpHeaders.authorizationHeader: authHeader, 'content-type': 'application/json; charset=utf-8'};
     switch (obj.toString()) {
       case 'CompanyService': return new CompanyService(context, headers);
-      case 'EmployeeService': return new EmployeeService(context, header, headers);
+      case 'EmployeeService': return new EmployeeService(context, headers);
       case 'EmployeeUnauthenticatedService': return new EmployeeUnauthenticatedService();
-      case 'ExcelService': return new ExcelService(context, header);
-      case 'GroupService': return new GroupService(context, header, headers);
-      case 'ItemService': return new ItemService(context, header, headers);
-      case 'ItemPlaceService': return new ItemPlaceService(context, header, headers);
-      case 'ManagerService': return new ManagerService(context, header, headers);
+      case 'ExcelService': return new ExcelService(context, headers);
+      case 'GroupService': return new GroupService(context, headers);
+      case 'ItemService': return new ItemService(context, headers);
+      case 'ItemPlaceService': return new ItemPlaceService(context, headers);
+      case 'ManagerService': return new ManagerService(context, headers);
       case 'ManagerUnauthenticatedService': return new ManagerUnauthenticatedService();
       case 'NoteService': return new NoteService(context, headers);
-      case 'PieceworkService': return new PieceworkService(context, header, headers);
-      case 'PriceListService': return new PriceListService(context, header, headers);
-      case 'SubWorkplaceService': return new SubWorkplaceService(context, header, headers);
-      case 'TimesheetService': return new TimesheetService(context, header, headers);
+      case 'PieceworkService': return new PieceworkService(context, headers);
+      case 'PriceListService': return new PriceListService(context, headers);
+      case 'SubWorkplaceService': return new SubWorkplaceService(context, headers);
+      case 'TimesheetService': return new TimesheetService(context, headers);
       case 'TokenService': return new TokenService();
       case 'UserService': return new UserService(context, headers);
-      case 'WorkdayService': return new WorkdayService(context, header, headers);
-      case 'WarehouseService': return new WarehouseService(context, header, headers);
-      case 'WorkTimeService': return new WorkTimeService(context, header, headers);
-      case 'WorkplaceService': return new WorkplaceService(context, header, headers);
+      case 'WorkdayService': return new WorkdayService(context, headers);
+      case 'WarehouseService': return new WarehouseService(context, headers);
+      case 'WorkTimeService': return new WorkTimeService(context, headers);
+      case 'WorkplaceService': return new WorkplaceService(context, headers);
       default: throw 'Wrong (class as String) to translate!';
     }
   }

@@ -14,10 +14,9 @@ import 'package:jobbed/shared/util/logout_util.dart';
 
 class EmployeeService {
   final BuildContext _context;
-  final Map<String, String> _header;
   final Map<String, String> _headers;
 
-  EmployeeService(this._context, this._header, this._headers);
+  EmployeeService(this._context, this._headers);
 
   static const String _url = '$SERVER_IP/employees';
 
@@ -34,7 +33,7 @@ class EmployeeService {
 
   Future<Map<String, Object>> findEmployeeAndUserAndCompanyFieldsValuesById(int id, List<String> fields) async {
     String url = '$_url?id=$id&fields=$fields';
-    Response res = await get(url, headers: _header);
+    Response res = await get(url, headers: _headers);
     if (res.statusCode == 200) {
       return json.decode(res.body);
     } else if (res.statusCode == 401) {
@@ -46,7 +45,7 @@ class EmployeeService {
 
   Future<EmployeeProfileDto> findByIdForProfileView(String id) async {
     String url = '$_url/view/profile?id=$id';
-    Response res = await get(url, headers: _header);
+    Response res = await get(url, headers: _headers);
     if (res.statusCode == 200) {
       return EmployeeProfileDto.fromJson(jsonDecode(res.body));
     } else if (res.statusCode == 401) {
@@ -58,7 +57,7 @@ class EmployeeService {
 
   Future<List<EmployeeSettingsDto>> findAllByGroupIdForSettingsView(int groupId) async {
     String url = '$_url/view/settings?group_id=$groupId';
-    Response res = await get(url, headers: _header);
+    Response res = await get(url, headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeSettingsDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -69,7 +68,7 @@ class EmployeeService {
   }
 
   Future<List<EmployeeWorkTimeDto>> findAllByGroupIdForWorkTimeView(int groupId) async {
-    Response res = await get('$_url/view/work-time?group_id=$groupId', headers: _header);
+    Response res = await get('$_url/view/work-time?group_id=$groupId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeWorkTimeDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -80,7 +79,7 @@ class EmployeeService {
   }
 
   Future<List<EmployeePieceworkDto>> findAllByGroupIdForPieceworkView(int groupId) async {
-    Response res = await get('$_url/view/piecework?group_id=$groupId', headers: _header);
+    Response res = await get('$_url/view/piecework?group_id=$groupId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeePieceworkDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -92,7 +91,7 @@ class EmployeeService {
 
   Future<List<EmployeeStatisticsDto>> findAllByGroupIdAndTsYearAndMonthAndStatusForStatisticsView(int groupId, int tsYear, int tsMonth, String tsStatus) async {
     String url = '$_url/view/statistics/groups/$groupId/timesheets?ts_year=$tsYear&ts_month=$tsMonth&ts_status=$tsStatus';
-    Response res = await get(url, headers: _header);
+    Response res = await get(url, headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeStatisticsDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -104,7 +103,7 @@ class EmployeeService {
 
   Future<List<EmployeeBasicDto>> findAllByGroupIdAndTsInYearsAndMonthsForScheduleView(int groupId, Set<String> yearsWithMonths) async {
     String url = '$_url/view/schedule/groups/$groupId/timesheets?years_with_months=$yearsWithMonths';
-    Response res = await get(url, headers: _header);
+    Response res = await get(url, headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeBasicDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -115,7 +114,7 @@ class EmployeeService {
   }
 
   Future<List<EmployeeBasicDto>> findAllByCompanyId(String companyId) async {
-    Response res = await get('$_url/companies?company_id=$companyId', headers: _header);
+    Response res = await get('$_url/companies?company_id=$companyId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeBasicDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -126,7 +125,7 @@ class EmployeeService {
   }
 
   Future<List<EmployeeBasicDto>> findAllByGroupId(int groupId) async {
-    Response res = await get('$_url/groups?group_id=$groupId', headers: _header);
+    Response res = await get('$_url/groups?group_id=$groupId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeBasicDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -138,7 +137,7 @@ class EmployeeService {
 
   Future<List<EmployeeBasicDto>> findAllByGroupIdAndTsInYearAndMonthAndStatus(int groupId, int tsYear, int tsMonth, String tsStatus) async {
     String url = '$_url/groups/$groupId/timesheets/in?ts_year=$tsYear&ts_month=$tsMonth&ts_status=$tsStatus';
-    Response res = await get(url, headers: _header);
+    Response res = await get(url, headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeBasicDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -150,7 +149,7 @@ class EmployeeService {
 
   Future<List<EmployeeBasicDto>> findAllByGroupIdAndTsNotInYearAndMonth(int groupId, int tsYear, int tsMonth) async {
     String url = '$_url/groups/$groupId/timesheets/not-in?ts_year=$tsYear&ts_month=$tsMonth';
-    Response res = await get(url, headers: _header);
+    Response res = await get(url, headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeBasicDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -162,7 +161,7 @@ class EmployeeService {
 
   Future<List<EmployeeBasicDto>> findAllByGroupIsNullAndCompanyId(String companyId, int groupId) async {
     String url = '$_url/companies/$companyId/groups/not-equal/$groupId';
-    Response res = await get(url, headers: _header);
+    Response res = await get(url, headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeBasicDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {

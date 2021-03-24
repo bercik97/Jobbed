@@ -1,18 +1,17 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart';
 import 'package:jobbed/api/warehouse/dto/create_warehouse_dto.dart';
 import 'package:jobbed/api/warehouse/dto/warehouse_dashboard_dto.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/util/logout_util.dart';
-import 'package:http/http.dart';
 
 class WarehouseService {
   final BuildContext _context;
-  final Map<String, String> _header;
   final Map<String, String> _headers;
 
-  WarehouseService(this._context, this._header, this._headers);
+  WarehouseService(this._context, this._headers);
 
   static const String _url = '$SERVER_IP/warehouses';
 
@@ -28,7 +27,7 @@ class WarehouseService {
   }
 
   Future<List<WarehouseDashboardDto>> findAllByCompanyId(String companyId) async {
-    Response res = await get(_url + '/companies/$companyId', headers: _header);
+    Response res = await get(_url + '/companies/$companyId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => WarehouseDashboardDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {

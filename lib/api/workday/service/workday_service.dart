@@ -10,15 +10,14 @@ import 'package:jobbed/shared/util/logout_util.dart';
 
 class WorkdayService {
   final BuildContext _context;
-  final Map<String, String> _header;
   final Map<String, String> _headers;
 
-  WorkdayService(this._context, this._header, this._headers);
+  WorkdayService(this._context, this._headers);
 
   static const String _url = '$SERVER_IP/workdays';
 
   Future<List<WorkdayDto>> findAllByTimesheetId(int tsId) async {
-    Response res = await get('$_url/timesheet?ts_id=$tsId', headers: _header);
+    Response res = await get('$_url/timesheet?ts_id=$tsId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => WorkdayDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -29,7 +28,7 @@ class WorkdayService {
   }
 
   Future<List<WorkdayForTimesheetDto>> findAllByTimesheetIdForTimesheetView(String tsId) async {
-    Response res = await get('$_url/view/timesheet?ts_id=$tsId', headers: _header);
+    Response res = await get('$_url/view/timesheet?ts_id=$tsId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => WorkdayForTimesheetDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {

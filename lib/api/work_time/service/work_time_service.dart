@@ -10,10 +10,9 @@ import 'package:jobbed/shared/util/logout_util.dart';
 
 class WorkTimeService {
   final BuildContext _context;
-  final Map<String, String> _header;
   final Map<String, String> _headers;
 
-  WorkTimeService(this._context, this._header, this._headers);
+  WorkTimeService(this._context, this._headers);
 
   static const String _url = '$SERVER_IP/work-times';
 
@@ -58,7 +57,7 @@ class WorkTimeService {
   }
 
   Future<List<String>> findAllYearMonthDatesByWorkplaceId(String workplaceId) async {
-    Response res = await get(_url + '/workplaces/$workplaceId', headers: _header);
+    Response res = await get(_url + '/workplaces/$workplaceId', headers: _headers);
     if (res.statusCode == 200) {
       return (jsonDecode(res.body) as List<dynamic>).cast<String>();
     } else if (res.statusCode == 401) {
@@ -70,7 +69,7 @@ class WorkTimeService {
 
   Future<List<WorkTimeDetailsDto>> findAllDatesWithTotalTimeByWorkplaceIdAndYearMonthIn(String workplaceId, String date) async {
     String url = _url + '?workplace_id=$workplaceId&date=$date';
-    Response res = await get(url, headers: _header);
+    Response res = await get(url, headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => WorkTimeDetailsDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -82,7 +81,7 @@ class WorkTimeService {
 
   Future<IsCurrentlyAtWorkWithWorkTimesDto> checkIfWorkTimeIsStartedAndNotFinished(num employeeId, num workdayId) async {
     String url = _url + '/employees/$employeeId/currently-at-work';
-    Response res = await get(url, headers: _header);
+    Response res = await get(url, headers: _headers);
     if (res.statusCode == 200) {
       return IsCurrentlyAtWorkWithWorkTimesDto.fromJson(jsonDecode(res.body));
     } else if (res.statusCode == 401) {
@@ -94,7 +93,7 @@ class WorkTimeService {
 
   Future<bool> canFinishByIdAndLocationParams(int id, double latitude, double longitude) async {
     String url = _url + '/$id/can-finish?latitude=$latitude&longitude=$longitude';
-    Response res = await get(url, headers: _header);
+    Response res = await get(url, headers: _headers);
     if (res.statusCode == 200) {
       return res.body == 'true' ? true : false;
     } else if (res.statusCode == 401) {
@@ -106,7 +105,7 @@ class WorkTimeService {
 
   Future<String> calculateTotalTimeById(int id) async {
     String url = _url + '/$id/calculate-total-time';
-    Response res = await get(url, headers: _header);
+    Response res = await get(url, headers: _headers);
     if (res.statusCode == 200) {
       return res.body;
     } else if (res.statusCode == 401) {

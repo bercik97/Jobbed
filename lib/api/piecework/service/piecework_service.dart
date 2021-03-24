@@ -1,18 +1,17 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart';
 import 'package:jobbed/api/piecework/dto/create_piecework_dto.dart';
 import 'package:jobbed/api/piecework/dto/piecework_for_employee_dto.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/util/logout_util.dart';
-import 'package:http/http.dart';
 
 class PieceworkService {
   final BuildContext _context;
-  final Map<String, String> _header;
   final Map<String, String> _headers;
 
-  PieceworkService(this._context, this._header, this._headers);
+  PieceworkService(this._context, this._headers);
 
   static const String _url = '$SERVER_IP/pieceworks';
 
@@ -28,7 +27,7 @@ class PieceworkService {
   }
 
   Future<List<PieceworkForEmployeeDto>> findAllByWorkdayIdForEmployeeView(int workdayId) async {
-    Response res = await get(_url + '/view/employee/workdays/$workdayId', headers: _header);
+    Response res = await get(_url + '/view/employee/workdays/$workdayId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => PieceworkForEmployeeDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {

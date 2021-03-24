@@ -9,10 +9,9 @@ import 'package:jobbed/shared/util/logout_util.dart';
 
 class SubWorkplaceService {
   final BuildContext _context;
-  final Map<String, String> _header;
   final Map<String, String> _headers;
 
-  SubWorkplaceService(this._context, this._header, this._headers);
+  SubWorkplaceService(this._context, this._headers);
 
   static const String _url = '$SERVER_IP/sub-workplaces';
 
@@ -28,7 +27,7 @@ class SubWorkplaceService {
   }
 
   Future<List<SubWorkplaceDto>> findAllByWorkplaceId(String workplaceId) async {
-    Response res = await get(_url + '/workplaces/$workplaceId', headers: _header);
+    Response res = await get(_url + '/workplaces/$workplaceId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => SubWorkplaceDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {

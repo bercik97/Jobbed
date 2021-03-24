@@ -9,10 +9,9 @@ import 'package:jobbed/shared/util/logout_util.dart';
 
 class PriceListService {
   final BuildContext _context;
-  final Map<String, String> _header;
   final Map<String, String> _headers;
 
-  PriceListService(this._context, this._header, this._headers);
+  PriceListService(this._context, this._headers);
 
   static const String _url = '$SERVER_IP/price-lists';
 
@@ -28,7 +27,7 @@ class PriceListService {
   }
 
   Future<List<PriceListDto>> findAllByCompanyIdAndIsNotDeleted(String companyId) async {
-    Response res = await get(_url + '/companies/$companyId?is_deleted=${false}', headers: _header);
+    Response res = await get(_url + '/companies/$companyId?is_deleted=${false}', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => PriceListDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
