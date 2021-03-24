@@ -259,7 +259,7 @@ class DialogUtil {
                       children: <Widget>[
                         text20BlueBold(title),
                         SizedBox(height: 20),
-                        textCenter20Black(UTFDecoderUtil.decode(context, value)),
+                        textCenter20Black(UTFDecoderUtil.decode(value)),
                         SizedBox(height: 20),
                         Container(
                           width: 60,

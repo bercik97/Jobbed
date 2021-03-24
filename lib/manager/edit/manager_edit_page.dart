@@ -76,9 +76,9 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
           _fieldsValues = res;
           _usernameController.text = this._fieldsValues['username'];
           String name = this._fieldsValues['name'];
-          _nameController.text = UTFDecoderUtil.decode(context, name);
+          _nameController.text = UTFDecoderUtil.decode(name);
           String surname = this._fieldsValues['surname'];
-          _surnameController.text = UTFDecoderUtil.decode(context, surname);
+          _surnameController.text = UTFDecoderUtil.decode(surname);
           _emailController.text = this._fieldsValues['email'];
           _nationality = this._fieldsValues['nationality'];
           _phoneController.text = this._fieldsValues['phone'];

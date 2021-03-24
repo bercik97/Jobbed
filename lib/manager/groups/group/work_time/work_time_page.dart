@@ -187,8 +187,8 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                 foundIndex = i;
                               }
                             }
-                            String additionalInformation = UTFDecoderUtil.decode(context, employee.additionalInformation);
-                            String yesterdayAdditionalInformation = UTFDecoderUtil.decode(context, employee.yesterdayAdditionalInformation);
+                            String additionalInformation = UTFDecoderUtil.decode(employee.additionalInformation);
+                            String yesterdayAdditionalInformation = UTFDecoderUtil.decode(employee.yesterdayAdditionalInformation);
                             String empty = getTranslated(context, 'empty');
                             return Card(
                               color: WHITE,
@@ -242,7 +242,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              text20BlackBold(UTFDecoderUtil.decode(this.context, info) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                              text20BlackBold(UTFDecoderUtil.decode(info) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                               Row(
                                                 children: <Widget>[
                                                   textBlack(getTranslated(this.context, 'timeWorkedToday') + ': '),
@@ -663,7 +663,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                     for (int i = 0; i < _workplaces.length; i++)
                                       RadioButton.buildRadioBtn(
                                         color: BLUE,
-                                        title: UTFDecoderUtil.decode(this.context, _workplaces[i].name),
+                                        title: UTFDecoderUtil.decode(_workplaces[i].name),
                                         value: 0,
                                         groupValue: _workplacesRadioValues[i],
                                         onChanged: (newValue) => setState(
@@ -860,7 +860,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
           alignment,
           iconGreen(Icons.check),
           textGreenBold(getTranslated(context, 'workIsDoneStatus')),
-          textBlackBold(workplace != null ? UTFDecoderUtil.decode(this.context, workplace) : '-'),
+          textBlackBold(workplace != null ? UTFDecoderUtil.decode(workplace) : '-'),
           textBlackBold(workplaceCode != null ? workplaceCode : '-'),
         );
       case 'In progress':
@@ -868,7 +868,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
           alignment,
           iconOrange(Icons.timer),
           textOrangeBold(getTranslated(context, 'workIsInProgress')),
-          textBlackBold(workplace != null ? UTFDecoderUtil.decode(this.context, workplace) : '-'),
+          textBlackBold(workplace != null ? UTFDecoderUtil.decode(workplace) : '-'),
           textBlackBold(workplaceCode != null ? workplaceCode : '-'),
         );
       default:
@@ -919,7 +919,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                       onPressed: () => DialogUtil.showScrollableDialog(
                         context,
                         getTranslated(context, 'additionalInfo'),
-                        UTFDecoderUtil.decode(context, additionalInfo),
+                        UTFDecoderUtil.decode(additionalInfo),
                       ),
                     ),
                     iconOrange(Icons.warning_amber_outlined),
@@ -936,7 +936,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                       onPressed: () => DialogUtil.showScrollableDialog(
                         context,
                         getTranslated(context, 'yesterdayAdditionalInfo'),
-                        UTFDecoderUtil.decode(context, yesterdayAdditionalInfo),
+                        UTFDecoderUtil.decode(yesterdayAdditionalInfo),
                       ),
                     ),
                     iconOrange(Icons.warning_amber_outlined),

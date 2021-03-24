@@ -99,7 +99,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
                                   Card(
                                     color: BRIGHTER_BLUE,
                                     child: ListTile(
-                                      title: text17BlueBold(UTFDecoderUtil.decode(this.context, _items[i].name)),
+                                      title: text17BlueBold(UTFDecoderUtil.decode(_items[i].name)),
                                       subtitle: Row(
                                         children: [
                                           text16Black(getTranslated(this.context, 'quantity') + ': '),
@@ -219,7 +219,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
                           for (int i = 0; i < _itemPlaces.length; i++)
                             RadioButton.buildRadioBtn(
                               color: BLUE,
-                              title: UTFDecoderUtil.decode(this.context, _itemPlaces[i].location),
+                              title: UTFDecoderUtil.decode(_itemPlaces[i].location),
                               value: 0,
                               groupValue: _itemPlacesRadioValues[i],
                               onChanged: (newValue) => setState(
@@ -288,7 +288,7 @@ class _ReleaseItemsPageState extends State<ReleaseItemsPage> {
     for (int i = 0; i < _items.length; i++) {
       int quantity = int.parse(_textEditingItemControllers[i].text);
       if (quantity != 0) {
-        itemsWithQuantities[UTFDecoderUtil.decode(this.context, _items[i].name)] = quantity;
+        itemsWithQuantities[UTFDecoderUtil.decode(_items[i].name)] = quantity;
       }
     }
     if (itemsWithQuantities.isEmpty) {

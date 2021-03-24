@@ -173,7 +173,7 @@ class _NotePageState extends State<NotePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             ListTile(
-                              title: text20BlackBold(UTFDecoderUtil.decode(this.context, name)),
+                              title: text20BlackBold(UTFDecoderUtil.decode(name)),
                               subtitle: text14BlueGrey(getTranslated(this.context, 'workplaceHasNoSubWorkplaces')),
                               leading: _checkedNoteWorkplaces[foundIndex] ? icon50Green(Icons.check) : icon50Red(Icons.close),
                             )
@@ -202,7 +202,7 @@ class _NotePageState extends State<NotePage> {
                               color: BRIGHTER_BLUE,
                               child: ListTileTheme(
                                 child: ListTile(
-                                  title: text20BlackBold(UTFDecoderUtil.decode(context, noteSubWorkplaces.keys.toList()[i])),
+                                  title: text20BlackBold(UTFDecoderUtil.decode(noteSubWorkplaces.keys.toList()[i])),
                                   subtitle: SizedBox(
                                     height: noteSubWorkplaces.values.elementAt(i).length * 80.0,
                                     child: ListView.builder(
@@ -216,8 +216,8 @@ class _NotePageState extends State<NotePage> {
                                             foundIndex = j;
                                           }
                                         }
-                                        String name = UTFDecoderUtil.decode(context, subWorkplace.subWorkplaceName);
-                                        String description = UTFDecoderUtil.decode(context, subWorkplace.subWorkplaceDescription);
+                                        String name = UTFDecoderUtil.decode(subWorkplace.subWorkplaceName);
+                                        String description = UTFDecoderUtil.decode(subWorkplace.subWorkplaceDescription);
                                         return Card(
                                           color: BRIGHTER_BLUE,
                                           child: Column(
@@ -286,7 +286,7 @@ class _NotePageState extends State<NotePage> {
                               child: Card(
                                 color: BRIGHTER_BLUE,
                                 child: ListTile(
-                                  title: text17BlueBold(UTFDecoderUtil.decode(this.context, piecework.service)),
+                                  title: text17BlueBold(UTFDecoderUtil.decode(piecework.service)),
                                   subtitle: text20Black(piecework.doneQuantity.toString() + ' / ' + piecework.toBeDoneQuantity.toString()),
                                   leading: piecework.doneQuantity == piecework.toBeDoneQuantity ? icon50Green(Icons.check) : icon50Red(Icons.close),
                                 ),

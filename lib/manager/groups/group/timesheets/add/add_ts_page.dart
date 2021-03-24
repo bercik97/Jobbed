@@ -79,7 +79,7 @@ class _AddTsPageState extends State<AddTsPage> {
     return WillPopScope(
       child: Scaffold(
         backgroundColor: WHITE,
-        appBar: managerAppBar(context, _user, UTFDecoderUtil.decode(context, _model.groupName), () => Navigator.pop(context)),
+        appBar: managerAppBar(context, _user, UTFDecoderUtil.decode(_model.groupName), () => Navigator.pop(context)),
         body: RefreshIndicator(
           color: WHITE,
           backgroundColor: BLUE,
@@ -173,7 +173,7 @@ class _AddTsPageState extends State<AddTsPage> {
                                     contentPadding: EdgeInsets.only(right: 10),
                                     child: CheckboxListTile(
                                       controlAffinity: ListTileControlAffinity.leading,
-                                      title: text20BlackBold(UTFDecoderUtil.decode(context, info) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                      title: text20BlackBold(UTFDecoderUtil.decode(info) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                       activeColor: BLUE,
                                       checkColor: WHITE,
                                       value: _checked[foundIndex],

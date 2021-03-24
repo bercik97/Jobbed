@@ -84,7 +84,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
                                     Card(
                                       color: BRIGHTER_BLUE,
                                       child: ListTile(
-                                        title: text17BlueBold(UTFDecoderUtil.decode(context, _itemPlaces[i].name)),
+                                        title: text17BlueBold(UTFDecoderUtil.decode(_itemPlaces[i].name)),
                                         subtitle: Column(
                                           children: [
                                             Row(
@@ -101,7 +101,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
                                                   alignment: Alignment.topLeft,
                                                 ),
                                                 Align(
-                                                  child: text17BlackBold(UTFDecoderUtil.decode(context, _itemPlaces[i].warehouseName.toString())),
+                                                  child: text17BlackBold(UTFDecoderUtil.decode(_itemPlaces[i].warehouseName.toString())),
                                                   alignment: Alignment.topLeft,
                                                 ),
                                               ],
@@ -197,13 +197,13 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
         Map<String, int> itemsWithQuantities = warehouseIdsAndItemsWithQuantities[warehouseId];
         int quantity = int.parse(_textEditingItemControllers[i].text);
         if (quantity != 0) {
-          itemsWithQuantities[UTFDecoderUtil.decode(context, _itemPlaces[i].name)] = quantity;
+          itemsWithQuantities[UTFDecoderUtil.decode(_itemPlaces[i].name)] = quantity;
         }
       } else {
         Map<String, int> itemsWithQuantities = new Map();
         int quantity = int.parse(_textEditingItemControllers[i].text);
         if (quantity != 0) {
-          itemsWithQuantities[UTFDecoderUtil.decode(context, _itemPlaces[i].name)] = quantity;
+          itemsWithQuantities[UTFDecoderUtil.decode(_itemPlaces[i].name)] = quantity;
           warehouseIdsAndItemsWithQuantities[warehouseId.toString()] = itemsWithQuantities;
         }
       }

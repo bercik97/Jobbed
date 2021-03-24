@@ -201,12 +201,12 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                               children: [
                                                 Align(
                                                   alignment: Alignment.topLeft,
-                                                  child: text17BlueBold(UTFDecoderUtil.decode(context, name)),
+                                                  child: text17BlueBold(UTFDecoderUtil.decode(name)),
                                                 ),
                                                 Align(
                                                   alignment: Alignment.topLeft,
                                                   child: location != null && location != ''
-                                                      ? text16Black(UTFDecoderUtil.decode(context, location))
+                                                      ? text16Black(UTFDecoderUtil.decode(location))
                                                       : Row(
                                                           children: [
                                                             text16Black(getTranslated(this.context, 'location') + ': '),

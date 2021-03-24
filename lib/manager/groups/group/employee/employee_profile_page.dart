@@ -107,7 +107,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                         ),
                       ),
                       SizedBox(height: 5),
-                      text25BlackBold(UTFDecoderUtil.decode(this.context, _employeeInfo)),
+                      text25BlackBold(UTFDecoderUtil.decode(_employeeInfo)),
                       SizedBox(height: 2.5),
                       text20Black(LanguageUtil.convertShortNameToFullName(this.context, _employeeNationality) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality)),
                       SizedBox(height: 2.5),

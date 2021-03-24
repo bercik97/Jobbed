@@ -78,7 +78,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
     _priceListService.findAllByCompanyIdAndIsNotDeleted(_user.companyId).then((res) {
       setState(() {
         _priceLists = res;
-        _priceLists.forEach((i) => _textEditingItemControllers[UTFDecoderUtil.decode(this.context, i.name)] = new TextEditingController());
+        _priceLists.forEach((i) => _textEditingItemControllers[UTFDecoderUtil.decode(i.name)] = new TextEditingController());
         _loading = false;
       });
     });
@@ -138,7 +138,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
                               Card(
                                 color: BRIGHTER_BLUE,
                                 child: ListTile(
-                                  title: text17BlueBold(UTFDecoderUtil.decode(this.context, priceList.name)),
+                                  title: text17BlueBold(UTFDecoderUtil.decode(priceList.name)),
                                   subtitle: Column(
                                     children: [
                                       Row(
@@ -157,7 +157,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
                                   ),
                                   trailing: Container(
                                     width: 100,
-                                    child: _buildNumberField(_textEditingItemControllers[UTFDecoderUtil.decode(this.context, priceList.name)]),
+                                    child: _buildNumberField(_textEditingItemControllers[UTFDecoderUtil.decode(priceList.name)]),
                                   ),
                                 ),
                               ),

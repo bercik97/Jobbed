@@ -1,12 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:jobbed/internationalization/localization/localization_constants.dart';
 
 class UTFDecoderUtil {
-  static String decode(BuildContext context, String text) {
+  static String decode(String text) {
     if (text == null) {
-      return getTranslated(context, 'empty');
+      return null;
     }
     try {
       return utf8.decode(text.runes.toList());

@@ -186,7 +186,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                           ),
                                         ),
                                       ),
-                                      title: text20BlackBold(UTFDecoderUtil.decode(this.context, info) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                      title: text20BlackBold(UTFDecoderUtil.decode(info) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                       subtitle: Column(
                                         children: <Widget>[
                                           Align(

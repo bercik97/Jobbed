@@ -159,7 +159,7 @@ class _ItemPlacesPageState extends State<ItemPlacesPage> {
                                     foundIndex = i;
                                   }
                                 }
-                                String location = UTFDecoderUtil.decode(context, itemPlace.location);
+                                String location = UTFDecoderUtil.decode(itemPlace.location);
                                 String numberOfTypeOfItems = itemPlace.numberOfTypeOfItems.toString();
                                 String totalNumberOfItems = itemPlace.totalNumberOfItems.toString();
                                 return Card(

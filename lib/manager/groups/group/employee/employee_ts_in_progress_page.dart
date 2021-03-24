@@ -139,7 +139,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                     children: <Widget>[
                       Align(
                         alignment: Alignment.topLeft,
-                        child: text17BlackBold(UTFDecoderUtil.decode(context, _employeeInfo) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality)),
+                        child: text17BlackBold(UTFDecoderUtil.decode(_employeeInfo) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality)),
                       ),
                       Row(
                         children: <Widget>[
@@ -649,7 +649,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                     for (int i = 0; i < _workplaces.length; i++)
                                       RadioButton.buildRadioBtn(
                                         color: BLUE,
-                                        title: UTFDecoderUtil.decode(this.context, _workplaces[i].name),
+                                        title: UTFDecoderUtil.decode(_workplaces[i].name),
                                         value: 0,
                                         groupValue: _workplacesRadioValues[i],
                                         onChanged: (newValue) => setState(
@@ -857,7 +857,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                     DataRow(
                                       cells: [
                                         DataCell(text16Black((i + 1).toString())),
-                                        DataCell(text16Black(UTFDecoderUtil.decode(this.context, pieceworks[i].service))),
+                                        DataCell(text16Black(UTFDecoderUtil.decode(pieceworks[i].service))),
                                         DataCell(Align(alignment: Alignment.center, child: text16Black(pieceworks[i].quantity.toString()))),
                                         DataCell(Align(alignment: Alignment.center, child: text16Black(pieceworks[i].priceForEmployee.toString()))),
                                         DataCell(Align(alignment: Alignment.center, child: text16Black(pieceworks[i].priceForCompany.toString()))),
@@ -987,11 +987,11 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                                 onTap: () => DialogUtil.showScrollableDialog(
                                                   context,
                                                   getTranslated(context, 'additionalInfo'),
-                                                  UTFDecoderUtil.decode(context, workTimes[i].additionalInfo.toString()),
+                                                  UTFDecoderUtil.decode(workTimes[i].additionalInfo.toString()),
                                                 ),
                                               )
                                             : DataCell(textBlack(getTranslated(context, 'empty'))),
-                                        DataCell(text16Black(UTFDecoderUtil.decode(this.context, workTimes[i].workplaceName.toString()))),
+                                        DataCell(text16Black(UTFDecoderUtil.decode(workTimes[i].workplaceName.toString()))),
                                         DataCell(
                                           IconButton(
                                             icon: iconRed(Icons.delete),

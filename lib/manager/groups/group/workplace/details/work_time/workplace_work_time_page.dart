@@ -51,12 +51,12 @@ class _WorkplaceWorkTimePageState extends State<WorkplaceWorkTimePage> {
         child: Column(
           children: [
             ListTile(
-              title: text17BlueBold(UTFDecoderUtil.decode(context, _workplaceDto.name)),
+              title: text17BlueBold(UTFDecoderUtil.decode(_workplaceDto.name)),
               subtitle: Column(
                 children: <Widget>[
                   Align(
                     child: _workplaceDto.location != null
-                        ? text16Black(UTFDecoderUtil.decode(context, _workplaceDto.location))
+                        ? text16Black(UTFDecoderUtil.decode(_workplaceDto.location))
                         : Row(
                             children: [
                               text16Black(getTranslated(context, 'location') + ': '),
@@ -101,7 +101,7 @@ class _WorkplaceWorkTimePageState extends State<WorkplaceWorkTimePage> {
                                   DataCell(textBlack(workTime.startTime)),
                                   DataCell(textBlack(workTime.endTime != null ? workTime.endTime : '-')),
                                   DataCell(textBlack(workTime.totalTime != null ? workTime.totalTime : '-')),
-                                  DataCell(textBlack(UTFDecoderUtil.decode(this.context, workTime.employeeInfo))),
+                                  DataCell(textBlack(UTFDecoderUtil.decode(workTime.employeeInfo))),
                                 ],
                               ),
                           ],

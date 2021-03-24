@@ -277,7 +277,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                     DataCell(textBlack(workTimes[i].startTime)),
                     DataCell(textBlack(workTimes[i].endTime != null ? workTimes[i].endTime : '-')),
                     DataCell(textBlack(workTimes[i].totalTime != null ? workTimes[i].totalTime : '-')),
-                    DataCell(textBlack(UTFDecoderUtil.decode(this.context, workTimes[i].workplaceName))),
+                    DataCell(textBlack(UTFDecoderUtil.decode(workTimes[i].workplaceName))),
                   ],
                 ),
             ],
@@ -418,7 +418,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                     DataRow(
                                       cells: [
                                         DataCell(textBlack((i + 1).toString())),
-                                        DataCell(textBlack(UTFDecoderUtil.decode(context, workplaces[i].name))),
+                                        DataCell(textBlack(UTFDecoderUtil.decode(workplaces[i].name))),
                                         DataCell(
                                           MaterialButton(
                                             child: Text(getTranslated(context, 'startUpperCase')),

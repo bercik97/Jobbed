@@ -280,8 +280,8 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
   }
 
   Widget _buildWorkday(EmployeeForManagerScheduleDto employee) {
-    String name = UTFDecoderUtil.decode(context, employee.name);
-    String surname = UTFDecoderUtil.decode(context, employee.surname);
+    String name = UTFDecoderUtil.decode(employee.name);
+    String surname = UTFDecoderUtil.decode(employee.surname);
     String nationality = employee.nationality;
     String employeeInfo = name + ' ' + surname + ' ' + LanguageUtil.findFlagByNationality(nationality);
     String moneyForTime = employee.moneyForTime;

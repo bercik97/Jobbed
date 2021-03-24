@@ -218,7 +218,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          text20BlackBold(UTFDecoderUtil.decode(context, info) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                          text20BlackBold(UTFDecoderUtil.decode(info) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                           Row(
                                             children: <Widget>[
                                               textBlack(getTranslated(this.context, 'moneyForPieceworkToday') + ': '),

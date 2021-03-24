@@ -160,7 +160,7 @@ class _AddGroupEmployeesPageState extends State<AddGroupEmployeesPage> {
                 foundIndex = i;
               }
             }
-            String info = UTFDecoderUtil.decode(context, employee.name + ' ' + employee.surname);
+            String info = UTFDecoderUtil.decode(employee.name + ' ' + employee.surname);
             String nationality = employee.nationality;
             return Card(
               color: WHITE,

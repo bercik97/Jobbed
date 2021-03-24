@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 
 class SubWorkplaceDto {
   final int id;
@@ -14,8 +15,8 @@ class SubWorkplaceDto {
   factory SubWorkplaceDto.fromJson(Map<String, dynamic> json) {
     return SubWorkplaceDto(
       id: json['id'] as int,
-      name: json['name'] as String,
-      description: json['description'] as String,
+      name: UTFDecoderUtil.decode(json['name']),
+      description: UTFDecoderUtil.decode(json['description']),
     );
   }
 }

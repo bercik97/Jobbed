@@ -54,23 +54,23 @@ class _GroupEditPageState extends State<GroupEditPage> {
                       SizedBox(height: 10),
                       ListTile(
                         title: text17BlackBold(getTranslated(context, 'groupName')),
-                        subtitle: text16Black(UTFDecoderUtil.decode(context, _model.groupName)),
+                        subtitle: text16Black(UTFDecoderUtil.decode(_model.groupName)),
                         trailing: Ink(
                           decoration: ShapeDecoration(color: BLUE, shape: CircleBorder()),
                           child: IconButton(
                             icon: iconWhite(Icons.border_color),
-                            onPressed: () => _updateGroupName(context, UTFDecoderUtil.decode(context, _model.groupName)),
+                            onPressed: () => _updateGroupName(context, UTFDecoderUtil.decode(_model.groupName)),
                           ),
                         ),
                       ),
                       ListTile(
                         title: text17BlackBold(getTranslated(context, 'groupDescription')),
-                        subtitle: text16Black(UTFDecoderUtil.decode(context, _model.groupDescription)),
+                        subtitle: text16Black(UTFDecoderUtil.decode(_model.groupDescription)),
                         trailing: Ink(
                           decoration: ShapeDecoration(color: BLUE, shape: CircleBorder()),
                           child: IconButton(
                             icon: iconWhite(Icons.border_color),
-                            onPressed: () => _updateGroupDescription(context, UTFDecoderUtil.decode(context, _model.groupDescription)),
+                            onPressed: () => _updateGroupDescription(context, UTFDecoderUtil.decode(_model.groupDescription)),
                           ),
                         ),
                       ),

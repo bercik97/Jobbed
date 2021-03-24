@@ -85,7 +85,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                         children: <Widget>[
                           Align(
                             alignment: Alignment.topLeft,
-                            child: text17BlackBold(_user.info != null ? UTFDecoderUtil.decode(context, _user.info) + ' ' + LanguageUtil.findFlagByNationality(_user.nationality) : getTranslated(context, 'empty')),
+                            child: text17BlackBold(_user.info != null ? UTFDecoderUtil.decode(_user.info) + ' ' + LanguageUtil.findFlagByNationality(_user.nationality) : getTranslated(context, 'empty')),
                           ),
                           Row(
                             children: <Widget>[

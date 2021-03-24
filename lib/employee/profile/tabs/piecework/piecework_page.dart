@@ -165,7 +165,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
                       DataRow(
                         cells: [
                           DataCell(textBlack((i + 1).toString())),
-                          DataCell(textBlack(UTFDecoderUtil.decode(context, _pieceworks[i].service))),
+                          DataCell(textBlack(UTFDecoderUtil.decode(_pieceworks[i].service))),
                           DataCell(textBlack(_pieceworks[i].quantity.toString())),
                           DataCell(textBlack(_pieceworks[i].priceForEmployee.toString())),
                           DataCell(

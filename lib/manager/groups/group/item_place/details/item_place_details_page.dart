@@ -86,7 +86,7 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
                   ),
                 ),
                 title: ExpandableText(
-                  UTFDecoderUtil.decode(this.context, _itemPlaceDto.location),
+                  UTFDecoderUtil.decode(_itemPlaceDto.location),
                   expandText: getTranslated(context, 'showMore'),
                   collapseText: getTranslated(context, 'showLess'),
                   maxLines: 2,
@@ -108,7 +108,7 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
                       _checked.forEach((b) => l.add(value));
                       _checked = l;
                       if (value) {
-                        _selectedNames.addAll(_filteredItems.map((e) => UTFDecoderUtil.decode(context, e.name)));
+                        _selectedNames.addAll(_filteredItems.map((e) => UTFDecoderUtil.decode(e.name)));
                         _selectedItems.addAll(_filteredItems);
                       } else {
                         _selectedNames.clear();
@@ -134,12 +134,12 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
                                 ItemPlaceDetailsDto item = _filteredItems[index];
                                 int foundIndex = 0;
                                 for (int i = 0; i < _items.length; i++) {
-                                  if (UTFDecoderUtil.decode(context, _items[i].name) == UTFDecoderUtil.decode(context, item.name)) {
+                                  if (UTFDecoderUtil.decode(_items[i].name) == UTFDecoderUtil.decode(item.name)) {
                                     foundIndex = i;
                                   }
                                 }
-                                String warehouseName = UTFDecoderUtil.decode(context, item.warehouseName);
-                                String name = UTFDecoderUtil.decode(context, item.name);
+                                String warehouseName = UTFDecoderUtil.decode(item.warehouseName);
+                                String name = UTFDecoderUtil.decode(item.name);
                                 String quantity = item.quantity;
                                 return Card(
                                   color: WHITE,
@@ -194,10 +194,10 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
                                               setState(() {
                                                 _checked[foundIndex] = value;
                                                 if (value) {
-                                                  _selectedNames.add(UTFDecoderUtil.decode(context, _items[foundIndex].name));
+                                                  _selectedNames.add(UTFDecoderUtil.decode(_items[foundIndex].name));
                                                   _selectedItems.add(_items[foundIndex]);
                                                 } else {
-                                                  _selectedNames.remove(UTFDecoderUtil.decode(context, _items[foundIndex].name));
+                                                  _selectedNames.remove(UTFDecoderUtil.decode(_items[foundIndex].name));
                                                   _selectedItems.remove(_items[foundIndex]);
                                                 }
                                                 int selectedIdsLength = _selectedNames.length;

@@ -117,7 +117,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                           ),
                         ),
                         SizedBox(height: 5),
-                        text25BlackBold(UTFDecoderUtil.decode(context, _user.info) + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
+                        text25BlackBold(UTFDecoderUtil.decode(_user.info) + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
                         SizedBox(height: 10),
                         text18Black(getTranslated(this.context, 'statisticsForThe') + _employeePageDto.tsCurrentYear + ' ' + getTranslated(this.context, _employeePageDto.tsCurrentMonth)),
                         SizedBox(height: 5),

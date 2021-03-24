@@ -129,7 +129,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                     ),
                   ),
                 ),
-                title: text17BlueBold(UTFDecoderUtil.decode(context, _workplaceDto.name)),
+                title: text17BlueBold(UTFDecoderUtil.decode(_workplaceDto.name)),
                 subtitle: Column(
                   children: <Widget>[
                     Align(
@@ -145,7 +145,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                     ),
                     Align(
                       child: _workplaceDto.location != null && _workplaceDto.location != ''
-                          ? text16Black(UTFDecoderUtil.decode(context, _workplaceDto.location))
+                          ? text16Black(UTFDecoderUtil.decode(_workplaceDto.location))
                           : Row(
                               children: [
                                 text16Black(getTranslated(context, 'location') + ': '),
@@ -327,7 +327,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                                               children: [
                                                 Align(
                                                   alignment: Alignment.topLeft,
-                                                  child: text17BlueBold(UTFDecoderUtil.decode(this.context, name)),
+                                                  child: text17BlueBold(UTFDecoderUtil.decode(name)),
                                                 ),
                                                 Align(
                                                   alignment: Alignment.topLeft,
@@ -403,8 +403,8 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
   void _editSubWorkplace(SubWorkplaceDto subWorkplaceDto) {
     TextEditingController _nameController = new TextEditingController();
     TextEditingController _descriptionController = new TextEditingController();
-    _nameController.text = UTFDecoderUtil.decode(this.context, subWorkplaceDto.name);
-    _descriptionController.text = UTFDecoderUtil.decode(this.context, subWorkplaceDto.description);
+    _nameController.text = UTFDecoderUtil.decode(subWorkplaceDto.name);
+    _descriptionController.text = UTFDecoderUtil.decode(subWorkplaceDto.description);
     showGeneralDialog(
       context: context,
       barrierColor: WHITE.withOpacity(0.95),
@@ -528,9 +528,9 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
   }
 
   void _editWorkplace(WorkplaceDto workplace) {
-    _nameController.text = UTFDecoderUtil.decode(this.context, workplace.name);
-    _descriptionController.text = UTFDecoderUtil.decode(this.context, workplace.description);
-    _locationController.text = UTFDecoderUtil.decode(this.context, workplace.location);
+    _nameController.text = UTFDecoderUtil.decode(workplace.name);
+    _descriptionController.text = UTFDecoderUtil.decode(workplace.description);
+    _locationController.text = UTFDecoderUtil.decode(workplace.location);
     double latitude = workplace.latitude;
     double longitude = workplace.longitude;
     String location = workplace.location;

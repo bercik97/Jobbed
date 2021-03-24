@@ -3,6 +3,7 @@ import 'package:jobbed/api/note/dto/note_dto.dart';
 import 'package:jobbed/api/piecework/dto/piecework_details_dto.dart';
 import 'package:jobbed/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:jobbed/api/work_time/dto/work_time_dto.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 
 class EmployeeProfileDto {
   final int id;
@@ -54,7 +55,7 @@ class EmployeeProfileDto {
       tsEarnedMoney: json['tsEarnedMoney'] as num,
       timeSheets: json['timeSheets'].map((data) => TimesheetForEmployeeDto.fromJson(data)).toList(),
       todayWorkdayId: json['todayWorkdayId'] as int,
-      todayDate: json['todayDate'] as String,
+      todayDate: UTFDecoderUtil.decode(json['todayDate']),
       todayMoneyForTime: json['todayMoneyForTime'] as String,
       todayMoneyForPiecework: json['todayMoneyForPiecework'] as String,
       todayMoney: json['todayMoney'] as String,

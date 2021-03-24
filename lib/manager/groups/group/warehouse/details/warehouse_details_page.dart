@@ -95,11 +95,11 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                title: text17BlueBold(UTFDecoderUtil.decode(context, _warehouseDto.name)),
+                title: text17BlueBold(UTFDecoderUtil.decode(_warehouseDto.name)),
                 subtitle: Column(
                   children: <Widget>[
                     Align(
-                      child: buildExpandableText(context, UTFDecoderUtil.decode(context, _warehouseDto.description), 2, 16),
+                      child: buildExpandableText(context, UTFDecoderUtil.decode(_warehouseDto.description), 2, 16),
                       alignment: Alignment.topLeft,
                     ),
                   ],
@@ -144,7 +144,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                       _checked.forEach((b) => l.add(value));
                       _checked = l;
                       if (value) {
-                        _selectedNames.addAll(_filteredItems.map((e) => UTFDecoderUtil.decode(context, e.name)));
+                        _selectedNames.addAll(_filteredItems.map((e) => UTFDecoderUtil.decode(e.name)));
                         _selectedItems.addAll(_filteredItems);
                       } else {
                         _selectedNames.clear();
@@ -201,7 +201,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                                               children: [
                                                 Align(
                                                   alignment: Alignment.topLeft,
-                                                  child: text17BlueBold(UTFDecoderUtil.decode(this.context, name)),
+                                                  child: text17BlueBold(UTFDecoderUtil.decode(name)),
                                                 ),
                                                 Align(
                                                   alignment: Alignment.topLeft,
@@ -222,11 +222,11 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                                                     children: [
                                                       Align(
                                                         alignment: Alignment.topLeft,
-                                                        child: text15Black(UTFDecoderUtil.decode(context, item.locationInfoAboutItems[i].name) + ' x ' + item.locationInfoAboutItems[i].quantity),
+                                                        child: text15Black(UTFDecoderUtil.decode(item.locationInfoAboutItems[i].name) + ' x ' + item.locationInfoAboutItems[i].quantity),
                                                       ),
                                                       Align(
                                                         alignment: Alignment.topLeft,
-                                                        child: buildExpandableText(context, UTFDecoderUtil.decode(context, item.locationInfoAboutItems[i].itemplace), 2, 15),
+                                                        child: buildExpandableText(context, UTFDecoderUtil.decode(item.locationInfoAboutItems[i].itemplace), 2, 15),
                                                       ),
                                                       SizedBox(height: 5),
                                                     ],
@@ -240,7 +240,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
                                               setState(() {
                                                 _checked[foundIndex] = value;
                                                 if (value) {
-                                                  _selectedNames.add(UTFDecoderUtil.decode(this.context, _items[foundIndex].name));
+                                                  _selectedNames.add(UTFDecoderUtil.decode(_items[foundIndex].name));
                                                   _selectedItems.add(_items[foundIndex]);
                                                 } else {
                                                   _selectedNames.remove(_items[foundIndex].name);
@@ -333,7 +333,7 @@ class _WarehouseDetailsPageState extends State<WarehouseDetailsPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  text20BlackBold(UTFDecoderUtil.decode(this.context, item.name)),
+                  text20BlackBold(UTFDecoderUtil.decode(item.name)),
                   SizedBox(height: 10),
                   Padding(
                     padding: EdgeInsets.only(left: 25, right: 25),

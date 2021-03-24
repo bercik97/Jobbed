@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:jobbed/api/sub_workplace/dto/sub_workplace_dto.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 
 class WorkplaceForAddNoteDto {
   String id;
@@ -18,8 +19,8 @@ class WorkplaceForAddNoteDto {
     var subWorkplacesDtoAsJson = json['subWorkplacesDto'];
     return WorkplaceForAddNoteDto(
       id: json['id'] as String,
-      name: json['name'] as String,
-      description: json['description'] as String,
+      name: UTFDecoderUtil.decode(json['name']),
+      description: UTFDecoderUtil.decode(json['description']),
       subWorkplacesDto: subWorkplacesDtoAsJson != null ? subWorkplacesDtoAsJson.map((data) => SubWorkplaceDto.fromJson(data)).toList() : null,
     );
   }

@@ -160,7 +160,7 @@ class _AddNotePageState extends State<AddNotePage> {
                                     color: BRIGHTER_BLUE,
                                     child: ListTileTheme(
                                       child: ListTile(
-                                        title: text20BlueBold(UTFDecoderUtil.decode(context, workplace.name)),
+                                        title: text20BlueBold(UTFDecoderUtil.decode(workplace.name)),
                                         leading: IconButton(
                                           icon: iconRed(Icons.remove),
                                           onPressed: () => setState(() => _selectedWorkplacesWithChecked.remove(workplace)),
@@ -180,8 +180,8 @@ class _AddNotePageState extends State<AddNotePage> {
                                                         foundIndex = i;
                                                       }
                                                     }
-                                                    String name = UTFDecoderUtil.decode(context, subWorkplace.name);
-                                                    String description = UTFDecoderUtil.decode(context, subWorkplace.description);
+                                                    String name = UTFDecoderUtil.decode(subWorkplace.name);
+                                                    String description = UTFDecoderUtil.decode(subWorkplace.description);
                                                     return Card(
                                                       color: WHITE,
                                                       child: Column(
@@ -194,8 +194,8 @@ class _AddNotePageState extends State<AddNotePage> {
                                                               contentPadding: EdgeInsets.only(right: 10),
                                                               child: CheckboxListTile(
                                                                 controlAffinity: ListTileControlAffinity.leading,
-                                                                title: text17BlueBold(UTFDecoderUtil.decode(context, name)),
-                                                                subtitle: buildExpandableText(context, UTFDecoderUtil.decode(context, description), 2, 15),
+                                                                title: text17BlueBold(UTFDecoderUtil.decode(name)),
+                                                                subtitle: buildExpandableText(context, UTFDecoderUtil.decode(description), 2, 15),
                                                                 activeColor: BLUE,
                                                                 checkColor: WHITE,
                                                                 value: _selectedWorkplacesWithChecked[workplace][foundIndex],
@@ -253,7 +253,7 @@ class _AddNotePageState extends State<AddNotePage> {
                             child: Card(
                               color: BRIGHTER_BLUE,
                               child: ListTile(
-                                title: text17BlueBold(UTFDecoderUtil.decode(this.context, priceList.name)),
+                                title: text17BlueBold(UTFDecoderUtil.decode(priceList.name)),
                                 subtitle: Column(
                                   children: [
                                     Row(
@@ -275,12 +275,12 @@ class _AddNotePageState extends State<AddNotePage> {
                                     onPressed: () {
                                       setState(() {
                                         _selectedPriceLists.remove(priceList);
-                                        _selectedTextEditingPriceListControllers.remove(UTFDecoderUtil.decode(this.context, priceList.name));
+                                        _selectedTextEditingPriceListControllers.remove(UTFDecoderUtil.decode(priceList.name));
                                       });
                                     }),
                                 trailing: Container(
                                   width: 100,
-                                  child: _buildNumberField(_selectedTextEditingPriceListControllers[UTFDecoderUtil.decode(this.context, priceList.name)]),
+                                  child: _buildNumberField(_selectedTextEditingPriceListControllers[UTFDecoderUtil.decode(priceList.name)]),
                                 ),
                               ),
                             ),
@@ -323,13 +323,13 @@ class _AddNotePageState extends State<AddNotePage> {
         isExpanded: true,
         hint: text16BlueGrey(getTranslated(context, 'tapToAdd')),
         items: [
-          for (var workplace in workplaces) UTFDecoderUtil.decode(context, workplace.name),
+          for (var workplace in workplaces) UTFDecoderUtil.decode(workplace.name),
         ],
         customWidgets: [
           for (var workplace in workplaces)
             Row(
               children: [
-                textBlack(UTFDecoderUtil.decode(context, workplace.name) + ' '),
+                textBlack(UTFDecoderUtil.decode(workplace.name) + ' '),
                 _selectedWorkplacesWithChecked.containsKey(workplace) ? iconGreen(Icons.check) : textBlack(' '),
               ],
             ),
@@ -337,7 +337,7 @@ class _AddNotePageState extends State<AddNotePage> {
         onChanged: (value) {
           setState(() {
             FocusScope.of(context).requestFocus(new FocusNode());
-            WorkplaceForAddNoteDto workplace = workplaces.firstWhere((element) => UTFDecoderUtil.decode(context, element.name) == value);
+            WorkplaceForAddNoteDto workplace = workplaces.firstWhere((element) => UTFDecoderUtil.decode(element.name) == value);
             value = workplaces.first;
             if (workplace.name != '' && !_selectedWorkplacesWithChecked.containsKey(workplace)) {
               List<bool> _checked = new List();
@@ -365,23 +365,23 @@ class _AddNotePageState extends State<AddNotePage> {
         isExpanded: true,
         hint: text16BlueGrey(getTranslated(context, 'tapToAdd')),
         items: [
-          for (var priceList in _priceLists) UTFDecoderUtil.decode(context, priceList.name),
+          for (var priceList in _priceLists) UTFDecoderUtil.decode(priceList.name),
         ],
         customWidgets: [
           for (var priceList in _priceLists)
             Row(
               children: [
-                textBlack(UTFDecoderUtil.decode(context, priceList.name) + ' '),
+                textBlack(UTFDecoderUtil.decode(priceList.name) + ' '),
                 _selectedPriceLists.contains(priceList) ? iconGreen(Icons.check) : textBlack(' '),
               ],
             ),
         ],
         onChanged: (value) {
           setState(() => FocusScope.of(context).requestFocus(new FocusNode()));
-          PriceListDto priceList = _priceLists.where((element) => UTFDecoderUtil.decode(context, element.name) == value).first;
+          PriceListDto priceList = _priceLists.where((element) => UTFDecoderUtil.decode(element.name) == value).first;
           if (priceList.name != '' && !_selectedPriceLists.contains(priceList)) {
             setState(() {
-              _selectedTextEditingPriceListControllers[UTFDecoderUtil.decode(this.context, value)] = new TextEditingController();
+              _selectedTextEditingPriceListControllers[UTFDecoderUtil.decode(value)] = new TextEditingController();
               _selectedPriceLists.add(priceList);
             });
           }

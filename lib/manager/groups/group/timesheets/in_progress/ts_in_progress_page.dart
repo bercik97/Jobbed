@@ -116,7 +116,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
     return WillPopScope(
       child: Scaffold(
         backgroundColor: WHITE,
-        appBar: managerAppBar(context, _model.user, UTFDecoderUtil.decode(context, _model.groupName), () => NavigatorUtil.onWillPopNavigate(context, TsPage(_model))),
+        appBar: managerAppBar(context, _model.user, UTFDecoderUtil.decode(_model.groupName), () => NavigatorUtil.onWillPopNavigate(context, TsPage(_model))),
         body: RefreshIndicator(
           color: WHITE,
           backgroundColor: BLUE,
@@ -253,7 +253,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          text17BlackBold(UTFDecoderUtil.decode(this.context, info) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                          text17BlackBold(UTFDecoderUtil.decode(info) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                           Row(
                                             children: <Widget>[
                                               textBlackBold(getTranslated(this.context, 'accord') + ': '),
@@ -664,7 +664,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                     for (int i = 0; i < _workplaces.length; i++)
                                       RadioButton.buildRadioBtn(
                                         color: BLUE,
-                                        title: UTFDecoderUtil.decode(this.context, _workplaces[i].name),
+                                        title: UTFDecoderUtil.decode(_workplaces[i].name),
                                         value: 0,
                                         groupValue: _workplacesRadioValues[i],
                                         onChanged: (newValue) => setState(

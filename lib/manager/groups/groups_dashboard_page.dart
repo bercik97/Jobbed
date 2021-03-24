@@ -140,7 +140,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                       ),
                     ),
                   ),
-                  title: text17BlueBold(UTFDecoderUtil.decode(context, _user.companyName)),
+                  title: text17BlueBold(UTFDecoderUtil.decode(_user.companyName)),
                   subtitle: text16Black(_user.companyId != null ? _user.companyId : getTranslated(context, 'empty')),
                 ),
               ),
@@ -214,7 +214,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                           ),
                         );
                       },
-                      title: text17BlueBold(UTFDecoderUtil.decode(this.context, _groups[index].name)),
+                      title: text17BlueBold(UTFDecoderUtil.decode(_groups[index].name)),
                       subtitle: Column(
                         children: <Widget>[
                           SizedBox(height: 5),
@@ -223,7 +223,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                             alignment: Alignment.topLeft,
                           ),
                           Align(
-                            child: text16Black(getTranslated(this.context, 'groupCreator') + ': ' + UTFDecoderUtil.decode(this.context, _groups[index].groupCreator)),
+                            child: text16Black(getTranslated(this.context, 'groupCreator') + ': ' + UTFDecoderUtil.decode(_groups[index].groupCreator)),
                             alignment: Alignment.topLeft,
                           ),
                           SizedBox(height: 5),
@@ -240,7 +240,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                           IconButton(
                             icon: icon30Red(Icons.delete),
                             onPressed: () {
-                              String groupName = UTFDecoderUtil.decode(this.context, _groups[index].name);
+                              String groupName = UTFDecoderUtil.decode(_groups[index].name);
                               DialogUtil.showConfirmationDialog(
                                 context: this.context,
                                 title: getTranslated(this.context, 'confirmation'),
@@ -296,7 +296,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
           padding: EdgeInsets.only(top: 20),
           child: Align(
             alignment: Alignment.center,
-            child: text20BlueBold(getTranslated(context, 'welcome') + ' ' + UTFDecoderUtil.decode(context, _user.info)),
+            child: text20BlueBold(getTranslated(context, 'welcome') + ' ' + UTFDecoderUtil.decode(_user.info)),
           ),
         ),
         Padding(
@@ -342,7 +342,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    text20Black(UTFDecoderUtil.decode(this.context, groupName)),
+                    text20Black(UTFDecoderUtil.decode(groupName)),
                     SizedBox(height: 20),
                     Buttons.standardButton(
                       minWidth: 200.0,

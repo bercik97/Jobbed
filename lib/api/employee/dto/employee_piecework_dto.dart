@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 
 class EmployeePieceworkDto {
   final num id;
@@ -20,8 +21,8 @@ class EmployeePieceworkDto {
   factory EmployeePieceworkDto.fromJson(Map<String, dynamic> json) {
     return EmployeePieceworkDto(
       id: json['id'] as num,
-      name: json['name'] as String,
-      surname: json['surname'] as String,
+      name: UTFDecoderUtil.decode(json['name']),
+      surname: UTFDecoderUtil.decode(json['surname']),
       gender: json['gender'] as String,
       nationality: json['nationality'] as String,
       moneyForPieceworkToday: json['moneyForPieceworkToday'] as String,

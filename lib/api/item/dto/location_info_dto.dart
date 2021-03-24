@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:jobbed/shared/util/utf_decoder_util.dart';
 
 class LocationInfoDto {
   final String name;
@@ -13,9 +14,9 @@ class LocationInfoDto {
 
   factory LocationInfoDto.fromJson(Map<String, dynamic> json) {
     return LocationInfoDto(
-      name: json['name'] as String,
+      name: UTFDecoderUtil.decode(json['name']),
       quantity: json['quantity'] as String,
-      itemplace: json['itemplace'] as String,
+      itemplace: UTFDecoderUtil.decode(json['itemplace']),
     );
   }
 }

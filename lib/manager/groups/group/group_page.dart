@@ -63,8 +63,8 @@ class _GroupPageState extends State<GroupPage> {
                         ),
                       ),
                     ),
-                    title: text17BlueBold(UTFDecoderUtil.decode(context, _model.groupName)),
-                    subtitle: buildExpandableText(context, UTFDecoderUtil.decode(context, _model.groupDescription), 2, 16),
+                    title: text17BlueBold(UTFDecoderUtil.decode(_model.groupName)),
+                    subtitle: buildExpandableText(context, UTFDecoderUtil.decode(_model.groupDescription), 2, 16),
                     trailing: Ink(
                       decoration: ShapeDecoration(color: BLUE, shape: CircleBorder()),
                       child: IconButton(

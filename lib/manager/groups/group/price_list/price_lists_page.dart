@@ -186,7 +186,7 @@ class _PriceListsPageState extends State<PriceListsPage> {
                                                 children: [
                                                   Align(
                                                     alignment: Alignment.topLeft,
-                                                    child: text17BlueBold(UTFDecoderUtil.decode(this.context, name)),
+                                                    child: text17BlueBold(UTFDecoderUtil.decode(name)),
                                                   ),
                                                   Align(
                                                     alignment: Alignment.topLeft,
