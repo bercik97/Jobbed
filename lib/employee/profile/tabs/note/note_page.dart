@@ -267,37 +267,27 @@ class _NotePageState extends State<NotePage> {
                     ),
                   )
                 : SizedBox(height: 0),
-            Scrollbar(
-              controller: scrollController,
-              child: Column(
-                children: [
-                  for (var piecework in _pieceworksDetails)
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 25),
-                      child: Card(
-                        color: WHITE,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            SizedBox(
-                              height: 80.0,
-                              child: Card(
-                                color: BRIGHTER_BLUE,
-                                child: ListTile(
-                                  title: text17BlueBold(piecework.service),
-                                  subtitle: text20Black(piecework.doneQuantity.toString() + ' / ' + piecework.toBeDoneQuantity.toString()),
-                                  leading: piecework.doneQuantity == piecework.toBeDoneQuantity ? icon50Green(Icons.check) : icon50Red(Icons.close),
-                                ),
-                              ),
-                            ),
-                          ],
+            for (var piecework in _pieceworksDetails)
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 25),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Card(
+                      color: BRIGHTER_BLUE,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 5, bottom: 5),
+                        child: ListTile(
+                          title: text17BlueBold(piecework.service),
+                          subtitle: text20Black(piecework.doneQuantity.toString() + ' / ' + piecework.toBeDoneQuantity.toString()),
+                          leading: piecework.doneQuantity == piecework.toBeDoneQuantity ? icon50Green(Icons.check) : icon50Red(Icons.close),
                         ),
                       ),
                     ),
-                ],
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       ),

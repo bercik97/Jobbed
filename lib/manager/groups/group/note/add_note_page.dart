@@ -29,6 +29,7 @@ import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/expandable_text.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
+import 'package:jobbed/shared/widget/texts_with_loupe.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
 class AddNotePage extends StatefulWidget {
@@ -159,7 +160,7 @@ class _AddNotePageState extends State<AddNotePage> {
                                     color: BRIGHTER_BLUE,
                                     child: ListTileTheme(
                                       child: ListTile(
-                                        title: text20BlueBold(workplace.name),
+                                        title: textBlueBold(workplace.name),
                                         leading: IconButton(
                                           icon: iconRed(Icons.remove),
                                           onPressed: () => setState(() => _selectedWorkplacesWithChecked.remove(workplace)),
@@ -193,7 +194,7 @@ class _AddNotePageState extends State<AddNotePage> {
                                                               contentPadding: EdgeInsets.only(right: 10),
                                                               child: CheckboxListTile(
                                                                 controlAffinity: ListTileControlAffinity.leading,
-                                                                title: text17BlueBold(name),
+                                                                title: textBlueBold(name),
                                                                 subtitle: buildExpandableText(context, description, 2, 15),
                                                                 activeColor: BLUE,
                                                                 checkColor: WHITE,
@@ -238,57 +239,50 @@ class _AddNotePageState extends State<AddNotePage> {
                   ],
                 ),
               ),
-              Column(
-                children: [
-                  for (var priceList in _selectedPriceLists)
+              for (var priceList in _selectedPriceLists)
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
                     Card(
-                      color: WHITE,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          SizedBox(
-                            height: 80.0,
-                            child: Card(
-                              color: BRIGHTER_BLUE,
-                              child: ListTile(
-                                title: text17BlueBold(priceList.name),
-                                subtitle: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        text17BlackBold(getTranslated(this.context, 'priceForEmployee') + ': '),
-                                        text16Black(priceList.priceForEmployee.toString()),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        text17BlackBold(getTranslated(this.context, 'priceForCompany') + ': '),
-                                        text16Black(priceList.priceForCompany.toString()),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                leading: IconButton(
-                                    icon: iconRed(Icons.remove),
-                                    onPressed: () {
-                                      setState(() {
-                                        _selectedPriceLists.remove(priceList);
-                                        _selectedTextEditingPriceListControllers.remove(priceList.name);
-                                      });
-                                    }),
-                                trailing: Container(
-                                  width: 100,
-                                  child: _buildNumberField(_selectedTextEditingPriceListControllers[priceList.name]),
-                                ),
+                      color: BRIGHTER_BLUE,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 5, bottom: 5),
+                        child: ListTile(
+                          title: text17BlueBold(priceList.name),
+                          subtitle: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  text17BlackBold(getTranslated(this.context, 'priceForEmployee') + ': '),
+                                  text16Black(priceList.priceForEmployee.toString()),
+                                ],
                               ),
-                            ),
+                              Row(
+                                children: [
+                                  text17BlackBold(getTranslated(this.context, 'priceForCompany') + ': '),
+                                  text16Black(priceList.priceForCompany.toString()),
+                                ],
+                              ),
+                            ],
                           ),
-                        ],
+                          leading: IconButton(
+                              icon: iconRed(Icons.remove),
+                              onPressed: () {
+                                setState(() {
+                                  _selectedPriceLists.remove(priceList);
+                                  _selectedTextEditingPriceListControllers.remove(priceList.name);
+                                });
+                              }),
+                          trailing: Container(
+                            width: 100,
+                            child: _buildNumberField(_selectedTextEditingPriceListControllers[priceList.name]),
+                          ),
+                        ),
                       ),
                     ),
-                ],
-              ),
+                  ],
+                ),
             ],
           ),
         ),
@@ -328,7 +322,7 @@ class _AddNotePageState extends State<AddNotePage> {
           for (var workplace in workplaces)
             Row(
               children: [
-                textBlack(workplace.name + ' '),
+                textBlackWithLoupe(context, workplace.name),
                 _selectedWorkplacesWithChecked.containsKey(workplace) ? iconGreen(Icons.check) : textBlack(' '),
               ],
             ),
@@ -370,7 +364,7 @@ class _AddNotePageState extends State<AddNotePage> {
           for (var priceList in _priceLists)
             Row(
               children: [
-                textBlack(priceList.name + ' '),
+                textBlackWithLoupe(context, priceList.name),
                 _selectedPriceLists.contains(priceList) ? iconGreen(Icons.check) : textBlack(' '),
               ],
             ),

@@ -359,67 +359,57 @@ class _EditNotePageState extends State<EditNotePage> {
                       ),
                     )
                   : SizedBox(height: 0),
-              Scrollbar(
-                controller: scrollController,
-                child: Column(
-                  children: [
-                    for (var piecework in _pieceworksDetails)
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 25),
-                        child: Card(
-                          color: WHITE,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              SizedBox(
-                                height: 80.0,
-                                child: Card(
-                                  color: BRIGHTER_BLUE,
-                                  child: ListTile(
-                                    title: text17BlueBold(piecework.service),
-                                    subtitle: text20Black(piecework.doneQuantity.toString() + ' / ' + piecework.toBeDoneQuantity.toString()),
-                                    leading: piecework.doneQuantity == piecework.toBeDoneQuantity ? icon50Green(Icons.check) : icon50Red(Icons.close),
-                                    trailing: Container(
-                                      width: 100,
-                                      child: NumberInputWithIncrementDecrement(
-                                        controller: _textEditingItemControllers[piecework.service],
-                                        initialValue: piecework.doneQuantity,
-                                        style: TextStyle(color: BLUE),
-                                        max: piecework.toBeDoneQuantity,
-                                        widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
-                                        onIncrement: (value) {
-                                          setState(() => FocusScope.of(context).requestFocus(new FocusNode()));
-                                          if (piecework.doneQuantity == piecework.toBeDoneQuantity) {
-                                            return;
-                                          }
-                                          setState(() {
-                                            piecework.doneQuantity = value;
-                                            if (piecework.doneQuantity == piecework.toBeDoneQuantity) {
-                                              donePieceworkTasks++;
-                                            }
-                                          });
-                                        },
-                                        onDecrement: (value) {
-                                          setState(() {
-                                            if (piecework.doneQuantity == piecework.toBeDoneQuantity) {
-                                              donePieceworkTasks--;
-                                            }
-                                            piecework.doneQuantity = value;
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ),
+              for (var piecework in _pieceworksDetails)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 25),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Card(
+                        color: BRIGHTER_BLUE,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 5, bottom: 5),
+                          child: ListTile(
+                            title: text17BlueBold(piecework.service),
+                            subtitle: text20Black(piecework.doneQuantity.toString() + ' / ' + piecework.toBeDoneQuantity.toString()),
+                            leading: piecework.doneQuantity == piecework.toBeDoneQuantity ? icon50Green(Icons.check) : icon50Red(Icons.close),
+                            trailing: Container(
+                              width: 100,
+                              child: NumberInputWithIncrementDecrement(
+                                controller: _textEditingItemControllers[piecework.service],
+                                initialValue: piecework.doneQuantity,
+                                style: TextStyle(color: BLUE),
+                                max: piecework.toBeDoneQuantity,
+                                widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
+                                onIncrement: (value) {
+                                  setState(() => FocusScope.of(context).requestFocus(new FocusNode()));
+                                  if (piecework.doneQuantity == piecework.toBeDoneQuantity) {
+                                    return;
+                                  }
+                                  setState(() {
+                                    piecework.doneQuantity = value;
+                                    if (piecework.doneQuantity == piecework.toBeDoneQuantity) {
+                                      donePieceworkTasks++;
+                                    }
+                                  });
+                                },
+                                onDecrement: (value) {
+                                  setState(() {
+                                    if (piecework.doneQuantity == piecework.toBeDoneQuantity) {
+                                      donePieceworkTasks--;
+                                    }
+                                    piecework.doneQuantity = value;
+                                  });
+                                },
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
             ],
           ),
         ),
