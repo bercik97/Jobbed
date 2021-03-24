@@ -14,7 +14,6 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
@@ -84,7 +83,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
                                     Card(
                                       color: BRIGHTER_BLUE,
                                       child: ListTile(
-                                        title: text17BlueBold(UTFDecoderUtil.decode(_itemPlaces[i].name)),
+                                        title: text17BlueBold(_itemPlaces[i].name),
                                         subtitle: Column(
                                           children: [
                                             Row(
@@ -101,7 +100,7 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
                                                   alignment: Alignment.topLeft,
                                                 ),
                                                 Align(
-                                                  child: text17BlackBold(UTFDecoderUtil.decode(_itemPlaces[i].warehouseName.toString())),
+                                                  child: text17BlackBold(_itemPlaces[i].warehouseName.toString()),
                                                   alignment: Alignment.topLeft,
                                                 ),
                                               ],
@@ -197,13 +196,13 @@ class _ReturnItemsPageState extends State<ReturnItemsPage> {
         Map<String, int> itemsWithQuantities = warehouseIdsAndItemsWithQuantities[warehouseId];
         int quantity = int.parse(_textEditingItemControllers[i].text);
         if (quantity != 0) {
-          itemsWithQuantities[UTFDecoderUtil.decode(_itemPlaces[i].name)] = quantity;
+          itemsWithQuantities[_itemPlaces[i].name] = quantity;
         }
       } else {
         Map<String, int> itemsWithQuantities = new Map();
         int quantity = int.parse(_textEditingItemControllers[i].text);
         if (quantity != 0) {
-          itemsWithQuantities[UTFDecoderUtil.decode(_itemPlaces[i].name)] = quantity;
+          itemsWithQuantities[_itemPlaces[i].name] = quantity;
           warehouseIdsAndItemsWithQuantities[warehouseId.toString()] = itemsWithQuantities;
         }
       }

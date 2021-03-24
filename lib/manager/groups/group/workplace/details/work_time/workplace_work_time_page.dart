@@ -10,7 +10,6 @@ import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
@@ -51,12 +50,12 @@ class _WorkplaceWorkTimePageState extends State<WorkplaceWorkTimePage> {
         child: Column(
           children: [
             ListTile(
-              title: text17BlueBold(UTFDecoderUtil.decode(_workplaceDto.name)),
+              title: text17BlueBold(_workplaceDto.name),
               subtitle: Column(
                 children: <Widget>[
                   Align(
                     child: _workplaceDto.location != null
-                        ? text16Black(UTFDecoderUtil.decode(_workplaceDto.location))
+                        ? text16Black(_workplaceDto.location)
                         : Row(
                             children: [
                               text16Black(getTranslated(context, 'location') + ': '),
@@ -101,7 +100,7 @@ class _WorkplaceWorkTimePageState extends State<WorkplaceWorkTimePage> {
                                   DataCell(textBlack(workTime.startTime)),
                                   DataCell(textBlack(workTime.endTime != null ? workTime.endTime : '-')),
                                   DataCell(textBlack(workTime.totalTime != null ? workTime.totalTime : '-')),
-                                  DataCell(textBlack(UTFDecoderUtil.decode(workTime.employeeInfo))),
+                                  DataCell(textBlack(workTime.employeeInfo)),
                                 ],
                               ),
                           ],

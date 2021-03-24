@@ -25,7 +25,6 @@ import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
@@ -187,8 +186,8 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                 foundIndex = i;
                               }
                             }
-                            String additionalInformation = UTFDecoderUtil.decode(employee.additionalInformation);
-                            String yesterdayAdditionalInformation = UTFDecoderUtil.decode(employee.yesterdayAdditionalInformation);
+                            String additionalInformation = employee.additionalInformation;
+                            String yesterdayAdditionalInformation = employee.yesterdayAdditionalInformation;
                             String empty = getTranslated(context, 'empty');
                             return Card(
                               color: WHITE,
@@ -242,7 +241,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              text20BlackBold(UTFDecoderUtil.decode(info) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                              text20BlackBold(info + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                               Row(
                                                 children: <Widget>[
                                                   textBlack(getTranslated(this.context, 'timeWorkedToday') + ': '),
@@ -663,7 +662,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                     for (int i = 0; i < _workplaces.length; i++)
                                       RadioButton.buildRadioBtn(
                                         color: BLUE,
-                                        title: UTFDecoderUtil.decode(_workplaces[i].name),
+                                        title: _workplaces[i].name,
                                         value: 0,
                                         groupValue: _workplacesRadioValues[i],
                                         onChanged: (newValue) => setState(
@@ -860,7 +859,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
           alignment,
           iconGreen(Icons.check),
           textGreenBold(getTranslated(context, 'workIsDoneStatus')),
-          textBlackBold(workplace != null ? UTFDecoderUtil.decode(workplace) : '-'),
+          textBlackBold(workplace != null ? workplace : '-'),
           textBlackBold(workplaceCode != null ? workplaceCode : '-'),
         );
       case 'In progress':
@@ -868,7 +867,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
           alignment,
           iconOrange(Icons.timer),
           textOrangeBold(getTranslated(context, 'workIsInProgress')),
-          textBlackBold(workplace != null ? UTFDecoderUtil.decode(workplace) : '-'),
+          textBlackBold(workplace != null ? workplace : '-'),
           textBlackBold(workplaceCode != null ? workplaceCode : '-'),
         );
       default:
@@ -919,7 +918,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                       onPressed: () => DialogUtil.showScrollableDialog(
                         context,
                         getTranslated(context, 'additionalInfo'),
-                        UTFDecoderUtil.decode(additionalInfo),
+                        additionalInfo,
                       ),
                     ),
                     iconOrange(Icons.warning_amber_outlined),
@@ -936,7 +935,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                       onPressed: () => DialogUtil.showScrollableDialog(
                         context,
                         getTranslated(context, 'yesterdayAdditionalInfo'),
-                        UTFDecoderUtil.decode(yesterdayAdditionalInfo),
+                        yesterdayAdditionalInfo,
                       ),
                     ),
                     iconOrange(Icons.warning_amber_outlined),

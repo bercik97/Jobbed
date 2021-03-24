@@ -19,7 +19,6 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
@@ -222,7 +221,7 @@ class _EditNotePageState extends State<EditNotePage> {
                                   contentPadding: EdgeInsets.only(right: 10),
                                   child: CheckboxListTile(
                                     controlAffinity: ListTileControlAffinity.leading,
-                                    title: text20BlackBold(UTFDecoderUtil.decode(name)),
+                                    title: text20BlackBold(name),
                                     subtitle: text16BlueGrey(getTranslated(this.context, 'workplaceHasNoSubWorkplaces')),
                                     activeColor: BLUE,
                                     checkColor: WHITE,
@@ -270,7 +269,7 @@ class _EditNotePageState extends State<EditNotePage> {
                                 color: BRIGHTER_BLUE,
                                 child: ListTileTheme(
                                   child: ListTile(
-                                    title: text20BlackBold(UTFDecoderUtil.decode(noteSubWorkplaces.keys.toList()[i])),
+                                    title: text20BlackBold(noteSubWorkplaces.keys.toList()[i]),
                                     subtitle: SizedBox(
                                       height: noteSubWorkplaces.values.elementAt(i).length * 80.0,
                                       child: ListView.builder(
@@ -284,8 +283,8 @@ class _EditNotePageState extends State<EditNotePage> {
                                               foundIndex = j;
                                             }
                                           }
-                                          String name = UTFDecoderUtil.decode(subWorkplace.subWorkplaceName);
-                                          String description = UTFDecoderUtil.decode(subWorkplace.subWorkplaceDescription);
+                                          String name = subWorkplace.subWorkplaceName;
+                                          String description = subWorkplace.subWorkplaceDescription;
                                           return Card(
                                             color: WHITE,
                                             child: Column(
@@ -378,7 +377,7 @@ class _EditNotePageState extends State<EditNotePage> {
                                 child: Card(
                                   color: BRIGHTER_BLUE,
                                   child: ListTile(
-                                    title: text17BlueBold(UTFDecoderUtil.decode(piecework.service)),
+                                    title: text17BlueBold(piecework.service),
                                     subtitle: text20Black(piecework.doneQuantity.toString() + ' / ' + piecework.toBeDoneQuantity.toString()),
                                     leading: piecework.doneQuantity == piecework.toBeDoneQuantity ? icon50Green(Icons.check) : icon50Red(Icons.close),
                                     trailing: Container(

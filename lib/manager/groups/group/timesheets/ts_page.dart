@@ -19,7 +19,6 @@ import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/month_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
@@ -85,7 +84,7 @@ class _TsPageState extends State<TsPage> {
     return WillPopScope(
       child: Scaffold(
         backgroundColor: WHITE,
-        appBar: managerAppBar(context, _model.user, UTFDecoderUtil.decode(_model.groupName), () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model))),
+        appBar: managerAppBar(context, _model.user, _model.groupName, () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model))),
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[

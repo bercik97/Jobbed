@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
@@ -258,7 +257,7 @@ class WorkdayUtil {
                 DataRow(
                   cells: [
                     DataCell(textBlack((i + 1).toString())),
-                    DataCell(textBlack(UTFDecoderUtil.decode(pieceworks[i].service))),
+                    DataCell(textBlack(pieceworks[i].service)),
                     DataCell(Align(alignment: Alignment.center, child: textBlack(pieceworks[i].quantity.toString()))),
                     DataCell(Align(alignment: Alignment.center, child: textBlack(pieceworks[i].priceForEmployee.toString()))),
                     displayCompanyPrice ? DataCell(Align(alignment: Alignment.center, child: textBlack(pieceworks[i].priceForCompany.toString()))) : DataCell(SizedBox(height: 0)),
@@ -307,11 +306,11 @@ class WorkdayUtil {
                             onTap: () => DialogUtil.showScrollableDialog(
                               context,
                               getTranslated(context, 'additionalInfo'),
-                              UTFDecoderUtil.decode(workTimes[i].additionalInfo.toString()),
+                              workTimes[i].additionalInfo.toString(),
                             ),
                           )
                         : DataCell(textBlack(getTranslated(context, 'empty'))),
-                    DataCell(textBlack(UTFDecoderUtil.decode(workTimes[i].workplaceName.toString()))),
+                    DataCell(textBlack(workTimes[i].workplaceName.toString())),
                   ],
                 ),
             ],

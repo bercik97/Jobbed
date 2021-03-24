@@ -8,7 +8,6 @@ import 'package:jobbed/internationalization/localization/localization_constants.
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
@@ -173,7 +172,7 @@ class _NotePageState extends State<NotePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             ListTile(
-                              title: text20BlackBold(UTFDecoderUtil.decode(name)),
+                              title: text20BlackBold(name),
                               subtitle: text14BlueGrey(getTranslated(this.context, 'workplaceHasNoSubWorkplaces')),
                               leading: _checkedNoteWorkplaces[foundIndex] ? icon50Green(Icons.check) : icon50Red(Icons.close),
                             )
@@ -202,7 +201,7 @@ class _NotePageState extends State<NotePage> {
                               color: BRIGHTER_BLUE,
                               child: ListTileTheme(
                                 child: ListTile(
-                                  title: text20BlackBold(UTFDecoderUtil.decode(noteSubWorkplaces.keys.toList()[i])),
+                                  title: text20BlackBold(noteSubWorkplaces.keys.toList()[i]),
                                   subtitle: SizedBox(
                                     height: noteSubWorkplaces.values.elementAt(i).length * 80.0,
                                     child: ListView.builder(
@@ -216,8 +215,8 @@ class _NotePageState extends State<NotePage> {
                                             foundIndex = j;
                                           }
                                         }
-                                        String name = UTFDecoderUtil.decode(subWorkplace.subWorkplaceName);
-                                        String description = UTFDecoderUtil.decode(subWorkplace.subWorkplaceDescription);
+                                        String name = subWorkplace.subWorkplaceName;
+                                        String description = subWorkplace.subWorkplaceDescription;
                                         return Card(
                                           color: BRIGHTER_BLUE,
                                           child: Column(
@@ -286,7 +285,7 @@ class _NotePageState extends State<NotePage> {
                               child: Card(
                                 color: BRIGHTER_BLUE,
                                 child: ListTile(
-                                  title: text17BlueBold(UTFDecoderUtil.decode(piecework.service)),
+                                  title: text17BlueBold(piecework.service),
                                   subtitle: text20Black(piecework.doneQuantity.toString() + ' / ' + piecework.toBeDoneQuantity.toString()),
                                   leading: piecework.doneQuantity == piecework.toBeDoneQuantity ? icon50Green(Icons.check) : icon50Red(Icons.close),
                                 ),

@@ -15,7 +15,6 @@ import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/month_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/util/workday_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
@@ -85,7 +84,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                         children: <Widget>[
                           Align(
                             alignment: Alignment.topLeft,
-                            child: text17BlackBold(_user.info != null ? UTFDecoderUtil.decode(_user.info) + ' ' + LanguageUtil.findFlagByNationality(_user.nationality) : getTranslated(context, 'empty')),
+                            child: text17BlackBold(_user.info != null ? _user.info + ' ' + LanguageUtil.findFlagByNationality(_user.nationality) : getTranslated(context, 'empty')),
                           ),
                           Row(
                             children: <Widget>[

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
@@ -259,7 +258,7 @@ class DialogUtil {
                       children: <Widget>[
                         text20BlueBold(title),
                         SizedBox(height: 20),
-                        textCenter20Black(UTFDecoderUtil.decode(value)),
+                        textCenter20Black(value),
                         SizedBox(height: 20),
                         Container(
                           width: 60,

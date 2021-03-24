@@ -23,7 +23,6 @@ import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
@@ -201,12 +200,12 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                               children: [
                                                 Align(
                                                   alignment: Alignment.topLeft,
-                                                  child: text17BlueBold(UTFDecoderUtil.decode(name)),
+                                                  child: text17BlueBold(name),
                                                 ),
                                                 Align(
                                                   alignment: Alignment.topLeft,
                                                   child: location != null && location != ''
-                                                      ? text16Black(UTFDecoderUtil.decode(location))
+                                                      ? text16Black(location)
                                                       : Row(
                                                           children: [
                                                             text16Black(getTranslated(this.context, 'location') + ': '),

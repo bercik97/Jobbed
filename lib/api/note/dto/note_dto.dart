@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:jobbed/api/note_sub_workplace/dto/note_sub_workplace_dto.dart';
 import 'package:jobbed/api/piecework_details/dto/piecework_details_dto.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 
 class NoteDto {
   final int id;
@@ -24,8 +23,8 @@ class NoteDto {
     return NoteDto(
       id: json['id'] as int,
       workdayId: json['workdayId'] as int,
-      managerNote: UTFDecoderUtil.decode(json['managerNote']),
-      employeeNote: UTFDecoderUtil.decode(json['employeeNote']),
+      managerNote: json['managerNote'],
+      employeeNote: json['employeeNote'],
       noteSubWorkplaceDto: json['noteSubWorkplaceDto'].map((data) => NoteSubWorkplaceDto.fromJson(data)).toList(),
       pieceworksDetails: json['pieceworksDetails'].map((data) => PieceworkDetails.fromJson(data)).toList(),
     );

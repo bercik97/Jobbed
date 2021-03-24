@@ -18,7 +18,6 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/util/workday_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
@@ -280,8 +279,8 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
   }
 
   Widget _buildWorkday(EmployeeForManagerScheduleDto employee) {
-    String name = UTFDecoderUtil.decode(employee.name);
-    String surname = UTFDecoderUtil.decode(employee.surname);
+    String name = employee.name;
+    String surname = employee.surname;
     String nationality = employee.nationality;
     String employeeInfo = name + ' ' + surname + ' ' + LanguageUtil.findFlagByNationality(nationality);
     String moneyForTime = employee.moneyForTime;

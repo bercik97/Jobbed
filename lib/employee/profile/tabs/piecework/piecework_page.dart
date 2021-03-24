@@ -11,7 +11,6 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
@@ -165,7 +164,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
                       DataRow(
                         cells: [
                           DataCell(textBlack((i + 1).toString())),
-                          DataCell(textBlack(UTFDecoderUtil.decode(_pieceworks[i].service))),
+                          DataCell(textBlack(_pieceworks[i].service)),
                           DataCell(textBlack(_pieceworks[i].quantity.toString())),
                           DataCell(textBlack(_pieceworks[i].priceForEmployee.toString())),
                           DataCell(

@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 
 class WorkTimeDetailsDto {
   final int id;
@@ -27,8 +26,8 @@ class WorkTimeDetailsDto {
       startTime: json['startTime'] as String,
       endTime: json['endTime'] as String,
       totalTime: json['totalTime'] as String,
-      additionalInfo: UTFDecoderUtil.decode(json['additionalInfo']),
-      employeeInfo: UTFDecoderUtil.decode(json['employeeInfo']),
+      additionalInfo: json['additionalInfo'],
+      employeeInfo: json['employeeInfo'],
     );
   }
 }

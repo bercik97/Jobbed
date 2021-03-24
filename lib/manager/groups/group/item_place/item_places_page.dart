@@ -17,7 +17,6 @@ import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
@@ -159,7 +158,7 @@ class _ItemPlacesPageState extends State<ItemPlacesPage> {
                                     foundIndex = i;
                                   }
                                 }
-                                String location = UTFDecoderUtil.decode(itemPlace.location);
+                                String location = itemPlace.location;
                                 String numberOfTypeOfItems = itemPlace.numberOfTypeOfItems.toString();
                                 String totalNumberOfItems = itemPlace.totalNumberOfItems.toString();
                                 return Card(

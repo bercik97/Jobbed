@@ -15,7 +15,6 @@ import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
@@ -78,7 +77,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
     _priceListService.findAllByCompanyIdAndIsNotDeleted(_user.companyId).then((res) {
       setState(() {
         _priceLists = res;
-        _priceLists.forEach((i) => _textEditingItemControllers[UTFDecoderUtil.decode(i.name)] = new TextEditingController());
+        _priceLists.forEach((i) => _textEditingItemControllers[i.name] = new TextEditingController());
         _loading = false;
       });
     });
@@ -138,7 +137,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
                               Card(
                                 color: BRIGHTER_BLUE,
                                 child: ListTile(
-                                  title: text17BlueBold(UTFDecoderUtil.decode(priceList.name)),
+                                  title: text17BlueBold(priceList.name),
                                   subtitle: Column(
                                     children: [
                                       Row(
@@ -157,7 +156,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
                                   ),
                                   trailing: Container(
                                     width: 100,
-                                    child: _buildNumberField(_textEditingItemControllers[UTFDecoderUtil.decode(priceList.name)]),
+                                    child: _buildNumberField(_textEditingItemControllers[priceList.name]),
                                   ),
                                 ),
                               ),

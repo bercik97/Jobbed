@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:jobbed/api/note/dto/note_dto.dart';
 import 'package:jobbed/api/piecework/dto/piecework_details_dto.dart';
 import 'package:jobbed/api/work_time/dto/work_time_dto.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 
 class EmployeeForManagerScheduleDto {
   final num id;
@@ -37,8 +36,8 @@ class EmployeeForManagerScheduleDto {
     var noteJson = json['noteDto'];
     return EmployeeForManagerScheduleDto(
       id: json['id'] as num,
-      name: UTFDecoderUtil.decode(json['name']),
-      surname: UTFDecoderUtil.decode(json['surname']),
+      name: json['name'],
+      surname: json['surname'],
       nationality: json['nationality'] as String,
       moneyForTime: json['moneyForTime'] as String,
       moneyForPiecework: json['moneyForPiecework'] as String,

@@ -18,7 +18,6 @@ import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
@@ -166,7 +165,7 @@ class _EditScheduleEmployeesPageState extends State<EditScheduleEmployeesPage> {
                                     contentPadding: EdgeInsets.only(right: 10),
                                     child: CheckboxListTile(
                                       controlAffinity: ListTileControlAffinity.leading,
-                                      title: text20BlackBold(UTFDecoderUtil.decode(info) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                      title: text20BlackBold(info + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                       activeColor: BLUE,
                                       checkColor: WHITE,
                                       value: _checked[foundIndex],

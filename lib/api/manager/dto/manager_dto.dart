@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 
 class ManagerDto {
   final String username;
@@ -28,11 +27,11 @@ class ManagerDto {
 
   factory ManagerDto.fromJson(Map<String, dynamic> json) {
     return ManagerDto(
-      username: UTFDecoderUtil.decode(json['username']),
-      name: UTFDecoderUtil.decode(json['name']),
-      surname: UTFDecoderUtil.decode(json['surname']),
+      username: json['username'],
+      name: json['name'],
+      surname: json['surname'],
       nationality: json['nationality'] as String,
-      email: UTFDecoderUtil.decode(json['email']),
+      email: json['email'],
       phoneNumber: json['phoneNumber'] as String,
       viberNumber: json['viberNumber'] as String,
       whatsAppNumber: json['whatsAppNumber'] as String,

@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 
 class GroupDashboardDto {
   final int id;
@@ -19,9 +18,9 @@ class GroupDashboardDto {
   factory GroupDashboardDto.fromJson(Map<String, dynamic> json) {
     return GroupDashboardDto(
       id: json['id'] as int,
-      name: UTFDecoderUtil.decode(json['name']),
-      description: UTFDecoderUtil.decode(json['description']),
-      groupCreator: UTFDecoderUtil.decode(json['groupCreator']),
+      name: json['name'],
+      description: json['description'],
+      groupCreator: json['groupCreator'],
       numberOfEmployees: json['numberOfEmployees'] as int,
     );
   }

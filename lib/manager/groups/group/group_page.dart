@@ -14,7 +14,6 @@ import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/expandable_text.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
@@ -63,8 +62,8 @@ class _GroupPageState extends State<GroupPage> {
                         ),
                       ),
                     ),
-                    title: text17BlueBold(UTFDecoderUtil.decode(_model.groupName)),
-                    subtitle: buildExpandableText(context, UTFDecoderUtil.decode(_model.groupDescription), 2, 16),
+                    title: text17BlueBold(_model.groupName),
+                    subtitle: buildExpandableText(context, _model.groupDescription, 2, 16),
                     trailing: Ink(
                       decoration: ShapeDecoration(color: BLUE, shape: CircleBorder()),
                       child: IconButton(

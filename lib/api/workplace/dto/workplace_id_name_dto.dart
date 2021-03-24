@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 
 class WorkplaceIdNameDto {
   final String id;
@@ -15,8 +14,8 @@ class WorkplaceIdNameDto {
   factory WorkplaceIdNameDto.fromJson(Map<String, dynamic> json) {
     return WorkplaceIdNameDto(
       id: json['id'] as String,
-      name: UTFDecoderUtil.decode(json['name']),
-      location: UTFDecoderUtil.decode(json['location']),
+      name: json['name'],
+      location: json['location'],
     );
   }
 }

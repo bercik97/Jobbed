@@ -27,7 +27,6 @@ import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/month_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/expandable_text.dart';
@@ -129,7 +128,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                     ),
                   ),
                 ),
-                title: text17BlueBold(UTFDecoderUtil.decode(_workplaceDto.name)),
+                title: text17BlueBold(_workplaceDto.name),
                 subtitle: Column(
                   children: <Widget>[
                     Align(
@@ -145,7 +144,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                     ),
                     Align(
                       child: _workplaceDto.location != null && _workplaceDto.location != ''
-                          ? text16Black(UTFDecoderUtil.decode(_workplaceDto.location))
+                          ? text16Black(_workplaceDto.location)
                           : Row(
                               children: [
                                 text16Black(getTranslated(context, 'location') + ': '),
@@ -327,7 +326,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                                               children: [
                                                 Align(
                                                   alignment: Alignment.topLeft,
-                                                  child: text17BlueBold(UTFDecoderUtil.decode(name)),
+                                                  child: text17BlueBold(name),
                                                 ),
                                                 Align(
                                                   alignment: Alignment.topLeft,
@@ -403,8 +402,8 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
   void _editSubWorkplace(SubWorkplaceDto subWorkplaceDto) {
     TextEditingController _nameController = new TextEditingController();
     TextEditingController _descriptionController = new TextEditingController();
-    _nameController.text = UTFDecoderUtil.decode(subWorkplaceDto.name);
-    _descriptionController.text = UTFDecoderUtil.decode(subWorkplaceDto.description);
+    _nameController.text = subWorkplaceDto.name;
+    _descriptionController.text = subWorkplaceDto.description;
     showGeneralDialog(
       context: context,
       barrierColor: WHITE.withOpacity(0.95),
@@ -528,9 +527,9 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
   }
 
   void _editWorkplace(WorkplaceDto workplace) {
-    _nameController.text = UTFDecoderUtil.decode(workplace.name);
-    _descriptionController.text = UTFDecoderUtil.decode(workplace.description);
-    _locationController.text = UTFDecoderUtil.decode(workplace.location);
+    _nameController.text = workplace.name;
+    _descriptionController.text = workplace.description;
+    _locationController.text = workplace.location;
     double latitude = workplace.latitude;
     double longitude = workplace.longitude;
     String location = workplace.location;

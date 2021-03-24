@@ -17,7 +17,6 @@ import 'package:jobbed/shared/util/avatars_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/month_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
@@ -66,7 +65,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: WHITE,
-      appBar: managerAppBar(context, _model.user, UTFDecoderUtil.decode(_model.groupName), () => Navigator.pop(context)),
+      appBar: managerAppBar(context, _model.user, _model.groupName, () => Navigator.pop(context)),
       body: Column(
         children: <Widget>[
           Align(
@@ -153,7 +152,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                                       ),
                                     ),
                                   ),
-                                  title: text17BlackBold(UTFDecoderUtil.decode(info) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                  title: text17BlackBold(info + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                   subtitle: Column(
                                     children: <Widget>[
                                       Row(

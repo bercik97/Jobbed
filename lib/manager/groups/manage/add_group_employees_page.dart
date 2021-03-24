@@ -16,7 +16,6 @@ import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
@@ -160,7 +159,7 @@ class _AddGroupEmployeesPageState extends State<AddGroupEmployeesPage> {
                 foundIndex = i;
               }
             }
-            String info = UTFDecoderUtil.decode(employee.name + ' ' + employee.surname);
+            String info = employee.name + ' ' + employee.surname;
             String nationality = employee.nationality;
             return Card(
               color: WHITE,

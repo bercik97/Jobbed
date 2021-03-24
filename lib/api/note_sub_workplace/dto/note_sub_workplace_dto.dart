@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 
 class NoteSubWorkplaceDto {
   final num id;
@@ -20,9 +19,9 @@ class NoteSubWorkplaceDto {
     return NoteSubWorkplaceDto(
       id: json['id'] as num,
       done: json['done'] as bool,
-      workplaceName: UTFDecoderUtil.decode(json['workplaceName']),
-      subWorkplaceName: UTFDecoderUtil.decode(json['subWorkplaceName']),
-      subWorkplaceDescription: UTFDecoderUtil.decode(json['subWorkplaceDescription']),
+      workplaceName: json['workplaceName'],
+      subWorkplaceName: json['subWorkplaceName'],
+      subWorkplaceDescription: json['subWorkplaceDescription'],
     );
   }
 }

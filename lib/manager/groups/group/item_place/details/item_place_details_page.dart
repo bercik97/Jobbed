@@ -13,7 +13,6 @@ import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
-import 'package:jobbed/shared/util/utf_decoder_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/texts.dart';
@@ -86,7 +85,7 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
                   ),
                 ),
                 title: ExpandableText(
-                  UTFDecoderUtil.decode(_itemPlaceDto.location),
+                  _itemPlaceDto.location,
                   expandText: getTranslated(context, 'showMore'),
                   collapseText: getTranslated(context, 'showLess'),
                   maxLines: 2,
@@ -108,7 +107,7 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
                       _checked.forEach((b) => l.add(value));
                       _checked = l;
                       if (value) {
-                        _selectedNames.addAll(_filteredItems.map((e) => UTFDecoderUtil.decode(e.name)));
+                        _selectedNames.addAll(_filteredItems.map((e) => e.name));
                         _selectedItems.addAll(_filteredItems);
                       } else {
                         _selectedNames.clear();
@@ -134,12 +133,12 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
                                 ItemPlaceDetailsDto item = _filteredItems[index];
                                 int foundIndex = 0;
                                 for (int i = 0; i < _items.length; i++) {
-                                  if (UTFDecoderUtil.decode(_items[i].name) == UTFDecoderUtil.decode(item.name)) {
+                                  if (_items[i].name == item.name) {
                                     foundIndex = i;
                                   }
                                 }
-                                String warehouseName = UTFDecoderUtil.decode(item.warehouseName);
-                                String name = UTFDecoderUtil.decode(item.name);
+                                String warehouseName = item.warehouseName;
+                                String name = item.name;
                                 String quantity = item.quantity;
                                 return Card(
                                   color: WHITE,
@@ -194,10 +193,10 @@ class _ItemPlaceDetailsPageState extends State<ItemPlaceDetailsPage> {
                                               setState(() {
                                                 _checked[foundIndex] = value;
                                                 if (value) {
-                                                  _selectedNames.add(UTFDecoderUtil.decode(_items[foundIndex].name));
+                                                  _selectedNames.add(_items[foundIndex].name);
                                                   _selectedItems.add(_items[foundIndex]);
                                                 } else {
-                                                  _selectedNames.remove(UTFDecoderUtil.decode(_items[foundIndex].name));
+                                                  _selectedNames.remove(_items[foundIndex].name);
                                                   _selectedItems.remove(_items[foundIndex]);
                                                 }
                                                 int selectedIdsLength = _selectedNames.length;
