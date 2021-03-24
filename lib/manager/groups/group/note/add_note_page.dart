@@ -158,67 +158,69 @@ class _AddNotePageState extends State<AddNotePage> {
                                 children: <Widget>[
                                   Container(
                                     color: BRIGHTER_BLUE,
-                                    child: ListTileTheme(
-                                      child: ListTile(
-                                        title: textBlueBold(workplace.name),
-                                        leading: IconButton(
-                                          icon: iconRed(Icons.remove),
-                                          onPressed: () => setState(() => _selectedWorkplacesWithChecked.remove(workplace)),
-                                        ),
-                                        subtitle: workplace.subWorkplacesDto.isEmpty
-                                            ? text16BlueGrey(getTranslated(context, 'workplaceHasNoSubWorkplaces'))
-                                            : SizedBox(
-                                                height: workplace.subWorkplacesDto.length * 80.0,
-                                                child: ListView.builder(
-                                                  controller: scrollController,
-                                                  itemCount: workplace.subWorkplacesDto.length,
-                                                  itemBuilder: (BuildContext context, int index) {
-                                                    SubWorkplaceDto subWorkplace = workplace.subWorkplacesDto[index];
-                                                    int foundIndex = 0;
-                                                    for (int i = 0; i < workplace.subWorkplacesDto.length; i++) {
-                                                      if (workplace.subWorkplacesDto[i].id == subWorkplace.id) {
-                                                        foundIndex = i;
-                                                      }
-                                                    }
-                                                    String name = subWorkplace.name;
-                                                    String description = subWorkplace.description;
-                                                    return Card(
-                                                      color: WHITE,
-                                                      child: Column(
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: <Widget>[
-                                                          Container(
-                                                            color: BRIGHTER_BLUE,
-                                                            child: ListTileTheme(
-                                                              contentPadding: EdgeInsets.only(right: 10),
-                                                              child: CheckboxListTile(
-                                                                controlAffinity: ListTileControlAffinity.leading,
-                                                                title: textBlueBold(name),
-                                                                subtitle: buildExpandableText(context, description, 2, 15),
-                                                                activeColor: BLUE,
-                                                                checkColor: WHITE,
-                                                                value: _selectedWorkplacesWithChecked[workplace][foundIndex],
-                                                                onChanged: (bool value) {
-                                                                  setState(() {
-                                                                    _selectedWorkplacesWithChecked[workplace][foundIndex] = value;
-                                                                    if (value) {
-                                                                      _selectedSubWorkplacesIds.add(workplace.subWorkplacesDto[foundIndex].id);
-                                                                    } else {
-                                                                      _selectedSubWorkplacesIds.remove(workplace.subWorkplacesDto[foundIndex].id);
-                                                                    }
-                                                                  });
-                                                                },
-                                                              ),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                              ),
+                                    child: ListTile(
+                                      title: text17BlackBold(workplace.name),
+                                      leading: IconButton(
+                                        icon: iconRed(Icons.remove),
+                                        onPressed: () => setState(() => _selectedWorkplacesWithChecked.remove(workplace)),
                                       ),
+                                      subtitle: workplace.subWorkplacesDto.isEmpty
+                                          ? Padding(
+                                              padding: const EdgeInsets.only(bottom: 5),
+                                              child: textBlueGrey(getTranslated(context, 'workplaceHasNoSubWorkplaces')),
+                                            )
+                                          : ListView.builder(
+                                              shrinkWrap: true,
+                                              controller: scrollController,
+                                              itemCount: workplace.subWorkplacesDto.length,
+                                              itemBuilder: (BuildContext context, int index) {
+                                                SubWorkplaceDto subWorkplace = workplace.subWorkplacesDto[index];
+                                                int foundIndex = 0;
+                                                for (int i = 0; i < workplace.subWorkplacesDto.length; i++) {
+                                                  if (workplace.subWorkplacesDto[i].id == subWorkplace.id) {
+                                                    foundIndex = i;
+                                                  }
+                                                }
+                                                String name = subWorkplace.name;
+                                                String description = subWorkplace.description;
+                                                return Card(
+                                                  color: WHITE,
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: <Widget>[
+                                                      Container(
+                                                        color: BRIGHTER_BLUE,
+                                                        child: ListTileTheme(
+                                                          contentPadding: EdgeInsets.only(right: 10),
+                                                          child: CheckboxListTile(
+                                                            controlAffinity: ListTileControlAffinity.leading,
+                                                            title: text17BlackBold(name),
+                                                            subtitle: Padding(
+                                                              padding: const EdgeInsets.only(bottom: 5),
+                                                              child: buildExpandableText(context, description, 2, 15),
+                                                            ),
+                                                            activeColor: BLUE,
+                                                            checkColor: WHITE,
+                                                            value: _selectedWorkplacesWithChecked[workplace][foundIndex],
+                                                            onChanged: (bool value) {
+                                                              setState(() {
+                                                                _selectedWorkplacesWithChecked[workplace][foundIndex] = value;
+                                                                if (value) {
+                                                                  _selectedSubWorkplacesIds.add(workplace.subWorkplacesDto[foundIndex].id);
+                                                                } else {
+                                                                  _selectedSubWorkplacesIds.remove(workplace.subWorkplacesDto[foundIndex].id);
+                                                                }
+                                                              });
+                                                            },
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                            ),
                                     ),
                                   )
                                 ],
@@ -249,7 +251,7 @@ class _AddNotePageState extends State<AddNotePage> {
                       child: Padding(
                         padding: const EdgeInsets.only(top: 5, bottom: 5),
                         child: ListTile(
-                          title: text17BlueBold(priceList.name),
+                          title: text17BlackBold(priceList.name),
                           subtitle: Column(
                             children: [
                               Row(

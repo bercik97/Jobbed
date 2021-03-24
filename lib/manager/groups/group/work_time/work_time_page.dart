@@ -188,75 +188,75 @@ class _WorkTimePageState extends State<WorkTimePage> {
                             }
                             String additionalInformation = employee.additionalInformation;
                             String yesterdayAdditionalInformation = employee.yesterdayAdditionalInformation;
-                            String empty = getTranslated(context, 'empty');
                             return Card(
                               color: WHITE,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Ink(
-                                    width: MediaQuery.of(context).size.width * 0.15,
-                                    height: additionalInformation != empty || yesterdayAdditionalInformation != empty ? 140 : 116,
-                                    color: BRIGHTER_BLUE,
-                                    child: ListTileTheme(
-                                      contentPadding: EdgeInsets.only(right: 10),
-                                      child: CheckboxListTile(
-                                        controlAffinity: ListTileControlAffinity.leading,
-                                        activeColor: BLUE,
-                                        checkColor: WHITE,
-                                        value: _checked[foundIndex],
-                                        onChanged: (bool value) {
-                                          setState(() {
-                                            _checked[foundIndex] = value;
-                                            if (value) {
-                                              _selectedIds.add(_employees[foundIndex].id);
-                                              _selectedEmployees.add(_employees[foundIndex]);
-                                            } else {
-                                              _selectedIds.remove(_employees[foundIndex].id);
-                                              _selectedEmployees.removeWhere((e) => e.id == _employees[foundIndex].id);
-                                            }
-                                            int selectedIdsLength = _selectedIds.length;
-                                            if (selectedIdsLength == _employees.length) {
-                                              _isChecked = true;
-                                            } else if (selectedIdsLength == 0) {
-                                              _isChecked = false;
-                                            }
-                                          });
-                                        },
+                              child: Container(
+                                color: BRIGHTER_BLUE,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Ink(
+                                      width: MediaQuery.of(context).size.width * 0.15,
+                                      height: additionalInformation != null || yesterdayAdditionalInformation != null ? 140 : 116,
+                                      child: ListTileTheme(
+                                        contentPadding: EdgeInsets.only(right: 10),
+                                        child: CheckboxListTile(
+                                          controlAffinity: ListTileControlAffinity.leading,
+                                          activeColor: BLUE,
+                                          checkColor: WHITE,
+                                          value: _checked[foundIndex],
+                                          onChanged: (bool value) {
+                                            setState(() {
+                                              _checked[foundIndex] = value;
+                                              if (value) {
+                                                _selectedIds.add(_employees[foundIndex].id);
+                                                _selectedEmployees.add(_employees[foundIndex]);
+                                              } else {
+                                                _selectedIds.remove(_employees[foundIndex].id);
+                                                _selectedEmployees.removeWhere((e) => e.id == _employees[foundIndex].id);
+                                              }
+                                              int selectedIdsLength = _selectedIds.length;
+                                              if (selectedIdsLength == _employees.length) {
+                                                _isChecked = true;
+                                              } else if (selectedIdsLength == 0) {
+                                                _isChecked = false;
+                                              }
+                                            });
+                                          },
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(width: 5),
-                                  Expanded(
-                                    child: InkWell(
-                                      onTap: () {
-                                        String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.gender, info.substring(0, 1));
-                                        NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, employee.id, info, avatarPath));
-                                      },
-                                      child: Ink(
-                                        color: BRIGHTER_BLUE,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(6),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              text20BlackBold(info + ' ' + LanguageUtil.findFlagByNationality(nationality)),
-                                              Row(
-                                                children: <Widget>[
-                                                  textBlack(getTranslated(this.context, 'timeWorkedToday') + ': '),
-                                                  textBlackBold(employee.timeWorkedToday != null ? employee.timeWorkedToday : getTranslated(this.context, 'empty')),
-                                                ],
-                                              ),
-                                              _handleWorkStatus(MainAxisAlignment.start, employee.workStatus, employee.workplace, employee.workplaceCode),
-                                              additionalInformation != empty || yesterdayAdditionalInformation != empty ? _handleAdditionalInfo(MainAxisAlignment.start, empty, additionalInformation, yesterdayAdditionalInformation) : SizedBox(height: 0),
-                                            ],
+                                    SizedBox(width: 5),
+                                    Expanded(
+                                      child: InkWell(
+                                        onTap: () {
+                                          String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.gender, info.substring(0, 1));
+                                          NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, employee.id, info, avatarPath));
+                                        },
+                                        child: Ink(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(6),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                text20BlackBold(info.length > 30 ? info.substring(0, 30) + '... ' + LanguageUtil.findFlagByNationality(nationality) : info + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                                Row(
+                                                  children: <Widget>[
+                                                    textBlack(getTranslated(this.context, 'timeWorkedToday') + ': '),
+                                                    textBlackBold(employee.timeWorkedToday != null ? employee.timeWorkedToday : getTranslated(this.context, 'empty')),
+                                                  ],
+                                                ),
+                                                _handleWorkStatus(MainAxisAlignment.start, employee.workStatus, employee.workplace, employee.workplaceCode),
+                                                additionalInformation != null || yesterdayAdditionalInformation != null ? _handleAdditionalInfo(MainAxisAlignment.start, additionalInformation, yesterdayAdditionalInformation) : SizedBox(height: 0),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             );
                           },
@@ -902,11 +902,11 @@ class _WorkTimePageState extends State<WorkTimePage> {
     );
   }
 
-  Widget _handleAdditionalInfo(MainAxisAlignment alignment, String empty, String additionalInfo, String yesterdayAdditionalInfo) {
+  Widget _handleAdditionalInfo(MainAxisAlignment alignment, String additionalInfo, String yesterdayAdditionalInfo) {
     return Align(
       child: Column(
         children: [
-          additionalInfo != empty
+          additionalInfo != null
               ? Row(
                   mainAxisAlignment: alignment,
                   children: <Widget>[

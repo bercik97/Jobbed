@@ -8,6 +8,7 @@ import 'package:jobbed/internationalization/localization/localization_constants.
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
+import 'package:jobbed/shared/widget/expandable_text.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
@@ -70,123 +71,117 @@ class _NotePageState extends State<NotePage> {
     return Scaffold(
       backgroundColor: WHITE,
       appBar: employeeAppBar(context, _user, getTranslated(context, 'note'), () => Navigator.pop(context)),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            ListTile(
-              title: text20BlackBold(getTranslated(this.context, 'todo') + ' ($_todayDate)'),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 10),
-                  text20Black(_doneTasks.toString() + ' / ' + _allTasks.toString()),
-                ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              ListTile(
+                title: text20BlackBold(getTranslated(this.context, 'todo') + ' ($_todayDate)'),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 10),
+                    text20Black(_doneTasks.toString() + ' / ' + _allTasks.toString()),
+                  ],
+                ),
+                leading: _doneTasks == _allTasks ? icon50Green(Icons.check) : icon50Red(Icons.close),
               ),
-              leading: _doneTasks == _allTasks ? icon50Green(Icons.check) : icon50Red(Icons.close),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 30, top: 10),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: text20OrangeBold(getTranslated(context, 'managerNote')),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 30, top: 5, right: 30),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: managerNote != null && managerNote != ''
-                    ? ExpandableText(
-                        managerNote,
-                        expandText: getTranslated(context, 'showMore'),
-                        collapseText: getTranslated(context, 'showLess'),
-                        maxLines: 2,
-                        linkColor: Colors.blue,
-                        style: TextStyle(fontSize: 17),
-                      )
-                    : text16BlueGrey(getTranslated(context, 'noteManagerEmpty')),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 30, top: 10),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: text20OrangeBold(getTranslated(context, 'yourNote')),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 30, top: 5, right: 30, bottom: 10),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: employeeNote != null && employeeNote != ''
-                    ? ExpandableText(
-                        employeeNote,
-                        expandText: getTranslated(context, 'showMore'),
-                        collapseText: getTranslated(context, 'showLess'),
-                        maxLines: 2,
-                        linkColor: Colors.blue,
-                        style: TextStyle(fontSize: 17),
-                      )
-                    : text16BlueGrey(getTranslated(context, 'yourNoteIsEmpty')),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 30),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: text20OrangeBold(getTranslated(context, 'noteBasedOnWorkplace')),
-              ),
-            ),
-            noteWorkplaces.isEmpty && noteSubWorkplaces.isEmpty
-                ? Padding(
-                    padding: EdgeInsets.only(left: 30),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: text16BlueGrey(getTranslated(context, 'noNoteBasedOnWorkplace')),
-                    ),
-                  )
-                : SizedBox(height: 0),
-            Scrollbar(
-              controller: scrollController,
-              child: SizedBox(
-                height: noteWorkplaces.length * 80.0,
-                child: ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(vertical: 10.0),
-                  itemCount: noteWorkplaces.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    NoteSubWorkplaceDto noteWorkplace = noteWorkplaces[index];
-                    int foundIndex = 0;
-                    for (int i = 0; i < noteWorkplaces.length; i++) {
-                      if (noteWorkplaces[i].id == noteWorkplace.id) {
-                        foundIndex = i;
-                      }
-                    }
-                    String name = noteWorkplace.workplaceName;
-                    return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 25),
-                      child: Card(
-                        color: BRIGHTER_BLUE,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            ListTile(
-                              title: text20BlackBold(name),
-                              subtitle: text14BlueGrey(getTranslated(this.context, 'workplaceHasNoSubWorkplaces')),
-                              leading: _checkedNoteWorkplaces[foundIndex] ? icon50Green(Icons.check) : icon50Red(Icons.close),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+              Padding(
+                padding: EdgeInsets.only(left: 30, top: 10),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: text20OrangeBold(getTranslated(context, 'managerNote')),
                 ),
               ),
-            ),
-            Scrollbar(
-              controller: scrollController,
-              child: Column(
+              Padding(
+                padding: EdgeInsets.only(left: 30, top: 5, right: 30),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: managerNote != null && managerNote != ''
+                      ? ExpandableText(
+                          managerNote,
+                          expandText: getTranslated(context, 'showMore'),
+                          collapseText: getTranslated(context, 'showLess'),
+                          maxLines: 2,
+                          linkColor: Colors.blue,
+                          style: TextStyle(fontSize: 17),
+                        )
+                      : text16BlueGrey(getTranslated(context, 'noteManagerEmpty')),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 30, top: 10),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: text20OrangeBold(getTranslated(context, 'yourNote')),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 30, top: 5, right: 30, bottom: 10),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: employeeNote != null && employeeNote != ''
+                      ? ExpandableText(
+                          employeeNote,
+                          expandText: getTranslated(context, 'showMore'),
+                          collapseText: getTranslated(context, 'showLess'),
+                          maxLines: 2,
+                          linkColor: Colors.blue,
+                          style: TextStyle(fontSize: 17),
+                        )
+                      : text16BlueGrey(getTranslated(context, 'yourNoteIsEmpty')),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 30),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: text20OrangeBold(getTranslated(context, 'noteBasedOnWorkplace')),
+                ),
+              ),
+              noteWorkplaces.isEmpty && noteSubWorkplaces.isEmpty
+                  ? Padding(
+                      padding: EdgeInsets.only(left: 30),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: text16BlueGrey(getTranslated(context, 'noNoteBasedOnWorkplace')),
+                      ),
+                    )
+                  : SizedBox(height: 0),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.symmetric(vertical: 10.0),
+                itemCount: noteWorkplaces.length,
+                itemBuilder: (BuildContext context, int index) {
+                  NoteSubWorkplaceDto noteWorkplace = noteWorkplaces[index];
+                  int foundIndex = 0;
+                  for (int i = 0; i < noteWorkplaces.length; i++) {
+                    if (noteWorkplaces[i].id == noteWorkplace.id) {
+                      foundIndex = i;
+                    }
+                  }
+                  String name = noteWorkplace.workplaceName;
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25),
+                    child: Card(
+                      color: BRIGHTER_BLUE,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          ListTile(
+                            title: text17BlackBold(name),
+                            subtitle: textBlueGrey(getTranslated(this.context, 'workplaceHasNoSubWorkplaces')),
+                            leading: _checkedNoteWorkplaces[foundIndex] ? icon50Green(Icons.check) : icon50Red(Icons.close),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+              Column(
                 children: [
                   for (int i = 0; i < noteSubWorkplaces.keys.toList().length; i++)
                     Padding(
@@ -199,48 +194,46 @@ class _NotePageState extends State<NotePage> {
                           children: <Widget>[
                             Container(
                               color: BRIGHTER_BLUE,
-                              child: ListTileTheme(
-                                child: ListTile(
-                                  title: text20BlackBold(noteSubWorkplaces.keys.toList()[i]),
-                                  subtitle: SizedBox(
-                                    height: noteSubWorkplaces.values.elementAt(i).length * 80.0,
-                                    child: ListView.builder(
-                                      physics: const NeverScrollableScrollPhysics(),
-                                      itemCount: noteSubWorkplaces.values.elementAt(i).length,
-                                      itemBuilder: (BuildContext context, int index) {
-                                        NoteSubWorkplaceDto subWorkplace = noteSubWorkplaces.values.elementAt(i)[index];
-                                        int foundIndex = 0;
-                                        for (int j = 0; j < noteSubWorkplaces.values.elementAt(i).length; j++) {
-                                          if (noteSubWorkplaces.values.elementAt(i)[j].id == subWorkplace.id) {
-                                            foundIndex = j;
-                                          }
-                                        }
-                                        String name = subWorkplace.subWorkplaceName;
-                                        String description = subWorkplace.subWorkplaceDescription;
-                                        return Card(
-                                          color: BRIGHTER_BLUE,
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              ListTile(
-                                                title: text17BlueBold(name),
-                                                subtitle: description.length < 20
-                                                    ? text15Black(description)
-                                                    : Row(
-                                                        children: [
-                                                          text15Black(description.substring(0, 20) + ' ...'),
-                                                          IconButton(icon: iconBlue(Icons.search), onPressed: () => DialogUtil.showScrollableDialog(context, name, description)),
-                                                        ],
-                                                      ),
-                                                leading: noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].done ? icon50Green(Icons.check) : icon50Red(Icons.close),
-                                              )
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
+                              child: ListTile(
+                                title: Padding(
+                                  padding: const EdgeInsets.only(left: 14),
+                                  child: text17BlackBold(noteSubWorkplaces.keys.toList()[i]),
+                                ),
+                                subtitle: ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: noteSubWorkplaces.values.elementAt(i).length,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    NoteSubWorkplaceDto subWorkplace = noteSubWorkplaces.values.elementAt(i)[index];
+                                    int foundIndex = 0;
+                                    for (int j = 0; j < noteSubWorkplaces.values.elementAt(i).length; j++) {
+                                      if (noteSubWorkplaces.values.elementAt(i)[j].id == subWorkplace.id) {
+                                        foundIndex = j;
+                                      }
+                                    }
+                                    String name = subWorkplace.subWorkplaceName;
+                                    String description = subWorkplace.subWorkplaceDescription;
+                                    return Card(
+                                      color: BRIGHTER_BLUE,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          ListTile(
+                                            title: Padding(
+                                              padding: const EdgeInsets.only(left: 5, right: 5),
+                                              child: text17BlackBold(name),
+                                            ),
+                                            subtitle: Padding(
+                                              padding: const EdgeInsets.only(left: 5, right: 5, bottom: 5),
+                                              child: buildExpandableText(context, description, 2, 15),
+                                            ),
+                                            leading: noteSubWorkplaces[noteSubWorkplaces.keys.toList()[i]][foundIndex].done ? icon50Green(Icons.check) : icon50Red(Icons.close),
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                             )
@@ -250,45 +243,45 @@ class _NotePageState extends State<NotePage> {
                     ),
                 ],
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 30, top: 10),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: text20OrangeBold(getTranslated(context, 'noteBasedOnPiecework')),
-              ),
-            ),
-            _pieceworksDetails.isEmpty
-                ? Padding(
-                    padding: EdgeInsets.only(left: 30),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: text16BlueGrey(getTranslated(context, 'noNoteBasedOnPiecework')),
-                    ),
-                  )
-                : SizedBox(height: 0),
-            for (var piecework in _pieceworksDetails)
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 25),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Card(
-                      color: BRIGHTER_BLUE,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 5, bottom: 5),
-                        child: ListTile(
-                          title: text17BlueBold(piecework.service),
-                          subtitle: text20Black(piecework.doneQuantity.toString() + ' / ' + piecework.toBeDoneQuantity.toString()),
-                          leading: piecework.doneQuantity == piecework.toBeDoneQuantity ? icon50Green(Icons.check) : icon50Red(Icons.close),
-                        ),
-                      ),
-                    ),
-                  ],
+                padding: EdgeInsets.only(left: 30, top: 10),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: text20OrangeBold(getTranslated(context, 'noteBasedOnPiecework')),
                 ),
               ),
-          ],
+              _pieceworksDetails.isEmpty
+                  ? Padding(
+                      padding: EdgeInsets.only(left: 30),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: text16BlueGrey(getTranslated(context, 'noNoteBasedOnPiecework')),
+                      ),
+                    )
+                  : SizedBox(height: 0),
+              for (var piecework in _pieceworksDetails)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 25),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Card(
+                        color: BRIGHTER_BLUE,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 5, bottom: 5),
+                          child: ListTile(
+                            title: text17BlackBold(piecework.service),
+                            subtitle: text20Black(piecework.doneQuantity.toString() + ' / ' + piecework.toBeDoneQuantity.toString()),
+                            leading: piecework.doneQuantity == piecework.toBeDoneQuantity ? icon50Green(Icons.check) : icon50Red(Icons.close),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );
