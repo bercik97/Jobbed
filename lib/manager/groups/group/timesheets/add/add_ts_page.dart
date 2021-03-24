@@ -78,7 +78,7 @@ class _AddTsPageState extends State<AddTsPage> {
     return WillPopScope(
       child: Scaffold(
         backgroundColor: WHITE,
-        appBar: managerAppBar(context, _user, _model.groupName, () => Navigator.pop(context)),
+        appBar: managerAppBar(context, _user, getTranslated(context, 'addNewTimesheet'), () => Navigator.pop(context)),
         body: RefreshIndicator(
           color: WHITE,
           backgroundColor: BLUE,

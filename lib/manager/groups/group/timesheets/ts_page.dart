@@ -84,7 +84,7 @@ class _TsPageState extends State<TsPage> {
     return WillPopScope(
       child: Scaffold(
         backgroundColor: WHITE,
-        appBar: managerAppBar(context, _model.user, _model.groupName, () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model))),
+        appBar: managerAppBar(context, _model.user, getTranslated(context, 'timesheets'), () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model))),
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[

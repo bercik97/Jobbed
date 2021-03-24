@@ -616,5 +616,7 @@
   "cannotFindWorkplaceWhereYouStartedConfirmation": "Nie znaleziono miejsca pracy, w którym zacząłęs swoją pracę na podstawie Twojej lokalizacji! Czy na pewno chcesz zakończyć pracę?",
   "groupName": "Nazwa grupy",
   "groupDescription": "Opis grupy",
-  "yesterdayAdditionalInfo": "Wczorajsza dodatkowa informacja"
+  "yesterdayAdditionalInfo": "Wczorajsza dodatkowa informacja",
+  "changeTimesheetStatus": "Zmienianie statusu arkusza",
+  "addNewTimesheet": "Dodawanie nowego arkusza"
 }

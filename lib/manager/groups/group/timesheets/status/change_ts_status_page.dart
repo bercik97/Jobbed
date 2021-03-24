@@ -80,7 +80,7 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: WHITE,
-      appBar: managerAppBar(context, _model.user, _model.groupName, () => Navigator.pop(context)),
+      appBar: managerAppBar(context, _model.user, getTranslated(context, 'changeTimesheetStatus'), () => Navigator.pop(context)),
       body: RefreshIndicator(
         color: WHITE,
         backgroundColor: BLUE,

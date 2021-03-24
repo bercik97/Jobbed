@@ -615,5 +615,7 @@
   "cannotFindWorkplaceWhereYouStartedConfirmation": "ვერ პოულობთ სამუშაო ადგილს, სადაც დაიწყეთ თქვენი ამჟამინდელი მდებარეობის მიხედვით! დარწმუნებული ხართ, რომ გსურთ სამუშაოს შეჩერება?",
   "groupName": "\u1CAFგუფის სახელი",
   "groupDescription": "ჯგუფის აღწერა",
-  "yesterdayAdditionalInfo": "გუშინ დამატებითი ინფორმაცია"
+  "yesterdayAdditionalInfo": "გუშინ დამატებითი ინფორმაცია",
+  "changeTimesheetStatus": "დროის ფურცლის სტატუსის შეცვლა",
+  "addNewTimesheet": "ახალი დროის ფურცლის დამატება"
 }

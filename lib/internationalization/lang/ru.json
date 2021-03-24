@@ -615,5 +615,7 @@
   "cannotFindWorkplaceWhereYouStartedConfirmation": "Невозможно найти рабочее место, с которого вы начали, по вашему текущему местоположению! Вы уверены, что хотите прекратить работу?",
   "groupName": "Название группы",
   "groupDescription": "Описание группы",
-  "yesterdayAdditionalInfo": "Вчерашняя дополнительная информация"
+  "yesterdayAdditionalInfo": "Вчерашняя дополнительная информация",
+  "changeTimesheetStatus": "Изменить статус расписания",
+  "addNewTimesheet": "Добавить новый табель"
 }

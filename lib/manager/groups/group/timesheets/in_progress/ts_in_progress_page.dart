@@ -115,7 +115,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
     return WillPopScope(
       child: Scaffold(
         backgroundColor: WHITE,
-        appBar: managerAppBar(context, _model.user, _model.groupName, () => NavigatorUtil.onWillPopNavigate(context, TsPage(_model))),
+        appBar: managerAppBar(context, _model.user, getTranslated(context, 'timesheets'), () => NavigatorUtil.onWillPopNavigate(context, TsPage(_model))),
         body: RefreshIndicator(
           color: WHITE,
           backgroundColor: BLUE,

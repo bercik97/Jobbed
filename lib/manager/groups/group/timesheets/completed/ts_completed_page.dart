@@ -65,7 +65,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: WHITE,
-      appBar: managerAppBar(context, _model.user, _model.groupName, () => Navigator.pop(context)),
+      appBar: managerAppBar(context, _model.user, getTranslated(context, 'timesheets'), () => Navigator.pop(context)),
       body: Column(
         children: <Widget>[
           Align(
