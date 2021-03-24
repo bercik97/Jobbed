@@ -116,7 +116,10 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                           ),
                         ),
                         SizedBox(height: 5),
-                        text25BlackBold(_user.info + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 5, right: 5),
+                          child: textCenter20Black(_user.info.length > 30 ? _user.info.substring(0, 30) +  '... ' + LanguageUtil.findFlagByNationality(_user.nationality) : _user.info +  ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
+                        ),
                         SizedBox(height: 10),
                         text18Black(getTranslated(this.context, 'statisticsForThe') + _employeePageDto.tsCurrentYear + ' ' + getTranslated(this.context, _employeePageDto.tsCurrentMonth)),
                         SizedBox(height: 5),

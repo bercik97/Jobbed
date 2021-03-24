@@ -23,7 +23,6 @@ Text text22Black(String text) { return Text(text, style: GoogleFonts.lato(fontSi
 Text textBlackBold(String text) { return Text(text, style: GoogleFonts.lato(color: BLACK, fontWeight: FontWeight.bold)); }
 Text text17BlackBold(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 17, color: BLACK, fontWeight: FontWeight.bold)); }
 Text text20BlackBold(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 20, color: BLACK, fontWeight: FontWeight.bold)); }
-Text text25BlackBold(String text) { return Text(text, style: GoogleFonts.lato(fontSize: 25, color: BLACK, fontWeight: FontWeight.bold)); }
 
 
 ////////////////////////////////////
