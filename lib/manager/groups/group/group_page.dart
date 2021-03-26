@@ -212,11 +212,11 @@ class _GroupPageState extends State<GroupPage> {
         scrollDirection: Axis.vertical,
         child: Column(
           children: <Widget>[
-            Image(height: 100, image: AssetImage(imagePath)),
-            textCenter17BlueBold(getTranslated(context, title)),
+            Image(height: 90, image: AssetImage(imagePath)),
+            textCenter16BlueBold(getTranslated(context, title)),
             Padding(
               padding: EdgeInsets.only(left: 10, right: 10),
-              child: textCenter13Black(getTranslated(context, subtitle)),
+              child: textCenterBlack(getTranslated(context, subtitle)),
             ),
           ],
         ),
