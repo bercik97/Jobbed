@@ -101,12 +101,12 @@ class _EditNotePageState extends State<EditNotePage> {
         allPieceworkTasks++;
       });
     }
+    doneTasks = doneWorkplaceNoteIds.length + donePieceworkTasks;
+    allTasks = undoneWorkplaceNoteIds.length + doneWorkplaceNoteIds.length + allPieceworkTasks;
   }
 
   @override
   Widget build(BuildContext context) {
-    doneTasks = doneWorkplaceNoteIds.length + donePieceworkTasks;
-    allTasks = undoneWorkplaceNoteIds.length + doneWorkplaceNoteIds.length + allPieceworkTasks;
     String employeeNote = _noteDto.employeeNote;
     return WillPopScope(
       child: Scaffold(
@@ -340,69 +340,74 @@ class _EditNotePageState extends State<EditNotePage> {
                   child: text20OrangeBold(getTranslated(context, 'noteBasedOnPiecework')),
                 ),
               ),
-              _pieceworksDetails == null || _pieceworksDetails.isEmpty
-                  ? Padding(
-                      padding: EdgeInsets.only(left: 30),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: text16BlueGrey(getTranslated(context, 'noNoteBasedOnPiecework')),
-                      ),
-                    )
-                  : Column(
-                      children: [
-                        for (var piecework in _pieceworksDetails)
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 25),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Card(
-                                  color: BRIGHTER_BLUE,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 5, bottom: 5),
-                                    child: ListTile(
-                                      title: text17BlueBold(piecework.service),
-                                      subtitle: text20Black(piecework.doneQuantity.toString() + ' / ' + piecework.toBeDoneQuantity.toString()),
-                                      leading: piecework.doneQuantity == piecework.toBeDoneQuantity ? icon50Green(Icons.check) : icon50Red(Icons.close),
-                                      trailing: Container(
-                                        width: 100,
-                                        child: NumberInputWithIncrementDecrement(
-                                          controller: _textEditingItemControllers[piecework.service],
-                                          initialValue: piecework.doneQuantity,
-                                          style: TextStyle(color: BLUE),
-                                          max: piecework.toBeDoneQuantity,
-                                          widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
-                                          onIncrement: (value) {
-                                            setState(() => FocusScope.of(context).requestFocus(new FocusNode()));
-                                            if (piecework.doneQuantity == piecework.toBeDoneQuantity) {
-                                              return;
-                                            }
-                                            setState(() {
-                                              piecework.doneQuantity = value;
-                                              if (piecework.doneQuantity == piecework.toBeDoneQuantity) {
-                                                donePieceworkTasks++;
-                                              }
-                                            });
-                                          },
-                                          onDecrement: (value) {
-                                            setState(() {
-                                              if (piecework.doneQuantity == piecework.toBeDoneQuantity) {
-                                                donePieceworkTasks--;
-                                              }
-                                              piecework.doneQuantity = value;
-                                            });
-                                          },
-                                        ),
-                                      ),
+              if (_pieceworksDetails == null || _pieceworksDetails.isEmpty)
+                Padding(
+                  padding: EdgeInsets.only(left: 30),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: text16BlueGrey(getTranslated(context, 'noNoteBasedOnPiecework')),
+                  ),
+                )
+              else
+                Column(
+                  children: [
+                    for (var piecework in _pieceworksDetails)
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 25),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Card(
+                              color: BRIGHTER_BLUE,
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 5, bottom: 5),
+                                child: ListTile(
+                                  title: text17BlueBold(piecework.service),
+                                  subtitle: text20Black(piecework.doneQuantity.toString() + ' / ' + piecework.toBeDoneQuantity.toString()),
+                                  leading: piecework.doneQuantity == piecework.toBeDoneQuantity ? icon50Green(Icons.check) : icon50Red(Icons.close),
+                                  trailing: Container(
+                                    width: 100,
+                                    child: NumberInputWithIncrementDecrement(
+                                      controller: _textEditingItemControllers[piecework.service],
+                                      initialValue: piecework.doneQuantity,
+                                      style: TextStyle(color: BLUE),
+                                      widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
+                                      onIncrement: (value) {
+                                        setState(() {
+                                          FocusScope.of(context).requestFocus(new FocusNode());
+                                          if (value > piecework.toBeDoneQuantity) {
+                                            _textEditingItemControllers[piecework.service].text = '0';
+                                            piecework.doneQuantity = 0;
+                                            return;
+                                          }
+                                          if (piecework.doneQuantity == piecework.toBeDoneQuantity) {
+                                            return;
+                                          }
+                                          piecework.doneQuantity = value;
+                                        });
+                                      },
+                                      onDecrement: (value) {
+                                        setState(() {
+                                          if (value > piecework.toBeDoneQuantity) {
+                                            _textEditingItemControllers[piecework.service].text = '0';
+                                            piecework.doneQuantity = 0;
+                                            return;
+                                          }
+                                          _textEditingItemControllers[piecework.service].text = value.toString();
+                                          piecework.doneQuantity = value;
+                                        });
+                                      },
                                     ),
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                      ],
-                    )
+                          ],
+                        ),
+                      ),
+                  ],
+                )
             ],
           ),
         ),
@@ -443,18 +448,22 @@ class _EditNotePageState extends State<EditNotePage> {
     _noteService.update(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyUpdatedNote'));
-        Navigator.pop(context);
-        setState(() {
-          _noteDto.employeeNote = _managerNoteController.text;
-          _noteDto.noteSubWorkplaceDto.forEach((element) {
-            if (doneWorkplaceNoteIds.contains(element.id)) {
-              element = true;
-            } else {
-              element = false;
-            }
-          });
-          _isUpdateButtonTapped = false;
+        _noteDto.managerNote = noteSubWorkplaceDto.managerNote;
+        _noteDto.pieceworksDetails.forEach((element) {
+          if (element.toBeDoneQuantity == element.doneQuantity) {
+            element.done = true;
+          } else {
+            element.done = false;
+          }
         });
+        _noteDto.noteSubWorkplaceDto.forEach((element) {
+          if (doneWorkplaceNoteIds.contains(element.id)) {
+            element.done = true;
+          } else {
+            element.done = false;
+          }
+        });
+        NavigatorUtil.navigateReplacement(context, EditNotePage(_model, _date, _noteDto));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

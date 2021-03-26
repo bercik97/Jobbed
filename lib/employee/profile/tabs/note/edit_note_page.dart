@@ -98,12 +98,12 @@ class _EditNotePageState extends State<EditNotePage> {
         allPieceworkTasks++;
       });
     }
+    doneTasks = doneWorkplaceNoteIds.length + donePieceworkTasks;
+    allTasks = undoneWorkplaceNoteIds.length + doneWorkplaceNoteIds.length + allPieceworkTasks;
   }
 
   @override
   Widget build(BuildContext context) {
-    doneTasks = doneWorkplaceNoteIds.length + donePieceworkTasks;
-    allTasks = undoneWorkplaceNoteIds.length + doneWorkplaceNoteIds.length + allPieceworkTasks;
     String managerNote = _noteDto.managerNote;
     return WillPopScope(
       child: Scaffold(
@@ -360,22 +360,27 @@ class _EditNotePageState extends State<EditNotePage> {
                                           max: piecework.toBeDoneQuantity,
                                           widgetContainerDecoration: BoxDecoration(border: Border.all(color: BRIGHTER_BLUE)),
                                           onIncrement: (value) {
-                                            setState(() => FocusScope.of(context).requestFocus(new FocusNode()));
-                                            if (piecework.doneQuantity == piecework.toBeDoneQuantity) {
-                                              return;
-                                            }
                                             setState(() {
-                                              piecework.doneQuantity = value;
-                                              if (piecework.doneQuantity == piecework.toBeDoneQuantity) {
-                                                donePieceworkTasks++;
+                                              FocusScope.of(context).requestFocus(new FocusNode());
+                                              if (value > piecework.toBeDoneQuantity) {
+                                                _textEditingItemControllers[piecework.service].text = '0';
+                                                piecework.doneQuantity = 0;
+                                                return;
                                               }
+                                              if (piecework.doneQuantity == piecework.toBeDoneQuantity) {
+                                                return;
+                                              }
+                                              piecework.doneQuantity = value;
                                             });
                                           },
                                           onDecrement: (value) {
                                             setState(() {
-                                              if (piecework.doneQuantity == piecework.toBeDoneQuantity) {
-                                                donePieceworkTasks--;
+                                              if (value > piecework.toBeDoneQuantity) {
+                                                _textEditingItemControllers[piecework.service].text = '0';
+                                                piecework.doneQuantity = 0;
+                                                return;
                                               }
+                                              _textEditingItemControllers[piecework.service].text = value.toString();
                                               piecework.doneQuantity = value;
                                             });
                                           },
@@ -429,18 +434,22 @@ class _EditNotePageState extends State<EditNotePage> {
     _noteService.update(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyUpdatedNote'));
-        Navigator.pop(context);
-        setState(() {
-          _noteDto.employeeNote = _employeeNoteController.text;
-          _noteDto.noteSubWorkplaceDto.forEach((element) {
-            if (doneWorkplaceNoteIds.contains(element.id)) {
-              element = true;
-            } else {
-              element = false;
-            }
-          });
-          _isUpdateButtonTapped = false;
+        _noteDto.employeeNote = _employeeNoteController.text;
+        _noteDto.pieceworksDetails.forEach((element) {
+          if (element.toBeDoneQuantity == element.doneQuantity) {
+            element.done = true;
+          } else {
+            element.done = false;
+          }
         });
+        _noteDto.noteSubWorkplaceDto.forEach((element) {
+          if (doneWorkplaceNoteIds.contains(element.id)) {
+            element.done = true;
+          } else {
+            element.done = false;
+          }
+        });
+        NavigatorUtil.navigateReplacement(context, EditNotePage(_user, _todayDate, _noteDto));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

@@ -5,10 +5,10 @@ import 'package:jobbed/api/piecework_details/dto/piecework_details_dto.dart';
 class NoteDto {
   final int id;
   final int workdayId;
-  final String managerNote;
+  String managerNote;
   String employeeNote;
-  final List noteSubWorkplaceDto;
-  final List pieceworksDetails;
+  List noteSubWorkplaceDto;
+  List pieceworksDetails;
 
   NoteDto({
     @required this.id,
