@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 
 class WorkTimeDto {
@@ -22,16 +20,14 @@ class WorkTimeDto {
   });
 
   factory WorkTimeDto.fromJson(Map<String, dynamic> json) {
-    var additionalInfoJson = json['additionalInfo'];
-    var workplaceNameJson = json['workplaceName'];
     return WorkTimeDto(
       id: json['id'] as int,
       date: json['date'] as String,
       startTime: json['startTime'] as String,
       endTime: json['endTime'] as String,
       totalTime: json['totalTime'] as String,
-      additionalInfo: additionalInfoJson != null ? utf8.decode(additionalInfoJson.runes.toList()) : null,
-      workplaceName: workplaceNameJson != null ? utf8.decode(workplaceNameJson.runes.toList()) : null,
+      additionalInfo: json['additionalInfo'] as String,
+      workplaceName: json['workplaceName'] as String,
     );
   }
 }
