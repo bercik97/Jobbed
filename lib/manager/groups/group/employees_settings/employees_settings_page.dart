@@ -112,7 +112,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                   onChanged: (string) {
                     setState(
                       () {
-                        _filteredEmployees = _employees.where((u) => (u.employeeInfo.toLowerCase().contains(string.toLowerCase()))).toList();
+                        _filteredEmployees = _employees.where((u) => (u.name.toLowerCase().contains(string.toLowerCase()))).toList();
                       },
                     );
                   },
@@ -132,7 +132,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                       _checked.forEach((b) => l.add(value));
                       _checked = l;
                       if (value) {
-                        _selectedIds.addAll(_filteredEmployees.map((e) => e.employeeId));
+                        _selectedIds.addAll(_filteredEmployees.map((e) => e.id));
                       } else
                         _selectedIds.clear();
                     });
@@ -149,13 +149,14 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                           EmployeeSettingsDto employee = _filteredEmployees[index];
                           int foundIndex = 0;
                           for (int i = 0; i < _employees.length; i++) {
-                            if (_employees[i].employeeId == employee.employeeId) {
+                            if (_employees[i].id == employee.id) {
                               foundIndex = i;
                             }
                           }
-                          String info = employee.employeeInfo;
-                          String nationality = employee.employeeNationality;
-                          String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.employeeGender, info.substring(0, 1));
+                          String name = employee.name;
+                          String surname = employee.surname;
+                          String gender = employee.gender;
+                          String nationality = employee.nationality;
                           return Card(
                             color: WHITE,
                             child: Column(
@@ -175,17 +176,12 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                           child: BouncingWidget(
                                             duration: Duration(milliseconds: 100),
                                             scaleFactor: 2,
-                                            onPressed: () async => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, employee.employeeId, info, avatarPath)),
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                Image(image: AssetImage(avatarPath), height: 40),
-                                              ],
-                                            ),
+                                            onPressed: () async => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, employee.id, name, surname, gender, nationality)),
+                                            child: AvatarsUtil.buildAvatar(gender, 50, 16, name.substring(0, 1), surname.substring(0, 1)),
                                           ),
                                         ),
                                       ),
-                                      title: text20BlackBold(info.length > 30 ? info.substring(0, 30) + '... ' + LanguageUtil.findFlagByNationality(nationality) : info + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                      title: text20BlackBold(name + ' ' + surname + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                       subtitle: Column(
                                         children: <Widget>[
                                           Align(
@@ -229,9 +225,9 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                         setState(() {
                                           _checked[foundIndex] = value;
                                           if (value) {
-                                            _selectedIds.add(_employees[foundIndex].employeeId);
+                                            _selectedIds.add(_employees[foundIndex].id);
                                           } else {
-                                            _selectedIds.remove(_employees[foundIndex].employeeId);
+                                            _selectedIds.remove(_employees[foundIndex].id);
                                           }
                                           int selectedIdsLength = _selectedIds.length;
                                           if (selectedIdsLength == _employees.length) {

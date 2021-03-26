@@ -23,13 +23,14 @@ import 'package:number_inc_dec/number_inc_dec.dart';
 class AddPieceworkForSelectedWorkdays extends StatefulWidget {
   final GroupModel _model;
   final List<String> _selectedWorkdayIds;
-  final String _employeeInfo;
   final int _employeeId;
-  final String _employeeNationality;
+  final String _name;
+  final String _surname;
+  final String _gender;
+  final String _nationality;
   final TimesheetForEmployeeDto _timesheet;
-  final String _avatarPath;
 
-  AddPieceworkForSelectedWorkdays(this._model, this._selectedWorkdayIds, this._employeeInfo, this._employeeId, this._employeeNationality, this._timesheet, this._avatarPath);
+  AddPieceworkForSelectedWorkdays(this._model, this._selectedWorkdayIds, this._employeeId, this._name, this._surname, this._gender, this._nationality, this._timesheet);
 
   @override
   _AddPieceworkForSelectedWorkdaysState createState() => _AddPieceworkForSelectedWorkdaysState();
@@ -38,11 +39,12 @@ class AddPieceworkForSelectedWorkdays extends StatefulWidget {
 class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelectedWorkdays> {
   GroupModel _model;
   List<String> _selectedWorkdayIds;
-  String _employeeInfo;
   int _employeeId;
-  String _employeeNationality;
+  String _name;
+  String _surname;
+  String _gender;
+  String _nationality;
   TimesheetForEmployeeDto _timesheet;
-  String _avatarPath;
 
   User _user;
 
@@ -65,11 +67,12 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
     this._model = widget._model;
     this._user = _model.user;
     this._selectedWorkdayIds = widget._selectedWorkdayIds;
-    this._employeeInfo = widget._employeeInfo;
     this._employeeId = widget._employeeId;
-    this._employeeNationality = widget._employeeNationality;
+    this._name = widget._name;
+    this._surname = widget._surname;
+    this._gender = widget._gender;
+    this._nationality = widget._nationality;
     this._timesheet = widget._timesheet;
-    this._avatarPath = widget._avatarPath;
     this._priceListService = ServiceInitializer.initialize(context, _user.authHeader, PriceListService);
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     super.initState();
@@ -112,7 +115,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
         ),
         bottomNavigationBar: _buildBottomNavigationBar(),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _timesheet, _avatarPath)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, EmployeeTsInProgressPage(_model, _employeeId, _name, _surname, _gender, _nationality, _timesheet)),
     );
   }
 
@@ -198,7 +201,7 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
                 children: <Widget>[iconWhite(Icons.close)],
               ),
               color: Colors.red,
-              onPressed: () => navigateIntoEmployeeTsInProgressPage(),
+              onPressed: () => NavigatorUtil.navigateReplacement(this.context, EmployeeTsInProgressPage(_model, _employeeId, _name, _surname, _gender, _nationality, _timesheet)),
             ),
             SizedBox(width: 25),
             MaterialButton(
@@ -240,13 +243,9 @@ class _AddPieceworkForSelectedWorkdaysState extends State<AddPieceworkForSelecte
     _workdayService.updatePieceworkByIds(_selectedWorkdayIds, pieceworksDetails).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyAddedNewReportsAboutPiecework'));
-        navigateIntoEmployeeTsInProgressPage();
+        NavigatorUtil.navigateReplacement(this.context, EmployeeTsInProgressPage(_model, _employeeId, _name, _surname, _gender, _nationality, _timesheet));
       });
     });
-  }
-
-  void navigateIntoEmployeeTsInProgressPage() {
-    NavigatorUtil.navigateReplacement(this.context, EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, _timesheet, _avatarPath));
   }
 
   _handleNoPriceList() {

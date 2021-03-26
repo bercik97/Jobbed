@@ -18,7 +18,6 @@ import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
-import 'package:jobbed/shared/util/avatars_util.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
@@ -157,7 +156,9 @@ class _PieceworkPageState extends State<PieceworkPage> {
                       itemCount: _filteredEmployees.length,
                       itemBuilder: (BuildContext context, int index) {
                         EmployeePieceworkDto employee = _filteredEmployees[index];
-                        String info = employee.name + ' ' + employee.surname;
+                        String name = employee.name;
+                        String surname = employee.surname;
+                        String gender = employee.gender;
                         String nationality = employee.nationality;
                         int foundIndex = 0;
                         for (int i = 0; i < _employees.length; i++) {
@@ -207,17 +208,14 @@ class _PieceworkPageState extends State<PieceworkPage> {
                                 SizedBox(width: 5),
                                 Expanded(
                                   child: InkWell(
-                                    onTap: () {
-                                      String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.gender, info.substring(0, 1));
-                                      NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, employee.id, info, avatarPath));
-                                    },
+                                    onTap: () => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, employee.id, name, surname, gender, nationality)),
                                     child: Ink(
                                       child: Padding(
                                         padding: const EdgeInsets.all(6),
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            text20BlackBold(info.length > 30 ? info.substring(0, 30) + '... ' + LanguageUtil.findFlagByNationality(nationality) : info + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                            text20BlackBold((name + ' ' + surname).length > 30 ? (name + ' ' + surname).substring(0, 30) + '... ' + LanguageUtil.findFlagByNationality(nationality) : (name + ' ' + surname) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                             Row(
                                               children: <Widget>[
                                                 textBlack(getTranslated(this.context, 'moneyForPieceworkToday') + ': '),

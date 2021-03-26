@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 
 class EmployeeStatisticsDto {
   final int id;
-  final String info;
+  final String name;
+  final String surname;
   final String gender;
   final String nationality;
   final int timesheetId;
@@ -14,7 +15,8 @@ class EmployeeStatisticsDto {
 
   EmployeeStatisticsDto({
     @required this.id,
-    @required this.info,
+    @required this.name,
+    @required this.surname,
     @required this.gender,
     @required this.nationality,
     @required this.timesheetId,
@@ -28,7 +30,8 @@ class EmployeeStatisticsDto {
   factory EmployeeStatisticsDto.fromJson(Map<String, dynamic> json) {
     return EmployeeStatisticsDto(
       id: json['id'] as int,
-      info: json['info'],
+      name: json['name'] as String,
+      surname: json['surname'] as String,
       gender: json['gender'] as String,
       nationality: json['nationality'] as String,
       timesheetId: json['timesheetId'] as int,

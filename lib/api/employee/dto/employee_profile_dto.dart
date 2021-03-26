@@ -6,6 +6,8 @@ import 'package:jobbed/api/work_time/dto/work_time_dto.dart';
 
 class EmployeeProfileDto {
   final int id;
+  final String name;
+  final String surname;
   final String gender;
   final String tsCurrentYear;
   final String tsCurrentMonth;
@@ -25,6 +27,8 @@ class EmployeeProfileDto {
 
   EmployeeProfileDto({
     @required this.id,
+    @required this.name,
+    @required this.surname,
     @required this.gender,
     @required this.tsCurrentYear,
     @required this.tsCurrentMonth,
@@ -47,6 +51,8 @@ class EmployeeProfileDto {
     var todayNoteJson = json['todayNote'];
     return EmployeeProfileDto(
       id: json['id'] as int,
+      name: json['name'] as String,
+      surname: json['surname'] as String,
       gender: json['gender'] as String,
       tsCurrentYear: json['tsCurrentYear'] as String,
       tsCurrentMonth: json['tsCurrentMonth'] as String,

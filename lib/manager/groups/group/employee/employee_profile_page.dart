@@ -11,6 +11,7 @@ import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/settings/settings_page.dart';
+import 'package:jobbed/shared/util/avatars_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/month_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
@@ -26,12 +27,13 @@ import 'employee_ts_in_progress_page.dart';
 
 class EmployeeProfilePage extends StatefulWidget {
   final GroupModel _model;
-  final String _employeeNationality;
-  final int _employeeId;
-  final String _employeeInfo;
-  final String _avatarPath;
+  final int _id;
+  final String _name;
+  final String _surname;
+  final String _gender;
+  final String _nationality;
 
-  const EmployeeProfilePage(this._model, this._employeeNationality, this._employeeId, this._employeeInfo, this._avatarPath);
+  const EmployeeProfilePage(this._model, this._id, this._name, this._surname, this._gender, this._nationality);
 
   @override
   _EmployeeProfilePageState createState() => _EmployeeProfilePageState();
@@ -44,10 +46,11 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
   TimesheetService _tsService;
   EmployeeService _employeeService;
 
-  String _employeeNationality;
-  int _employeeId;
-  String _employeeInfo;
-  String _avatarPath;
+  int _id;
+  String _name;
+  String _surname;
+  String _gender;
+  String _nationality;
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +58,11 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
     this._user = _model.user;
     this._tsService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
     this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
-    this._employeeNationality = widget._employeeNationality;
-    this._employeeId = widget._employeeId;
-    this._employeeInfo = widget._employeeInfo;
-    this._avatarPath = widget._avatarPath;
+    this._id = widget._id;
+    this._name = widget._name;
+    this._surname = widget._surname;
+    this._gender = widget._gender;
+    this._nationality = widget._nationality;
     return Scaffold(
       backgroundColor: WHITE,
       body: DefaultTabController(
@@ -96,24 +100,19 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                 flexibleSpace: FlexibleSpaceBar(
                   background: Column(
                     children: <Widget>[
-                      Container(
-                        width: 100,
-                        height: 100,
-                        margin: EdgeInsets.only(top: 70, bottom: 10),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(image: AssetImage(_avatarPath), fit: BoxFit.fill),
-                        ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 100, bottom: 10),
+                        child: AvatarsUtil.buildAvatar(_gender, 75, 30, _name.substring(0, 1), _surname.substring(0, 1)),
                       ),
                       SizedBox(height: 5),
                       Padding(
                         padding: const EdgeInsets.only(left: 5, right: 5),
-                        child: textCenter20Black(_employeeInfo.length > 30 ? _employeeInfo.substring(0, 30) + '... ' : _employeeInfo),
+                        child: textCenter20Black((_name + ' ' + _surname).length > 30 ? (_name + ' ' + _surname).substring(0, 30) + '... ' : _name + ' ' + _surname),
                       ),
                       SizedBox(height: 2.5),
-                      text20Black(LanguageUtil.convertShortNameToFullName(this.context, _employeeNationality) + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality)),
+                      text20Black(LanguageUtil.convertShortNameToFullName(this.context, _nationality) + ' ' + LanguageUtil.findFlagByNationality(_nationality)),
                       SizedBox(height: 2.5),
-                      text18Black(getTranslated(this.context, 'employee') + ' #' + _employeeId.toString()),
+                      text18Black(getTranslated(this.context, 'employee') + ' #' + _id.toString()),
                       SizedBox(height: 5),
                     ],
                   ),
@@ -153,7 +152,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
 
   Widget _buildSheetsSection() {
     return FutureBuilder(
-      future: _tsService.findAllByEmployeeIdOrderByYearDescMonthDesc(_employeeId),
+      future: _tsService.findAllByEmployeeIdOrderByYearDescMonthDesc(_id),
       builder: (BuildContext context, AsyncSnapshot<List<TimesheetForEmployeeDto>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
           return Center(child: circularProgressIndicator());
@@ -170,9 +169,9 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                             child: InkWell(
                               onTap: () {
                                 if (timesheet.status == 'Completed') {
-                                  NavigatorUtil.navigate(this.context, EmployeeTsCompletedPage(_model, _employeeInfo, _employeeNationality, timesheet));
+                                  NavigatorUtil.navigate(this.context, EmployeeTsCompletedPage(_model, _name, _surname, _nationality, timesheet));
                                 } else {
-                                  NavigatorUtil.navigate(this.context, EmployeeTsInProgressPage(_model, _employeeInfo, _employeeId, _employeeNationality, timesheet, _avatarPath));
+                                  NavigatorUtil.navigate(this.context, EmployeeTsInProgressPage(_model, _id, _name, _surname, _gender, _nationality, timesheet));
                                 }
                               },
                               child: Column(
@@ -223,7 +222,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
 
   Widget _buildContactSection() {
     return FutureBuilder(
-      future: _employeeService.findEmployeeAndUserAndCompanyFieldsValuesById(_employeeId, ['phone', 'viber', 'whatsApp']),
+      future: _employeeService.findEmployeeAndUserAndCompanyFieldsValuesById(_id, ['phone', 'viber', 'whatsApp']),
       builder: (BuildContext context, AsyncSnapshot<Map<String, Object>> snapshot) {
         Map<String, Object> res = snapshot.data;
         if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
@@ -248,7 +247,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
 
   Widget _buildInformationSection() {
     return FutureBuilder(
-      future: _employeeService.findEmployeeAndUserAndCompanyFieldsValuesById(_employeeId, [
+      future: _employeeService.findEmployeeAndUserAndCompanyFieldsValuesById(_id, [
         'moneyPerHour',
         'moneyPerHourForCompany',
         'workTimeByLocation',

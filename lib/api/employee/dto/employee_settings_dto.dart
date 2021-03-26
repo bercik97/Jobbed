@@ -1,20 +1,22 @@
 import 'package:flutter/cupertino.dart';
 
 class EmployeeSettingsDto {
-  final int employeeId;
-  final String employeeInfo;
-  final String employeeGender;
-  final String employeeNationality;
+  final int id;
+  final String name;
+  final String surname;
+  final String gender;
+  final String nationality;
   final double moneyPerHour;
   final double moneyPerHourForCompany;
   final bool workTimeByLocation;
   final bool piecework;
 
   EmployeeSettingsDto({
-    @required this.employeeId,
-    @required this.employeeInfo,
-    @required this.employeeGender,
-    @required this.employeeNationality,
+    @required this.id,
+    @required this.name,
+    @required this.surname,
+    @required this.gender,
+    @required this.nationality,
     @required this.moneyPerHour,
     @required this.moneyPerHourForCompany,
     @required this.workTimeByLocation,
@@ -23,10 +25,11 @@ class EmployeeSettingsDto {
 
   factory EmployeeSettingsDto.fromJson(Map<String, dynamic> json) {
     return EmployeeSettingsDto(
-      employeeId: json['employeeId'] as int,
-      employeeInfo: json['employeeInfo'],
-      employeeGender: json['employeeGender'] as String,
-      employeeNationality: json['employeeNationality'] as String,
+      id: json['id'] as int,
+      name: json['name'] as String,
+      surname: json['surname'] as String,
+      gender: json['gender'] as String,
+      nationality: json['nationality'] as String,
       moneyPerHour: json['moneyPerHour'] as double,
       moneyPerHourForCompany: json['moneyPerHourForCompany'] as double,
       workTimeByLocation: json['workTimeByLocation'] as bool,

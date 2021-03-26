@@ -36,13 +36,14 @@ import '../../../shared/manager_app_bar.dart';
 
 class EmployeeTsInProgressPage extends StatefulWidget {
   final GroupModel _model;
-  final String _employeeInfo;
   final int _employeeId;
-  final String _employeeNationality;
+  final String _name;
+  final String _surname;
+  final String _gender;
+  final String _nationality;
   final TimesheetForEmployeeDto timesheet;
-  final String _avatarPath;
 
-  const EmployeeTsInProgressPage(this._model, this._employeeInfo, this._employeeId, this._employeeNationality, this.timesheet, this._avatarPath);
+  const EmployeeTsInProgressPage(this._model, this._employeeId, this._name, this._surname, this._gender, this._nationality, this.timesheet);
 
   @override
   _EmployeeTsInProgressPageState createState() => _EmployeeTsInProgressPageState();
@@ -57,11 +58,12 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   GroupModel _model;
   User _user;
 
-  String _employeeInfo;
   int _employeeId;
-  String _employeeNationality;
+  String _name;
+  String _surname;
+  String _gender;
+  String _nationality;
   TimesheetForEmployeeDto _timesheet;
-  String _avatarPath;
 
   Set<int> selectedIds = new Set();
   List<bool> _checked = new List();
@@ -91,11 +93,12 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     this._pieceworkService = ServiceInitializer.initialize(context, _user.authHeader, PieceworkService);
     this._workTimeService = ServiceInitializer.initialize(context, _user.authHeader, WorkTimeService);
     this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
-    this._employeeInfo = widget._employeeInfo;
     this._employeeId = widget._employeeId;
-    this._employeeNationality = widget._employeeNationality;
+    this._name = widget._nationality;
+    this._surname = widget._surname;
+    this._gender = widget._gender;
+    this._nationality = widget._nationality;
     this._timesheet = widget.timesheet;
-    this._avatarPath = widget._avatarPath;
     super.initState();
     _loading = true;
     _workdayService.findAllByTimesheetId(_timesheet.id).then((res) {
@@ -138,7 +141,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                     children: <Widget>[
                       Align(
                         alignment: Alignment.topLeft,
-                        child: text17BlackBold(_employeeInfo + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality)),
+                        child: text17BlackBold(_name + ' ' + _surname + ' ' + LanguageUtil.findFlagByNationality(_name)),
                       ),
                       Row(
                         children: <Widget>[
@@ -231,17 +234,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                   child: Image(image: AssetImage('images/white-piecework.png')),
                   onPressed: () {
                     if (selectedIds.isNotEmpty) {
-                      NavigatorUtil.navigate(
-                          context,
-                          AddPieceworkForSelectedWorkdays(
-                            _model,
-                            selectedIds.map((el) => el.toString()).toList(),
-                            _employeeInfo,
-                            _employeeId,
-                            _employeeNationality,
-                            _timesheet,
-                            _avatarPath,
-                          ));
+                      NavigatorUtil.navigate(context, AddPieceworkForSelectedWorkdays(_model, selectedIds.map((el) => el.toString()).toList(), _employeeId, _name, _surname, _gender, _nationality, _timesheet));
                     } else {
                       showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
                     }

@@ -107,18 +107,11 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         SizedBox(height: MediaQuery.of(context).size.height * 0.08),
-                        Container(
-                          width: 100,
-                          height: 75,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(image: AssetImage(AvatarsUtil.getAvatarPathByLetter(_employeePageDto.gender, _user.info.substring(0, 1)))),
-                          ),
-                        ),
+                        AvatarsUtil.buildAvatar(_employeePageDto.gender, 75, 30, _employeePageDto.name.substring(0, 1), _employeePageDto.surname.substring(0, 1)),
                         SizedBox(height: 5),
                         Padding(
                           padding: const EdgeInsets.only(left: 5, right: 5),
-                          child: textCenter20Black(_user.info.length > 30 ? _user.info.substring(0, 30) +  '... ' + LanguageUtil.findFlagByNationality(_user.nationality) : _user.info +  ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
+                          child: textCenter20Black(_user.info.length > 30 ? _user.info.substring(0, 30) + '... ' + LanguageUtil.findFlagByNationality(_user.nationality) : _user.info + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
                         ),
                         SizedBox(height: 10),
                         text18Black(getTranslated(this.context, 'statisticsForThe') + _employeePageDto.tsCurrentYear + ' ' + getTranslated(this.context, _employeePageDto.tsCurrentMonth)),

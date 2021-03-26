@@ -24,11 +24,12 @@ import '../../../shared/manager_app_bar.dart';
 
 class EmployeeTsCompletedPage extends StatefulWidget {
   final GroupModel _model;
-  final String _employeeInfo;
-  final String _employeeNationality;
+  final String _name;
+  final String _surname;
+  final String _nationality;
   final TimesheetForEmployeeDto _timesheet;
 
-  const EmployeeTsCompletedPage(this._model, this._employeeInfo, this._employeeNationality, this._timesheet);
+  const EmployeeTsCompletedPage(this._model, this._name, this._surname, this._nationality, this._timesheet);
 
   @override
   _EmployeeTsCompletedPageState createState() => _EmployeeTsCompletedPageState();
@@ -40,8 +41,9 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
 
   WorkdayService _workdayService;
 
-  String _employeeInfo;
-  String _employeeNationality;
+  String _name;
+  String _surname;
+  String _nationality;
   TimesheetForEmployeeDto _timesheet;
 
   List<WorkdayDto> workdays;
@@ -53,8 +55,9 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
     this._model = widget._model;
     this._user = _model.user;
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
-    this._employeeInfo = widget._employeeInfo;
-    this._employeeNationality = widget._employeeNationality;
+    this._name = widget._name;
+    this._surname = widget._surname;
+    this._nationality = widget._nationality;
     this._timesheet = widget._timesheet;
     super.initState();
     _loading = true;
@@ -88,7 +91,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                     children: <Widget>[
                       Align(
                         alignment: Alignment.topLeft,
-                        child: text17BlackBold(_employeeInfo != null ? _employeeInfo + ' ' + LanguageUtil.findFlagByNationality(_employeeNationality) : getTranslated(context, 'empty')),
+                        child: text17BlackBold(_name + ' ' + _surname + ' ' + LanguageUtil.findFlagByNationality(_nationality)),
                       ),
                       Row(
                         children: <Widget>[

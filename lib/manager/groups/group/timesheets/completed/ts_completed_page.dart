@@ -94,7 +94,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
               onChanged: (string) {
                 setState(
                   () {
-                    _filteredEmployees = _employees.where((u) => (u.info.toLowerCase().contains(string.toLowerCase()))).toList();
+                    _filteredEmployees = _employees.where((u) => ((u.name + u.surname).toLowerCase().contains(string.toLowerCase()))).toList();
                   },
                 );
               },
@@ -107,9 +107,10 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                     itemCount: _filteredEmployees.length,
                     itemBuilder: (BuildContext context, int index) {
                       EmployeeStatisticsDto employee = _filteredEmployees[index];
-                      String info = employee.info;
+                      String name = employee.name;
+                      String surname = employee.surname;
+                      String gender = employee.gender;
                       String nationality = employee.nationality;
-                      String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.gender, info.substring(0, 1));
                       return Card(
                         color: WHITE,
                         child: InkWell(
@@ -126,7 +127,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                               totalMoneyEarned: _filteredEmployees[index].totalMoneyEarned,
                               employeeBasicDto: null,
                             );
-                            NavigatorUtil.navigate(this.context, EmployeeTsCompletedPage(_model, info, nationality, _completedTimesheet));
+                            NavigatorUtil.navigate(this.context, EmployeeTsCompletedPage(_model, name, surname, nationality, _completedTimesheet));
                           },
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -142,17 +143,12 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                                       child: BouncingWidget(
                                         duration: Duration(milliseconds: 100),
                                         scaleFactor: 1.5,
-                                        onPressed: () => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, employee.id, info, avatarPath)),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Image(image: AssetImage(avatarPath), height: 40),
-                                          ],
-                                        ),
+                                        onPressed: () => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, employee.id, name, surname, employee.gender, nationality)),
+                                        child: AvatarsUtil.buildAvatar(gender, 50, 16, name.substring(0, 1), surname.substring(0, 1)),
                                       ),
                                     ),
                                   ),
-                                  title: text17BlackBold(info + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                  title: text17BlackBold(name + ' ' + surname + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                   subtitle: Column(
                                     children: <Widget>[
                                       Row(

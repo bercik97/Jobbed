@@ -148,7 +148,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                   onChanged: (string) {
                     setState(
                       () {
-                        _filteredEmployees = _employees.where((u) => (u.info.toLowerCase().contains(string.toLowerCase()))).toList();
+                        _filteredEmployees = _employees.where((u) => ((u.name + u.surname).toLowerCase().contains(string.toLowerCase()))).toList();
                       },
                     );
                   },
@@ -189,9 +189,10 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                               foundIndex = i;
                             }
                           }
-                          String info = employee.info;
+                          String name = employee.name;
+                          String surname = employee.surname;
+                          String gender = employee.gender;
                           String nationality = employee.nationality;
-                          String avatarPath = AvatarsUtil.getAvatarPathByLetter(employee.gender, info.substring(0, 1));
                           return Card(
                             color: BRIGHTER_BLUE,
                             child: Row(
@@ -242,7 +243,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                       totalMoneyEarned: _filteredEmployees[index].totalMoneyEarned,
                                       employeeBasicDto: null,
                                     );
-                                    NavigatorUtil.navigate(this.context, EmployeeTsInProgressPage(_model, info, employee.id, nationality, _inProgressTs, avatarPath));
+                                    NavigatorUtil.navigate(this.context, EmployeeTsInProgressPage(_model, employee.id, name, surname, gender, nationality, _inProgressTs));
                                   },
                                   child: Ink(
                                     width: MediaQuery.of(context).size.width * 0.60,
@@ -252,7 +253,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          text17BlackBold(info + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                          text17BlackBold(name + ' ' + surname + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                           Row(
                                             children: <Widget>[
                                               textBlackBold(getTranslated(this.context, 'accord') + ': '),
@@ -284,13 +285,8 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                       child: BouncingWidget(
                                         duration: Duration(milliseconds: 100),
                                         scaleFactor: 2,
-                                        onPressed: () => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, nationality, employee.id, info, avatarPath)),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Image(image: AssetImage(avatarPath), height: 40),
-                                          ],
-                                        ),
+                                        onPressed: () => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, employee.id, name, surname, gender, nationality)),
+                                        child: AvatarsUtil.buildAvatar(gender, 50, 16, name.substring(0, 1), surname.substring(0, 1)),
                                       ),
                                     ),
                                   ),

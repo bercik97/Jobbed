@@ -50,6 +50,7 @@ dependencies:
   expandable_text: ^1.3.2
   google_map_location_picker: ^4.1.6
   bot_toast: ^3.0.5
+  avatar_letter: ^1.0.1
 
 dev_dependencies:
   flutter_test:
@@ -107,64 +108,6 @@ flutter:
     - images/white-note.png
     - images/white-play.png
     - images/white-stop.png
-
-    - images/letters/male/A.png
-    - images/letters/male/B.png
-    - images/letters/male/C.png
-    - images/letters/male/D.png
-    - images/letters/male/E.png
-    - images/letters/male/F.png
-    - images/letters/male/G.png
-    - images/letters/male/H.png
-    - images/letters/male/I.png
-    - images/letters/male/J.png
-    - images/letters/male/K.png
-    - images/letters/male/L.png
-    - images/letters/male/M.png
-    - images/letters/male/N.png
-    - images/letters/male/O.png
-    - images/letters/male/P.png
-    - images/letters/male/Q.png
-    - images/letters/male/R.png
-    - images/letters/male/S.png
-    - images/letters/male/T.png
-    - images/letters/male/U.png
-    - images/letters/male/V.png
-    - images/letters/male/W.png
-    - images/letters/male/X.png
-    - images/letters/male/Y.png
-    - images/letters/male/Z.png
-    - images/letters/male/Ł.png
-    - images/letters/male/Ż.png
-
-    - images/letters/female/A.png
-    - images/letters/female/B.png
-    - images/letters/female/C.png
-    - images/letters/female/D.png
-    - images/letters/female/E.png
-    - images/letters/female/F.png
-    - images/letters/female/G.png
-    - images/letters/female/H.png
-    - images/letters/female/I.png
-    - images/letters/female/J.png
-    - images/letters/female/K.png
-    - images/letters/female/L.png
-    - images/letters/female/M.png
-    - images/letters/female/N.png
-    - images/letters/female/O.png
-    - images/letters/female/P.png
-    - images/letters/female/Q.png
-    - images/letters/female/R.png
-    - images/letters/female/S.png
-    - images/letters/female/T.png
-    - images/letters/female/U.png
-    - images/letters/female/V.png
-    - images/letters/female/W.png
-    - images/letters/female/X.png
-    - images/letters/female/Y.png
-    - images/letters/female/Z.png
-    - images/letters/female/Ł.png
-    - images/letters/female/Ż.png
 
     - docs/regulations.pdf
     - docs/privacy_policy.pdf
