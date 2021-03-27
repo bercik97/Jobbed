@@ -93,7 +93,7 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
     return WillPopScope(
       child: Scaffold(
         backgroundColor: WHITE,
-        appBar: employeeAppBar(context, _user, getTranslated(context, 'informationAboutYou'), () => Navigator.pop(context)),
+        appBar: employeeAppBar(context, _user, getTranslated(context, 'informations'), () => Navigator.pop(context)),
         body: Padding(
           padding: EdgeInsets.fromLTRB(25, 0, 25, 25),
           child: Center(

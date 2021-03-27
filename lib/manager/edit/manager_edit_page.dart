@@ -92,7 +92,7 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: WHITE,
-      appBar: managerAppBar(context, _user, getTranslated(context, 'informationAboutYou'), () => Navigator.pop(context)),
+      appBar: managerAppBar(context, _user, getTranslated(context, 'informations'), () => Navigator.pop(context)),
       body: Padding(
         padding: EdgeInsets.fromLTRB(25, 0, 25, 25),
         child: Center(
