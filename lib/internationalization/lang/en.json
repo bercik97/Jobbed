@@ -561,7 +561,7 @@
   "pieceworksDescription": "Manage pieceworks",
   "permissionPageTitle": "Here you can set employee hourly rates and assign permissions to use selected functions on their own",
   "workTimePageTitle": "In this section, you can perform all operations related to employee working time",
-  "day": "Day",
+  "shortNumber": "No.",
   "workplacePageTitle": "In this section, you can add objects and their individual parts together with GPS location to monitor working time",
   "warehousePageTitle": "Here you can add a warehouse where your items will be stored",
   "itemPlacePageTitle": "Here you can add slots where items delivered from your warehouse are located",

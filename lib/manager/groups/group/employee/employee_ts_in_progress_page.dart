@@ -298,7 +298,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
           child: CheckboxListTile(
             contentPadding: EdgeInsets.only(left: 1),
             controlAffinity: ListTileControlAffinity.leading,
-            title: textBlackBold(getTranslated(context, 'day')),
+            title: textBlackBold(getTranslated(context, 'shortNumber')),
             subtitle: textBlackBold(' '),
             activeColor: BLUE,
             checkColor: WHITE,

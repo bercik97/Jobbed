@@ -149,7 +149,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
 
   List<Widget> _buildTitleWidget() {
     return [
-      DataTableUtil.buildTitleItemWidget(getTranslated(context, 'day'), 50),
+      DataTableUtil.buildTitleItemWidget(getTranslated(context, 'shortNumber'), 50),
       DataTableUtil.buildTitleItemWidget(getTranslated(context, 'hours'), 75),
       DataTableUtil.buildTitleItemWidget(getTranslated(context, 'accord'), 50),
       DataTableUtil.buildTitleItemWidget(getTranslated(context, 'time'), 50),

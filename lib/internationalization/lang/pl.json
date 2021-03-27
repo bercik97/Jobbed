@@ -561,7 +561,7 @@
   "pieceworksDescription": "Zarządzaj pracami na akord",
   "permissionPageTitle": "W tym miejscu możesz ustalać stawki pracowników oraz przydzielać im uprawnienia do samodzielnego korzystania z wybranych funkcji",
   "workTimePageTitle": "W tym miejscu, możesz wykonywać wszystkie operacje związane z czasem pracy pracowników",
-  "day": "Dzień",
+  "shortNumber": "Nr.",
   "workplacePageTitle": "W tym miejscu, możesz dodawać obiekty oraz ich poszczególne części wraz z lokalizacją GPS w celu monitorowania czasu pracy",
   "warehousePageTitle": "W tym miejscu możesz dodać magazyn, w którym składowane są przedmioty",
   "itemPlacePageTitle": "Tutaj możesz dodać miejsca, w których znajdują się przedmioty wydane z magazynu",
