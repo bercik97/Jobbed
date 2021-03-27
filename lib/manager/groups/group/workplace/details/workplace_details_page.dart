@@ -854,7 +854,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _excelService.generateWorkTimesExcel(workplaceId, workplaceName, date, _user.username).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyGeneratedExcelAndSendEmail') + '!');
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'excelFileSentToYourEmail') + '!');
         setState(() => _isGenerateExcelButtonTapped = false);
         Navigator.pop(context);
       });

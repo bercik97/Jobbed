@@ -418,7 +418,7 @@
   "employeeProfile": "Wyświetlenie profilu pracownika",
   "availableQuantity": "Dostępna ilość",
   "generateExcel": "Generowanie pliku Excel",
-  "successfullyGeneratedExcelAndSendEmail": "Wygenerowano plik Excel i wysłano na Twój email",
+  "excelFileSentToYourEmail": "Wysłano plik Excel na Twój email",
   "emailWrongFormat": "Błędny format adresu email",
   "excelEmailIsEmpty": "Nie można wygenerować pliku excel, ponieważ nie posiadasz adresu email. Proszę wejdź do sekcji 'ustawienia', a następnie 'o mnie' aby wpisać adres email.",
   "chooseGender": "Proszę, wybierz swoją płeć",

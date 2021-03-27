@@ -375,7 +375,7 @@ class _PriceListsPageState extends State<PriceListsPage> {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     _excelService.generatePriceListExcel(_model.user.companyId, _excelType == 0 || _excelType == 2, _excelType == 1 || _excelType == 2, _model.user.username).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyGeneratedExcelAndSendEmail') + '!');
+        ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'excelFileSentToYourEmail') + '!');
         setState(() => _isGenerateExcelBtnTapped = false);
         _excelType = -1;
         Navigator.pop(context);
