@@ -315,6 +315,10 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                         showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
                         return;
                       }
+                      if (_workplaces.isEmpty) {
+                        showHint(context, getTranslated(context, 'noWorkplaces') + ' ', getTranslated(context, 'goToWorkplacesSectionAndAddSomeWorkplaces'));
+                        return;
+                      }
                       _showUpdateWorkTimeDialog(_selectedIds);
                     },
                   ),

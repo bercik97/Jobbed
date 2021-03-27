@@ -199,11 +199,15 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                   color: BLUE,
                   child: Image(image: AssetImage('images/white-hours.png')),
                   onPressed: () {
-                    if (selectedIds.isNotEmpty) {
-                      _showUpdateWorkTimeDialog();
-                    } else {
+                    if (selectedIds.isEmpty) {
                       showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
+                      return;
                     }
+                    if (_workplaces.isEmpty) {
+                      showHint(context, getTranslated(context, 'noWorkplaces') + ' ', getTranslated(context, 'goToWorkplacesSectionAndAddSomeWorkplaces'));
+                      return;
+                    }
+                    _showUpdateWorkTimeDialog();
                   },
                 ),
               ),
