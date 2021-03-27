@@ -825,7 +825,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                               child: DataTable(
                                 columnSpacing: 10,
                                 columns: [
-                                  DataColumn(label: textBlackBold('No.')),
                                   DataColumn(label: textBlackBold(getTranslated(context, 'serviceName'))),
                                   DataColumn(label: textBlackBold(getTranslated(context, 'quantity'))),
                                   DataColumn(
@@ -852,7 +851,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                   for (int i = 0; i < pieceworks.length; i++)
                                     DataRow(
                                       cells: [
-                                        DataCell(text16Black((i + 1).toString())),
                                         DataCell(text16Black(pieceworks[i].service)),
                                         DataCell(Align(alignment: Alignment.center, child: text16Black(pieceworks[i].quantity.toString()))),
                                         DataCell(Align(alignment: Alignment.center, child: text16Black(pieceworks[i].priceForEmployee.toString()))),
@@ -956,7 +954,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                               child: DataTable(
                                 columnSpacing: 10,
                                 columns: [
-                                  DataColumn(label: textBlackBold('No.')),
                                   DataColumn(label: textBlackBold(getTranslated(context, 'from'))),
                                   DataColumn(label: textBlackBold(getTranslated(context, 'to'))),
                                   DataColumn(label: textBlackBold(getTranslated(context, 'sum'))),
@@ -968,7 +965,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                   for (int i = 0; i < workTimes.length; i++)
                                     DataRow(
                                       cells: [
-                                        DataCell(text16Black((i + 1).toString())),
                                         DataCell(text16Black(workTimes[i].startTime.toString())),
                                         DataCell(text16Black(workTimes[i].endTime != null ? workTimes[i].endTime.toString() : '-')),
                                         DataCell(text16Black(workTimes[i].totalTime != null ? workTimes[i].totalTime.toString() : '-')),

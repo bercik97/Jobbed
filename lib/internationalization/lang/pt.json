@@ -616,5 +616,6 @@
   "groupDescription": "ჯგუფის აღწერა",
   "yesterdayAdditionalInfo": "გუშინ დამატებითი ინფორმაცია",
   "changeTimesheetStatus": "დროის ფურცლის სტატუსის შეცვლა",
-  "addNewTimesheet": "ახალი დროის ფურცლის დამატება"
+  "addNewTimesheet": "ახალი დროის ფურცლის დამატება",
+  "deleteEmployeesAccounts": "წაშალეთ თანამშრომლების ანგარიშები"
 }

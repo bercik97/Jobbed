@@ -226,7 +226,6 @@ class WorkdayUtil {
           child: DataTable(
             columnSpacing: 10,
             columns: [
-              DataColumn(label: textBlackBold('No.')),
               DataColumn(label: textBlackBold(getTranslated(context, 'serviceName'))),
               DataColumn(label: textBlackBold(getTranslated(context, 'quantity'))),
               displayCompanyPrice
@@ -256,7 +255,6 @@ class WorkdayUtil {
               for (int i = 0; i < pieceworks.length; i++)
                 DataRow(
                   cells: [
-                    DataCell(textBlack((i + 1).toString())),
                     DataCell(textBlack(pieceworks[i].service)),
                     DataCell(Align(alignment: Alignment.center, child: textBlack(pieceworks[i].quantity.toString()))),
                     DataCell(Align(alignment: Alignment.center, child: textBlack(pieceworks[i].priceForEmployee.toString()))),
@@ -280,7 +278,6 @@ class WorkdayUtil {
           child: DataTable(
             columnSpacing: 10,
             columns: [
-              DataColumn(label: textBlackBold('No.')),
               DataColumn(label: textBlackBold(getTranslated(context, 'from'))),
               DataColumn(label: textBlackBold(getTranslated(context, 'to'))),
               DataColumn(label: textBlackBold(getTranslated(context, 'sum'))),
@@ -291,7 +288,6 @@ class WorkdayUtil {
               for (int i = 0; i < workTimes.length; i++)
                 DataRow(
                   cells: [
-                    DataCell(textBlack((i + 1).toString())),
                     DataCell(textBlack(workTimes[i].startTime.toString())),
                     DataCell(textBlack(workTimes[i].endTime != null ? workTimes[i].endTime.toString() : '-')),
                     DataCell(textBlack(workTimes[i].totalTime != null ? workTimes[i].totalTime.toString() : '-')),

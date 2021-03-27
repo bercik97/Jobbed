@@ -457,7 +457,7 @@
   "pieceworkCannotBeEmpty": "Praca akordowa nie może być pusta",
   "pieceworkForSelectedDaysDeleted": "Praca akordowa dla wybranych dni została usunięta",
   "deletingPieceworkForSelectedDaysConfirmation": "Czy na pewno chcesz usunąć wszystkie prace akordowe z wybranych dni?",
-  "createNewEmployeeAccount": "Dodawanie nowego pracownika",
+  "createNewEmployeeAccount": "Tworzenie konta pracownika",
   "employeeAccountAdded": "Dodano konto pracownika",
   "chooseEmployeeGender": "Proszę, wybierz płeć pracownika",
   "generateExcelForPriceList": "Czy na pewno chcesz wygenerować plik excel cennika?",
@@ -617,5 +617,6 @@
   "groupDescription": "Opis grupy",
   "yesterdayAdditionalInfo": "Wczorajsza dodatkowa informacja",
   "changeTimesheetStatus": "Zmienianie statusu arkusza",
-  "addNewTimesheet": "Dodawanie nowego arkusza"
+  "addNewTimesheet": "Dodawanie nowego arkusza",
+  "deleteEmployeesAccounts": "Usuwanie kont pracowników"
 }

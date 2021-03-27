@@ -176,6 +176,16 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                 labelStyle: TextStyle(fontWeight: FontWeight.w500, color: BLACK),
                 labelBackgroundColor: BRIGHTER_BLUE,
               ),
+              SpeedDialChild(
+                child: Icon(Icons.person_remove, color: BLACK),
+                backgroundColor: BRIGHTER_BLUE,
+                onTap: () {
+                  // todo
+                },
+                label: getTranslated(context, 'deleteEmployeesAccounts'),
+                labelStyle: TextStyle(fontWeight: FontWeight.w500, color: BLACK),
+                labelBackgroundColor: BRIGHTER_BLUE,
+              ),
             ],
           ),
         ),

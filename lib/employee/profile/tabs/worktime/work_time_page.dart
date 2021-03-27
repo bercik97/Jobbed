@@ -408,7 +408,6 @@ class _WorkTimePageState extends State<WorkTimePage> {
                               child: DataTable(
                                 columnSpacing: 10,
                                 columns: [
-                                  DataColumn(label: textBlackBold('No.')),
                                   DataColumn(label: textBlackBold(getTranslated(context, 'workplace'))),
                                   DataColumn(label: textBlackBold(getTranslated(context, 'confirmation'))),
                                 ],
@@ -416,7 +415,6 @@ class _WorkTimePageState extends State<WorkTimePage> {
                                   for (int i = 0; i < workplaces.length; i++)
                                     DataRow(
                                       cells: [
-                                        DataCell(textBlack((i + 1).toString())),
                                         DataCell(textBlack(workplaces[i].name)),
                                         DataCell(
                                           MaterialButton(

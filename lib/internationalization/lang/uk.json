@@ -616,5 +616,6 @@
   "groupDescription": "Опис групи",
   "yesterdayAdditionalInfo": "Вчора додаткова інформація",
   "changeTimesheetStatus": "Змінити статус табеля обліку робочого часу",
-  "addNewTimesheet": "Додайте новий графік роботи"
+  "addNewTimesheet": "Додайте новий графік роботи",
+  "deleteEmployeesAccounts": "Видалити облікові записи працівників"
 }

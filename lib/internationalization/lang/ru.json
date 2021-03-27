@@ -616,5 +616,6 @@
   "groupDescription": "Описание группы",
   "yesterdayAdditionalInfo": "Вчерашняя дополнительная информация",
   "changeTimesheetStatus": "Изменить статус расписания",
-  "addNewTimesheet": "Добавить новый табель"
+  "addNewTimesheet": "Добавить новый табель",
+  "deleteEmployeesAccounts": "Удалить учетные записи сотрудников"
 }

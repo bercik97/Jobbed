@@ -153,7 +153,6 @@ class _PieceworkPageState extends State<PieceworkPage> {
                 child: DataTable(
                   columnSpacing: 10,
                   columns: [
-                    DataColumn(label: textBlackBold('No.')),
                     DataColumn(label: textBlackBold(getTranslated(context, 'serviceName'))),
                     DataColumn(label: textBlackBold(getTranslated(context, 'quantity'))),
                     DataColumn(label: textBlackBold(getTranslated(context, 'price'))),
@@ -163,7 +162,6 @@ class _PieceworkPageState extends State<PieceworkPage> {
                     for (int i = 0; i < _pieceworks.length; i++)
                       DataRow(
                         cells: [
-                          DataCell(textBlack((i + 1).toString())),
                           DataCell(textBlack(_pieceworks[i].service)),
                           DataCell(textBlack(_pieceworks[i].quantity.toString())),
                           DataCell(textBlack(_pieceworks[i].priceForEmployee.toString())),

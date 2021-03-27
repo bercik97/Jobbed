@@ -617,5 +617,6 @@
   "groupDescription": "Group description",
   "yesterdayAdditionalInfo": "Yesterday additional information",
   "changeTimesheetStatus": "Change timesheet status",
-  "addNewTimesheet": "Add new timesheet"
+  "addNewTimesheet": "Add new timesheet",
+  "deleteEmployeesAccounts": "Delete employees accounts"
 }
