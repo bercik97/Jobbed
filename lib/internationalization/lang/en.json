@@ -222,7 +222,7 @@
   "settingTsStatusToCompleted": "Setting timesheet status to 'completed'",
   "accountExpirationDate": "Account expiration date",
   "informationAboutYou": "Information about you",
-  "successfullyUpdatedInformationAboutYou": "Successfully updated information about you",
+  "updated": "Updated!",
   "companyName": "Company name",
   "role": "Role",
   "editableSection": "Editable section",

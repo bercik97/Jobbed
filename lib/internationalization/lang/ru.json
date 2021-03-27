@@ -222,7 +222,7 @@
   "settingTsStatusToCompleted": "Установка статуса расписания на \"завершено\"",
   "accountExpirationDate": "Срок действия учетной записи",
   "informationAboutYou": "Информация о вас",
-  "successfullyUpdatedInformationAboutYou": "Информация о вас успешно обновлена",
+  "updated": "Обновлено!",
   "companyName": "Название компании",
   "role": "Роль",
   "editableSection": "Редактируемый раздел",
