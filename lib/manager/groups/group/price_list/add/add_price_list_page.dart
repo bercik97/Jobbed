@@ -123,7 +123,6 @@ class _AddPriceListPageState extends State<AddPriceListPage> {
                       _priceListPriceForCompanyController.clear();
                     });
                     FocusScope.of(context).unfocus();
-                    ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'addedNewPriceService'));
                   },
                 ),
                 _buildAddItems(),
