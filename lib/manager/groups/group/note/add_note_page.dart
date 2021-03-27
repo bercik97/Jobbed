@@ -256,14 +256,14 @@ class _AddNotePageState extends State<AddNotePage> {
                             children: [
                               Row(
                                 children: [
-                                  text17BlackBold(getTranslated(this.context, 'priceForEmployee') + ': '),
-                                  text16Black(priceList.priceForEmployee.toString()),
+                                  text15Black(getTranslated(this.context, 'priceForEmployee') + ': '),
+                                  text15Black(priceList.priceForEmployee.toString()),
                                 ],
                               ),
                               Row(
                                 children: [
-                                  text17BlackBold(getTranslated(this.context, 'priceForCompany') + ': '),
-                                  text16Black(priceList.priceForCompany.toString()),
+                                  text15Black(getTranslated(this.context, 'priceForCompany') + ': '),
+                                  text15Black(priceList.priceForCompany.toString()),
                                 ],
                               ),
                             ],

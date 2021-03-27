@@ -440,6 +440,14 @@ class _EditNotePageState extends State<EditNotePage> {
       undoneWorkplaceNoteIds: undoneWorkplaceNoteIds,
       doneWorkplaceNoteIds: doneWorkplaceNoteIds,
     );
+    _pieceworksDetails.forEach((element) {
+      int value = int.parse(_textEditingItemControllers[element.service].text);
+      if (value > element.toBeDoneQuantity) {
+        element.doneQuantity = 0;
+      } else {
+        element.doneQuantity = value;
+      }
+    });
     UpdateNoteDto dto = new UpdateNoteDto(
       workdayId: _noteDto.workdayId,
       noteSubWorkplaceDto: noteSubWorkplaceDto,

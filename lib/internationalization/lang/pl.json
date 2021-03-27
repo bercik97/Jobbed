@@ -136,7 +136,7 @@
   "welcome": "Witaj",
   "loggedSuccessButNoEmployees": "Udało Ci się zalogować, jednak wygląda na to że konta pracowników nie zostały jeszcze utworzone. Aby stworzyć konto pracownika, wybierz proszę przycisk znajdujacy się na dole ekranu",
   "manageEmployeesWorkTime": "Zarządzaj czasem pracy pracowników",
-  "fillHoursPieceworks": "Dokonuj poprawek w danym arkuszu i generuj plik excel",
+  "fillHoursPieceworks": "Dokonuj poprawek w arkuszach i generuj pliki excel",
   "inProgressTimesheets": "Arkusze czasu pracy w toku",
   "noInProgressTimesheets": "Bieżąca grupa nie posiada arkuszy czasu pracy w toku",
   "completedTimesheets": "Zaakceptowane arkusze czasu pracy",
