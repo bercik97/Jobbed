@@ -60,7 +60,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: WHITE,
-      appBar: employeeAppBar(context, _user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, _timesheet.status), () => Navigator.pop(context)),
+      appBar: employeeAppBar(context, _user, getTranslated(context, 'workdays'), () => Navigator.pop(context)),
       body: RefreshIndicator(
         color: WHITE,
         backgroundColor: BLUE,

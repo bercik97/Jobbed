@@ -189,7 +189,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
               ),
             ),
             _buildPauseHint(),
-            _displayWorkTimes(_dto.workTimes),
+            _dto.workTimes != null && _dto.workTimes.isNotEmpty ? _displayWorkTimes(_dto.workTimes) : SizedBox(height: 0),
           ],
         ),
       ),
@@ -210,7 +210,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
             ),
           ),
           _buildStartHint(),
-          _displayWorkTimes(_dto.workTimes),
+          _dto.workTimes != null && _dto.workTimes.isNotEmpty ? _displayWorkTimes(_dto.workTimes) : SizedBox(height: 0),
         ],
       ),
     );
@@ -260,7 +260,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
           child: DataTable(
             columnSpacing: 20,
             columns: [
-              DataColumn(label: textBlackBold('No.')),
+              DataColumn(label: textBlackBold(getTranslated(this.context, 'shortNumber'))),
               DataColumn(label: textBlackBold(getTranslated(this.context, 'date'))),
               DataColumn(label: textBlackBold(getTranslated(this.context, 'from'))),
               DataColumn(label: textBlackBold(getTranslated(this.context, 'to'))),

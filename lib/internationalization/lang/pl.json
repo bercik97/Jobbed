@@ -207,7 +207,7 @@
   "addNewTsForSelectedEmployeesForChosenDate": "Dodaj nowy grafik dla wybranych pracowników na wybrany rok i miesiąc",
   "accountExpired": "Konto wygasło",
   "yourAccountProbablyExpired": "Twoje konto prawdopodobnie wygasło. Skontaktuj się z administratorem, aby uzyskać więcej informacji.",
-  "allEmployeesHaveTsForChosenYearAndMonth": "Wygląda na to, że wszyscy pracownicy Twojej firmy posiadają arkusz czasu pracy na wybrany rok oraz miesiąc. Proszę, wybierz inny rok oraz miesiąc.",
+  "allEmployeesHaveTsForChosenYearAndMonth": "Wygląda na to, że wszyscy pracownicy grupy posiadają arkusz czasu pracy na wybrany rok oraz miesiąc. Proszę, wybierz inny rok oraz miesiąc.",
   "forWhomYouWantToAddNewTs": "dla których chcesz dodać nowy arkusz czasu pracy",
   "timesheetsSuccessfullyCreated": "Arkusze zostały utworzone",
   "forWhomYouWantToDeleteTs": "dla których chcesz usunąć wybrany arkusz czasu pracy",

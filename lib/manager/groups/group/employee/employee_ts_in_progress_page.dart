@@ -30,7 +30,6 @@ import 'package:jobbed/shared/widget/radio_button.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
-import '../../../../shared/libraries/constants.dart';
 import '../../../shared/group_model.dart';
 import '../../../shared/manager_app_bar.dart';
 
@@ -120,7 +119,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: WHITE,
-      appBar: managerAppBar(context, _user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, STATUS_IN_PROGRESS), () => Navigator.pop(context)),
+      appBar: managerAppBar(context, _user, getTranslated(context, 'workdays'), () => Navigator.pop(context)),
       body: RefreshIndicator(
         color: WHITE,
         backgroundColor: BLUE,

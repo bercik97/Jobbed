@@ -207,7 +207,7 @@
   "addNewTsForSelectedEmployeesForChosenDate": "Add new timesheet for selected employees for chosen year and month",
   "accountExpired": "Account expired",
   "yourAccountProbablyExpired": "Your account probably expired. You can contact administrator for more info.",
-  "allEmployeesHaveTsForChosenYearAndMonth": "It seems that all of your company employees have a timesheet for the year and month that you choose. Please choose other year and month.",
+  "allEmployeesHaveTsForChosenYearAndMonth": "It seems that all employees of group have a timesheet for the year and month that you choose. Please choose other year and month.",
   "forWhomYouWantToAddNewTs": "for whom you want to add new timesheet",
   "timesheetsSuccessfullyCreated": "Timesheets have been created",
   "forWhomYouWantToDeleteTs": "for whom you want to remove selected timesheet",

@@ -18,7 +18,6 @@ import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
-import '../../../../shared/libraries/constants.dart';
 import '../../../shared/group_model.dart';
 import '../../../shared/manager_app_bar.dart';
 
@@ -73,7 +72,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: WHITE,
-      appBar: managerAppBar(context, _user, getTranslated(context, 'workdays') + ' - ' + getTranslated(context, STATUS_COMPLETED), () => Navigator.pop(context)),
+      appBar: managerAppBar(context, _user, getTranslated(context, 'workdays'), () => Navigator.pop(context)),
       body: SafeArea(
         child: Column(
           children: <Widget>[
