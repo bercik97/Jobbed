@@ -274,7 +274,6 @@
   "lookingForWorkplacesInYourLocation": "Looking for workplaces",
   "cannotGetCurrentLocation": "Cannot get current location",
   "enableGpsAndTryAgain": "Please make sure you enable GPS and try again",
-  "noteFinishWorkInPlaceWhereYouStarted": "Note: You can only finish your work when you are in the place where you started to work!",
   "cannotFindWorkplaceByLocation": "Cannot find workplace by your location!",
   "followingWorkplacesHaveBeenFoundInYourLocation": "Following workplaces have been found in your location.",
   "selectBtnNextToWhereYouWantToStartWork": "Hint: Select the button next to where you want to start working.",
@@ -626,5 +625,6 @@
   "deletedEmployeesAccounts": "Deleted employees accounts",
   "areYouSureYouWantToDeleteSelectedEmployeesAccounts": "Are you sure you want to delete selected employees accounts?",
   "timeOfStartWork": "Time of start work",
-  "todayAdditionalInfo": "Today additional information"
+  "todayAdditionalInfo": "Today additional information",
+  "rememberToFinishYourWorkTimeHint": "Don't forget to finish your work by pause button. If you do not do this, the time for work will be reset."
 }

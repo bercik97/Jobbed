@@ -274,7 +274,6 @@
   "lookingForWorkplacesInYourLocation": "\u1CA1ამსახურის ძებნა",
   "cannotGetCurrentLocation": "ვერ ხერხდება ადგილმდებარეობის მიღება",
   "enableGpsAndTryAgain": "დარწმუნდით, რომ ჩართეთ GPS და სცადეთ ხელახლა",
-  "noteFinishWorkInPlaceWhereYouStarted": "შენიშვნა: სამუშაოს დასრულება მხოლოდ მაშინ შეგიძლიათ, როდესაც იმ ადგილზე ხართ, სადაც დაიწყო მუშაობა!",
   "cannotFindWorkplaceByLocation": "თქვენი ადგილმდებარეობის მიხედვით ვერ პოულობთ სამუშაო ადგილს!",
   "followingWorkplacesHaveBeenFoundInYourLocation": "თქვენს სამუშაო ადგილებზე ნაპოვნია შემდეგი სამუშაო ადგილები.",
   "selectBtnNextToWhereYouWantToStartWork": "მინიშნება: აირჩიეთ ღილაკი, სადაც გსურთ მუშაობის დაწყება.",
@@ -625,5 +624,6 @@
   "deletedEmployeesAccounts": "წაიშალა თანამშრომლების ანგარიშები",
   "areYouSureYouWantToDeleteSelectedEmployeesAccounts": "დარწმუნებული ხართ, რომ გსურთ წაშალოთ შერჩეული თანამშრომლების ანგარიშები?",
   "timeOfStartWork": "სამუშაოების დაწყების დრო",
-  "todayAdditionalInfo": "დღეს დამატებითი ინფორმაცია"
+  "todayAdditionalInfo": "დღეს დამატებითი ინფორმაცია",
+  "rememberToFinishYourWorkTimeHint": "არ დაგავიწყდეთ პაუზის ღილაკის დასრულება. თუ ამას არ გააკეთებთ, სამუშაოს დრო გადაიტვირთება."
 }

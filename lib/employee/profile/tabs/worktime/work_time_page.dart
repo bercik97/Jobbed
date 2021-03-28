@@ -244,7 +244,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
         children: [
           textCenter18Blue(getTranslated(context, 'pressBtnToPause')),
           SizedBox(height: 5),
-          textCenter15Red(getTranslated(context, 'noteFinishWorkInPlaceWhereYouStarted')),
+          textCenter15Red(getTranslated(context, 'rememberToFinishYourWorkTimeHint')),
         ],
       ),
     );
@@ -469,6 +469,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workTimeHasBegun'));
         _refresh();
+        DialogUtil.showInformationDialog(context, getTranslated(context, 'rememberToFinishYourWorkTimeHint'));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
@@ -643,6 +644,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workTimeHasBegun'));
         _refresh();
+        DialogUtil.showInformationDialog(context, getTranslated(context, 'rememberToFinishYourWorkTimeHint'));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

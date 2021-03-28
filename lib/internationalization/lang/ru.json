@@ -274,7 +274,6 @@
   "lookingForWorkplacesInYourLocation": "Поиск работы",
   "cannotGetCurrentLocation": "Невозможно получить текущее местоположение",
   "enableGpsAndTryAgain": "Убедитесь, что вы включили GPS, и повторите попытку",
-  "noteFinishWorkInPlaceWhereYouStarted": "Примечание. Вы можете закончить свою работу только тогда, когда находитесь на том месте, где начали работать!",
   "cannotFindWorkplaceByLocation": "Не могу найти рабочее место по вашему местоположению!",
   "followingWorkplacesHaveBeenFoundInYourLocation": "В вашем местоположении были обнаружены следующие рабочие места.",
   "selectBtnNextToWhereYouWantToStartWork": "Подсказка: нажмите кнопку рядом с тем местом, где вы хотите начать работу.",
@@ -625,5 +624,6 @@
   "deletedEmployeesAccounts": "Удаленные аккаунты сотрудников",
   "areYouSureYouWantToDeleteSelectedEmployeesAccounts": "Вы действительно хотите удалить выбранные учетные записи сотрудников?",
   "timeOfStartWork": "Время начала работы",
-  "todayAdditionalInfo": "Сегодня дополнительная информация"
+  "todayAdditionalInfo": "Сегодня дополнительная информация",
+  "rememberToFinishYourWorkTimeHint": "Не забудьте завершить работу кнопкой паузы. Если этого не сделать, время работы будет сброшено."
 }

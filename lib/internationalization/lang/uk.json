@@ -274,7 +274,6 @@
   "lookingForWorkplacesInYourLocation": "Пошук роботи",
   "cannotGetCurrentLocation": "Не вдається отримати місце розташування",
   "enableGpsAndTryAgain": "Будь ласка, переконайтесь, що ви ввімкнули GPS і повторіть спробу",
-  "noteFinishWorkInPlaceWhereYouStarted": "Примітка: Ви можете закінчити свою роботу, лише перебуваючи в тому місці, де ви почали працювати!",
   "cannotFindWorkplaceByLocation": "Не вдається знайти робоче місце за вашим місцезнаходженням!",
   "followingWorkplacesHaveBeenFoundInYourLocation": "У вашому місцезнаходженні знайдено такі робочі місця.",
   "selectBtnNextToWhereYouWantToStartWork": "Підказка: виберіть кнопку поруч із місцем, де ви хочете почати працювати.",
@@ -625,5 +624,6 @@
   "deletedEmployeesAccounts": "Видалені рахунки працівників",
   "areYouSureYouWantToDeleteSelectedEmployeesAccounts": "Ви впевнені, що хочете видалити вибрані облікові записи співробітників?",
   "timeOfStartWork": "Час початку роботи",
-  "todayAdditionalInfo": "Сьогодні додаткова інформація"
+  "todayAdditionalInfo": "Сьогодні додаткова інформація",
+  "rememberToFinishYourWorkTimeHint": "Не забудьте закінчити свою роботу кнопкою паузи. Якщо ви цього не зробите, час роботи буде скинуто."
 }

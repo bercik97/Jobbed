@@ -274,7 +274,6 @@
   "lookingForWorkplacesInYourLocation": "Szukanie miejsc pracy",
   "cannotGetCurrentLocation": "Nie można pobrać aktualnej lokalizacji",
   "enableGpsAndTryAgain": "Upewnij się, że włączyłeś lokalizację i spróbuj ponownie",
-  "noteFinishWorkInPlaceWhereYouStarted": "Uwaga: Możesz zakończyć pracę jedynie w miejscu, w którym zacząłeś pracę!",
   "cannotFindWorkplaceByLocation": "Nie można znaleźć miejsca pracy w Twojej lokalizacji!",
   "followingWorkplacesHaveBeenFoundInYourLocation": "Znaleziono poniższe miejsca pracy w Twojej lokalizacji.",
   "selectBtnNextToWhereYouWantToStartWork": "Podpowiedź: Wybierz przycisk obok miejsca, w którym chcesz rozpocząć pracę.",
@@ -626,5 +625,6 @@
   "deletedEmployeesAccounts": "Usunięto konta pracownicze",
   "areYouSureYouWantToDeleteSelectedEmployeesAccounts": "Czy na pewno chcesz usunąć wybrane konta pracownicze?",
   "timeOfStartWork": "Czas rozpoczęcia pracy",
-  "todayAdditionalInfo": "Dzisiejsza dodatkowa informacja"
+  "todayAdditionalInfo": "Dzisiejsza dodatkowa informacja",
+  "rememberToFinishYourWorkTimeHint": "Po skończonej pracy nie zapomnij zastopować czasu przyciskiem pauzy. Jeżeli tego nie zrobisz to czas pracy zostanie wyzerowany."
 }
