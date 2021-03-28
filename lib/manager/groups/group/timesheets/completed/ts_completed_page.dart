@@ -144,7 +144,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                                         duration: Duration(milliseconds: 100),
                                         scaleFactor: 1.5,
                                         onPressed: () => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, employee.id, name, surname, employee.gender, nationality)),
-                                        child: AvatarsUtil.buildAvatar(gender, 50, 16, name.substring(0, 1), surname.substring(0, 1)),
+                                        child: AvatarsUtil.buildAvatar(gender, 40, 16, name.substring(0, 1), surname.substring(0, 1)),
                                       ),
                                     ),
                                   ),

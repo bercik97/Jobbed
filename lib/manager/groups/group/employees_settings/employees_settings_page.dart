@@ -177,7 +177,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                                             duration: Duration(milliseconds: 100),
                                             scaleFactor: 2,
                                             onPressed: () async => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, employee.id, name, surname, gender, nationality)),
-                                            child: AvatarsUtil.buildAvatar(gender, 50, 16, name.substring(0, 1), surname.substring(0, 1)),
+                                            child: AvatarsUtil.buildAvatar(gender, 40, 16, name.substring(0, 1), surname.substring(0, 1)),
                                           ),
                                         ),
                                       ),

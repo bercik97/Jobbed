@@ -102,7 +102,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.only(top: 100, bottom: 10),
-                        child: AvatarsUtil.buildAvatar(_gender, 75, 30, _name.substring(0, 1), _surname.substring(0, 1)),
+                        child: AvatarsUtil.buildAvatar(_gender, 90, 30, _name.substring(0, 1), _surname.substring(0, 1)),
                       ),
                       SizedBox(height: 5),
                       Padding(

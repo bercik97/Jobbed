@@ -107,7 +107,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         SizedBox(height: MediaQuery.of(context).size.height * 0.08),
-                        AvatarsUtil.buildAvatar(_employeePageDto.gender, 75, 30, _employeePageDto.name.substring(0, 1), _employeePageDto.surname.substring(0, 1)),
+                        AvatarsUtil.buildAvatar(_employeePageDto.gender, 90, 30, _employeePageDto.name.substring(0, 1), _employeePageDto.surname.substring(0, 1)),
                         SizedBox(height: 5),
                         Padding(
                           padding: const EdgeInsets.only(left: 5, right: 5),
