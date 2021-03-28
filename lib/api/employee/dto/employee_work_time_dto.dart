@@ -7,9 +7,9 @@ class EmployeeWorkTimeDto {
   final String gender;
   final String nationality;
   final String timeWorkedToday;
+  final String timeOfStartWork;
   final String workStatus;
   final String workplace;
-  final String workplaceCode;
   final String additionalInformation;
   final String yesterdayAdditionalInformation;
 
@@ -20,9 +20,9 @@ class EmployeeWorkTimeDto {
     @required this.gender,
     @required this.nationality,
     @required this.timeWorkedToday,
+    @required this.timeOfStartWork,
     @required this.workStatus,
     @required this.workplace,
-    @required this.workplaceCode,
     @required this.additionalInformation,
     @required this.yesterdayAdditionalInformation,
   });
@@ -35,9 +35,9 @@ class EmployeeWorkTimeDto {
       gender: json['gender'] as String,
       nationality: json['nationality'] as String,
       timeWorkedToday: json['timeWorkedToday'] as String,
+      timeOfStartWork: json['timeOfStartWork'] as String,
       workStatus: json['workStatus'] as String,
       workplace: json['workplace'],
-      workplaceCode: json['workplaceCode'] as String,
       additionalInformation: json['additionalInformation'],
       yesterdayAdditionalInformation: json['yesterdayAdditionalInformation'],
     );

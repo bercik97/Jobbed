@@ -623,5 +623,7 @@
   "needToSelectEmployeesAccounts": "საჭიროა თანამშრომლების ანგარიშების არჩევა",
   "youWantToDelete": "გსურთ წაშალოთ",
   "deletedEmployeesAccounts": "წაიშალა თანამშრომლების ანგარიშები",
-  "areYouSureYouWantToDeleteSelectedEmployeesAccounts": "დარწმუნებული ხართ, რომ გსურთ წაშალოთ შერჩეული თანამშრომლების ანგარიშები?"
+  "areYouSureYouWantToDeleteSelectedEmployeesAccounts": "დარწმუნებული ხართ, რომ გსურთ წაშალოთ შერჩეული თანამშრომლების ანგარიშები?",
+  "timeOfStartWork": "სამუშაოების დაწყების დრო",
+  "todayAdditionalInfo": "დღეს დამატებითი ინფორმაცია"
 }

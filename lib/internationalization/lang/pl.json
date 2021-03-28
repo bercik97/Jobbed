@@ -624,5 +624,7 @@
   "needToSelectEmployeesAccounts": "Musisz zaznaczyć konta pracownicze",
   "youWantToDelete": "które chcesz usunąć",
   "deletedEmployeesAccounts": "Usunięto konta pracownicze",
-  "areYouSureYouWantToDeleteSelectedEmployeesAccounts": "Czy na pewno chcesz usunąć wybrane konta pracownicze?"
+  "areYouSureYouWantToDeleteSelectedEmployeesAccounts": "Czy na pewno chcesz usunąć wybrane konta pracownicze?",
+  "timeOfStartWork": "Czas rozpoczęcia pracy",
+  "todayAdditionalInfo": "Dzisiejsza dodatkowa informacja"
 }

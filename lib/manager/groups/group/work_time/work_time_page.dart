@@ -177,86 +177,13 @@ class _WorkTimePageState extends State<WorkTimePage> {
                           itemCount: _filteredEmployees.length,
                           itemBuilder: (BuildContext context, int index) {
                             EmployeeWorkTimeDto employee = _filteredEmployees[index];
-                            String name = employee.name;
-                            String surname = employee.surname;
-                            String gender = employee.gender;
-                            String nationality = employee.nationality;
                             int foundIndex = 0;
                             for (int i = 0; i < _employees.length; i++) {
                               if (_employees[i].id == employee.id) {
                                 foundIndex = i;
                               }
                             }
-                            String additionalInformation = employee.additionalInformation;
-                            String yesterdayAdditionalInformation = employee.yesterdayAdditionalInformation;
-                            return Card(
-                              color: WHITE,
-                              child: Container(
-                                color: BRIGHTER_BLUE,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Ink(
-                                      width: MediaQuery.of(context).size.width * 0.15,
-                                      height: additionalInformation != null || yesterdayAdditionalInformation != null ? 140 : 116,
-                                      child: ListTileTheme(
-                                        contentPadding: EdgeInsets.only(right: 10),
-                                        child: CheckboxListTile(
-                                          controlAffinity: ListTileControlAffinity.leading,
-                                          activeColor: BLUE,
-                                          checkColor: WHITE,
-                                          value: _checked[foundIndex],
-                                          onChanged: (bool value) {
-                                            setState(() {
-                                              _checked[foundIndex] = value;
-                                              if (value) {
-                                                _selectedIds.add(_employees[foundIndex].id);
-                                                _selectedEmployees.add(_employees[foundIndex]);
-                                              } else {
-                                                _selectedIds.remove(_employees[foundIndex].id);
-                                                _selectedEmployees.removeWhere((e) => e.id == _employees[foundIndex].id);
-                                              }
-                                              int selectedIdsLength = _selectedIds.length;
-                                              if (selectedIdsLength == _employees.length) {
-                                                _isChecked = true;
-                                              } else if (selectedIdsLength == 0) {
-                                                _isChecked = false;
-                                              }
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Expanded(
-                                      child: InkWell(
-                                        onTap: () => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, employee.id, name, surname, gender, nationality)),
-                                        child: Ink(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(6),
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                text20BlackBold((name + ' ' + surname).length > 30 ? (name + ' ' + surname).substring(0, 30) + '... ' + LanguageUtil.findFlagByNationality(nationality) : (name + ' ' + surname) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
-                                                Row(
-                                                  children: <Widget>[
-                                                    textBlack(getTranslated(this.context, 'timeWorkedToday') + ': '),
-                                                    textBlackBold(employee.timeWorkedToday != null ? employee.timeWorkedToday : getTranslated(this.context, 'empty')),
-                                                  ],
-                                                ),
-                                                _handleWorkStatus(MainAxisAlignment.start, employee.workStatus, employee.workplace, employee.workplaceCode),
-                                                additionalInformation != null || yesterdayAdditionalInformation != null ? _handleAdditionalInfo(MainAxisAlignment.start, additionalInformation, yesterdayAdditionalInformation) : SizedBox(height: 0),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
+                            return _buildCard(employee, foundIndex);
                           },
                         ),
                       ),
@@ -850,97 +777,185 @@ class _WorkTimePageState extends State<WorkTimePage> {
     );
   }
 
-  Widget _handleWorkStatus(MainAxisAlignment alignment, String workStatus, String workplace, String workplaceCode) {
-    switch (workStatus) {
-      case 'Done':
-        return _buildWorkStatusRow(
-          alignment,
-          iconGreen(Icons.check),
-          textGreenBold(getTranslated(context, 'workIsDoneStatus')),
-          textBlackBold(workplace != null ? workplace : '-'),
-          textBlackBold(workplaceCode != null ? workplaceCode : '-'),
-        );
-      case 'In progress':
-        return _buildWorkStatusRow(
-          alignment,
-          iconOrange(Icons.timer),
-          textOrangeBold(getTranslated(context, 'workIsInProgress')),
-          textBlackBold(workplace != null ? workplace : '-'),
-          textBlackBold(workplaceCode != null ? workplaceCode : '-'),
-        );
-      default:
-        return _buildWorkStatusRow(
-          alignment,
-          iconRed(Icons.remove),
-          textRedBold(getTranslated(context, 'workDoNotStarted')),
-          textBlackBold('-'),
-          textBlackBold('-'),
-        );
-    }
-  }
-
-  Widget _buildWorkStatusRow(MainAxisAlignment alignment, Icon icon, Widget workStatusWidget, Widget workplaceWidget, Widget workplaceCodeWidget) {
-    return Align(
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: alignment,
-            children: <Widget>[textBlack(getTranslated(context, 'status') + ': '), icon, workStatusWidget],
-          ),
-          Row(
-            mainAxisAlignment: alignment,
-            children: <Widget>[textBlack(getTranslated(context, 'workplace') + ': '), workplaceWidget],
-          ),
-          Row(
-            mainAxisAlignment: alignment,
-            children: <Widget>[textBlack(getTranslated(context, 'workplaceId') + ': '), workplaceCodeWidget],
-          ),
-        ],
+  Widget _buildCard(EmployeeWorkTimeDto employee, int foundIndex) {
+    String name = employee.name;
+    String surname = employee.surname;
+    String gender = employee.gender;
+    String nationality = employee.nationality;
+    return Card(
+      color: WHITE,
+      child: Container(
+        color: BRIGHTER_BLUE,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Ink(
+              width: MediaQuery.of(context).size.width * 0.15,
+              height: calculateInkWidth(employee),
+              child: ListTileTheme(
+                contentPadding: EdgeInsets.only(right: 10),
+                child: CheckboxListTile(
+                  controlAffinity: ListTileControlAffinity.leading,
+                  activeColor: BLUE,
+                  checkColor: WHITE,
+                  value: _checked[foundIndex],
+                  onChanged: (bool value) {
+                    setState(() {
+                      _checked[foundIndex] = value;
+                      if (value) {
+                        _selectedIds.add(_employees[foundIndex].id);
+                        _selectedEmployees.add(_employees[foundIndex]);
+                      } else {
+                        _selectedIds.remove(_employees[foundIndex].id);
+                        _selectedEmployees.removeWhere((e) => e.id == _employees[foundIndex].id);
+                      }
+                      int selectedIdsLength = _selectedIds.length;
+                      if (selectedIdsLength == _employees.length) {
+                        _isChecked = true;
+                      } else if (selectedIdsLength == 0) {
+                        _isChecked = false;
+                      }
+                    });
+                  },
+                ),
+              ),
+            ),
+            SizedBox(width: 5),
+            Expanded(
+              child: InkWell(
+                onTap: () => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, employee.id, name, surname, gender, nationality)),
+                child: Ink(
+                  child: Padding(
+                    padding: const EdgeInsets.all(6),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        text20BlackBold((name + ' ' + surname).length > 30 ? (name + ' ' + surname).substring(0, 30) + '... ' + LanguageUtil.findFlagByNationality(nationality) : (name + ' ' + surname) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                        _handleWorkStatus(MainAxisAlignment.start, employee.workStatus, employee.workplace, employee.timeWorkedToday, employee.timeOfStartWork, employee.additionalInformation, employee.yesterdayAdditionalInformation),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
+  double calculateInkWidth(EmployeeWorkTimeDto employee) {
+    double inkWidth = 0;
+    switch (employee.workStatus) {
+      case 'Done':
+        inkWidth = 96;
+        break;
+      case 'In progress':
+        inkWidth = 96;
+        break;
+      default:
+        inkWidth = 46;
+        break;
+    }
+    if (employee.additionalInformation != null || employee.yesterdayAdditionalInformation != null) {
+      inkWidth += 20;
+    }
+    return inkWidth;
+  }
+
+  Widget _handleWorkStatus(MainAxisAlignment alignment, String workStatus, String workplace, String timeWorkedToday, String timeOfStartWork, String additionalInformation, String yesterdayAdditionalInformation) {
+    switch (workStatus) {
+      case 'Done':
+        return Column(
+          children: [
+            Row(
+              mainAxisAlignment: alignment,
+              children: <Widget>[textBlack(getTranslated(context, 'status') + ': '), iconGreen(Icons.check), textGreenBold(getTranslated(context, 'workIsDoneStatus'))],
+            ),
+            Row(
+              mainAxisAlignment: alignment,
+              children: <Widget>[textBlack(getTranslated(context, 'timeWorkedToday') + ': '), textGreenBold(timeWorkedToday)],
+            ),
+            Row(
+              mainAxisAlignment: alignment,
+              children: <Widget>[textBlack(getTranslated(context, 'workplace') + ': '), textBlackBold(workplace)],
+            ),
+            additionalInformation != null || yesterdayAdditionalInformation != null ? _handleAdditionalInfo(MainAxisAlignment.start, additionalInformation, yesterdayAdditionalInformation) : SizedBox(height: 0),
+          ],
+        );
+      case 'In progress':
+        return Column(
+          children: [
+            Row(
+              mainAxisAlignment: alignment,
+              children: <Widget>[textBlack(getTranslated(context, 'status') + ': '), iconOrange(Icons.timer), textOrangeBold(getTranslated(context, 'workIsInProgress'))],
+            ),
+            Row(
+              mainAxisAlignment: alignment,
+              children: <Widget>[textBlack(getTranslated(context, 'timeOfStartWork') + ': '), textBlackBold(timeOfStartWork)],
+            ),
+            Row(
+              mainAxisAlignment: alignment,
+              children: <Widget>[textBlack(getTranslated(context, 'workplace') + ': '), textBlackBold(workplace)],
+            ),
+            additionalInformation != null || yesterdayAdditionalInformation != null ? _handleAdditionalInfo(MainAxisAlignment.start, additionalInformation, yesterdayAdditionalInformation) : SizedBox(height: 0),
+          ],
+        );
+      default:
+        return Column(
+          children: [
+            Row(
+              mainAxisAlignment: alignment,
+              children: <Widget>[
+                textBlack(getTranslated(context, 'status') + ': '),
+                iconRed(Icons.remove),
+                textRedBold(getTranslated(context, 'workDoNotStarted')),
+              ],
+            ),
+            additionalInformation != null || yesterdayAdditionalInformation != null ? _handleAdditionalInfo(MainAxisAlignment.start, additionalInformation, yesterdayAdditionalInformation) : SizedBox(height: 0),
+          ],
+        );
+    }
+  }
+
   Widget _handleAdditionalInfo(MainAxisAlignment alignment, String additionalInfo, String yesterdayAdditionalInfo) {
-    return Align(
-      child: Column(
-        children: [
-          additionalInfo != null
-              ? Row(
-                  mainAxisAlignment: alignment,
-                  children: <Widget>[
-                    textRedBold(getTranslated(context, 'additionalInfo') + ': '),
-                    IconButton(
-                      padding: EdgeInsets.zero,
-                      constraints: BoxConstraints(),
-                      icon: iconBlack(Icons.search),
-                      onPressed: () => DialogUtil.showScrollableDialog(
-                        context,
-                        getTranslated(context, 'additionalInfo'),
-                        additionalInfo,
-                      ),
+    return Column(
+      children: [
+        additionalInfo != null
+            ? Row(
+                mainAxisAlignment: alignment,
+                children: <Widget>[
+                  textRedBold(getTranslated(context, 'todayAdditionalInfo') + ': '),
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    constraints: BoxConstraints(),
+                    icon: iconRed(Icons.search),
+                    onPressed: () => DialogUtil.showScrollableDialog(
+                      context,
+                      getTranslated(context, 'todayAdditionalInfo'),
+                      additionalInfo,
                     ),
-                    iconOrange(Icons.warning_amber_outlined),
-                  ],
-                )
-              : Row(
-                  mainAxisAlignment: alignment,
-                  children: <Widget>[
-                    textRedBold(getTranslated(context, 'yesterdayAdditionalInfo') + ': '),
-                    IconButton(
-                      padding: EdgeInsets.zero,
-                      constraints: BoxConstraints(),
-                      icon: iconBlack(Icons.search),
-                      onPressed: () => DialogUtil.showScrollableDialog(
-                        context,
-                        getTranslated(context, 'yesterdayAdditionalInfo'),
-                        yesterdayAdditionalInfo,
-                      ),
+                  ),
+                ],
+              )
+            : Row(
+                mainAxisAlignment: alignment,
+                children: <Widget>[
+                  textRedBold(getTranslated(context, 'yesterdayAdditionalInfo') + ': '),
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    constraints: BoxConstraints(),
+                    icon: iconRed(Icons.search),
+                    onPressed: () => DialogUtil.showScrollableDialog(
+                      context,
+                      getTranslated(context, 'yesterdayAdditionalInfo'),
+                      yesterdayAdditionalInfo,
                     ),
-                    iconOrange(Icons.warning_amber_outlined),
-                  ],
-                ),
-        ],
-      ),
+                  ),
+                ],
+              ),
+      ],
     );
   }
 

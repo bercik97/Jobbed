@@ -624,5 +624,7 @@
   "needToSelectEmployeesAccounts": "Need to select employees accounts",
   "youWantToDelete": "you want to delete",
   "deletedEmployeesAccounts": "Deleted employees accounts",
-  "areYouSureYouWantToDeleteSelectedEmployeesAccounts": "Are you sure you want to delete selected employees accounts?"
+  "areYouSureYouWantToDeleteSelectedEmployeesAccounts": "Are you sure you want to delete selected employees accounts?",
+  "timeOfStartWork": "Time of start work",
+  "todayAdditionalInfo": "Today additional information"
 }

@@ -623,5 +623,7 @@
   "needToSelectEmployeesAccounts": "Потрібно вибрати рахунки працівників",
   "youWantToDelete": "Ви хочете видалити",
   "deletedEmployeesAccounts": "Видалені рахунки працівників",
-  "areYouSureYouWantToDeleteSelectedEmployeesAccounts": "Ви впевнені, що хочете видалити вибрані облікові записи співробітників?"
+  "areYouSureYouWantToDeleteSelectedEmployeesAccounts": "Ви впевнені, що хочете видалити вибрані облікові записи співробітників?",
+  "timeOfStartWork": "Час початку роботи",
+  "todayAdditionalInfo": "Сьогодні додаткова інформація"
 }
