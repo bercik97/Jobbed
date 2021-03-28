@@ -70,6 +70,7 @@ class _EditNotePageState extends State<EditNotePage> {
     this._todayDate = widget._todayDate;
     this._noteDto = widget._noteDto;
     this._pieceworksDetails = _noteDto.pieceworksDetails;
+    this._employeeNoteController.text = _noteDto.employeeNote;
     this._noteService = ServiceInitializer.initialize(context, _user.authHeader, NoteService);
     super.initState();
     _noteDto.noteSubWorkplaceDto.forEach((element) {
@@ -140,6 +141,7 @@ class _EditNotePageState extends State<EditNotePage> {
               Padding(
                 padding: EdgeInsets.only(left: 15, top: 5, right: 15),
                 child: ExpansionTile(
+                  initiallyExpanded: _employeeNoteController.text.isNotEmpty ? true : false,
                   title: text20OrangeBold(getTranslated(context, 'yourNote')),
                   subtitle: text16BlueGrey(getTranslated(context, 'tapToAdd')),
                   children: [

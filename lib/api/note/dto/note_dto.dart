@@ -25,8 +25,8 @@ class NoteDto {
     return NoteDto(
       id: json['id'] as int,
       workdayId: json['workdayId'] as int,
-      managerNote: json['managerNote'],
-      employeeNote: json['employeeNote'],
+      managerNote: json['managerNote'] as String,
+      employeeNote: json['employeeNote'] as String,
       noteSubWorkplaceDto: noteSubWorkplaceDtoJson != null ? noteSubWorkplaceDtoJson.map((data) => NoteSubWorkplaceDto.fromJson(data)).toList() : null,
       pieceworksDetails: pieceworksDetailsJson != null ? pieceworksDetailsJson.map((data) => PieceworkDetails.fromJson(data)).toList() : null,
     );
