@@ -419,6 +419,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                             _markersList.clear();
                             _circles.clear();
                             _nameController.clear();
+                            _descriptionController.clear();
                             _locationController.clear();
                             _radiusController.text = '0.00';
                           });
