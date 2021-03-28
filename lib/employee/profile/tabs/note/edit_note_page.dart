@@ -423,8 +423,6 @@ class _EditNotePageState extends State<EditNotePage> {
     setState(() => _isUpdateButtonTapped = true);
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     UpdateNoteSubWorkplaceDto noteSubWorkplaceDto = new UpdateNoteSubWorkplaceDto(
-      managerNote: _noteDto.managerNote,
-      employeeNote: _employeeNoteController.text,
       undoneWorkplaceNoteIds: undoneWorkplaceNoteIds,
       doneWorkplaceNoteIds: doneWorkplaceNoteIds,
     );
@@ -438,6 +436,8 @@ class _EditNotePageState extends State<EditNotePage> {
     });
     UpdateNoteDto dto = new UpdateNoteDto(
       workdayId: _noteDto.workdayId,
+      managerNote: _noteDto.managerNote,
+      employeeNote: _employeeNoteController.text,
       noteSubWorkplaceDto: noteSubWorkplaceDto,
       pieceworksDetailsDto: _pieceworksDetails,
     );

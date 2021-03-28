@@ -435,8 +435,6 @@ class _EditNotePageState extends State<EditNotePage> {
     setState(() => _isUpdateButtonTapped = true);
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     UpdateNoteSubWorkplaceDto noteSubWorkplaceDto = new UpdateNoteSubWorkplaceDto(
-      managerNote: _managerNoteController.text,
-      employeeNote: _noteDto.employeeNote,
       undoneWorkplaceNoteIds: undoneWorkplaceNoteIds,
       doneWorkplaceNoteIds: doneWorkplaceNoteIds,
     );
@@ -450,13 +448,15 @@ class _EditNotePageState extends State<EditNotePage> {
     });
     UpdateNoteDto dto = new UpdateNoteDto(
       workdayId: _noteDto.workdayId,
+      managerNote: _managerNoteController.text,
+      employeeNote: _noteDto.employeeNote,
       noteSubWorkplaceDto: noteSubWorkplaceDto,
       pieceworksDetailsDto: _pieceworksDetails,
     );
     _noteService.update(dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyUpdatedNote'));
-        _noteDto.managerNote = noteSubWorkplaceDto.managerNote;
+        _noteDto.managerNote = _managerNoteController.text;
         _noteDto.pieceworksDetails.forEach((element) {
           if (element.toBeDoneQuantity == element.doneQuantity) {
             element.done = true;
