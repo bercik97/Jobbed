@@ -94,7 +94,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     this._workTimeService = ServiceInitializer.initialize(context, _user.authHeader, WorkTimeService);
     this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
     this._employeeId = widget._employeeId;
-    this._name = widget._nationality;
+    this._name = widget._name;
     this._surname = widget._surname;
     this._gender = widget._gender;
     this._nationality = widget._nationality;
