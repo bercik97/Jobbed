@@ -14,6 +14,7 @@ import 'package:jobbed/api/group/service/group_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/manager/groups/manage/add_group_page.dart';
+import 'package:jobbed/manager/groups/manage/delete_employees_accounts_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants_length.dart';
@@ -179,9 +180,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
               SpeedDialChild(
                 child: Icon(Icons.person_remove, color: BLACK),
                 backgroundColor: BRIGHTER_BLUE,
-                onTap: () {
-                  // todo
-                },
+                onTap: () => NavigatorUtil.navigate(this.context, DeleteEmployeesAccountsPage(_user)),
                 label: getTranslated(context, 'deleteEmployeesAccounts'),
                 labelStyle: TextStyle(fontWeight: FontWeight.w500, color: BLACK),
                 labelBackgroundColor: BRIGHTER_BLUE,

@@ -617,5 +617,11 @@
   "yesterdayAdditionalInfo": "გუშინ დამატებითი ინფორმაცია",
   "changeTimesheetStatus": "დროის ფურცლის სტატუსის შეცვლა",
   "addNewTimesheet": "ახალი დროის ფურცლის დამატება",
-  "deleteEmployeesAccounts": "წაშალეთ თანამშრომლების ანგარიშები"
+  "deleteEmployeesAccounts": "წაშალეთ თანამშრომლების ანგარიშები",
+  "noEmployeesAccountsInCompany": "კომპანიაში არ მუშაობს არცერთი თანამშრომელი",
+  "deleteAccounts": "ანგარიშების წაშლა",
+  "needToSelectEmployeesAccounts": "საჭიროა თანამშრომლების ანგარიშების არჩევა",
+  "youWantToDelete": "გსურთ წაშალოთ",
+  "deletedEmployeesAccounts": "წაიშალა თანამშრომლების ანგარიშები",
+  "areYouSureYouWantToDeleteSelectedEmployeesAccounts": "დარწმუნებული ხართ, რომ გსურთ წაშალოთ შერჩეული თანამშრომლების ანგარიშები?"
 }

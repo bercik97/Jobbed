@@ -618,5 +618,11 @@
   "yesterdayAdditionalInfo": "Yesterday additional information",
   "changeTimesheetStatus": "Change timesheet status",
   "addNewTimesheet": "Add new timesheet",
-  "deleteEmployeesAccounts": "Delete employees accounts"
+  "deleteEmployeesAccounts": "Delete employees accounts",
+  "noEmployeesAccountsInCompany": "No employees accounts in company",
+  "deleteAccounts": "Delete accounts",
+  "needToSelectEmployeesAccounts": "Need to select employees accounts",
+  "youWantToDelete": "you want to delete",
+  "deletedEmployeesAccounts": "Deleted employees accounts",
+  "areYouSureYouWantToDeleteSelectedEmployeesAccounts": "Are you sure you want to delete selected employees accounts?"
 }

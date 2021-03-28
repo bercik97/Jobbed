@@ -618,5 +618,11 @@
   "yesterdayAdditionalInfo": "Wczorajsza dodatkowa informacja",
   "changeTimesheetStatus": "Zmienianie statusu arkusza",
   "addNewTimesheet": "Dodawanie nowego arkusza",
-  "deleteEmployeesAccounts": "Usuwanie kont pracowników"
+  "deleteEmployeesAccounts": "Usuwanie kont pracowników",
+  "noEmployeesAccountsInCompany": "Brak kont pracowniczych w firmie",
+  "deleteAccounts": "Usuwanie kont",
+  "needToSelectEmployeesAccounts": "Musisz zaznaczyć konta pracownicze",
+  "youWantToDelete": "które chcesz usunąć",
+  "deletedEmployeesAccounts": "Usunięto konta pracownicze",
+  "areYouSureYouWantToDeleteSelectedEmployeesAccounts": "Czy na pewno chcesz usunąć wybrane konta pracownicze?"
 }

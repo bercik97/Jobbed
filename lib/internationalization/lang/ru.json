@@ -617,5 +617,11 @@
   "yesterdayAdditionalInfo": "Вчерашняя дополнительная информация",
   "changeTimesheetStatus": "Изменить статус расписания",
   "addNewTimesheet": "Добавить новый табель",
-  "deleteEmployeesAccounts": "Удалить учетные записи сотрудников"
+  "deleteEmployeesAccounts": "Удалить учетные записи сотрудников",
+  "noEmployeesAccountsInCompany": "В компании нет учетных записей сотрудников",
+  "deleteAccounts": "Удалить учетные записи",
+  "needToSelectEmployeesAccounts": "Необходимо выбрать учетные записи сотрудников",
+  "youWantToDelete": "ты хочешь удалить",
+  "deletedEmployeesAccounts": "Удаленные аккаунты сотрудников",
+  "areYouSureYouWantToDeleteSelectedEmployeesAccounts": "Вы действительно хотите удалить выбранные учетные записи сотрудников?"
 }

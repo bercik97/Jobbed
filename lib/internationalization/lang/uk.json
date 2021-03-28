@@ -617,5 +617,11 @@
   "yesterdayAdditionalInfo": "Вчора додаткова інформація",
   "changeTimesheetStatus": "Змінити статус табеля обліку робочого часу",
   "addNewTimesheet": "Додайте новий графік роботи",
-  "deleteEmployeesAccounts": "Видалити облікові записи працівників"
+  "deleteEmployeesAccounts": "Видалити облікові записи працівників",
+  "noEmployeesAccountsInCompany": "У компанії немає рахунків працівників",
+  "deleteAccounts": "Видалити облікові записи",
+  "needToSelectEmployeesAccounts": "Потрібно вибрати рахунки працівників",
+  "youWantToDelete": "Ви хочете видалити",
+  "deletedEmployeesAccounts": "Видалені рахунки працівників",
+  "areYouSureYouWantToDeleteSelectedEmployeesAccounts": "Ви впевнені, що хочете видалити вибрані облікові записи співробітників?"
 }

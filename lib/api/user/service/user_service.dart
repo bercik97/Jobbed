@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/util/logout_util.dart';
-import 'package:http/http.dart';
 
 class UserService {
   final BuildContext _context;
@@ -13,6 +13,17 @@ class UserService {
 
   Future<dynamic> updatePasswordByUsername(String username, String password) async {
     Response res = await put('$_url/password?username=$username', body: password, headers: _headers);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 401) {
+      return LogoutUtil.handle401WithLogout(_context);
+    } else {
+      return Future.error(res.body);
+    }
+  }
+
+  Future<dynamic> deleteByEmployeeIdsIn(List<String> ids) async {
+    Response res = await delete(_url + '/employees/$ids', headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
