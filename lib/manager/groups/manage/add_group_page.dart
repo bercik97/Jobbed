@@ -77,7 +77,6 @@ class _AddGroupPageState extends State<AddGroupPage> {
         body: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Form(
-            autovalidateMode: AutovalidateMode.always,
             key: formKey,
             child: Column(
               children: [
