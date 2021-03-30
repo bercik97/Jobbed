@@ -86,7 +86,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
         if (_groups.isNotEmpty) {
           _loading = false;
         } else {
-          _companyService.exitsEmployeeInCompany(_user.companyId).then((res) {
+          _companyService.isAnyEmployeeExistInCompany(_user.companyId).then((res) {
             setState(() {
               if (res) {
                 _areEmployeesExists = false;
@@ -711,7 +711,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
         if (_groups.isNotEmpty) {
           _loading = false;
         } else {
-          _companyService.exitsEmployeeInCompany(_user.companyId).then((res) {
+          _companyService.isAnyEmployeeExistInCompany(_user.companyId).then((res) {
             setState(() {
               if (res) {
                 _areEmployeesExists = false;

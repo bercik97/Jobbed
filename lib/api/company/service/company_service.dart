@@ -13,8 +13,8 @@ class CompanyService {
 
   static const String _url = '$SERVER_IP/companies';
 
-  Future<dynamic> exitsEmployeeInCompany(String id) async {
-    Response res = await get('$_url/employees/exists?id=$id', headers: _headers);
+  Future<dynamic> isAnyEmployeeExistInCompany(String id) async {
+    Response res = await get('$_url/existence/employees?id=$id', headers: _headers);
     if (res.statusCode == 200) {
       return json.decode(res.body);
     } else if (res.statusCode == 401) {
