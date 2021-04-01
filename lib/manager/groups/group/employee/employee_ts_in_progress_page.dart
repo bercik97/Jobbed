@@ -140,7 +140,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                     children: <Widget>[
                       Align(
                         alignment: Alignment.topLeft,
-                        child: text17BlackBold(_name + ' ' + _surname + ' ' + LanguageUtil.findFlagByNationality(_name)),
+                        child: text17BlackBold(_name + ' ' + _surname + ' ' + LanguageUtil.findFlagByNationality(_nationality)),
                       ),
                       Row(
                         children: <Widget>[
