@@ -7,11 +7,11 @@ import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:jobbed/api/company/service/company_service.dart';
-import 'package:jobbed/api/employee/dto/create_basic_employee_dto.dart';
 import 'package:jobbed/api/employee/service/employee_service.dart';
 import 'package:jobbed/api/group/dto/group_dashboard_dto.dart';
 import 'package:jobbed/api/group/service/group_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/user/dto/create_user_dto.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/manager/groups/manage/add_group_page.dart';
 import 'package:jobbed/manager/groups/manage/delete_employees_accounts_page.dart';
@@ -67,7 +67,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
   bool _isCreateEmployeeAccountButtonTapped = false;
   bool _isDeleteGroupButtonTapped = false;
 
-  CreateBasicEmployeeDto dto;
+  CreateUserDto dto;
 
   bool _loading = false;
   bool _areEmployeesExists = true;
@@ -665,16 +665,16 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    dto = new CreateBasicEmployeeDto(
+    dto = new CreateUserDto(
       username: _usernameController.text,
       password: _passwordController.text,
       name: _nameController.text,
       surname: _surnameController.text,
-      gender: _genderRadioValue == 0 ? 'male' : 'female',
       nationality: _nationality,
+      gender: _genderRadioValue == 0 ? 'male' : 'female',
       companyId: _user.companyId,
     );
-    _employeeService.createBasicEmployee(dto).then((res) {
+    _employeeService.save(dto).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'employeeAccountAdded'));
         Navigator.pop(context);

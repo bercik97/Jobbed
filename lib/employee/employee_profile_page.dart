@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:jobbed/api/employee/dto/employee_profile_dto.dart';
-import 'package:jobbed/api/employee/service/employee_service.dart';
+import 'package:jobbed/api/employee/service/employee_mobile_view_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/employee/profile/tabs/employee_panel.dart';
 import 'package:jobbed/employee/profile/tabs/employee_today.dart';
@@ -31,7 +31,7 @@ class EmployeeProfilePage extends StatefulWidget {
 }
 
 class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
-  EmployeeService _employeeService;
+  EmployeeMobileViewService _employeeMobileViewService;
 
   User _user;
   EmployeeProfileDto _employeePageDto;
@@ -43,9 +43,9 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
   void initState() {
     super.initState();
     this._user = widget._user;
-    this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
+    this._employeeMobileViewService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeMobileViewService);
     this._loading = true;
-    _employeeService.findByIdForProfileView(_user.id).then((res) {
+    _employeeMobileViewService.findByIdForProfileView(_user.id).then((res) {
       setState(() {
         _employeePageDto = res;
         _loading = false;
@@ -207,7 +207,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
   }
 
   Future<Null> _refresh() {
-    return _employeeService.findByIdForProfileView(_user.id.toString()).then((employee) {
+    return _employeeMobileViewService.findByIdForProfileView(_user.id.toString()).then((employee) {
       setState(() {
         _employeePageDto = employee;
         _loading = false;

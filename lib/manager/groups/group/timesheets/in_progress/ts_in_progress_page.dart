@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:jobbed/api/employee/dto/employee_statistics_dto.dart';
-import 'package:jobbed/api/employee/service/employee_service.dart';
+import 'package:jobbed/api/employee/service/employee_mobile_view_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:jobbed/api/timesheet/dto/timesheet_with_status_dto.dart';
@@ -62,7 +62,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
   GroupModel _model;
   User _user;
 
-  EmployeeService _employeeService;
+  EmployeeMobileViewService _employeeMobileViewService;
   WorkdayService _workdayService;
   WorkTimeService _workTimeService;
   WorkplaceService _workplaceService;
@@ -87,14 +87,14 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
   void initState() {
     this._model = widget._model;
     this._user = _model.user;
-    this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
+    this._employeeMobileViewService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeMobileViewService);
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     this._workTimeService = ServiceInitializer.initialize(context, _user.authHeader, WorkTimeService);
     this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
     this._timesheet = widget._timeSheet;
     super.initState();
     _loading = true;
-    _employeeService.findAllByGroupIdAndTsYearAndMonthAndStatusForStatisticsView(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_IN_PROGRESS).then((res) {
+    _employeeMobileViewService.findAllByGroupIdAndTsYearAndMonthAndStatusForStatisticsView(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_IN_PROGRESS).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
@@ -869,7 +869,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
   }
 
   Future<Null> _refresh() {
-    return _employeeService.findAllByGroupIdAndTsYearAndMonthAndStatusForStatisticsView(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_IN_PROGRESS).then((res) {
+    return _employeeMobileViewService.findAllByGroupIdAndTsYearAndMonthAndStatusForStatisticsView(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_IN_PROGRESS).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));

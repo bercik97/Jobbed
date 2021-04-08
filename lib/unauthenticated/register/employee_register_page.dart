@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:jobbed/api/employee/dto/create_employee_dto.dart';
 import 'package:jobbed/api/employee/service/employee_unauthenticated_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/user/dto/create_user_dto.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants_length.dart';
@@ -32,7 +32,7 @@ class EmployeeRegisterPage extends StatefulWidget {
 }
 
 class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
-  CreateEmployeeDto dto;
+  CreateUserDto dto;
   EmployeeUnauthenticatedService _employeeUnauthenticatedService;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool _passwordVisible;
@@ -569,7 +569,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    dto = new CreateEmployeeDto(
+    dto = new CreateUserDto(
       username: _usernameController.text,
       password: _passwordController.text,
       name: _nameController.text,
@@ -582,7 +582,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
       tokenId: widget._tokenId,
       accountExpirationDate: widget._accountExpirationDate,
     );
-    _employeeUnauthenticatedService.create(dto).then((res) {
+    _employeeUnauthenticatedService.save(dto).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() => DialogUtil.showSuccessDialogWithWillPopScope(context, getTranslated(context, 'registerSuccess'), LoginPage()));
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

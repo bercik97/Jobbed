@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:jobbed/api/employee/dto/employee_settings_dto.dart';
+import 'package:jobbed/api/employee/service/employee_mobile_view_service.dart';
 import 'package:jobbed/api/employee/service/employee_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
@@ -44,6 +45,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
   User _user;
 
   EmployeeService _employeeService;
+  EmployeeMobileViewService _employeeMobileViewService;
 
   List<EmployeeSettingsDto> _employees = new List();
   List<EmployeeSettingsDto> _filteredEmployees = new List();
@@ -65,9 +67,10 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
     this._model = widget._model;
     this._user = _model.user;
     this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
+    this._employeeMobileViewService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeMobileViewService);
     super.initState();
     _loading = true;
-    _employeeService.findAllByGroupIdForSettingsView(_model.groupId).then((res) {
+    _employeeMobileViewService.findAllByGroupIdForSettingsView(_model.groupId).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
@@ -689,7 +692,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
   }
 
   Future<Null> _refresh() {
-    return _employeeService.findAllByGroupIdForSettingsView(_model.groupId).then((res) {
+    return _employeeMobileViewService.findAllByGroupIdForSettingsView(_model.groupId).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));

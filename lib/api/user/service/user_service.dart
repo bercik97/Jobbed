@@ -22,8 +22,8 @@ class UserService {
     }
   }
 
-  Future<dynamic> deleteByEmployeeIdsIn(List<String> ids) async {
-    Response res = await delete(_url + '/employees/$ids', headers: _headers);
+  Future<dynamic> deleteByEmployeeIdsIn(List<String> employeeIds) async {
+    Response res = await delete(_url + '/employees/$employeeIds', headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {

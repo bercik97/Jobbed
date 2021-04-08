@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:jobbed/api/employee/dto/employee_basic_dto.dart';
-import 'package:jobbed/api/employee/service/employee_service.dart';
+import 'package:jobbed/api/employee/service/employee_mobile_view_service.dart';
 import 'package:jobbed/api/note/service/note_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
@@ -44,7 +44,7 @@ class _EditScheduleEmployeesPageState extends State<EditScheduleEmployeesPage> {
   List<DateTime> _selectedDates;
   bool _isAddAction;
 
-  EmployeeService _employeeService;
+  EmployeeMobileViewService _employeeMobileViewService;
   NoteService _noteService;
 
   List<EmployeeBasicDto> _employees = new List();
@@ -65,11 +65,11 @@ class _EditScheduleEmployeesPageState extends State<EditScheduleEmployeesPage> {
     this._yearsWithMonths = widget._yearsWithMonths;
     this._selectedDates = widget._selectedDates;
     this._isAddAction = widget._isAddAction;
-    this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
+    this._employeeMobileViewService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeMobileViewService);
     this._noteService = ServiceInitializer.initialize(context, _user.authHeader, NoteService);
     super.initState();
     _loading = true;
-    _employeeService.findAllByGroupIdAndTsInYearsAndMonthsForScheduleView(_model.groupId, _yearsWithMonths).then((res) {
+    _employeeMobileViewService.findAllByGroupIdAndTsInYearsAndMonthsForScheduleView(_model.groupId, _yearsWithMonths).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));

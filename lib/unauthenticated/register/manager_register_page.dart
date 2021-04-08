@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:jobbed/api/manager/dto/create_manager_dto.dart';
 import 'package:jobbed/api/manager/service/manager_unauthenticated_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/user/dto/create_user_dto.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants_length.dart';
@@ -30,7 +30,7 @@ class ManagerRegisterPage extends StatefulWidget {
 }
 
 class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
-  CreateManagerDto _dto;
+  CreateUserDto _dto;
   ManagerUnauthenticatedService _managerUnauthenticatedService;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool _passwordVisible;
@@ -548,7 +548,7 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _dto = new CreateManagerDto(
+    _dto = new CreateUserDto(
       username: _usernameController.text,
       password: _passwordController.text,
       name: _nameController.text,

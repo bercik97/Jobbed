@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:jobbed/api/employee/dto/employee_work_time_dto.dart';
-import 'package:jobbed/api/employee/service/employee_service.dart';
+import 'package:jobbed/api/employee/service/employee_mobile_view_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/work_time/service/work_time_service.dart';
 import 'package:jobbed/api/workplace/dto/workplace_dto.dart';
@@ -48,7 +48,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
   final TextEditingController _toHoursController = new TextEditingController();
   final TextEditingController _toMinutesController = new TextEditingController();
 
-  EmployeeService _employeeService;
+  EmployeeMobileViewService _employeeMobileViewService;
   WorkplaceService _workplaceService;
   WorkTimeService _workTimeService;
 
@@ -76,12 +76,12 @@ class _WorkTimePageState extends State<WorkTimePage> {
   void initState() {
     this._model = widget._model;
     this._user = _model.user;
-    this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
+    this._employeeMobileViewService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeMobileViewService);
     this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
     this._workTimeService = ServiceInitializer.initialize(context, _user.authHeader, WorkTimeService);
     super.initState();
     _loading = true;
-    _employeeService.findAllByGroupIdForWorkTimeView(_model.groupId).then((res) {
+    _employeeMobileViewService.findAllByGroupIdForWorkTimeView(_model.groupId).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
@@ -981,7 +981,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
   }
 
   Future<Null> _refresh() {
-    return _employeeService.findAllByGroupIdForWorkTimeView(_model.groupId).then((res) {
+    return _employeeMobileViewService.findAllByGroupIdForWorkTimeView(_model.groupId).then((res) {
       setState(() {
         _employees = res;
         _filteredEmployees = _employees;
