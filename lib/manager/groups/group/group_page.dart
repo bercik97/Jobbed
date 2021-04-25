@@ -6,7 +6,6 @@ import 'package:jobbed/manager/groups/group/piecework/piecework_page.dart';
 import 'package:jobbed/manager/groups/group/price_list/price_lists_page.dart';
 import 'package:jobbed/manager/groups/group/schedule/schedule_page.dart';
 import 'package:jobbed/manager/groups/group/timesheets/ts_page.dart';
-import 'package:jobbed/manager/groups/group/warehouse/warehouse_page.dart';
 import 'package:jobbed/manager/groups/group/work_time/work_time_page.dart';
 import 'package:jobbed/manager/groups/group/workplace/workplaces_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
@@ -21,7 +20,6 @@ import 'package:jobbed/shared/widget/texts.dart';
 import '../../shared/manager_app_bar.dart';
 import '../groups_dashboard_page.dart';
 import 'edit/group_edit_page.dart';
-import 'item_place/item_places_page.dart';
 
 class GroupPage extends StatefulWidget {
   final GroupModel _model;
@@ -166,30 +164,6 @@ class _GroupPageState extends State<GroupPage> {
                               DialogUtil.showInformationDialog(context, getTranslated(context, 'diskSectionWillBeAvailableSoon'));
                             },
                             child: _buildScrollableContainer('images/disk.png', 'disk', 'diskDescription'),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Material(
-                          color: BRIGHTER_BLUE,
-                          child: InkWell(
-                            onTap: () => NavigatorUtil.navigate(context, WarehousePage(_model)),
-                            child: _buildScrollableContainer('images/warehouse.png', 'warehouses', 'manageCompanyWarehouses'),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Material(
-                          color: BRIGHTER_BLUE,
-                          child: InkWell(
-                            onTap: () => NavigatorUtil.navigate(context, ItemPlacesPage(_model)),
-                            child: _buildScrollableContainer('images/items.png', 'itemPlaces', 'manageCompanyItemPlaces'),
                           ),
                         ),
                       ),
