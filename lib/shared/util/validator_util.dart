@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jobbed/api/price_list/dto/price_list_dto.dart';
-import 'package:jobbed/api/workplace/dto/workplace_for_add_note_dto.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/constants_length.dart';
 
@@ -64,35 +62,6 @@ class ValidatorUtil {
       return getTranslated(context, 'workplaceNameWrongLength');
     } else if (description.length > LENGTH_DESCRIPTION) {
       return getTranslated(context, 'workplaceDescriptionWrongLength');
-    }
-    return null;
-  }
-
-  static String validateSubWorkplace(String name, String description, BuildContext context) {
-    if (name.isEmpty) {
-      return getTranslated(context, 'subWorkplaceNameIsRequired');
-    } else if (name.length > LENGTH_NAME) {
-      return getTranslated(context, 'subWorkplaceNameWrongLength');
-    } else if (description.length > LENGTH_DESCRIPTION) {
-      return getTranslated(context, 'subWorkplaceDescriptionWrongLength');
-    }
-    return null;
-  }
-
-  static String validateAddNote(String note, Map<WorkplaceForAddNoteDto, List<bool>> _selectedWorkplacesWithChecked, List<PriceListDto> selectedPriceLists, BuildContext context) {
-    if (note.isEmpty && _selectedWorkplacesWithChecked.isEmpty && selectedPriceLists.isEmpty) {
-      return getTranslated(context, 'noteAddFailure');
-    } else if (note.length > LENGTH_DESCRIPTION) {
-      return getTranslated(context, 'noteWrongLength');
-    }
-    return null;
-  }
-
-  static String validateItemQuantity(int quantity, BuildContext context) {
-    if (quantity < 1) {
-      return getTranslated(context, 'itemQuantityCannotBeLowerThan0');
-    } else if (quantity > 999) {
-      return getTranslated(context, 'itemQuantityCannotBeHigherThan999');
     }
     return null;
   }

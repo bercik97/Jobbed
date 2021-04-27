@@ -1,31 +1,22 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:jobbed/api/employee/dto/employee_for_manager_schedule_dto.dart';
-import 'package:jobbed/api/note/dto/note_dto.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/manager/groups/group/group_page.dart';
-import 'package:jobbed/manager/groups/group/note/add_note_page.dart';
-import 'package:jobbed/manager/groups/group/note/edit_note_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/model/user.dart';
-import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/workday_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
-import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 import 'package:table_calendar/table_calendar.dart';
-
-import 'edit/edit_schedule_page.dart';
 
 class SchedulePage extends StatefulWidget {
   final GroupModel _model;
@@ -94,42 +85,6 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
           children: <Widget>[
             _loading ? circularProgressIndicator() : _buildTableCalendarWithBuilders(),
             _loading ? SizedBox(height: 0) : Expanded(child: _buildEventList()),
-          ],
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            FloatingActionButton(
-              heroTag: "hintBtn",
-              tooltip: getTranslated(context, 'hint'),
-              backgroundColor: BLUE,
-              onPressed: () {
-                slideDialog.showSlideDialog(
-                  context: context,
-                  backgroundColor: WHITE,
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      children: <Widget>[
-                        text20GreenBold(getTranslated(context, 'iconsLegend')),
-                        SizedBox(height: 10),
-                        IconsLegendUtil.buildIconRow(Icon(Icons.note_add), getTranslated(context, 'addDeleteManyNotes')),
-                      ],
-                    ),
-                  ),
-                );
-              },
-              child: text35WhiteBold('?'),
-            ),
-            SizedBox(height: 15),
-            FloatingActionButton(
-              heroTag: "manageNotes",
-              tooltip: getTranslated(context, 'addDeleteManyNotes'),
-              backgroundColor: BLUE,
-              onPressed: () => NavigatorUtil.navigate(context, EditSchedulePage(_model)),
-              child: Icon(Icons.note_add),
-            ),
           ],
         ),
       ),
@@ -287,7 +242,6 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
     String moneyForPiecework = employee.moneyForPiecework;
     List workTimes = employee.workTimes;
     List pieceworks = employee.pieceworks;
-    NoteDto noteDto = employee.note;
     return Column(
       children: [
         ListTile(
@@ -338,31 +292,6 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
                     ],
                   ),
                   alignment: Alignment.topLeft),
-              SizedBox(height: 5),
-              noteDto != null
-                  ? ListTile(
-                      dense: true,
-                      contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-                      title: text20Black(getTranslated(context, 'note') + ': ' + employee.doneTasks.toString() + ' / ' + employee.allNoteTasks.toString()),
-                      subtitle: text16BlueGrey(getTranslated(context, 'tapToSeeNoteDetails')),
-                      onTap: () => NavigatorUtil.navigate(context, EditNotePage(_model, _selectedDay.toString().substring(0, 10), noteDto)),
-                    )
-                  : ListTile(
-                      dense: true,
-                      contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-                      title: text20Black(getTranslated(context, 'note') + ': ' + getTranslated(context, 'empty')),
-                      subtitle: text16BlueGrey(getTranslated(context, 'tapToAddNewNote')),
-                      onTap: () {
-                        NavigatorUtil.navigate(
-                            context,
-                            AddNotePage(
-                              _model,
-                              LinkedHashSet.from([employee.id]),
-                              [_selectedDay.year.toString() + '-' + _selectedDay.month.toString()].toSet(),
-                              [_selectedDay],
-                            ));
-                      },
-                    ),
             ],
           ),
         ),

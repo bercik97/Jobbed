@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:jobbed/api/note/dto/note_dto.dart';
 import 'package:jobbed/api/piecework/dto/piecework_details_dto.dart';
 import 'package:jobbed/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:jobbed/api/work_time/dto/work_time_dto.dart';
@@ -21,7 +20,6 @@ class EmployeeProfileDto {
   final String todayMoney;
   final List todayWorkTimes;
   final List todayPiecework;
-  final NoteDto todayNote;
   final bool workTimeByLocation;
   final bool piecework;
 
@@ -42,13 +40,11 @@ class EmployeeProfileDto {
     @required this.todayMoney,
     @required this.todayWorkTimes,
     @required this.todayPiecework,
-    @required this.todayNote,
     @required this.workTimeByLocation,
     @required this.piecework,
   });
 
   factory EmployeeProfileDto.fromJson(Map<String, dynamic> json) {
-    var todayNoteJson = json['todayNote'];
     return EmployeeProfileDto(
       id: json['id'] as int,
       name: json['name'] as String,
@@ -66,7 +62,6 @@ class EmployeeProfileDto {
       todayMoney: json['todayMoney'] as String,
       todayWorkTimes: json['todayWorkTimes'].map((data) => WorkTimeDto.fromJson(data)).toList(),
       todayPiecework: json['todayPiecework'].map((data) => PieceworkDto.fromJson(data)).toList(),
-      todayNote: todayNoteJson != null ? NoteDto.fromJson(todayNoteJson) : null,
       workTimeByLocation: json['workTimeByLocation'] as bool,
       piecework: json['piecework'] as bool,
     );

@@ -1,6 +1,3 @@
-import 'dart:collection';
-
-import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
@@ -8,9 +5,6 @@ import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jobbed/api/excel/service/excel_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
-import 'package:jobbed/api/sub_workplace/dto/create_sub_workplace_dto.dart';
-import 'package:jobbed/api/sub_workplace/dto/sub_workplace_dto.dart';
-import 'package:jobbed/api/sub_workplace/service/sub_workplace_service.dart';
 import 'package:jobbed/api/work_time/service/work_time_service.dart';
 import 'package:jobbed/api/workplace/dto/workplace_dto.dart';
 import 'package:jobbed/api/workplace/service/workplace_service.dart';
@@ -30,7 +24,6 @@ import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/expandable_text.dart';
-import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 import 'package:jobbed/shared/widget/warn_hint.dart';
@@ -52,12 +45,10 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
   WorkplaceDto _workplaceDto;
 
   WorkplaceService _workplaceService;
-  SubWorkplaceService _subWorkplaceService;
   WorkTimeService _workTimeService;
   ExcelService _excelService;
 
   List<String> _workTimeDates;
-  List<SubWorkplaceDto> _subWorkplaces;
 
   GoogleMapController _controller;
 
@@ -66,15 +57,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
 
   bool _loading = false;
 
-  bool _isChecked = false;
-  List<bool> _checked = new List();
-  LinkedHashSet<num> _selectedIds = new LinkedHashSet();
-
   bool _isGenerateExcelButtonTapped = false;
-  bool _isAddButtonTapped = false;
-  bool _isDeleteButtonTapped = false;
-
-  ScrollController _scrollController = new ScrollController();
 
   TextEditingController _nameController = new TextEditingController();
   TextEditingController _descriptionController = new TextEditingController();
@@ -87,7 +70,6 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
     this._user = _model.user;
     this._workplaceDto = widget._workplaceDto;
     this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
-    this._subWorkplaceService = ServiceInitializer.initialize(context, _user.authHeader, SubWorkplaceService);
     this._workTimeService = ServiceInitializer.initialize(context, _user.authHeader, WorkTimeService);
     this._excelService = ServiceInitializer.initialize(context, _user.authHeader, ExcelService);
     super.initState();
@@ -95,13 +77,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
     _workTimeService.findAllYearMonthDatesByWorkplaceId(_workplaceDto.id).then((res) {
       setState(() {
         _workTimeDates = res;
-        _subWorkplaceService.findAllByWorkplaceId(_workplaceDto.id).then((res) {
-          setState(() {
-            _subWorkplaces = res;
-            _subWorkplaces.forEach((e) => _checked.add(false));
-            _loading = false;
-          });
-        });
+        _loading = false;
       });
     });
   }
@@ -253,276 +229,11 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                   child: text20Black(getTranslated(context, 'subWorkplaces')),
                 ),
               ),
-              _subWorkplaces == null || _subWorkplaces.isEmpty
-                  ? SizedBox(height: 0)
-                  : Column(
-                      children: [
-                        ListTileTheme(
-                          contentPadding: EdgeInsets.only(left: 3),
-                          child: CheckboxListTile(
-                            title: textBlack(getTranslated(this.context, 'selectUnselectAll')),
-                            value: _isChecked,
-                            activeColor: BLUE,
-                            checkColor: WHITE,
-                            onChanged: (bool value) {
-                              setState(() {
-                                _isChecked = value;
-                                List<bool> l = new List();
-                                _checked.forEach((b) => l.add(value));
-                                _checked = l;
-                                if (value) {
-                                  _selectedIds.addAll(_subWorkplaces.map((e) => e.id));
-                                } else
-                                  _selectedIds.clear();
-                              });
-                            },
-                            controlAffinity: ListTileControlAffinity.leading,
-                          ),
-                        ),
-                      ],
-                    ),
-              _loading
-                  ? circularProgressIndicator()
-                  : _subWorkplaces == null || _subWorkplaces.isEmpty
-                      ? _handleNoSubWorkplaces()
-                      : Expanded(
-                          flex: 2,
-                          child: Scrollbar(
-                            controller: _scrollController,
-                            child: ListView.builder(
-                              itemCount: _subWorkplaces.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                SubWorkplaceDto subWorkplace = _subWorkplaces[index];
-                                int foundIndex = 0;
-                                for (int i = 0; i < _subWorkplaces.length; i++) {
-                                  if (_subWorkplaces[i].id == subWorkplace.id) {
-                                    foundIndex = i;
-                                  }
-                                }
-                                String name = subWorkplace.name;
-                                String description = subWorkplace.description;
-                                return Card(
-                                  color: WHITE,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Container(
-                                        color: BRIGHTER_BLUE,
-                                        child: ListTileTheme(
-                                          contentPadding: EdgeInsets.only(right: 10),
-                                          child: CheckboxListTile(
-                                            controlAffinity: ListTileControlAffinity.trailing,
-                                            secondary: Padding(
-                                              padding: EdgeInsets.only(left: 10),
-                                              child: BouncingWidget(
-                                                duration: Duration(milliseconds: 100),
-                                                scaleFactor: 2,
-                                                onPressed: () => _editSubWorkplace(subWorkplace),
-                                                child: iconBlue(Icons.search),
-                                              ),
-                                            ),
-                                            title: Column(
-                                              children: [
-                                                Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: text17BlueBold(name),
-                                                ),
-                                                Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: description != null
-                                                      ? buildExpandableText(context, description, 2, 16)
-                                                      : Row(
-                                                          children: [
-                                                            text16Black(getTranslated(this.context, 'description') + ': '),
-                                                            textRed(getTranslated(this.context, 'empty')),
-                                                          ],
-                                                        ),
-                                                ),
-                                              ],
-                                            ),
-                                            activeColor: BLUE,
-                                            checkColor: WHITE,
-                                            value: _checked[foundIndex],
-                                            onChanged: (bool value) {
-                                              setState(() {
-                                                _checked[foundIndex] = value;
-                                                if (value) {
-                                                  _selectedIds.add(_subWorkplaces[foundIndex].id);
-                                                } else {
-                                                  _selectedIds.remove(_subWorkplaces[foundIndex].id);
-                                                }
-                                                int selectedIdsLength = _selectedIds.length;
-                                                if (selectedIdsLength == _subWorkplaces.length) {
-                                                  _isChecked = true;
-                                                } else if (selectedIdsLength == 0) {
-                                                  _isChecked = false;
-                                                }
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
             ],
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            FloatingActionButton(
-              heroTag: "plusBtn",
-              tooltip: getTranslated(context, 'createSubWorkplace'),
-              backgroundColor: BLUE,
-              onPressed: () => _addSubWorkplace(context),
-              child: text25White('+'),
-            ),
-            SizedBox(height: 15),
-            FloatingActionButton(
-              heroTag: "deleteBtn",
-              tooltip: getTranslated(context, 'deleteSelectedSubWorkplaces'),
-              backgroundColor: Colors.red,
-              onPressed: () => _isDeleteButtonTapped ? null : _handleDeleteByIdIn(_selectedIds),
-              child: Icon(Icons.delete),
-            ),
-          ],
-        ),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, WorkplacesPage(_model)),
-    );
-  }
-
-  void _editSubWorkplace(SubWorkplaceDto subWorkplaceDto) {
-    TextEditingController _nameController = new TextEditingController();
-    TextEditingController _descriptionController = new TextEditingController();
-    _nameController.text = subWorkplaceDto.name;
-    _descriptionController.text = subWorkplaceDto.description;
-    showGeneralDialog(
-      context: context,
-      barrierColor: WHITE.withOpacity(0.95),
-      barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'name'),
-      transitionDuration: Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return SizedBox.expand(
-          child: Scaffold(
-            backgroundColor: Colors.black12,
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 50),
-                    child: text20BlackBold(getTranslated(context, 'editSubWorkplace')),
-                  ),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: EdgeInsets.only(left: 25, right: 25),
-                    child: TextFormField(
-                      autofocus: true,
-                      controller: _nameController,
-                      keyboardType: TextInputType.text,
-                      maxLength: LENGTH_NAME,
-                      maxLines: 1,
-                      cursorColor: BLACK,
-                      textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: BLACK),
-                      decoration: InputDecoration(
-                        hintText: getTranslated(context, 'subWorkplaceName'),
-                        counterStyle: TextStyle(color: BLACK),
-                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
-                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: EdgeInsets.only(left: 25, right: 25),
-                    child: TextFormField(
-                      autofocus: false,
-                      controller: _descriptionController,
-                      keyboardType: TextInputType.text,
-                      maxLength: LENGTH_DESCRIPTION,
-                      maxLines: 5,
-                      cursorColor: BLACK,
-                      textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: BLACK),
-                      decoration: InputDecoration(
-                        hintText: getTranslated(context, 'subWorkplaceDescription'),
-                        counterStyle: TextStyle(color: BLACK),
-                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
-                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        minWidth: 40,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.close)],
-                        ),
-                        color: Colors.red,
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      SizedBox(width: 25),
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.check)],
-                        ),
-                        color: BLUE,
-                        onPressed: () {
-                          String name = _nameController.text;
-                          String description = _descriptionController.text;
-                          String invalidMessage = ValidatorUtil.validateSubWorkplace(name, description, context);
-                          if (invalidMessage != null) {
-                            ToastUtil.showErrorToast(context, invalidMessage);
-                            return;
-                          }
-                          FocusScope.of(context).unfocus();
-                          showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                          _subWorkplaceService.updateFieldsValuesById(subWorkplaceDto.id, {'name': name, 'description': description}).then((res) {
-                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'subWorkplaceUpdatedSuccessfully'));
-                              Navigator.pop(context);
-                              _refreshSubWorkplaces();
-                            });
-                          }).catchError((onError) {
-                            Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                              String errorMsg = onError.toString();
-                              if (errorMsg.contains("SUB_WORKPLACE_NAME_EXISTS")) {
-                                ToastUtil.showErrorToast(this.context, getTranslated(context, 'subWorkplaceNameExists'));
-                              } else {
-                                DialogUtil.showErrorDialog(context, getTranslated(context, 'somethingWentWrong'));
-                              }
-                            });
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 
@@ -871,168 +582,6 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
     });
   }
 
-  void _addSubWorkplace(BuildContext context) {
-    TextEditingController _nameController = new TextEditingController();
-    TextEditingController _descriptionController = new TextEditingController();
-    showGeneralDialog(
-      context: context,
-      barrierColor: WHITE.withOpacity(0.95),
-      barrierDismissible: false,
-      barrierLabel: getTranslated(context, 'subWorkplace'),
-      transitionDuration: Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return SizedBox.expand(
-          child: Scaffold(
-            backgroundColor: Colors.black12,
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'createSubWorkplace'))),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: EdgeInsets.only(left: 25, right: 25),
-                    child: TextFormField(
-                      autofocus: true,
-                      controller: _nameController,
-                      keyboardType: TextInputType.text,
-                      maxLength: LENGTH_NAME,
-                      maxLines: 1,
-                      cursorColor: BLACK,
-                      textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: BLACK),
-                      decoration: InputDecoration(
-                        hintText: getTranslated(context, 'subWorkplaceName'),
-                        counterStyle: TextStyle(color: BLACK),
-                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
-                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: EdgeInsets.only(left: 25, right: 25),
-                    child: TextFormField(
-                      autofocus: false,
-                      controller: _descriptionController,
-                      keyboardType: TextInputType.text,
-                      maxLength: LENGTH_DESCRIPTION,
-                      maxLines: 5,
-                      cursorColor: BLACK,
-                      textAlignVertical: TextAlignVertical.center,
-                      style: TextStyle(color: BLACK),
-                      decoration: InputDecoration(
-                        hintText: getTranslated(context, 'subWorkplaceDescription'),
-                        counterStyle: TextStyle(color: BLACK),
-                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
-                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2.5)),
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        minWidth: 40,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            iconWhite(Icons.close),
-                          ],
-                        ),
-                        color: Colors.red,
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      SizedBox(width: 25),
-                      MaterialButton(
-                        elevation: 0,
-                        height: 50,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[iconWhite(Icons.check)],
-                        ),
-                        color: BLUE,
-                        onPressed: () => _isAddButtonTapped ? null : _handleAddSubWorkplace(_workplaceDto.id, _nameController.text, _descriptionController.text),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  _handleAddSubWorkplace(String workplaceId, String name, String description) {
-    setState(() => _isAddButtonTapped = true);
-    String invalidMessage = ValidatorUtil.validateSubWorkplace(name, description, context);
-    if (invalidMessage != null) {
-      setState(() => _isAddButtonTapped = false);
-      ToastUtil.showErrorToast(context, invalidMessage);
-      return;
-    }
-    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    CreateSubWorkplaceDto dto = new CreateSubWorkplaceDto(
-      workplaceId: workplaceId,
-      name: name,
-      description: description,
-    );
-    _subWorkplaceService.create(dto).then((res) {
-      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        Navigator.pop(context);
-        _refreshSubWorkplaces();
-        setState(() => _isAddButtonTapped = false);
-        ToastUtil.showSuccessNotification(this.context, getTranslated(this.context, 'successfullyAddedNewSubWorkplace'));
-      });
-    }).catchError((onError) {
-      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        setState(() => _isAddButtonTapped = false);
-        String errorMsg = onError.toString();
-        if (errorMsg.contains("SUB_WORKPLACE_NAME_EXISTS")) {
-          ToastUtil.showErrorToast(this.context, getTranslated(this.context, 'subWorkplaceNameExists'));
-        } else {
-          ToastUtil.showErrorToast(this.context, getTranslated(this.context, 'somethingWentWrong'));
-        }
-      });
-    });
-  }
-
-  _handleDeleteByIdIn(LinkedHashSet<num> ids) {
-    if (ids.isEmpty) {
-      showHint(context, getTranslated(context, 'needToSelectSubWorkplaces') + ' ', getTranslated(context, 'whichYouWantToRemove'));
-      return;
-    }
-    DialogUtil.showConfirmationDialog(
-      context: context,
-      title: getTranslated(context, 'confirmation'),
-      content: getTranslated(context, 'areYouSureYouWantToDeleteSelectedSubWorkplaces'),
-      isBtnTapped: _isDeleteButtonTapped,
-      agreeFun: () => _isDeleteButtonTapped ? null : _handleDeleteSubWorkplaces(ids),
-    );
-  }
-
-  _handleDeleteSubWorkplaces(LinkedHashSet<num> ids) {
-    showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _subWorkplaceService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
-      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        _refreshSubWorkplaces();
-        setState(() => _isDeleteButtonTapped = false);
-        ToastUtil.showSuccessNotification(this.context, getTranslated(this.context, 'selectedSubWorkplacesRemoved'));
-      });
-    }).catchError((onError) {
-      Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-        setState(() => _isDeleteButtonTapped = false);
-        ToastUtil.showErrorToast(this.context, getTranslated(this.context, 'somethingWentWrong'));
-      });
-    });
-  }
-
   Widget _handleNoWorkTimes() {
     return Padding(
       padding: EdgeInsets.only(left: 20),
@@ -1041,26 +590,5 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
         child: text16BlueGrey(getTranslated(context, 'noWorkingTime')),
       ),
     );
-  }
-
-  Widget _handleNoSubWorkplaces() {
-    return Padding(
-      padding: EdgeInsets.only(left: 20),
-      child: Align(
-        alignment: Alignment.topLeft,
-        child: text16BlueGrey(getTranslated(context, 'noSubWorkplaces')),
-      ),
-    );
-  }
-
-  Future<Null> _refreshSubWorkplaces() {
-    _loading = true;
-    return _subWorkplaceService.findAllByWorkplaceId(_workplaceDto.id).then((res) {
-      setState(() {
-        _subWorkplaces = res;
-        _subWorkplaces.forEach((e) => _checked.add(false));
-        _loading = false;
-      });
-    });
   }
 }

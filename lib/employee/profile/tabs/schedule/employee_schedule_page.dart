@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:jobbed/api/employee/dto/employee_schedule_dto.dart';
-import 'package:jobbed/api/note/dto/note_dto.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
-import 'package:jobbed/employee/profile/tabs/note/note_page.dart';
 import 'package:jobbed/employee/shared/employee_app_bar.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
@@ -181,7 +179,7 @@ class _EmployeeSchedulePageState extends State<EmployeeSchedulePage> with Ticker
 
   Widget _buildEventsMarker(DateTime date, List events) {
     EmployeeScheduleDto workday = events[0];
-    return workday.moneyForTime != '0.000' || workday.moneyForPiecework != '0.000' || (workday.note != null && workday.doneTasks == workday.allNoteTasks) ? icon30Green(Icons.check) : icon30Red(Icons.close);
+    return workday.moneyForTime != '0.000' || workday.moneyForPiecework != '0.000' ? icon30Green(Icons.check) : icon30Red(Icons.close);
   }
 
   Widget _buildEventList() {
@@ -206,9 +204,6 @@ class _EmployeeSchedulePageState extends State<EmployeeSchedulePage> with Ticker
     String moneyForPiecework = employee.moneyForPiecework;
     List workTimes = employee.workTimes;
     List pieceworks = employee.pieceworks;
-    NoteDto noteDto = employee.note;
-    int doneTasks = employee.doneTasks;
-    int allTasks = employee.allNoteTasks;
     return Column(
       children: [
         ListTile(
@@ -255,19 +250,6 @@ class _EmployeeSchedulePageState extends State<EmployeeSchedulePage> with Ticker
                     ],
                   ),
                   alignment: Alignment.topLeft),
-              noteDto != null
-                  ? ListTile(
-                      dense: true,
-                      contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-                      title: text20Black(getTranslated(context, 'note') + ': ' + doneTasks.toString() + ' / ' + allTasks.toString()),
-                      subtitle: text16BlueGrey(getTranslated(context, 'tapToSeeNoteDetails')),
-                      onTap: () => NavigatorUtil.navigate(context, NotePage(_user, _selectedDay.toString().substring(0, 10), noteDto, doneTasks, allTasks)),
-                    )
-                  : ListTile(
-                      dense: true,
-                      contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-                      title: text20Black(getTranslated(context, 'note') + ': ' + getTranslated(context, 'empty')),
-                    ),
             ],
           ),
         ),
