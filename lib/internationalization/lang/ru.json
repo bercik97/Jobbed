@@ -360,7 +360,6 @@
   "minutesCannotBeHigherThan59": "Минуты не могут быть больше 59",
   "accord": "Аккорд",
   "time": "Время",
-  "groupCreator": "Создатель группы",
   "nationalityIsRequired": "Гражданство обязательно",
   "thisFieldIsRequired": "Это поле обязательно к заполнению",
   "selectedPriceServiceHasBeenRemoved": "Выбранная цена услуги была удалена!",

@@ -360,7 +360,6 @@
   "minutesCannotBeHigherThan59": "Minutes cannot be higher than 59",
   "accord": "Accord",
   "time": "Time",
-  "groupCreator": "Group creator",
   "nationalityIsRequired": "Nationality is required",
   "thisFieldIsRequired": "This field is required",
   "selectedPriceServiceHasBeenRemoved": "Selected price service has been removed!",

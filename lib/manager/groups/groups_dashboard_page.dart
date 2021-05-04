@@ -231,7 +231,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                             alignment: Alignment.topLeft,
                           ),
                           Align(
-                            child: text16Black(getTranslated(this.context, 'groupCreator') + ': ' + _groups[index].groupCreator),
+                            child: text16Black(getTranslated(this.context, 'manager') + ': ' + _groups[index].groupCreator),
                             alignment: Alignment.topLeft,
                           ),
                           SizedBox(height: 5),
