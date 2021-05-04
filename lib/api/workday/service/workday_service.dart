@@ -38,28 +38,6 @@ class WorkdayService {
     }
   }
 
-  Future<dynamic> updateFieldsValuesById(int id, Map<String, Object> fieldsValues) async {
-    Response res = await put('$_url/id?id=$id', body: jsonEncode(fieldsValues), headers: _headers);
-    if (res.statusCode == 200) {
-      return res;
-    } else if (res.statusCode == 401) {
-      return LogoutUtil.handle401WithLogout(_context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<dynamic> updateFieldsValuesByIds(List<String> ids, Map<String, Object> fieldsValues) async {
-    Response res = await put('$_url/ids?ids=$ids', body: jsonEncode(fieldsValues), headers: _headers);
-    if (res.statusCode == 200) {
-      return res;
-    } else if (res.statusCode == 401) {
-      return LogoutUtil.handle401WithLogout(_context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
   Future<dynamic> updateHoursByIds(List<String> ids, double hours) async {
     Response res = await put('$_url/hours?ids=$ids', body: jsonEncode(hours), headers: _headers);
     if (res.statusCode == 200) {

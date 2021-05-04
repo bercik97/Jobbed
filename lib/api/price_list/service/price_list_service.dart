@@ -26,8 +26,8 @@ class PriceListService {
     }
   }
 
-  Future<List<PriceListDto>> findAllByCompanyIdAndIsNotDeleted(String companyId) async {
-    Response res = await get(_url + '/companies/$companyId?is_deleted=${false}', headers: _headers);
+  Future<List<PriceListDto>> findAllByCompanyId(String companyId) async {
+    Response res = await get(_url + '/companies/$companyId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => PriceListDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
@@ -37,7 +37,7 @@ class PriceListService {
     }
   }
 
-  Future<dynamic> deleteByIdIn(List<String> ids) async {
+  Future<dynamic> deleteByIdIn(var ids) async {
     Response res = await delete(_url + '/$ids', headers: _headers);
     if (res.statusCode == 200) {
       return res;

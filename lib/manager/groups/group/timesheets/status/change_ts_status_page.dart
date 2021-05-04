@@ -8,6 +8,7 @@ import 'package:jobbed/api/employee/service/employee_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
 import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/collection_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
@@ -277,7 +278,7 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _timesheetService.updateTsStatusByGroupIdAndYearAndMonthAndStatusAndEmployeesIdIn(_selectedIds.map((el) => el.toString()).toList(), newStatusId, _year, _month, status, _model.groupId).then((res) {
+    _timesheetService.updateTsStatusByGroupIdAndYearAndMonthAndStatusAndEmployeesIdIn(CollectionUtil.removeBracketsFromSet(_selectedIds), newStatusId, _year, _month, status, _model.groupId).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'timesheetStatusSuccessfullyUpdated'));
         NavigatorUtil.navigateReplacement(context, TsPage(_model));

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:jobbed/api/employee/dto/employee_settings_dto.dart';
-import 'package:jobbed/api/employee/service/employee_mobile_view_service.dart';
+import 'package:jobbed/api/employee/service/employee_view_service.dart';
 import 'package:jobbed/api/employee/service/employee_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
@@ -16,6 +16,7 @@ import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/avatars_util.dart';
+import 'package:jobbed/shared/util/collection_util.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
@@ -45,7 +46,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
   User _user;
 
   EmployeeService _employeeService;
-  EmployeeMobileViewService _employeeMobileViewService;
+  EmployeeViewService _employeeViewService;
 
   List<EmployeeSettingsDto> _employees = new List();
   List<EmployeeSettingsDto> _filteredEmployees = new List();
@@ -67,10 +68,10 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
     this._model = widget._model;
     this._user = _model.user;
     this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
-    this._employeeMobileViewService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeMobileViewService);
+    this._employeeViewService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeViewService);
     super.initState();
     _loading = true;
-    _employeeMobileViewService.findAllByGroupIdForSettingsView(_model.groupId).then((res) {
+    _employeeViewService.findAllByGroupIdForSettingsView(_model.groupId).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
@@ -435,7 +436,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                               setState(() => _isMoneyBtnTapped = true);
                               showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
                               String fieldToUpdate = _moneyRadioValue == 0 ? 'moneyPerHour' : 'moneyPerHourForCompany';
-                              _employeeService.updateFieldsValuesByIds(_selectedIds.toList(), {fieldToUpdate: money}).then((res) {
+                              _employeeService.updateFieldsValuesByIds(CollectionUtil.removeBracketsFromSet(_selectedIds), {fieldToUpdate: money}).then((res) {
                                 Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                   _refresh();
                                   Navigator.pop(context);
@@ -549,7 +550,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                               }
                               setState(() => _isWorkTimeByLocationBtnTapped = true);
                               showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                              _employeeService.updateFieldsValuesByIds(_selectedIds.toList(), {"workTimeByLocation": _workTimeByLocationRadioValue == 0 ? true : false}).then((res) {
+                              _employeeService.updateFieldsValuesByIds(CollectionUtil.removeBracketsFromSet(_selectedIds), {"workTimeByLocation": _workTimeByLocationRadioValue == 0 ? true : false}).then((res) {
                                 Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                   _refresh();
                                   Navigator.pop(context);
@@ -662,7 +663,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                               }
                               setState(() => _isPieceworkBtnTapped = true);
                               showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                              _employeeService.updateFieldsValuesByIds(_selectedIds.toList(), {"piecework": _pieceworkRadioValue == 0 ? true : false}).then((res) {
+                              _employeeService.updateFieldsValuesByIds(CollectionUtil.removeBracketsFromSet(_selectedIds), {"piecework": _pieceworkRadioValue == 0 ? true : false}).then((res) {
                                 Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
                                   _refresh();
                                   Navigator.pop(context);
@@ -692,7 +693,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
   }
 
   Future<Null> _refresh() {
-    return _employeeMobileViewService.findAllByGroupIdForSettingsView(_model.groupId).then((res) {
+    return _employeeViewService.findAllByGroupIdForSettingsView(_model.groupId).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));

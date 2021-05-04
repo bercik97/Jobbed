@@ -8,6 +8,7 @@ import 'package:jobbed/api/employee/service/employee_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
 import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/collection_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/hint.dart';
@@ -262,7 +263,7 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _timesheetService.deleteForEmployeesByYearAndMonthAndStatus(_selectedIds.map((el) => el.toString()).toList(), _year, _month, _status).then((res) {
+    _timesheetService.deleteByEmployeeIdsAndYearAndMonthAndStatus(CollectionUtil.removeBracketsFromSet(_selectedIds), _year, _month, _status).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'timesheetSuccessfullyDeleted'));
         NavigatorUtil.navigateReplacement(context, TsPage(_model));

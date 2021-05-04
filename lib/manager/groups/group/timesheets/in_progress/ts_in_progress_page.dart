@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:jobbed/api/employee/dto/employee_statistics_dto.dart';
-import 'package:jobbed/api/employee/service/employee_mobile_view_service.dart';
+import 'package:jobbed/api/employee/service/employee_view_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:jobbed/api/timesheet/dto/timesheet_with_status_dto.dart';
@@ -26,6 +26,7 @@ import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/avatars_util.dart';
+import 'package:jobbed/shared/util/collection_util.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
@@ -62,7 +63,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
   GroupModel _model;
   User _user;
 
-  EmployeeMobileViewService _employeeMobileViewService;
+  EmployeeViewService _employeeViewService;
   WorkdayService _workdayService;
   WorkTimeService _workTimeService;
   WorkplaceService _workplaceService;
@@ -73,7 +74,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
   bool _loading = false;
   bool _isChecked = false;
   List<bool> _checked = new List();
-  LinkedHashSet<int> _selectedIds = new LinkedHashSet();
+  Set<int> _selectedIds = new LinkedHashSet();
 
   List<WorkplaceDto> _workplaces = new List();
   List<int> _workplacesRadioValues = new List();
@@ -87,14 +88,14 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
   void initState() {
     this._model = widget._model;
     this._user = _model.user;
-    this._employeeMobileViewService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeMobileViewService);
+    this._employeeViewService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeViewService);
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     this._workTimeService = ServiceInitializer.initialize(context, _user.authHeader, WorkTimeService);
     this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
     this._timesheet = widget._timeSheet;
     super.initState();
     _loading = true;
-    _employeeMobileViewService.findAllByGroupIdAndTsYearAndMonthAndStatusForStatisticsView(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_IN_PROGRESS).then((res) {
+    _employeeViewService.findAllByGroupIdAndTsYearAndMonthAndStatusForStatisticsView(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_IN_PROGRESS).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
@@ -741,7 +742,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
 
   void _handleSaveWorkTimesManually(int year, int month, String dateFrom, String dateTo, String startTime, String endTime) {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workTimeService.saveForEmployees(_selectedIds.map((el) => el.toString()).toList(), _workplaces[_chosenIndex].id, dateFrom, dateTo, startTime, endTime).then((value) {
+    _workTimeService.saveByEmployeeIds(CollectionUtil.removeBracketsFromSet(_selectedIds), _workplaces[_chosenIndex].id, dateFrom, dateTo, startTime, endTime).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _refresh();
         Navigator.pop(context);
@@ -785,7 +786,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
   _handleDeleteWorkTime(String dateFrom, String dateTo) {
     setState(() => _isDeleteWorkTimeButtonTapped = true);
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workTimeService.deleteByEmployeeIdsAndFromDateToDate(_selectedIds.map((el) => el.toString()).toList(), dateFrom, dateTo).then((value) {
+    _workTimeService.deleteByEmployeeIdsAndFromDateToDate(CollectionUtil.removeBracketsFromSet(_selectedIds), dateFrom, dateTo).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _refresh();
         Navigator.of(context).pop();
@@ -869,7 +870,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
   }
 
   Future<Null> _refresh() {
-    return _employeeMobileViewService.findAllByGroupIdAndTsYearAndMonthAndStatusForStatisticsView(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_IN_PROGRESS).then((res) {
+    return _employeeViewService.findAllByGroupIdAndTsYearAndMonthAndStatusForStatisticsView(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_IN_PROGRESS).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));

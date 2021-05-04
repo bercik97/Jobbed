@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:jobbed/api/employee/dto/employee_piecework_dto.dart';
-import 'package:jobbed/api/employee/service/employee_mobile_view_service.dart';
+import 'package:jobbed/api/employee/service/employee_view_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/workday/service/workday_service.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
@@ -41,7 +41,7 @@ class PieceworkPage extends StatefulWidget {
 }
 
 class _PieceworkPageState extends State<PieceworkPage> {
-  EmployeeMobileViewService _employeeMobileViewService;
+  EmployeeViewService _employeeViewService;
   WorkdayService _workdayService;
 
   GroupModel _model;
@@ -63,11 +63,11 @@ class _PieceworkPageState extends State<PieceworkPage> {
   void initState() {
     this._model = widget._model;
     this._user = _model.user;
-    this._employeeMobileViewService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeMobileViewService);
+    this._employeeViewService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeViewService);
     this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
     super.initState();
     _loading = true;
-    _employeeMobileViewService.findAllByGroupIdForPieceworkView(_model.groupId).then((res) {
+    _employeeViewService.findAllByGroupIdForPieceworkView(_model.groupId).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));
@@ -370,7 +370,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
   }
 
   Future<Null> _refresh() {
-    return _employeeMobileViewService.findAllByGroupIdForPieceworkView(_model.groupId).then((res) {
+    return _employeeViewService.findAllByGroupIdForPieceworkView(_model.groupId).then((res) {
       setState(() {
         _employees = res;
         _employees.forEach((e) => _checked.add(false));

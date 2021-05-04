@@ -120,7 +120,7 @@ class EmployeeService {
     }
   }
 
-  Future<dynamic> updateFieldsValuesByIds(List<int> ids, Map<String, Object> fieldsValues) async {
+  Future<dynamic> updateFieldsValuesByIds(var ids, Map<String, Object> fieldsValues) async {
     String url = '$_url/ids?ids=$ids';
     Response res = await put(url, body: jsonEncode(fieldsValues), headers: _headers);
     if (res.statusCode == 200) {

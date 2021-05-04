@@ -11,6 +11,7 @@ import 'package:jobbed/internationalization/localization/localization_constants.
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/collection_util.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
@@ -44,7 +45,7 @@ class _DeleteEmployeesAccountsPageState extends State<DeleteEmployeesAccountsPag
   bool _isChecked = false;
   bool _isDeleteButtonTapped = false;
   List<bool> _checked = new List();
-  LinkedHashSet<int> _selectedIds = new LinkedHashSet();
+  Set<int> _selectedIds = new LinkedHashSet();
 
   @override
   void initState() {
@@ -228,7 +229,7 @@ class _DeleteEmployeesAccountsPageState extends State<DeleteEmployeesAccountsPag
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _userService.deleteByEmployeeIdsIn(_selectedIds.map((e) => e.toString()).toList()).then((res) {
+    _userService.deleteByEmployeeIdsIn(CollectionUtil.removeBracketsFromSet(_selectedIds)).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'deletedEmployeesAccounts'));
         NavigatorUtil.navigatePushAndRemoveUntil(context, GroupsDashboardPage(_user));

@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
@@ -14,6 +16,7 @@ import 'package:jobbed/internationalization/localization/localization_constants.
 import 'package:jobbed/manager/groups/group/piecework/manage/add_piecework_for_selected_workdays.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/collection_util.dart';
 import 'package:jobbed/shared/util/data_table_util.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/icons_legend_util.dart';
@@ -64,7 +67,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   String _nationality;
   TimesheetForEmployeeDto _timesheet;
 
-  Set<int> selectedIds = new Set();
+  Set<int> selectedIds = new LinkedHashSet();
   List<bool> _checked = new List();
   List<WorkdayDto> workdays = new List();
 
@@ -722,7 +725,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
 
   void _handleSaveWorkTimesManually(String startTime, String endTime) {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workTimeService.saveForWorkdays(selectedIds.map((el) => el.toString()).toList(), _workplaces[_chosenIndex].id, startTime, endTime).then((value) {
+    _workTimeService.saveByWorkdayIds(CollectionUtil.removeBracketsFromSet(selectedIds), _workplaces[_chosenIndex].id, startTime, endTime).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _refresh();
         Navigator.pop(context);
@@ -749,7 +752,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   _handleDeleteWorkTimes() {
     setState(() => _isDeleteWorkTimeButtonTapped = true);
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workTimeService.deleteByWorkdayIds(selectedIds.map((el) => el.toString()).toList()).then((value) {
+    _workTimeService.deleteByWorkdayIds(CollectionUtil.removeBracketsFromSet(selectedIds)).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _refresh();
         Navigator.of(context).pop();

@@ -11,13 +11,13 @@ import 'package:jobbed/api/employee/dto/employee_work_time_dto.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/util/logout_util.dart';
 
-class EmployeeMobileViewService {
+class EmployeeViewService {
   final BuildContext _context;
   final Map<String, String> _headers;
 
-  EmployeeMobileViewService(this._context, this._headers);
+  EmployeeViewService(this._context, this._headers);
 
-  static const String _url = '$SERVER_IP/employees/mobile-view';
+  static const String _url = '$SERVER_IP/employees/view';
 
   Future<EmployeeProfileDto> findByIdForProfileView(String id) async {
     String url = '$_url/profile?id=$id';
@@ -70,18 +70,6 @@ class EmployeeMobileViewService {
     Response res = await get(url, headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeStatisticsDto.fromJson(data)).toList();
-    } else if (res.statusCode == 401) {
-      return LogoutUtil.handle401WithLogout(_context);
-    } else {
-      return Future.error(res.body);
-    }
-  }
-
-  Future<List<EmployeeBasicDto>> findAllByGroupIdAndTsInYearsAndMonthsForScheduleView(int groupId, Set<String> yearsWithMonths) async {
-    String url = '$_url/schedule/groups/$groupId/timesheets?years_with_months=$yearsWithMonths';
-    Response res = await get(url, headers: _headers);
-    if (res.statusCode == 200) {
-      return (json.decode(res.body) as List).map((data) => EmployeeBasicDto.fromJson(data)).toList();
     } else if (res.statusCode == 401) {
       return LogoutUtil.handle401WithLogout(_context);
     } else {

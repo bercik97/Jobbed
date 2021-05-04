@@ -61,7 +61,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
     this._pieceworkService = ServiceInitializer.initialize(context, _user.authHeader, PieceworkService);
     super.initState();
     _loading = true;
-    _priceListService.findAllByCompanyIdAndIsNotDeleted(_user.companyId).then((res) {
+    _priceListService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
         _priceLists = res;
         _priceLists.forEach((i) => _textEditingItemControllers[i.name] = new TextEditingController());

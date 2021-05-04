@@ -13,6 +13,7 @@ import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/collection_util.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
@@ -45,7 +46,7 @@ class _PriceListsPageState extends State<PriceListsPage> {
   bool _loading = false;
   bool _isChecked = false;
   List<bool> _checked = new List();
-  LinkedHashSet<int> _selectedIds = new LinkedHashSet();
+  Set<int> _selectedIds = new LinkedHashSet();
 
   bool _isGenerateExcelBtnTapped = false;
   bool _isDeleteButtonTapped = false;
@@ -62,7 +63,7 @@ class _PriceListsPageState extends State<PriceListsPage> {
     this._excelService = ServiceInitializer.initialize(context, _user.authHeader, ExcelService);
     super.initState();
     _loading = true;
-    _priceListService.findAllByCompanyIdAndIsNotDeleted(_user.companyId).then((res) {
+    _priceListService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
         _priceLists = res;
         _priceLists.forEach((e) => _checked.add(false));
@@ -256,7 +257,7 @@ class _PriceListsPageState extends State<PriceListsPage> {
               heroTag: "deleteBtn",
               tooltip: getTranslated(context, 'deleteSelectedPriceLists'),
               backgroundColor: Colors.red,
-              onPressed: () => _isDeleteButtonTapped ? null : _handleDeleteByIdIn(_selectedIds),
+              onPressed: () => _isDeleteButtonTapped ? null : _handleDeleteByIdIn(),
               child: Icon(Icons.delete),
             ),
           ],
@@ -393,9 +394,9 @@ class _PriceListsPageState extends State<PriceListsPage> {
     });
   }
 
-  _handleDeleteByIdIn(LinkedHashSet<int> ids) {
+  _handleDeleteByIdIn() {
     setState(() => _isDeleteButtonTapped = true);
-    if (ids.isEmpty) {
+    if (_selectedIds.isEmpty) {
       showHint(context, getTranslated(context, 'needToSelectPriceLists') + ' ', getTranslated(context, 'whichYouWantToRemove'));
       setState(() => _isDeleteButtonTapped = false);
       return;
@@ -412,9 +413,9 @@ class _PriceListsPageState extends State<PriceListsPage> {
               child: textBlack(getTranslated(this.context, 'yesDeleteThem')),
               onPressed: () {
                 showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-                _priceListService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
+                _priceListService.deleteByIdIn(CollectionUtil.removeBracketsFromSet(_selectedIds)).then((res) {
                   Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
-                    setState(() => _priceLists.removeWhere((element) => ids.contains(element.id)));
+                    setState(() => _priceLists.removeWhere((element) => _selectedIds.contains(element.id)));
                     setState(() => _isDeleteButtonTapped = false);
                     _uncheckAll();
                     Navigator.of(this.context).pop();
@@ -466,7 +467,7 @@ class _PriceListsPageState extends State<PriceListsPage> {
 
   Future<Null> _refresh() {
     _loading = true;
-    return _priceListService.findAllByCompanyIdAndIsNotDeleted(_user.companyId).then((res) {
+    return _priceListService.findAllByCompanyId(_user.companyId).then((res) {
       setState(() {
         _isDeleteButtonTapped = false;
         _priceLists = res;

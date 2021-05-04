@@ -71,7 +71,7 @@ class WorkplaceService {
     }
   }
 
-  Future<dynamic> deleteByIdIn(List<String> ids) async {
+  Future<dynamic> deleteByIdIn(var ids) async {
     Response res = await delete(_url + '/$ids', headers: _headers);
     if (res.statusCode == 200) {
       return res;

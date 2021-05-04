@@ -222,13 +222,6 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                   ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(left: 20, top: 15, bottom: 5),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: text20Black(getTranslated(context, 'subWorkplaces')),
-                ),
-              ),
             ],
           ),
         ),

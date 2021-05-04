@@ -2,7 +2,7 @@ import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jobbed/api/employee/dto/employee_statistics_dto.dart';
-import 'package:jobbed/api/employee/service/employee_mobile_view_service.dart';
+import 'package:jobbed/api/employee/service/employee_view_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:jobbed/api/timesheet/dto/timesheet_with_status_dto.dart';
@@ -37,7 +37,7 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
   GroupModel _model;
   User _user;
 
-  EmployeeMobileViewService _employeeMobileViewService;
+  EmployeeViewService _employeeViewService;
   TimesheetWithStatusDto _timesheet;
 
   List<EmployeeStatisticsDto> _employees = new List();
@@ -48,11 +48,11 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
   void initState() {
     this._model = widget._model;
     this._user = _model.user;
-    this._employeeMobileViewService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeMobileViewService);
+    this._employeeViewService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeViewService);
     this._timesheet = widget._timesheet;
     super.initState();
     _loading = true;
-    _employeeMobileViewService.findAllByGroupIdAndTsYearAndMonthAndStatusForStatisticsView(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_COMPLETED).then((res) {
+    _employeeViewService.findAllByGroupIdAndTsYearAndMonthAndStatusForStatisticsView(_model.groupId, _timesheet.year, MonthUtil.findMonthNumberByMonthName(context, _timesheet.month), STATUS_COMPLETED).then((res) {
       setState(() {
         _employees = res;
         _filteredEmployees = _employees;

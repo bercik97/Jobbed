@@ -21,7 +21,7 @@ class WorkTimeService {
     return res.statusCode == 200 ? res : Future.error(res.body);
   }
 
-  Future<dynamic> saveForWorkdays(List<String> workdayIds, String workplaceId, String startTime, String endTime) async {
+  Future<dynamic> saveByWorkdayIds(var workdayIds, String workplaceId, String startTime, String endTime) async {
     Map<String, dynamic> map = {'workplaceId': workplaceId, 'startTime': startTime, 'endTime': endTime};
     Response res = await post('$_url/workdays/$workdayIds', body: jsonEncode(map), headers: _headers);
     if (res.statusCode == 200) {
@@ -33,7 +33,7 @@ class WorkTimeService {
     }
   }
 
-  Future<dynamic> saveForEmployees(List<String> employeeIds, String workplaceId, String dateFrom, String dateTo, String startTime, String endTime) async {
+  Future<dynamic> saveByEmployeeIds(var employeeIds, String workplaceId, String dateFrom, String dateTo, String startTime, String endTime) async {
     Map<String, dynamic> map = {'workplaceId': workplaceId, 'dateFrom': dateFrom, 'dateTo': dateTo, 'startTime': startTime, 'endTime': endTime};
     Response res = await post('$_url/employees/$employeeIds', body: jsonEncode(map), headers: _headers);
     if (res.statusCode == 200) {
@@ -45,7 +45,7 @@ class WorkTimeService {
     }
   }
 
-  Future<dynamic> createForEmployees(List<String> employeeIds, String workplaceId) async {
+  Future<dynamic> saveByEmployeeIdsAndWorkplaceId(var employeeIds, String workplaceId) async {
     Response res = await post('$_url/employees/$employeeIds/workplaces/$workplaceId', headers: _headers);
     if (res.statusCode == 200) {
       return res;
@@ -133,7 +133,7 @@ class WorkTimeService {
     return res.statusCode == 200 ? res : Future.error(res.body);
   }
 
-  Future<dynamic> finishForEmployees(List<String> employeeIds) async {
+  Future<dynamic> finishByEmployeeIds(var employeeIds) async {
     String url = _url + '/finish/employees/$employeeIds';
     Response res = await put(url, headers: _headers);
     if (res.statusCode == 200) {
@@ -156,7 +156,7 @@ class WorkTimeService {
     }
   }
 
-  Future<dynamic> deleteByEmployeeIdsAndFromDateToDate(List<String> employeeIds, String dateFrom, String dateTo) async {
+  Future<dynamic> deleteByEmployeeIdsAndFromDateToDate(var employeeIds, String dateFrom, String dateTo) async {
     Response res = await delete('$_url/employees/$employeeIds?date_from=$dateFrom&date_to=$dateTo', headers: _headers);
     if (res.statusCode == 200) {
       return res;
@@ -167,7 +167,7 @@ class WorkTimeService {
     }
   }
 
-  Future<dynamic> deleteByWorkdayIds(List<String> workdayIds) async {
+  Future<dynamic> deleteByWorkdayIds(var workdayIds) async {
     Response res = await delete('$_url/workdays/$workdayIds', headers: _headers);
     if (res.statusCode == 200) {
       return res;

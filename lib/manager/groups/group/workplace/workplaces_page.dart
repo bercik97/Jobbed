@@ -19,6 +19,7 @@ import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/libraries/constants_length.dart';
 import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/collection_util.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/icons_legend_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
@@ -53,7 +54,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
   bool _loading = false;
   bool _isChecked = false;
   List<bool> _checked = new List();
-  LinkedHashSet<String> _selectedIds = new LinkedHashSet();
+  Set<String> _selectedIds = new LinkedHashSet();
 
   bool _isAddButtonTapped = false;
   bool _isDeleteButtonTapped = false;
@@ -311,7 +312,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
               heroTag: "deleteBtn",
               tooltip: getTranslated(context, 'deleteSelectedWorkplaces'),
               backgroundColor: Colors.red,
-              onPressed: () => _isDeleteButtonTapped ? null : _handleDeleteByIdIn(_selectedIds),
+              onPressed: () => _isDeleteButtonTapped ? null : _handleDeleteByIdIn(),
               child: Icon(Icons.delete),
             ),
           ],
@@ -647,8 +648,8 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
     });
   }
 
-  _handleDeleteByIdIn(LinkedHashSet<String> ids) {
-    if (ids.isEmpty) {
+  _handleDeleteByIdIn() {
+    if (_selectedIds.isEmpty) {
       showHint(context, getTranslated(context, 'needToSelectWorkplaces') + ' ', getTranslated(context, 'whichYouWantToRemove'));
       return;
     }
@@ -657,13 +658,13 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
       title: getTranslated(context, 'confirmation'),
       content: getTranslated(context, 'areYouSureYouWantToDeleteSelectedWorkplaces'),
       isBtnTapped: _isDeleteButtonTapped,
-      agreeFun: () => _isDeleteButtonTapped ? null : _handleDeleteWorkplaces(ids),
+      agreeFun: () => _isDeleteButtonTapped ? null : _handleDeleteWorkplaces(),
     );
   }
 
-  _handleDeleteWorkplaces(LinkedHashSet<String> ids) {
+  _handleDeleteWorkplaces() {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workplaceService.deleteByIdIn(ids.map((e) => e.toString()).toList()).then((res) {
+    _workplaceService.deleteByIdIn(CollectionUtil.removeBracketsFromSet(_selectedIds)).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         Navigator.pop(context);
         _refresh();

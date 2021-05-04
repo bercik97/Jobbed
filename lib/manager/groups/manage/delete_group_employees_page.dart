@@ -12,6 +12,7 @@ import 'package:jobbed/manager/groups/groups_dashboard_page.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/collection_util.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
@@ -46,7 +47,7 @@ class _DeleteGroupEmployeesPageState extends State<DeleteGroupEmployeesPage> {
   bool _isChecked = false;
   bool _isDeleteButtonTapped = false;
   List<bool> _checked = new List();
-  LinkedHashSet<int> _selectedIds = new LinkedHashSet();
+  Set<int> _selectedIds = new LinkedHashSet();
 
   @override
   void initState() {
@@ -250,7 +251,7 @@ class _DeleteGroupEmployeesPageState extends State<DeleteGroupEmployeesPage> {
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _groupService.deleteGroupEmployees(_groupId, _selectedIds.map((e) => e.toString()).toList()).then((value) {
+    _groupService.removeEmployeesFromGroup(_groupId, CollectionUtil.removeBracketsFromSet(_selectedIds)).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyRemovedGroupEmployees'));
         NavigatorUtil.navigate(this.context, GroupsDashboardPage(_user));
