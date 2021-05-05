@@ -11,6 +11,7 @@ import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants_length.dart';
 import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/collection_util.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
@@ -47,6 +48,19 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
 
   bool _loading;
 
+  final List<String> _fields = [
+    'username',
+    'name',
+    'surname',
+    'email',
+    'nationality',
+    'phone',
+    'viber',
+    'whatsApp',
+    'companyName',
+    'accountExpirationDate',
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -54,38 +68,27 @@ class _ManagerEditPageState extends State<ManagerEditPage> {
     this._managerService = ServiceInitializer.initialize(context, _user.authHeader, ManagerService);
     super.initState();
     _loading = true;
-    _managerService.findManagerAndUserFieldsValuesById(
-      int.parse(_user.id),
-      [
-        'username',
-        'name',
-        'surname',
-        'email',
-        'nationality',
-        'phone',
-        'viber',
-        'whatsApp',
-        'companyName',
-        'accountExpirationDate',
-      ],
-    ).then(
-      (res) => {
-        setState(() {
-          _loading = false;
-          _fieldsValues = res;
-          _usernameController.text = this._fieldsValues['username'];
-          _nameController.text = this._fieldsValues['name'];
-          _surnameController.text = this._fieldsValues['surname'];
-          _emailController.text = this._fieldsValues['email'];
-          _nationality = this._fieldsValues['nationality'];
-          _phoneController.text = this._fieldsValues['phone'];
-          _viberController.text = this._fieldsValues['viber'];
-          _whatsAppController.text = this._fieldsValues['whatsApp'];
-          _companyName = this._fieldsValues['companyName'];
-          _accountExpirationDate = this._fieldsValues['accountExpirationDate'];
-        }),
-      },
-    );
+    _managerService
+        .findManagerAndUserFieldsValuesById(
+          int.parse(_user.id),
+          CollectionUtil.removeBracketsFromSet(_fields.toSet()),
+        )
+        .then((res) => setState(
+              () {
+                _loading = false;
+                _fieldsValues = res;
+                _usernameController.text = this._fieldsValues['username'];
+                _nameController.text = this._fieldsValues['name'];
+                _surnameController.text = this._fieldsValues['surname'];
+                _emailController.text = this._fieldsValues['email'];
+                _nationality = this._fieldsValues['nationality'];
+                _phoneController.text = this._fieldsValues['phone'];
+                _viberController.text = this._fieldsValues['viber'];
+                _whatsAppController.text = this._fieldsValues['whatsApp'];
+                _companyName = this._fieldsValues['companyName'];
+                _accountExpirationDate = this._fieldsValues['accountExpirationDate'];
+              },
+            ));
   }
 
   @override

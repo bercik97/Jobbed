@@ -13,7 +13,7 @@ class ManagerService {
 
   static const String _url = '$SERVER_IP/managers';
 
-  Future<Map<String, Object>> findManagerAndUserFieldsValuesById(int id, List<String> fields) async {
+  Future<Map<String, Object>> findManagerAndUserFieldsValuesById(int id, var fields) async {
     Response res = await get('$_url?id=$id&fields=$fields', headers: _headers);
     var body = res.body;
     if (res.statusCode == 200) {

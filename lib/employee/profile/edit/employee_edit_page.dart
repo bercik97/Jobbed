@@ -12,6 +12,7 @@ import 'package:jobbed/internationalization/localization/localization_constants.
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants_length.dart';
 import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/collection_util.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
@@ -49,6 +50,18 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
 
   bool _loading;
 
+  final List<String> _fields = [
+    'username',
+    'name',
+    'surname',
+    'nationality',
+    'phone',
+    'viber',
+    'whatsApp',
+    'accountExpirationDate',
+    'companyName',
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -56,36 +69,26 @@ class _EmployeeEditPageState extends State<EmployeeEditPage> {
     this._employeeService = ServiceInitializer.initialize(context, _user.authHeader, EmployeeService);
     super.initState();
     _loading = true;
-    _employeeService.findEmployeeAndUserAndCompanyFieldsValuesById(
-      widget._employeeId,
-      [
-        'username',
-        'name',
-        'surname',
-        'nationality',
-        'phone',
-        'viber',
-        'whatsApp',
-        'accountExpirationDate',
-        'companyName',
-      ],
-    ).then(
-      (res) => {
-        setState(() {
-          _loading = false;
-          _fieldsValues = res;
-          _usernameController.text = this._fieldsValues['username'];
-          _nameController.text = this._fieldsValues['name'];
-          _surnameController.text = this._fieldsValues['surname'];
-          _nationality = this._fieldsValues['nationality'];
-          _phoneController.text = this._fieldsValues['phone'];
-          _viberController.text = this._fieldsValues['viber'];
-          _whatsAppController.text = this._fieldsValues['whatsApp'];
-          _accountExpirationDate = this._fieldsValues['accountExpirationDate'];
-          _companyName = this._fieldsValues['companyName'];
-        }),
-      },
-    );
+    _employeeService
+        .findEmployeeAndUserAndCompanyFieldsValuesById(
+          widget._employeeId,
+          CollectionUtil.removeBracketsFromSet(_fields.toSet()),
+        )
+        .then((res) => setState(
+              () {
+                _loading = false;
+                _fieldsValues = res;
+                _usernameController.text = this._fieldsValues['username'];
+                _nameController.text = this._fieldsValues['name'];
+                _surnameController.text = this._fieldsValues['surname'];
+                _nationality = this._fieldsValues['nationality'];
+                _phoneController.text = this._fieldsValues['phone'];
+                _viberController.text = this._fieldsValues['viber'];
+                _whatsAppController.text = this._fieldsValues['whatsApp'];
+                _accountExpirationDate = this._fieldsValues['accountExpirationDate'];
+                _companyName = this._fieldsValues['companyName'];
+              },
+            ));
   }
 
   @override

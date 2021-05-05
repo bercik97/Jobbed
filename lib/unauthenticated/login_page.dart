@@ -13,6 +13,7 @@ import 'package:jobbed/manager/groups/groups_dashboard_page.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
 import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/collection_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/util/validator_util.dart';
@@ -313,9 +314,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _handleConfirmTokenButton() {
+    final List<String> _fields = ['role', 'companyName', 'accountExpirationDate'];
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     setState(() => _isConfirmTokenButtonTapped = true);
-    _tokenService.findFieldsValuesById(_tokenController.text, ['role', 'companyName', 'accountExpirationDate']).then(
+    _tokenService.findFieldsValuesById(_tokenController.text, CollectionUtil.removeBracketsFromSet(_fields.toSet())).then(
       (res) {
         if (res == null) {
           Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

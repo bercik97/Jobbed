@@ -12,6 +12,7 @@ import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/settings/settings_page.dart';
 import 'package:jobbed/shared/util/avatars_util.dart';
+import 'package:jobbed/shared/util/collection_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
 import 'package:jobbed/shared/util/month_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
@@ -221,8 +222,9 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
   }
 
   Widget _buildContactSection() {
+    final List<String> _fields = ['phone', 'viber', 'whatsApp'];
     return FutureBuilder(
-      future: _employeeService.findEmployeeAndUserAndCompanyFieldsValuesById(_id, ['phone', 'viber', 'whatsApp']),
+      future: _employeeService.findEmployeeAndUserAndCompanyFieldsValuesById(_id, CollectionUtil.removeBracketsFromSet(_fields.toSet())),
       builder: (BuildContext context, AsyncSnapshot<Map<String, Object>> snapshot) {
         Map<String, Object> res = snapshot.data;
         if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
@@ -246,13 +248,9 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
   }
 
   Widget _buildInformationSection() {
+    final List<String> _fields = ['moneyPerHour', 'moneyPerHourForCompany', 'workTimeByLocation', 'piecework'];
     return FutureBuilder(
-      future: _employeeService.findEmployeeAndUserAndCompanyFieldsValuesById(_id, [
-        'moneyPerHour',
-        'moneyPerHourForCompany',
-        'workTimeByLocation',
-        'piecework',
-      ]),
+      future: _employeeService.findEmployeeAndUserAndCompanyFieldsValuesById(_id, CollectionUtil.removeBracketsFromSet(_fields.toSet())),
       builder: (BuildContext context, AsyncSnapshot<Map<String, Object>> snapshot) {
         Map<String, Object> res = snapshot.data;
         if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
