@@ -57,7 +57,7 @@ Container employeePanel(BuildContext context, User user, EmployeeProfileDto empl
                           DialogUtil.showErrorDialog(context, getTranslated(context, 'noPermissionForPiecework'));
                           return;
                         }
-                        NavigatorUtil.navigate(context, PieceworkPage(user, employee.todayDate, employee.todayWorkdayId));
+                        NavigatorUtil.navigate(context, PieceworkPage(user, employee.id, employee.todayDate, employee.todayWorkdayId));
                       },
                       child: _buildScrollableContainer(context, 'images/piecework.png', 'piecework', 'addNoteAboutPiecework'),
                     ),

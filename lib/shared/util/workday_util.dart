@@ -255,7 +255,7 @@ class WorkdayUtil {
               for (int i = 0; i < pieceworks.length; i++)
                 DataRow(
                   cells: [
-                    DataCell(textBlack(pieceworks[i].service)),
+                    DataCell(textBlack(pieceworks[i].serviceName)),
                     DataCell(Align(alignment: Alignment.center, child: textBlack(pieceworks[i].quantity.toString()))),
                     DataCell(Align(alignment: Alignment.center, child: textBlack(pieceworks[i].priceForEmployee.toString()))),
                     displayCompanyPrice ? DataCell(Align(alignment: Alignment.center, child: textBlack(pieceworks[i].priceForCompany.toString()))) : DataCell(SizedBox(height: 0)),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:jobbed/api/piecework/dto/piecework_for_employee_dto.dart';
 import 'package:jobbed/api/piecework/service/piecework_service.dart';
+import 'package:jobbed/api/piecework/service/piecework_view_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/employee/shared/employee_app_bar.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
@@ -20,10 +21,11 @@ import 'add/add_piecework_page.dart';
 
 class PieceworkPage extends StatefulWidget {
   final User _user;
+  final num _employeeId;
   final String _todayDate;
   final int _todayWorkdayId;
 
-  PieceworkPage(this._user, this._todayDate, this._todayWorkdayId);
+  PieceworkPage(this._user, this._employeeId, this._todayDate, this._todayWorkdayId);
 
   @override
   _PieceworkPageState createState() => _PieceworkPageState();
@@ -31,6 +33,7 @@ class PieceworkPage extends StatefulWidget {
 
 class _PieceworkPageState extends State<PieceworkPage> {
   User _user;
+  num _employeeId;
   String _todayDate;
   int _todayWorkdayId;
 
@@ -40,17 +43,20 @@ class _PieceworkPageState extends State<PieceworkPage> {
   bool _isDeletePieceworkServiceButtonTapped = false;
   bool _isDeletePieceworkButtonTapped = false;
 
+  PieceworkViewService _pieceworkViewService;
   PieceworkService _pieceworkService;
 
   @override
   void initState() {
     this._user = widget._user;
+    this._employeeId = widget._employeeId;
     this._todayDate = widget._todayDate;
     this._todayWorkdayId = widget._todayWorkdayId;
+    this._pieceworkViewService = ServiceInitializer.initialize(context, _user.authHeader, PieceworkViewService);
     this._pieceworkService = ServiceInitializer.initialize(context, _user.authHeader, PieceworkService);
     super.initState();
     _loading = true;
-    _pieceworkService.findAllByWorkdayIdForEmployeeView(_todayWorkdayId).then((res) {
+    _pieceworkViewService.findAllByWorkdayIdForEmployeeView(_todayWorkdayId).then((res) {
       setState(() {
         _pieceworks = res;
         _loading = false;
@@ -80,7 +86,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
               heroTag: "plusBtn",
               tooltip: getTranslated(context, 'createNote'),
               backgroundColor: BLUE,
-              onPressed: () => NavigatorUtil.navigate(context, AddPieceworkPage(_user, _todayDate, _todayWorkdayId)),
+              onPressed: () => NavigatorUtil.navigate(context, AddPieceworkPage(_user, _employeeId, _todayDate, _todayWorkdayId)),
               child: text25White('+'),
             ),
             SizedBox(height: 15),
@@ -162,7 +168,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
                     for (int i = 0; i < _pieceworks.length; i++)
                       DataRow(
                         cells: [
-                          DataCell(textBlack(_pieceworks[i].service)),
+                          DataCell(textBlack(_pieceworks[i].serviceName)),
                           DataCell(textBlack(_pieceworks[i].quantity.toString())),
                           DataCell(textBlack(_pieceworks[i].priceForEmployee.toString())),
                           DataCell(
@@ -174,7 +180,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
                                   title: getTranslated(context, 'confirmation'),
                                   content: getTranslated(context, 'deletingSelectedPieceworkServiceConfirmation'),
                                   isBtnTapped: _isDeletePieceworkServiceButtonTapped,
-                                  agreeFun: () => _isDeletePieceworkServiceButtonTapped ? null : _handleDeletePieceworkService(_pieceworks[i].service),
+                                  agreeFun: () => _isDeletePieceworkServiceButtonTapped ? null : _handleDeletePieceworkService(_pieceworks[i].serviceName),
                                 );
                               },
                             ),
@@ -197,7 +203,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
     _pieceworkService.deleteByWorkdayIdAndServiceName(_todayWorkdayId, serviceName).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyDeletedPieceworkService'));
-        NavigatorUtil.navigate(this.context, PieceworkPage(_user, _todayDate, _todayWorkdayId));
+        NavigatorUtil.navigate(this.context, PieceworkPage(_user, _employeeId, _todayDate, _todayWorkdayId));
         setState(() => _isDeletePieceworkServiceButtonTapped = false);
       });
     }).catchError((onError) {
@@ -211,10 +217,10 @@ class _PieceworkPageState extends State<PieceworkPage> {
   void _handleDeletePiecework() {
     setState(() => _isDeletePieceworkButtonTapped = true);
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _pieceworkService.deleteByWorkdayId(_todayWorkdayId).then((value) {
+    _pieceworkService.deleteAllByWorkdayIds(_todayWorkdayId).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyDeletedPieceworkReport'));
-        NavigatorUtil.navigate(this.context, PieceworkPage(_user, _todayDate, _todayWorkdayId));
+        NavigatorUtil.navigate(this.context, PieceworkPage(_user, _employeeId, _todayDate, _todayWorkdayId));
         setState(() => _isDeletePieceworkButtonTapped = false);
       });
     }).catchError((onError) {

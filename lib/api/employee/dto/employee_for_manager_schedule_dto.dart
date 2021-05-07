@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:jobbed/api/piecework/dto/piecework_details_dto.dart';
+import 'package:jobbed/api/piecework/dto/piecework_dto.dart';
 import 'package:jobbed/api/work_time/dto/work_time_dto.dart';
 
 class EmployeeForManagerScheduleDto {

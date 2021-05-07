@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
-import 'package:jobbed/api/employee/dto/employee_basic_dto.dart';
 import 'package:jobbed/api/employee/dto/employee_piecework_dto.dart';
 import 'package:jobbed/api/employee/dto/employee_profile_dto.dart';
 import 'package:jobbed/api/employee/dto/employee_settings_dto.dart';

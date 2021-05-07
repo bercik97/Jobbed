@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:jobbed/api/piecework/dto/create_piecework_dto.dart';
 import 'package:jobbed/api/piecework/service/piecework_service.dart';
-import 'package:jobbed/api/piecework_details/dto/piecework_details_dto.dart';
 import 'package:jobbed/api/price_list/dto/price_list_dto.dart';
 import 'package:jobbed/api/price_list/service/price_list_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
@@ -12,6 +10,7 @@ import 'package:jobbed/employee/shared/employee_app_bar.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/model/user.dart';
+import 'package:jobbed/shared/util/collection_util.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
@@ -24,10 +23,11 @@ import '../piecework_page.dart';
 
 class AddPieceworkPage extends StatefulWidget {
   final User _user;
+  final num _employeeId;
   final String _todayDate;
   final int _todayWorkdayId;
 
-  AddPieceworkPage(this._user, this._todayDate, this._todayWorkdayId);
+  AddPieceworkPage(this._user, this._employeeId, this._todayDate, this._todayWorkdayId);
 
   @override
   _AddPieceworkPageState createState() => _AddPieceworkPageState();
@@ -35,6 +35,7 @@ class AddPieceworkPage extends StatefulWidget {
 
 class _AddPieceworkPageState extends State<AddPieceworkPage> {
   User _user;
+  num _employeeId;
   String _todayDate;
   int _todayWorkdayId;
 
@@ -55,6 +56,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
   @override
   void initState() {
     this._user = widget._user;
+    this._employeeId = widget._employeeId;
     this._todayDate = widget._todayDate;
     this._todayWorkdayId = widget._todayWorkdayId;
     this._priceListService = ServiceInitializer.initialize(context, _user.authHeader, PriceListService);
@@ -133,7 +135,7 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
         ),
         bottomNavigationBar: _buildBottomNavigationBar(),
       ),
-      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, PieceworkPage(_user, _todayDate, _todayWorkdayId)),
+      onWillPop: () => NavigatorUtil.onWillPopNavigate(context, PieceworkPage(_user, _employeeId, _todayDate, _todayWorkdayId)),
     );
   }
 
@@ -227,31 +229,23 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
 
   void _handleAdd() {
     setState(() => _isAddButtonTapped = true);
-    List pieceworksDetails = [];
+    Map<String, num> pieceworks = new Map();
     _textEditingItemControllers.forEach((name, quantityController) {
       String quantity = quantityController.text;
       if (quantity != '0') {
-        pieceworksDetails.add(new PieceworkDetails(
-          service: name,
-          toBeDoneQuantity: int.parse(quantity),
-          doneQuantity: int.parse(quantity),
-        ));
+        pieceworks[name] = num.parse(quantity);
       }
     });
-    if (pieceworksDetails.isEmpty) {
+    if (pieceworks.isEmpty) {
       setState(() => _isAddButtonTapped = false);
       ToastUtil.showErrorToast(this.context, getTranslated(context, 'pieceworkCannotBeEmpty'));
       return;
     }
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    CreatePieceworkDto dto = new CreatePieceworkDto(
-      workdayId: _todayWorkdayId,
-      pieceworksDetails: pieceworksDetails,
-    );
-    _pieceworkService.create(dto).then((res) {
+    _pieceworkService.createOrUpdateByEmployeeIdsAndDates(pieceworks, CollectionUtil.removeBracketsFromSet([_todayDate].toSet()), CollectionUtil.removeBracketsFromSet([_employeeId].toSet())).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyAddedNewReportAboutPiecework'));
-        NavigatorUtil.navigate(context, PieceworkPage(_user, _todayDate, _todayWorkdayId));
+        NavigatorUtil.navigate(context, PieceworkPage(_user, _employeeId, _todayDate, _todayWorkdayId));
       });
     }).catchError((onError) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {

@@ -1,27 +1,24 @@
 import 'package:flutter/cupertino.dart';
 
 class PieceworkDto {
-  final int id;
-  final List services;
-  final List quantities;
-  final List prices;
-  final double totalPrice;
+  final String serviceName;
+  final int quantity;
+  final double priceForEmployee;
+  final double priceForCompany;
 
   PieceworkDto({
-    @required this.id,
-    @required this.services,
-    @required this.quantities,
-    @required this.prices,
-    @required this.totalPrice,
+    @required this.serviceName,
+    @required this.quantity,
+    @required this.priceForEmployee,
+    @required this.priceForCompany,
   });
 
   factory PieceworkDto.fromJson(Map<String, dynamic> json) {
     return PieceworkDto(
-      id: json['id'] as int,
-      services: json['services'] as List,
-      quantities: json['quantities'] as List,
-      prices: json['prices'] as List,
-      totalPrice: json['totalPrice'] as double,
+      serviceName: json['serviceName'] as String,
+      quantity: json['quantity'] as int,
+      priceForEmployee: json['priceForEmployee'] as double,
+      priceForCompany: json['priceForCompany'] as double,
     );
   }
 }

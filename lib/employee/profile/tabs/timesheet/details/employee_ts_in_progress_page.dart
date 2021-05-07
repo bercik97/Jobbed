@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
-import 'package:jobbed/api/piecework/dto/piecework_dto.dart';
+import 'package:jobbed/api/piecework/dto/pieceworks_dto.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:jobbed/api/workday/dto/workday_for_timesheet_dto.dart';
-import 'package:jobbed/api/workday/service/workday_service.dart';
+import 'package:jobbed/api/workday/service/workday_view_service.dart';
 import 'package:jobbed/employee/shared/employee_app_bar.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
@@ -33,22 +33,22 @@ class EmployeeTsInProgressPage extends StatefulWidget {
 
 class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   User _user;
-  WorkdayService _workdayService;
+  WorkdayViewService _workdayViewService;
   TimesheetForEmployeeDto _timesheet;
 
   List<WorkdayForTimesheetDto> workdays = new List();
-  List<PieceworkDto> pieceworks = new List();
+  List<PieceworksDto> pieceworks = new List();
 
   bool _loading = false;
 
   @override
   void initState() {
     this._user = widget._user;
-    this._workdayService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayService);
+    this._workdayViewService = ServiceInitializer.initialize(context, _user.authHeader, WorkdayViewService);
     this._timesheet = widget._timesheet;
     this._loading = true;
     super.initState();
-    _workdayService.findAllByTimesheetIdForTimesheetView(_timesheet.id.toString()).then((res) {
+    _workdayViewService.findAllByTimesheetIdForTimesheetView(_timesheet.id.toString()).then((res) {
       setState(() {
         workdays = res;
         _loading = false;
@@ -208,7 +208,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
 
   Future<Null> _refresh() {
     _loading = true;
-    return _workdayService.findAllByTimesheetIdForTimesheetView(_timesheet.id.toString()).then((_workdays) {
+    return _workdayViewService.findAllByTimesheetIdForTimesheetView(_timesheet.id.toString()).then((_workdays) {
       setState(() {
         workdays = _workdays;
         _loading = false;

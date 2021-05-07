@@ -13,7 +13,7 @@ import 'package:jobbed/api/workday/service/workday_service.dart';
 import 'package:jobbed/api/workplace/dto/workplace_dto.dart';
 import 'package:jobbed/api/workplace/service/workplace_service.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
-import 'package:jobbed/manager/groups/group/piecework/manage/add_piecework_for_selected_workdays.dart';
+import 'package:jobbed/manager/groups/group/piecework/manage/add_piecework_page.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/collection_util.dart';
@@ -240,7 +240,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                   child: Image(image: AssetImage('images/white-piecework.png')),
                   onPressed: () {
                     if (selectedIds.isNotEmpty) {
-                      NavigatorUtil.navigate(context, AddPieceworkForSelectedWorkdays(_model, selectedIds.map((el) => el.toString()).toList(), _employeeId, _name, _surname, _gender, _nationality, _timesheet));
+                      NavigatorUtil.navigate(context, AddPieceworkPage(_model, null, null, selectedIds));
                     } else {
                       showHint(context, getTranslated(context, 'needToSelectRecords') + ' ', getTranslated(context, 'whichYouWantToUpdate'));
                     }
@@ -773,14 +773,14 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
       title: getTranslated(context, 'confirmation'),
       content: getTranslated(context, 'deletingPieceworkForSelectedDaysConfirmation'),
       isBtnTapped: _isDeletePieceworkButtonTapped,
-      agreeFun: () => _isDeletePieceworkButtonTapped ? null : _handleDeletePiecework(selectedIds.map((el) => el.toString()).toList()),
+      agreeFun: () => _isDeletePieceworkButtonTapped ? null : _handleDeletePiecework(),
     );
   }
 
-  void _handleDeletePiecework(List<String> ids) {
+  void _handleDeletePiecework() {
     setState(() => _isDeletePieceworkButtonTapped = true);
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workdayService.deletePieceworkByIds(ids).then((res) {
+    _pieceworkService.deleteAllByWorkdayIds(CollectionUtil.removeBracketsFromSet(selectedIds)).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _refresh();
         Navigator.of(context).pop();
@@ -853,7 +853,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                   for (int i = 0; i < pieceworks.length; i++)
                                     DataRow(
                                       cells: [
-                                        DataCell(text16Black(pieceworks[i].service)),
+                                        DataCell(text16Black(pieceworks[i].serviceName)),
                                         DataCell(Align(alignment: Alignment.center, child: text16Black(pieceworks[i].quantity.toString()))),
                                         DataCell(Align(alignment: Alignment.center, child: text16Black(pieceworks[i].priceForEmployee.toString()))),
                                         DataCell(Align(alignment: Alignment.center, child: text16Black(pieceworks[i].priceForCompany.toString()))),
@@ -866,7 +866,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                                 title: getTranslated(context, 'confirmation'),
                                                 content: getTranslated(context, 'deletingSelectedPieceworkServiceConfirmation'),
                                                 isBtnTapped: _isDeletePieceworkServiceButtonTapped,
-                                                agreeFun: () => _isDeletePieceworkServiceButtonTapped ? null : _handleDeletePieceworkService(workdayId, pieceworks[i].service),
+                                                agreeFun: () => _isDeletePieceworkServiceButtonTapped ? null : _handleDeletePieceworkService(workdayId, pieceworks[i].serviceName),
                                               );
                                             },
                                           ),
