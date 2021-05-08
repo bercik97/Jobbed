@@ -855,8 +855,8 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                       cells: [
                                         DataCell(text16Black(pieceworks[i].serviceName)),
                                         DataCell(Align(alignment: Alignment.center, child: text16Black(pieceworks[i].quantity.toString()))),
-                                        DataCell(Align(alignment: Alignment.center, child: text16Black(pieceworks[i].priceForEmployee.toString()))),
-                                        DataCell(Align(alignment: Alignment.center, child: text16Black(pieceworks[i].priceForCompany.toString()))),
+                                        DataCell(Align(alignment: Alignment.center, child: text16Black(pieceworks[i].moneyForEmployee.toString()))),
+                                        DataCell(Align(alignment: Alignment.center, child: text16Black(pieceworks[i].moneyForCompany.toString()))),
                                         DataCell(
                                           IconButton(
                                             icon: iconRed(Icons.delete),

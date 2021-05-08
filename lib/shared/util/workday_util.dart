@@ -257,8 +257,8 @@ class WorkdayUtil {
                   cells: [
                     DataCell(textBlack(pieceworks[i].serviceName)),
                     DataCell(Align(alignment: Alignment.center, child: textBlack(pieceworks[i].quantity.toString()))),
-                    DataCell(Align(alignment: Alignment.center, child: textBlack(pieceworks[i].priceForEmployee.toString()))),
-                    displayCompanyPrice ? DataCell(Align(alignment: Alignment.center, child: textBlack(pieceworks[i].priceForCompany.toString()))) : DataCell(SizedBox(height: 0)),
+                    DataCell(Align(alignment: Alignment.center, child: textBlack(pieceworks[i].moneyForEmployee.toString()))),
+                    displayCompanyPrice ? DataCell(Align(alignment: Alignment.center, child: textBlack(pieceworks[i].moneyForCompany.toString()))) : DataCell(SizedBox(height: 0)),
                   ],
                 ),
             ],

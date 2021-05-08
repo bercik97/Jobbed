@@ -170,7 +170,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
                         cells: [
                           DataCell(textBlack(_pieceworks[i].serviceName)),
                           DataCell(textBlack(_pieceworks[i].quantity.toString())),
-                          DataCell(textBlack(_pieceworks[i].priceForEmployee.toString())),
+                          DataCell(textBlack(_pieceworks[i].moneyForEmployee.toString())),
                           DataCell(
                             IconButton(
                               icon: iconRed(Icons.delete),

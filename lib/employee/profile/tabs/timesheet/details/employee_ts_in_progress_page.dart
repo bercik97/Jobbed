@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
-import 'package:jobbed/api/piecework/dto/pieceworks_dto.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:jobbed/api/workday/dto/workday_for_timesheet_dto.dart';
@@ -37,7 +36,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   TimesheetForEmployeeDto _timesheet;
 
   List<WorkdayForTimesheetDto> workdays = new List();
-  List<PieceworksDto> pieceworks = new List();
 
   bool _loading = false;
 
