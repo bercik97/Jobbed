@@ -217,9 +217,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                       onTap: () {
                         NavigatorUtil.navigate(
                           this.context,
-                          GroupPage(
-                            new GroupModel(_user, group.id, group.name, group.description, group.numberOfEmployees.toString()),
-                          ),
+                          GroupPage(new GroupModel(_user, group.id, group.name, group.description)),
                         );
                       },
                       title: text17BlueBold(_groups[index].name),

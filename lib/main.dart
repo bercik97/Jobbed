@@ -57,18 +57,17 @@ class _MyAppState extends State<MyApp> {
 
   Future<Map<String, String>> get authOrEmpty async {
     var getStartedClick = await storage.read(key: 'getStartedClick');
-    var auth = await storage.read(key: 'authorization');
-    var role = await storage.read(key: 'role');
     var id = await storage.read(key: 'id');
-    var info = await storage.read(key: 'info');
+    var role = await storage.read(key: 'role');
     var username = await storage.read(key: 'username');
+    var info = await storage.read(key: 'info');
     var nationality = await storage.read(key: 'nationality');
     var companyId = await storage.read(key: 'companyId');
     var companyName = await storage.read(key: 'companyName');
+    var auth = await storage.read(key: 'authorization');
     var groupId = await storage.read(key: 'groupId');
     var groupName = await storage.read(key: 'groupName');
     var groupDescription = await storage.read(key: 'groupDescription');
-    var numberOfEmployees = await storage.read(key: 'numberOfEmployees');
     Map<String, String> map = new Map();
     map['getStartedClick'] = getStartedClick;
     map['authorization'] = auth;
@@ -82,7 +81,6 @@ class _MyAppState extends State<MyApp> {
     map['groupId'] = groupId;
     map['groupName'] = groupName;
     map['groupDescription'] = groupDescription;
-    map['numberOfEmployees'] = numberOfEmployees;
     return map.isNotEmpty ? map : null;
   }
 
