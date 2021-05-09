@@ -6,17 +6,17 @@ class WorkdayForTimesheetDto {
   final int id;
   final int number;
   final String hours;
-  final List pieceworks;
   final List workTimes;
-  final String money;
+  final List pieceworks;
+  final String totalMoneyForEmployee;
 
   WorkdayForTimesheetDto({
     @required this.id,
     @required this.number,
     @required this.hours,
-    @required this.pieceworks,
     @required this.workTimes,
-    @required this.money,
+    @required this.pieceworks,
+    @required this.totalMoneyForEmployee,
   });
 
   factory WorkdayForTimesheetDto.fromJson(Map<String, dynamic> json) {
@@ -24,9 +24,9 @@ class WorkdayForTimesheetDto {
       id: json['id'] as int,
       number: json['number'] as int,
       hours: json['hours'] as String,
-      pieceworks: json['pieceworks'].map((data) => PieceworkDto.fromJson(data)).toList(),
       workTimes: json['workTimes'].map((data) => WorkTimeDto.fromJson(data)).toList(),
-      money: json['money'] as String,
+      pieceworks: json['pieceworks'].map((data) => PieceworkDto.fromJson(data)).toList(),
+      totalMoneyForEmployee: json['totalMoneyForEmployee'] as String,
     );
   }
 }

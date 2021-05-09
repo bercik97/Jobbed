@@ -196,7 +196,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
           ),
         ),
         Container(
-          child: Align(alignment: Alignment.center, child: text16Black(workdays[index].money)),
+          child: Align(alignment: Alignment.center, child: text16Black(workdays[index].totalMoneyForEmployee)),
           width: 80,
           height: 50,
         ),
