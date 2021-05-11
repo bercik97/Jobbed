@@ -23,8 +23,6 @@ dependencies:
   form_field_validator: ^1.0.1
   dropdown_formfield: ^0.1.2
   slide_popup_dialog: ^0.0.2
-  date_range_picker: ^1.0.6
-  date_util: ^0.1.4
   intl: ^0.16.0
   bouncing_widget: ^1.2.0
   shimmer: ^1.1.1
