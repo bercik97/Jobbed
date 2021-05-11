@@ -1,11 +1,8 @@
 import 'dart:collection';
 
-import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
-import 'package:date_util/date_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
-import 'package:intl/intl.dart';
 import 'package:jobbed/api/employee/dto/employee_work_time_dto.dart';
 import 'package:jobbed/api/employee/service/employee_view_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
@@ -31,6 +28,7 @@ import 'package:jobbed/shared/widget/hint.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
 import 'package:jobbed/shared/widget/radio_button.dart';
+import 'package:jobbed/shared/widget/refactored/callendarro_dialog.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
@@ -215,7 +213,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                       showHint(context, getTranslated(context, 'noWorkplaces') + ' ', getTranslated(context, 'goToWorkplacesSectionAndAddSomeWorkplaces'));
                       return;
                     }
-                    _showUpdateHoursDialog(_selectedIds);
+                    _showUpdateHoursDialog();
                   },
                 ),
               ),
@@ -278,7 +276,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                       showHint(context, getTranslated(context, 'noWorkplaces') + ' ', getTranslated(context, 'goToWorkplacesSectionAndAddSomeWorkplaces'));
                       return;
                     }
-                    _showDeleteWorkDialog(_selectedIds);
+                    _showDeleteWorkDialog();
                   },
                 ),
               ),
@@ -318,27 +316,11 @@ class _WorkTimePageState extends State<WorkTimePage> {
     return false;
   }
 
-  void _showUpdateHoursDialog(LinkedHashSet<int> selectedIds) async {
-    DateTime now = new DateTime.now();
-    int year = now.year;
-    int month = now.month;
-    int days = DateUtil().daysInMonth(month, year);
-    bool isJanuaryMonth = month == 1;
-    bool isDecemberMonth = month == 12;
-    int daysInLastDate = DateUtil().daysInMonth(isDecemberMonth ? 1 : month + 1, isDecemberMonth ? year + 1 : year);
-    final List<DateTime> picked = await DateRagePicker.showDatePicker(
-      context: context,
-      initialFirstDate: new DateTime(year, month, 1),
-      initialLastDate: new DateTime(year, month, days),
-      firstDate: new DateTime(isJanuaryMonth ? year - 1 : year, isJanuaryMonth ? 12 : month - 1, 1),
-      lastDate: new DateTime(isDecemberMonth ? year + 1 : year, isDecemberMonth ? 1 : month + 1, daysInLastDate),
-    );
-    if (picked != null && picked.length == 1) {
-      picked.add(picked[0]);
-    }
-    if (picked != null && picked.length == 2) {
-      String dateFrom = DateFormat('yyyy-MM-dd').format(picked[0]);
-      String dateTo = DateFormat('yyyy-MM-dd').format(picked[1]);
+  void _showUpdateHoursDialog() async {
+    callendarroDialog(context, 'Naciśnij na wybrany dzień aby zaznaczyć').then((dates) {
+      if (dates == null) {
+        return;
+      }
       showGeneralDialog(
         context: context,
         barrierColor: WHITE.withOpacity(0.95),
@@ -356,8 +338,6 @@ class _WorkTimePageState extends State<WorkTimePage> {
                     Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'workTimeUpperCase'))),
                     SizedBox(height: 2.5),
                     text16Black(getTranslated(context, 'setWorkTimeForSelectedEmployees')),
-                    SizedBox(height: 2.5),
-                    text17BlueBold('[' + dateFrom + ' - ' + dateTo + ']'),
                     SizedBox(height: 20),
                     text17BlackBold(getTranslated(context, 'startWorkTimeFrom')),
                     Row(
@@ -533,10 +513,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                             }
                             String startTime = fromHours.toString() + ':' + fromMinutes.toString() + ':' + '00';
                             String endTime = toHours.toString() + ':' + toMinutes.toString() + ':' + '00';
-                            _showChooseWorkplaceDialog(
-                              getTranslated(this.context, 'chooseWorkplace'),
-                              () => _handleSaveWorkTimesManually(year, month, dateFrom, dateTo, startTime, endTime),
-                            );
+                            _showChooseWorkplaceDialog(getTranslated(this.context, 'chooseWorkplace'), () => _handleSaveWorkTimesManually(dates, startTime, endTime));
                           },
                         ),
                       ],
@@ -548,7 +525,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
           );
         },
       );
-    }
+    });
   }
 
   void _showChooseWorkplaceDialog(String title, Function() fun) {
@@ -664,9 +641,9 @@ class _WorkTimePageState extends State<WorkTimePage> {
     );
   }
 
-  void _handleSaveWorkTimesManually(int year, int month, String dateFrom, String dateTo, String startTime, String endTime) {
+  void _handleSaveWorkTimesManually(List<String> dates, String startTime, String endTime) {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workTimeService.saveByEmployeeIds(CollectionUtil.removeBracketsFromSet(_selectedIds), _workplaces[_chosenIndex].id, dateFrom, dateTo, startTime, endTime).then((value) {
+    _workTimeService.saveByEmployeeIdsAndDates(CollectionUtil.removeBracketsFromSet(_selectedIds), CollectionUtil.removeBracketsFromSet(dates.toSet()), _workplaces[_chosenIndex].id, startTime, endTime).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _uncheckAll();
         _refresh();
@@ -683,7 +660,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
 
   void _handleCreateWorkTimeForEmployees() {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workTimeService.saveByEmployeeIdsAndWorkplaceId(CollectionUtil.removeBracketsFromSet(_selectedIds), _workplaces[_chosenIndex].id).then((value) {
+    _workTimeService.startByEmployeeIdsAndWorkplaceId(CollectionUtil.removeBracketsFromSet(_selectedIds), _workplaces[_chosenIndex].id).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _uncheckAll();
         _refresh();
@@ -726,41 +703,25 @@ class _WorkTimePageState extends State<WorkTimePage> {
     });
   }
 
-  void _showDeleteWorkDialog(LinkedHashSet<int> selectedIds) async {
-    DateTime now = new DateTime.now();
-    int year = now.year;
-    int month = now.month;
-    int days = DateUtil().daysInMonth(month, year);
-    bool isJanuaryMonth = month == 1;
-    bool isDecemberMonth = month == 12;
-    int daysInLastDate = DateUtil().daysInMonth(isDecemberMonth ? 1 : month + 1, isDecemberMonth ? year + 1 : year);
-    final List<DateTime> picked = await DateRagePicker.showDatePicker(
-      context: context,
-      initialFirstDate: new DateTime(year, month, 1),
-      initialLastDate: new DateTime(year, month, days),
-      firstDate: new DateTime(isJanuaryMonth ? year - 1 : year, isJanuaryMonth ? 12 : month - 1, 1),
-      lastDate: new DateTime(isDecemberMonth ? year + 1 : year, isDecemberMonth ? 1 : month + 1, daysInLastDate),
-    );
-    if (picked != null && picked.length == 1) {
-      picked.add(picked[0]);
-    }
-    if (picked != null && picked.length == 2) {
-      String dateFrom = DateFormat('yyyy-MM-dd').format(picked[0]);
-      String dateTo = DateFormat('yyyy-MM-dd').format(picked[1]);
+  void _showDeleteWorkDialog() async {
+    callendarroDialog(context, 'Naciśnij na wybrany dzień aby zaznaczyć').then((dates) {
+      if (dates == null) {
+        return;
+      }
       DialogUtil.showConfirmationDialog(
         context: this.context,
         title: getTranslated(this.context, 'confirmation'),
-        content: getTranslated(this.context, 'deleteWorkConfirmation') + ' $dateFrom - $dateTo)',
+        content: getTranslated(this.context, 'deleteWorkConfirmation'),
         isBtnTapped: _isDeleteWorkButtonTapped,
-        agreeFun: () => _isDeleteWorkButtonTapped ? null : _handleDeleteWork(dateFrom, dateTo),
+        agreeFun: () => _isDeleteWorkButtonTapped ? null : _handleDeleteWork(dates),
       );
-    }
+    });
   }
 
-  _handleDeleteWork(String dateFrom, String dateTo) {
+  _handleDeleteWork(List<String> dates) {
     setState(() => _isDeleteWorkButtonTapped = true);
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workTimeService.deleteByEmployeeIdsAndFromDateToDate(CollectionUtil.removeBracketsFromSet(_selectedIds), dateFrom, dateTo).then((value) {
+    _workTimeService.deleteByEmployeeIdsAndDates(CollectionUtil.removeBracketsFromSet(_selectedIds), CollectionUtil.removeBracketsFromSet(dates.toSet())).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _uncheckAll();
         _refresh();

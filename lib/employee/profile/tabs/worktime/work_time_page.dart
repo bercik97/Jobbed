@@ -8,8 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
-import 'package:jobbed/api/work_time/dto/create_work_time_dto.dart';
-import 'package:jobbed/api/work_time/dto/is_currently_at_work_with_work_times_dto.dart';
+import 'package:jobbed/api/work_time/dto/is_work_time_started_dto.dart';
 import 'package:jobbed/api/work_time/service/work_time_service.dart';
 import 'package:jobbed/api/workplace/dto/workplace_id_name_dto.dart';
 import 'package:jobbed/api/workplace/service/workplace_service.dart';
@@ -52,7 +51,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
   WorkTimeService _workTimeService;
   WorkplaceService _workplaceService;
 
-  IsCurrentlyAtWorkWithWorkTimesDto _dto;
+  IsWorkTimeStartedDto _dto;
 
   final _workplaceCodeController = TextEditingController();
 
@@ -109,9 +108,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
   Future<dynamic> _fetchData() async {
     return this._memoizer.runOnce(() async {
       await Future.delayed(Duration(microseconds: 1));
-      return Future.wait(
-        [_workTimeService.checkIfWorkTimeIsStartedAndNotFinished(_employeeId, _todayWorkdayId)],
-      );
+      return Future.wait([_workTimeService.isWorkTimeStarted(_employeeId, _todayWorkdayId)]);
     });
   }
 
@@ -460,12 +457,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
   void _startWorkByGPS(String workplaceId) {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
     setState(() => _isStartWorkButtonTapped = true);
-    CreateWorkTimeDto dto = new CreateWorkTimeDto(
-      workplaceId: workplaceId,
-      employeeId: _employeeId,
-      workdayId: _todayWorkdayId,
-    );
-    _workTimeService.create(dto).then((res) {
+    _workTimeService.startWorkByEmployeeIdAndWorkdayIdAndWorkplaceId(_employeeId, _todayWorkdayId, workplaceId).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workTimeHasBegun'));
         _refresh();
@@ -634,13 +626,8 @@ class _WorkTimePageState extends State<WorkTimePage> {
 
   _startWorkByWorkplaceCode(String workplaceId) {
     setState(() => _isStartWorkButtonTapped = true);
-    CreateWorkTimeDto dto = new CreateWorkTimeDto(
-      workplaceId: workplaceId,
-      employeeId: _employeeId,
-      workdayId: _todayWorkdayId,
-    );
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workTimeService.create(dto).then((value) {
+    _workTimeService.startWorkByEmployeeIdAndWorkdayIdAndWorkplaceId(_employeeId, _todayWorkdayId, workplaceId).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workTimeHasBegun'));
         _refresh();
@@ -795,7 +782,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
 
   _pauseWorkByWorkplaceCode(String workplaceId) {
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workTimeService.finishWorkplaceCode(_dto.notFinishedWorkTime.id).then((res) {
+    _workTimeService.finishById(_dto.notFinishedWorkTime.id).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'workTimeEnded'));
         _refresh();

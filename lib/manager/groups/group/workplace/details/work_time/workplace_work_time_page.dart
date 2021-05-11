@@ -68,7 +68,7 @@ class _WorkplaceWorkTimePageState extends State<WorkplaceWorkTimePage> {
               ),
             ),
             FutureBuilder(
-              future: _workTimeService.findAllDatesWithTotalTimeByWorkplaceIdAndYearMonthIn(_workplaceDto.id, _date),
+              future: _workTimeService.findAllByWorkplaceIdAndYearMonthIn(_workplaceDto.id, _date),
               builder: (BuildContext context, AsyncSnapshot<List<WorkTimeDetailsDto>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
                   return Padding(
