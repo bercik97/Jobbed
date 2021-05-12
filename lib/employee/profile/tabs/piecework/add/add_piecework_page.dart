@@ -230,11 +230,11 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
 
   void _handleAdd() {
     setState(() => _isAddButtonTapped = true);
-    Map<String, num> pieceworks = new Map();
+    Map<String, int> pieceworks = new Map();
     _textEditingItemControllers.forEach((name, quantityController) {
       String quantity = quantityController.text;
       if (quantity != '0') {
-        pieceworks[name] = num.parse(quantity);
+        pieceworks[name] = int.parse(quantity);
       }
     });
     if (pieceworks.isEmpty) {
