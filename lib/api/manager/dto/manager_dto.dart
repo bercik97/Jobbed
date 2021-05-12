@@ -9,8 +9,8 @@ class ManagerDto {
   final String phoneNumber;
   final String viberNumber;
   final String whatsAppNumber;
-  final int numberOfGroups;
-  final int numberOfEmployeesInGroups;
+  final num numberOfGroups;
+  final num numberOfEmployeesInGroups;
 
   ManagerDto({
     @required this.username,
@@ -30,13 +30,13 @@ class ManagerDto {
       username: json['username'],
       name: json['name'],
       surname: json['surname'],
-      nationality: json['nationality'] as String,
+      nationality: json['nationality'],
       email: json['email'],
-      phoneNumber: json['phoneNumber'] as String,
-      viberNumber: json['viberNumber'] as String,
-      whatsAppNumber: json['whatsAppNumber'] as String,
-      numberOfGroups: json['numberOfGroups'] as int,
-      numberOfEmployeesInGroups: json['numberOfEmployeesInGroups'] as int,
+      phoneNumber: json['phoneNumber'],
+      viberNumber: json['viberNumber'],
+      whatsAppNumber: json['whatsAppNumber'],
+      numberOfGroups: json['numberOfGroups'] as num,
+      numberOfEmployeesInGroups: json['numberOfEmployeesInGroups'] as num,
     );
   }
 }

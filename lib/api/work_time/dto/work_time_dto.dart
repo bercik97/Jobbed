@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class WorkTimeDto {
-  final int id;
+  final num id;
   final String date;
   final String startTime;
   final String endTime;
@@ -21,13 +21,13 @@ class WorkTimeDto {
 
   factory WorkTimeDto.fromJson(Map<String, dynamic> json) {
     return WorkTimeDto(
-      id: json['id'] as int,
-      date: json['date'] as String,
-      startTime: json['startTime'] as String,
-      endTime: json['endTime'] as String,
-      totalTime: json['totalTime'] as String,
-      additionalInfo: json['additionalInfo'] as String,
-      workplaceName: json['workplaceName'] as String,
+      id: json['id'] as num,
+      date: json['date'],
+      startTime: json['startTime'],
+      endTime: json['endTime'],
+      totalTime: json['totalTime'],
+      additionalInfo: json['additionalInfo'],
+      workplaceName: json['workplaceName'],
     );
   }
 }

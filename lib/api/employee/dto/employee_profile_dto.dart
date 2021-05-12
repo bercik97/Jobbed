@@ -4,7 +4,7 @@ import 'package:jobbed/api/timesheet/dto/timesheet_for_employee_dto.dart';
 import 'package:jobbed/api/work_time/dto/work_time_dto.dart';
 
 class EmployeeProfileDto {
-  final int id;
+  final num id;
   final String name;
   final String surname;
   final String gender;
@@ -13,7 +13,7 @@ class EmployeeProfileDto {
   final num tsDaysWorked;
   final num tsEarnedMoney;
   final List timeSheets;
-  final int todayWorkdayId;
+  final num todayWorkdayId;
   final String todayDate;
   final String todayMoneyForTime;
   final String todayMoneyForPiecework;
@@ -46,20 +46,20 @@ class EmployeeProfileDto {
 
   factory EmployeeProfileDto.fromJson(Map<String, dynamic> json) {
     return EmployeeProfileDto(
-      id: json['id'] as int,
-      name: json['name'] as String,
-      surname: json['surname'] as String,
-      gender: json['gender'] as String,
-      tsCurrentYear: json['tsCurrentYear'] as String,
-      tsCurrentMonth: json['tsCurrentMonth'] as String,
+      id: json['id'] as num,
+      name: json['name'],
+      surname: json['surname'],
+      gender: json['gender'],
+      tsCurrentYear: json['tsCurrentYear'],
+      tsCurrentMonth: json['tsCurrentMonth'],
       tsDaysWorked: json['tsDaysWorked'] as num,
       tsEarnedMoney: json['tsEarnedMoney'] as num,
       timeSheets: json['timeSheets'].map((data) => TimesheetForEmployeeDto.fromJson(data)).toList(),
-      todayWorkdayId: json['todayWorkdayId'] as int,
+      todayWorkdayId: json['todayWorkdayId'] as num,
       todayDate: json['todayDate'],
-      todayMoneyForTime: json['todayMoneyForTime'] as String,
-      todayMoneyForPiecework: json['todayMoneyForPiecework'] as String,
-      todayMoney: json['todayMoney'] as String,
+      todayMoneyForTime: json['todayMoneyForTime'],
+      todayMoneyForPiecework: json['todayMoneyForPiecework'],
+      todayMoney: json['todayMoney'],
       todayWorkTimes: json['todayWorkTimes'].map((data) => WorkTimeDto.fromJson(data)).toList(),
       todayPiecework: json['todayPiecework'].map((data) => PieceworkDto.fromJson(data)).toList(),
       workTimeByLocation: json['workTimeByLocation'] as bool,

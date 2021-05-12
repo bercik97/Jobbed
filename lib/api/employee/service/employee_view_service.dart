@@ -30,7 +30,7 @@ class EmployeeViewService {
     }
   }
 
-  Future<List<EmployeeSettingsDto>> findAllByGroupIdForSettingsView(int groupId) async {
+  Future<List<EmployeeSettingsDto>> findAllByGroupIdForSettingsView(num groupId) async {
     String url = '$_url/settings?group_id=$groupId';
     Response res = await get(url, headers: _headers);
     if (res.statusCode == 200) {
@@ -42,7 +42,7 @@ class EmployeeViewService {
     }
   }
 
-  Future<List<EmployeeWorkTimeDto>> findAllByGroupIdForWorkTimeView(int groupId) async {
+  Future<List<EmployeeWorkTimeDto>> findAllByGroupIdForWorkTimeView(num groupId) async {
     Response res = await get('$_url/work-time?group_id=$groupId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeWorkTimeDto.fromJson(data)).toList();
@@ -53,7 +53,7 @@ class EmployeeViewService {
     }
   }
 
-  Future<List<EmployeePieceworkDto>> findAllByGroupIdForPieceworkView(int groupId) async {
+  Future<List<EmployeePieceworkDto>> findAllByGroupIdForPieceworkView(num groupId) async {
     Response res = await get('$_url/piecework?group_id=$groupId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeePieceworkDto.fromJson(data)).toList();
@@ -64,7 +64,7 @@ class EmployeeViewService {
     }
   }
 
-  Future<List<EmployeeStatisticsDto>> findAllByGroupIdAndTsYearAndMonthAndStatusForStatisticsView(int groupId, int tsYear, int tsMonth, String tsStatus) async {
+  Future<List<EmployeeStatisticsDto>> findAllByGroupIdAndTsYearAndMonthAndStatusForStatisticsView(num groupId, int tsYear, int tsMonth, String tsStatus) async {
     String url = '$_url/statistics/groups/$groupId/timesheets?ts_year=$tsYear&ts_month=$tsMonth&ts_status=$tsStatus';
     Response res = await get(url, headers: _headers);
     if (res.statusCode == 200) {

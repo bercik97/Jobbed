@@ -29,7 +29,7 @@ class TimesheetService {
     }
   }
 
-  Future<Map<DateTime, List<EmployeeScheduleDto>>> findByIdForEmployeeScheduleView(int employeeId) async {
+  Future<Map<DateTime, List<EmployeeScheduleDto>>> findByIdForEmployeeScheduleView(num employeeId) async {
     Response res = await get('$_url/view/employee-schedule?employee_id=$employeeId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as Map).map(
@@ -61,7 +61,7 @@ class TimesheetService {
     }
   }
 
-  Future<List<TimesheetForEmployeeDto>> findAllByEmployeeIdOrderByYearDescMonthDesc(int employeeId) async {
+  Future<List<TimesheetForEmployeeDto>> findAllByEmployeeIdOrderByYearDescMonthDesc(num employeeId) async {
     Response res = await get('$_url/employees?employee_id=$employeeId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => TimesheetForEmployeeDto.fromJson(data)).toList();
@@ -72,7 +72,7 @@ class TimesheetService {
     }
   }
 
-  Future<List<TimesheetWithStatusDto>> findAllByGroupId(int groupId) async {
+  Future<List<TimesheetWithStatusDto>> findAllByGroupId(num groupId) async {
     Response res = await get('$_url/groups?group_id=$groupId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => TimesheetWithStatusDto.fromJson(data)).toList();
@@ -83,7 +83,7 @@ class TimesheetService {
     }
   }
 
-  Future<List<TimesheetWithoutStatusDto>> findAllByGroupIdAndStatus(int groupId, String tsStatus) async {
+  Future<List<TimesheetWithoutStatusDto>> findAllByGroupIdAndStatus(num groupId, String tsStatus) async {
     Response res = await get(_url + '/groups/$groupId/status?ts_status=$tsStatus', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => TimesheetWithoutStatusDto.fromJson(data)).toList();
@@ -94,7 +94,7 @@ class TimesheetService {
     }
   }
 
-  Future<dynamic> updateTsStatusByGroupIdAndYearAndMonthAndStatusAndEmployeesIdIn(var employeeIds, int newStatusId, int tsYear, int tsMonth, String currentTsStatus, int groupId) async {
+  Future<dynamic> updateTsStatusByGroupIdAndYearAndMonthAndStatusAndEmployeesIdIn(var employeeIds, int newStatusId, int tsYear, int tsMonth, String currentTsStatus, num groupId) async {
     Response res = await put('$_url/groups/$groupId/employees/$employeeIds', body: jsonEncode({'newStatusId': newStatusId, 'tsYear': tsYear, 'tsMonth': tsMonth, 'currentTsStatus': currentTsStatus}), headers: _headers);
     if (res.statusCode == 200) {
       return res;

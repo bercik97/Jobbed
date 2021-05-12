@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class EmployeeBasicDto {
-  final int id;
+  final num id;
   final String name;
   final String surname;
   final String gender;
@@ -17,11 +17,11 @@ class EmployeeBasicDto {
 
   factory EmployeeBasicDto.fromJson(Map<String, dynamic> json) {
     return EmployeeBasicDto(
-      id: json['id'] as int,
+      id: json['id'] as num,
       name: json['name'],
       surname: json['surname'],
-      gender: json['gender'] as String,
-      nationality: json['nationality'] as String,
+      gender: json['gender'],
+      nationality: json['nationality'],
     );
   }
 }

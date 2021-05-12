@@ -31,7 +31,7 @@ class GroupService {
     }
   }
 
-  Future<dynamic> update(int id, Map<String, Object> fieldsValues) async {
+  Future<dynamic> update(num id, Map<String, Object> fieldsValues) async {
     String url = '$_url/id?id=$id';
     Response res = await put(url, body: jsonEncode(fieldsValues), headers: _headers);
     if (res.statusCode == 200) {
@@ -54,7 +54,7 @@ class GroupService {
     }
   }
 
-  Future<dynamic> addGroupEmployees(int id, List<int> employeeIds) async {
+  Future<dynamic> addGroupEmployees(num id, List<int> employeeIds) async {
     String url = '$_url?id=$id';
     Response res = await put(url, body: jsonEncode(employeeIds), headers: _headers);
     if (res.statusCode == 200) {
@@ -66,7 +66,7 @@ class GroupService {
     }
   }
 
-  Future<dynamic> removeEmployeesFromGroup(int id, var employeeIds) async {
+  Future<dynamic> removeEmployeesFromGroup(num id, var employeeIds) async {
     String url = '$_url?id=$id&employee_ids=$employeeIds';
     Response res = await delete(url, headers: _headers);
     if (res.statusCode == 200) {

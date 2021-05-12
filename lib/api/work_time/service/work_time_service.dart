@@ -84,7 +84,7 @@ class WorkTimeService {
     }
   }
 
-  Future<bool> canFinishByIdAndLocationParams(int id, double latitude, double longitude) async {
+  Future<bool> canFinishByIdAndLocationParams(num id, double latitude, double longitude) async {
     String url = _url + '/$id/can-finish?latitude=$latitude&longitude=$longitude';
     Response res = await get(url, headers: _headers);
     if (res.statusCode == 200) {
@@ -108,7 +108,7 @@ class WorkTimeService {
     }
   }
 
-  Future<String> calculateTotalTimeById(int id) async {
+  Future<String> calculateTotalTimeById(num id) async {
     String url = _url + '/$id/calculate-total-time';
     Response res = await get(url, headers: _headers);
     if (res.statusCode == 200) {
@@ -120,7 +120,7 @@ class WorkTimeService {
     }
   }
 
-  Future<dynamic> finishById(int id) async {
+  Future<dynamic> finishById(num id) async {
     String url = _url + '/$id/finish';
     Response res = await put(url, headers: _headers);
     if (res.statusCode == 200) {
@@ -144,13 +144,13 @@ class WorkTimeService {
     }
   }
 
-  Future<dynamic> finishGPSWork(int id, bool isCorrectLocation) async {
+  Future<dynamic> finishGPSWork(num id, bool isCorrectLocation) async {
     String url = _url + '/$id/finish-gps?is_correct_location=$isCorrectLocation';
     Response res = await put(url, headers: _headers);
     return res.statusCode == 200 ? res : Future.error(res.body);
   }
 
-  Future<dynamic> setTotalTimeToZero(int id) async {
+  Future<dynamic> setTotalTimeToZero(num id) async {
     String url = _url + '/$id/total-time-to-zero';
     Response res = await put(url, headers: _headers);
     return res.statusCode == 200 ? res : Future.error(res.body);

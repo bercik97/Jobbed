@@ -15,7 +15,7 @@ class PieceworkDto {
 
   factory PieceworkDto.fromJson(Map<String, dynamic> json) {
     return PieceworkDto(
-      serviceName: json['serviceName'] as String,
+      serviceName: json['serviceName'],
       quantity: json['quantity'] as int,
       moneyForEmployee: json['moneyForEmployee'] as double,
       moneyForCompany: json['moneyForCompany'] as double,

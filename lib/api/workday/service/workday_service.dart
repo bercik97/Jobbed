@@ -14,7 +14,7 @@ class WorkdayService {
 
   static const String _url = '$SERVER_IP/workdays';
 
-  Future<List<WorkdayDto>> findAllByTimesheetId(int tsId) async {
+  Future<List<WorkdayDto>> findAllByTimesheetId(num tsId) async {
     Response res = await get('$_url/timesheet?ts_id=$tsId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => WorkdayDto.fromJson(data)).toList();

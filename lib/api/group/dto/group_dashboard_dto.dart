@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 
 class GroupDashboardDto {
-  final int id;
+  final num id;
   final String name;
   final String description;
   final String groupCreator;
-  final int numberOfEmployees;
+  final num numberOfEmployees;
 
   GroupDashboardDto({
     @required this.id,
@@ -17,11 +17,11 @@ class GroupDashboardDto {
 
   factory GroupDashboardDto.fromJson(Map<String, dynamic> json) {
     return GroupDashboardDto(
-      id: json['id'] as int,
+      id: json['id'] as num,
       name: json['name'],
       description: json['description'],
       groupCreator: json['groupCreator'],
-      numberOfEmployees: json['numberOfEmployees'] as int,
+      numberOfEmployees: json['numberOfEmployees'] as num,
     );
   }
 }

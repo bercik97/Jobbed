@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
 class PriceListDto {
-  final int id;
-  String name;
+  final num id;
+  final String name;
   final double priceForEmployee;
   final double priceForCompany;
 
@@ -15,7 +15,7 @@ class PriceListDto {
 
   factory PriceListDto.fromJson(Map<String, dynamic> json) {
     return PriceListDto(
-      id: json['id'] as int,
+      id: json['id'] as num,
       name: json['name'],
       priceForEmployee: json['priceForEmployee'] as double,
       priceForCompany: json['priceForCompany'] as double,

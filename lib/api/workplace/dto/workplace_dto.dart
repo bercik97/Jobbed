@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 
 class WorkplaceDto {
-  String id;
-  String name;
-  String description;
-  String location;
-  double radiusLength;
-  double latitude;
-  double longitude;
+  final String id;
+  final String name;
+  final String description;
+  final String location;
+  final double radiusLength;
+  final double latitude;
+  final double longitude;
 
   WorkplaceDto({
     @required this.id,
@@ -21,7 +21,7 @@ class WorkplaceDto {
 
   factory WorkplaceDto.fromJson(Map<String, dynamic> json) {
     return WorkplaceDto(
-      id: json['id'] as String,
+      id: json['id'],
       name: json['name'],
       description: json['description'],
       location: json['location'],

@@ -22,9 +22,9 @@ class EmployeePieceworkDto {
       id: json['id'] as num,
       name: json['name'],
       surname: json['surname'],
-      gender: json['gender'] as String,
-      nationality: json['nationality'] as String,
-      moneyForPieceworkToday: json['moneyForPieceworkToday'] as String,
+      gender: json['gender'],
+      nationality: json['nationality'],
+      moneyForPieceworkToday: json['moneyForPieceworkToday'],
     );
   }
 }

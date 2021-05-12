@@ -14,7 +14,7 @@ class PieceworkViewService {
 
   static const String _url = '$SERVER_IP/pieceworks/view';
 
-  Future<List<PieceworkForEmployeeDto>> findAllByWorkdayIdForEmployeeView(int workdayId) async {
+  Future<List<PieceworkForEmployeeDto>> findAllByWorkdayIdForEmployeeView(num workdayId) async {
     Response res = await get(_url + '/employee/workdays/$workdayId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => PieceworkForEmployeeDto.fromJson(data)).toList();

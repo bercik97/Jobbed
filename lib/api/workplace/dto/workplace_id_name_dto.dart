@@ -13,7 +13,7 @@ class WorkplaceIdNameDto {
 
   factory WorkplaceIdNameDto.fromJson(Map<String, dynamic> json) {
     return WorkplaceIdNameDto(
-      id: json['id'] as String,
+      id: json['id'],
       name: json['name'],
       location: json['location'],
     );

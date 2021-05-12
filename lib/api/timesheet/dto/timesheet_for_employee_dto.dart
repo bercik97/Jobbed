@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:jobbed/api/employee/dto/employee_basic_dto.dart';
 
 class TimesheetForEmployeeDto {
-  final int id;
+  final num id;
   final int year;
   final String month;
   final String status;
@@ -29,15 +29,15 @@ class TimesheetForEmployeeDto {
   factory TimesheetForEmployeeDto.fromJson(Map<String, dynamic> json) {
     var employeeBasicDtoJson = json['employeeBasicDto'];
     return TimesheetForEmployeeDto(
-      id: json['id'] as int,
+      id: json['id'] as num,
       year: json['year'] as int,
-      month: json['month'] as String,
-      status: json['status'] as String,
-      totalHours: json['totalHours'] as String,
-      totalTime: json['totalTime'] as String,
-      totalMoneyForPieceworkForEmployee: json['totalMoneyForPieceworkForEmployee'] as String,
-      totalMoneyForTimeForEmployee: json['totalMoneyForTimeForEmployee'] as String,
-      totalMoneyEarned: json['totalMoneyEarned'] as String,
+      month: json['month'],
+      status: json['status'],
+      totalHours: json['totalHours'],
+      totalTime: json['totalTime'],
+      totalMoneyForPieceworkForEmployee: json['totalMoneyForPieceworkForEmployee'],
+      totalMoneyForTimeForEmployee: json['totalMoneyForTimeForEmployee'],
+      totalMoneyEarned: json['totalMoneyEarned'],
       employeeBasicDto: employeeBasicDtoJson != null ? EmployeeBasicDto.fromJson(employeeBasicDtoJson) : null,
     );
   }

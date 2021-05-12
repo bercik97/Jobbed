@@ -4,7 +4,7 @@ class CreateGroupDto {
   final String name;
   final String description;
   final String companyId;
-  final int managerId;
+  final num managerId;
   final List<String> employeeIds;
 
   CreateGroupDto({

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class TimesheetWithoutStatusDto {
-  final int id;
+  final num id;
   final int year;
   final String month;
 
@@ -13,9 +13,9 @@ class TimesheetWithoutStatusDto {
 
   factory TimesheetWithoutStatusDto.fromJson(Map<String, dynamic> json) {
     return TimesheetWithoutStatusDto(
-      id: json['id'] as int,
-      year: json['year'] as int,
-      month: json['month'] as String,
+      id: json['id'] as num,
+      year: json['year'],
+      month: json['month'],
     );
   }
 }

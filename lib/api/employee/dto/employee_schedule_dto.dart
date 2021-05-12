@@ -19,8 +19,8 @@ class EmployeeScheduleDto {
 
   factory EmployeeScheduleDto.fromJson(Map<String, dynamic> json) {
     return EmployeeScheduleDto(
-      moneyForTime: json['moneyForTime'] as String,
-      moneyForPiecework: json['moneyForPiecework'] as String,
+      moneyForTime: json['moneyForTime'],
+      moneyForPiecework: json['moneyForPiecework'],
       workTimes: json['workTimes'].map((data) => WorkTimeDto.fromJson(data)).toList(),
       pieceworks: json['pieceworks'].map((data) => PieceworkDto.fromJson(data)).toList(),
       isWorkTouched: json['workTouched'] as bool,

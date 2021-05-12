@@ -57,7 +57,7 @@ class PieceworkService {
     }
   }
 
-  Future<dynamic> deleteByWorkdayIdAndServiceName(int id, String serviceName) async {
+  Future<dynamic> deleteByWorkdayIdAndServiceName(num id, String serviceName) async {
     Response res = await delete(_url + '/workdays/$id/$serviceName', headers: _headers);
     if (res.statusCode == 200) {
       return res;

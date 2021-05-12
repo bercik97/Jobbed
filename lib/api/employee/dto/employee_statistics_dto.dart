@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 
 class EmployeeStatisticsDto {
-  final int id;
+  final num id;
   final String name;
   final String surname;
   final String gender;
   final String nationality;
-  final int timesheetId;
+  final num timesheetId;
   final String totalHours;
   final String totalTime;
   final String totalMoneyForPieceworkForEmployee;
@@ -29,17 +29,17 @@ class EmployeeStatisticsDto {
 
   factory EmployeeStatisticsDto.fromJson(Map<String, dynamic> json) {
     return EmployeeStatisticsDto(
-      id: json['id'] as int,
-      name: json['name'] as String,
-      surname: json['surname'] as String,
-      gender: json['gender'] as String,
-      nationality: json['nationality'] as String,
-      timesheetId: json['timesheetId'] as int,
-      totalHours: json['totalHours'] as String,
-      totalTime: json['totalTime'] as String,
-      totalMoneyForPieceworkForEmployee: json['totalMoneyForPieceworkForEmployee'] as String,
-      totalMoneyForTimeForEmployee: json['totalMoneyForTimeForEmployee'] as String,
-      totalMoneyEarned: json['totalMoneyEarned'] as String,
+      id: json['id'] as num,
+      name: json['name'],
+      surname: json['surname'],
+      gender: json['gender'],
+      nationality: json['nationality'],
+      timesheetId: json['timesheetId'] as num,
+      totalHours: json['totalHours'],
+      totalTime: json['totalTime'],
+      totalMoneyForPieceworkForEmployee: json['totalMoneyForPieceworkForEmployee'],
+      totalMoneyForTimeForEmployee: json['totalMoneyForTimeForEmployee'],
+      totalMoneyEarned: json['totalMoneyEarned'],
     );
   }
 }

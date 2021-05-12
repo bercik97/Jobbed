@@ -13,7 +13,7 @@ class ManagerService {
 
   static const String _url = '$SERVER_IP/managers';
 
-  Future<Map<String, Object>> findManagerAndUserFieldsValuesById(int id, var fields) async {
+  Future<Map<String, Object>> findManagerAndUserFieldsValuesById(num id, var fields) async {
     Response res = await get('$_url?id=$id&fields=$fields', headers: _headers);
     var body = res.body;
     if (res.statusCode == 200) {
@@ -25,7 +25,7 @@ class ManagerService {
     }
   }
 
-  Future<dynamic> updateManagerAndUserFieldsValuesById(int id, Map<String, Object> fieldsValues) async {
+  Future<dynamic> updateManagerAndUserFieldsValuesById(num id, Map<String, Object> fieldsValues) async {
     Response res = await put('$_url/manager-user/id?id=$id', body: jsonEncode(fieldsValues), headers: _headers);
     if (res.statusCode == 200) {
       return res;

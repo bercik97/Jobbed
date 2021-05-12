@@ -26,7 +26,7 @@ class EmployeeService {
     }
   }
 
-  Future<Map<String, Object>> findEmployeeAndUserAndCompanyFieldsValuesById(int id, var fields) async {
+  Future<Map<String, Object>> findEmployeeAndUserAndCompanyFieldsValuesById(num id, var fields) async {
     String url = '$_url?id=$id&fields=$fields';
     Response res = await get(url, headers: _headers);
     if (res.statusCode == 200) {
@@ -49,7 +49,7 @@ class EmployeeService {
     }
   }
 
-  Future<List<EmployeeBasicDto>> findAllByGroupId(int groupId) async {
+  Future<List<EmployeeBasicDto>> findAllByGroupId(num groupId) async {
     Response res = await get('$_url/groups?group_id=$groupId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as List).map((data) => EmployeeBasicDto.fromJson(data)).toList();
@@ -60,7 +60,7 @@ class EmployeeService {
     }
   }
 
-  Future<List<EmployeeBasicDto>> findAllByGroupIdAndTsInYearAndMonthAndStatus(int groupId, int tsYear, int tsMonth, String tsStatus) async {
+  Future<List<EmployeeBasicDto>> findAllByGroupIdAndTsInYearAndMonthAndStatus(num groupId, int tsYear, int tsMonth, String tsStatus) async {
     String url = '$_url/groups/$groupId/timesheets/in?ts_year=$tsYear&ts_month=$tsMonth&ts_status=$tsStatus';
     Response res = await get(url, headers: _headers);
     if (res.statusCode == 200) {
@@ -72,7 +72,7 @@ class EmployeeService {
     }
   }
 
-  Future<List<EmployeeBasicDto>> findAllByGroupIdAndTsNotInYearAndMonth(int groupId, int tsYear, int tsMonth) async {
+  Future<List<EmployeeBasicDto>> findAllByGroupIdAndTsNotInYearAndMonth(num groupId, int tsYear, int tsMonth) async {
     String url = '$_url/groups/$groupId/timesheets/not-in?ts_year=$tsYear&ts_month=$tsMonth';
     Response res = await get(url, headers: _headers);
     if (res.statusCode == 200) {
@@ -84,7 +84,7 @@ class EmployeeService {
     }
   }
 
-  Future<List<EmployeeBasicDto>> findAllByGroupIsNullAndCompanyId(String companyId, int groupId) async {
+  Future<List<EmployeeBasicDto>> findAllByGroupIsNullAndCompanyId(String companyId, num groupId) async {
     String url = '$_url/companies/$companyId/groups/not-equal/$groupId';
     Response res = await get(url, headers: _headers);
     if (res.statusCode == 200) {
@@ -96,7 +96,7 @@ class EmployeeService {
     }
   }
 
-  Future<dynamic> updateEmployeeAndUserFieldsValuesById(int id, Map<String, Object> fieldsValues) async {
+  Future<dynamic> updateEmployeeAndUserFieldsValuesById(num id, Map<String, Object> fieldsValues) async {
     String url = '$_url/employee-user/id?id=$id';
     Response res = await put(url, body: jsonEncode(fieldsValues), headers: _headers);
     if (res.statusCode == 200) {
@@ -108,7 +108,7 @@ class EmployeeService {
     }
   }
 
-  Future<dynamic> updateFieldsValuesById(int id, Map<String, Object> fieldsValues) async {
+  Future<dynamic> updateFieldsValuesById(num id, Map<String, Object> fieldsValues) async {
     String url = '$_url/id?id=$id';
     Response res = await put(url, body: jsonEncode(fieldsValues), headers: _headers);
     if (res.statusCode == 200) {
