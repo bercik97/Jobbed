@@ -491,5 +491,6 @@
   "areYouSureYouWantToDeleteSelectedEmployeesAccounts": "Czy na pewno chcesz usunąć wybrane konta pracownicze?",
   "timeOfStartWork": "Czas rozpoczęcia pracy",
   "todayAdditionalInfo": "Dzisiejsza dodatkowa informacja",
-  "rememberToFinishYourWorkTimeHint": "Po skończonej pracy nie zapomnij zastopować czasu przyciskiem pauzy. Jeżeli tego nie zrobisz to czas pracy zostanie wyzerowany."
+  "rememberToFinishYourWorkTimeHint": "Po skończonej pracy nie zapomnij zastopować czasu przyciskiem pauzy. Jeżeli tego nie zrobisz to czas pracy zostanie wyzerowany.",
+  "tapToSelectDayToCheck": "Naciśnij na wybrany dzień aby zaznaczyć"
 }

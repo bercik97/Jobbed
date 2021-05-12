@@ -491,5 +491,6 @@
   "areYouSureYouWantToDeleteSelectedEmployeesAccounts": "Вы действительно хотите удалить выбранные учетные записи сотрудников?",
   "timeOfStartWork": "Время начала работы",
   "todayAdditionalInfo": "Сегодня дополнительная информация",
-  "rememberToFinishYourWorkTimeHint": "Не забудьте завершить работу кнопкой паузы. Если этого не сделать, время работы будет сброшено."
+  "rememberToFinishYourWorkTimeHint": "Не забудьте завершить работу кнопкой паузы. Если этого не сделать, время работы будет сброшено.",
+  "tapToSelectDayToCheck": "Нажмите на выбранный день, чтобы выбрать"
 }

@@ -491,5 +491,6 @@
   "areYouSureYouWantToDeleteSelectedEmployeesAccounts": "Are you sure you want to delete selected employees accounts?",
   "timeOfStartWork": "Time of start work",
   "todayAdditionalInfo": "Today additional information",
-  "rememberToFinishYourWorkTimeHint": "Don't forget to finish your work by pause button. If you do not do this, the time for work will be reset."
+  "rememberToFinishYourWorkTimeHint": "Don't forget to finish your work by pause button. If you do not do this, the time for work will be reset.",
+  "tapToSelectDayToCheck": "Tap on the selected day to select"
 }

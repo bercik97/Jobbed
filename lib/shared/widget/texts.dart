@@ -112,7 +112,7 @@ Text text20BlueUnderline(String text) { return Text(text, style: TextStyle(fontS
 ////////////////////////////
 /*    TEXT CENTER BLUE   */
 ////////////////////////////
-Text textCenter18Blue(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 19, color: Colors.black)); }
+Text textCenter18Blue(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 18, color: BLUE)); }
 
 
 ////////////////////////////

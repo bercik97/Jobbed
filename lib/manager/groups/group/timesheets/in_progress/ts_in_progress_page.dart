@@ -397,7 +397,11 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
   }
 
   void _showUpdateWorkTimeDialog() async {
-    callendarroDialog(context, 'Naciśnij na wybrany dzień aby zaznaczyć').then((dates) {
+    callendarroDialog(
+      context,
+      year: _timesheet.year,
+      month: MonthUtil.findMonthNumberByMonthName(context, _timesheet.month),
+    ).then((dates) {
       if (dates == null) {
         return;
       }
@@ -738,7 +742,11 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
   }
 
   void _showDeleteWorkTimeDialog() async {
-    callendarroDialog(context, 'Naciśnij na wybrany dzień aby zaznaczyć').then((dates) {
+    callendarroDialog(
+      context,
+      year: _timesheet.year,
+      month: MonthUtil.findMonthNumberByMonthName(context, _timesheet.month),
+    ).then((dates) {
       if (dates == null) {
         return;
       }
@@ -771,7 +779,11 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
   }
 
   void _showUpdatePiecework() async {
-    callendarroDialog(context, 'Naciśnij na wybrany dzień aby zaznaczyć').then((dates) {
+    callendarroDialog(
+      context,
+      year: _timesheet.year,
+      month: MonthUtil.findMonthNumberByMonthName(context, _timesheet.month),
+    ).then((dates) {
       if (dates == null) {
         return;
       }
@@ -780,7 +792,11 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
   }
 
   void _showDeletePiecework() async {
-    callendarroDialog(context, 'Naciśnij na wybrany dzień aby zaznaczyć').then((dates) {
+    callendarroDialog(
+      context,
+      year: _timesheet.year,
+      month: MonthUtil.findMonthNumberByMonthName(context, _timesheet.month),
+    ).then((dates) {
       if (dates == null) {
         return;
       }

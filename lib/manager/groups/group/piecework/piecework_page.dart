@@ -291,7 +291,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
   }
 
   void _showUpdatePiecework() async {
-    callendarroDialog(context, 'Naciśnij na wybrany dzień aby zaznaczyć').then((dates) {
+    callendarroDialog(context).then((dates) {
       if (dates == null) {
         return;
       }
@@ -300,7 +300,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
   }
 
   void _showDeletePiecework(LinkedHashSet<int> selectedIds) async {
-    callendarroDialog(context, 'Naciśnij na wybrany dzień aby zaznaczyć').then((dates) {
+    callendarroDialog(context).then((dates) {
       if (dates == null) {
         return;
       }

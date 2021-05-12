@@ -317,7 +317,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
   }
 
   void _showUpdateHoursDialog() async {
-    callendarroDialog(context, 'Naciśnij na wybrany dzień aby zaznaczyć').then((dates) {
+    callendarroDialog(context).then((dates) {
       if (dates == null) {
         return;
       }
@@ -704,7 +704,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
   }
 
   void _showDeleteWorkDialog() async {
-    callendarroDialog(context, 'Naciśnij na wybrany dzień aby zaznaczyć').then((dates) {
+    callendarroDialog(context).then((dates) {
       if (dates == null) {
         return;
       }
