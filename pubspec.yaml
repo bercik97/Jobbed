@@ -37,8 +37,6 @@ dependencies:
   number_inc_dec: ^0.6.6
   flutter_progress_dialog: ^0.1.0
   upgrader: ^2.7.3
-  xml: ^4.5.1
-  flutter_cached_pdfview: ^0.3.1
   draggable_widget: ^1.0.1
   splashscreen: ^1.3.5
   horizontal_data_table: ^1.0.9
@@ -106,6 +104,3 @@ flutter:
     - images/white-note.png
     - images/white-play.png
     - images/white-stop.png
-
-    - docs/regulations.pdf
-    - docs/privacy_policy.pdf

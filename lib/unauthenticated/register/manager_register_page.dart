@@ -10,9 +10,9 @@ import 'package:jobbed/api/user/dto/create_user_dto.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/libraries/constants_length.dart';
-import 'package:jobbed/shared/pdf_viewer_from_asset.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
+import 'package:jobbed/shared/util/url_util.dart';
 import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
@@ -272,17 +272,7 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
                 textBlack(getTranslated(context, 'accept') + ' '),
                 GestureDetector(
                   child: textBlackBoldUnderline(getTranslated(context, 'acceptRegulations')),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute<dynamic>(
-                        builder: (_) => PDFViewerFromAsset(
-                          title: getTranslated(context, 'regulations'),
-                          pdfAssetPath: 'docs/regulations.pdf',
-                        ),
-                      ),
-                    );
-                  },
+                  onTap: () async => UrlUtil.launchURL(this.context, 'https://jobbed.pl/docs/regulations.pdf'),
                 )
               ],
             ),
@@ -309,17 +299,7 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
                 textBlack(getTranslated(context, 'accept') + ' '),
                 GestureDetector(
                   child: textBlackBoldUnderline(getTranslated(context, 'acceptPrivacyPolicy')),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute<dynamic>(
-                        builder: (_) => PDFViewerFromAsset(
-                          title: getTranslated(context, 'privacyPolicy'),
-                          pdfAssetPath: 'docs/privacy_policy.pdf',
-                        ),
-                      ),
-                    );
-                  },
+                  onTap: () async => UrlUtil.launchURL(this.context, 'https://jobbed.pl/docs/website_privacy_policy.pdf'),
                 )
               ],
             ),

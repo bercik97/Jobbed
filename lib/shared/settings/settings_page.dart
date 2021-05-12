@@ -21,7 +21,6 @@ import 'package:open_appstore/open_appstore.dart';
 import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 
 import '../../main.dart';
-import '../pdf_viewer_from_asset.dart';
 
 class SettingsPage extends StatefulWidget {
   final User _user;
@@ -221,36 +220,8 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
           ),
-          Container(
-              margin: EdgeInsets.only(left: 15, top: 10),
-              child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute<dynamic>(
-                        builder: (_) => PDFViewerFromAsset(
-                          title: getTranslated(context, 'regulations'),
-                          pdfAssetPath: 'docs/regulations.pdf',
-                        ),
-                      ),
-                    );
-                  },
-                  child: _subtitleInkWellContainer(getTranslated(context, 'regulations')))),
-          Container(
-              margin: EdgeInsets.only(left: 15, top: 10),
-              child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute<dynamic>(
-                        builder: (_) => PDFViewerFromAsset(
-                          title: getTranslated(context, 'privacyPolicy'),
-                          pdfAssetPath: 'docs/privacy_policy.pdf',
-                        ),
-                      ),
-                    );
-                  },
-                  child: _subtitleInkWellContainer(getTranslated(context, 'privacyPolicy')))),
+          Container(margin: EdgeInsets.only(left: 15, top: 10), child: InkWell(onTap: () async => UrlUtil.launchURL(this.context, 'https://jobbed.pl/docs/regulations.pdf'), child: _subtitleInkWellContainer(getTranslated(context, 'regulations')))),
+          Container(margin: EdgeInsets.only(left: 15, top: 10), child: InkWell(onTap: () async => UrlUtil.launchURL(this.context, 'https://jobbed.pl/docs/website_privacy_policy.pdf'), child: _subtitleInkWellContainer(getTranslated(context, 'privacyPolicy')))),
           Container(
             margin: EdgeInsets.only(left: 15, top: 10),
             child: InkWell(
