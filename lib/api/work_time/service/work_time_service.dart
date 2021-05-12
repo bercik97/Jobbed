@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
+import 'package:jobbed/api/work_time/dto/create_work_time_dto.dart';
 import 'package:jobbed/api/work_time/dto/is_work_time_started_dto.dart';
 import 'package:jobbed/api/work_time/dto/work_time_details_dto.dart';
 import 'package:jobbed/shared/libraries/constants.dart';
@@ -15,9 +16,8 @@ class WorkTimeService {
 
   static const String _url = '$SERVER_IP/work-times';
 
-  Future<dynamic> saveByEmployeeIdsAndDates(var employeeIds, var dates, String workplaceId, String startTime, String endTime) async {
-    Map<String, dynamic> map = {'workplaceId': workplaceId, 'startTime': startTime, 'endTime': endTime};
-    Response res = await post('$_url/employees/$employeeIds?dates=$dates', body: jsonEncode(map), headers: _headers);
+  Future<dynamic> saveByEmployeeIdsAndDates(var employeeIds, var dates, CreateWorkTimeDto dto) async {
+    Response res = await post('$_url/employees/$employeeIds?dates=$dates', body: jsonEncode(CreateWorkTimeDto.jsonEncode(dto)), headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {
@@ -27,9 +27,8 @@ class WorkTimeService {
     }
   }
 
-  Future<dynamic> saveByWorkdayIds(var workdayIds, String workplaceId, String startTime, String endTime) async {
-    Map<String, dynamic> map = {'workplaceId': workplaceId, 'startTime': startTime, 'endTime': endTime};
-    Response res = await post('$_url/workdays/$workdayIds', body: jsonEncode(map), headers: _headers);
+  Future<dynamic> saveByWorkdayIds(var workdayIds, CreateWorkTimeDto dto) async {
+    Response res = await post('$_url/workdays/$workdayIds', body: jsonEncode(CreateWorkTimeDto.jsonEncode(dto)), headers: _headers);
     if (res.statusCode == 200) {
       return res;
     } else if (res.statusCode == 401) {

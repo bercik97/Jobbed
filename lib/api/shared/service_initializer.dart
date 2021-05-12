@@ -13,6 +13,7 @@ import 'package:jobbed/api/piecework/service/piecework_service.dart';
 import 'package:jobbed/api/piecework/service/piecework_view_service.dart';
 import 'package:jobbed/api/price_list/service/price_list_service.dart';
 import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
+import 'package:jobbed/api/timesheet/service/timesheet_view_service.dart';
 import 'package:jobbed/api/token/service/token_service.dart';
 import 'package:jobbed/api/user/service/user_service.dart';
 import 'package:jobbed/api/work_time/service/work_time_service.dart';
@@ -36,6 +37,7 @@ class ServiceInitializer {
       case 'PieceworkViewService': return new PieceworkViewService(context, headers);
       case 'PriceListService': return new PriceListService(context, headers);
       case 'TimesheetService': return new TimesheetService(context, headers);
+      case 'TimesheetViewService': return new TimesheetViewService(context, headers);
       case 'TokenService': return new TokenService();
       case 'UserService': return new UserService(context, headers);
       case 'WorkdayService': return new WorkdayService(context, headers);

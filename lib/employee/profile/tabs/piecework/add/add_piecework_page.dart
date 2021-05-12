@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
+import 'package:jobbed/api/piecework/dto/create_piecework_dto.dart';
 import 'package:jobbed/api/piecework/service/piecework_service.dart';
 import 'package:jobbed/api/price_list/dto/price_list_dto.dart';
 import 'package:jobbed/api/price_list/service/price_list_service.dart';
@@ -241,8 +242,9 @@ class _AddPieceworkPageState extends State<AddPieceworkPage> {
       ToastUtil.showErrorToast(this.context, getTranslated(context, 'pieceworkCannotBeEmpty'));
       return;
     }
+    CreatePieceworkDto dto = new CreatePieceworkDto(pieceworks: pieceworks);
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _pieceworkService.createOrUpdateByEmployeeIdsAndDates(pieceworks, CollectionUtil.removeBracketsFromSet([_todayDate].toSet()), CollectionUtil.removeBracketsFromSet([_employeeId].toSet())).then((res) {
+    _pieceworkService.createOrUpdateByEmployeeIdsAndDates(dto, CollectionUtil.removeBracketsFromSet([_todayDate].toSet()), CollectionUtil.removeBracketsFromSet([_employeeId].toSet())).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'successfullyAddedNewReportAboutPiecework'));
         NavigatorUtil.navigate(context, PieceworkPage(_user, _employeeId, _todayDate, _todayWorkdayId));

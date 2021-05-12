@@ -6,6 +6,7 @@ import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:jobbed/api/employee/dto/employee_work_time_dto.dart';
 import 'package:jobbed/api/employee/service/employee_view_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/work_time/dto/create_work_time_dto.dart';
 import 'package:jobbed/api/work_time/service/work_time_service.dart';
 import 'package:jobbed/api/workplace/dto/workplace_dto.dart';
 import 'package:jobbed/api/workplace/service/workplace_service.dart';
@@ -642,8 +643,13 @@ class _WorkTimePageState extends State<WorkTimePage> {
   }
 
   void _handleSaveWorkTimesManually(List<String> dates, String startTime, String endTime) {
+    CreateWorkTimeDto dto = new CreateWorkTimeDto(
+      workplaceId: _workplaces[_chosenIndex].id,
+      startTime: startTime,
+      endTime: endTime,
+    );
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workTimeService.saveByEmployeeIdsAndDates(CollectionUtil.removeBracketsFromSet(_selectedIds), CollectionUtil.removeBracketsFromSet(dates.toSet()), _workplaces[_chosenIndex].id, startTime, endTime).then((value) {
+    _workTimeService.saveByEmployeeIdsAndDates(CollectionUtil.removeBracketsFromSet(_selectedIds), CollectionUtil.removeBracketsFromSet(dates.toSet()), dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _uncheckAll();
         _refresh();

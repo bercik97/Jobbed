@@ -7,6 +7,7 @@ import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:jobbed/api/piecework/service/piecework_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/timesheet/dto/timesheet_for_employee_dto.dart';
+import 'package:jobbed/api/work_time/dto/create_work_time_dto.dart';
 import 'package:jobbed/api/work_time/service/work_time_service.dart';
 import 'package:jobbed/api/workday/dto/workday_dto.dart';
 import 'package:jobbed/api/workday/service/workday_service.dart';
@@ -724,8 +725,13 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   }
 
   void _handleSaveWorkTimesManually(String startTime, String endTime) {
+    CreateWorkTimeDto dto = new CreateWorkTimeDto(
+      workplaceId: _workplaces[_chosenIndex].id,
+      startTime: startTime,
+      endTime: endTime,
+    );
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _workTimeService.saveByWorkdayIds(CollectionUtil.removeBracketsFromSet(selectedIds), _workplaces[_chosenIndex].id, startTime, endTime).then((value) {
+    _workTimeService.saveByWorkdayIds(CollectionUtil.removeBracketsFromSet(selectedIds), dto).then((value) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         _refresh();
         Navigator.pop(context);

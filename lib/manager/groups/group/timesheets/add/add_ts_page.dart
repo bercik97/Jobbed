@@ -6,6 +6,7 @@ import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:jobbed/api/employee/dto/employee_basic_dto.dart';
 import 'package:jobbed/api/employee/service/employee_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/timesheet/dto/create_timesheet_dto.dart';
 import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/collection_util.dart';
@@ -251,8 +252,9 @@ class _AddTsPageState extends State<AddTsPage> {
       setState(() => _isAddBtnTapped = false);
       return;
     }
+    CreateTimesheetDto dto = new CreateTimesheetDto(year: _year, month: _month);
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _timesheetService.create(CollectionUtil.removeBracketsFromSet(_selectedIds), _year, _month).then(
+    _timesheetService.create(CollectionUtil.removeBracketsFromSet(_selectedIds), dto).then(
       (res) {
         Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
           ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'timesheetsSuccessfullyCreated'));

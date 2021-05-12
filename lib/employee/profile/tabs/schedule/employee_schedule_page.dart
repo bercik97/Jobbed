@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:jobbed/api/employee/dto/employee_schedule_dto.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
-import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
+import 'package:jobbed/api/timesheet/service/timesheet_view_service.dart';
 import 'package:jobbed/employee/shared/employee_app_bar.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
@@ -31,7 +31,7 @@ class EmployeeSchedulePage extends StatefulWidget {
 class _EmployeeSchedulePageState extends State<EmployeeSchedulePage> with TickerProviderStateMixin {
   User _user;
   int _employeeId;
-  TimesheetService _tsService;
+  TimesheetViewService _tsViewService;
 
   Map<DateTime, List<EmployeeScheduleDto>> _events = new Map();
   List _selectedEvents;
@@ -46,10 +46,10 @@ class _EmployeeSchedulePageState extends State<EmployeeSchedulePage> with Ticker
     super.initState();
     this._user = widget._user;
     this._employeeId = widget._employeeId;
-    this._tsService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
+    this._tsViewService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetViewService);
     super.initState();
     _loading = true;
-    _tsService.findByIdForEmployeeScheduleView(_employeeId).then((res) {
+    _tsViewService.findByIdForEmployeeScheduleView(_employeeId).then((res) {
       setState(() {
         _loading = false;
         res.forEach((key, value) => _events[key] = value);

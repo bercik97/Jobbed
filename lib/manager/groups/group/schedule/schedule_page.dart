@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:jobbed/api/employee/dto/employee_for_manager_schedule_dto.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
+import 'package:jobbed/api/timesheet/service/timesheet_view_service.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/manager/groups/group/group_page.dart';
 import 'package:jobbed/manager/shared/group_model.dart';
@@ -30,7 +31,7 @@ class SchedulePage extends StatefulWidget {
 class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMixin {
   GroupModel _model;
   User _user;
-  TimesheetService _tsService;
+  TimesheetViewService _tsViewService;
 
   Map<DateTime, List> _events = new Map();
   List _selectedEvents;
@@ -45,11 +46,11 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
     super.initState();
     this._model = widget._model;
     this._user = _model.user;
-    this._tsService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetService);
+    this._tsViewService = ServiceInitializer.initialize(context, _user.authHeader, TimesheetViewService);
     super.initState();
     _loading = true;
     DateTime currentDate = DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()));
-    _tsService.findByIdForManagerScheduleView(_model.groupId, currentDate.year, currentDate.month).then((res) {
+    _tsViewService.findByIdForManagerScheduleView(_model.groupId, currentDate.year, currentDate.month).then((res) {
       setState(() {
         res.forEach((key, value) => _events[key] = value);
         _selectedEvents = _events[currentDate] ?? [];
@@ -108,7 +109,7 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
       onVisibleDaysChanged: (first, last, format) {
         if (!_events.containsKey(DateTime.parse(first.toString().substring(0, 10)))) {
           showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-          _tsService.findByIdForManagerScheduleView(_model.groupId, first.year, first.month).then((res) {
+          _tsViewService.findByIdForManagerScheduleView(_model.groupId, first.year, first.month).then((res) {
             Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
               if (res.isEmpty) {
                 return;

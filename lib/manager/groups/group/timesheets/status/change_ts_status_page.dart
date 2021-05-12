@@ -6,6 +6,7 @@ import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:jobbed/api/employee/dto/employee_basic_dto.dart';
 import 'package:jobbed/api/employee/service/employee_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
+import 'package:jobbed/api/timesheet/dto/update_timesheet_status_dto.dart';
 import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
 import 'package:jobbed/shared/model/user.dart';
 import 'package:jobbed/shared/util/collection_util.dart';
@@ -277,8 +278,14 @@ class _ChangeTsStatusPageState extends State<ChangeTsStatusPage> {
       setState(() => _isChangeBtnTapped = false);
       return;
     }
+    UpdateTimesheetStatusDto dto = new UpdateTimesheetStatusDto(
+      newStatusId: newStatusId,
+      tsYear: _year,
+      tsMonth: _month,
+      currentTsStatus: status,
+    );
     showProgressDialog(context: context, loadingText: getTranslated(context, 'loading'));
-    _timesheetService.updateTsStatusByGroupIdAndYearAndMonthAndStatusAndEmployeesIdIn(CollectionUtil.removeBracketsFromSet(_selectedIds), newStatusId, _year, _month, status, _model.groupId).then((res) {
+    _timesheetService.updateTsStatusByGroupIdAndYearAndMonthAndStatusAndEmployeesIdIn(CollectionUtil.removeBracketsFromSet(_selectedIds), _model.groupId, dto).then((res) {
       Future.delayed(Duration(microseconds: 1), () => dismissProgressDialog()).whenComplete(() {
         ToastUtil.showSuccessNotification(this.context, getTranslated(context, 'timesheetStatusSuccessfullyUpdated'));
         NavigatorUtil.navigateReplacement(context, TsPage(_model));
