@@ -81,34 +81,13 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
               child: Padding(
                 padding: EdgeInsets.only(bottom: 5),
                 child: ListTile(
-                  leading: Padding(
-                    padding: EdgeInsets.only(top: 30),
-                    child: icon30Green(Icons.check_circle_outline),
-                  ),
+                  leading: icon50Green(Icons.check_circle_outline),
                   title: text17BlackBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
                   subtitle: Column(
                     children: <Widget>[
                       Align(
                         alignment: Alignment.topLeft,
                         child: text17BlackBold(_name + ' ' + _surname + ' ' + LanguageUtil.findFlagByNationality(_nationality)),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          text17BlackBold(getTranslated(this.context, 'accord') + ': '),
-                          text16Black(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
-                        ],
-                      ),
-                      Row(
-                        children: <Widget>[
-                          text17BlackBold(getTranslated(this.context, 'time') + ': '),
-                          text16Black(_timesheet.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + _timesheet.totalTime + ')'),
-                        ],
-                      ),
-                      Row(
-                        children: <Widget>[
-                          text17BlackBold(getTranslated(this.context, 'sum') + ': '),
-                          text16Black(_timesheet.totalMoneyEarned.toString() + ' PLN'),
-                        ],
                       ),
                     ],
                   ),
@@ -160,8 +139,8 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
     return [
       DataTableUtil.buildTitleItemWidget(getTranslated(context, 'shortNumber'), 50),
       DataTableUtil.buildTitleItemWidget(getTranslated(context, 'hours'), 75),
-      DataTableUtil.buildTitleItemWidget(getTranslated(context, 'accord'), 50),
       DataTableUtil.buildTitleItemWidget(getTranslated(context, 'time'), 50),
+      DataTableUtil.buildTitleItemWidget(getTranslated(context, 'accord'), 50),
       DataTableUtil.buildTitleItemWidgetWithRow(getTranslated(context, 'money'), getTranslated(context, 'employee'), getTranslated(context, 'net'), 80),
       DataTableUtil.buildTitleItemWidgetWithRow(getTranslated(context, 'money'), getTranslated(context, 'company'), getTranslated(context, 'gross'), 80),
     ];
@@ -186,14 +165,6 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
           height: 50,
         ),
         InkWell(
-          onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workdays[index].pieceworks, true),
-          child: Ink(
-            child: workdays[index].pieceworks != null && workdays[index].pieceworks.isNotEmpty ? iconBlack(Icons.zoom_in) : Align(alignment: Alignment.center, child: text16Black('-')),
-            width: 50,
-            height: 50,
-          ),
-        ),
-        InkWell(
           onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workdays[index].workTimes),
           child: Ink(
             child: workdays[index].workTimes != null && workdays[index].workTimes.isNotEmpty
@@ -204,6 +175,14 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
                     ],
                   )
                 : Align(alignment: Alignment.center, child: text16Black('-')),
+            width: 50,
+            height: 50,
+          ),
+        ),
+        InkWell(
+          onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workdays[index].pieceworks, true),
+          child: Ink(
+            child: workdays[index].pieceworks != null && workdays[index].pieceworks.isNotEmpty ? iconBlack(Icons.zoom_in) : Align(alignment: Alignment.center, child: text16Black('-')),
             width: 50,
             height: 50,
           ),

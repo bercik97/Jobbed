@@ -61,10 +61,8 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
   GroupModel _model;
   User _user;
 
-  int _employeeId;
   String _name;
   String _surname;
-  String _gender;
   String _nationality;
   TimesheetForEmployeeDto _timesheet;
 
@@ -96,10 +94,8 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     this._pieceworkService = ServiceInitializer.initialize(context, _user.authHeader, PieceworkService);
     this._workTimeService = ServiceInitializer.initialize(context, _user.authHeader, WorkTimeService);
     this._workplaceService = ServiceInitializer.initialize(context, _user.authHeader, WorkplaceService);
-    this._employeeId = widget._employeeId;
     this._name = widget._name;
     this._surname = widget._surname;
-    this._gender = widget._gender;
     this._nationality = widget._nationality;
     this._timesheet = widget.timesheet;
     super.initState();
@@ -135,34 +131,13 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
               child: Padding(
                 padding: EdgeInsets.only(bottom: 5),
                 child: ListTile(
-                  leading: Padding(
-                    padding: EdgeInsets.only(top: 30),
-                    child: icon30Orange(Icons.arrow_circle_up),
-                  ),
+                  leading: icon50Orange(Icons.arrow_circle_up),
                   title: text17BlackBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
                   subtitle: Column(
                     children: <Widget>[
                       Align(
                         alignment: Alignment.topLeft,
                         child: text17BlackBold(_name + ' ' + _surname + ' ' + LanguageUtil.findFlagByNationality(_nationality)),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          text17BlackBold(getTranslated(this.context, 'accord') + ': '),
-                          text16Black(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
-                        ],
-                      ),
-                      Row(
-                        children: <Widget>[
-                          text17BlackBold(getTranslated(this.context, 'time') + ': '),
-                          text16Black(_timesheet.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + _timesheet.totalTime + ')'),
-                        ],
-                      ),
-                      Row(
-                        children: <Widget>[
-                          text17BlackBold(getTranslated(this.context, 'sum') + ': '),
-                          text16Black(_timesheet.totalMoneyEarned.toString() + ' PLN'),
-                        ],
                       ),
                     ],
                   ),
@@ -326,8 +301,8 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
         ),
       ),
       DataTableUtil.buildTitleItemWidget(getTranslated(context, 'hours'), 75),
-      DataTableUtil.buildTitleItemWidget(getTranslated(context, 'accord'), 50),
       DataTableUtil.buildTitleItemWidget(getTranslated(context, 'time'), 50),
+      DataTableUtil.buildTitleItemWidget(getTranslated(context, 'accord'), 50),
       DataTableUtil.buildTitleItemWidgetWithRow(getTranslated(context, 'money'), getTranslated(context, 'employee'), getTranslated(context, 'net'), 80),
       DataTableUtil.buildTitleItemWidgetWithRow(getTranslated(context, 'money'), getTranslated(context, 'company'), getTranslated(context, 'gross'), 80),
     ];
@@ -368,14 +343,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
           height: 50,
         ),
         InkWell(
-          onTap: () => _showScrollablePieceworksDialog(this.context, workdays[index].id, workdays[index].pieceworks),
-          child: Ink(
-            child: workdays[index].pieceworks != null && workdays[index].pieceworks.isNotEmpty ? iconBlack(Icons.zoom_in) : Align(alignment: Alignment.center, child: text16Black('-')),
-            width: 50,
-            height: 50,
-          ),
-        ),
-        InkWell(
           onTap: () => _showScrollableWorkTimesDialog(this.context, workdays[index].workTimes),
           child: Ink(
             child: workdays[index].workTimes != null && workdays[index].workTimes.isNotEmpty
@@ -386,6 +353,14 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                     ],
                   )
                 : Align(alignment: Alignment.center, child: text16Black('-')),
+            width: 50,
+            height: 50,
+          ),
+        ),
+        InkWell(
+          onTap: () => _showScrollablePieceworksDialog(this.context, workdays[index].id, workdays[index].pieceworks),
+          child: Ink(
+            child: workdays[index].pieceworks != null && workdays[index].pieceworks.isNotEmpty ? iconBlack(Icons.zoom_in) : Align(alignment: Alignment.center, child: text16Black('-')),
             width: 50,
             height: 50,
           ),

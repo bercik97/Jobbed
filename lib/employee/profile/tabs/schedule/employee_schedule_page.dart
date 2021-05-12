@@ -94,7 +94,6 @@ class _EmployeeSchedulePageState extends State<EmployeeSchedulePage> with Ticker
           this.context,
           getTranslated(context, 'iconsLegend'),
           [
-            IconsLegendUtil.buildIconRow(iconOrange(Icons.error_outline), getTranslated(context, 'dayWithNote')),
             IconsLegendUtil.buildIconRow(iconGreen(Icons.check), getTranslated(context, 'workedDay')),
             IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_circle_up), getTranslated(context, 'workInProgress')),
           ],

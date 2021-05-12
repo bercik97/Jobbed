@@ -7,10 +7,9 @@ class EmployeeStatisticsDto {
   final String gender;
   final String nationality;
   final num timesheetId;
-  final String totalHours;
   final String totalTime;
-  final String totalMoneyForPieceworkForEmployee;
   final String totalMoneyForTimeForEmployee;
+  final String totalMoneyForPieceworkForEmployee;
   final String totalMoneyEarned;
 
   EmployeeStatisticsDto({
@@ -20,10 +19,9 @@ class EmployeeStatisticsDto {
     @required this.gender,
     @required this.nationality,
     @required this.timesheetId,
-    @required this.totalHours,
     @required this.totalTime,
-    @required this.totalMoneyForPieceworkForEmployee,
     @required this.totalMoneyForTimeForEmployee,
+    @required this.totalMoneyForPieceworkForEmployee,
     @required this.totalMoneyEarned,
   });
 
@@ -35,10 +33,9 @@ class EmployeeStatisticsDto {
       gender: json['gender'],
       nationality: json['nationality'],
       timesheetId: json['timesheetId'] as num,
-      totalHours: json['totalHours'],
       totalTime: json['totalTime'],
-      totalMoneyForPieceworkForEmployee: json['totalMoneyForPieceworkForEmployee'],
       totalMoneyForTimeForEmployee: json['totalMoneyForTimeForEmployee'],
+      totalMoneyForPieceworkForEmployee: json['totalMoneyForPieceworkForEmployee'],
       totalMoneyEarned: json['totalMoneyEarned'],
     );
   }

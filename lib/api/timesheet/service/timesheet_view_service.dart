@@ -16,7 +16,7 @@ class TimesheetViewService {
   static const String _url = '$SERVER_IP/timesheets/view';
 
   Future<Map<DateTime, List<EmployeeScheduleDto>>> findByIdForEmployeeScheduleView(num employeeId) async {
-    Response res = await get('$_url/view/employee-schedule?employee_id=$employeeId', headers: _headers);
+    Response res = await get('$_url/employee-schedule?employee_id=$employeeId', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as Map).map(
         (key, value) => MapEntry(
@@ -32,7 +32,7 @@ class TimesheetViewService {
   }
 
   Future<Map<DateTime, List>> findByIdForManagerScheduleView(num groupId, int tsYear, int tsMonth) async {
-    Response res = await get('$_url/view/manager-schedule?group_id=$groupId&ts_year=$tsYear&ts_month=$tsMonth', headers: _headers);
+    Response res = await get('$_url/manager-schedule?group_id=$groupId&ts_year=$tsYear&ts_month=$tsMonth', headers: _headers);
     if (res.statusCode == 200) {
       return (json.decode(res.body) as Map).map(
         (key, value) => MapEntry(

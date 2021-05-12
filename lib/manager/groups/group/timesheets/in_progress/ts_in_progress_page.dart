@@ -236,10 +236,9 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                       year: _timesheet.year,
                                       month: _timesheet.month,
                                       status: _timesheet.status,
-                                      totalHours: _filteredEmployees[index].totalHours,
                                       totalTime: _filteredEmployees[index].totalTime,
-                                      totalMoneyForPieceworkForEmployee: _filteredEmployees[index].totalMoneyForPieceworkForEmployee,
                                       totalMoneyForTimeForEmployee: _filteredEmployees[index].totalMoneyForTimeForEmployee,
+                                      totalMoneyForPieceworkForEmployee: _filteredEmployees[index].totalMoneyForPieceworkForEmployee,
                                       totalMoneyEarned: _filteredEmployees[index].totalMoneyEarned,
                                       employeeBasicDto: null,
                                     );
@@ -256,14 +255,14 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                           text17BlackBold(name + ' ' + surname + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                           Row(
                                             children: <Widget>[
-                                              textBlackBold(getTranslated(this.context, 'accord') + ': '),
-                                              textBlack(employee.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
+                                              textBlackBold(getTranslated(this.context, 'time') + ': '),
+                                              textBlack(employee.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + employee.totalTime + ')'),
                                             ],
                                           ),
                                           Row(
                                             children: <Widget>[
-                                              textBlackBold(getTranslated(this.context, 'time') + ': '),
-                                              textBlack(employee.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + employee.totalTime + ')'),
+                                              textBlackBold(getTranslated(this.context, 'accord') + ': '),
+                                              textBlack(employee.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
                                             ],
                                           ),
                                           Row(

@@ -180,22 +180,22 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                                 children: <Widget>[
                                   ListTile(
                                     leading: Padding(
-                                      padding: EdgeInsets.only(top: 25),
-                                      child: timesheet.status == STATUS_IN_PROGRESS ? icon30Orange(Icons.arrow_circle_up) : icon30Green(Icons.check_circle_outline),
+                                      padding: EdgeInsets.only(top: 5),
+                                      child: timesheet.status == STATUS_IN_PROGRESS ? icon50Orange(Icons.arrow_circle_up) : icon50Green(Icons.check_circle_outline),
                                     ),
                                     title: text17BlackBold(timesheet.year.toString() + ' ' + MonthUtil.translateMonth(this.context, timesheet.month)),
                                     subtitle: Column(
                                       children: <Widget>[
                                         Row(
                                           children: <Widget>[
-                                            text17BlackBold(getTranslated(this.context, 'accord') + ': '),
-                                            text16Black(timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
+                                            text17BlackBold(getTranslated(this.context, 'time') + ': '),
+                                            text16Black(timesheet.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + timesheet.totalTime + ')'),
                                           ],
                                         ),
                                         Row(
                                           children: <Widget>[
-                                            text17BlackBold(getTranslated(this.context, 'time') + ': '),
-                                            text16Black(timesheet.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + timesheet.totalTime + ')'),
+                                            text17BlackBold(getTranslated(this.context, 'accord') + ': '),
+                                            text16Black(timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
                                           ],
                                         ),
                                         Row(

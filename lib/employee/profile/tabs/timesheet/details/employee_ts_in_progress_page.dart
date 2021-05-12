@@ -83,14 +83,14 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                       ),
                       Row(
                         children: <Widget>[
-                          text17BlackBold(getTranslated(this.context, 'accord') + ': '),
-                          text16Black(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
+                          text17BlackBold(getTranslated(this.context, 'time') + ': '),
+                          text16Black(_timesheet.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + _timesheet.totalTime + ')'),
                         ],
                       ),
                       Row(
                         children: <Widget>[
-                          text17BlackBold(getTranslated(this.context, 'time') + ': '),
-                          text16Black(_timesheet.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + _timesheet.totalTime + ')'),
+                          text17BlackBold(getTranslated(this.context, 'accord') + ': '),
+                          text16Black(_timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
                         ],
                       ),
                       Row(
@@ -149,8 +149,8 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     return [
       DataTableUtil.buildTitleItemWidget(getTranslated(context, 'shortNumber'), 50),
       DataTableUtil.buildTitleItemWidget(getTranslated(context, 'hours'), 75),
-      DataTableUtil.buildTitleItemWidget(getTranslated(context, 'accord'), 50),
       DataTableUtil.buildTitleItemWidget(getTranslated(context, 'time'), 50),
+      DataTableUtil.buildTitleItemWidget(getTranslated(context, 'accord'), 50),
       DataTableUtil.buildTitleItemWidgetWithRow(getTranslated(context, 'money'), getTranslated(context, 'sum'), getTranslated(context, 'net'), 80),
     ];
   }
@@ -173,14 +173,6 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
           height: 50,
         ),
         InkWell(
-          onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workdays[index].pieceworks, false),
-          child: Ink(
-            child: workdays[index].pieceworks != null && workdays[index].pieceworks.isNotEmpty ? iconBlack(Icons.zoom_in) : Align(alignment: Alignment.center, child: text16Black('-')),
-            width: 50,
-            height: 50,
-          ),
-        ),
-        InkWell(
           onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workdays[index].workTimes),
           child: Ink(
             child: workdays[index].workTimes != null && workdays[index].workTimes.isNotEmpty
@@ -191,6 +183,14 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                     ],
                   )
                 : Align(alignment: Alignment.center, child: text16Black('-')),
+            width: 50,
+            height: 50,
+          ),
+        ),
+        InkWell(
+          onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workdays[index].pieceworks, false),
+          child: Ink(
+            child: workdays[index].pieceworks != null && workdays[index].pieceworks.isNotEmpty ? iconBlack(Icons.zoom_in) : Align(alignment: Alignment.center, child: text16Black('-')),
             width: 50,
             height: 50,
           ),

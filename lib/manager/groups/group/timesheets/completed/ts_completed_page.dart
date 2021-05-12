@@ -120,10 +120,9 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                               year: _timesheet.year,
                               month: _timesheet.month,
                               status: _timesheet.status,
-                              totalHours: _filteredEmployees[index].totalHours,
                               totalTime: _filteredEmployees[index].totalTime,
-                              totalMoneyForPieceworkForEmployee: _filteredEmployees[index].totalMoneyForPieceworkForEmployee,
                               totalMoneyForTimeForEmployee: _filteredEmployees[index].totalMoneyForTimeForEmployee,
+                              totalMoneyForPieceworkForEmployee: _filteredEmployees[index].totalMoneyForPieceworkForEmployee,
                               totalMoneyEarned: _filteredEmployees[index].totalMoneyEarned,
                               employeeBasicDto: null,
                             );
@@ -153,14 +152,14 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                                     children: <Widget>[
                                       Row(
                                         children: <Widget>[
-                                          text17BlackBold(getTranslated(this.context, 'accord') + ': '),
-                                          text16Black(employee.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
+                                          text17BlackBold(getTranslated(this.context, 'time') + ': '),
+                                          text16Black(employee.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + employee.totalTime + ')'),
                                         ],
                                       ),
                                       Row(
                                         children: <Widget>[
-                                          text17BlackBold(getTranslated(this.context, 'time') + ': '),
-                                          text16Black(employee.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + employee.totalTime + ')'),
+                                          text17BlackBold(getTranslated(this.context, 'accord') + ': '),
+                                          text16Black(employee.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
                                         ],
                                       ),
                                       Row(

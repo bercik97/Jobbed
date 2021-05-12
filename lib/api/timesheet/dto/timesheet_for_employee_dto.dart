@@ -6,10 +6,9 @@ class TimesheetForEmployeeDto {
   final int year;
   final String month;
   final String status;
-  final String totalHours;
   final String totalTime;
-  final String totalMoneyForPieceworkForEmployee;
   final String totalMoneyForTimeForEmployee;
+  final String totalMoneyForPieceworkForEmployee;
   final String totalMoneyEarned;
   final EmployeeBasicDto employeeBasicDto;
 
@@ -18,10 +17,9 @@ class TimesheetForEmployeeDto {
     @required this.year,
     @required this.month,
     @required this.status,
-    @required this.totalHours,
     @required this.totalTime,
-    @required this.totalMoneyForPieceworkForEmployee,
     @required this.totalMoneyForTimeForEmployee,
+    @required this.totalMoneyForPieceworkForEmployee,
     @required this.totalMoneyEarned,
     @required this.employeeBasicDto,
   });
@@ -33,10 +31,9 @@ class TimesheetForEmployeeDto {
       year: json['year'] as int,
       month: json['month'],
       status: json['status'],
-      totalHours: json['totalHours'],
       totalTime: json['totalTime'],
-      totalMoneyForPieceworkForEmployee: json['totalMoneyForPieceworkForEmployee'],
       totalMoneyForTimeForEmployee: json['totalMoneyForTimeForEmployee'],
+      totalMoneyForPieceworkForEmployee: json['totalMoneyForPieceworkForEmployee'],
       totalMoneyEarned: json['totalMoneyEarned'],
       employeeBasicDto: employeeBasicDtoJson != null ? EmployeeBasicDto.fromJson(employeeBasicDtoJson) : null,
     );
