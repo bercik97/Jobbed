@@ -168,7 +168,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
                     for (int i = 0; i < _pieceworks.length; i++)
                       DataRow(
                         cells: [
-                          DataCell(textBlack(_pieceworks[i].serviceName)),
+                          DataCell(textBlack(_pieceworks[i].priceListName)),
                           DataCell(textBlack(_pieceworks[i].quantity.toString())),
                           DataCell(textBlack(_pieceworks[i].moneyForEmployee.toString())),
                           DataCell(
@@ -180,7 +180,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
                                   title: getTranslated(context, 'confirmation'),
                                   content: getTranslated(context, 'deletingSelectedPieceworkServiceConfirmation'),
                                   isBtnTapped: _isDeletePieceworkServiceButtonTapped,
-                                  agreeFun: () => _isDeletePieceworkServiceButtonTapped ? null : _handleDeletePieceworkService(_pieceworks[i].serviceName),
+                                  agreeFun: () => _isDeletePieceworkServiceButtonTapped ? null : _handleDeletePieceworkService(_pieceworks[i].priceListName),
                                 );
                               },
                             ),

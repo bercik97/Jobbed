@@ -834,7 +834,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                   for (int i = 0; i < pieceworks.length; i++)
                                     DataRow(
                                       cells: [
-                                        DataCell(text16Black(pieceworks[i].serviceName)),
+                                        DataCell(text16Black(pieceworks[i].priceListName)),
                                         DataCell(Align(alignment: Alignment.center, child: text16Black(pieceworks[i].quantity.toString()))),
                                         DataCell(Align(alignment: Alignment.center, child: text16Black(pieceworks[i].moneyForEmployee.toString()))),
                                         DataCell(Align(alignment: Alignment.center, child: text16Black(pieceworks[i].moneyForCompany.toString()))),
@@ -847,7 +847,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                                 title: getTranslated(context, 'confirmation'),
                                                 content: getTranslated(context, 'deletingSelectedPieceworkServiceConfirmation'),
                                                 isBtnTapped: _isDeletePieceworkServiceButtonTapped,
-                                                agreeFun: () => _isDeletePieceworkServiceButtonTapped ? null : _handleDeletePieceworkService(workdayId, pieceworks[i].serviceName),
+                                                agreeFun: () => _isDeletePieceworkServiceButtonTapped ? null : _handleDeletePieceworkService(workdayId, pieceworks[i].priceListName),
                                               );
                                             },
                                           ),
