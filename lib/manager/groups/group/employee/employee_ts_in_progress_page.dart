@@ -623,7 +623,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                                     for (int i = 0; i < _workplaces.length; i++)
                                       RadioButton.buildRadioBtn(
                                         color: BLUE,
-                                        title: _workplaces[i].name,
+                                        widget: textBlack(_workplaces[i].name),
                                         value: 0,
                                         groupValue: _workplacesRadioValues[i],
                                         onChanged: (newValue) => setState(

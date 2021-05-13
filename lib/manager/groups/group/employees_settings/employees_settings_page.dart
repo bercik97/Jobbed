@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:jobbed/api/employee/dto/employee_settings_dto.dart';
-import 'package:jobbed/api/employee/service/employee_view_service.dart';
 import 'package:jobbed/api/employee/service/employee_service.dart';
+import 'package:jobbed/api/employee/service/employee_view_service.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/manager/groups/group/employee/employee_profile_page.dart';
@@ -348,14 +348,14 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                         children: <Widget>[
                           RadioButton.buildRadioBtn(
                             color: BLUE,
-                            title: getTranslated(context, 'moneyPerHour'),
+                            widget: textBlack(getTranslated(context, 'moneyPerHour')),
                             value: 0,
                             groupValue: _moneyRadioValue,
                             onChanged: (newValue) => setState(() => _moneyRadioValue = newValue),
                           ),
                           RadioButton.buildRadioBtn(
                             color: BLUE,
-                            title: getTranslated(context, 'moneyPerHourForCompany'),
+                            widget: textBlack(getTranslated(context, 'moneyPerHourForCompany')),
                             value: 1,
                             groupValue: _moneyRadioValue,
                             onChanged: (newValue) => setState(() => _moneyRadioValue = newValue),
@@ -497,14 +497,14 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                         children: <Widget>[
                           RadioButton.buildRadioBtn(
                             color: BLUE,
-                            title: getTranslated(context, 'yesEmployeeCanDoWorkTimeByLocation'),
+                            widget: textBlack(getTranslated(context, 'yesEmployeeCanDoWorkTimeByLocation')),
                             value: 0,
                             groupValue: _workTimeByLocationRadioValue,
                             onChanged: (newValue) => setState(() => _workTimeByLocationRadioValue = newValue),
                           ),
                           RadioButton.buildRadioBtn(
                             color: Colors.red,
-                            title: getTranslated(context, 'noEmployeeCannotDoWorkTimeByLocation'),
+                            widget: textBlack(getTranslated(context, 'noEmployeeCannotDoWorkTimeByLocation')),
                             value: 1,
                             groupValue: _workTimeByLocationRadioValue,
                             onChanged: (newValue) => setState(() => _workTimeByLocationRadioValue = newValue),
@@ -610,14 +610,14 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                         children: <Widget>[
                           RadioButton.buildRadioBtn(
                             color: BLUE,
-                            title: getTranslated(context, 'yesEmployeeCanDoPieceworkUsingCompanyPriceList'),
+                            widget: textBlack(getTranslated(context, 'yesEmployeeCanDoPieceworkUsingCompanyPriceList')),
                             value: 0,
                             groupValue: _pieceworkRadioValue,
                             onChanged: (newValue) => setState(() => _pieceworkRadioValue = newValue),
                           ),
                           RadioButton.buildRadioBtn(
                             color: Colors.red,
-                            title: getTranslated(context, 'noEmployeeCannotDoPiecework'),
+                            widget: textBlack(getTranslated(context, 'noEmployeeCannotDoPiecework')),
                             value: 1,
                             groupValue: _pieceworkRadioValue,
                             onChanged: (newValue) => setState(() => _pieceworkRadioValue = newValue),

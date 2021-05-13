@@ -341,8 +341,6 @@
   "emailWrongFormat": "Email has wrong format",
   "excelEmailIsEmpty": "Cannot generate excel file because you don't have email address. Please go to the 'settings' section and then 'about me' to enter your email address.",
   "chooseGender": "Please, choose your gender",
-  "male": "Male",
-  "female": "Female",
   "settingPiecework": "Setting piecework",
   "successfullyAddedNewReportsAboutPiecework": "Successfully added new reports about piecework",
   "pieceworkForSelectedWorkdays": "Setting piecework for selected days",

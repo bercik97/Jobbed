@@ -4,6 +4,7 @@ import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:jobbed/api/employee/service/employee_unauthenticated_service.dart';
@@ -487,7 +488,12 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
                 fit: FlexFit.loose,
                 child: RadioButton.buildRadioBtn(
                   color: Colors.blueAccent,
-                  title: getTranslated(context, 'male'),
+                  widget: Row(
+                    children: [
+                      Icon(FlutterIcons.man_ant, color: Colors.blueAccent),
+                      Icon(FlutterIcons.md_man_ion, color: Colors.blueAccent),
+                    ],
+                  ),
                   value: 0,
                   groupValue: _genderRadioValue,
                   onChanged: (newValue) => setState(() {
@@ -500,7 +506,12 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
                 fit: FlexFit.loose,
                 child: RadioButton.buildRadioBtn(
                   color: Colors.pinkAccent,
-                  title: getTranslated(context, 'female'),
+                  widget: Row(
+                    children: [
+                      Icon(FlutterIcons.woman_ant, color: Colors.pinkAccent),
+                      Icon(FlutterIcons.md_woman_ion, color: Colors.pinkAccent),
+                    ],
+                  ),
                   value: 1,
                   groupValue: _genderRadioValue,
                   onChanged: (newValue) => setState(() {
