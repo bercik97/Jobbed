@@ -163,7 +163,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
             curve: Curves.bounceIn,
             children: [
               SpeedDialChild(
-                child: Icon(Icons.group_add_outlined, color: BLACK),
+                child: Icon(FlutterIcons.addusergroup_ant, color: BLACK),
                 backgroundColor: BRIGHTER_BLUE,
                 onTap: () => NavigatorUtil.navigate(this.context, AddGroupPage(_user)),
                 label: getTranslated(context, 'createGroup'),
@@ -171,7 +171,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                 labelBackgroundColor: BRIGHTER_BLUE,
               ),
               SpeedDialChild(
-                child: Icon(Icons.person_add, color: BLACK),
+                child: Icon(FlutterIcons.adduser_ant, color: BLACK),
                 backgroundColor: BRIGHTER_BLUE,
                 onTap: () => _createNewEmployeeAccount(),
                 label: getTranslated(context, 'createNewEmployeeAccount'),
@@ -179,7 +179,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                 labelBackgroundColor: BRIGHTER_BLUE,
               ),
               SpeedDialChild(
-                child: Icon(Icons.person_remove, color: BLACK),
+                child: Icon(FlutterIcons.deleteuser_ant, color: BLACK),
                 backgroundColor: BRIGHTER_BLUE,
                 onTap: () => NavigatorUtil.navigate(this.context, DeleteEmployeesAccountsPage(_user)),
                 label: getTranslated(context, 'deleteEmployeesAccounts'),
@@ -240,7 +240,7 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           IconButton(
-                            icon: icon30Green(Icons.group_add),
+                            icon: icon30Green(FlutterIcons.account_group_outline_mco),
                             onPressed: () => _manageGroupEmployees(_groups[index].name, _groups[index].id),
                           ),
                           SizedBox(width: 10),
