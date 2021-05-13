@@ -576,47 +576,47 @@ class _GroupsDashboardPageState extends State<GroupsDashboardPage> {
                               SizedBox(height: 20),
                             ],
                           ),
-                          SafeArea(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                MaterialButton(
-                                  elevation: 0,
-                                  height: 50,
-                                  minWidth: 40,
-                                  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[iconWhite(Icons.close)],
-                                  ),
-                                  color: Colors.red,
-                                  onPressed: () {
-                                    _nameController.clear();
-                                    _surnameController.clear();
-                                    _nationality = '';
-                                    _isCreateEmployeeAccountButtonTapped = false;
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                                SizedBox(width: 25),
-                                MaterialButton(
-                                  elevation: 0,
-                                  height: 50,
-                                  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[iconWhite(Icons.check)],
-                                  ),
-                                  color: BLUE,
-                                  onPressed: () => _isCreateEmployeeAccountButtonTapped ? null : _handleCreateEmployeeAccountButton(),
-                                ),
-                              ],
-                            ),
-                          ),
                         ],
                       ),
                     ),
                   ),
+                ),
+              ),
+              bottomNavigationBar: SafeArea(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    MaterialButton(
+                      elevation: 0,
+                      height: 50,
+                      minWidth: 40,
+                      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[iconWhite(Icons.close)],
+                      ),
+                      color: Colors.red,
+                      onPressed: () {
+                        _nameController.clear();
+                        _surnameController.clear();
+                        _nationality = '';
+                        _isCreateEmployeeAccountButtonTapped = false;
+                        Navigator.pop(context);
+                      },
+                    ),
+                    SizedBox(width: 25),
+                    MaterialButton(
+                      elevation: 0,
+                      height: 50,
+                      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[iconWhite(Icons.check)],
+                      ),
+                      color: BLUE,
+                      onPressed: () => _isCreateEmployeeAccountButtonTapped ? null : _handleCreateEmployeeAccountButton(),
+                    ),
+                  ],
                 ),
               ),
             );
