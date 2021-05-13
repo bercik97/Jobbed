@@ -12,7 +12,7 @@ class DataTableUtil {
     );
   }
 
-  static Widget buildTitleItemWidgetWithRow(String firstLabel, String secondLabel, String thirdLabel, double width) {
+  static Widget buildTitleItemWidgetWithRow(String firstLabel, String secondLabel, double width) {
     return Container(
       width: width,
       child: Column(
@@ -20,7 +20,6 @@ class DataTableUtil {
         children: [
           Align(alignment: Alignment.center, child: textBlackBold(firstLabel)),
           Align(alignment: Alignment.center, child: text12Black('(' + secondLabel + ')')),
-          Align(alignment: Alignment.center, child: text12Black('(' + thirdLabel + ')')),
         ],
       ),
     );

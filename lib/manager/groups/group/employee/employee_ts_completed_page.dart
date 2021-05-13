@@ -141,8 +141,8 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
       DataTableUtil.buildTitleItemWidget(getTranslated(context, 'hours'), 75),
       DataTableUtil.buildTitleItemWidget(getTranslated(context, 'time'), 50),
       DataTableUtil.buildTitleItemWidget(getTranslated(context, 'accord'), 50),
-      DataTableUtil.buildTitleItemWidgetWithRow(getTranslated(context, 'money'), getTranslated(context, 'employee'), getTranslated(context, 'net'), 80),
-      DataTableUtil.buildTitleItemWidgetWithRow(getTranslated(context, 'money'), getTranslated(context, 'company'), getTranslated(context, 'gross'), 80),
+      DataTableUtil.buildTitleItemWidgetWithRow(getTranslated(context, 'money'), getTranslated(context, 'employee'), 80),
+      DataTableUtil.buildTitleItemWidgetWithRow(getTranslated(context, 'money'), getTranslated(context, 'company'), 80),
     ];
   }
 
