@@ -21,9 +21,9 @@ import 'package:jobbed/shared/util/navigator_util.dart';
 import 'package:jobbed/shared/util/toast_util.dart';
 import 'package:jobbed/shared/widget/circular_progress_indicator.dart';
 import 'package:jobbed/shared/widget/icons.dart';
-import 'package:jobbed/shared/widget/icons_legend_dialog.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
+import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 
 import '../../../../internationalization/localization/localization_constants.dart';
 import '../../../../shared/widget/texts.dart';
@@ -95,7 +95,7 @@ class _TsPageState extends State<TsPage> {
                   child: text20OrangeBold(getTranslated(context, 'inProgressTimesheets')),
                 ),
               ),
-              _inProgressTimesheets.isEmpty
+              !_loading && _inProgressTimesheets.isEmpty
                   ? Padding(
                       padding: EdgeInsets.only(left: 20),
                       child: Align(
@@ -155,7 +155,7 @@ class _TsPageState extends State<TsPage> {
                   child: text20GreenBold(getTranslated(this.context, 'completedTimesheets')),
                 ),
               ),
-              _completedTimesheets.isEmpty
+              !_loading && _completedTimesheets.isEmpty
                   ? Padding(
                       padding: EdgeInsets.only(left: 20),
                       child: Align(
@@ -211,33 +211,44 @@ class _TsPageState extends State<TsPage> {
             ],
           ),
         ),
-        bottomNavigationBar: SafeArea(
-          child: Container(
-            height: 40,
-            child: Row(
-              children: <Widget>[
-                SizedBox(width: 1),
-                Expanded(
-                  child: MaterialButton(
-                    color: BLUE,
-                    child: text18White(getTranslated(context, 'addNewTs')),
-                    onPressed: () => _addNewTs(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              heroTag: "hintBtn",
+              tooltip: getTranslated(context, 'hint'),
+              backgroundColor: BLUE,
+              onPressed: () {
+                slideDialog.showSlideDialog(
+                  context: context,
+                  backgroundColor: WHITE,
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: <Widget>[
+                        text20GreenBold(getTranslated(context, 'iconsLegend')),
+                        SizedBox(height: 10),
+                        IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_circle_up), getTranslated(context, 'tsInProgress')),
+                        IconsLegendUtil.buildIconRow(iconGreen(Icons.check_circle_outline), getTranslated(context, 'tsCompleted')),
+                        IconsLegendUtil.buildImageRow('images/excel.png', getTranslated(context, 'generateExcel')),
+                        IconsLegendUtil.buildIconRow(iconGreen(Icons.arrow_upward), getTranslated(context, 'settingTsStatusToCompleted')),
+                        IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_downward), getTranslated(context, 'settingTsStatusToInProgress')),
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(width: 1),
-              ],
+                );
+              },
+              child: text35WhiteBold('?'),
             ),
-          ),
-        ),
-        floatingActionButton: iconsLegendDialog(
-          context,
-          getTranslated(context, 'iconsLegend'),
-          [
-            IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_circle_up), getTranslated(context, 'tsInProgress')),
-            IconsLegendUtil.buildIconRow(iconGreen(Icons.check_circle_outline), getTranslated(context, 'tsCompleted')),
-            IconsLegendUtil.buildImageRow('images/excel.png', getTranslated(context, 'generateExcel')),
-            IconsLegendUtil.buildIconRow(iconGreen(Icons.arrow_upward), getTranslated(context, 'settingTsStatusToCompleted')),
-            IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_downward), getTranslated(context, 'settingTsStatusToInProgress')),
+            SizedBox(height: 15),
+            FloatingActionButton(
+              heroTag: "plusBtn",
+              tooltip: getTranslated(context, 'addNewTs'),
+              backgroundColor: BLUE,
+              onPressed: () => _addNewTs(),
+              child: text25White('+'),
+            ),
           ],
         ),
       ),
