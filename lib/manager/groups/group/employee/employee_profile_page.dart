@@ -181,27 +181,28 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                                   ListTile(
                                     leading: Padding(
                                       padding: EdgeInsets.only(top: 5),
-                                      child: timesheet.status == STATUS_IN_PROGRESS ? icon50Orange(Icons.arrow_circle_up) : icon50Green(Icons.check_circle_outline),
+                                      child: timesheet.status == STATUS_IN_PROGRESS ? icon30Orange(Icons.arrow_circle_up) : icon30Green(Icons.check_circle_outline),
                                     ),
-                                    title: text17BlackBold(timesheet.year.toString() + ' ' + MonthUtil.translateMonth(this.context, timesheet.month)),
+                                    title: text17Black(timesheet.year.toString() + ' ' + MonthUtil.translateMonth(this.context, timesheet.month)),
                                     subtitle: Column(
                                       children: <Widget>[
                                         Row(
                                           children: <Widget>[
                                             text17BlackBold(getTranslated(this.context, 'time') + ': '),
-                                            text16Black(timesheet.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + timesheet.totalTime + ')'),
+                                            text17GreenBold(timesheet.totalMoneyForTimeForEmployee.toString() + ' PLN'),
+                                            text17Black(' (' + timesheet.totalTime + ')'),
                                           ],
                                         ),
                                         Row(
                                           children: <Widget>[
                                             text17BlackBold(getTranslated(this.context, 'accord') + ': '),
-                                            text16Black(timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
+                                            text17GreenBold(timesheet.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
                                           ],
                                         ),
                                         Row(
                                           children: <Widget>[
                                             text17BlackBold(getTranslated(this.context, 'sum') + ': '),
-                                            text16Black(timesheet.totalMoneyEarned.toString() + ' PLN'),
+                                            text17GreenBold(timesheet.totalMoneyEarned.toString() + ' PLN'),
                                           ],
                                         ),
                                       ],

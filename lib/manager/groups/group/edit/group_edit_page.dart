@@ -52,7 +52,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
                     children: <Widget>[
                       SizedBox(height: 10),
                       ListTile(
-                        title: text17BlackBold(getTranslated(context, 'groupName')),
+                        title: text17BlueBold(getTranslated(context, 'groupName')),
                         subtitle: text16Black(_model.groupName),
                         trailing: Ink(
                           decoration: ShapeDecoration(color: BLUE, shape: CircleBorder()),
@@ -63,7 +63,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
                         ),
                       ),
                       ListTile(
-                        title: text17BlackBold(getTranslated(context, 'groupDescription')),
+                        title: text17BlueBold(getTranslated(context, 'groupDescription')),
                         subtitle: text16Black(_model.groupDescription),
                         trailing: Ink(
                           decoration: ShapeDecoration(color: BLUE, shape: CircleBorder()),
@@ -102,7 +102,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'groupNameUpperCase'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20Blue(getTranslated(context, 'groupNameUpperCase'))),
                   SizedBox(height: 20),
                   Padding(
                     padding: EdgeInsets.only(left: 25, right: 25),
@@ -198,7 +198,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'groupDescriptionUpperCase'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20Blue(getTranslated(context, 'groupDescriptionUpperCase'))),
                   SizedBox(height: 20),
                   Padding(
                     padding: EdgeInsets.only(left: 25, right: 25),

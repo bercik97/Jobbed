@@ -6,7 +6,7 @@ class Buttons {
   static Widget standardButton({double minWidth, Color color, String title, Function() fun}) {
     return ButtonTheme(
       minWidth: minWidth,
-      child: MaterialButton(color: color, child: textWhiteBold(title), onPressed: () => fun()),
+      child: MaterialButton(color: color, child: textWhite(title), onPressed: () => fun()),
     );
   }
 }

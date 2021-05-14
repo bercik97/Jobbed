@@ -353,7 +353,7 @@
   "hoursPieceworkForCompany": "საათები / შეთანხმება (კომპანია)",
   "priceForEmployee": "ფასი (თანამშრომელი)",
   "priceForCompany": "ფასი (კომპანია)",
-  "daysWorked": "დღეები მუშაობდა",
+  "worked": "მუშაობდა",
   "minutesCannotBeLowerThan0": "წუთები არ შეიძლება იყოს 0-ზე დაბალი",
   "minutesCannotBeHigherThan59": "წუთი არ შეიძლება იყოს 59-ზე მეტი",
   "accord": "აკორდი",
@@ -390,7 +390,6 @@
   "startingWork": "სამუშაოების დაწყება",
   "stoppingWork": "სამუშაოს შეჩერება",
   "workTimeUpperCase": "სამუშაო დრო",
-  "setWorkTimeForSelectedEmployees": "განსაზღვრეთ სამუშაო დრო შერჩეული თანამშრომლებისთვის",
   "startWorkTimeFrom": "სამუშაო დროის დაწყება (დან)",
   "finishWorkTimeTo": "სამუშაოს დასრულების დრო (რომ)",
   "minutes": "წუთები",
@@ -408,7 +407,7 @@
   "noEmployeesInGroupOrTheyDoNotHaveTimesheetForCurrentMonth": "ჯგუფში არცერთი თანამშრომელი არ არის ან მათ არ აქვთ სამუშაო ფურცელი მიმდინარე თვისთვის.",
   "deletingSelectedWorkTimeConfirmation": "ნამდვილად გსურთ წაშალოთ არჩეული სამუშაო დრო?",
   "successfullyDeletedWorkTime": "წარმატებით წაიშალა სამუშაო დროის ჩანაწერი",
-  "gps": "GPS ადგილმდებარეობა",
+  "gpsLocation": "GPS ადგილმდებარეობა",
   "workplaceCode": "სამუშაო ადგილის კოდი",
   "selectTypeOfWorkingTime": "შეარჩიეთ სამუშაო დროის ტიპი",
   "enterWorkplaceCode": "შეიყვანეთ სამუშაო ადგილი კოდი",
@@ -441,7 +440,6 @@
   "workTimePageTitle": "ამ სექციაში შეგიძლიათ შეასრულოთ ყველა ოპერაცია, რომელიც დაკავშირებულია თანამშრომლის სამუშაო დროთან",
   "shortNumber": "ნო.",
   "workplacePageTitle": "ამ სექციაში შეგიძლიათ დაამატოთ ობიექტები და მათი ცალკეული ნაწილები GPS მდებარეობასთან ერთად, სამუშაო დროის მონიტორინგისთვის",
-  "setWorkTimeForEmployee": "დაადგინეთ სამუშაო დრო თანამშრომლისთვის",
   "deleteWorkForSingleEmployeeConfirmation": "დარწმუნებული ხართ, რომ გსურთ წაშალოთ არჩეული დღეების სამუშაო დრო?",
   "workingTimeHasBeenSuccessfullySetForSelectedDays": "სამუშაო დრო წარმატებით განისაზღვრა შერჩეული დღეებისთვის",
   "pieceworkPageTitle": "ამ სექციაში შეგიძლიათ დაამატოთ თანამშრომლების ნაჭერი სამუშაოები ფასების ჩამონათვალის საფუძველზე",
@@ -488,5 +486,8 @@
   "timeOfStartWork": "სამუშაოების დაწყების დრო",
   "todayAdditionalInfo": "დღეს დამატებითი ინფორმაცია",
   "rememberToFinishYourWorkTimeHint": "არ დაგავიწყდეთ პაუზის ღილაკის დასრულება. თუ ამას არ გააკეთებთ, სამუშაოს დრო გადაიტვირთება.",
-  "tapToSelectDayToCheck": "ასარჩევად დააჭირეთ არჩეულ დღეს"
+  "tapToSelectDayToCheck": "ასარჩევად დააჭირეთ არჩეულ დღეს",
+  "rate": "შეფასება",
+  "gps": "GPS",
+  "day": "\u1C93ღის"
 }

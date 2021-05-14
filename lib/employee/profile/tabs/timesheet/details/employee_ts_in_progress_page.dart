@@ -70,16 +70,18 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
               child: Padding(
                 padding: EdgeInsets.only(bottom: 5),
                 child: ListTile(
-                  leading: Padding(
-                    padding: EdgeInsets.only(top: 30),
-                    child: _timesheet.status == STATUS_IN_PROGRESS ? icon30Orange(Icons.arrow_circle_up) : icon30Green(Icons.check_circle_outline),
-                  ),
-                  title: text17BlackBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
+                  title: text20Black(_user.info + ' ' + LanguageUtil.findFlagByNationality(_user.nationality)),
                   subtitle: Column(
                     children: <Widget>[
                       Align(
                         alignment: Alignment.topLeft,
-                        child: text17BlackBold(_user.info != null ? _user.info + ' ' + LanguageUtil.findFlagByNationality(_user.nationality) : getTranslated(context, 'empty')),
+                        child: Row(
+                          children: [
+                            text17Black(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' - '),
+                            text17OrangeBold(getTranslated(context, 'inProgressTimesheets') + ' '),
+                            icon30Orange(Icons.check_circle_outline)
+                          ],
+                        ),
                       ),
                       Row(
                         children: <Widget>[
@@ -173,7 +175,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
           height: 50,
         ),
         InkWell(
-          onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workdays[index].workTimes),
+          onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, workdays[index].number, workdays[index].workTimes),
           child: Ink(
             child: workdays[index].workTimes != null && workdays[index].workTimes.isNotEmpty
                 ? Row(
@@ -188,7 +190,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
           ),
         ),
         InkWell(
-          onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workdays[index].pieceworks, false),
+          onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workdays[index].number, workdays[index].pieceworks, false),
           child: Ink(
             child: workdays[index].pieceworks != null && workdays[index].pieceworks.isNotEmpty ? iconBlack(Icons.zoom_in) : Align(alignment: Alignment.center, child: text16Black('-')),
             width: 50,

@@ -353,7 +353,7 @@
   "hoursPieceworkForCompany": "Часы / Accord (компания)",
   "priceForEmployee": "Цена (сотрудник)",
   "priceForCompany": "Цена (компания)",
-  "daysWorked": "Рабочих дней",
+  "worked": "Работал",
   "minutesCannotBeLowerThan0": "Минуты не могут быть меньше 0",
   "minutesCannotBeHigherThan59": "Минуты не могут быть больше 59",
   "accord": "Аккорд",
@@ -390,7 +390,6 @@
   "startingWork": "Начало работы",
   "stoppingWork": "Прекращение работы",
   "workTimeUpperCase": "РАБОЧЕЕ ВРЕМЯ",
-  "setWorkTimeForSelectedEmployees": "Установить рабочее время для выбранных сотрудников",
   "startWorkTimeFrom": "НАЧАТЬ РАБОЧЕЕ ВРЕМЯ (С)",
   "finishWorkTimeTo": "ВРЕМЯ ЗАВЕРШЕНИЯ (ДО)",
   "minutes": "Минуты",
@@ -408,7 +407,7 @@
   "noEmployeesInGroupOrTheyDoNotHaveTimesheetForCurrentMonth": "В группе нет сотрудников или у них нет расписания на текущий месяц.",
   "deletingSelectedWorkTimeConfirmation": "Вы уверены, что хотите удалить выбранное рабочее время??",
   "successfullyDeletedWorkTime": "Успешно удалена запись рабочего времени",
-  "gps": "Местоположение по GPS",
+  "gpsLocation": "Местоположение по GPS",
   "workplaceCode": "Код рабочего места",
   "selectTypeOfWorkingTime": "Выберите тип рабочего времени",
   "enterWorkplaceCode": "Введите код рабочего места",
@@ -441,7 +440,6 @@
   "workTimePageTitle": "В этом разделе вы можете выполнять все операции, связанные с рабочим временем сотрудников.",
   "shortNumber": "Кі.",
   "workplacePageTitle": "В этом разделе вы можете добавлять объекты и их отдельные части вместе с местоположением по GPS для отслеживания рабочего времени.",
-  "setWorkTimeForEmployee": "Установить рабочее время сотрудника",
   "deleteWorkForSingleEmployeeConfirmation": "Вы действительно хотите удалить рабочее время выбранных дней?",
   "workingTimeHasBeenSuccessfullySetForSelectedDays": "Рабочее время для выбранных дней успешно установлено",
   "pieceworkPageTitle": "В этом разделе вы можете добавить сдельную работу сотрудников по прейскуранту.",
@@ -488,5 +486,8 @@
   "timeOfStartWork": "Время начала работы",
   "todayAdditionalInfo": "Сегодня дополнительная информация",
   "rememberToFinishYourWorkTimeHint": "Не забудьте завершить работу кнопкой паузы. Если этого не сделать, время работы будет сброшено.",
-  "tapToSelectDayToCheck": "Нажмите на выбранный день, чтобы выбрать"
+  "tapToSelectDayToCheck": "Нажмите на выбранный день, чтобы выбрать",
+  "rate": "Показатель",
+  "gps": "GPS",
+  "day": "День"
 }

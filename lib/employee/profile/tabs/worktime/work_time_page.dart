@@ -303,7 +303,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                     Buttons.standardButton(
                       minWidth: 200.0,
                       color: BLUE,
-                      title: getTranslated(context, 'gps'),
+                      title: getTranslated(context, 'gpsLocation'),
                       fun: () {
                         Navigator.pop(context);
                         gpsFun();

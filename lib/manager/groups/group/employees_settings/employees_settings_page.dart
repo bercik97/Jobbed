@@ -1,6 +1,5 @@
 import 'dart:collection';
 
-import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,7 +14,6 @@ import 'package:jobbed/manager/shared/group_model.dart';
 import 'package:jobbed/manager/shared/manager_app_bar.dart';
 import 'package:jobbed/shared/libraries/colors.dart';
 import 'package:jobbed/shared/model/user.dart';
-import 'package:jobbed/shared/util/avatars_util.dart';
 import 'package:jobbed/shared/util/collection_util.dart';
 import 'package:jobbed/shared/util/dialog_util.dart';
 import 'package:jobbed/shared/util/language_util.dart';
@@ -157,96 +155,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                               foundIndex = i;
                             }
                           }
-                          String name = employee.name;
-                          String surname = employee.surname;
-                          String gender = employee.gender;
-                          String nationality = employee.nationality;
-                          return Card(
-                            color: WHITE,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  color: BRIGHTER_BLUE,
-                                  child: ListTileTheme(
-                                    contentPadding: EdgeInsets.only(right: 10),
-                                    child: CheckboxListTile(
-                                      controlAffinity: ListTileControlAffinity.leading,
-                                      secondary: Padding(
-                                        padding: EdgeInsets.all(4),
-                                        child: Transform.scale(
-                                          scale: 1.2,
-                                          child: BouncingWidget(
-                                            duration: Duration(milliseconds: 100),
-                                            scaleFactor: 2,
-                                            onPressed: () async => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, employee.id, name, surname, gender, nationality)),
-                                            child: AvatarsUtil.buildAvatar(gender, 40, 16, name.substring(0, 1), surname.substring(0, 1)),
-                                          ),
-                                        ),
-                                      ),
-                                      title: text20BlackBold(name + ' ' + surname + ' ' + LanguageUtil.findFlagByNationality(nationality)),
-                                      subtitle: Column(
-                                        children: <Widget>[
-                                          Align(
-                                              child: Row(
-                                                children: <Widget>[
-                                                  textBlack(getTranslated(this.context, 'moneyPerHour') + ': '),
-                                                  textBlackBold(employee.moneyPerHour.toString()),
-                                                ],
-                                              ),
-                                              alignment: Alignment.topLeft),
-                                          Align(
-                                              child: Row(
-                                                children: <Widget>[
-                                                  textBlack(getTranslated(this.context, 'moneyPerHourForCompany') + ': '),
-                                                  textBlackBold(employee.moneyPerHourForCompany.toString()),
-                                                ],
-                                              ),
-                                              alignment: Alignment.topLeft),
-                                          Align(
-                                              child: Row(
-                                                children: <Widget>[
-                                                  textBlack(getTranslated(this.context, 'workTimeByLocation') + ': '),
-                                                  employee.workTimeByLocation ? textBlueBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
-                                                ],
-                                              ),
-                                              alignment: Alignment.topLeft),
-                                          Align(
-                                              child: Row(
-                                                children: <Widget>[
-                                                  textBlack(getTranslated(this.context, 'piecework') + ': '),
-                                                  employee.piecework ? textBlueBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
-                                                ],
-                                              ),
-                                              alignment: Alignment.topLeft),
-                                        ],
-                                      ),
-                                      activeColor: BLUE,
-                                      checkColor: WHITE,
-                                      value: _checked[foundIndex],
-                                      onChanged: (bool value) {
-                                        setState(() {
-                                          _checked[foundIndex] = value;
-                                          if (value) {
-                                            _selectedIds.add(_employees[foundIndex].id);
-                                          } else {
-                                            _selectedIds.remove(_employees[foundIndex].id);
-                                          }
-                                          int selectedIdsLength = _selectedIds.length;
-                                          if (selectedIdsLength == _employees.length) {
-                                            _isChecked = true;
-                                          } else if (selectedIdsLength == 0) {
-                                            _isChecked = false;
-                                          }
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          );
+                          return _buildCard(employee, foundIndex);
                         },
                       ),
                     ),
@@ -262,7 +171,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                 Expanded(
                   child: MaterialButton(
                     color: BLUE,
-                    child: textCenter12White(getTranslated(context, 'hourlyWage')),
+                    child: textCenterWhite(getTranslated(context, 'rate')),
                     onPressed: () {
                       if (_selectedIds.isNotEmpty && !_isMoneyBtnTapped) {
                         _moneyPerHourController.clear();
@@ -277,7 +186,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                 Expanded(
                   child: MaterialButton(
                     color: BLUE,
-                    child: textCenter12White(getTranslated(context, 'workTimeGPS')),
+                    child: textCenterWhite(getTranslated(context, 'gps')),
                     onPressed: () {
                       if (_selectedIds.isNotEmpty && !_isWorkTimeByLocationBtnTapped) {
                         _changePermissionToWorkTimeByLocation();
@@ -291,7 +200,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                 Expanded(
                   child: MaterialButton(
                     color: BLUE,
-                    child: textCenter12White(getTranslated(context, 'piecework')),
+                    child: textCenterWhite(getTranslated(context, 'accord')),
                     onPressed: () {
                       if (_selectedIds.isNotEmpty) {
                         _changePermissionToPiecework();
@@ -308,6 +217,92 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
         ),
       ),
       onWillPop: () => NavigatorUtil.onWillPopNavigate(context, GroupPage(_model)),
+    );
+  }
+
+  Widget _buildCard(EmployeeSettingsDto employee, int foundIndex) {
+    String name = employee.name;
+    String surname = employee.surname;
+    String gender = employee.gender;
+    String nationality = employee.nationality;
+    return Card(
+      color: WHITE,
+      child: Container(
+        color: BRIGHTER_BLUE,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Ink(
+              width: MediaQuery.of(context).size.width * 0.15,
+              height: 100,
+              child: ListTileTheme(
+                contentPadding: EdgeInsets.only(right: 10),
+                child: CheckboxListTile(
+                  controlAffinity: ListTileControlAffinity.leading,
+                  activeColor: BLUE,
+                  checkColor: WHITE,
+                  value: _checked[foundIndex],
+                  onChanged: (bool value) {
+                    setState(() {
+                      _checked[foundIndex] = value;
+                      if (value) {
+                        _selectedIds.add(_employees[foundIndex].id);
+                      } else {
+                        _selectedIds.remove(_employees[foundIndex].id);
+                      }
+                      int selectedIdsLength = _selectedIds.length;
+                      if (selectedIdsLength == _employees.length) {
+                        _isChecked = true;
+                      } else if (selectedIdsLength == 0) {
+                        _isChecked = false;
+                      }
+                    });
+                  },
+                ),
+              ),
+            ),
+            SizedBox(width: 5),
+            Expanded(
+              child: InkWell(
+                onTap: () => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, employee.id, name, surname, gender, nationality)),
+                child: Ink(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      text20Black((name + ' ' + surname).length > 30 ? (name + ' ' + surname).substring(0, 30) + '... ' + LanguageUtil.findFlagByNationality(nationality) : (name + ' ' + surname) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                      Row(
+                        children: <Widget>[
+                          textBlackBold(getTranslated(this.context, 'moneyPerHour') + ': '),
+                          textBlack(employee.moneyPerHour.toString()),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          textBlackBold(getTranslated(this.context, 'moneyPerHourForCompany') + ': '),
+                          textBlack(employee.moneyPerHourForCompany.toString()),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          textBlackBold(getTranslated(this.context, 'workTimeByLocation') + ': '),
+                          employee.workTimeByLocation ? textGreenBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          textBlackBold(getTranslated(this.context, 'piecework') + ': '),
+                          employee.piecework ? textGreenBold(getTranslated(this.context, 'yes')) : textRedBold(getTranslated(this.context, 'no')),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -334,7 +329,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                         padding: EdgeInsets.only(top: 50),
                         child: Column(
                           children: [
-                            textCenter20Black(getTranslated(context, 'moneyPerHourUpperCase')),
+                            textCenter20Blue(getTranslated(context, 'moneyPerHourUpperCase')),
                           ],
                         ),
                       ),
@@ -488,7 +483,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                         padding: EdgeInsets.only(top: 50),
                         child: Column(
                           children: [
-                            textCenter20BlackBold(getTranslated(context, 'permissionToWorkTimeByLocationUpperCase')),
+                            textCenter20Blue(getTranslated(context, 'permissionToWorkTimeByLocationUpperCase')),
                           ],
                         ),
                       ),
@@ -599,11 +594,7 @@ class _EmployeesSettingsPageState extends State<EmployeesSettingsPage> {
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.only(top: 50),
-                        child: Column(
-                          children: [
-                            textCenter20BlackBold(getTranslated(context, 'permissionToPieceworkUpperCase')),
-                          ],
-                        ),
+                        child: textCenter20Blue(getTranslated(context, 'permissionToPieceworkUpperCase')),
                       ),
                       SizedBox(height: 7.5),
                       Column(

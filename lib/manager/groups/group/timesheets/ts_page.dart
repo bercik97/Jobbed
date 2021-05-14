@@ -140,7 +140,7 @@ class _TsPageState extends State<TsPage> {
                                         ),
                                       ],
                                     ),
-                                    title: text17BlackBold(inProgressTs.year.toString() + ' ' + MonthUtil.translateMonth(context, inProgressTs.month)),
+                                    title: text17Black(inProgressTs.year.toString() + ' ' + MonthUtil.translateMonth(context, inProgressTs.month)),
                                   ),
                                 ],
                               ),
@@ -200,7 +200,7 @@ class _TsPageState extends State<TsPage> {
                                         ),
                                       ],
                                     ),
-                                    title: text17BlackBold(completedTs.year.toString() + ' ' + MonthUtil.translateMonth(context, completedTs.month)),
+                                    title: text17Black(completedTs.year.toString() + ' ' + MonthUtil.translateMonth(context, completedTs.month)),
                                   ),
                                 ],
                               ),
@@ -239,7 +239,7 @@ class _TsPageState extends State<TsPage> {
                   ),
                 );
               },
-              child: text35WhiteBold('?'),
+              child: text25White('?'),
             ),
             SizedBox(height: 15),
             FloatingActionButton(

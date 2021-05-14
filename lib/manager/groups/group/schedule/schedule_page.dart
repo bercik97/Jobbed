@@ -3,7 +3,6 @@ import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:jobbed/api/employee/dto/employee_for_manager_schedule_dto.dart';
 import 'package:jobbed/api/shared/service_initializer.dart';
-import 'package:jobbed/api/timesheet/service/timesheet_service.dart';
 import 'package:jobbed/api/timesheet/service/timesheet_view_service.dart';
 import 'package:jobbed/internationalization/localization/localization_constants.dart';
 import 'package:jobbed/manager/groups/group/group_page.dart';
@@ -246,7 +245,7 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
     return Column(
       children: [
         ListTile(
-          title: text20BlackBold(employeeInfo),
+          title: text20Black(employeeInfo),
           trailing: employee.isWorkTouched ? icon50Green(Icons.check) : icon50Red(Icons.close),
           subtitle: Column(
             children: <Widget>[
@@ -254,13 +253,13 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
               Align(
                   child: Row(
                     children: <Widget>[
-                      text20Black(getTranslated(context, 'workTime') + ': '),
-                      text17GreenBold(moneyForTime.toString() + ' PLN'),
+                      textBlackBold(getTranslated(context, 'workTime') + ': '),
+                      textGreenBold(moneyForTime.toString() + ' PLN '),
                       workTimes != null && workTimes.isNotEmpty
                           ? IconButton(
                               padding: EdgeInsets.zero,
                               constraints: BoxConstraints(),
-                              icon: icon30Blue(Icons.search),
+                              icon: iconBlack(Icons.zoom_in),
                               onPressed: () => WorkdayUtil.showScrollableWorkTimes(context, _selectedDay.toString(), workTimes),
                             )
                           : SizedBox(height: 0),
@@ -271,13 +270,13 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
               Align(
                   child: Row(
                     children: <Widget>[
-                      text20Black(getTranslated(context, 'accord') + ': '),
-                      text17GreenBold(moneyForPiecework.toString() + ' PLN'),
+                      textBlackBold(getTranslated(context, 'accord') + ': '),
+                      textGreenBold(moneyForPiecework.toString() + ' PLN '),
                       pieceworks != null && pieceworks.isNotEmpty
                           ? IconButton(
                               padding: EdgeInsets.zero,
                               constraints: BoxConstraints(),
-                              icon: icon30Blue(Icons.search),
+                              icon: iconBlack(Icons.zoom_in),
                               onPressed: () => WorkdayUtil.showScrollablePieceworks(context, _selectedDay.toString(), pieceworks),
                             )
                           : SizedBox(width: 0),
@@ -288,8 +287,8 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
               Align(
                   child: Row(
                     children: <Widget>[
-                      text20Black(getTranslated(context, 'sum') + ': '),
-                      text17GreenBold((double.parse(moneyForTime) + double.parse(moneyForPiecework)).toString() + ' PLN'),
+                      textBlackBold(getTranslated(context, 'sum') + ': '),
+                      textGreenBold((double.parse(moneyForTime) + double.parse(moneyForPiecework)).toString() + ' PLN'),
                     ],
                   ),
                   alignment: Alignment.topLeft),

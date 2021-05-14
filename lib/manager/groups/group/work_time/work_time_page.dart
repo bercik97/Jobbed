@@ -336,11 +336,9 @@ class _WorkTimePageState extends State<WorkTimePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'workTimeUpperCase'))),
-                    SizedBox(height: 2.5),
-                    text16Black(getTranslated(context, 'setWorkTimeForSelectedEmployees')),
+                    Padding(padding: EdgeInsets.only(top: 50), child: text20Blue(getTranslated(context, 'workTimeUpperCase'))),
                     SizedBox(height: 20),
-                    text17BlackBold(getTranslated(context, 'startWorkTimeFrom')),
+                    text17Black(getTranslated(context, 'startWorkTimeFrom')),
                     Row(
                       children: [
                         Expanded(
@@ -404,7 +402,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                       ],
                     ),
                     SizedBox(height: 20),
-                    text17BlackBold(getTranslated(context, 'finishWorkTimeTo')),
+                    text17Black(getTranslated(context, 'finishWorkTimeTo')),
                     Row(
                       children: [
                         Expanded(
@@ -550,7 +548,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                           padding: EdgeInsets.only(top: 50, bottom: 10),
                           child: Column(
                             children: [
-                              textCenter25BlueBold(title),
+                              textCenter20Blue(title),
                             ],
                           ),
                         ),
@@ -799,7 +797,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        text20BlackBold((name + ' ' + surname).length > 30 ? (name + ' ' + surname).substring(0, 30) + '... ' + LanguageUtil.findFlagByNationality(nationality) : (name + ' ' + surname) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                        text20Black((name + ' ' + surname).length > 30 ? (name + ' ' + surname).substring(0, 30) + '... ' + LanguageUtil.findFlagByNationality(nationality) : (name + ' ' + surname) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                         _handleWorkStatus(MainAxisAlignment.start, employee.workStatus, employee.workplace, employee.timeWorkedToday, employee.timeOfStartWork, employee.additionalInformation, employee.yesterdayAdditionalInformation),
                       ],
                     ),
@@ -839,15 +837,15 @@ class _WorkTimePageState extends State<WorkTimePage> {
           children: [
             Row(
               mainAxisAlignment: alignment,
-              children: <Widget>[textBlack(getTranslated(context, 'status') + ': '), iconGreen(Icons.check), textGreenBold(getTranslated(context, 'workIsDoneStatus'))],
+              children: <Widget>[textBlackBold(getTranslated(context, 'status') + ': '), iconGreen(Icons.check), textGreenBold(getTranslated(context, 'workIsDoneStatus'))],
             ),
             Row(
               mainAxisAlignment: alignment,
-              children: <Widget>[textBlack(getTranslated(context, 'timeWorkedToday') + ': '), textGreenBold(timeWorkedToday)],
+              children: <Widget>[textBlackBold(getTranslated(context, 'timeWorkedToday') + ': '), textGreenBold(timeWorkedToday)],
             ),
             Row(
               mainAxisAlignment: alignment,
-              children: <Widget>[textBlack(getTranslated(context, 'workplace') + ': '), textBlackBold(workplace)],
+              children: <Widget>[textBlackBold(getTranslated(context, 'workplace') + ': '), textBlack(workplace)],
             ),
             additionalInformation != null || yesterdayAdditionalInformation != null ? _handleAdditionalInfo(MainAxisAlignment.start, additionalInformation, yesterdayAdditionalInformation) : SizedBox(height: 0),
           ],
@@ -857,15 +855,15 @@ class _WorkTimePageState extends State<WorkTimePage> {
           children: [
             Row(
               mainAxisAlignment: alignment,
-              children: <Widget>[textBlack(getTranslated(context, 'status') + ': '), iconOrange(Icons.timer), textOrangeBold(getTranslated(context, 'workIsInProgress'))],
+              children: <Widget>[textBlackBold(getTranslated(context, 'status') + ': '), iconOrange(Icons.timer), textOrangeBold(getTranslated(context, 'workIsInProgress'))],
             ),
             Row(
               mainAxisAlignment: alignment,
-              children: <Widget>[textBlack(getTranslated(context, 'timeOfStartWork') + ': '), textBlackBold(timeOfStartWork)],
+              children: <Widget>[textBlackBold(getTranslated(context, 'timeOfStartWork') + ': '), textBlack(timeOfStartWork)],
             ),
             Row(
               mainAxisAlignment: alignment,
-              children: <Widget>[textBlack(getTranslated(context, 'workplace') + ': '), textBlackBold(workplace)],
+              children: <Widget>[textBlackBold(getTranslated(context, 'workplace') + ': '), textBlack(workplace)],
             ),
             additionalInformation != null || yesterdayAdditionalInformation != null ? _handleAdditionalInfo(MainAxisAlignment.start, additionalInformation, yesterdayAdditionalInformation) : SizedBox(height: 0),
           ],
@@ -876,7 +874,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
             Row(
               mainAxisAlignment: alignment,
               children: <Widget>[
-                textBlack(getTranslated(context, 'status') + ': '),
+                textBlackBold(getTranslated(context, 'status') + ': '),
                 iconRed(Icons.remove),
                 textRedBold(getTranslated(context, 'workDoNotStarted')),
               ],

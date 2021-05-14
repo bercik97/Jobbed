@@ -245,30 +245,31 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                     NavigatorUtil.navigate(this.context, EmployeeTsInProgressPage(_model, employee.id, name, surname, gender, nationality, _inProgressTs));
                                   },
                                   child: Ink(
-                                    width: MediaQuery.of(context).size.width * 0.60,
+                                    width: MediaQuery.of(context).size.width * 0.80,
                                     color: BRIGHTER_BLUE,
                                     child: Padding(
                                       padding: const EdgeInsets.all(6),
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          text17BlackBold(name + ' ' + surname + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                          text20Black(name + ' ' + surname + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                           Row(
                                             children: <Widget>[
-                                              textBlackBold(getTranslated(this.context, 'time') + ': '),
-                                              textBlack(employee.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + employee.totalTime + ')'),
+                                              text17BlackBold(getTranslated(this.context, 'time') + ': '),
+                                              text17GreenBold(employee.totalMoneyForTimeForEmployee.toString() + ' PLN'),
+                                              text17Black(' (' + employee.totalTime + ')'),
                                             ],
                                           ),
                                           Row(
                                             children: <Widget>[
-                                              textBlackBold(getTranslated(this.context, 'accord') + ': '),
-                                              textBlack(employee.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
+                                              text17BlackBold(getTranslated(this.context, 'accord') + ': '),
+                                              text17GreenBold(employee.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
                                             ],
                                           ),
                                           Row(
                                             children: <Widget>[
-                                              textBlackBold(getTranslated(this.context, 'sum') + ': '),
-                                              textBlack(employee.totalMoneyEarned.toString() + ' PLN'),
+                                              text17BlackBold(getTranslated(this.context, 'sum') + ': '),
+                                              text17GreenBold(employee.totalMoneyEarned.toString() + ' PLN'),
                                             ],
                                           ),
                                         ],
@@ -276,20 +277,6 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                                     ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 25, left: 25),
-                                  child: Container(
-                                    child: Transform.scale(
-                                      scale: 1.2,
-                                      child: BouncingWidget(
-                                        duration: Duration(milliseconds: 100),
-                                        scaleFactor: 2,
-                                        onPressed: () => NavigatorUtil.navigate(this.context, EmployeeProfilePage(_model, employee.id, name, surname, gender, nationality)),
-                                        child: AvatarsUtil.buildAvatar(gender, 40, 16, name.substring(0, 1), surname.substring(0, 1)),
-                                      ),
-                                    ),
-                                  ),
-                                )
                               ],
                             ),
                           );
@@ -419,11 +406,9 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'workTimeUpperCase'))),
-                    SizedBox(height: 2.5),
-                    text16Black(getTranslated(context, 'setWorkTimeForSelectedEmployees')),
+                    Padding(padding: EdgeInsets.only(top: 50), child: text20Blue(getTranslated(context, 'workTimeUpperCase'))),
                     SizedBox(height: 20),
-                    text17BlackBold(getTranslated(context, 'startWorkTimeFrom')),
+                    text17Black(getTranslated(context, 'startWorkTimeFrom')),
                     Row(
                       children: [
                         Expanded(
@@ -487,7 +472,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                       ],
                     ),
                     SizedBox(height: 20),
-                    text17BlackBold(getTranslated(context, 'finishWorkTimeTo')),
+                    text17Black(getTranslated(context, 'finishWorkTimeTo')),
                     Row(
                       children: [
                         Expanded(

@@ -134,22 +134,22 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                       child: _workplaceDto.location != null
                           ? Row(
                               children: [
-                                text16Black(getTranslated(context, 'radius') + ': '),
-                                text17BlackBold(_workplaceDto.radiusLength.toString().substring(0, 4) + ' KM'),
+                                textBlackBold(getTranslated(context, 'radius') + ': '),
+                                textBlack(_workplaceDto.radiusLength.toString().substring(0, 4) + ' KM'),
                               ],
                             )
                           : Row(
                               children: [
-                                text16Black(getTranslated(context, 'radius') + ': '),
-                                text16BlueGrey(getTranslated(context, 'empty')),
+                                textBlackBold(getTranslated(context, 'radius') + ': '),
+                                textBlueGrey(getTranslated(context, 'empty')),
                               ],
                             ),
                     ),
                     Align(
                       child: Row(
                         children: [
-                          text16Black(getTranslated(context, 'workplaceCode') + ': '),
-                          text17BlackBold(_workplaceDto.id),
+                          textBlackBold(getTranslated(context, 'workplaceCode') + ': '),
+                          textBlack(_workplaceDto.id),
                         ],
                       ),
                       alignment: Alignment.topLeft,
@@ -209,7 +209,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
                                                   ),
                                                 ],
                                               ),
-                                              title: text17BlackBold(
+                                              title: text17Black(
                                                 date.substring(0, 4).toString() + ' ' + MonthUtil.findMonthNameByMonthNumber(this.context, int.parse(date.substring(5, 7))),
                                               ),
                                             ),
@@ -251,7 +251,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'editWorkplace'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20Blue(getTranslated(context, 'editWorkplace'))),
                   Padding(
                     padding: EdgeInsets.only(top: 20, left: 25, right: 25),
                     child: TextFormField(

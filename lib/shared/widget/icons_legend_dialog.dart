@@ -39,7 +39,7 @@ Widget iconsLegendDialog(BuildContext context, String title, List<Widget> widget
           child: Shimmer.fromColors(
             baseColor: WHITE,
             highlightColor: WHITE,
-            child: text35WhiteBold('?'),
+            child: text25White('?'),
           ),
         ),
         initialPosition: AnchoringPosition.bottomRight,

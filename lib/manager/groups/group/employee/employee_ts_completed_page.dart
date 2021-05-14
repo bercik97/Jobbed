@@ -78,19 +78,21 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
           children: <Widget>[
             Container(
               color: BRIGHTER_BLUE,
-              child: Padding(
-                padding: EdgeInsets.only(bottom: 5),
-                child: ListTile(
-                  leading: icon50Green(Icons.check_circle_outline),
-                  title: text17BlackBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
-                  subtitle: Column(
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: text17BlackBold(_name + ' ' + _surname + ' ' + LanguageUtil.findFlagByNationality(_nationality)),
+              child: ListTile(
+                title: text20Black(_name + ' ' + _surname + ' ' + LanguageUtil.findFlagByNationality(_nationality)),
+                subtitle: Column(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Row(
+                        children: [
+                          text17Black(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' - '),
+                          text17GreenBold(getTranslated(context, 'completedTimesheets') + ' '),
+                          icon30Green(Icons.check_circle_outline)
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -165,7 +167,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
           height: 50,
         ),
         InkWell(
-          onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, getTranslated(this.context, 'workTimes'), workdays[index].workTimes),
+          onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, workdays[index].number, workdays[index].workTimes),
           child: Ink(
             child: workdays[index].workTimes != null && workdays[index].workTimes.isNotEmpty
                 ? Row(
@@ -180,7 +182,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
           ),
         ),
         InkWell(
-          onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workdays[index].pieceworks, true),
+          onTap: () => WorkdayUtil.showScrollablePieceworksDialog(this.context, workdays[index].number, workdays[index].pieceworks, true),
           child: Ink(
             child: workdays[index].pieceworks != null && workdays[index].pieceworks.isNotEmpty ? iconBlack(Icons.zoom_in) : Align(alignment: Alignment.center, child: text16Black('-')),
             width: 50,

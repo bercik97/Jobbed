@@ -206,11 +206,11 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                                 Align(
                                                   alignment: Alignment.topLeft,
                                                   child: location != null && location != ''
-                                                      ? text16Black(location)
+                                                      ? textBlack(location)
                                                       : Row(
                                                           children: [
-                                                            text16Black(getTranslated(this.context, 'location') + ': '),
-                                                            text16BlueGrey(getTranslated(this.context, 'empty')),
+                                                            textBlack(getTranslated(this.context, 'location') + ': '),
+                                                            textBlueGrey(getTranslated(this.context, 'empty')),
                                                           ],
                                                         ),
                                                 ),
@@ -219,14 +219,14 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                                   child: location != null
                                                       ? Row(
                                                           children: [
-                                                            text16Black(getTranslated(this.context, 'radius') + ': '),
-                                                            text17BlackBold(radiusLength.substring(0, 4) + ' KM'),
+                                                            textBlackBold(getTranslated(this.context, 'radius') + ': '),
+                                                            textBlack(radiusLength.substring(0, 4) + ' KM'),
                                                           ],
                                                         )
                                                       : Row(
                                                           children: [
-                                                            text16Black(getTranslated(this.context, 'radius') + ': '),
-                                                            text16BlueGrey(getTranslated(this.context, 'empty')),
+                                                            textBlackBold(getTranslated(this.context, 'radius') + ': '),
+                                                            textBlueGrey(getTranslated(this.context, 'empty')),
                                                           ],
                                                         ),
                                                 ),
@@ -234,8 +234,8 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                                                   alignment: Alignment.topLeft,
                                                   child: Row(
                                                     children: [
-                                                      text16Black(getTranslated(this.context, 'workplaceId') + ': '),
-                                                      text17BlackBold(workplace.id),
+                                                      textBlackBold(getTranslated(this.context, 'workplaceId') + ': '),
+                                                      textBlack(workplace.id),
                                                     ],
                                                   ),
                                                 ),
@@ -297,7 +297,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                   ),
                 );
               },
-              child: text35WhiteBold('?'),
+              child: text25White('?'),
             ),
             SizedBox(height: 15),
             FloatingActionButton(
@@ -336,7 +336,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'createWorkplace'))),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20Blue(getTranslated(context, 'createWorkplace'))),
                   Padding(
                     padding: EdgeInsets.only(top: 20, left: 25, right: 25),
                     child: TextFormField(

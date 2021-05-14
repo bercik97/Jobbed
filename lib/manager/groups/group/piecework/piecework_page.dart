@@ -212,11 +212,11 @@ class _PieceworkPageState extends State<PieceworkPage> {
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            text20BlackBold((name + ' ' + surname).length > 30 ? (name + ' ' + surname).substring(0, 30) + '... ' + LanguageUtil.findFlagByNationality(nationality) : (name + ' ' + surname) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                            text20Black((name + ' ' + surname).length > 30 ? (name + ' ' + surname).substring(0, 30) + '... ' + LanguageUtil.findFlagByNationality(nationality) : (name + ' ' + surname) + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                             Row(
                                               children: <Widget>[
-                                                textBlack(getTranslated(this.context, 'moneyForPieceworkToday') + ': '),
-                                                textBlackBold(employee.moneyForPieceworkToday.toString() + ' PLN'),
+                                                textBlackBold(getTranslated(this.context, 'moneyForPieceworkToday') + ': '),
+                                                textGreenBold(employee.moneyForPieceworkToday.toString() + ' PLN'),
                                               ],
                                             ),
                                           ],

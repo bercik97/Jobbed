@@ -172,7 +172,7 @@ class _DeleteGroupEmployeesPageState extends State<DeleteGroupEmployeesPage> {
                       contentPadding: EdgeInsets.only(right: 10),
                       child: CheckboxListTile(
                         controlAffinity: ListTileControlAffinity.leading,
-                        title: text20BlackBold(employee.name + ' ' + employee.surname + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                        title: text20Black(employee.name + ' ' + employee.surname + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                         activeColor: BLUE,
                         checkColor: WHITE,
                         value: _checked[foundIndex],

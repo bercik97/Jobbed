@@ -39,13 +39,13 @@ Widget employeeToday(BuildContext context, User user, EmployeeProfileDto dto) {
                 Align(
                     child: Row(
                       children: <Widget>[
-                        text20Black(getTranslated(context, 'workTime') + ': '),
-                        text17GreenBold(todayMoneyForTime + ' PLN'),
+                        text17Black(getTranslated(context, 'workTime') + ': '),
+                        text17GreenBold(todayMoneyForTime + ' PLN '),
                         todayWorkTimes != null && todayWorkTimes.isNotEmpty
                             ? IconButton(
                                 padding: EdgeInsets.zero,
                                 constraints: BoxConstraints(),
-                                icon: icon30Blue(Icons.search),
+                                icon: icon30Black(Icons.zoom_in),
                                 onPressed: () => WorkdayUtil.showScrollableWorkTimes(context, todayDate, todayWorkTimes),
                               )
                             : SizedBox(height: 0),
@@ -56,13 +56,13 @@ Widget employeeToday(BuildContext context, User user, EmployeeProfileDto dto) {
                 Align(
                     child: Row(
                       children: <Widget>[
-                        text20Black(getTranslated(context, 'accord') + ': '),
-                        text17GreenBold(todayMoneyForPiecework + ' PLN'),
+                        text17Black(getTranslated(context, 'accord') + ': '),
+                        text17GreenBold(todayMoneyForPiecework + ' PLN '),
                         todayPiecework != null && todayPiecework.isNotEmpty
                             ? IconButton(
                                 padding: EdgeInsets.zero,
                                 constraints: BoxConstraints(),
-                                icon: icon30Blue(Icons.search),
+                                icon: icon30Black(Icons.zoom_in),
                                 onPressed: () => WorkdayUtil.showScrollablePieceworks(context, todayDate, todayPiecework),
                               )
                             : SizedBox(width: 0),
@@ -73,7 +73,7 @@ Widget employeeToday(BuildContext context, User user, EmployeeProfileDto dto) {
                 Align(
                     child: Row(
                       children: <Widget>[
-                        text20Black(getTranslated(context, 'sum') + ': '),
+                        text17Black(getTranslated(context, 'sum') + ': '),
                         text17GreenBold(todayMoney + ' PLN'),
                       ],
                     ),

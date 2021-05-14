@@ -62,7 +62,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
           backgroundColor: WHITE,
           elevation: 0.0,
           bottomOpacity: 0.0,
-          title: text15Black(getTranslated(context, 'loading')),
+          title: text20Black(getTranslated(context, 'loading')),
           leading: IconButton(icon: iconBlack(Icons.power_settings_new), onPressed: () => LogoutUtil.logout(context)),
           actions: <Widget>[
             Padding(
@@ -115,7 +115,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                         ),
                         SizedBox(height: 10),
                         text18Black(getTranslated(this.context, 'statisticsForThe') + _employeePageDto.tsCurrentYear + ' ' + getTranslated(this.context, _employeePageDto.tsCurrentMonth)),
-                        SizedBox(height: 5),
+                        SizedBox(height: 15),
                         Row(
                           children: <Widget>[
                             Spacer(),
@@ -123,8 +123,8 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                               flex: 2,
                               child: Column(
                                 children: <Widget>[
-                                  textCenter15BlueBold(getTranslated(this.context, 'daysWorked')),
-                                  SizedBox(height: 5.0),
+                                  textCenter15BlueBold(getTranslated(this.context, 'days')),
+                                  textCenter12BlueBold('(' + getTranslated(this.context, 'worked') + ')'),
                                   Countup(
                                     begin: 0,
                                     end: _employeePageDto.tsDaysWorked.toDouble(),
@@ -140,7 +140,7 @@ class _EmployeeProfilePageState extends State<EmployeeProfilePage> {
                               child: Column(
                                 children: <Widget>[
                                   textCenter15BlueBold(getTranslated(this.context, 'money')),
-                                  textCenter15BlueBold('(PLN)'),
+                                  textCenter12BlueBold('(PLN)'),
                                   Countup(
                                     begin: 0,
                                     end: _employeePageDto.tsEarnedMoney,

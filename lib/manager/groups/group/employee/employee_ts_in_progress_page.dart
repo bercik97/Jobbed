@@ -128,19 +128,21 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
           children: <Widget>[
             Container(
               color: BRIGHTER_BLUE,
-              child: Padding(
-                padding: EdgeInsets.only(bottom: 5),
-                child: ListTile(
-                  leading: icon50Orange(Icons.arrow_circle_up),
-                  title: text17BlackBold(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month)),
-                  subtitle: Column(
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: text17BlackBold(_name + ' ' + _surname + ' ' + LanguageUtil.findFlagByNationality(_nationality)),
+              child: ListTile(
+                title: text20Black(_name + ' ' + _surname + ' ' + LanguageUtil.findFlagByNationality(_nationality)),
+                subtitle: Column(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Row(
+                        children: [
+                          text20Black(_timesheet.year.toString() + ' ' + MonthUtil.translateMonth(context, _timesheet.month) + ' - '),
+                          text20OrangeBold(getTranslated(context, 'inProgressTimesheets') + ' '),
+                          icon30Orange(Icons.check_circle_outline)
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -343,7 +345,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
           height: 50,
         ),
         InkWell(
-          onTap: () => _showScrollableWorkTimesDialog(this.context, workdays[index].workTimes),
+          onTap: () => _showScrollableWorkTimesDialog(this.context, workdays[index].number, workdays[index].workTimes),
           child: Ink(
             child: workdays[index].workTimes != null && workdays[index].workTimes.isNotEmpty
                 ? Row(
@@ -358,7 +360,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
           ),
         ),
         InkWell(
-          onTap: () => _showScrollablePieceworksDialog(this.context, workdays[index].id, workdays[index].pieceworks),
+          onTap: () => _showScrollablePieceworksDialog(this.context, workdays[index].number, workdays[index].id, workdays[index].pieceworks),
           child: Ink(
             child: workdays[index].pieceworks != null && workdays[index].pieceworks.isNotEmpty ? iconBlack(Icons.zoom_in) : Align(alignment: Alignment.center, child: text16Black('-')),
             width: 50,
@@ -394,11 +396,9 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 50), child: text20BlackBold(getTranslated(context, 'workTimeUpperCase'))),
-                  SizedBox(height: 2.5),
-                  text16Black(getTranslated(context, 'setWorkTimeForEmployee')),
+                  Padding(padding: EdgeInsets.only(top: 50), child: text20Blue(getTranslated(context, 'workTimeUpperCase'))),
                   SizedBox(height: 20),
-                  text17BlackBold(getTranslated(context, 'startWorkTimeFrom')),
+                  text17Black(getTranslated(context, 'startWorkTimeFrom')),
                   Row(
                     children: [
                       Expanded(
@@ -462,7 +462,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                     ],
                   ),
                   SizedBox(height: 20),
-                  text17BlackBold(getTranslated(context, 'finishWorkTimeTo')),
+                  text17Black(getTranslated(context, 'finishWorkTimeTo')),
                   Row(
                     children: [
                       Expanded(
@@ -776,7 +776,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     });
   }
 
-  void _showScrollablePieceworksDialog(BuildContext context, num workdayId, List pieceworks) {
+  void _showScrollablePieceworksDialog(BuildContext context, num workdayNum, num workdayId, List pieceworks) {
     if (pieceworks == null || pieceworks.isEmpty) {
       return;
     }
@@ -797,8 +797,8 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                     padding: EdgeInsets.all(10),
                     child: Column(
                       children: <Widget>[
-                        text20BlueBold(getTranslated(context, 'pieceworkReports')),
-                        SizedBox(height: 20),
+                        text20Blue(getTranslated(context, 'day') + ' $workdayNum'),
+                        SizedBox(height: 5),
                         SingleChildScrollView(
                           scrollDirection: Axis.vertical,
                           child: SingleChildScrollView(
@@ -905,7 +905,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
     });
   }
 
-  void _showScrollableWorkTimesDialog(BuildContext context, List workTimes) {
+  void _showScrollableWorkTimesDialog(BuildContext context, num workdayNum, List workTimes) {
     if (workTimes == null || workTimes.isEmpty) {
       return;
     }
@@ -926,8 +926,8 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                     padding: EdgeInsets.all(10),
                     child: Column(
                       children: <Widget>[
-                        text20BlueBold(getTranslated(context, 'workTimes')),
-                        SizedBox(height: 20),
+                        text20Blue(getTranslated(context, 'day') + ' $workdayNum'),
+                        SizedBox(height: 5),
                         SingleChildScrollView(
                           scrollDirection: Axis.vertical,
                           child: SingleChildScrollView(

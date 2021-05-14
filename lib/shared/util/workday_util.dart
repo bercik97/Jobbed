@@ -28,9 +28,7 @@ class WorkdayUtil {
                     padding: EdgeInsets.all(10),
                     child: Column(
                       children: <Widget>[
-                        text20BlueBold(date.substring(0, 10)),
-                        SizedBox(height: 20),
-                        text20BlueBold(getTranslated(context, 'workTimes')),
+                        text20Blue(date.substring(0, 10)),
                         SizedBox(height: 5),
                         _buildWorkTimesDataTable(context, workTimes),
                         SizedBox(height: 20),
@@ -81,9 +79,7 @@ class WorkdayUtil {
                     padding: EdgeInsets.all(10),
                     child: Column(
                       children: <Widget>[
-                        text20BlueBold(date.substring(0, 10)),
-                        SizedBox(height: 20),
-                        text20BlueBold(getTranslated(context, 'pieceworks')),
+                        text20Blue(date.substring(0, 10)),
                         SizedBox(height: 5),
                         _buildPieceworksDataTable(context, pieceworks, false),
                         SizedBox(height: 20),
@@ -113,7 +109,7 @@ class WorkdayUtil {
     );
   }
 
-  static void showScrollableWorkTimesDialog(BuildContext context, String title, List workTimes) {
+  static void showScrollableWorkTimesDialog(BuildContext context, num workdayNum, List workTimes) {
     if (workTimes == null || workTimes.isEmpty) {
       return;
     }
@@ -121,7 +117,6 @@ class WorkdayUtil {
       context: context,
       barrierColor: WHITE.withOpacity(0.95),
       barrierDismissible: false,
-      barrierLabel: title,
       transitionDuration: Duration(milliseconds: 400),
       pageBuilder: (_, __, ___) {
         return SizedBox.expand(
@@ -135,7 +130,7 @@ class WorkdayUtil {
                     padding: EdgeInsets.all(10),
                     child: Column(
                       children: <Widget>[
-                        text20BlueBold(title),
+                        text20Blue(getTranslated(context, 'day') + ' $workdayNum'),
                         SizedBox(height: 20),
                         _buildWorkTimesDataTable(context, workTimes),
                         SizedBox(height: 20),
@@ -165,7 +160,7 @@ class WorkdayUtil {
     );
   }
 
-  static void showScrollablePieceworksDialog(BuildContext context, List pieceworks, bool displayCompanyPrice) {
+  static void showScrollablePieceworksDialog(BuildContext context, num workdayNum, List pieceworks, bool displayCompanyPrice) {
     if (pieceworks == null || pieceworks.isEmpty) {
       return;
     }
@@ -186,8 +181,8 @@ class WorkdayUtil {
                     padding: EdgeInsets.all(10),
                     child: Column(
                       children: <Widget>[
-                        text20BlueBold(getTranslated(context, 'pieceworkReports')),
-                        SizedBox(height: 20),
+                        text20Blue(getTranslated(context, 'day') + ' $workdayNum'),
+                        SizedBox(height: 5),
                         _buildPieceworksDataTable(context, pieceworks, displayCompanyPrice),
                         SizedBox(height: 20),
                         Container(

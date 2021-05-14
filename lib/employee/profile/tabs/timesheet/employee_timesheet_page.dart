@@ -78,7 +78,7 @@ class _EmployeeTimesheetPageState extends State<EmployeeTimesheetPage> {
                         children: <Widget>[
                           ListTile(
                             leading: icon30Orange(Icons.arrow_circle_up),
-                            title: text17BlackBold(inProgressTs.year.toString() + ' ' + MonthUtil.translateMonth(context, inProgressTs.month)),
+                            title: text17Black(inProgressTs.year.toString() + ' ' + MonthUtil.translateMonth(context, inProgressTs.month)),
                           ),
                         ],
                       ),
@@ -114,7 +114,7 @@ class _EmployeeTimesheetPageState extends State<EmployeeTimesheetPage> {
                         children: <Widget>[
                           ListTile(
                             leading: icon30Green(Icons.check_circle_outline),
-                            title: text17BlackBold(completedTs.year.toString() + ' ' + MonthUtil.translateMonth(context, completedTs.month)),
+                            title: text17Black(completedTs.year.toString() + ' ' + MonthUtil.translateMonth(context, completedTs.month)),
                           ),
                         ],
                       ),

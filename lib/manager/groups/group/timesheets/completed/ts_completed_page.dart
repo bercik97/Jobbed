@@ -147,25 +147,26 @@ class _TsCompletedPageState extends State<TsCompletedPage> {
                                       ),
                                     ),
                                   ),
-                                  title: text17BlackBold(name + ' ' + surname + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                                  title: text20Black(name + ' ' + surname + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                                   subtitle: Column(
                                     children: <Widget>[
                                       Row(
                                         children: <Widget>[
                                           text17BlackBold(getTranslated(this.context, 'time') + ': '),
-                                          text16Black(employee.totalMoneyForTimeForEmployee.toString() + ' PLN' + ' (' + employee.totalTime + ')'),
+                                          text17GreenBold(employee.totalMoneyForTimeForEmployee.toString() + ' PLN'),
+                                          text17Black(' (' + employee.totalTime + ')'),
                                         ],
                                       ),
                                       Row(
                                         children: <Widget>[
                                           text17BlackBold(getTranslated(this.context, 'accord') + ': '),
-                                          text16Black(employee.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
+                                          text17GreenBold(employee.totalMoneyForPieceworkForEmployee.toString() + ' PLN'),
                                         ],
                                       ),
                                       Row(
                                         children: <Widget>[
                                           text17BlackBold(getTranslated(this.context, 'sum') + ': '),
-                                          text16Black(employee.totalMoneyEarned.toString() + ' PLN'),
+                                          text17GreenBold(employee.totalMoneyEarned.toString() + ' PLN'),
                                         ],
                                       ),
                                     ],

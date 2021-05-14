@@ -173,7 +173,7 @@ class _AddGroupEmployeesPageState extends State<AddGroupEmployeesPage> {
                       contentPadding: EdgeInsets.only(right: 10),
                       child: CheckboxListTile(
                         controlAffinity: ListTileControlAffinity.leading,
-                        title: text20BlackBold(info + ' ' + LanguageUtil.findFlagByNationality(nationality)),
+                        title: text20Black(info + ' ' + LanguageUtil.findFlagByNationality(nationality)),
                         activeColor: BLUE,
                         checkColor: WHITE,
                         value: _checked[foundIndex],
