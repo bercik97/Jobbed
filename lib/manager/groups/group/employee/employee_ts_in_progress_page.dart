@@ -199,7 +199,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image(image: AssetImage('images/white-hours.png')),
-                      iconRed(Icons.close),
+                      icon20Red(Icons.close),
                     ],
                   ),
                   onPressed: () {
@@ -233,7 +233,7 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image(image: AssetImage('images/white-piecework.png')),
-                      iconRed(Icons.close),
+                      icon20Red(Icons.close),
                     ],
                   ),
                   onPressed: () {
@@ -257,9 +257,9 @@ class _EmployeeTsInProgressPageState extends State<EmployeeTsInProgressPage> {
           IconsLegendUtil.buildIconRow(iconOrange(Icons.arrow_circle_up), getTranslated(context, 'tsInProgress')),
           IconsLegendUtil.buildIconRow(iconBlack(Icons.search), getTranslated(context, 'checkDetails')),
           IconsLegendUtil.buildImageRow('images/hours.png', getTranslated(context, 'settingHours')),
-          IconsLegendUtil.buildImageWithIconRow('images/hours.png', iconRed(Icons.close), getTranslated(context, 'deletingWork')),
+          IconsLegendUtil.buildImageWithIconRow('images/hours.png', icon20Red(Icons.close), getTranslated(context, 'deletingWork')),
           IconsLegendUtil.buildImageRow('images/piecework.png', getTranslated(context, 'settingPiecework')),
-          IconsLegendUtil.buildImageWithIconRow('images/piecework.png', iconRed(Icons.close), getTranslated(context, 'deletingPiecework')),
+          IconsLegendUtil.buildImageWithIconRow('images/piecework.png', icon20Red(Icons.close), getTranslated(context, 'deletingPiecework')),
           IconsLegendUtil.buildIconRow(
               Row(
                 children: [

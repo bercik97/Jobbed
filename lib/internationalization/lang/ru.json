@@ -218,8 +218,8 @@
   "timesheetStatusSuccessfullyUpdated": "Статус выбранного расписания успешно обновлен для выбранных сотрудников",
   "forWhomYouWantToUpdateTsStatus": "для кого вы хотите обновить статус выбранного расписания",
   "graphics": "ГРАФИКА",
-  "settingTsStatusToInProgress": "Установка статуса расписания на \"в процессе\"",
-  "settingTsStatusToCompleted": "Установка статуса расписания на \"завершено\"",
+  "settingTsStatusToInProgress": "Изменить статус на 'в процессе'",
+  "settingTsStatusToCompleted": "Изменить статус на 'завершено'",
   "accountExpirationDate": "Срок действия учетной записи",
   "informations": "Информация",
   "updated": "Обновлено!",
@@ -478,7 +478,6 @@
   "addNewTimesheet": "Добавить новый табель",
   "deleteEmployeesAccounts": "Удалить учетные записи сотрудников",
   "noEmployeesAccountsInCompany": "В компании нет учетных записей сотрудников",
-  "deleteAccounts": "Удалить учетные записи",
   "needToSelectEmployeesAccounts": "Необходимо выбрать учетные записи сотрудников",
   "youWantToDelete": "ты хочешь удалить",
   "deletedEmployeesAccounts": "Удаленные аккаунты сотрудников",
@@ -489,5 +488,6 @@
   "tapToSelectDayToCheck": "Нажмите на выбранный день, чтобы выбрать",
   "rate": "Показатель",
   "gps": "GPS",
-  "day": "День"
+  "day": "День",
+  "accounts": "Accounts"
 }

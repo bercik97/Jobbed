@@ -262,7 +262,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image(image: AssetImage('images/white-piecework.png')),
-                      iconRed(Icons.close),
+                      icon20Red(Icons.close),
                     ],
                   ),
                   onPressed: () {
@@ -284,7 +284,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
         getTranslated(context, 'iconsLegend'),
         [
           IconsLegendUtil.buildImageRow('images/piecework.png', getTranslated(context, 'settingPiecework')),
-          IconsLegendUtil.buildImageWithIconRow('images/piecework.png', iconRed(Icons.close), getTranslated(context, 'deletingPiecework')),
+          IconsLegendUtil.buildImageWithIconRow('images/piecework.png', icon20Red(Icons.close), getTranslated(context, 'deletingPiecework')),
         ],
       ),
     );

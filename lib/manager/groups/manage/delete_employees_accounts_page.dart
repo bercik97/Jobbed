@@ -68,12 +68,15 @@ class _DeleteEmployeesAccountsPageState extends State<DeleteEmployeesAccountsPag
     return WillPopScope(
       child: Scaffold(
         backgroundColor: WHITE,
-        appBar: managerAppBar(context, _user, getTranslated(context, 'deleteAccounts'), () => NavigatorUtil.navigate(context, GroupsDashboardPage(_user))),
+        appBar: managerAppBar(context, _user, getTranslated(context, 'accounts'), () => NavigatorUtil.navigate(context, GroupsDashboardPage(_user))),
         body: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
-              SizedBox(height: 5),
+              Padding(
+                padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 10),
+                child: text18Black(getTranslated(context, 'permissionPageTitle')),
+              ),
               _buildSelectUnselectAllCheckbox(),
               _loading ? circularProgressIndicator() : _buildEmployees(),
             ],

@@ -19,6 +19,7 @@ Icon icon50Green(IconData iconData) { return Icon(iconData, size: 50, color: GRE
 
 // RED //
 Icon iconRed(IconData iconData) { return Icon(iconData, color: Colors.red); }
+Icon icon20Red(IconData iconData) { return Icon(iconData, size: 20, color: Colors.red); }
 Icon icon30Red(IconData iconData) { return Icon(iconData, size: 30, color: Colors.red); }
 Icon icon50Red(IconData iconData) { return Icon(iconData, size: 50, color: Colors.red); }
 

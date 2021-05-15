@@ -218,8 +218,8 @@
   "timesheetStatusSuccessfullyUpdated": "Статус вибраного табеля успішно оновлений для вибраних працівників",
   "forWhomYouWantToUpdateTsStatus": "для кого ви хочете оновити статус вибраного табеля робочого часу",
   "graphics": "ГРАФІКА",
-  "settingTsStatusToInProgress": "Встановлення статусу табеля обліку робочого часу в \"виконується\"",
-  "settingTsStatusToCompleted": "Встановлення статусу табеля обліку робочого часу \"завершено\"",
+  "settingTsStatusToInProgress": "Змінити статус на 'виконується'",
+  "settingTsStatusToCompleted": "Змінити статус на 'завершено'",
   "accountExpirationDate": "Срок действия учетной записи",
   "informations": "Інформація",
   "updated": "Оновлено!",
@@ -478,7 +478,6 @@
   "addNewTimesheet": "Додайте новий графік роботи",
   "deleteEmployeesAccounts": "Видалити облікові записи працівників",
   "noEmployeesAccountsInCompany": "У компанії немає рахунків працівників",
-  "deleteAccounts": "Видалити облікові записи",
   "needToSelectEmployeesAccounts": "Потрібно вибрати рахунки працівників",
   "youWantToDelete": "Ви хочете видалити",
   "deletedEmployeesAccounts": "Видалені рахунки працівників",
@@ -489,5 +488,6 @@
   "tapToSelectDayToCheck": "Натисніть вибраний день, щоб вибрати",
   "rate": "Оцініть",
   "gps": "GPS",
-  "day": "День"
+  "day": "День",
+  "accounts": "Accounts"
 }

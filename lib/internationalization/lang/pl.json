@@ -218,8 +218,8 @@
   "timesheetStatusSuccessfullyUpdated": "Status arkusza został zaktualizowany",
   "forWhomYouWantToUpdateTsStatus": "dla których chcesz zaktualizować status wybranego arkusza czasu pracy",
   "graphics": "GRAFIKA",
-  "settingTsStatusToInProgress": "Ustawianie statusu arkusza na 'w toku'",
-  "settingTsStatusToCompleted": "Ustawianie statusu arkusza na 'zakończony'",
+  "settingTsStatusToInProgress": "Zmiana statusu na 'w toku'",
+  "settingTsStatusToCompleted": "Zmiana statusu na 'zakończony'",
   "accountExpirationDate": "Data wygaśnięcia konta",
   "informations": "Informacje",
   "updated": "Zaktualizowano!",
@@ -478,7 +478,6 @@
   "addNewTimesheet": "Dodawanie nowego arkusza",
   "deleteEmployeesAccounts": "Usuwanie kont pracowników",
   "noEmployeesAccountsInCompany": "Brak kont pracowniczych w firmie",
-  "deleteAccounts": "Usuwanie kont",
   "needToSelectEmployeesAccounts": "Musisz zaznaczyć konta pracownicze",
   "youWantToDelete": "które chcesz usunąć",
   "deletedEmployeesAccounts": "Usunięto konta pracownicze",
@@ -489,5 +488,6 @@
   "tapToSelectDayToCheck": "Naciśnij na wybrany dzień aby zaznaczyć",
   "rate": "Stawka",
   "gps": "GPS",
-  "day": "Dzień"
+  "day": "Dzień",
+  "accounts": "Konta"
 }

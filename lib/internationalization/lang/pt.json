@@ -218,8 +218,8 @@
   "timesheetStatusSuccessfullyUpdated": "არჩეული დროის ცხრილის სტატუსი წარმატებით განახლდა არჩეული თანამშრომლებისთვის",
   "forWhomYouWantToUpdateTsStatus": "ვისთვისაც გსურთ განაახლოთ არჩეული დროის ფურცლის სტატუსი",
   "graphics": "გრაფიკა",
-  "settingTsStatusToInProgress": "დროის ფურცლის სტატუსის დაყენება \"მიმდინარეში\"",
-  "settingTsStatusToCompleted": "დროის ფურცლის სტატუსის დაყენება \"დასრულებულად\"",
+  "settingTsStatusToInProgress": "სტატუსის შეცვლა 'მიმდინარეში'",
+  "settingTsStatusToCompleted": "სტატუსის შეცვლა 'დასრულებულად'",
   "accountExpirationDate": "ანგარიშის მოქმედების ვადა",
   "informations": "ინფორმაცია",
   "updated": "განახლებულია!",
@@ -478,7 +478,6 @@
   "addNewTimesheet": "ახალი დროის ფურცლის დამატება",
   "deleteEmployeesAccounts": "წაშალეთ თანამშრომლების ანგარიშები",
   "noEmployeesAccountsInCompany": "კომპანიაში არ მუშაობს არცერთი თანამშრომელი",
-  "deleteAccounts": "ანგარიშების წაშლა",
   "needToSelectEmployeesAccounts": "საჭიროა თანამშრომლების ანგარიშების არჩევა",
   "youWantToDelete": "გსურთ წაშალოთ",
   "deletedEmployeesAccounts": "წაიშალა თანამშრომლების ანგარიშები",
@@ -489,5 +488,6 @@
   "tapToSelectDayToCheck": "ასარჩევად დააჭირეთ არჩეულ დღეს",
   "rate": "შეფასება",
   "gps": "GPS",
-  "day": "\u1C93ღის"
+  "day": "\u1C93ღის",
+  "accounts": "Accounts"
 }

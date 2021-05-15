@@ -218,8 +218,8 @@
   "timesheetStatusSuccessfullyUpdated": "Status of selected timesheet have been successfully updated for the chosen employees",
   "forWhomYouWantToUpdateTsStatus": "for whom you want to update status of selected timesheet",
   "graphics": "GRAPHICS",
-  "settingTsStatusToInProgress": "Setting timesheet status to 'in progress'",
-  "settingTsStatusToCompleted": "Setting timesheet status to 'completed'",
+  "settingTsStatusToInProgress": "Change status to 'in progress'",
+  "settingTsStatusToCompleted": "Change status to 'completed'",
   "accountExpirationDate": "Account expiration date",
   "informations": "Information",
   "updated": "Updated!",
@@ -478,7 +478,6 @@
   "addNewTimesheet": "Add new timesheet",
   "deleteEmployeesAccounts": "Delete employees accounts",
   "noEmployeesAccountsInCompany": "No employees accounts in company",
-  "deleteAccounts": "Delete accounts",
   "needToSelectEmployeesAccounts": "Need to select employees accounts",
   "youWantToDelete": "you want to delete",
   "deletedEmployeesAccounts": "Deleted employees accounts",
@@ -489,5 +488,6 @@
   "tapToSelectDayToCheck": "Tap on the selected day to select",
   "rate": "Rate",
   "gps": "GPS",
-  "day": "Day"
+  "day": "Day",
+  "accounts": "Accounts"
 }

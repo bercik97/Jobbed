@@ -265,7 +265,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                   child: Row(
                     children: [
                       Image(image: AssetImage('images/white-hours.png')),
-                      iconRed(Icons.close),
+                      icon20Red(Icons.close),
                     ],
                   ),
                   onPressed: () {
@@ -293,7 +293,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
           IconsLegendUtil.buildImageRow('images/hours.png', getTranslated(context, 'manualSettingOfWorkingTimes')),
           IconsLegendUtil.buildImageRow('images/play.png', getTranslated(context, 'startingWork')),
           IconsLegendUtil.buildImageRow('images/stop.png', getTranslated(context, 'stoppingWork')),
-          IconsLegendUtil.buildImageWithIconRow('images/hours.png', iconRed(Icons.close), getTranslated(context, 'deletingWork')),
+          IconsLegendUtil.buildImageWithIconRow('images/hours.png', icon20Red(Icons.close), getTranslated(context, 'deletingWork')),
         ],
       ),
     );
