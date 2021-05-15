@@ -262,6 +262,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
               DataColumn(label: textBlackBold(getTranslated(this.context, 'from'))),
               DataColumn(label: textBlackBold(getTranslated(this.context, 'to'))),
               DataColumn(label: textBlackBold(getTranslated(this.context, 'sum'))),
+              DataColumn(label: textBlackBold(getTranslated(this.context, 'money'))),
               DataColumn(label: textBlackBold(getTranslated(this.context, 'workplaceName'))),
             ],
             rows: [
@@ -273,6 +274,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                     DataCell(textBlack(workTimes[i].startTime)),
                     DataCell(textBlack(workTimes[i].endTime != null ? workTimes[i].endTime : '-')),
                     DataCell(textBlack(workTimes[i].totalTime != null ? workTimes[i].totalTime : '-')),
+                    DataCell(textBlack(workTimes[i].moneyForEmployee.toString())),
                     DataCell(textBlack(workTimes[i].workplaceName)),
                   ],
                 ),

@@ -46,7 +46,7 @@ Widget employeeToday(BuildContext context, User user, EmployeeProfileDto dto) {
                                 padding: EdgeInsets.zero,
                                 constraints: BoxConstraints(),
                                 icon: icon30Black(Icons.zoom_in),
-                                onPressed: () => WorkdayUtil.showScrollableWorkTimes(context, todayDate, todayWorkTimes),
+                                onPressed: () => WorkdayUtil.showScrollableWorkTimes(context, todayDate, todayWorkTimes, false),
                               )
                             : SizedBox(height: 0),
                       ],
@@ -63,7 +63,7 @@ Widget employeeToday(BuildContext context, User user, EmployeeProfileDto dto) {
                                 padding: EdgeInsets.zero,
                                 constraints: BoxConstraints(),
                                 icon: icon30Black(Icons.zoom_in),
-                                onPressed: () => WorkdayUtil.showScrollablePieceworks(context, todayDate, todayPiecework),
+                                onPressed: () => WorkdayUtil.showScrollablePieceworks(context, todayDate, todayPiecework, false),
                               )
                             : SizedBox(width: 0),
                       ],

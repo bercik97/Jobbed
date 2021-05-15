@@ -7,6 +7,8 @@ class WorkTimeDetailsDto {
   final String endTime;
   final String totalTime;
   final String additionalInfo;
+  final double moneyForEmployee;
+  final double moneyForCompany;
   final String employeeInfo;
 
   WorkTimeDetailsDto({
@@ -16,6 +18,8 @@ class WorkTimeDetailsDto {
     @required this.endTime,
     @required this.totalTime,
     @required this.additionalInfo,
+    @required this.moneyForEmployee,
+    @required this.moneyForCompany,
     @required this.employeeInfo,
   });
 
@@ -27,6 +31,8 @@ class WorkTimeDetailsDto {
       endTime: json['endTime'],
       totalTime: json['totalTime'],
       additionalInfo: json['additionalInfo'],
+      moneyForEmployee: json['moneyForEmployee'] as double,
+      moneyForCompany: json['moneyForCompany'] as double,
       employeeInfo: json['employeeInfo'],
     );
   }

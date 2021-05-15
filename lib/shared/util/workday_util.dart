@@ -7,7 +7,7 @@ import 'package:jobbed/shared/widget/icons.dart';
 import 'package:jobbed/shared/widget/texts.dart';
 
 class WorkdayUtil {
-  static void showScrollableWorkTimes(BuildContext context, String date, List workTimes) {
+  static void showScrollableWorkTimes(BuildContext context, String date, List workTimes, bool displayCompanyPrice) {
     if (workTimes == null || workTimes.isEmpty) {
       return;
     }
@@ -30,7 +30,7 @@ class WorkdayUtil {
                       children: <Widget>[
                         text20Blue(date.substring(0, 10)),
                         SizedBox(height: 5),
-                        _buildWorkTimesDataTable(context, workTimes),
+                        _buildWorkTimesDataTable(context, workTimes, displayCompanyPrice),
                         SizedBox(height: 20),
                         Container(
                           width: 60,
@@ -58,7 +58,7 @@ class WorkdayUtil {
     );
   }
 
-  static void showScrollablePieceworks(BuildContext context, String date, List pieceworks) {
+  static void showScrollablePieceworks(BuildContext context, String date, List pieceworks, bool displayCompanyPrice) {
     if (pieceworks == null || pieceworks.isEmpty) {
       return;
     }
@@ -81,7 +81,7 @@ class WorkdayUtil {
                       children: <Widget>[
                         text20Blue(date.substring(0, 10)),
                         SizedBox(height: 5),
-                        _buildPieceworksDataTable(context, pieceworks, false),
+                        _buildPieceworksDataTable(context, pieceworks, displayCompanyPrice),
                         SizedBox(height: 20),
                         Container(
                           width: 60,
@@ -109,7 +109,7 @@ class WorkdayUtil {
     );
   }
 
-  static void showScrollableWorkTimesDialog(BuildContext context, num workdayNum, List workTimes) {
+  static void showScrollableWorkTimesDialog(BuildContext context, num workdayNum, List workTimes, bool displayCompanyPrice) {
     if (workTimes == null || workTimes.isEmpty) {
       return;
     }
@@ -132,7 +132,7 @@ class WorkdayUtil {
                       children: <Widget>[
                         text20Blue(getTranslated(context, 'day') + ' $workdayNum'),
                         SizedBox(height: 20),
-                        _buildWorkTimesDataTable(context, workTimes),
+                        _buildWorkTimesDataTable(context, workTimes, displayCompanyPrice),
                         SizedBox(height: 20),
                         Container(
                           width: 60,
@@ -223,17 +223,15 @@ class WorkdayUtil {
             columns: [
               DataColumn(label: textBlackBold(getTranslated(context, 'serviceName'))),
               DataColumn(label: textBlackBold(getTranslated(context, 'quantity'))),
-              displayCompanyPrice
-                  ? DataColumn(
-                      label: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          textBlackBold(getTranslated(context, 'price')),
-                          text12Black('(' + getTranslated(context, 'employee') + ')'),
-                        ],
-                      ),
-                    )
-                  : DataColumn(label: textBlackBold(getTranslated(context, 'price'))),
+              DataColumn(
+                label: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    textBlackBold(getTranslated(context, 'price')),
+                    text12Black('(' + getTranslated(context, 'employee') + ')'),
+                  ],
+                ),
+              ),
               displayCompanyPrice
                   ? DataColumn(
                       label: Column(
@@ -263,7 +261,7 @@ class WorkdayUtil {
     );
   }
 
-  static Widget _buildWorkTimesDataTable(BuildContext context, List workTimes) {
+  static Widget _buildWorkTimesDataTable(BuildContext context, List workTimes, bool displayCompanyPrice) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: SingleChildScrollView(
@@ -277,6 +275,26 @@ class WorkdayUtil {
               DataColumn(label: textBlackBold(getTranslated(context, 'to'))),
               DataColumn(label: textBlackBold(getTranslated(context, 'sum'))),
               DataColumn(label: textBlackBold(getTranslated(context, 'information'))),
+              DataColumn(
+                label: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    textBlackBold(getTranslated(context, 'price')),
+                    text12Black('(' + getTranslated(context, 'employee') + ')'),
+                  ],
+                ),
+              ),
+              displayCompanyPrice
+                  ? DataColumn(
+                label: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    textBlackBold(getTranslated(context, 'price')),
+                    text12Black('(' + getTranslated(context, 'company') + ')'),
+                  ],
+                ),
+              )
+                  : DataColumn(label: SizedBox(height: 0)),
               DataColumn(label: textBlackBold(getTranslated(context, 'workplace'))),
             ],
             rows: [
@@ -301,6 +319,8 @@ class WorkdayUtil {
                             ),
                           )
                         : DataCell(textBlack(getTranslated(context, 'empty'))),
+                    DataCell(Align(alignment: Alignment.center, child: textBlack(workTimes[i].moneyForEmployee.toString()))),
+                    displayCompanyPrice ? DataCell(Align(alignment: Alignment.center, child: textBlack(workTimes[i].moneyForCompany.toString()))) : DataCell(SizedBox(height: 0)),
                     DataCell(textBlack(workTimes[i].workplaceName.toString())),
                   ],
                 ),

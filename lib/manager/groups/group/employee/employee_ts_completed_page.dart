@@ -167,7 +167,7 @@ class _EmployeeTsCompletedPageState extends State<EmployeeTsCompletedPage> {
           height: 50,
         ),
         InkWell(
-          onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, workdays[index].number, workdays[index].workTimes),
+          onTap: () => WorkdayUtil.showScrollableWorkTimesDialog(this.context, workdays[index].number, workdays[index].workTimes, true),
           child: Ink(
             child: workdays[index].workTimes != null && workdays[index].workTimes.isNotEmpty
                 ? Row(

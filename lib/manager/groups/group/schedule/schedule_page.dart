@@ -260,7 +260,7 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
                               padding: EdgeInsets.zero,
                               constraints: BoxConstraints(),
                               icon: iconBlack(Icons.zoom_in),
-                              onPressed: () => WorkdayUtil.showScrollableWorkTimes(context, _selectedDay.toString(), workTimes),
+                              onPressed: () => WorkdayUtil.showScrollableWorkTimes(context, _selectedDay.toString(), workTimes, true),
                             )
                           : SizedBox(height: 0),
                     ],
@@ -277,7 +277,7 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
                               padding: EdgeInsets.zero,
                               constraints: BoxConstraints(),
                               icon: iconBlack(Icons.zoom_in),
-                              onPressed: () => WorkdayUtil.showScrollablePieceworks(context, _selectedDay.toString(), pieceworks),
+                              onPressed: () => WorkdayUtil.showScrollablePieceworks(context, _selectedDay.toString(), pieceworks, true),
                             )
                           : SizedBox(width: 0),
                     ],

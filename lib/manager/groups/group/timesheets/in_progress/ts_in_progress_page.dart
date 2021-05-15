@@ -316,7 +316,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                     child: Row(
                       children: [
                         Image(image: AssetImage('images/white-hours.png')),
-                        iconRed(Icons.close),
+                        icon20Red(Icons.close),
                       ],
                     ),
                     onPressed: () {
@@ -350,7 +350,7 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image(image: AssetImage('images/white-piecework.png')),
-                        iconRed(Icons.close),
+                        icon20Red(Icons.close),
                       ],
                     ),
                     onPressed: () {
@@ -373,9 +373,9 @@ class _TsInProgressPageState extends State<TsInProgressPage> {
           [
             IconsLegendUtil.buildIconRow(AvatarsUtil.buildAvatar('male', 30, 14, 'A', 'B'), getTranslated(context, 'employeeProfile')),
             IconsLegendUtil.buildImageRow('images/hours.png', getTranslated(context, 'manualSettingOfWorkingTimes')),
-            IconsLegendUtil.buildImageWithIconRow('images/hours.png', iconRed(Icons.close), getTranslated(context, 'deletingWork')),
+            IconsLegendUtil.buildImageWithIconRow('images/hours.png', icon20Red(Icons.close), getTranslated(context, 'deletingWork')),
             IconsLegendUtil.buildImageRow('images/piecework.png', getTranslated(context, 'settingPiecework')),
-            IconsLegendUtil.buildImageWithIconRow('images/piecework.png', iconRed(Icons.close), getTranslated(context, 'deletingPiecework')),
+            IconsLegendUtil.buildImageWithIconRow('images/piecework.png', icon20Red(Icons.close), getTranslated(context, 'deletingPiecework')),
           ],
         ),
       ),
