@@ -83,7 +83,7 @@ Container employeePanel(BuildContext context, User user, EmployeeProfileDto empl
                     color: BRIGHTER_BLUE,
                     child: InkWell(
                       onTap: () async => NavigatorUtil.navigate(context, EmployeeTimesheetPage(user, employee.timeSheets)),
-                      child: _buildScrollableContainer(context, 'images/timesheet.png', 'timesheets', 'timesheetsDescription'),
+                      child: _buildScrollableContainer(context, 'images/timesheet.png', 'timesheets', 'timesheetsEmployeeDescription'),
                     ),
                   ),
                 ),

@@ -79,167 +79,168 @@ class _PriceListsPageState extends State<PriceListsPage> {
       child: Scaffold(
         backgroundColor: WHITE,
         appBar: managerAppBar(context, _user, getTranslated(context, 'priceList'), () => NavigatorUtil.navigateReplacement(context, GroupPage(_model))),
-        body: Padding(
-          padding: const EdgeInsets.only(left: 12, right: 12),
-          child: Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
-                child: TextFormField(
-                  autofocus: false,
-                  autocorrect: true,
-                  cursorColor: BLACK,
-                  style: TextStyle(color: BLACK),
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
-                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2)),
-                    counterStyle: TextStyle(color: BLACK),
-                    border: OutlineInputBorder(),
-                    labelText: getTranslated(context, 'search'),
-                    prefixIcon: iconBlack(Icons.search),
-                    labelStyle: TextStyle(color: BLACK),
-                  ),
-                  onChanged: (string) {
-                    setState(
-                      () {
-                        _filteredPriceLists = _priceLists.where((p) => ((p.name + p.priceForEmployee.toString() + p.priceForCompany.toString()).toLowerCase().contains(string.toLowerCase()))).toList();
-                      },
-                    );
-                  },
+        body: Column(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 10),
+              child: text18Black(getTranslated(context, 'priceListPageTitle')),
+            ),
+            Container(
+              padding: EdgeInsets.all(10),
+              child: TextFormField(
+                autofocus: false,
+                autocorrect: true,
+                cursorColor: BLACK,
+                style: TextStyle(color: BLACK),
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: BLUE, width: 2)),
+                  counterStyle: TextStyle(color: BLACK),
+                  border: OutlineInputBorder(),
+                  labelText: getTranslated(context, 'search'),
+                  prefixIcon: iconBlack(Icons.search),
+                  labelStyle: TextStyle(color: BLACK),
                 ),
+                onChanged: (string) {
+                  setState(
+                    () {
+                      _filteredPriceLists = _priceLists.where((p) => ((p.name + p.priceForEmployee.toString() + p.priceForCompany.toString()).toLowerCase().contains(string.toLowerCase()))).toList();
+                    },
+                  );
+                },
               ),
-              Row(
-                children: [
-                  Flexible(
-                    child: ListTileTheme(
-                      contentPadding: EdgeInsets.only(left: 3),
-                      child: CheckboxListTile(
-                        title: textBlack(getTranslated(this.context, 'selectUnselectAll')),
-                        value: _isChecked,
-                        activeColor: BLUE,
-                        checkColor: WHITE,
-                        onChanged: (bool value) {
-                          setState(() {
-                            _isChecked = value;
-                            List<bool> l = new List();
-                            _checked.forEach((b) => l.add(value));
-                            _checked = l;
-                            if (value) {
-                              _selectedIds.addAll(_filteredPriceLists.map((e) => e.id));
-                            } else
-                              _selectedIds.clear();
-                          });
-                        },
-                        controlAffinity: ListTileControlAffinity.leading,
-                      ),
+            ),
+            Row(
+              children: [
+                Flexible(
+                  child: ListTileTheme(
+                    contentPadding: EdgeInsets.only(left: 3),
+                    child: CheckboxListTile(
+                      title: textBlack(getTranslated(this.context, 'selectUnselectAll')),
+                      value: _isChecked,
+                      activeColor: BLUE,
+                      checkColor: WHITE,
+                      onChanged: (bool value) {
+                        setState(() {
+                          _isChecked = value;
+                          List<bool> l = new List();
+                          _checked.forEach((b) => l.add(value));
+                          _checked = l;
+                          if (value) {
+                            _selectedIds.addAll(_filteredPriceLists.map((e) => e.id));
+                          } else
+                            _selectedIds.clear();
+                        });
+                      },
+                      controlAffinity: ListTileControlAffinity.leading,
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 12),
-                    child: InkWell(
-                      onTap: () => _isGenerateExcelBtnTapped ? null : _handleGenerateExcelAndSendEmail(),
-                      child: Image(image: AssetImage('images/excel.png'), height: 40),
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(height: 10),
-              _loading
-                  ? circularProgressIndicator()
-                  : _priceLists.isEmpty
-                      ? _handleNoPriceLists()
-                      : Expanded(
-                          flex: 2,
-                          child: RefreshIndicator(
-                            color: WHITE,
-                            backgroundColor: BLUE,
-                            onRefresh: _refresh,
-                            child: Scrollbar(
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: 12),
+                  child: InkWell(
+                    onTap: () => _isGenerateExcelBtnTapped ? null : _handleGenerateExcelAndSendEmail(),
+                    child: Image(image: AssetImage('images/excel.png'), height: 40),
+                  ),
+                )
+              ],
+            ),
+            SizedBox(height: 10),
+            _loading
+                ? circularProgressIndicator()
+                : _priceLists.isEmpty
+                    ? _handleNoPriceLists()
+                    : Expanded(
+                        flex: 2,
+                        child: RefreshIndicator(
+                          color: WHITE,
+                          backgroundColor: BLUE,
+                          onRefresh: _refresh,
+                          child: Scrollbar(
+                            controller: _scrollController,
+                            child: ListView.builder(
                               controller: _scrollController,
-                              child: ListView.builder(
-                                controller: _scrollController,
-                                itemCount: _filteredPriceLists.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  PriceListDto priceList = _filteredPriceLists[index];
-                                  int foundIndex = 0;
-                                  for (int i = 0; i < _priceLists.length; i++) {
-                                    if (_priceLists[i].id == priceList.id) {
-                                      foundIndex = i;
-                                    }
+                              itemCount: _filteredPriceLists.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                PriceListDto priceList = _filteredPriceLists[index];
+                                int foundIndex = 0;
+                                for (int i = 0; i < _priceLists.length; i++) {
+                                  if (_priceLists[i].id == priceList.id) {
+                                    foundIndex = i;
                                   }
-                                  String name = priceList.name;
-                                  String priceForEmployee = priceList.priceForEmployee.toString();
-                                  String priceForCompany = priceList.priceForCompany.toString();
-                                  return Card(
-                                    color: WHITE,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Container(
-                                          color: BRIGHTER_BLUE,
-                                          child: ListTileTheme(
-                                            contentPadding: EdgeInsets.only(right: 10, left: 10),
-                                            child: CheckboxListTile(
-                                              controlAffinity: ListTileControlAffinity.trailing,
-                                              title: Column(
-                                                children: [
-                                                  Align(
-                                                    alignment: Alignment.topLeft,
-                                                    child: text17BlueBold(name),
+                                }
+                                String name = priceList.name;
+                                String priceForEmployee = priceList.priceForEmployee.toString();
+                                String priceForCompany = priceList.priceForCompany.toString();
+                                return Card(
+                                  color: WHITE,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                        color: BRIGHTER_BLUE,
+                                        child: ListTileTheme(
+                                          contentPadding: EdgeInsets.only(right: 10, left: 10),
+                                          child: CheckboxListTile(
+                                            controlAffinity: ListTileControlAffinity.trailing,
+                                            title: Column(
+                                              children: [
+                                                Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: text17BlueBold(name),
+                                                ),
+                                                Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: Row(
+                                                    children: [
+                                                      text17BlackBold(getTranslated(this.context, 'priceForEmployee') + ': '),
+                                                      text16Black(priceForEmployee),
+                                                    ],
                                                   ),
-                                                  Align(
-                                                    alignment: Alignment.topLeft,
-                                                    child: Row(
-                                                      children: [
-                                                        text17BlackBold(getTranslated(this.context, 'priceForEmployee') + ': '),
-                                                        text16Black(priceForEmployee),
-                                                      ],
-                                                    ),
+                                                ),
+                                                Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: Row(
+                                                    children: [
+                                                      text17BlackBold(getTranslated(this.context, 'priceForCompany') + ': '),
+                                                      text16Black(priceForCompany),
+                                                    ],
                                                   ),
-                                                  Align(
-                                                    alignment: Alignment.topLeft,
-                                                    child: Row(
-                                                      children: [
-                                                        text17BlackBold(getTranslated(this.context, 'priceForCompany') + ': '),
-                                                        text16Black(priceForCompany),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              activeColor: BLUE,
-                                              checkColor: WHITE,
-                                              value: _checked[foundIndex],
-                                              onChanged: (bool value) {
-                                                setState(() {
-                                                  _checked[foundIndex] = value;
-                                                  if (value) {
-                                                    _selectedIds.add(_priceLists[foundIndex].id);
-                                                  } else {
-                                                    _selectedIds.remove(_priceLists[foundIndex].id);
-                                                  }
-                                                  int selectedIdsLength = _selectedIds.length;
-                                                  if (selectedIdsLength == _priceLists.length) {
-                                                    _isChecked = true;
-                                                  } else if (selectedIdsLength == 0) {
-                                                    _isChecked = false;
-                                                  }
-                                                });
-                                              },
+                                                ),
+                                              ],
                                             ),
+                                            activeColor: BLUE,
+                                            checkColor: WHITE,
+                                            value: _checked[foundIndex],
+                                            onChanged: (bool value) {
+                                              setState(() {
+                                                _checked[foundIndex] = value;
+                                                if (value) {
+                                                  _selectedIds.add(_priceLists[foundIndex].id);
+                                                } else {
+                                                  _selectedIds.remove(_priceLists[foundIndex].id);
+                                                }
+                                                int selectedIdsLength = _selectedIds.length;
+                                                if (selectedIdsLength == _priceLists.length) {
+                                                  _isChecked = true;
+                                                } else if (selectedIdsLength == 0) {
+                                                  _isChecked = false;
+                                                }
+                                              });
+                                            },
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ),
-            ],
-          ),
+                      ),
+          ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: Column(

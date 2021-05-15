@@ -136,7 +136,7 @@
   "welcome": "Welcome",
   "loggedSuccessButNoEmployees": "You have successfully logged in but it looks like you don't have created groups. To create a group, please select the button at the bottom of the screen.",
   "manageEmployeesWorkTime": "Manage employees work time",
-  "fillHoursPieceworks": "Fill hours, piecework etc.",
+  "timesheetsDescription": "Correct timesheets and generate excel files",
   "inProgressTimesheets": "In progress",
   "noInProgressTimesheets": "Current group has no in progress timesheets",
   "completedTimesheets": "Completed",
@@ -422,7 +422,7 @@
   "deleteWorkConfirmation": "Are you sure you want to delete all work time for selected employees?",
   "workHasBeenSuccessfullyDeleted": "Work has been successfully deleted!",
   "schedule": "Schedule",
-  "checkSchedule": "Check schedule",
+  "checkSchedule": "Check group calendar",
   "noEmployeesWhoHaveTsForSelectedDaysFromSelectedMonthsAndYears": "There are no employees who have a time sheet for selected days from selected months and years.",
   "todo": "To do",
   "showMore": "show more",
@@ -434,7 +434,7 @@
   "remember": "Remember",
   "employeesCanCreateTheirAccountsByToken": "Employees can create their accounts using token that bas been shared",
   "permissions": "Permissions",
-  "permissionsDescription": "Assign permissions and set hourly rates",
+  "permissionsDescription": "Assign permissions and hourly rates",
   "pieceworksDescription": "Manage pieceworks",
   "permissionPageTitle": "Here you can set employee hourly rates and assign permissions to use selected functions on their own",
   "workTimePageTitle": "In this section, you can perform all operations related to employee working time",
@@ -451,7 +451,7 @@
   "rememberSetLocationHint": "Remember that GPS in mobile phones can work with different accuracy, so it is recommended to set a larger GPS range radius",
   "youDoNotHaveInProgressTimesheets": "No in progress timesheets",
   "youDoNotHaveCompletedTimesheets": "No completed timesheets",
-  "timesheetsDescription": "Browse your sheets",
+  "timesheetsEmployeeDescription": "Browse your sheets",
   "enterWorkplaceCodeToPausePopupTitle": "Enter workplace code to end work",
   "workTimeHasBegun": "Working time has begun!",
   "workTimeEnded": "Working time ended!",
@@ -489,5 +489,6 @@
   "rate": "Rate",
   "gps": "GPS",
   "day": "Day",
-  "accounts": "Accounts"
+  "accounts": "Accounts",
+  "priceListPageTitle": "In this place, you can add price lists for piecework"
 }
