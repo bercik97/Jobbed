@@ -295,7 +295,7 @@ class _PieceworkPageState extends State<PieceworkPage> {
       if (dates == null) {
         return;
       }
-      NavigatorUtil.navigate(context, AddPieceworkPage(_model, dates, _selectedIds, null));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => AddPieceworkPage(_model, dates, _selectedIds, null))).then((value) => _refresh());
     });
   }
 
