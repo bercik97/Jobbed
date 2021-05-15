@@ -87,7 +87,7 @@ class _WorkplaceDetailsPageState extends State<WorkplaceDetailsPage> {
     return WillPopScope(
       child: Scaffold(
         backgroundColor: WHITE,
-        appBar: managerAppBar(context, _user, getTranslated(context, 'workplaceDetails'), () => NavigatorUtil.navigateReplacement(context, WorkplacesPage(_model))),
+        appBar: managerAppBar(context, _user, getTranslated(context, 'details'), () => NavigatorUtil.navigateReplacement(context, WorkplacesPage(_model))),
         body: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(

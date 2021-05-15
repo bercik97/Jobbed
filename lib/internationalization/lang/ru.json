@@ -213,7 +213,6 @@
   "forWhomYouWantToDeleteTs": "для кого вы хотите удалить выбранное расписание",
   "timesheetSuccessfullyDeleted": "Выбранное расписание было успешно удалено для выбранных сотрудников",
   "removeSelectedTsForChosenEmployees": "Удалить выбранное расписание для выбранных сотрудников",
-  "deleteSelectedTs": "Удалить выбранное расписание",
   "updateSelectedTsStatusForChosenEmployees": "Обновить статус выбранного расписания для выбранных сотрудников",
   "timesheetStatusSuccessfullyUpdated": "Статус выбранного расписания успешно обновлен для выбранных сотрудников",
   "forWhomYouWantToUpdateTsStatus": "для кого вы хотите обновить статус выбранного расписания",
@@ -413,7 +412,6 @@
   "enterWorkplaceCode": "Введите код рабочего места",
   "enterWorkplaceCodePopupTitle": "Введите код рабочего места, чтобы начать работу",
   "workplaceCodeIsIncorrect": "Пройденный код рабочего места неверен",
-  "workplaceDetails": "Детали рабочего места",
   "selectedWorkplacesRemoved": "Выбранные рабочие места удалены",
   "deleteGroupConfirmation": "Вы уверены, что хотите удалить выбранную группу?",
   "generateExcelForWorkTimesConfirmation": "Вы уверены, что хотите создать файл Excel для выбранной даты?",
@@ -474,7 +472,6 @@
   "groupName": "Название группы",
   "groupDescription": "Описание группы",
   "yesterdayAdditionalInfo": "Вчерашняя дополнительная информация",
-  "changeTimesheetStatus": "Изменить статус расписания",
   "addNewTimesheet": "Добавить новый табель",
   "deleteEmployeesAccounts": "Удалить учетные записи сотрудников",
   "noEmployeesAccountsInCompany": "В компании нет учетных записей сотрудников",
@@ -490,5 +487,7 @@
   "gps": "GPS",
   "day": "День",
   "accounts": "Accounts",
-  "priceListPageTitle": "In this place, you can add price lists for piecework"
+  "priceListPageTitle": "In this place, you can add price lists for piecework",
+  "deleteEmployeesAccountsDescription": "Select employees accounts which you want to delete",
+  "details": "Details"
 }

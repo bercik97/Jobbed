@@ -278,7 +278,7 @@ class _TsPageState extends State<TsPage> {
                         padding: EdgeInsets.only(top: 50),
                         child: Column(
                           children: [
-                            textCenter20BlackBold(getTranslated(context, 'generateExcelFile')),
+                            textCenter20Blue(getTranslated(context, 'generateExcelFile')),
                           ],
                         ),
                       ),

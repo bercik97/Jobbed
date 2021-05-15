@@ -213,7 +213,6 @@
   "forWhomYouWantToDeleteTs": "for whom you want to remove selected timesheet",
   "timesheetSuccessfullyDeleted": "Selected timesheet have been successfully deleted for the chosen employees",
   "removeSelectedTsForChosenEmployees": "Remove selected timesheet for chosen employees",
-  "deleteSelectedTs": "Delete timesheet",
   "updateSelectedTsStatusForChosenEmployees": "Update selected timesheet status for chosen employees",
   "timesheetStatusSuccessfullyUpdated": "Status of selected timesheet have been successfully updated for the chosen employees",
   "forWhomYouWantToUpdateTsStatus": "for whom you want to update status of selected timesheet",
@@ -413,7 +412,6 @@
   "enterWorkplaceCode": "Enter workplace code",
   "enterWorkplaceCodePopupTitle": "Enter workplace code to begin work",
   "workplaceCodeIsIncorrect": "Passed workplace code is not correct",
-  "workplaceDetails": "Workplace details",
   "selectedWorkplacesRemoved": "Selected workplaces has been removed",
   "deleteGroupConfirmation": "Are you sure you want to delete selected group?",
   "generateExcelForWorkTimesConfirmation": "Are you sure you want to generate excel file for selected date?",
@@ -474,7 +472,6 @@
   "groupName": "Group name",
   "groupDescription": "Group description",
   "yesterdayAdditionalInfo": "Yesterday additional information",
-  "changeTimesheetStatus": "Change timesheet status",
   "addNewTimesheet": "Add new timesheet",
   "deleteEmployeesAccounts": "Delete employees accounts",
   "noEmployeesAccountsInCompany": "No employees accounts in company",
@@ -490,5 +487,7 @@
   "gps": "GPS",
   "day": "Day",
   "accounts": "Accounts",
-  "priceListPageTitle": "In this place, you can add price lists for piecework"
+  "priceListPageTitle": "In this place, you can add price lists for piecework",
+  "deleteEmployeesAccountsDescription": "Select employees accounts which you want to delete",
+  "details": "Details"
 }

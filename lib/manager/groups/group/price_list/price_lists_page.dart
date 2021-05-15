@@ -290,7 +290,7 @@ class _PriceListsPageState extends State<PriceListsPage> {
                         padding: EdgeInsets.only(top: 50),
                         child: Column(
                           children: [
-                            textCenter20BlackBold(getTranslated(context, 'generateExcelFile')),
+                            textCenter20Blue(getTranslated(context, 'generateExcelFile')),
                           ],
                         ),
                       ),

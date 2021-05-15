@@ -75,7 +75,7 @@ class _DeleteEmployeesAccountsPageState extends State<DeleteEmployeesAccountsPag
             children: [
               Padding(
                 padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 10),
-                child: text18Black(getTranslated(context, 'permissionPageTitle')),
+                child: text18Black(getTranslated(context, 'deleteEmployeesAccountsDescription')),
               ),
               _buildSelectUnselectAllCheckbox(),
               _loading ? circularProgressIndicator() : _buildEmployees(),

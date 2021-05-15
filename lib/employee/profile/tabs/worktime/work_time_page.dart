@@ -547,7 +547,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: textCenter20BlackBold(getTranslated(context, 'enterWorkplaceCodePopupTitle')),
+                    child: textCenter20Blue(getTranslated(context, 'enterWorkplaceCodePopupTitle')),
                   ),
                   SizedBox(height: 30),
                   PinCodeTextField(
@@ -664,7 +664,7 @@ class _WorkTimePageState extends State<WorkTimePage> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: textCenter20BlackBold(getTranslated(context, 'enterWorkplaceCodeToPausePopupTitle')),
+                    child: textCenter20Blue(getTranslated(context, 'enterWorkplaceCodeToPausePopupTitle')),
                   ),
                   SizedBox(height: 30),
                   PinCodeTextField(

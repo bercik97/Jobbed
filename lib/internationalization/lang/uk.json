@@ -213,7 +213,6 @@
   "forWhomYouWantToDeleteTs": "для кого ви хочете видалити вибраний графік роботи",
   "timesheetSuccessfullyDeleted": "Вибраний графік роботи успішно видалений для обраних співробітників",
   "removeSelectedTsForChosenEmployees": "Видалити вибраний графік роботи для вибраних працівників",
-  "deleteSelectedTs": "Видалити вибраний графік роботи",
   "updateSelectedTsStatusForChosenEmployees": "Оновити вибраний статус табеля обліку робочого часу для вибраних співробітників",
   "timesheetStatusSuccessfullyUpdated": "Статус вибраного табеля успішно оновлений для вибраних працівників",
   "forWhomYouWantToUpdateTsStatus": "для кого ви хочете оновити статус вибраного табеля робочого часу",
@@ -413,7 +412,6 @@
   "enterWorkplaceCode": "Введіть код робочого місця",
   "enterWorkplaceCodePopupTitle": "Введіть код робочого місця, щоб розпочати роботу",
   "workplaceCodeIsIncorrect": "Введений код робочого місця неправильний",
-  "workplaceDetails": "Деталі робочого місця",
   "selectedWorkplacesRemoved": "Вибрані робочі місця було видалено",
   "deleteGroupConfirmation": "Ви впевнені, що хочете видалити вибрану групу?",
   "generateExcelForWorkTimesConfirmation": "Ви впевнені, що хочете створити файл Excel на вибрану дату?",
@@ -474,7 +472,6 @@
   "groupName": "Назва групи",
   "groupDescription": "Опис групи",
   "yesterdayAdditionalInfo": "Вчора додаткова інформація",
-  "changeTimesheetStatus": "Змінити статус табеля обліку робочого часу",
   "addNewTimesheet": "Додайте новий графік роботи",
   "deleteEmployeesAccounts": "Видалити облікові записи працівників",
   "noEmployeesAccountsInCompany": "У компанії немає рахунків працівників",
@@ -490,5 +487,7 @@
   "gps": "GPS",
   "day": "День",
   "accounts": "Accounts",
-  "priceListPageTitle": "In this place, you can add price lists for piecework"
+  "priceListPageTitle": "In this place, you can add price lists for piecework",
+  "deleteEmployeesAccountsDescription": "Select employees accounts which you want to delete",
+  "details": "Details"
 }

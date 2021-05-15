@@ -25,7 +25,7 @@ Text text20BlackBold(String text) { return Text(text, style: TextStyle(fontSize:
 ////////////////////////////////////
 /*TEXT CENTER BLACK BOLD UNDERLINE*/
 ////////////////////////////////////
-Text textCenter20BlackBoldUnderline(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: BLACK, decoration: TextDecoration.underline, fontWeight: FontWeight.bold)); }
+Text textCenter20BlueUnderline(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: BLACK, decoration: TextDecoration.underline, fontWeight: FontWeight.bold)); }
 Text textBlackBoldUnderline(String text) { return Text(text, style: TextStyle(color: BLACK, decoration: TextDecoration.underline, fontWeight: FontWeight.bold)); }
 
 
@@ -40,13 +40,6 @@ Text textCenter19Black(String text) { return Text(text, textAlign: TextAlign.cen
 Text textCenter20Black(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: BLACK)); }
 Text textCenter28Black(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: BLACK)); }
 Text textCenter30Black(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 30, color: BLACK)); }
-
-
-//////////////////////////
-/*TEXT CENTER BLACK BOLD*/
-/////////////////////////
-Text textCenter20BlackBold(String text) { return Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: BLACK, fontWeight: FontWeight.bold)); }
-
 
 /////////////////////
 /*    TEXT WHITE    */

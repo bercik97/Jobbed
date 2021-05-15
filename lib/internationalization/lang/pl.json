@@ -213,7 +213,6 @@
   "forWhomYouWantToDeleteTs": "dla których chcesz usunąć wybrany arkusz czasu pracy",
   "timesheetSuccessfullyDeleted": "Arkusz został usunięty",
   "removeSelectedTsForChosenEmployees": "Usuń wybrany arkusz czasu pracy dla wybranych pracowników",
-  "deleteSelectedTs": "Usuwanie arkusza",
   "updateSelectedTsStatusForChosenEmployees": "Zaaktualizuj status arkusza czasu pracy dla wybranych pracowników",
   "timesheetStatusSuccessfullyUpdated": "Status arkusza został zaktualizowany",
   "forWhomYouWantToUpdateTsStatus": "dla których chcesz zaktualizować status wybranego arkusza czasu pracy",
@@ -413,7 +412,6 @@
   "enterWorkplaceCode": "Wpisz kod miejsca pracy",
   "enterWorkplaceCodePopupTitle": "Wpisz kod miejsca pracy aby rozpocząc pracę",
   "workplaceCodeIsIncorrect": "Wpisany kod miejsca pracy jest niepoprawny",
-  "workplaceDetails": "Szczegóły miejsca pracy",
   "selectedWorkplacesRemoved": "Miejsca pracy zostały usunięte",
   "deleteGroupConfirmation": "Czy na pewno chcesz usunąć wybraną grupę?",
   "generateExcelForWorkTimesConfirmation": "Czy na pewno chcesz wygenerować plik excel dla wybranej daty?",
@@ -474,7 +472,6 @@
   "groupName": "Nazwa grupy",
   "groupDescription": "Opis grupy",
   "yesterdayAdditionalInfo": "Wczorajsza dodatkowa informacja",
-  "changeTimesheetStatus": "Zmienianie statusu arkusza",
   "addNewTimesheet": "Dodawanie nowego arkusza",
   "deleteEmployeesAccounts": "Usuwanie kont pracowników",
   "noEmployeesAccountsInCompany": "Brak kont pracowniczych w firmie",
@@ -490,5 +487,7 @@
   "gps": "GPS",
   "day": "Dzień",
   "accounts": "Konta",
-  "priceListPageTitle": "W tym miejscu, możesz dodawać cenniki za pracę akordową"
+  "priceListPageTitle": "W tym miejscu, możesz dodawać cenniki za pracę akordową",
+  "deleteEmployeesAccountsDescription": "Zaznacz konta pracownicze, które chcesz usunąć",
+  "details": "Szczegóły"
 }

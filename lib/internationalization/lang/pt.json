@@ -213,7 +213,6 @@
   "forWhomYouWantToDeleteTs": "ვისთვისაც გსურთ წაშალოთ დროის ფურცელი",
   "timesheetSuccessfullyDeleted": "არჩეული დროის ფურცელი წარმატებით წაიშალა არჩეული თანამშრომლებისთვის",
   "removeSelectedTsForChosenEmployees": "არჩეული დროის ფურცლის ამოღება არჩეული თანამშრომლებისთვის",
-  "deleteSelectedTs": "დროის ფურცლის წაშლა",
   "updateSelectedTsStatusForChosenEmployees": "განაახლეთ შერჩეული დროის ფურცლის სტატუსი არჩეული თანამშრომლებისთვის",
   "timesheetStatusSuccessfullyUpdated": "არჩეული დროის ცხრილის სტატუსი წარმატებით განახლდა არჩეული თანამშრომლებისთვის",
   "forWhomYouWantToUpdateTsStatus": "ვისთვისაც გსურთ განაახლოთ არჩეული დროის ფურცლის სტატუსი",
@@ -413,7 +412,6 @@
   "enterWorkplaceCode": "შეიყვანეთ სამუშაო ადგილი კოდი",
   "enterWorkplaceCodePopupTitle": "სამუშაოს დასაწყებად შეიყვანეთ სამუშაო ადგილი",
   "workplaceCodeIsIncorrect": "გავიდა სამუშაო ადგილის კოდი",
-  "workplaceDetails": "სამუშაო ადგილის დეტალები",
   "selectedWorkplacesRemoved": "არჩეული სამუშაო ადგილები ამოღებულია",
   "deleteGroupConfirmation": "დარწმუნებული ხართ, რომ გსურთ წაშალოთ შერჩეული ჯგუფი?",
   "generateExcelForWorkTimesConfirmation": "დარწმუნებული ხართ, რომ გსურთ Excel ფაილის შექმნა შერჩეული თარიღისთვის?",
@@ -474,7 +472,6 @@
   "groupName": "\u1CAFგუფის სახელი",
   "groupDescription": "ჯგუფის აღწერა",
   "yesterdayAdditionalInfo": "გუშინ დამატებითი ინფორმაცია",
-  "changeTimesheetStatus": "დროის ფურცლის სტატუსის შეცვლა",
   "addNewTimesheet": "ახალი დროის ფურცლის დამატება",
   "deleteEmployeesAccounts": "წაშალეთ თანამშრომლების ანგარიშები",
   "noEmployeesAccountsInCompany": "კომპანიაში არ მუშაობს არცერთი თანამშრომელი",
@@ -490,5 +487,7 @@
   "gps": "GPS",
   "day": "\u1C93ღის",
   "accounts": "Accounts",
-  "priceListPageTitle": "In this place, you can add price lists for piecework"
+  "priceListPageTitle": "In this place, you can add price lists for piecework",
+  "deleteEmployeesAccountsDescription": "Select employees accounts which you want to delete",
+  "details": "Details"
 }

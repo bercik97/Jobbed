@@ -234,7 +234,7 @@ class _LoginPageState extends State<LoginPage> {
   _buildCreateAccountDialog() {
     return InkWell(
       onTap: () => _showCreateAccountDialog(),
-      child: textCenter20BlackBoldUnderline(getTranslated(context, 'createNewAccount')),
+      child: textCenter20BlueUnderline(getTranslated(context, 'createNewAccount')),
     );
   }
 
@@ -253,7 +253,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  textCenter20BlackBold(getTranslated(context, 'createNewAccountPopupTitle')),
+                  textCenter20Blue(getTranslated(context, 'createNewAccountPopupTitle')),
                   SizedBox(height: 30),
                   PinCodeTextField(
                     autofocus: true,

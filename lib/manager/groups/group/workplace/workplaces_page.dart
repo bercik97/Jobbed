@@ -291,7 +291,7 @@ class _WorkplacesPageState extends State<WorkplacesPage> {
                       children: <Widget>[
                         text20GreenBold(getTranslated(context, 'iconsLegend')),
                         SizedBox(height: 10),
-                        IconsLegendUtil.buildImageRow('images/workplace.png', getTranslated(context, 'workplaceDetails')),
+                        IconsLegendUtil.buildImageRow('images/workplace.png', getTranslated(context, 'details')),
                       ],
                     ),
                   ),

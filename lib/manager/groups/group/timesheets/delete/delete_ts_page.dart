@@ -81,7 +81,7 @@ class _DeleteTsPageState extends State<DeleteTsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: WHITE,
-      appBar: managerAppBar(context, _user, getTranslated(context, 'deleteSelectedTs'), () => Navigator.pop(context)),
+      appBar: managerAppBar(context, _user, getTranslated(context, 'timesheets'), () => Navigator.pop(context)),
       body: RefreshIndicator(
         color: WHITE,
         backgroundColor: BLUE,
