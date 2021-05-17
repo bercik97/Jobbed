@@ -486,9 +486,9 @@
   "rate": "შეფასება",
   "gps": "GPS",
   "day": "\u1C93ღის",
-  "accounts": "Accounts",
-  "priceListPageTitle": "In this place, you can add price lists for piecework",
-  "deleteEmployeesAccountsDescription": "Select employees accounts which you want to delete",
-  "details": "Details",
-  "usernameWrongLength": "Field should contain at least 5 characters"
+  "accounts": "ანგარიშები",
+  "priceListPageTitle": "ამ ადგილას შეგიძლიათ დაამატოთ ფასების სიები ნაჭრებისთვის",
+  "deleteEmployeesAccountsDescription": "აირჩიეთ თანამშრომლების ანგარიშები, რომელთა წაშლა გსურთ",
+  "details": "დეტალები",
+  "usernameWrongLength": "ველი უნდა შეიცავდეს მინიმუმ 5 სიმბოლოს"
 }
