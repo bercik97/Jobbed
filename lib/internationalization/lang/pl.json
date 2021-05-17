@@ -489,5 +489,6 @@
   "accounts": "Konta",
   "priceListPageTitle": "W tym miejscu, możesz dodawać cenniki za pracę akordową",
   "deleteEmployeesAccountsDescription": "Zaznacz konta pracownicze, które chcesz usunąć",
-  "details": "Szczegóły"
+  "details": "Szczegóły",
+  "usernameWrongLength": "Pole powinno zawierać co najmniej 5 znaków"
 }

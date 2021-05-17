@@ -152,13 +152,7 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
           getTranslated(context, 'loginSection'),
           getTranslated(context, 'loginSectionDescription'),
         ),
-        _buildRequiredTextField(
-          _usernameController,
-          LENGTH_NAME,
-          getTranslated(context, 'username'),
-          getTranslated(context, 'usernameIsRequired'),
-          Icons.person,
-        ),
+        _buildUsernameTextField(),
         _buildPasswordTextField(),
         _buildRePasswordTextField(),
       ],
@@ -330,6 +324,33 @@ class _ManagerRegisterPageState extends State<ManagerRegisterPage> {
         SizedBox(height: 5),
         Align(alignment: Alignment.topLeft, child: text13Black(subtitle)),
         SizedBox(height: 20),
+      ],
+    );
+  }
+
+  Widget _buildUsernameTextField() {
+    return Column(
+      children: <Widget>[
+        TextFormField(
+          autocorrect: true,
+          cursorColor: WHITE,
+          maxLength: LENGTH_NAME,
+          controller: _usernameController,
+          style: TextStyle(color: BLACK),
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: BLACK, width: 2)),
+            counterStyle: TextStyle(color: BLACK),
+            border: OutlineInputBorder(),
+            labelText: getTranslated(context, 'username'),
+            prefixIcon: iconBlack(Icons.person),
+            labelStyle: TextStyle(color: BLACK),
+          ),
+          validator: MultiValidator([
+            RequiredValidator(errorText: getTranslated(context, 'usernameIsRequired')),
+            MinLengthValidator(5, errorText: getTranslated(context, 'usernameWrongLength')),
+          ]),
+        ),
+        SizedBox(height: 10),
       ],
     );
   }

@@ -489,5 +489,6 @@
   "accounts": "Accounts",
   "priceListPageTitle": "In this place, you can add price lists for piecework",
   "deleteEmployeesAccountsDescription": "Select employees accounts which you want to delete",
-  "details": "Details"
+  "details": "Details",
+  "usernameWrongLength": "Field should contain at least 5 characters"
 }
