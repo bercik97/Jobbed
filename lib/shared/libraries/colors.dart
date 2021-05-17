@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 const Color BLUE = Color(0xff4169E1);
-const Color BLUE_AVATAR = Color(0xff9dc4e5);
 const Color GREEN = Colors.green;
 const Color BRIGHTER_GREEN = Color(0xffb5d76d);
 const Color BRIGHTER_BLUE = Color(0xffe6f0ff);
